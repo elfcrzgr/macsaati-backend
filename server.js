@@ -104,6 +104,8 @@ allMatches.sort((a, b) => a.time.localeCompare(b.time));
 
     console.log("Cache başarıyla güncellendi ✅");
     console.log("Toplam maç:", allMatches.length);
+console.log("API RAW RESPONSE COUNT:", response.data.response.length);
+console.log("FILTERED COUNT:", filtered.length);
 
   } catch (error) {
     console.error("Cache hatası ❌:", error.message);
