@@ -90,6 +90,8 @@ async function fetchAndCacheMatches() {
         }));
 
       allMatches.push(...filtered);
+// Saate göre sırala
+allMatches.sort((a, b) => a.time.localeCompare(b.time));
     }
 
     const finalData = {
