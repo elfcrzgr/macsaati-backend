@@ -8,11 +8,11 @@ const cron = require("node-cron");
 const app = express();
 app.use(cors());
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const CACHE_FILE = "matches.json";
 
 /* ================================
-   POPÜLER LİGLER (ANDROID İLE AYNI)
+   POPÜLER LİGLER
 ================================ */
 
 const POPULAR_LEAGUES = new Set([
@@ -24,7 +24,20 @@ const POPULAR_LEAGUES = new Set([
 ]);
 
 /* ================================
-   CACHE OLUŞTURMA FONKSİYONU
+   SAAT FORMATLAMA (HH:mm)
+================================ */
+
+function formatTime(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString("tr-TR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Istanbul"
+  });
+}
+
+/* ================================
+   CACHE OLUŞTURMA
 ================================ */
 
 async function fetchAndCacheMatches() {
@@ -54,9 +67,27 @@ async function fetchAndCacheMatches() {
         }
       );
 
-      const filtered = response.data.response.filter(match =>
-        POPULAR_LEAGUES.has(match.league.id)
-      );
+      const filtered = response.data.response
+        .filter(match => POPULAR_LEAGUES.has(match.league.id))
+        .map(match => ({
+          id: match.fixture.id,
+          time: formatTime(match.fixture.date),
+          league: {
+            id: match.league.id,
+            name: match.league.name,
+            logo: match.league.logo
+          },
+          teams: {
+            home: {
+              name: match.teams.home.name,
+              logo: match.teams.home.logo
+            },
+            away: {
+              name: match.teams.away.name,
+              logo: match.teams.away.logo
+            }
+          }
+        }));
 
       allMatches.push(...filtered);
     }
@@ -64,13 +95,13 @@ async function fetchAndCacheMatches() {
     const finalData = {
       updatedAt: new Date(),
       total: allMatches.length,
-      response: allMatches,
+      matches: allMatches
     };
 
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(finalData, null, 2));
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(finalData));
 
     console.log("Cache başarıyla güncellendi ✅");
-    console.log("Filtre sonrası toplam maç:", allMatches.length);
+    console.log("Toplam maç:", allMatches.length);
 
   } catch (error) {
     console.error("Cache hatası ❌:", error.message);
@@ -78,7 +109,7 @@ async function fetchAndCacheMatches() {
 }
 
 /* ================================
-   CRON JOB (Her Gün 10:00)
+   CRON (Her Gün 10:00)
 ================================ */
 
 cron.schedule("0 10 * * *", () => {
@@ -86,16 +117,12 @@ cron.schedule("0 10 * * *", () => {
 });
 
 /* ================================
-   TEST ENDPOINT
+   ENDPOINTLER
 ================================ */
 
 app.get("/", (req, res) => {
   res.send("MacSaati Backend Çalışıyor 🚀");
 });
-
-/* ================================
-   MATCHES ENDPOINT
-================================ */
 
 app.get("/matches", (req, res) => {
   if (fs.existsSync(CACHE_FILE)) {
