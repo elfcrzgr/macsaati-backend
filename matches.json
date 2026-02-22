@@ -1,0 +1,5396 @@
+{
+  "updatedAt": "2026-02-22T12:12:20.427Z",
+  "total": 77,
+  "response": [
+    {
+      "fixture": {
+        "id": 1491894,
+        "referee": "Facundo Raul Tello Figueroa, Argentina",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T01:15:00+03:00",
+        "timestamp": 1771712100,
+        "periods": {
+          "first": 1771712100,
+          "second": 1771715700
+        },
+        "venue": {
+          "id": null,
+          "name": "Florencio Sola",
+          "city": "Buenos Aires"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 4
+        }
+      },
+      "league": {
+        "id": 128,
+        "name": "Liga Profesional Argentina",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/128.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "season": 2026,
+        "round": "Regular Season - 6",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 449,
+          "name": "Banfield",
+          "logo": "https://media.api-sports.io/football/teams/449.png",
+          "winner": true
+        },
+        "away": {
+          "id": 457,
+          "name": "Newells Old Boys",
+          "logo": "https://media.api-sports.io/football/teams/457.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 3,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 3,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1491898,
+        "referee": "Fernando Echenique, Argentina",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T01:15:00+03:00",
+        "timestamp": 1771712100,
+        "periods": {
+          "first": 1771712100,
+          "second": 1771715700
+        },
+        "venue": {
+          "id": null,
+          "name": "Estadio Guillermo Laza",
+          "city": "Flores"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 6
+        }
+      },
+      "league": {
+        "id": 128,
+        "name": "Liga Profesional Argentina",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/128.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "season": 2026,
+        "round": "Regular Season - 6",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 476,
+          "name": "Deportivo Riestra",
+          "logo": "https://media.api-sports.io/football/teams/476.png",
+          "winner": null
+        },
+        "away": {
+          "id": 445,
+          "name": "Huracan",
+          "logo": "https://media.api-sports.io/football/teams/445.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 0,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1491896,
+        "referee": "Nazareno Arasa, Argentina",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T03:30:00+03:00",
+        "timestamp": 1771720200,
+        "periods": {
+          "first": 1771720200,
+          "second": 1771723800
+        },
+        "venue": {
+          "id": null,
+          "name": "Estadio Unico Madre De Ciudades",
+          "city": "Santiago del Estero"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 4
+        }
+      },
+      "league": {
+        "id": 128,
+        "name": "Liga Profesional Argentina",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/128.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "season": 2026,
+        "round": "Regular Season - 6",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 1065,
+          "name": "Central Cordoba de Santiago",
+          "logo": "https://media.api-sports.io/football/teams/1065.png",
+          "winner": null
+        },
+        "away": {
+          "id": 452,
+          "name": "Tigre",
+          "logo": "https://media.api-sports.io/football/teams/452.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 0,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441882,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:00:00+03:00",
+        "timestamp": 1771754400,
+        "periods": {
+          "first": 1771754400,
+          "second": 1771758000
+        },
+        "venue": {
+          "id": 2396,
+          "name": "Kastamonu Gazi Stadyumu",
+          "city": "Kastamonu"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 6
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Beyaz - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3594,
+          "name": "Kastamonuspor 1966",
+          "logo": "https://media.api-sports.io/football/teams/3594.png",
+          "winner": true
+        },
+        "away": {
+          "id": 7392,
+          "name": "24 Erzincanspor",
+          "logo": "https://media.api-sports.io/football/teams/7392.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 1,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441884,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:00:00+03:00",
+        "timestamp": 1771754400,
+        "periods": {
+          "first": 1771754400,
+          "second": 1771758000
+        },
+        "venue": {
+          "id": 22381,
+          "name": "Yeni Karaman Stadyumu",
+          "city": "Karaman"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 2
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Beyaz - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 6526,
+          "name": "Karaman Belediyespor",
+          "logo": "https://media.api-sports.io/football/teams/6526.png",
+          "winner": false
+        },
+        "away": {
+          "id": 3571,
+          "name": "Elazığspor",
+          "logo": "https://media.api-sports.io/football/teams/3571.png",
+          "winner": true
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 5
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 4
+        },
+        "fulltime": {
+          "home": 0,
+          "away": 5
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441885,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:00:00+03:00",
+        "timestamp": 1771754400,
+        "periods": {
+          "first": 1771754400,
+          "second": 1771758000
+        },
+        "venue": {
+          "id": null,
+          "name": "Batman Yeni Sehir Stadi",
+          "city": "Batman"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 6
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Beyaz - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 7395,
+          "name": "Batman Petrolspor",
+          "logo": "https://media.api-sports.io/football/teams/7395.png",
+          "winner": true
+        },
+        "away": {
+          "id": 7406,
+          "name": "Beyoğlu Yeni Çarşı",
+          "logo": "https://media.api-sports.io/football/teams/7406.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 4,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 4,
+          "away": 1
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441893,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:00:00+03:00",
+        "timestamp": 1771754400,
+        "periods": {
+          "first": 1771754400,
+          "second": 1771758000
+        },
+        "venue": {
+          "id": 8398,
+          "name": "Muş Şehir Stadı",
+          "city": "Muş"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 8
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Kırmızı - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 6536,
+          "name": "Muş Menderesspor",
+          "logo": "https://media.api-sports.io/football/teams/6536.png",
+          "winner": null
+        },
+        "away": {
+          "id": 6507,
+          "name": "68 Aksaray Belediyespor",
+          "logo": "https://media.api-sports.io/football/teams/6507.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 1,
+          "away": 1
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441896,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:00:00+03:00",
+        "timestamp": 1771754400,
+        "periods": {
+          "first": 1771754400,
+          "second": 1771758000
+        },
+        "venue": {
+          "id": 21092,
+          "name": "Ortahisar Yavuz Selim Stadı",
+          "city": "Trabzon"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 5
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Kırmızı - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 6340,
+          "name": "Hekimoğlu Trabzon",
+          "logo": "https://media.api-sports.io/football/teams/6340.png",
+          "winner": true
+        },
+        "away": {
+          "id": 6538,
+          "name": "Somaspor",
+          "logo": "https://media.api-sports.io/football/teams/6538.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 1,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441897,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:00:00+03:00",
+        "timestamp": 1771754400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 8392,
+          "name": "Mersin Stadyumu",
+          "city": "Mersin"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Kırmızı - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 6546,
+          "name": "İçel İdmanyurdu Spor",
+          "logo": "https://media.api-sports.io/football/teams/6546.png",
+          "winner": null
+        },
+        "away": {
+          "id": 3581,
+          "name": "Ankara Demirspor",
+          "logo": "https://media.api-sports.io/football/teams/3581.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1448393,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:00:00+03:00",
+        "timestamp": 1771754400,
+        "periods": {
+          "first": 1771754400,
+          "second": 1771758000
+        },
+        "venue": {
+          "id": 20025,
+          "name": "Mimar Kubilay Köse Stadyumu",
+          "city": "İstanbul"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 7
+        }
+      },
+      "league": {
+        "id": 552,
+        "name": "3. Lig - Group 1",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/552.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Group 1 - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 19301,
+          "name": "Kartal Bulvarspor",
+          "logo": "https://media.api-sports.io/football/teams/19301.png",
+          "winner": null
+        },
+        "away": {
+          "id": 7428,
+          "name": "Çankaya FK",
+          "logo": "https://media.api-sports.io/football/teams/7428.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": 1,
+          "away": 1
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1394637,
+        "referee": "Halil Umut Meler, Türkiye",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:30:00+03:00",
+        "timestamp": 1771756200,
+        "periods": {
+          "first": 1771756200,
+          "second": 1771759800
+        },
+        "venue": {
+          "id": 19613,
+          "name": "Kadir Has Stadium",
+          "city": "Kayseri"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 80,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 203,
+        "name": "Süper Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/203.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 1001,
+          "name": "Kayserispor",
+          "logo": "https://media.api-sports.io/football/teams/1001.png",
+          "winner": null
+        },
+        "away": {
+          "id": 1005,
+          "name": "Antalyaspor",
+          "logo": "https://media.api-sports.io/football/teams/1005.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1398576,
+        "referee": "Yusuf Adnan Kendirciler, Türkiye",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:30:00+03:00",
+        "timestamp": 1771756200,
+        "periods": {
+          "first": 1771756200,
+          "second": 1771759800
+        },
+        "venue": {
+          "id": 0,
+          "name": "Bandırma 17 Eylül Stadı",
+          "city": "Balıkesir"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 79,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/204.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3584,
+          "name": "Bandırmaspor",
+          "logo": "https://media.api-sports.io/football/teams/3584.png",
+          "winner": true
+        },
+        "away": {
+          "id": 3575,
+          "name": "Hatayspor",
+          "logo": "https://media.api-sports.io/football/teams/3575.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 3,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1398580,
+        "referee": "Alpaslan Sen, Türkiye",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T13:30:00+03:00",
+        "timestamp": 1771756200,
+        "periods": {
+          "first": 1771756200,
+          "second": 1771759800
+        },
+        "venue": {
+          "id": 1741,
+          "name": "Kazım Karabekir Stadyumu",
+          "city": "Erzurum"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 82,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/204.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 1009,
+          "name": "Erzurum BB",
+          "logo": "https://media.api-sports.io/football/teams/1009.png",
+          "winner": true
+        },
+        "away": {
+          "id": 7421,
+          "name": "Serik Belediyespor",
+          "logo": "https://media.api-sports.io/football/teams/7421.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 3,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 2,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1378118,
+        "referee": "Marco Guida, Italy",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T14:30:00+03:00",
+        "timestamp": 1771759800,
+        "periods": {
+          "first": 1771759800,
+          "second": null
+        },
+        "venue": {
+          "id": 905,
+          "name": "Luigi Ferraris",
+          "city": "Genova"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 40,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 135,
+        "name": "Serie A",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/135.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 495,
+          "name": "Genoa",
+          "logo": "https://media.api-sports.io/football/teams/495.png",
+          "winner": true
+        },
+        "away": {
+          "id": 503,
+          "name": "Torino",
+          "logo": "https://media.api-sports.io/football/teams/503.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441881,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Karacabey M. Fehmi Gerçeker Stadyumu",
+          "city": "Karacabey"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 11,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Beyaz - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 7407,
+          "name": "Karacabey Belediyespor",
+          "logo": "https://media.api-sports.io/football/teams/7407.png",
+          "winner": null
+        },
+        "away": {
+          "id": 1010,
+          "name": "Ankaragücü",
+          "logo": "https://media.api-sports.io/football/teams/1010.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441883,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": 20477,
+          "name": "Şanlıurfa 11 Nisan Stadyumu",
+          "city": "Şanlıurfa"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 11,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Beyaz - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3613,
+          "name": "Şanlıurfaspor",
+          "logo": "https://media.api-sports.io/football/teams/3613.png",
+          "winner": false
+        },
+        "away": {
+          "id": 22009,
+          "name": "Adana 1954 FK",
+          "logo": "https://media.api-sports.io/football/teams/22009.png",
+          "winner": true
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441886,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": 5398,
+          "name": "Muğla Atatürk Stadyumu",
+          "city": "Muğla"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 9,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Beyaz - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 7414,
+          "name": "Muğlaspor",
+          "logo": "https://media.api-sports.io/football/teams/7414.png",
+          "winner": null
+        },
+        "away": {
+          "id": 7403,
+          "name": "Erzin Spor",
+          "logo": "https://media.api-sports.io/football/teams/7403.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441888,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": 22384,
+          "name": "Yeni Buca Stadı",
+          "city": "İzmir"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 9,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Beyaz - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 7396,
+          "name": "Buca FK",
+          "logo": "https://media.api-sports.io/football/teams/7396.png",
+          "winner": null
+        },
+        "away": {
+          "id": 6529,
+          "name": "Kepez Belediyespor",
+          "logo": "https://media.api-sports.io/football/teams/6529.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441894,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": 2398,
+          "name": "Kırklareli Atatürk Stadyumu",
+          "city": "Kırklareli"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 12,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Kırmızı - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3596,
+          "name": "Kırklarelispor",
+          "logo": "https://media.api-sports.io/football/teams/3596.png",
+          "winner": false
+        },
+        "away": {
+          "id": 24601,
+          "name": " Kahramanmaraş İstiklal Spor",
+          "logo": "https://media.api-sports.io/football/teams/24601.png",
+          "winner": true
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441898,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": 11026,
+          "name": "Bolluca Stadı",
+          "city": "Arnavutköy"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 10,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Kırmızı - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 15101,
+          "name": "Arnavutköy Belediyespor",
+          "logo": "https://media.api-sports.io/football/teams/15101.png",
+          "winner": null
+        },
+        "away": {
+          "id": 6533,
+          "name": "Mardin BB",
+          "logo": "https://media.api-sports.io/football/teams/6533.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1448386,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": 4686,
+          "name": "Mustafa Kemal Atatürk Stadyumu",
+          "city": "Velimeşe"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 8,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 552,
+        "name": "3. Lig - Group 1",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/552.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Group 1 - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 22451,
+          "name": "Çorluspor 1947",
+          "logo": "https://media.api-sports.io/football/teams/22451.png",
+          "winner": null
+        },
+        "away": {
+          "id": 26467,
+          "name": "İnkılapspor",
+          "logo": "https://media.api-sports.io/football/teams/26467.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1448389,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": null,
+          "city": null
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 10,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 552,
+        "name": "3. Lig - Group 1",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/552.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Group 1 - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 26466,
+          "name": "Kestel Çilek",
+          "logo": "https://media.api-sports.io/football/teams/26466.png",
+          "winner": null
+        },
+        "away": {
+          "id": 24957,
+          "name": "Yalova Yeşilovaspor",
+          "logo": "https://media.api-sports.io/football/teams/24957.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1448390,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:00:00+03:00",
+        "timestamp": 1771761600,
+        "periods": {
+          "first": 1771761600,
+          "second": null
+        },
+        "venue": {
+          "id": 21094,
+          "name": "Etimesgut Belediyesi Atatürk Stadı",
+          "city": "Etimesgut"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 13,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 552,
+        "name": "3. Lig - Group 1",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/552.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Group 1 - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 24600,
+          "name": "1926 Polatlı Belediye",
+          "logo": "https://media.api-sports.io/football/teams/24600.png",
+          "winner": true
+        },
+        "away": {
+          "id": 26465,
+          "name": "Galata",
+          "logo": "https://media.api-sports.io/football/teams/26465.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1382633,
+        "referee": "Lothar D'hondt, Belgium",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T15:30:00+03:00",
+        "timestamp": 1771763400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 12455,
+          "name": "Cegeka Arena",
+          "city": "Genk"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 144,
+        "name": "Jupiler Pro League",
+        "country": "Belgium",
+        "logo": "https://media.api-sports.io/football/leagues/144.png",
+        "flag": "https://media.api-sports.io/flags/be.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 742,
+          "name": "Genk",
+          "logo": "https://media.api-sports.io/football/teams/742.png",
+          "winner": null
+        },
+        "away": {
+          "id": 733,
+          "name": "Standard Liege",
+          "logo": "https://media.api-sports.io/football/teams/733.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1391065,
+        "referee": "Mateo Busquets Ferrer, Spain",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T16:00:00+03:00",
+        "timestamp": 1771765200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 20422,
+          "name": "Coliseum",
+          "city": "Getafe"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 140,
+        "name": "La Liga",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/140.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 546,
+          "name": "Getafe",
+          "logo": "https://media.api-sports.io/football/teams/546.png",
+          "winner": null
+        },
+        "away": {
+          "id": 536,
+          "name": "Sevilla",
+          "logo": "https://media.api-sports.io/football/teams/536.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1392054,
+        "referee": "Damaso Arcediano Monescillo, Spain",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T16:00:00+03:00",
+        "timestamp": 1771765200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Estadio Municipal El Molinón-Enrique Castro Quini",
+          "city": "Gijon"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 141,
+        "name": "Segunda División",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/141.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 731,
+          "name": "Sporting Gijon",
+          "logo": "https://media.api-sports.io/football/teams/731.png",
+          "winner": null
+        },
+        "away": {
+          "id": 720,
+          "name": "Valladolid",
+          "logo": "https://media.api-sports.io/football/teams/720.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1394635,
+        "referee": "Cagdas Altay, Türkiye",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T16:00:00+03:00",
+        "timestamp": 1771765200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 2375,
+          "name": "Kalyon Stadyumu",
+          "city": "Gaziantep"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 203,
+        "name": "Süper Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/203.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3573,
+          "name": "Gaziantep FK",
+          "logo": "https://media.api-sports.io/football/teams/3573.png",
+          "winner": null
+        },
+        "away": {
+          "id": 998,
+          "name": "Trabzonspor",
+          "logo": "https://media.api-sports.io/football/teams/998.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1398579,
+        "referee": "Burak Demirkiran, Türkiye",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T16:00:00+03:00",
+        "timestamp": 1771765200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 20306,
+          "name": "Corum Stadyumu",
+          "city": "Corum"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/204.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 6343,
+          "name": "Yeni Çorumspor",
+          "logo": "https://media.api-sports.io/football/teams/6343.png",
+          "winner": null
+        },
+        "away": {
+          "id": 3577,
+          "name": "Ümraniyespor",
+          "logo": "https://media.api-sports.io/football/teams/3577.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1378114,
+        "referee": "D. Chiffi",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T17:00:00+03:00",
+        "timestamp": 1771768800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 879,
+          "name": "New Balance Arena",
+          "city": "Bergamo"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 135,
+        "name": "Serie A",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/135.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 499,
+          "name": "Atalanta",
+          "logo": "https://media.api-sports.io/football/teams/499.png",
+          "winner": null
+        },
+        "away": {
+          "id": 492,
+          "name": "Napoli",
+          "logo": "https://media.api-sports.io/football/teams/492.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379232,
+        "referee": "T. Kirk",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T17:00:00+03:00",
+        "timestamp": 1771768800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 525,
+          "name": "Selhurst Park",
+          "city": "London"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 52,
+          "name": "Crystal Palace",
+          "logo": "https://media.api-sports.io/football/teams/52.png",
+          "winner": null
+        },
+        "away": {
+          "id": 39,
+          "name": "Wolves",
+          "logo": "https://media.api-sports.io/football/teams/39.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379235,
+        "referee": "A. Taylor",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T17:00:00+03:00",
+        "timestamp": 1771768800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 566,
+          "name": "City Ground",
+          "city": "Nottingham"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 65,
+          "name": "Nottingham Forest",
+          "logo": "https://media.api-sports.io/football/teams/65.png",
+          "winner": null
+        },
+        "away": {
+          "id": 40,
+          "name": "Liverpool",
+          "logo": "https://media.api-sports.io/football/teams/40.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379236,
+        "referee": "C. Pawson",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T17:00:00+03:00",
+        "timestamp": 1771768800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 589,
+          "name": "Stadium of Light",
+          "city": "Sunderland"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 746,
+          "name": "Sunderland",
+          "logo": "https://media.api-sports.io/football/teams/746.png",
+          "winner": null
+        },
+        "away": {
+          "id": 36,
+          "name": "Fulham",
+          "logo": "https://media.api-sports.io/football/teams/36.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1387897,
+        "referee": "G. Angoula",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T17:00:00+03:00",
+        "timestamp": 1771768800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 636,
+          "name": "Stade de l'Abbé Deschamps",
+          "city": "Auxerre"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 61,
+        "name": "Ligue 1",
+        "country": "France",
+        "logo": "https://media.api-sports.io/football/leagues/61.png",
+        "flag": "https://media.api-sports.io/flags/fr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 108,
+          "name": "Auxerre",
+          "logo": "https://media.api-sports.io/football/teams/108.png",
+          "winner": null
+        },
+        "away": {
+          "id": 94,
+          "name": "Rennes",
+          "logo": "https://media.api-sports.io/football/teams/94.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1388508,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T17:30:00+03:00",
+        "timestamp": 1771770600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Europa-Park Stadion",
+          "city": "Freiburg"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 78,
+        "name": "Bundesliga",
+        "country": "Germany",
+        "logo": "https://media.api-sports.io/football/leagues/78.png",
+        "flag": "https://media.api-sports.io/flags/de.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 160,
+          "name": "SC Freiburg",
+          "logo": "https://media.api-sports.io/football/teams/160.png",
+          "winner": null
+        },
+        "away": {
+          "id": 163,
+          "name": "Borussia Mönchengladbach",
+          "logo": "https://media.api-sports.io/football/teams/163.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1382628,
+        "referee": "M. Allaerts",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T18:00:00+03:00",
+        "timestamp": 1771772400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Easi Arena",
+          "city": null
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 144,
+        "name": "Jupiler Pro League",
+        "country": "Belgium",
+        "logo": "https://media.api-sports.io/football/leagues/144.png",
+        "flag": "https://media.api-sports.io/flags/be.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 5902,
+          "name": "RAAL La Louvière",
+          "logo": "https://media.api-sports.io/football/teams/5902.png",
+          "winner": null
+        },
+        "away": {
+          "id": 266,
+          "name": "KV Mechelen",
+          "logo": "https://media.api-sports.io/football/teams/266.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1441892,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T18:00:00+03:00",
+        "timestamp": 1771772400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 1588,
+          "name": "Yeni Malatya Stadyumu",
+          "city": "Malatya"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 205,
+        "name": "2. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/205.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Kırmızı - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 999,
+          "name": "Yeni Malatyaspor",
+          "logo": "https://media.api-sports.io/football/teams/999.png",
+          "winner": null
+        },
+        "away": {
+          "id": 21993,
+          "name": "Aliağa FAŞ",
+          "logo": "https://media.api-sports.io/football/teams/21993.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1391062,
+        "referee": "J. Alberola",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T18:15:00+03:00",
+        "timestamp": 1771773300,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 19939,
+          "name": "Camp Nou",
+          "city": "Barcelona"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 140,
+        "name": "La Liga",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/140.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 529,
+          "name": "Barcelona",
+          "logo": "https://media.api-sports.io/football/teams/529.png",
+          "winner": null
+        },
+        "away": {
+          "id": 539,
+          "name": "Levante",
+          "logo": "https://media.api-sports.io/football/teams/539.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1396975,
+        "referee": "E. Mallo",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T18:15:00+03:00",
+        "timestamp": 1771773300,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 2618,
+          "name": "Estadi de la FAF",
+          "city": "Encamp"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 141,
+        "name": "Segunda División",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/141.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 8157,
+          "name": "FC Andorra",
+          "logo": "https://media.api-sports.io/football/teams/8157.png",
+          "winner": null
+        },
+        "away": {
+          "id": 732,
+          "name": "Zaragoza",
+          "logo": "https://media.api-sports.io/football/teams/732.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1387896,
+        "referee": "M. Vernice",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T19:15:00+03:00",
+        "timestamp": 1771776900,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 634,
+          "name": "Stade Raymond-Kopa",
+          "city": "Angers"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 61,
+        "name": "Ligue 1",
+        "country": "France",
+        "logo": "https://media.api-sports.io/football/leagues/61.png",
+        "flag": "https://media.api-sports.io/flags/fr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 77,
+          "name": "Angers",
+          "logo": "https://media.api-sports.io/football/teams/77.png",
+          "winner": null
+        },
+        "away": {
+          "id": 79,
+          "name": "Lille",
+          "logo": "https://media.api-sports.io/football/teams/79.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1387900,
+        "referee": "J. Pignard",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T19:15:00+03:00",
+        "timestamp": 1771776900,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 662,
+          "name": "Stade de la Beaujoire",
+          "city": "Nantes"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 61,
+        "name": "Ligue 1",
+        "country": "France",
+        "logo": "https://media.api-sports.io/football/leagues/61.png",
+        "flag": "https://media.api-sports.io/flags/fr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 83,
+          "name": "Nantes",
+          "logo": "https://media.api-sports.io/football/teams/83.png",
+          "winner": null
+        },
+        "away": {
+          "id": 111,
+          "name": "Le Havre",
+          "logo": "https://media.api-sports.io/football/teams/111.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1387901,
+        "referee": "J. Stinat",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T19:15:00+03:00",
+        "timestamp": 1771776900,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 663,
+          "name": "Allianz Riviera",
+          "city": "Nice"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 61,
+        "name": "Ligue 1",
+        "country": "France",
+        "logo": "https://media.api-sports.io/football/leagues/61.png",
+        "flag": "https://media.api-sports.io/flags/fr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 84,
+          "name": "Nice",
+          "logo": "https://media.api-sports.io/football/teams/84.png",
+          "winner": null
+        },
+        "away": {
+          "id": 97,
+          "name": "Lorient",
+          "logo": "https://media.api-sports.io/football/teams/97.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379237,
+        "referee": "P. Bankes",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T19:30:00+03:00",
+        "timestamp": 1771777800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 593,
+          "name": "Tottenham Hotspur Stadium",
+          "city": "London"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 47,
+          "name": "Tottenham",
+          "logo": "https://media.api-sports.io/football/teams/47.png",
+          "winner": null
+        },
+        "away": {
+          "id": 42,
+          "name": "Arsenal",
+          "logo": "https://media.api-sports.io/football/teams/42.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1388512,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T19:30:00+03:00",
+        "timestamp": 1771777800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 745,
+          "name": "Millerntor-Stadion",
+          "city": "Hamburg"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 78,
+        "name": "Bundesliga",
+        "country": "Germany",
+        "logo": "https://media.api-sports.io/football/leagues/78.png",
+        "flag": "https://media.api-sports.io/flags/de.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 186,
+          "name": "FC St. Pauli",
+          "logo": "https://media.api-sports.io/football/teams/186.png",
+          "winner": null
+        },
+        "away": {
+          "id": 162,
+          "name": "Werder Bremen",
+          "logo": "https://media.api-sports.io/football/teams/162.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1378121,
+        "referee": "M. Piccinini",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T20:00:00+03:00",
+        "timestamp": 1771779600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 907,
+          "name": "Stadio Giuseppe Meazza",
+          "city": "Milan"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 135,
+        "name": "Serie A",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/135.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 489,
+          "name": "AC Milan",
+          "logo": "https://media.api-sports.io/football/teams/489.png",
+          "winner": null
+        },
+        "away": {
+          "id": 523,
+          "name": "Parma",
+          "logo": "https://media.api-sports.io/football/teams/523.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1394632,
+        "referee": "O. Ergun",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T20:00:00+03:00",
+        "timestamp": 1771779600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 20423,
+          "name": "Tupras Stadium",
+          "city": "Istanbul"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 203,
+        "name": "Süper Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/203.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 549,
+          "name": "Beşiktaş",
+          "logo": "https://media.api-sports.io/football/teams/549.png",
+          "winner": null
+        },
+        "away": {
+          "id": 994,
+          "name": "Göztepe",
+          "logo": "https://media.api-sports.io/football/teams/994.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1394636,
+        "referee": "O. Cakir",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T20:00:00+03:00",
+        "timestamp": 1771779600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 1968,
+          "name": "Atatürk Olimpiyat Stadı",
+          "city": "Istanbul"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 203,
+        "name": "Süper Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/203.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3589,
+          "name": "Fatih Karagümrük",
+          "logo": "https://media.api-sports.io/football/teams/3589.png",
+          "winner": null
+        },
+        "away": {
+          "id": 3603,
+          "name": "Samsunspor",
+          "logo": "https://media.api-sports.io/football/teams/3603.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1398577,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T20:00:00+03:00",
+        "timestamp": 1771779600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 0,
+          "name": "Grey Beton Bodrum Stadyumu",
+          "city": "Bodrum"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/204.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3583,
+          "name": "BB Bodrumspor",
+          "logo": "https://media.api-sports.io/football/teams/3583.png",
+          "winner": null
+        },
+        "away": {
+          "id": 3597,
+          "name": "Manisa BBSK",
+          "logo": "https://media.api-sports.io/football/teams/3597.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1382631,
+        "referee": "B. Verbeke",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T20:30:00+03:00",
+        "timestamp": 1771781400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 11891,
+          "name": "Elindus Arena",
+          "city": "Waregem"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 144,
+        "name": "Jupiler Pro League",
+        "country": "Belgium",
+        "logo": "https://media.api-sports.io/football/leagues/144.png",
+        "flag": "https://media.api-sports.io/flags/be.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 600,
+          "name": "Zulte Waregem",
+          "logo": "https://media.api-sports.io/football/teams/600.png",
+          "winner": null
+        },
+        "away": {
+          "id": 554,
+          "name": "Anderlecht",
+          "logo": "https://media.api-sports.io/football/teams/554.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1391064,
+        "referee": "J. Guzman",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T20:30:00+03:00",
+        "timestamp": 1771781400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Estadio Abanca-Balaídos",
+          "city": "Vigo"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 140,
+        "name": "La Liga",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/140.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 538,
+          "name": "Celta Vigo",
+          "logo": "https://media.api-sports.io/football/teams/538.png",
+          "winner": null
+        },
+        "away": {
+          "id": 798,
+          "name": "Mallorca",
+          "logo": "https://media.api-sports.io/football/teams/798.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1392053,
+        "referee": "S. Ais",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T20:30:00+03:00",
+        "timestamp": 1771781400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 3516,
+          "name": "Estadio El Sardinero",
+          "city": "Santander"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 141,
+        "name": "Segunda División",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/141.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 4665,
+          "name": "Racing Santander",
+          "logo": "https://media.api-sports.io/football/teams/4665.png",
+          "winner": null
+        },
+        "away": {
+          "id": 9580,
+          "name": "Burgos",
+          "logo": "https://media.api-sports.io/football/teams/9580.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1396439,
+        "referee": "I. Vasilica",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T21:00:00+03:00",
+        "timestamp": 1771783200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 1274,
+          "name": "Estádio António Coimbra da Mota",
+          "city": "Estoril"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 94,
+        "name": "Primeira Liga",
+        "country": "Portugal",
+        "logo": "https://media.api-sports.io/football/leagues/94.png",
+        "flag": "https://media.api-sports.io/flags/pt.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 230,
+          "name": "Estoril",
+          "logo": "https://media.api-sports.io/football/teams/230.png",
+          "winner": null
+        },
+        "away": {
+          "id": 762,
+          "name": "GIL Vicente",
+          "logo": "https://media.api-sports.io/football/teams/762.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1382630,
+        "referee": "K. van Damme",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T21:15:00+03:00",
+        "timestamp": 1771784100,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 195,
+          "name": "Het Kuipje",
+          "city": "Westerlo"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 144,
+        "name": "Jupiler Pro League",
+        "country": "Belgium",
+        "logo": "https://media.api-sports.io/football/leagues/144.png",
+        "flag": "https://media.api-sports.io/flags/be.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 261,
+          "name": "KVC Westerlo",
+          "logo": "https://media.api-sports.io/football/teams/261.png",
+          "winner": null
+        },
+        "away": {
+          "id": 736,
+          "name": "Charleroi",
+          "logo": "https://media.api-sports.io/football/teams/736.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1388509,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T21:30:00+03:00",
+        "timestamp": 1771785000,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Voith-Arena",
+          "city": "Heidenheim"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 78,
+        "name": "Bundesliga",
+        "country": "Germany",
+        "logo": "https://media.api-sports.io/football/leagues/78.png",
+        "flag": "https://media.api-sports.io/flags/de.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 180,
+          "name": "1. FC Heidenheim",
+          "logo": "https://media.api-sports.io/football/teams/180.png",
+          "winner": null
+        },
+        "away": {
+          "id": 172,
+          "name": "VfB Stuttgart",
+          "logo": "https://media.api-sports.io/football/teams/172.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1378122,
+        "referee": "M. Di Bello",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T22:45:00+03:00",
+        "timestamp": 1771789500,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Stadio Olimpico",
+          "city": "Rome"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 135,
+        "name": "Serie A",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/135.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 497,
+          "name": "AS Roma",
+          "logo": "https://media.api-sports.io/football/teams/497.png",
+          "winner": null
+        },
+        "away": {
+          "id": 520,
+          "name": "Cremonese",
+          "logo": "https://media.api-sports.io/football/teams/520.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1387903,
+        "referee": "R. Buquet",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T22:45:00+03:00",
+        "timestamp": 1771789500,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 681,
+          "name": "Stade de la Meinau",
+          "city": "Strasbourg"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 61,
+        "name": "Ligue 1",
+        "country": "France",
+        "logo": "https://media.api-sports.io/football/leagues/61.png",
+        "flag": "https://media.api-sports.io/flags/fr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 95,
+          "name": "Strasbourg",
+          "logo": "https://media.api-sports.io/football/teams/95.png",
+          "winner": null
+        },
+        "away": {
+          "id": 80,
+          "name": "Lyon",
+          "logo": "https://media.api-sports.io/football/teams/80.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1391068,
+        "referee": "J. Manzano",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T23:00:00+03:00",
+        "timestamp": 1771790400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 1498,
+          "name": "Estadio de la Ceramica",
+          "city": "Villarreal"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 140,
+        "name": "La Liga",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/140.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 533,
+          "name": "Villarreal",
+          "logo": "https://media.api-sports.io/football/teams/533.png",
+          "winner": null
+        },
+        "away": {
+          "id": 532,
+          "name": "Valencia",
+          "logo": "https://media.api-sports.io/football/teams/532.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1392056,
+        "referee": "D. Palencia",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T23:00:00+03:00",
+        "timestamp": 1771790400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 1483,
+          "name": "Estadio La Rosaleda",
+          "city": "Málaga"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 141,
+        "name": "Segunda División",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/141.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 535,
+          "name": "Malaga",
+          "logo": "https://media.api-sports.io/football/teams/535.png",
+          "winner": null
+        },
+        "away": {
+          "id": 722,
+          "name": "Albacete",
+          "logo": "https://media.api-sports.io/football/teams/722.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1491905,
+        "referee": "S. Martinez",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T23:00:00+03:00",
+        "timestamp": 1771790400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Estadio Pedro Bidegain",
+          "city": "Buenos Aires"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 128,
+        "name": "Liga Profesional Argentina",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/128.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "season": 2026,
+        "round": "Regular Season - 6",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 460,
+          "name": "San Lorenzo",
+          "logo": "https://media.api-sports.io/football/teams/460.png",
+          "winner": null
+        },
+        "away": {
+          "id": 2424,
+          "name": "Estudiantes de Rio Cuarto",
+          "logo": "https://media.api-sports.io/football/teams/2424.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1396442,
+        "referee": "D. Silva",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-22T23:30:00+03:00",
+        "timestamp": 1771792200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 1286,
+          "name": "Estádio Do Dragão",
+          "city": "Porto"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 94,
+        "name": "Primeira Liga",
+        "country": "Portugal",
+        "logo": "https://media.api-sports.io/football/leagues/94.png",
+        "flag": "https://media.api-sports.io/flags/pt.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 212,
+          "name": "FC Porto",
+          "logo": "https://media.api-sports.io/football/teams/212.png",
+          "winner": null
+        },
+        "away": {
+          "id": 226,
+          "name": "Rio Ave",
+          "logo": "https://media.api-sports.io/football/teams/226.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1491893,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T00:00:00+03:00",
+        "timestamp": 1771794000,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Estadio Diego Armando Maradona",
+          "city": "Buenos Aires"
+        },
+        "status": {
+          "long": "Match Postponed",
+          "short": "PST",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 128,
+        "name": "Liga Profesional Argentina",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/128.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "season": 2026,
+        "round": "Regular Season - 6",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 458,
+          "name": "Argentinos JRS",
+          "logo": "https://media.api-sports.io/football/teams/458.png",
+          "winner": null
+        },
+        "away": {
+          "id": 446,
+          "name": "Lanus",
+          "logo": "https://media.api-sports.io/football/teams/446.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1491907,
+        "referee": "D. Herrera",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T01:15:00+03:00",
+        "timestamp": 1771798500,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": null,
+          "city": "Buenos Aires"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 128,
+        "name": "Liga Profesional Argentina",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/128.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "season": 2026,
+        "round": "Regular Season - 6",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 438,
+          "name": "Velez Sarsfield",
+          "logo": "https://media.api-sports.io/football/teams/438.png",
+          "winner": null
+        },
+        "away": {
+          "id": 435,
+          "name": "River Plate",
+          "logo": "https://media.api-sports.io/football/teams/435.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1491906,
+        "referee": "L. Lobo Medina",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T03:30:00+03:00",
+        "timestamp": 1771806600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Estadio 15 de Abril",
+          "city": "Santa Fe"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 128,
+        "name": "Liga Profesional Argentina",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/128.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "season": 2026,
+        "round": "Regular Season - 6",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 441,
+          "name": "Union Santa Fe",
+          "logo": "https://media.api-sports.io/football/teams/441.png",
+          "winner": null
+        },
+        "away": {
+          "id": 463,
+          "name": "Aldosivi",
+          "logo": "https://media.api-sports.io/football/teams/463.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1398583,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T13:30:00+03:00",
+        "timestamp": 1771842600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 2407,
+          "name": "Yusuf Ziya Onis",
+          "city": "Istanbul"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/204.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3605,
+          "name": "Sarıyer",
+          "logo": "https://media.api-sports.io/football/teams/3605.png",
+          "winner": null
+        },
+        "away": {
+          "id": 3563,
+          "name": "Adana Demirspor",
+          "logo": "https://media.api-sports.io/football/teams/3563.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1398584,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T13:30:00+03:00",
+        "timestamp": 1771842600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 0,
+          "name": "BG Grup 4 Eylül Stadyumu",
+          "city": "Sivas"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/204.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 1002,
+          "name": "Sivasspor",
+          "logo": "https://media.api-sports.io/football/teams/1002.png",
+          "winner": null
+        },
+        "away": {
+          "id": 3602,
+          "name": "Sakaryaspor",
+          "logo": "https://media.api-sports.io/football/teams/3602.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1398582,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T16:00:00+03:00",
+        "timestamp": 1771851600,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 19225,
+          "name": "Pendik Stadyumu",
+          "city": "Istanbul"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/204.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3601,
+          "name": "Pendikspor",
+          "logo": "https://media.api-sports.io/football/teams/3601.png",
+          "winner": null
+        },
+        "away": {
+          "id": 3595,
+          "name": "Keçiörengücü",
+          "logo": "https://media.api-sports.io/football/teams/3595.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1394634,
+        "referee": "Y. Kol",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T20:00:00+03:00",
+        "timestamp": 1771866000,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 1581,
+          "name": "Chobani Stadium Fenerbahce Sukru Saracoglu",
+          "city": "Istanbul"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 203,
+        "name": "Süper Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/203.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 611,
+          "name": "Fenerbahçe",
+          "logo": "https://media.api-sports.io/football/teams/611.png",
+          "winner": null
+        },
+        "away": {
+          "id": 1004,
+          "name": "Kasımpaşa",
+          "logo": "https://media.api-sports.io/football/teams/1004.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1398575,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T20:00:00+03:00",
+        "timestamp": 1771866000,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 0,
+          "name": "Diyarbakir Stadium",
+          "city": "Diyarbakır"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "logo": "https://media.api-sports.io/football/leagues/204.png",
+        "flag": "https://media.api-sports.io/flags/tr.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 3579,
+          "name": "Amed",
+          "logo": "https://media.api-sports.io/football/teams/3579.png",
+          "winner": null
+        },
+        "away": {
+          "id": 6342,
+          "name": "Van BB",
+          "logo": "https://media.api-sports.io/football/teams/6342.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1378117,
+        "referee": "M. Mariani",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T20:30:00+03:00",
+        "timestamp": 1771867800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Stadio Artemio Franchi",
+          "city": "Florence"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 135,
+        "name": "Serie A",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/135.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 502,
+          "name": "Fiorentina",
+          "logo": "https://media.api-sports.io/football/teams/502.png",
+          "winner": null
+        },
+        "away": {
+          "id": 801,
+          "name": "Pisa",
+          "logo": "https://media.api-sports.io/football/teams/801.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1435995,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T22:00:00+03:00",
+        "timestamp": 1771873200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Al-Shabab Club Stadium",
+          "city": "Riyadh"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 307,
+        "name": "Pro League",
+        "country": "Saudi-Arabia",
+        "logo": "https://media.api-sports.io/football/leagues/307.png",
+        "flag": "https://media.api-sports.io/flags/sa.svg",
+        "season": 2025,
+        "round": "Regular Season - 10",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 2940,
+          "name": "Al Shabab",
+          "logo": "https://media.api-sports.io/football/teams/2940.png",
+          "winner": null
+        },
+        "away": {
+          "id": 10511,
+          "name": "Al Riyadh",
+          "logo": "https://media.api-sports.io/football/teams/10511.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1435997,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T22:00:00+03:00",
+        "timestamp": 1771873200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 10516,
+          "name": "Prince Sultan bin Abdul Aziz Stadium",
+          "city": "Abha"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 307,
+        "name": "Pro League",
+        "country": "Saudi-Arabia",
+        "logo": "https://media.api-sports.io/football/leagues/307.png",
+        "flag": "https://media.api-sports.io/flags/sa.svg",
+        "season": 2025,
+        "round": "Regular Season - 10",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 2956,
+          "name": "Damac",
+          "logo": "https://media.api-sports.io/football/teams/2956.png",
+          "winner": null
+        },
+        "away": {
+          "id": 2929,
+          "name": "Al-Ahli Jeddah",
+          "logo": "https://media.api-sports.io/football/teams/2929.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1435999,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T22:00:00+03:00",
+        "timestamp": 1771873200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Prince Saud bin Jalawi Stadium",
+          "city": "Dammam"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 307,
+        "name": "Pro League",
+        "country": "Saudi-Arabia",
+        "logo": "https://media.api-sports.io/football/leagues/307.png",
+        "flag": "https://media.api-sports.io/flags/sa.svg",
+        "season": 2025,
+        "round": "Regular Season - 10",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 2933,
+          "name": "Al-Qadisiyah FC",
+          "logo": "https://media.api-sports.io/football/teams/2933.png",
+          "winner": null
+        },
+        "away": {
+          "id": 2934,
+          "name": "Al-Ettifaq",
+          "logo": "https://media.api-sports.io/football/teams/2934.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1436001,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T22:00:00+03:00",
+        "timestamp": 1771873200,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Al Fateh club stadium",
+          "city": "Al-Hofuf"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 307,
+        "name": "Pro League",
+        "country": "Saudi-Arabia",
+        "logo": "https://media.api-sports.io/football/leagues/307.png",
+        "flag": "https://media.api-sports.io/flags/sa.svg",
+        "season": 2025,
+        "round": "Regular Season - 10",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 2931,
+          "name": "Al-Fateh",
+          "logo": "https://media.api-sports.io/football/teams/2931.png",
+          "winner": null
+        },
+        "away": {
+          "id": 2977,
+          "name": "Al Okhdood",
+          "logo": "https://media.api-sports.io/football/teams/2977.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1392051,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T22:30:00+03:00",
+        "timestamp": 1771875000,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 11915,
+          "name": "Estadio Nuevo Mirandilla",
+          "city": "Cadiz"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 141,
+        "name": "Segunda División",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/141.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 724,
+          "name": "Cadiz",
+          "logo": "https://media.api-sports.io/football/teams/724.png",
+          "winner": null
+        },
+        "away": {
+          "id": 9585,
+          "name": "Real Sociedad II",
+          "logo": "https://media.api-sports.io/football/teams/9585.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1378115,
+        "referee": "M. Marcenaro",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T22:45:00+03:00",
+        "timestamp": 1771875900,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 881,
+          "name": "Stadio Renato Dall'Ara",
+          "city": "Bologna"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 135,
+        "name": "Serie A",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/135.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "season": 2025,
+        "round": "Regular Season - 26",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 500,
+          "name": "Bologna",
+          "logo": "https://media.api-sports.io/football/teams/500.png",
+          "winner": null
+        },
+        "away": {
+          "id": 494,
+          "name": "Udinese",
+          "logo": "https://media.api-sports.io/football/teams/494.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379233,
+        "referee": "D. England",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T23:00:00+03:00",
+        "timestamp": 1771876800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 22033,
+          "name": "Hill Dickinson Stadium",
+          "city": "Liverpool"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 27",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 45,
+          "name": "Everton",
+          "logo": "https://media.api-sports.io/football/teams/45.png",
+          "winner": null
+        },
+        "away": {
+          "id": 33,
+          "name": "Manchester United",
+          "logo": "https://media.api-sports.io/football/teams/33.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1391059,
+        "referee": null,
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T23:00:00+03:00",
+        "timestamp": 1771876800,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": null,
+          "name": "Estadio Mendizorrotza",
+          "city": "Vitoria-Gasteiz"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 140,
+        "name": "La Liga",
+        "country": "Spain",
+        "logo": "https://media.api-sports.io/football/leagues/140.png",
+        "flag": "https://media.api-sports.io/flags/es.svg",
+        "season": 2025,
+        "round": "Regular Season - 25",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 542,
+          "name": "Alaves",
+          "logo": "https://media.api-sports.io/football/teams/542.png",
+          "winner": null
+        },
+        "away": {
+          "id": 547,
+          "name": "Girona",
+          "logo": "https://media.api-sports.io/football/teams/547.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1396441,
+        "referee": "A. Narciso",
+        "timezone": "Europe/Istanbul",
+        "date": "2026-02-23T23:15:00+03:00",
+        "timestamp": 1771877700,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 1276,
+          "name": "Estadio Municipal de Famalicao",
+          "city": "Vila Nova de Famalicao"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 94,
+        "name": "Primeira Liga",
+        "country": "Portugal",
+        "logo": "https://media.api-sports.io/football/leagues/94.png",
+        "flag": "https://media.api-sports.io/flags/pt.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 242,
+          "name": "Famalicao",
+          "logo": "https://media.api-sports.io/football/teams/242.png",
+          "winner": null
+        },
+        "away": {
+          "id": 4716,
+          "name": "Casa Pia",
+          "logo": "https://media.api-sports.io/football/teams/4716.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    }
+  ]
+}
