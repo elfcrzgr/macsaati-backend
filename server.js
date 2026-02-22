@@ -12,9 +12,8 @@ const PORT = process.env.PORT || 3000;
 const CACHE_FILE = "matches.json";
 
 /* ================================
-   POPÜLER LİGLER
+   POPÜLER LİGLER (Geçici genişletildi)
 ================================ */
-
 const POPULAR_LEAGUES = new Set([
   203, 204, 552, 205,
   39, 140, 141, 135, 78, 61, 94, 144,
@@ -26,7 +25,6 @@ const POPULAR_LEAGUES = new Set([
 /* ================================
    SAAT FORMATLAMA (HH:mm)
 ================================ */
-
 function formatTime(dateString) {
   const date = new Date(dateString);
   return date.toLocaleTimeString("tr-TR", {
@@ -39,17 +37,18 @@ function formatTime(dateString) {
 /* ================================
    CACHE OLUŞTURMA
 ================================ */
-
 async function fetchAndCacheMatches() {
   try {
     console.log("Maç verileri çekiliyor...");
 
+    // Tarihleri netleştirelim
     const today = new Date();
-    const tomorrow = new Date();
+    const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
     const formatDate = (date) => date.toISOString().split("T")[0];
     const dates = [formatDate(today), formatDate(tomorrow)];
+    console.log("Dates to fetch:", dates);
 
     let allMatches = [];
 
@@ -67,6 +66,11 @@ async function fetchAndCacheMatches() {
         }
       );
 
+      // Log ekleyelim
+      console.log(`API raw response for ${date}:`, response.data.response.length);
+      console.log("League IDs:", response.data.response.map(m => m.league.id));
+
+      // Filtreyi önce uygulayalım
       const filtered = response.data.response
         .filter(match => POPULAR_LEAGUES.has(match.league.id))
         .map(match => ({
@@ -89,10 +93,13 @@ async function fetchAndCacheMatches() {
           }
         }));
 
+      console.log(`Filtered count for ${date}:`, filtered.length);
+
       allMatches.push(...filtered);
-// Saate göre sırala
-allMatches.sort((a, b) => a.time.localeCompare(b.time));
     }
+
+    // Saat sırasına göre sırala
+    allMatches.sort((a, b) => a.time.localeCompare(b.time));
 
     const finalData = {
       updatedAt: new Date(),
@@ -100,12 +107,9 @@ allMatches.sort((a, b) => a.time.localeCompare(b.time));
       matches: allMatches
     };
 
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(finalData));
-
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(finalData, null, 2));
     console.log("Cache başarıyla güncellendi ✅");
     console.log("Toplam maç:", allMatches.length);
-console.log("API RAW RESPONSE COUNT:", response.data.response.length);
-console.log("FILTERED COUNT:", filtered.length);
 
   } catch (error) {
     console.error("Cache hatası ❌:", error.message);
@@ -113,9 +117,8 @@ console.log("FILTERED COUNT:", filtered.length);
 }
 
 /* ================================
-   CRON (Her Gün 10:00)
+   CRON (Her gün 10:00)
 ================================ */
-
 cron.schedule("0 10 * * *", () => {
   fetchAndCacheMatches();
 });
@@ -123,7 +126,6 @@ cron.schedule("0 10 * * *", () => {
 /* ================================
    ENDPOINTLER
 ================================ */
-
 app.get("/", (req, res) => {
   res.send("MacSaati Backend Çalışıyor 🚀");
 });
@@ -140,7 +142,6 @@ app.get("/matches", (req, res) => {
 /* ================================
    SERVER BAŞLAT
 ================================ */
-
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor 🚀`);
 });
@@ -148,5 +149,4 @@ app.listen(PORT, () => {
 /* ================================
    SUNUCU AÇILDIĞINDA CACHE OLUŞTUR
 ================================ */
-
-fetchAndCacheMatches();
+fetchAndCacheMatches().then(() => console.log("Initial fetch tamamlandı"));
