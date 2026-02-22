@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 const CACHE_FILE = "matches.json";
 
 /* ================================
-   POPÜLER LİGLER (API-Football ID)
+   POPÜLER LİGLER
 ================================ */
 const POPULAR_LEAGUES = new Set([
   203, 204, 552, 205,
@@ -23,7 +23,7 @@ const POPULAR_LEAGUES = new Set([
 ]);
 
 /* ================================
-   SAAT FORMATLAMA (HH:mm)
+   SAAT FORMATLAMA
 ================================ */
 function formatTime(dateString) {
   const date = new Date(dateString);
@@ -35,18 +35,50 @@ function formatTime(dateString) {
 }
 
 /* ================================
-   CACHE OLUŞTURMA
+   TARİH FORMAT (TR TIMEZONE)
+================================ */
+function formatDateTR(date) {
+  return date.toLocaleDateString("en-CA", {
+    timeZone: "Europe/Istanbul"
+  });
+}
+
+/* ================================
+   GÜNLÜK TEKRAR ENGELLEYİCİ
+================================ */
+function alreadyUpdatedToday() {
+  if (!fs.existsSync(CACHE_FILE)) return false;
+
+  const data = JSON.parse(fs.readFileSync(CACHE_FILE));
+  if (!data.updatedAt) return false;
+
+  const lastUpdate = new Date(data.updatedAt);
+  const now = new Date();
+
+  const lastDateTR = formatDateTR(lastUpdate);
+  const todayTR = formatDateTR(now);
+
+  return lastDateTR === todayTR;
+}
+
+/* ================================
+   FETCH (2 GÜNLÜK)
 ================================ */
 async function fetchAndCacheMatches() {
   try {
+
+    if (alreadyUpdatedToday()) {
+      console.log("Bugün zaten güncellenmiş. API çağrılmadı.");
+      return false;
+    }
+
     console.log("Maç verileri çekiliyor...");
 
     const today = new Date();
-    const tomorrow = new Date(today);
+    const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
-    const formatDate = (date) => date.toISOString().split("T")[0];
-    const dates = [formatDate(today), formatDate(tomorrow)];
+    const dates = [formatDateTR(today), formatDateTR(tomorrow)];
     let allMatches = [];
 
     for (let date of dates) {
@@ -85,8 +117,15 @@ async function fetchAndCacheMatches() {
           }
         }));
 
+      console.log(`API raw (${date}):`, response.data.response.length);
+      console.log(`Filtered (${date}):`, filtered.length);
+
       allMatches.push(...filtered);
-      console.log(`API raw: ${response.data.response.length}, Filtered: ${filtered.length} (${date})`);
+    }
+
+    if (allMatches.length === 0) {
+      console.log("⚠️ API boş döndü. Cache korunuyor.");
+      return false;
     }
 
     allMatches.sort((a, b) => a.time.localeCompare(b.time));
@@ -98,23 +137,31 @@ async function fetchAndCacheMatches() {
     };
 
     fs.writeFileSync(CACHE_FILE, JSON.stringify(finalData, null, 2));
-    console.log("Cache başarıyla güncellendi ✅ Toplam maç:", allMatches.length);
+    console.log("✅ Cache güncellendi. Toplam maç:", allMatches.length);
+
+    return true;
 
   } catch (error) {
-    console.error("Cache hatası ❌:", error.message);
+    console.error("❌ API Hatası:", error.message);
+    return false;
   }
 }
 
 /* ================================
-   CRON (Her gün 10:00)
+   CRON (HER GÜN 09:00)
 ================================ */
-cron.schedule("0 10 * * *", () => {
+cron.schedule("0 9 * * *", () => {
+  console.log("⏰ Günlük otomatik fetch çalıştı");
   fetchAndCacheMatches();
+}, {
+  timezone: "Europe/Istanbul"
 });
 
 /* ================================
    ENDPOINTLER
 ================================ */
+
+// Health
 app.get("/", (req, res) => {
   res.send("MacSaati Backend Çalışıyor 🚀");
 });
@@ -129,16 +176,25 @@ app.get("/matches", (req, res) => {
   }
 });
 
-// Manuel fetch (gerektiğinde API’ye istek atar)
+// Manuel fetch (secret korumalı)
 app.get("/fetch", async (req, res) => {
-  await fetchAndCacheMatches();
-  res.send("Cache güncellendi ✅");
+
+  if (req.query.secret !== process.env.ADMIN_SECRET) {
+    return res.status(403).send("Forbidden");
+  }
+
+  const success = await fetchAndCacheMatches();
+
+  if (success) {
+    res.send("Cache güncellendi ✅");
+  } else {
+    res.send("API çağrılmadı veya hata oluştu ❌");
+  }
 });
 
 /* ================================
-   SERVER BAŞLAT
+   SERVER
 ================================ */
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor 🚀`);
-  // Sunucu açılışında otomatik fetch kapalı, API’ye istek gitmez
 });
