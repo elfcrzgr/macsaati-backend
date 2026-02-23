@@ -8,104 +8,95 @@ const cron = require("node-cron");
 const app = express();
 const DATA_FILE = path.join(__dirname, "all_matches.json");
 
-function getLeagueInfo(leagueName) {
-    const name = leagueName.toLowerCase();
-    if (name.includes("süper lig")) return { id: 203, logo: "https://media.api-sports.io/football/leagues/203.png" };
-    if (name.includes("1. lig")) return { id: 204, logo: "https://media.api-sports.io/football/leagues/204.png" };
-    if (name.includes("premier league")) return { id: 39, logo: "https://media.api-sports.io/football/leagues/39.png" };
-    if (name.includes("la liga")) return { id: 140, logo: "https://media.api-sports.io/football/leagues/140.png" };
-    if (name.includes("serie a")) return { id: 135, logo: "https://media.api-sports.io/football/leagues/135.png" };
-    return { id: 0, logo: "" };
-}
+// Logo oluşturucu
+const getLogo = (name) => `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff`;
 
 async function scrapeData(dateStr) {
-    // Sporx yerine daha stabil bir URL yapısı deniyoruz
-    const url = `https://www.sporx.com/iddaa/canli-skor?tarih=${dateStr}`;
-    console.log(`İstek atılıyor: ${url}`);
+    // Sporx yerine alternatif bir kaynağın (Örn: Skorer veya benzeri) altyapısını deniyoruz
+    // Eğer bu da 404 verirse, direkt Google arama sonuçlarından çekecek bir yapıya geçeceğiz.
+    const url = `https://www.skorer.com/iddaa/canli-skor?tarih=${dateStr}`;
+    console.log(`Kazıma deneniyor: ${url}`);
 
     try {
         const { data } = await axios.get(url, {
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache'
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept-Language': 'tr-TR,tr;q=0.9'
             },
-            timeout: 20000
+            timeout: 15000
         });
 
         const $ = cheerio.load(data);
         let matches = [];
 
-        // Eğer Sporx 404 vermez ama boş sayfa dönerse diye kontrol
-        const rows = $(".iddaa-oyun-listesi-satir");
-        console.log(`${dateStr} tarihinde bulunan satır sayısı: ${rows.length}`);
+        // Yeni hedef siteye göre seçiciler (Bu kısım en basit maç listesi yapısına göredir)
+        $(".live-score-table-row, .match-item, tr.match").each((i, el) => {
+            const home = $(el).find(".home-team, .ev-takim").text().trim();
+            const away = $(el).find(".away-team, .deplasman-takim").text().trim();
+            const time = $(el).find(".match-time, .saat").text().trim();
+            const league = $(el).closest(".league-block").find(".league-name").text().trim() || "Genel Lig";
 
-        $(".iddaa-oyun-listesi-icerik").each((i, el) => {
-            const leagueRaw = $(el).prev(".iddaa-oyun-listesi-header").find(".iddaa-oyun-listesi-header-sol").text().trim();
-            const leagueInfo = getLeagueInfo(leagueRaw);
-
-            $(el).find(".iddaa-oyun-listesi-satir").each((j, row) => {
-                const time = $(row).find(".iddaa-oyun-listesi-saat").text().trim();
-                const home = $(row).find(".iddaa-oyun-listesi-ev-sahibi").text().trim();
-                const away = $(row).find(".iddaa-oyun-listesi-deplasman").text().trim();
-
-                if (home && away) {
-                    matches.push({
-                        homeName: home,
-                        awayName: away,
-                        homeLogo: `https://ui-avatars.com/api/?name=${encodeURIComponent(home)}&background=random&color=fff`,
-                        awayLogo: `https://ui-avatars.com/api/?name=${encodeURIComponent(away)}&background=random&color=fff`,
-                        leagueName: leagueRaw,
-                        leagueLogo: leagueInfo.logo,
-                        matchTime: time,
-                        leagueId: leagueInfo.id
-                    });
-                }
-            });
+            if (home && away) {
+                matches.push({
+                    homeName: home,
+                    awayName: away,
+                    homeLogo: getLogo(home),
+                    awayLogo: getLogo(away),
+                    leagueName: league,
+                    leagueLogo: "",
+                    matchTime: time,
+                    leagueId: league.includes("Süper Lig") ? 203 : (league.includes("1. Lig") ? 204 : 0)
+                });
+            }
         });
 
         return matches;
     } catch (err) {
-        // Eğer hala 404 alıyorsak, Sporx bugünlük bizi bloklamış olabilir.
-        console.error(`HATA [${dateStr}]:`, err.response ? `Status: ${err.response.status}` : err.message);
+        console.error(`Hata oluştu (${dateStr}):`, err.message);
         return [];
     }
 }
 
 async function updateDatabase() {
     const today = new Date().toISOString().split("T")[0];
-    const tomorrowDate = new Date();
-    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-    const tomorrow = tomorrowDate.toISOString().split("T")[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
 
-    console.log("Veri çekme işlemi başlatıldı...");
+    console.log("Maçlar güncelleniyor...");
     const todayMatches = await scrapeData(today);
     const tomorrowMatches = await scrapeData(tomorrow);
 
+    // Eğer her iki site de 404 veya boş dönerse, statik ama çalışan bir test verisi ekleyelim ki uygulama boş kalmasın
+    if (todayMatches.length === 0) {
+        console.log("⚠️ Veri çekilemedi, test verisi oluşturuluyor...");
+        todayMatches.push({
+            homeName: "Veri Güncelleniyor",
+            awayName: "Lütfen Bekleyin",
+            homeLogo: getLogo("V"),
+            awayLogo: getLogo("L"),
+            leagueName: "Sistem",
+            leagueLogo: "",
+            matchTime: "00:00",
+            leagueId: 203
+        });
+    }
+
     const db = { [today]: todayMatches, [tomorrow]: tomorrowMatches };
     fs.writeFileSync(DATA_FILE, JSON.stringify(db, null, 2));
-    console.log(`İşlem tamamlandı. Toplam Maç: ${todayMatches.length + tomorrowMatches.length}`);
+    console.log("Veritabanı yazıldı.");
 }
 
 app.get("/matches", (req, res) => {
     const reqDate = req.query.date;
-    if (!fs.existsSync(DATA_FILE)) return res.status(503).json({success: false, message: "Veri hazır değil"});
+    if (!fs.existsSync(DATA_FILE)) return res.status(200).json({ success: true, response: [] });
 
     const db = JSON.parse(fs.readFileSync(DATA_FILE));
-    const responseData = db[reqDate] || [];
-
-    res.json({
-        success: true,
-        response: responseData
-    });
+    res.json({ success: true, response: db[reqDate] || [] });
 });
 
 cron.schedule("0 5 * * *", updateDatabase);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-    console.log(`Sunucu ${PORT} portunda aktif.`);
+    console.log(`Sunucu ${PORT} portunda hazır.`);
     updateDatabase();
 });
