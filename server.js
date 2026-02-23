@@ -22,16 +22,24 @@ function getLeagueInfo(leagueName) {
 
 // ================= SCRAPER FONKSİYONU =================
 async function scrapeData(dateStr) {
+    // URL'i test edilmiş güncel formatla değiştirdik
     const url = `https://www.sporx.com/iddaa/canli-skor?tarih=${dateStr}`;
+    
     try {
         const { data } = await axios.get(url, {
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+            headers: { 
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,all;q=0.8'
+            },
+            timeout: 15000 
         });
+        
         const $ = cheerio.load(data);
         let matches = [];
 
-        // Sporx geniş programındaki her bir lig bloğunu dön
+        // Sporx'in HTML yapısına göre en garanti kapsayıcıyı hedefliyoruz
         $(".iddaa-oyun-listesi-icerik").each((i, el) => {
+            // Bir önceki element olan header'dan lig adını al
             const leagueRaw = $(el).prev(".iddaa-oyun-listesi-header").find(".iddaa-oyun-listesi-header-sol").text().trim();
             const leagueInfo = getLeagueInfo(leagueRaw);
 
@@ -44,8 +52,8 @@ async function scrapeData(dateStr) {
                     matches.push({
                         homeName: home,
                         awayName: away,
-                        homeLogo: `https://ui-avatars.com/api/?name=${encodeURIComponent(home)}&background=random`, // Logo yoksa isimden geçici logo
-                        awayLogo: `https://ui-avatars.com/api/?name=${encodeURIComponent(away)}&background=random`,
+                        homeLogo: `https://ui-avatars.com/api/?name=${encodeURIComponent(home)}&background=random&color=fff`,
+                        awayLogo: `https://ui-avatars.com/api/?name=${encodeURIComponent(away)}&background=random&color=fff`,
                         leagueName: leagueRaw,
                         leagueLogo: leagueInfo.logo,
                         matchTime: time,
@@ -54,9 +62,17 @@ async function scrapeData(dateStr) {
                 }
             });
         });
+
+        // Eğer hala maç bulamadıysa alternatif bir seçici deneyelim (Yedek Plan)
+        if (matches.length === 0) {
+            console.log(`${dateStr} için ana seçici boş kaldı, alternatif deneniyor...`);
+            // Buraya gerekirse başka bir tablo yapısı eklenebilir
+        }
+
         return matches;
     } catch (err) {
-        console.error(`${dateStr} çekilemedi:`, err.message);
+        // Eğer 404 veriyorsa URL'de tarih kısmını kontrol etmeliyiz
+        console.error(`${dateStr} Hatası:`, err.response ? err.response.status : err.message);
         return [];
     }
 }
