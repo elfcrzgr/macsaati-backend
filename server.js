@@ -3,8 +3,6 @@ const axios = require("axios");
 const cron = require("node-cron");
 const fs = require("fs");
 const path = require("path");
-let cronJob; 
-let isSuspended = false;
 
 const app = express();
 
@@ -13,10 +11,28 @@ const BASE_URL = "https://v3.football.api-sports.io/fixtures";
 
 const DATA_FILE = path.join(__dirname, "matches.json");
 
-// ================= FETCH FUNCTION =================
+let cronJob;
+let isSuspended = false;
+
+// 🎯 Çekilecek Lig ID'leri
+const IMPORTANT_LEAGUES = [
+  203, // Süper Lig
+  204, // 1. Lig
+  39,  // Premier League
+  140, // La Liga
+  135, // Serie A
+  78,  // Bundesliga
+  61,  // Ligue 1
+  2,   // Champions League
+  1,   // Dünya Kupası
+  4,   // Avrupa Şampiyonası
+  9    // Copa America
+];
+
+// ================= FETCH =================
 async function fetchMatches() {
   if (isSuspended) {
-    console.log("Hesap suspend. Fetch iptal edildi.");
+    console.log("Hesap suspend. Fetch iptal.");
     return;
   }
 
@@ -27,8 +43,7 @@ async function fetchMatches() {
 
     const response = await axios.get(BASE_URL, {
       params: {
-        from: today,
-        to: today,
+        date: today
       },
       headers: {
         "x-apisports-key": API_KEY,
@@ -43,23 +58,27 @@ async function fetchMatches() {
     ) {
       console.log("⚠ API hesabı suspend edildi!");
       isSuspended = true;
-
-      if (cronJob) {
-        cronJob.stop();
-        console.log("Cron durduruldu.");
-      }
-
+      if (cronJob) cronJob.stop();
       return;
     }
 
+    const allMatches = response.data.response;
+
+    // 🎯 Sadece önemli ligleri filtrele
+    const filtered = allMatches.filter(match =>
+      IMPORTANT_LEAGUES.includes(match.league.id)
+    );
+
     const dataToSave = {
       date: today,
-      data: response.data,
+      total: filtered.length,
+      matches: filtered
     };
 
     fs.writeFileSync(DATA_FILE, JSON.stringify(dataToSave, null, 2));
 
-    console.log("Veri dosyaya kaydedildi.");
+    console.log("Veri kaydedildi. Toplam maç:", filtered.length);
+
   } catch (err) {
     console.error("API hata:", err.response?.data || err.message);
   }
@@ -76,12 +95,12 @@ function checkAndFetchIfNeeded() {
   }
 
   const fileContent = JSON.parse(fs.readFileSync(DATA_FILE));
-  
+
   if (fileContent.date !== today) {
     console.log("Bugünün verisi yok. Fetch yapılıyor...");
     fetchMatches();
   } else {
-    console.log("Bugünün verisi zaten mevcut.");
+    console.log("Bugünün verisi mevcut.");
   }
 }
 
@@ -89,6 +108,8 @@ function checkAndFetchIfNeeded() {
 cronJob = cron.schedule("0 5 * * *", async () => {
   console.log("05:00 Cron tetiklendi");
   await fetchMatches();
+}, {
+  timezone: "Europe/Istanbul"
 });
 
 // ================= ROUTE =================
@@ -96,7 +117,7 @@ app.get("/matches", (req, res) => {
   if (!fs.existsSync(DATA_FILE)) {
     return res.status(503).json({
       success: false,
-      message: "Veri henüz hazır değil",
+      message: "Veri henüz hazır değil"
     });
   }
 
@@ -104,7 +125,9 @@ app.get("/matches", (req, res) => {
 
   res.json({
     success: true,
-    data: fileContent.data,
+    date: fileContent.date,
+    total: fileContent.total,
+    matches: fileContent.matches
   });
 });
 
