@@ -106,6 +106,13 @@ async function fetchMatches() {
     });
 
     console.log(`✅ ${matches.length} maç bulundu`);
+    
+    if (matches.length > 0) {
+      console.log("🔍 İlk 5 maç:");
+      matches.slice(0, 5).forEach(m => {
+        console.log(`  ${m.league?.name} (ID: ${m.league?.id}): ${m.teams?.home?.name} vs ${m.teams?.away?.name}`);
+      });
+    }
 
     const dataToSave = {
       date: today,
@@ -157,6 +164,25 @@ cronJob = cron.schedule("0 5 * * *", async () => {
   await fetchMatches();
 });
 
+// ========== ROOT ROUTE ==========
+app.get("/", (req, res) => {
+  res.json({
+    status: "Server çalışıyor ✅",
+    message: "Maç verileri için /matches?date=YYYY-MM-DD'ye git",
+    health: "/health",
+    example: "/matches?date=2026-02-23"
+  });
+});
+
+// ========== HEALTH CHECK ==========
+app.get("/health", (req, res) => {
+  res.json({ 
+    status: "OK", 
+    timestamp: new Date().toISOString(),
+    suspended: isSuspended
+  });
+});
+
 // ========== ROUTE: /matches ==========
 app.get("/matches", (req, res) => {
   const { date } = req.query;
@@ -189,15 +215,6 @@ app.get("/matches", (req, res) => {
       message: "Veri işleme hatası",
     });
   }
-});
-
-// ========== HEALTH CHECK ==========
-app.get("/health", (req, res) => {
-  res.json({ 
-    status: "OK", 
-    timestamp: new Date().toISOString(),
-    suspended: isSuspended
-  });
 });
 
 // ========== START ==========
