@@ -18,17 +18,13 @@ const IMPORTANT_LEAGUE_IDS = [
   "4334", // Ligue 1
   "4341", // Süper Lig
   "4480"  // UEFA Champions League
-  // Daha eklemek istersen buraya...
 ];
 
 // === Yardımcı Fonksiyonlar ===
-
-// Günün tarih string
 function getToday() {
   return new Date().toISOString().split("T")[0];
 }
 
-// Bugün veya yarın kontrol
 function isTodayOrTomorrow(dateStr) {
   const now = new Date();
   const tomorrow = new Date(now);
@@ -41,7 +37,6 @@ function isTodayOrTomorrow(dateStr) {
   );
 }
 
-// Maçları birleştirip filtrele
 function mergeAndFilter(allMatches) {
   return allMatches.filter((m) => {
     if (!m.dateEvent) return false;
@@ -52,12 +47,11 @@ function mergeAndFilter(allMatches) {
 // === Fetch API Fun ===
 async function fetchMatchesFromTheSportsDB() {
   try {
-
-    console.log("Fetching from TheSportsDB...");
+    console.log("Fetching from TheSportsDB V1...");
 
     const leaguePromises = IMPORTANT_LEAGUE_IDS.map((lid) =>
       axios.get(
-        `https://www.thesportsdb.com/api/v2/json/${process.env.TSDB_KEY}/eventsnextleague.php?id=${lid}`
+        `https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=${lid}`
       )
     );
 
@@ -69,13 +63,11 @@ async function fetchMatchesFromTheSportsDB() {
       if (r.status === "fulfilled" && r.value.data && r.value.data.events) {
         combinedMatches.push(...r.value.data.events);
       } else {
-        console.warn(
-          `Warning: failed league fetch ${IMPORTANT_LEAGUE_IDS[idx]}`
-        );
+        console.warn(`Warning: failed league fetch ${IMPORTANT_LEAGUE_IDS[idx]}`);
       }
     });
 
-    // Bugün+ yarın olanları filtrele
+    // Bugün+yarın olanları filtrele
     const filtered = mergeAndFilter(combinedMatches);
 
     cachedMatches = filtered;
@@ -103,7 +95,6 @@ cron.schedule(
 app.get("/matches", async (req, res) => {
   const today = getToday();
 
-  // İlk defa veya gün değiştiyse
   if (!lastFetchDay || lastFetchDay !== today) {
     await fetchMatchesFromTheSportsDB();
   }
