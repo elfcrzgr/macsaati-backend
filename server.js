@@ -6,120 +6,127 @@ const cron = require("node-cron");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-let cachedMatches = null;
-let lastFetchDay = null;
+let cachedMatches = [];
+let lastFetchDate = null;
 
-// === ÖNEMLİ LİGLER ===
-const IMPORTANT_LEAGUE_IDS = [
-  "4328", // Premier League
-  "4335", // La Liga
-  "4332", // Serie A
-  "4331", // Bundesliga
-  "4334", // Ligue 1
-  "4341", // Süper Lig
-  "4480"  // UEFA Champions League
-];
-
-// === Yardımcı Fonksiyonlar ===
-
-// Bugünün tarihi UTC olarak
-function getTodayUTC() {
-  const now = new Date();
-  return now.toISOString().split("T")[0];
+// --------------------------------------------------
+// Tarih format helper
+// --------------------------------------------------
+function formatDate(date) {
+    return date.toISOString().split("T")[0];
 }
 
-// Bugün veya yarın kontrol (UTC üzerinden)
-function isTodayOrTomorrowUTC(dateStr) {
-  if (!dateStr) return false;
+// --------------------------------------------------
+// API'den gelen veriyi küçült
+// --------------------------------------------------
+function simplifyMatches(apiResponse) {
+    return apiResponse.map(match => ({
+        fixtureId: match.fixture.id,
+        date: match.fixture.date,
+        status: match.fixture.status.short,
 
-  const now = new Date();
-  const todayStr = now.toISOString().split("T")[0];
+        league: {
+            id: match.league.id,
+            name: match.league.name,
+            logo: match.league.logo
+        },
 
-  const tomorrow = new Date(now);
-  tomorrow.setDate(now.getDate() + 1);
-  const tomorrowStr = tomorrow.toISOString().split("T")[0];
+        home: {
+            id: match.teams.home.id,
+            name: match.teams.home.name,
+            logo: match.teams.home.logo,
+            goals: match.goals.home
+        },
 
-  const d = new Date(dateStr);
-  const eventStr = d.toISOString().split("T")[0];
-
-  return eventStr === todayStr || eventStr === tomorrowStr;
+        away: {
+            id: match.teams.away.id,
+            name: match.teams.away.name,
+            logo: match.teams.away.logo,
+            goals: match.goals.away
+        }
+    }));
 }
 
-// Maçları birleştirip filtrele
-function mergeAndFilter(allMatches) {
-  return allMatches.filter(m => {
-    if (!m.dateEvent) return false;
-    return isTodayOrTomorrowUTC(m.dateEvent);
-  });
+// --------------------------------------------------
+// TEK CALL - today + tomorrow
+// --------------------------------------------------
+async function fetchMatchesFromApi() {
+    try {
+        const now = new Date();
+
+        const today = new Date(now);
+        const tomorrow = new Date(now);
+        tomorrow.setDate(today.getDate() + 1);
+
+        const todayStr = formatDate(today);
+        const tomorrowStr = formatDate(tomorrow);
+
+        console.log("🚀 API çekiliyor:", todayStr, "-", tomorrowStr);
+
+        const response = await axios.get(
+            `https://v3.football.api-sports.io/fixtures?from=${todayStr}&to=${tomorrowStr}&timezone=Europe/Istanbul`,
+            {
+                headers: {
+                    "x-apisports-key": process.env.API_KEY
+                }
+            }
+        );
+
+        cachedMatches = simplifyMatches(response.data.response);
+        lastFetchDate = todayStr;
+
+        console.log("✅ Güncellendi. Maç sayısı:", cachedMatches.length);
+
+    } catch (error) {
+        console.error("❌ API çekme hatası:", error.message);
+    }
 }
 
-// === Fetch API Fun ===
-async function fetchMatchesFromTheSportsDB() {
-  try {
-    console.log("Fetching from TheSportsDB V1...");
+// --------------------------------------------------
+// CRON - Her gün 05:00
+// --------------------------------------------------
+cron.schedule("0 5 * * *", async () => {
+    console.log("⏰ 05:00 cron tetiklendi");
+    await fetchMatchesFromApi();
+}, {
+    timezone: "Europe/Istanbul"
+});
 
-    const leaguePromises = IMPORTANT_LEAGUE_IDS.map(lid =>
-      axios.get(`https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=${lid}`)
-    );
+// --------------------------------------------------
+// Render uyursa fallback
+// --------------------------------------------------
+async function ensureDataFresh() {
+    const todayStr = formatDate(new Date());
 
-    const results = await Promise.allSettled(leaguePromises);
-
-    let combinedMatches = [];
-
-    results.forEach((r, idx) => {
-      if (r.status === "fulfilled" && r.value.data && r.value.data.events) {
-        r.value.data.events.forEach(m => console.log(`Fetched date: ${m.dateEvent} for league ${IMPORTANT_LEAGUE_IDS[idx]}`));
-        combinedMatches.push(...r.value.data.events);
-      } else {
-        console.warn(`Warning: failed league fetch ${IMPORTANT_LEAGUE_IDS[idx]}`);
-      }
-    });
-
-    // Bugün + yarın filtrele
-    const filtered = mergeAndFilter(combinedMatches);
-
-    cachedMatches = filtered;
-    lastFetchDay = getTodayUTC();
-
-    console.log("Matches cached:", filtered.length);
-  } catch (err) {
-    console.error("Error fetching leagues:", err.message);
-  }
+    if (lastFetchDate !== todayStr) {
+        console.log("⚠️ Cron kaçmış olabilir. Manuel fetch yapılıyor...");
+        await fetchMatchesFromApi();
+    }
 }
 
-// === Cron: Her gün 05:00 ===
-cron.schedule(
-  "0 5 * * *",
-  () => {
-    console.log("Cron running at 05:00...");
-    fetchMatchesFromTheSportsDB();
-  },
-  { timezone: "Europe/Istanbul" }
-);
-
-// === Endpoint ===
+// --------------------------------------------------
+// Endpoint
+// --------------------------------------------------
 app.get("/matches", async (req, res) => {
-  const today = getTodayUTC();
 
-  if (!lastFetchDay || lastFetchDay !== today) {
-    await fetchMatchesFromTheSportsDB();
-  }
+    await ensureDataFresh();
 
-  if (!cachedMatches) return res.status(503).json({ error: "No data yet" });
+    if (!cachedMatches || cachedMatches.length === 0) {
+        return res.status(503).json({
+            success: false,
+            message: "Veri henüz hazır değil"
+        });
+    }
 
-  res.json({
-    success: true,
-    date: today,
-    matches: cachedMatches,
-  });
+    res.json({
+        success: true,
+        date: lastFetchDate,
+        count: cachedMatches.length,
+        data: cachedMatches
+    });
 });
 
-// === Root Endpoint ===
-app.get("/", (req, res) => {
-  res.send("Mac Saati Backend çalışıyor. /matches endpoint’ini kullanın.");
-});
-
-// === Server Start ===
+// --------------------------------------------------
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+    console.log(`🔥 Server çalışıyor: ${PORT}`);
 });
