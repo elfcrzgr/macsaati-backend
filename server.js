@@ -21,26 +21,35 @@ const IMPORTANT_LEAGUE_IDS = [
 ];
 
 // === Yardımcı Fonksiyonlar ===
-function getToday() {
-  return new Date().toISOString().split("T")[0];
+
+// Bugünün tarihi UTC olarak
+function getTodayUTC() {
+  const now = new Date();
+  return now.toISOString().split("T")[0];
 }
 
-function isTodayOrTomorrow(dateStr) {
+// Bugün veya yarın kontrol (UTC üzerinden)
+function isTodayOrTomorrowUTC(dateStr) {
+  if (!dateStr) return false;
+
   const now = new Date();
+  const todayStr = now.toISOString().split("T")[0];
+
   const tomorrow = new Date(now);
   tomorrow.setDate(now.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().split("T")[0];
 
   const d = new Date(dateStr);
-  return (
-    d.toISOString().split("T")[0] === now.toISOString().split("T")[0] ||
-    d.toISOString().split("T")[0] === tomorrow.toISOString().split("T")[0]
-  );
+  const eventStr = d.toISOString().split("T")[0];
+
+  return eventStr === todayStr || eventStr === tomorrowStr;
 }
 
+// Maçları birleştirip filtrele
 function mergeAndFilter(allMatches) {
-  return allMatches.filter((m) => {
+  return allMatches.filter(m => {
     if (!m.dateEvent) return false;
-    return isTodayOrTomorrow(m.dateEvent);
+    return isTodayOrTomorrowUTC(m.dateEvent);
   });
 }
 
@@ -49,10 +58,8 @@ async function fetchMatchesFromTheSportsDB() {
   try {
     console.log("Fetching from TheSportsDB V1...");
 
-    const leaguePromises = IMPORTANT_LEAGUE_IDS.map((lid) =>
-      axios.get(
-        `https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=${lid}`
-      )
+    const leaguePromises = IMPORTANT_LEAGUE_IDS.map(lid =>
+      axios.get(`https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=${lid}`)
     );
 
     const results = await Promise.allSettled(leaguePromises);
@@ -61,17 +68,18 @@ async function fetchMatchesFromTheSportsDB() {
 
     results.forEach((r, idx) => {
       if (r.status === "fulfilled" && r.value.data && r.value.data.events) {
+        r.value.data.events.forEach(m => console.log(`Fetched date: ${m.dateEvent} for league ${IMPORTANT_LEAGUE_IDS[idx]}`));
         combinedMatches.push(...r.value.data.events);
       } else {
         console.warn(`Warning: failed league fetch ${IMPORTANT_LEAGUE_IDS[idx]}`);
       }
     });
 
-    // Bugün+yarın olanları filtrele
+    // Bugün + yarın filtrele
     const filtered = mergeAndFilter(combinedMatches);
 
     cachedMatches = filtered;
-    lastFetchDay = getToday();
+    lastFetchDay = getTodayUTC();
 
     console.log("Matches cached:", filtered.length);
   } catch (err) {
@@ -86,16 +94,13 @@ cron.schedule(
     console.log("Cron running at 05:00...");
     fetchMatchesFromTheSportsDB();
   },
-  {
-    timezone: "Europe/Istanbul",
-  }
+  { timezone: "Europe/Istanbul" }
 );
 
 // === Endpoint ===
 app.get("/matches", async (req, res) => {
-  const today = getToday();
+  const today = getTodayUTC();
 
-  // İlk defa veya gün değiştiyse
   if (!lastFetchDay || lastFetchDay !== today) {
     await fetchMatchesFromTheSportsDB();
   }
@@ -109,7 +114,7 @@ app.get("/matches", async (req, res) => {
   });
 });
 
-// === Root Endpoint (opsiyonel) ===
+// === Root Endpoint ===
 app.get("/", (req, res) => {
   res.send("Mac Saati Backend çalışıyor. /matches endpoint’ini kullanın.");
 });
