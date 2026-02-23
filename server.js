@@ -108,7 +108,8 @@ app.get("/matches", (req, res) => {
 // Günde 1 kez sabah 05:00'te otomatik güncelle
 cron.schedule("0 5 * * *", updateDatabase);
 
-app.listen(3000, () => {
-    console.log("Scraper aktif: http://localhost:3000");
-    updateDatabase(); // Sunucu açılınca veriyi hemen çek
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Sunucu ${PORT} portunda aktif.`);
+    updateDatabase(); 
 });
