@@ -4,135 +4,208 @@ const cron = require("node-cron");
 const fs = require("fs");
 const path = require("path");
 
+let cronJob;
+let isSuspended = false;
+
 const app = express();
 
 const API_KEY = process.env.API_KEY;
 const BASE_URL = "https://v3.football.api-sports.io/fixtures";
-
 const DATA_FILE = path.join(__dirname, "matches.json");
 
-let cronJob;
-let isSuspended = false;
-
-// 🎯 Çekilecek Lig ID'leri
-const IMPORTANT_LEAGUES = [
+// ================= POPÜLER LİGLER =================
+const POPULAR_LEAGUES = new Set([
+  // 🇹🇷 TÜRKİYE
   203, // Süper Lig
-  204, // 1. Lig
-  39,  // Premier League
-  140, // La Liga
-  135, // Serie A
-  78,  // Bundesliga
-  61,  // Ligue 1
-  2,   // Champions League
-  1,   // Dünya Kupası
-  4,   // Avrupa Şampiyonası
-  9    // Copa America
-];
+  204, // Trendyol 1. Lig
+  205, // 2. Lig
+  552, // Türkiye Kupası
 
-// ================= FETCH =================
+  // 🇪🇺 AVRUPA KUPALARI
+  2,   // Champions League
+  3,   // Europa League
+  848, // Conference League
+  525, // UEFA Youth League
+
+  // 🇬🇧 İNGİLTERE
+  39,  // Premier League
+  40,  // Championship (1. Lig)
+  41,  // League One (2. Lig)
+  42,  // League Two (3. Lig)
+
+  // 🇪🇸 İSPANYA
+  140, // La Liga
+  141, // La Liga 2
+
+  // 🇮🇹 İTALYA
+  135, // Serie A
+  136, // Serie B
+
+  // 🇩🇪 ALMANYA
+  78,  // Bundesliga
+  79,  // 2. Bundesliga
+
+  // 🇫🇷 FRANSA
+  186, // Ligue 1
+  187, // Ligue 2
+
+  // 🇵🇹 PORTEKİZ
+  94,  // Primeira Liga
+
+  // 🇳🇱 HOLLANDA
+  88,  // Eredivisie
+  89,  // Eerste Divisie
+
+  // 🇦🇷 ARJANTIN
+  128, // Primera División
+
+  // 🇧🇷 BREZİLYA
+  71,  // Serie A
+  72,  // Serie B
+]);
+
+// ========== FETCH FUNCTION ==========
 async function fetchMatches() {
   if (isSuspended) {
-    console.log("Hesap suspend. Fetch iptal.");
+    console.log("❌ Hesap suspend. Fetch iptal edildi.");
     return;
   }
 
   try {
-    console.log("Maç verileri çekiliyor...");
+    console.log("📡 Api-Football'dan maç verileri çekiliyor...");
 
     const today = new Date().toISOString().split("T")[0];
 
     const response = await axios.get(BASE_URL, {
       params: {
-        date: today
+        from: today,
+        to: today,
+        timezone: "Europe/Istanbul"
       },
       headers: {
         "x-apisports-key": API_KEY,
       },
+      timeout: 15000
     });
 
     // Suspend kontrolü
-    if (
-      response.data.errors &&
-      response.data.errors.access &&
-      response.data.errors.access.toLowerCase().includes("suspend")
-    ) {
-      console.log("⚠ API hesabı suspend edildi!");
-      isSuspended = true;
-      if (cronJob) cronJob.stop();
-      return;
+    if (response.data.errors && response.data.errors.access) {
+      const errorMsg = response.data.errors.access.toLowerCase();
+      if (errorMsg.includes("suspend")) {
+        console.log("⚠️  API hesabı suspend edildi!");
+        isSuspended = true;
+        if (cronJob) cronJob.stop();
+        return;
+      }
     }
 
-    const allMatches = response.data.response;
+    // Maçları filtrele
+    const matches = (response.data.response || []).filter(match => {
+      const leagueId = match.league?.id;
+      return POPULAR_LEAGUES.has(leagueId);
+    });
 
-    // 🎯 Sadece önemli ligleri filtrele
-    const filtered = allMatches.filter(match =>
-      IMPORTANT_LEAGUES.includes(match.league.id)
-    );
+    console.log(`✅ ${matches.length} maç bulundu`);
 
     const dataToSave = {
       date: today,
-      total: filtered.length,
-      matches: filtered
+      timestamp: Date.now(),
+      response: matches,
     };
 
     fs.writeFileSync(DATA_FILE, JSON.stringify(dataToSave, null, 2));
-
-    console.log("Veri kaydedildi. Toplam maç:", filtered.length);
+    console.log(`✅ Veri kaydedildi.`);
 
   } catch (err) {
-    console.error("API hata:", err.response?.data || err.message);
+    console.error("❌ API hatası:", err.response?.data?.errors || err.message);
+    
+    if (err.response?.status === 403) {
+      isSuspended = true;
+      console.log("⚠️  Hesap askıya alındı!");
+    }
   }
 }
 
-// ================= INITIAL CHECK =================
+// ========== İLK KONTROL ==========
 function checkAndFetchIfNeeded() {
   const today = new Date().toISOString().split("T")[0];
 
   if (!fs.existsSync(DATA_FILE)) {
-    console.log("Dosya yok. İlk fetch yapılıyor...");
+    console.log("📂 Dosya yok. İlk fetch yapılıyor...");
     fetchMatches();
     return;
   }
 
-  const fileContent = JSON.parse(fs.readFileSync(DATA_FILE));
-
-  if (fileContent.date !== today) {
-    console.log("Bugünün verisi yok. Fetch yapılıyor...");
+  try {
+    const fileContent = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
+    
+    if (fileContent.date !== today || Date.now() - fileContent.timestamp > 43200000) {
+      console.log("⏰ Veri eski. Yenisi çekiliyor...");
+      fetchMatches();
+    } else {
+      console.log("✅ Bugünün verisi mevcut.");
+    }
+  } catch (e) {
+    console.log("⚠️  Dosya okunamadı. Yeni fetch yapılıyor...");
     fetchMatches();
-  } else {
-    console.log("Bugünün verisi mevcut.");
   }
 }
 
-// ================= CRON =================
+// ========== CRON (Her gün 05:00 UTC) ==========
 cronJob = cron.schedule("0 5 * * *", async () => {
-  console.log("05:00 Cron tetiklendi");
+  console.log("🔔 05:00 UTC - Cron tetiklendi");
   await fetchMatches();
-}, {
-  timezone: "Europe/Istanbul"
 });
 
-// ================= ROUTE =================
+// ========== ROUTE: /matches ==========
 app.get("/matches", (req, res) => {
+  const { date } = req.query;
+
   if (!fs.existsSync(DATA_FILE)) {
     return res.status(503).json({
       success: false,
-      message: "Veri henüz hazır değil"
+      message: "Veri henüz hazır değil",
     });
   }
 
-  const fileContent = JSON.parse(fs.readFileSync(DATA_FILE));
+  try {
+    const fileContent = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
 
-  res.json({
-    success: true,
-    date: fileContent.date,
-    total: fileContent.total,
-    matches: fileContent.matches
+    if (date && fileContent.date !== date) {
+      return res.status(404).json({
+        success: false,
+        message: `${date} için veri yok`,
+      });
+    }
+
+    res.json({
+      success: true,
+      data: fileContent,
+    });
+  } catch (e) {
+    console.error("❌ Dosya okuması hatası:", e);
+    return res.status(500).json({
+      success: false,
+      message: "Veri işleme hatası",
+    });
+  }
+});
+
+// ========== HEALTH CHECK ==========
+app.get("/health", (req, res) => {
+  res.json({ 
+    status: "OK", 
+    timestamp: new Date().toISOString(),
+    suspended: isSuspended
   });
 });
 
-// ================= START =================
-app.listen(3000, () => {
-  console.log("Server 3000 portta çalışıyor");
+// ========== START ==========
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server ${PORT} portunda çalışıyor`);
+  console.log(`📡 API Key: ${API_KEY ? "✅ Ayarlanmış" : "❌ Eksik"}`);
   checkAndFetchIfNeeded();
 });
+
+module.exports = app;
