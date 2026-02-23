@@ -95,6 +95,7 @@ cron.schedule(
 app.get("/matches", async (req, res) => {
   const today = getToday();
 
+  // İlk defa veya gün değiştiyse
   if (!lastFetchDay || lastFetchDay !== today) {
     await fetchMatchesFromTheSportsDB();
   }
@@ -106,6 +107,11 @@ app.get("/matches", async (req, res) => {
     date: today,
     matches: cachedMatches,
   });
+});
+
+// === Root Endpoint (opsiyonel) ===
+app.get("/", (req, res) => {
+  res.send("Mac Saati Backend çalışıyor. /matches endpoint’ini kullanın.");
 });
 
 // === Server Start ===
