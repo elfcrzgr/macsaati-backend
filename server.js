@@ -1,148 +1,132 @@
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
-const cors = require("cors");
-const fs = require("fs");
 const cron = require("node-cron");
 
 const app = express();
-app.use(cors());
-
 const PORT = process.env.PORT || 3000;
-const CACHE_FILE = "matches.json";
 
-/* ================================
-   POPÜLER LİGLER
-================================ */
-const POPULAR_LEAGUES = new Set([
-  203, 204, 552, 205,
-  39, 140, 141, 135, 78, 61, 94, 144,
-  529, 528, 143, 137, 48,
-  128, 307, 525,
-  2, 3, 848
-]);
+let cachedMatches = [];
+let lastFetchDate = null;
 
-/* ================================
-   SAAT FORMAT (HH:mm)
-================================ */
-function formatTime(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleTimeString("tr-TR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Europe/Istanbul"
-  });
+// --------------------------------------------------
+// Tarih format helper
+// --------------------------------------------------
+function formatDate(date) {
+    return date.toISOString().split("T")[0];
 }
 
-/* ================================
-   SADECE 06:00'DA API ÇEK
-================================ */
-async function fetchAndCacheMatches() {
-  try {
+// --------------------------------------------------
+// API'den gelen veriyi küçült
+// --------------------------------------------------
+function simplifyMatches(apiResponse) {
+    return apiResponse.map(match => ({
+        fixtureId: match.fixture.id,
+        date: match.fixture.date,
+        status: match.fixture.status.short,
 
-    console.log("06:00 → API çağrılıyor...");
+        league: {
+            id: match.league.id,
+            name: match.league.name,
+            logo: match.league.logo
+        },
 
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+        home: {
+            id: match.teams.home.id,
+            name: match.teams.home.name,
+            logo: match.teams.home.logo,
+            goals: match.goals.home
+        },
 
-    const formatDate = (date) => date.toISOString().split("T")[0];
-    const dates = [formatDate(today), formatDate(tomorrow)];
-
-    let allMatches = [];
-
-    for (let date of dates) {
-
-      const response = await axios.get(
-        "https://v3.football.api-sports.io/fixtures",
-        {
-          headers: {
-            "x-apisports-key": process.env.API_KEY,
-          },
-          params: {
-            date: date,
-            timezone: "Europe/Istanbul",
-          },
+        away: {
+            id: match.teams.away.id,
+            name: match.teams.away.name,
+            logo: match.teams.away.logo,
+            goals: match.goals.away
         }
-      );
+    }));
+}
 
-      const filtered = response.data.response
-        .filter(match => POPULAR_LEAGUES.has(match.league.id))
-        .map(match => ({
-          id: match.fixture.id,
+// --------------------------------------------------
+// TEK CALL - today + tomorrow
+// --------------------------------------------------
+async function fetchMatchesFromApi() {
+    try {
+        const now = new Date();
 
-          time: formatTime(match.fixture.date),
+        const today = new Date(now);
+        const tomorrow = new Date(now);
+        tomorrow.setDate(today.getDate() + 1);
 
-          leagueName: match.league.name,
-          leagueLogo: match.league.logo,
+        const todayStr = formatDate(today);
+        const tomorrowStr = formatDate(tomorrow);
 
-          homeTeam: match.teams.home.name,
-          homeLogo: match.teams.home.logo,
+        console.log("🚀 API çekiliyor:", todayStr, "-", tomorrowStr);
 
-          awayTeam: match.teams.away.name,
-          awayLogo: match.teams.away.logo
-        }));
+        const response = await axios.get(
+            `https://v3.football.api-sports.io/fixtures?from=${todayStr}&to=${tomorrowStr}&timezone=Europe/Istanbul`,
+            {
+                headers: {
+                    "x-apisports-key": process.env.API_KEY
+                }
+            }
+        );
 
-      allMatches.push(...filtered);
+        cachedMatches = simplifyMatches(response.data.response);
+        lastFetchDate = todayStr;
+
+        console.log("✅ Güncellendi. Maç sayısı:", cachedMatches.length);
+
+    } catch (error) {
+        console.error("❌ API çekme hatası:", error.message);
+    }
+}
+
+// --------------------------------------------------
+// CRON - Her gün 05:00
+// --------------------------------------------------
+cron.schedule("0 5 * * *", async () => {
+    console.log("⏰ 05:00 cron tetiklendi");
+    await fetchMatchesFromApi();
+}, {
+    timezone: "Europe/Istanbul"
+});
+
+// --------------------------------------------------
+// Render uyursa fallback
+// --------------------------------------------------
+async function ensureDataFresh() {
+    const todayStr = formatDate(new Date());
+
+    if (lastFetchDate !== todayStr) {
+        console.log("⚠️ Cron kaçmış olabilir. Manuel fetch yapılıyor...");
+        await fetchMatchesFromApi();
+    }
+}
+
+// --------------------------------------------------
+// Endpoint
+// --------------------------------------------------
+app.get("/matches", async (req, res) => {
+
+    await ensureDataFresh();
+
+    if (!cachedMatches || cachedMatches.length === 0) {
+        return res.status(503).json({
+            success: false,
+            message: "Veri henüz hazır değil"
+        });
     }
 
-    allMatches.sort((a, b) => a.time.localeCompare(b.time));
-
-    const finalData = {
-      updatedAt: new Date(),
-      total: allMatches.length,
-      matches: allMatches
-    };
-
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(finalData, null, 2));
-
-    console.log("Cache güncellendi ✅ Toplam:", allMatches.length);
-
-  } catch (error) {
-    console.error("API hatası ❌:", error.message);
-  }
-}
-
-/* ================================
-   CRON → HER SABAH 06:00
-================================ */
-cron.schedule("0 6 * * *", () => {
-  fetchAndCacheMatches();
-}, {
-  timezone: "Europe/Istanbul"
-});
-
-/* ================================
-   ENDPOINTLER
-================================ */
-
-app.get("/", (req, res) => {
-  res.send("MacSaati Backend Çalışıyor 🚀");
-});
-
-/* SADECE CACHE OKUR */
-app.get("/matches", (req, res) => {
-
-  if (fs.existsSync(CACHE_FILE)) {
-    const data = fs.readFileSync(CACHE_FILE);
-    res.json(JSON.parse(data));
-  } else {
-    res.status(404).json({
-      error: "Cache henüz oluşturulmadı. 06:00 cron bekleniyor."
+    res.json({
+        success: true,
+        date: lastFetchDate,
+        count: cachedMatches.length,
+        data: cachedMatches
     });
-  }
-
 });
 
-/* MANUEL FETCH DEVRE DIŞI */
-app.get("/fetch", (req, res) => {
-  res.send("Manuel fetch kapalı ❌ Sadece 06:00 cron çalışır.");
-});
-
-/* ================================
-   SERVER
-================================ */
-
+// --------------------------------------------------
 app.listen(PORT, () => {
-  console.log(`Server ${PORT} portunda çalışıyor 🚀`);
+    console.log(`🔥 Server çalışıyor: ${PORT}`);
 });
