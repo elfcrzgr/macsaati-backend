@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 const CACHE_FILE = "matches.json";
 
 /* ================================
-   POPÜLER LİGLER (API-Football ID)
+   POPÜLER LİGLER
 ================================ */
 const POPULAR_LEAGUES = new Set([
   203, 204, 552, 205,
@@ -23,7 +23,7 @@ const POPULAR_LEAGUES = new Set([
 ]);
 
 /* ================================
-   SAAT FORMATLAMA (HH:mm)
+   SAAT FORMATLAMA
 ================================ */
 function formatTime(dateString) {
   const date = new Date(dateString);
@@ -35,11 +35,12 @@ function formatTime(dateString) {
 }
 
 /* ================================
-   CACHE OLUŞTURMA
+   SADECE CRON İÇİN API ÇEKME
 ================================ */
 async function fetchAndCacheMatches() {
   try {
-    console.log("Maç verileri çekiliyor...");
+
+    console.log("06:00 Cron → API çağrılıyor...");
 
     const today = new Date();
     const tomorrow = new Date(today);
@@ -47,9 +48,11 @@ async function fetchAndCacheMatches() {
 
     const formatDate = (date) => date.toISOString().split("T")[0];
     const dates = [formatDate(today), formatDate(tomorrow)];
+
     let allMatches = [];
 
     for (let date of dates) {
+
       const response = await axios.get(
         "https://v3.football.api-sports.io/fixtures",
         {
@@ -86,7 +89,6 @@ async function fetchAndCacheMatches() {
         }));
 
       allMatches.push(...filtered);
-      console.log(`API raw: ${response.data.response.length}, Filtered: ${filtered.length} (${date})`);
     }
 
     allMatches.sort((a, b) => a.time.localeCompare(b.time));
@@ -98,47 +100,53 @@ async function fetchAndCacheMatches() {
     };
 
     fs.writeFileSync(CACHE_FILE, JSON.stringify(finalData, null, 2));
-    console.log("Cache başarıyla güncellendi ✅ Toplam maç:", allMatches.length);
+
+    console.log("Cache güncellendi ✅ Toplam:", allMatches.length);
 
   } catch (error) {
-    console.error("Cache hatası ❌:", error.message);
+    console.error("API hatası ❌:", error.message);
   }
 }
 
 /* ================================
-   CRON (Her gün 10:00)
+   CRON → HER SABAH 06:00
 ================================ */
-cron.schedule("0 10 * * *", () => {
+cron.schedule("0 6 * * *", () => {
   fetchAndCacheMatches();
+}, {
+  timezone: "Europe/Istanbul"
 });
 
 /* ================================
    ENDPOINTLER
 ================================ */
+
 app.get("/", (req, res) => {
   res.send("MacSaati Backend Çalışıyor 🚀");
 });
 
-// Cache okuma
+// SADECE CACHE OKUR
 app.get("/matches", (req, res) => {
+
   if (fs.existsSync(CACHE_FILE)) {
     const data = fs.readFileSync(CACHE_FILE);
     res.json(JSON.parse(data));
   } else {
-    res.status(404).json({ error: "Cache bulunamadı" });
+    res.status(404).json({
+      error: "Cache henüz oluşturulmadı. 06:00 cron bekleniyor."
+    });
   }
+
 });
 
-// Manuel fetch (gerektiğinde API’ye istek atar)
-app.get("/fetch", async (req, res) => {
-  await fetchAndCacheMatches();
-  res.send("Cache güncellendi ✅");
+// /fetch endpoint tamamen pasif
+app.get("/fetch", (req, res) => {
+  res.send("Manuel fetch devre dışı ❌ Sadece 06:00 cron çalışır.");
 });
 
 /* ================================
-   SERVER BAŞLAT
+   SERVER
 ================================ */
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor 🚀`);
-  // Sunucu açılışında otomatik fetch kapalı, API’ye istek gitmez
 });
