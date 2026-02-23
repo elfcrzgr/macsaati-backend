@@ -23,7 +23,7 @@ const POPULAR_LEAGUES = new Set([
 ]);
 
 /* ================================
-   SAAT FORMATLAMA
+   SAAT FORMAT (HH:mm)
 ================================ */
 function formatTime(dateString) {
   const date = new Date(dateString);
@@ -35,12 +35,12 @@ function formatTime(dateString) {
 }
 
 /* ================================
-   SADECE CRON İÇİN API ÇEKME
+   SADECE 06:00'DA API ÇEK
 ================================ */
 async function fetchAndCacheMatches() {
   try {
 
-    console.log("06:00 Cron → API çağrılıyor...");
+    console.log("06:00 → API çağrılıyor...");
 
     const today = new Date();
     const tomorrow = new Date(today);
@@ -70,22 +70,17 @@ async function fetchAndCacheMatches() {
         .filter(match => POPULAR_LEAGUES.has(match.league.id))
         .map(match => ({
           id: match.fixture.id,
+
           time: formatTime(match.fixture.date),
-          league: {
-            id: match.league.id,
-            name: match.league.name,
-            logo: match.league.logo
-          },
-          teams: {
-            home: {
-              name: match.teams.home.name,
-              logo: match.teams.home.logo
-            },
-            away: {
-              name: match.teams.away.name,
-              logo: match.teams.away.logo
-            }
-          }
+
+          leagueName: match.league.name,
+          leagueLogo: match.league.logo,
+
+          homeTeam: match.teams.home.name,
+          homeLogo: match.teams.home.logo,
+
+          awayTeam: match.teams.away.name,
+          awayLogo: match.teams.away.logo
         }));
 
       allMatches.push(...filtered);
@@ -125,7 +120,7 @@ app.get("/", (req, res) => {
   res.send("MacSaati Backend Çalışıyor 🚀");
 });
 
-// SADECE CACHE OKUR
+/* SADECE CACHE OKUR */
 app.get("/matches", (req, res) => {
 
   if (fs.existsSync(CACHE_FILE)) {
@@ -139,14 +134,15 @@ app.get("/matches", (req, res) => {
 
 });
 
-// /fetch endpoint tamamen pasif
+/* MANUEL FETCH DEVRE DIŞI */
 app.get("/fetch", (req, res) => {
-  res.send("Manuel fetch devre dışı ❌ Sadece 06:00 cron çalışır.");
+  res.send("Manuel fetch kapalı ❌ Sadece 06:00 cron çalışır.");
 });
 
 /* ================================
    SERVER
 ================================ */
+
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor 🚀`);
 });
