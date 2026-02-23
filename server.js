@@ -88,6 +88,13 @@ async function fetchMatches() {
       timeout: 15000
     });
 
+    // 🔴 API YANITI DEBUG
+    console.log("📋 API Yanıtı:", {
+      results: response.data.results,
+      errors: response.data.errors,
+      responseLength: response.data.response?.length || 0
+    });
+
     // Suspend kontrolü
     if (response.data.errors && response.data.errors.access) {
       const errorMsg = response.data.errors.access.toLowerCase();
@@ -99,16 +106,16 @@ async function fetchMatches() {
       }
     }
 
-    // 🔴 FİLTRE YOK - TÜM MAÇLARI GÖSTER
+    // 🔴 TÜM MAÇLARI GÖSTER - HİÇ FİLTRE YOK
     const matches = response.data.response || [];
 
     console.log(`✅ ${matches.length} maç bulundu`);
     
-    // Debug: İlk 10 maçın lig ID'lerini yazdır
+    // 🔍 TÜM MAÇLARIN LİG ID'LERİNİ YAZDIR
     if (matches.length > 0) {
-      console.log("🔍 Bugünün tüm maçları (İlk 10):");
-      matches.slice(0, 10).forEach(m => {
-        console.log(`  League ID: ${m.league?.id} | ${m.league?.name} | ${m.teams?.home?.name} vs ${m.teams?.away?.name}`);
+      console.log("🔍 === BUGÜNÜN TÜM MAÇLARI ===");
+      matches.forEach(m => {
+        console.log(`League ID: ${m.league?.id} | ${m.league?.name} | ${m.teams?.home?.name} vs ${m.teams?.away?.name} | ${m.fixture?.date}`);
       });
     }
 
