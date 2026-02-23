@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
-const cors = require("cors");
+const cheerio = require("cheerio");
 const fs = require("fs");
+const cors = require("cors");
 const cron = require("node-cron");
 
 const app = express();
@@ -12,30 +13,7 @@ const PORT = process.env.PORT || 3000;
 const CACHE_FILE = "matches.json";
 
 /* ================================
-   POPÜLER LİGLER
-================================ */
-const POPULAR_LEAGUES = new Set([
-  203, 204, 552, 205,
-  39, 140, 141, 135, 78, 61, 94, 144,
-  529, 528, 143, 137, 48,
-  128, 307, 525,
-  2, 3, 848
-]);
-
-/* ================================
-   SAAT FORMATLAMA
-================================ */
-function formatTime(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleTimeString("tr-TR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Europe/Istanbul"
-  });
-}
-
-/* ================================
-   TARİH FORMAT (TR TIMEZONE)
+   TARİH FORMAT (TR)
 ================================ */
 function formatDateTR(date) {
   return date.toLocaleDateString("en-CA", {
@@ -44,35 +22,18 @@ function formatDateTR(date) {
 }
 
 /* ================================
-   GÜNLÜK TEKRAR ENGELLEYİCİ
+   SAAT FORMAT
 ================================ */
-function alreadyUpdatedToday() {
-  if (!fs.existsSync(CACHE_FILE)) return false;
-
-  const data = JSON.parse(fs.readFileSync(CACHE_FILE));
-  if (!data.updatedAt) return false;
-
-  const lastUpdate = new Date(data.updatedAt);
-  const now = new Date();
-
-  const lastDateTR = formatDateTR(lastUpdate);
-  const todayTR = formatDateTR(now);
-
-  return lastDateTR === todayTR;
+function formatTime(timeText) {
+  return timeText.trim();
 }
 
 /* ================================
-   FETCH (2 GÜNLÜK)
+   SCRAPING (BUGÜN + YARIN)
 ================================ */
-async function fetchAndCacheMatches() {
+async function fetchMatches() {
   try {
-
-    if (alreadyUpdatedToday()) {
-      console.log("Bugün zaten güncellenmiş. API çağrılmadı.");
-      return false;
-    }
-
-    console.log("Maç verileri çekiliyor...");
+    console.log("Scraping başlatıldı...");
 
     const today = new Date();
     const tomorrow = new Date();
@@ -82,49 +43,48 @@ async function fetchAndCacheMatches() {
     let allMatches = [];
 
     for (let date of dates) {
-      const response = await axios.get(
-        "https://v3.football.api-sports.io/fixtures",
-        {
-          headers: {
-            "x-apisports-key": process.env.API_KEY,
-          },
-          params: {
-            date: date,
-            timezone: "Europe/Istanbul",
-          },
+
+      const url = `https://int.soccerway.com/matches/${date}/`;
+
+      const response = await axios.get(url, {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         }
-      );
+      });
 
-      const filtered = response.data.response
-        .filter(match => POPULAR_LEAGUES.has(match.league.id))
-        .map(match => ({
-          id: match.fixture.id,
-          time: formatTime(match.fixture.date),
-          league: {
-            id: match.league.id,
-            name: match.league.name,
-            logo: match.league.logo
-          },
-          teams: {
-            home: {
-              name: match.teams.home.name,
-              logo: match.teams.home.logo
+      const $ = cheerio.load(response.data);
+
+      $(".match-row").each((i, el) => {
+
+        const time = $(el).find(".match-time").text();
+        const home = $(el).find(".team-a").text().trim();
+        const away = $(el).find(".team-b").text().trim();
+        const league = $(el).closest(".competition").find("h2").text().trim();
+
+        if (time && home && away) {
+          allMatches.push({
+            id: `${date}-${i}`,
+            time: formatTime(time),
+            league: {
+              id: league,
+              name: league,
+              logo: ""
             },
-            away: {
-              name: match.teams.away.name,
-              logo: match.teams.away.logo
+            teams: {
+              home: { name: home, logo: "" },
+              away: { name: away, logo: "" }
             }
-          }
-        }));
+          });
+        }
 
-      console.log(`API raw (${date}):`, response.data.response.length);
-      console.log(`Filtered (${date}):`, filtered.length);
+      });
 
-      allMatches.push(...filtered);
+      console.log(`${date} için maç sayısı:`, allMatches.length);
     }
 
     if (allMatches.length === 0) {
-      console.log("⚠️ API boş döndü. Cache korunuyor.");
+      console.log("⚠️ Veri bulunamadı. Cache güncellenmedi.");
       return false;
     }
 
@@ -137,22 +97,23 @@ async function fetchAndCacheMatches() {
     };
 
     fs.writeFileSync(CACHE_FILE, JSON.stringify(finalData, null, 2));
-    console.log("✅ Cache güncellendi. Toplam maç:", allMatches.length);
+
+    console.log("✅ Cache güncellendi:", allMatches.length);
 
     return true;
 
-  } catch (error) {
-    console.error("❌ API Hatası:", error.message);
+  } catch (err) {
+    console.error("❌ Scraping hatası:", err.message);
     return false;
   }
 }
 
 /* ================================
-   CRON (HER GÜN 09:00)
+   CRON (Her gün 09:00)
 ================================ */
 cron.schedule("0 9 * * *", () => {
-  console.log("⏰ Günlük otomatik fetch çalıştı");
-  fetchAndCacheMatches();
+  console.log("⏰ Günlük scraping çalıştı");
+  fetchMatches();
 }, {
   timezone: "Europe/Istanbul"
 });
@@ -160,35 +121,24 @@ cron.schedule("0 9 * * *", () => {
 /* ================================
    ENDPOINTLER
 ================================ */
-
-// Health
 app.get("/", (req, res) => {
-  res.send("MacSaati Backend Çalışıyor 🚀");
+  res.send("MacSaati Backend (API’siz) 🚀");
 });
 
-// Cache okuma
 app.get("/matches", (req, res) => {
   if (fs.existsSync(CACHE_FILE)) {
-    const data = fs.readFileSync(CACHE_FILE);
-    res.json(JSON.parse(data));
+    res.json(JSON.parse(fs.readFileSync(CACHE_FILE)));
   } else {
     res.status(404).json({ error: "Cache bulunamadı" });
   }
 });
 
-// Manuel fetch (secret korumalı)
 app.get("/fetch", async (req, res) => {
-
-  if (req.query.secret !== process.env.ADMIN_SECRET) {
-    return res.status(403).send("Forbidden");
-  }
-
-  const success = await fetchAndCacheMatches();
-
+  const success = await fetchMatches();
   if (success) {
-    res.send("Cache güncellendi ✅");
+    res.send("Scraping başarılı ✅");
   } else {
-    res.send("API çağrılmadı veya hata oluştu ❌");
+    res.send("Scraping başarısız ❌");
   }
 });
 
