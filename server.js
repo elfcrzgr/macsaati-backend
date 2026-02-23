@@ -99,18 +99,16 @@ async function fetchMatches() {
       }
     }
 
-    // Maçları filtrele
-    const matches = (response.data.response || []).filter(match => {
-      const leagueId = match.league?.id;
-      return POPULAR_LEAGUES.has(leagueId);
-    });
+    // 🔴 FİLTRE YOK - TÜM MAÇLARI GÖSTER
+    const matches = response.data.response || [];
 
     console.log(`✅ ${matches.length} maç bulundu`);
     
+    // Debug: İlk 10 maçın lig ID'lerini yazdır
     if (matches.length > 0) {
-      console.log("🔍 İlk 5 maç:");
-      matches.slice(0, 5).forEach(m => {
-        console.log(`  ${m.league?.name} (ID: ${m.league?.id}): ${m.teams?.home?.name} vs ${m.teams?.away?.name}`);
+      console.log("🔍 Bugünün tüm maçları (İlk 10):");
+      matches.slice(0, 10).forEach(m => {
+        console.log(`  League ID: ${m.league?.id} | ${m.league?.name} | ${m.teams?.home?.name} vs ${m.teams?.away?.name}`);
       });
     }
 
@@ -121,7 +119,7 @@ async function fetchMatches() {
     };
 
     fs.writeFileSync(DATA_FILE, JSON.stringify(dataToSave, null, 2));
-    console.log(`✅ Veri kaydedildi.`);
+    console.log(`✅ ${matches.length} maç kaydedildi.`);
 
   } catch (err) {
     console.error("❌ API hatası:", err.response?.data?.errors || err.message);
