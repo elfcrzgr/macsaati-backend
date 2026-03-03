@@ -1,19 +1,20 @@
 {
   "success": true,
-  "updatedAt": "2026-03-03T08:51:00.108Z",
-  "timestamp": 1772527860108,
+  "updatedAt": "2026-03-03T09:01:08.688Z",
+  "timestamp": 1772528468688,
   "dateRange": {
     "start": "2026-03-03",
     "end": "2026-03-04"
   },
-  "totalMatches": 11,
-  "activeTournaments": 3,
+  "totalMatches": 10,
+  "activeTournaments": 2,
   "matches": [
     {
       "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023980,
@@ -30,13 +31,15 @@
           "id": 60,
           "name": "Bournemouth",
           "shortName": "Bournemouth",
-          "slug": "bournemouth"
+          "slug": "bournemouth",
+          "logo": "https://www.sofascore.com/images/team/60.png"
         },
         "awayTeam": {
           "id": 50,
           "name": "Brentford",
           "shortName": "Brentford",
-          "slug": "brentford"
+          "slug": "brentford",
+          "logo": "https://www.sofascore.com/images/team/50.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -50,7 +53,8 @@
       "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023941,
@@ -67,13 +71,15 @@
           "id": 48,
           "name": "Everton",
           "shortName": "Everton",
-          "slug": "everton"
+          "slug": "everton",
+          "logo": "https://www.sofascore.com/images/team/48.png"
         },
         "awayTeam": {
           "id": 6,
           "name": "Burnley",
           "shortName": "Burnley",
-          "slug": "burnley"
+          "slug": "burnley",
+          "logo": "https://www.sofascore.com/images/team/6.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -87,7 +93,8 @@
       "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023982,
@@ -104,13 +111,15 @@
           "id": 34,
           "name": "Leeds United",
           "shortName": "Leeds",
-          "slug": "leeds-united"
+          "slug": "leeds-united",
+          "logo": "https://www.sofascore.com/images/team/34.png"
         },
         "awayTeam": {
           "id": 41,
           "name": "Sunderland",
           "shortName": "Sunderland",
-          "slug": "sunderland"
+          "slug": "sunderland",
+          "logo": "https://www.sofascore.com/images/team/41.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -124,7 +133,8 @@
       "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023985,
@@ -141,13 +151,15 @@
           "id": 3,
           "name": "Wolverhampton",
           "shortName": "Wolves",
-          "slug": "wolverhampton"
+          "slug": "wolverhampton",
+          "logo": "https://www.sofascore.com/images/team/3.png"
         },
         "awayTeam": {
           "id": 44,
           "name": "Liverpool",
           "shortName": "Liverpool",
-          "slug": "liverpool"
+          "slug": "liverpool",
+          "logo": "https://www.sofascore.com/images/team/44.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -161,7 +173,8 @@
       "tournament": {
         "id": 8,
         "name": "LaLiga",
-        "country": "🇪🇸 İspanya"
+        "country": "🇪🇸 İspanya",
+        "logo": "https://www.sofascore.com/images/league/8.png"
       },
       "match": {
         "id": 15534915,
@@ -178,13 +191,15 @@
           "id": 2818,
           "name": "Rayo Vallecano",
           "shortName": "Rayo Vallecano",
-          "slug": "rayo-vallecano"
+          "slug": "rayo-vallecano",
+          "logo": "https://www.sofascore.com/images/team/2818.png"
         },
         "awayTeam": {
           "id": 2851,
           "name": "Real Oviedo",
           "shortName": "Real Oviedo",
-          "slug": "real-oviedo"
+          "slug": "real-oviedo",
+          "logo": "https://www.sofascore.com/images/team/2851.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -198,7 +213,8 @@
       "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023984,
@@ -215,13 +231,15 @@
           "id": 17,
           "name": "Manchester City",
           "shortName": "Man City",
-          "slug": "manchester-city"
+          "slug": "manchester-city",
+          "logo": "https://www.sofascore.com/images/team/17.png"
         },
         "awayTeam": {
           "id": 14,
           "name": "Nottingham Forest",
           "shortName": "Forest",
-          "slug": "nottingham-forest"
+          "slug": "nottingham-forest",
+          "logo": "https://www.sofascore.com/images/team/14.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -235,7 +253,8 @@
       "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023933,
@@ -252,13 +271,15 @@
           "id": 30,
           "name": "Brighton & Hove Albion",
           "shortName": "Brighton",
-          "slug": "brighton-and-hove-albion"
+          "slug": "brighton-and-hove-albion",
+          "logo": "https://www.sofascore.com/images/team/30.png"
         },
         "awayTeam": {
           "id": 42,
           "name": "Arsenal",
           "shortName": "Arsenal",
-          "slug": "arsenal"
+          "slug": "arsenal",
+          "logo": "https://www.sofascore.com/images/team/42.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -272,7 +293,8 @@
       "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023986,
@@ -289,13 +311,15 @@
           "id": 40,
           "name": "Aston Villa",
           "shortName": "Aston Villa",
-          "slug": "aston-villa"
+          "slug": "aston-villa",
+          "logo": "https://www.sofascore.com/images/team/40.png"
         },
         "awayTeam": {
           "id": 38,
           "name": "Chelsea",
           "shortName": "Chelsea",
-          "slug": "chelsea"
+          "slug": "chelsea",
+          "logo": "https://www.sofascore.com/images/team/38.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -309,7 +333,8 @@
       "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023947,
@@ -326,13 +351,15 @@
           "id": 43,
           "name": "Fulham",
           "shortName": "Fulham",
-          "slug": "fulham"
+          "slug": "fulham",
+          "logo": "https://www.sofascore.com/images/team/43.png"
         },
         "awayTeam": {
           "id": 37,
           "name": "West Ham United",
           "shortName": "West Ham",
-          "slug": "west-ham-united"
+          "slug": "west-ham-united",
+          "logo": "https://www.sofascore.com/images/team/37.png"
         },
         "homeScore": {},
         "awayScore": {},
@@ -344,46 +371,10 @@
     },
     {
       "tournament": {
-        "id": 35,
-        "name": "Bundesliga",
-        "country": "🇩🇪 Almanya"
-      },
-      "match": {
-        "id": 15380505,
-        "slug": "bayer-04-leverkusen-hamburger-sv",
-        "startTimestamp": 1772652600,
-        "startDate": "2026-03-04T19:30:00.000Z",
-        "startTime": "22:30",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
-        "homeTeam": {
-          "id": 2676,
-          "name": "Hamburger SV",
-          "shortName": "HSV",
-          "slug": "hamburger-sv"
-        },
-        "awayTeam": {
-          "id": 2681,
-          "name": "Bayer 04 Leverkusen",
-          "shortName": "Leverkusen",
-          "slug": "bayer-04-leverkusen"
-        },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 17
-        },
-        "venue": null
-      }
-    },
-    {
-      "tournament": {
         "id": 17,
         "name": "Premier League",
-        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere"
+        "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere",
+        "logo": "https://www.sofascore.com/images/league/17.png"
       },
       "match": {
         "id": 14023983,
@@ -400,13 +391,15 @@
           "id": 39,
           "name": "Newcastle United",
           "shortName": "Newcastle",
-          "slug": "newcastle-united"
+          "slug": "newcastle-united",
+          "logo": "https://www.sofascore.com/images/team/39.png"
         },
         "awayTeam": {
           "id": 35,
           "name": "Manchester United",
           "shortName": "Man Utd",
-          "slug": "manchester-united"
+          "slug": "manchester-united",
+          "logo": "https://www.sofascore.com/images/team/35.png"
         },
         "homeScore": {},
         "awayScore": {},
