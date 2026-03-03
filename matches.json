@@ -1,7 +1,7 @@
 {
   "success": true,
-  "updatedAt": "2026-03-03T16:32:32.959Z",
-  "timestamp": 1772555552959,
+  "updatedAt": "2026-03-03T16:47:59.829Z",
+  "timestamp": 1772556479829,
   "dateRange": {
     "start": "2026-03-02",
     "end": "2026-03-03"
@@ -17,32 +17,22 @@
       },
       "match": {
         "id": 14023980,
-        "slug": "bournemouth-brentford",
         "startTimestamp": 1772566200,
-        "startDate": "2026-03-03T19:30:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 60,
           "name": "Bournemouth",
-          "shortName": "Bournemouth",
-          "slug": "bournemouth"
+          "logo": "https://api.sofascore.app/api/v1/team/60/image"
         },
         "awayTeam": {
           "id": 50,
           "name": "Brentford",
-          "shortName": "Brentford",
-          "slug": "brentford"
+          "logo": "https://api.sofascore.app/api/v1/team/50/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     },
     {
@@ -53,32 +43,22 @@
       },
       "match": {
         "id": 14023941,
-        "slug": "everton-burnley",
         "startTimestamp": 1772566200,
-        "startDate": "2026-03-03T19:30:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 48,
           "name": "Everton",
-          "shortName": "Everton",
-          "slug": "everton"
+          "logo": "https://api.sofascore.app/api/v1/team/48/image"
         },
         "awayTeam": {
           "id": 6,
           "name": "Burnley",
-          "shortName": "Burnley",
-          "slug": "burnley"
+          "logo": "https://api.sofascore.app/api/v1/team/6/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     },
     {
@@ -89,32 +69,22 @@
       },
       "match": {
         "id": 14023982,
-        "slug": "sunderland-leeds-united",
         "startTimestamp": 1772566200,
-        "startDate": "2026-03-03T19:30:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 34,
           "name": "Leeds United",
-          "shortName": "Leeds",
-          "slug": "leeds-united"
+          "logo": "https://api.sofascore.app/api/v1/team/34/image"
         },
         "awayTeam": {
           "id": 41,
           "name": "Sunderland",
-          "shortName": "Sunderland",
-          "slug": "sunderland"
+          "logo": "https://api.sofascore.app/api/v1/team/41/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     },
     {
@@ -125,32 +95,22 @@
       },
       "match": {
         "id": 14023985,
-        "slug": "liverpool-wolverhampton",
         "startTimestamp": 1772568900,
-        "startDate": "2026-03-03T20:15:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 3,
           "name": "Wolverhampton",
-          "shortName": "Wolves",
-          "slug": "wolverhampton"
+          "logo": "https://api.sofascore.app/api/v1/team/3/image"
         },
         "awayTeam": {
           "id": 44,
           "name": "Liverpool",
-          "shortName": "Liverpool",
-          "slug": "liverpool"
+          "logo": "https://api.sofascore.app/api/v1/team/44/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     },
     {
@@ -161,32 +121,22 @@
       },
       "match": {
         "id": 15534915,
-        "slug": "real-oviedo-rayo-vallecano",
         "startTimestamp": 1772647200,
-        "startDate": "2026-03-04T18:00:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 2818,
           "name": "Rayo Vallecano",
-          "shortName": "Rayo Vallecano",
-          "slug": "rayo-vallecano"
+          "logo": "https://api.sofascore.app/api/v1/team/2818/image"
         },
         "awayTeam": {
           "id": 2851,
           "name": "Real Oviedo",
-          "shortName": "Real Oviedo",
-          "slug": "real-oviedo"
+          "logo": "https://api.sofascore.app/api/v1/team/2851/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 23
-        },
-        "venue": null
+        "tournament": {
+          "id": 8,
+          "name": "LaLiga",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+        }
       }
     },
     {
@@ -197,32 +147,22 @@
       },
       "match": {
         "id": 14023984,
-        "slug": "manchester-city-nottingham-forest",
         "startTimestamp": 1772652600,
-        "startDate": "2026-03-04T19:30:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 17,
           "name": "Manchester City",
-          "shortName": "Man City",
-          "slug": "manchester-city"
+          "logo": "https://api.sofascore.app/api/v1/team/17/image"
         },
         "awayTeam": {
           "id": 14,
           "name": "Nottingham Forest",
-          "shortName": "Forest",
-          "slug": "nottingham-forest"
+          "logo": "https://api.sofascore.app/api/v1/team/14/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     },
     {
@@ -233,32 +173,22 @@
       },
       "match": {
         "id": 14023933,
-        "slug": "arsenal-brighton-and-hove-albion",
         "startTimestamp": 1772652600,
-        "startDate": "2026-03-04T19:30:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 30,
           "name": "Brighton & Hove Albion",
-          "shortName": "Brighton",
-          "slug": "brighton-and-hove-albion"
+          "logo": "https://api.sofascore.app/api/v1/team/30/image"
         },
         "awayTeam": {
           "id": 42,
           "name": "Arsenal",
-          "shortName": "Arsenal",
-          "slug": "arsenal"
+          "logo": "https://api.sofascore.app/api/v1/team/42/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     },
     {
@@ -269,32 +199,22 @@
       },
       "match": {
         "id": 14023986,
-        "slug": "aston-villa-chelsea",
         "startTimestamp": 1772652600,
-        "startDate": "2026-03-04T19:30:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 40,
           "name": "Aston Villa",
-          "shortName": "Aston Villa",
-          "slug": "aston-villa"
+          "logo": "https://api.sofascore.app/api/v1/team/40/image"
         },
         "awayTeam": {
           "id": 38,
           "name": "Chelsea",
-          "shortName": "Chelsea",
-          "slug": "chelsea"
+          "logo": "https://api.sofascore.app/api/v1/team/38/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     },
     {
@@ -305,32 +225,22 @@
       },
       "match": {
         "id": 14023947,
-        "slug": "fulham-west-ham-united",
         "startTimestamp": 1772652600,
-        "startDate": "2026-03-04T19:30:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 43,
           "name": "Fulham",
-          "shortName": "Fulham",
-          "slug": "fulham"
+          "logo": "https://api.sofascore.app/api/v1/team/43/image"
         },
         "awayTeam": {
           "id": 37,
           "name": "West Ham United",
-          "shortName": "West Ham",
-          "slug": "west-ham-united"
+          "logo": "https://api.sofascore.app/api/v1/team/37/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     },
     {
@@ -341,32 +251,22 @@
       },
       "match": {
         "id": 15380505,
-        "slug": "bayer-04-leverkusen-hamburger-sv",
         "startTimestamp": 1772652600,
-        "startDate": "2026-03-04T19:30:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 2676,
           "name": "Hamburger SV",
-          "shortName": "HSV",
-          "slug": "hamburger-sv"
+          "logo": "https://api.sofascore.app/api/v1/team/2676/image"
         },
         "awayTeam": {
           "id": 2681,
           "name": "Bayer 04 Leverkusen",
-          "shortName": "Leverkusen",
-          "slug": "bayer-04-leverkusen"
+          "logo": "https://api.sofascore.app/api/v1/team/2681/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 17
-        },
-        "venue": null
+        "tournament": {
+          "id": 35,
+          "name": "Bundesliga",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        }
       }
     },
     {
@@ -377,32 +277,22 @@
       },
       "match": {
         "id": 14023983,
-        "slug": "newcastle-united-manchester-united",
         "startTimestamp": 1772655300,
-        "startDate": "2026-03-04T20:15:00.000Z",
-        "status": {
-          "code": 0,
-          "description": "Not started",
-          "type": "notstarted"
-        },
         "homeTeam": {
           "id": 39,
           "name": "Newcastle United",
-          "shortName": "Newcastle",
-          "slug": "newcastle-united"
+          "logo": "https://api.sofascore.app/api/v1/team/39/image"
         },
         "awayTeam": {
           "id": 35,
           "name": "Manchester United",
-          "shortName": "Man Utd",
-          "slug": "manchester-united"
+          "logo": "https://api.sofascore.app/api/v1/team/35/image"
         },
-        "homeScore": {},
-        "awayScore": {},
-        "roundInfo": {
-          "round": 29
-        },
-        "venue": null
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        }
       }
     }
   ]
