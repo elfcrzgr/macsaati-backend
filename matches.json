@@ -1,13 +1,13 @@
 {
   "success": true,
-  "updatedAt": "2026-03-03T16:47:59.829Z",
-  "timestamp": 1772556479829,
+  "updatedAt": "2026-03-03T17:01:58.546Z",
+  "timestamp": 1772557318546,
   "dateRange": {
     "start": "2026-03-02",
     "end": "2026-03-03"
   },
-  "totalMatches": 11,
-  "activeTournaments": 3,
+  "totalMatches": 10,
+  "activeTournaments": 2,
   "matches": [
     {
       "tournament": {
@@ -240,32 +240,6 @@
           "id": 17,
           "name": "Premier League",
           "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
-        }
-      }
-    },
-    {
-      "tournament": {
-        "id": 35,
-        "name": "Bundesliga",
-        "country": "🇩🇪 Almanya"
-      },
-      "match": {
-        "id": 15380505,
-        "startTimestamp": 1772652600,
-        "homeTeam": {
-          "id": 2676,
-          "name": "Hamburger SV",
-          "logo": "https://api.sofascore.app/api/v1/team/2676/image"
-        },
-        "awayTeam": {
-          "id": 2681,
-          "name": "Bayer 04 Leverkusen",
-          "logo": "https://api.sofascore.app/api/v1/team/2681/image"
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
         }
       }
     },
