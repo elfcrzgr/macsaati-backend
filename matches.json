@@ -1,9 +1,9 @@
 {
   "success": true,
-  "updatedAt": "2026-03-06T09:32:59.632Z",
-  "timestamp": 1772789579638,
+  "updatedAt": "2026-03-06T09:34:51.737Z",
+  "timestamp": 1772789691743,
   "date": "2026-03-06",
-  "totalMatches": 4,
+  "totalMatches": 5,
   "matches": [
     {
       "match": {
@@ -119,6 +119,36 @@
           "id": 35,
           "name": "Bundesliga",
           "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 541138,
+        "startTimestamp": 1772827200,
+        "homeTeam": {
+          "id": 1081,
+          "name": "Preston North End FC",
+          "logo": "https://crests.football-data.org/1081.png"
+        },
+        "awayTeam": {
+          "id": 1082,
+          "name": "Oxford United FC",
+          "logo": "https://crests.football-data.org/1082.png"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 36,
+          "name": "Championship",
+          "logo": "https://api.sofascore.app/static/images/tournaments/36.png"
         },
         "status": {
           "type": "notstarted"
