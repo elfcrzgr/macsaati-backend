@@ -1,158 +1,129 @@
 {
   "success": true,
-  "updatedAt": "2026-03-06T09:30:53.013Z",
-  "timestamp": 1772789453020,
+  "updatedAt": "2026-03-06T09:32:59.632Z",
+  "timestamp": 1772789579638,
   "date": "2026-03-06",
   "totalMatches": 4,
-  "activeTournaments": 4,
-  "tournaments": {
-    "8": {
-      "tournament": {
-        "id": 8,
-        "name": "La Liga",
-        "logo": "https://api.sofascore.app/static/images/tournaments/8.png"
-      },
-      "matches": [
-        {
-          "id": 544473,
-          "startTimestamp": 1772827200,
-          "homeTeam": {
-            "id": 558,
-            "name": "RC Celta de Vigo",
-            "logo": "https://crests.football-data.org/558.png"
-          },
-          "awayTeam": {
-            "id": 86,
-            "name": "Real Madrid CF",
-            "logo": "https://crests.football-data.org/86.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 8,
-            "name": "La Liga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/8.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
+  "matches": [
+    {
+      "match": {
+        "id": 544473,
+        "startTimestamp": 1772827200,
+        "homeTeam": {
+          "id": 558,
+          "name": "RC Celta de Vigo",
+          "logo": "https://crests.football-data.org/558.png"
+        },
+        "awayTeam": {
+          "id": 86,
+          "name": "Real Madrid CF",
+          "logo": "https://crests.football-data.org/86.png"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 8,
+          "name": "La Liga",
+          "logo": "https://api.sofascore.app/static/images/tournaments/8.png"
+        },
+        "status": {
+          "type": "notstarted"
         }
-      ]
+      }
     },
-    "23": {
-      "tournament": {
-        "id": 23,
-        "name": "Serie A",
-        "logo": "https://api.sofascore.app/static/images/tournaments/23.png"
-      },
-      "matches": [
-        {
-          "id": 537093,
-          "startTimestamp": 1772826300,
-          "homeTeam": {
-            "id": 113,
-            "name": "SSC Napoli",
-            "logo": "https://crests.football-data.org/113.png"
-          },
-          "awayTeam": {
-            "id": 586,
-            "name": "Torino FC",
-            "logo": "https://crests.football-data.org/586.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 23,
-            "name": "Serie A",
-            "logo": "https://api.sofascore.app/static/images/tournaments/23.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
+    {
+      "match": {
+        "id": 542628,
+        "startTimestamp": 1772826300,
+        "homeTeam": {
+          "id": 524,
+          "name": "Paris Saint-Germain FC",
+          "logo": "https://crests.football-data.org/524.png"
+        },
+        "awayTeam": {
+          "id": 548,
+          "name": "AS Monaco FC",
+          "logo": "https://crests.football-data.org/548.png"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 34,
+          "name": "Ligue 1",
+          "logo": "https://api.sofascore.app/static/images/tournaments/34.png"
+        },
+        "status": {
+          "type": "notstarted"
         }
-      ]
+      }
     },
-    "34": {
-      "tournament": {
-        "id": 34,
-        "name": "Ligue 1",
-        "logo": "https://api.sofascore.app/static/images/tournaments/34.png"
-      },
-      "matches": [
-        {
-          "id": 542628,
-          "startTimestamp": 1772826300,
-          "homeTeam": {
-            "id": 524,
-            "name": "Paris Saint-Germain FC",
-            "logo": "https://crests.football-data.org/524.png"
-          },
-          "awayTeam": {
-            "id": 548,
-            "name": "AS Monaco FC",
-            "logo": "https://crests.football-data.org/548.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 34,
-            "name": "Ligue 1",
-            "logo": "https://api.sofascore.app/static/images/tournaments/34.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
+    {
+      "match": {
+        "id": 537093,
+        "startTimestamp": 1772826300,
+        "homeTeam": {
+          "id": 113,
+          "name": "SSC Napoli",
+          "logo": "https://crests.football-data.org/113.png"
+        },
+        "awayTeam": {
+          "id": 586,
+          "name": "Torino FC",
+          "logo": "https://crests.football-data.org/586.png"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 23,
+          "name": "Serie A",
+          "logo": "https://api.sofascore.app/static/images/tournaments/23.png"
+        },
+        "status": {
+          "type": "notstarted"
         }
-      ]
+      }
     },
-    "35": {
-      "tournament": {
-        "id": 35,
-        "name": "Bundesliga",
-        "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
-      },
-      "matches": [
-        {
-          "id": 540627,
-          "startTimestamp": 1772825400,
-          "homeTeam": {
-            "id": 5,
-            "name": "FC Bayern München",
-            "logo": "https://crests.football-data.org/5.png"
-          },
-          "awayTeam": {
-            "id": 18,
-            "name": "Borussia Mönchengladbach",
-            "logo": "https://crests.football-data.org/18.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 35,
-            "name": "Bundesliga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
+    {
+      "match": {
+        "id": 540627,
+        "startTimestamp": 1772825400,
+        "homeTeam": {
+          "id": 5,
+          "name": "FC Bayern München",
+          "logo": "https://crests.football-data.org/5.png"
+        },
+        "awayTeam": {
+          "id": 18,
+          "name": "Borussia Mönchengladbach",
+          "logo": "https://crests.football-data.org/18.png"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 35,
+          "name": "Bundesliga",
+          "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
+        },
+        "status": {
+          "type": "notstarted"
         }
-      ]
+      }
     }
-  }
+  ]
 }
