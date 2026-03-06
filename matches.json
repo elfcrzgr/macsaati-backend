@@ -1,15 +1,16 @@
 {
   "success": true,
-  "updatedAt": "2026-03-06T09:28:22.278Z",
-  "timestamp": 1772789302289,
+  "updatedAt": "2026-03-06T09:30:53.013Z",
+  "timestamp": 1772789453020,
   "date": "2026-03-06",
-  "totalMatches": 20,
+  "totalMatches": 4,
   "activeTournaments": 4,
   "tournaments": {
     "8": {
       "tournament": {
         "id": 8,
-        "name": "La Liga"
+        "name": "La Liga",
+        "logo": "https://api.sofascore.app/static/images/tournaments/8.png"
       },
       "matches": [
         {
@@ -18,124 +19,12 @@
           "homeTeam": {
             "id": 558,
             "name": "RC Celta de Vigo",
-            "logo": "https://api.sofascore.app/static/images/teams/558.png"
+            "logo": "https://crests.football-data.org/558.png"
           },
           "awayTeam": {
             "id": 86,
             "name": "Real Madrid CF",
-            "logo": "https://api.sofascore.app/static/images/teams/86.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 8,
-            "name": "La Liga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/8.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 544479,
-          "startTimestamp": 1772888400,
-          "homeTeam": {
-            "id": 79,
-            "name": "CA Osasuna",
-            "logo": "https://api.sofascore.app/static/images/teams/79.png"
-          },
-          "awayTeam": {
-            "id": 89,
-            "name": "RCD Mallorca",
-            "logo": "https://api.sofascore.app/static/images/teams/89.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 8,
-            "name": "La Liga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/8.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 544478,
-          "startTimestamp": 1772896500,
-          "homeTeam": {
-            "id": 88,
-            "name": "Levante UD",
-            "logo": "https://api.sofascore.app/static/images/teams/88.png"
-          },
-          "awayTeam": {
-            "id": 298,
-            "name": "Girona FC",
-            "logo": "https://api.sofascore.app/static/images/teams/298.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 8,
-            "name": "La Liga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/8.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 544472,
-          "startTimestamp": 1772904600,
-          "homeTeam": {
-            "id": 78,
-            "name": "Club Atlético de Madrid",
-            "logo": "https://api.sofascore.app/static/images/teams/78.png"
-          },
-          "awayTeam": {
-            "id": 92,
-            "name": "Real Sociedad de Fútbol",
-            "logo": "https://api.sofascore.app/static/images/teams/92.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 8,
-            "name": "La Liga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/8.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 544471,
-          "startTimestamp": 1772913600,
-          "homeTeam": {
-            "id": 77,
-            "name": "Athletic Club",
-            "logo": "https://api.sofascore.app/static/images/teams/77.png"
-          },
-          "awayTeam": {
-            "id": 81,
-            "name": "FC Barcelona",
-            "logo": "https://api.sofascore.app/static/images/teams/81.png"
+            "logo": "https://crests.football-data.org/86.png"
           },
           "homeScore": {
             "display": "-"
@@ -157,7 +46,8 @@
     "23": {
       "tournament": {
         "id": 23,
-        "name": "Serie A"
+        "name": "Serie A",
+        "logo": "https://api.sofascore.app/static/images/tournaments/23.png"
       },
       "matches": [
         {
@@ -166,96 +56,12 @@
           "homeTeam": {
             "id": 113,
             "name": "SSC Napoli",
-            "logo": "https://api.sofascore.app/static/images/teams/113.png"
+            "logo": "https://crests.football-data.org/113.png"
           },
           "awayTeam": {
             "id": 586,
             "name": "Torino FC",
-            "logo": "https://api.sofascore.app/static/images/teams/586.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 23,
-            "name": "Serie A",
-            "logo": "https://api.sofascore.app/static/images/tournaments/23.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 537088,
-          "startTimestamp": 1772892000,
-          "homeTeam": {
-            "id": 104,
-            "name": "Cagliari Calcio",
-            "logo": "https://api.sofascore.app/static/images/teams/104.png"
-          },
-          "awayTeam": {
-            "id": 7397,
-            "name": "Como 1907",
-            "logo": "https://api.sofascore.app/static/images/teams/7397.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 23,
-            "name": "Serie A",
-            "logo": "https://api.sofascore.app/static/images/tournaments/23.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 537087,
-          "startTimestamp": 1772902800,
-          "homeTeam": {
-            "id": 102,
-            "name": "Atalanta BC",
-            "logo": "https://api.sofascore.app/static/images/teams/102.png"
-          },
-          "awayTeam": {
-            "id": 115,
-            "name": "Udinese Calcio",
-            "logo": "https://api.sofascore.app/static/images/teams/115.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 23,
-            "name": "Serie A",
-            "logo": "https://api.sofascore.app/static/images/tournaments/23.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 537091,
-          "startTimestamp": 1772912700,
-          "homeTeam": {
-            "id": 109,
-            "name": "Juventus FC",
-            "logo": "https://api.sofascore.app/static/images/teams/109.png"
-          },
-          "awayTeam": {
-            "id": 487,
-            "name": "AC Pisa 1909",
-            "logo": "https://api.sofascore.app/static/images/teams/487.png"
+            "logo": "https://crests.football-data.org/586.png"
           },
           "homeScore": {
             "display": "-"
@@ -277,7 +83,8 @@
     "34": {
       "tournament": {
         "id": 34,
-        "name": "Ligue 1"
+        "name": "Ligue 1",
+        "logo": "https://api.sofascore.app/static/images/tournaments/34.png"
       },
       "matches": [
         {
@@ -286,96 +93,12 @@
           "homeTeam": {
             "id": 524,
             "name": "Paris Saint-Germain FC",
-            "logo": "https://api.sofascore.app/static/images/teams/524.png"
+            "logo": "https://crests.football-data.org/524.png"
           },
           "awayTeam": {
             "id": 548,
             "name": "AS Monaco FC",
-            "logo": "https://api.sofascore.app/static/images/teams/548.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 34,
-            "name": "Ligue 1",
-            "logo": "https://api.sofascore.app/static/images/tournaments/34.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 542623,
-          "startTimestamp": 1772899200,
-          "homeTeam": {
-            "id": 543,
-            "name": "FC Nantes",
-            "logo": "https://api.sofascore.app/static/images/teams/543.png"
-          },
-          "awayTeam": {
-            "id": 532,
-            "name": "Angers SCO",
-            "logo": "https://api.sofascore.app/static/images/teams/532.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 34,
-            "name": "Ligue 1",
-            "logo": "https://api.sofascore.app/static/images/tournaments/34.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 542622,
-          "startTimestamp": 1772906400,
-          "homeTeam": {
-            "id": 519,
-            "name": "AJ Auxerre",
-            "logo": "https://api.sofascore.app/static/images/teams/519.png"
-          },
-          "awayTeam": {
-            "id": 576,
-            "name": "RC Strasbourg Alsace",
-            "logo": "https://api.sofascore.app/static/images/teams/576.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 34,
-            "name": "Ligue 1",
-            "logo": "https://api.sofascore.app/static/images/tournaments/34.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 542624,
-          "startTimestamp": 1772913900,
-          "homeTeam": {
-            "id": 511,
-            "name": "Toulouse FC",
-            "logo": "https://api.sofascore.app/static/images/teams/511.png"
-          },
-          "awayTeam": {
-            "id": 516,
-            "name": "Olympique de Marseille",
-            "logo": "https://api.sofascore.app/static/images/teams/516.png"
+            "logo": "https://crests.football-data.org/548.png"
           },
           "homeScore": {
             "display": "-"
@@ -397,7 +120,8 @@
     "35": {
       "tournament": {
         "id": 35,
-        "name": "Bundesliga"
+        "name": "Bundesliga",
+        "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
       },
       "matches": [
         {
@@ -406,180 +130,12 @@
           "homeTeam": {
             "id": 5,
             "name": "FC Bayern München",
-            "logo": "https://api.sofascore.app/static/images/teams/5.png"
+            "logo": "https://crests.football-data.org/5.png"
           },
           "awayTeam": {
             "id": 18,
             "name": "Borussia Mönchengladbach",
-            "logo": "https://api.sofascore.app/static/images/teams/18.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 35,
-            "name": "Bundesliga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 540622,
-          "startTimestamp": 1772893800,
-          "homeTeam": {
-            "id": 17,
-            "name": "SC Freiburg",
-            "logo": "https://api.sofascore.app/static/images/teams/17.png"
-          },
-          "awayTeam": {
-            "id": 3,
-            "name": "Bayer 04 Leverkusen",
-            "logo": "https://api.sofascore.app/static/images/teams/3.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 35,
-            "name": "Bundesliga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 540626,
-          "startTimestamp": 1772893800,
-          "homeTeam": {
-            "id": 15,
-            "name": "1. FSV Mainz 05",
-            "logo": "https://api.sofascore.app/static/images/teams/15.png"
-          },
-          "awayTeam": {
-            "id": 10,
-            "name": "VfB Stuttgart",
-            "logo": "https://api.sofascore.app/static/images/teams/10.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 35,
-            "name": "Bundesliga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 540628,
-          "startTimestamp": 1772893800,
-          "homeTeam": {
-            "id": 721,
-            "name": "RB Leipzig",
-            "logo": "https://api.sofascore.app/static/images/teams/721.png"
-          },
-          "awayTeam": {
-            "id": 16,
-            "name": "FC Augsburg",
-            "logo": "https://api.sofascore.app/static/images/teams/16.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 35,
-            "name": "Bundesliga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 540629,
-          "startTimestamp": 1772893800,
-          "homeTeam": {
-            "id": 44,
-            "name": "1. FC Heidenheim 1846",
-            "logo": "https://api.sofascore.app/static/images/teams/44.png"
-          },
-          "awayTeam": {
-            "id": 2,
-            "name": "TSG 1899 Hoffenheim",
-            "logo": "https://api.sofascore.app/static/images/teams/2.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 35,
-            "name": "Bundesliga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 540630,
-          "startTimestamp": 1772893800,
-          "homeTeam": {
-            "id": 11,
-            "name": "VfL Wolfsburg",
-            "logo": "https://api.sofascore.app/static/images/teams/11.png"
-          },
-          "awayTeam": {
-            "id": 7,
-            "name": "Hamburger SV",
-            "logo": "https://api.sofascore.app/static/images/teams/7.png"
-          },
-          "homeScore": {
-            "display": "-"
-          },
-          "awayScore": {
-            "display": "-"
-          },
-          "tournament": {
-            "id": 35,
-            "name": "Bundesliga",
-            "logo": "https://api.sofascore.app/static/images/tournaments/35.png"
-          },
-          "status": {
-            "type": "notstarted"
-          }
-        },
-        {
-          "id": 540624,
-          "startTimestamp": 1772904600,
-          "homeTeam": {
-            "id": 1,
-            "name": "1. FC Köln",
-            "logo": "https://api.sofascore.app/static/images/teams/1.png"
-          },
-          "awayTeam": {
-            "id": 4,
-            "name": "Borussia Dortmund",
-            "logo": "https://api.sofascore.app/static/images/teams/4.png"
+            "logo": "https://crests.football-data.org/18.png"
           },
           "homeScore": {
             "display": "-"
