@@ -1,23 +1,113 @@
 {
   "success": true,
-  "updatedAt": "2026-03-06T09:53:39.837Z",
-  "timestamp": 1772790819837,
+  "updatedAt": "2026-03-06T12:00:00.000Z",
+  "timestamp": 1772788800000,
   "date": "2026-03-06",
-  "totalMatches": 13,
+  "totalMatches": 10,
   "matches": [
     {
       "match": {
-        "id": 544473,
-        "startTimestamp": 1772827200,
+        "id": 14023980,
+        "startTimestamp": 1772826300,
+        "homeTeam": {
+          "id": 60,
+          "name": "Bournemouth",
+          "logo": "https://crests.football-data.org/60.png"
+        },
+        "awayTeam": {
+          "id": 50,
+          "name": "Brentford",
+          "logo": "https://crests.football-data.org/50.png"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14023941,
+        "startTimestamp": 1772826300,
+        "homeTeam": {
+          "id": 48,
+          "name": "Everton",
+          "logo": "https://crests.football-data.org/48.png"
+        },
+        "awayTeam": {
+          "id": 6,
+          "name": "Burnley",
+          "logo": "https://crests.football-data.org/6.png"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 17,
+          "name": "Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/17/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15534915,
+        "startTimestamp": 1772844000,
+        "homeTeam": {
+          "id": 559,
+          "name": "Rayo Vallecano",
+          "logo": "https://crests.football-data.org/559.png"
+        },
+        "awayTeam": {
+          "id": 541,
+          "name": "Real Oviedo",
+          "logo": "https://crests.football-data.org/541.png"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 8,
+          "name": "La Liga",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15534916,
+        "startTimestamp": 1772847600,
         "homeTeam": {
           "id": 558,
-          "name": "RC Celta de Vigo",
+          "name": "Barcelona",
           "logo": "https://crests.football-data.org/558.png"
         },
         "awayTeam": {
-          "id": 86,
-          "name": "Real Madrid CF",
-          "logo": "https://crests.football-data.org/86.png"
+          "id": 559,
+          "name": "Atletico Madrid",
+          "logo": "https://crests.football-data.org/559.png"
         },
         "homeScore": {
           "display": "-"
@@ -37,137 +127,17 @@
     },
     {
       "match": {
-        "id": 544479,
-        "startTimestamp": 1772888400,
+        "id": 15543201,
+        "startTimestamp": 1772844000,
         "homeTeam": {
-          "id": 79,
-          "name": "CA Osasuna",
-          "logo": "https://crests.football-data.org/79.png"
+          "id": 497,
+          "name": "Paris Saint-Germain",
+          "logo": "https://crests.football-data.org/497.png"
         },
         "awayTeam": {
-          "id": 89,
-          "name": "RCD Mallorca",
-          "logo": "https://crests.football-data.org/89.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 8,
-          "name": "La Liga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 544478,
-        "startTimestamp": 1772896500,
-        "homeTeam": {
-          "id": 88,
-          "name": "Levante UD",
-          "logo": "https://crests.football-data.org/88.png"
-        },
-        "awayTeam": {
-          "id": 298,
-          "name": "Girona FC",
-          "logo": "https://crests.football-data.org/298.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 8,
-          "name": "La Liga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 544472,
-        "startTimestamp": 1772904600,
-        "homeTeam": {
-          "id": 78,
-          "name": "Club Atlético de Madrid",
-          "logo": "https://crests.football-data.org/78.png"
-        },
-        "awayTeam": {
-          "id": 92,
-          "name": "Real Sociedad de Fútbol",
-          "logo": "https://crests.football-data.org/92.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 8,
-          "name": "La Liga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 544471,
-        "startTimestamp": 1772913600,
-        "homeTeam": {
-          "id": 77,
-          "name": "Athletic Club",
-          "logo": "https://crests.football-data.org/77.png"
-        },
-        "awayTeam": {
-          "id": 81,
-          "name": "FC Barcelona",
-          "logo": "https://crests.football-data.org/81.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 8,
-          "name": "La Liga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 542628,
-        "startTimestamp": 1772826300,
-        "homeTeam": {
-          "id": 524,
-          "name": "Paris Saint-Germain FC",
-          "logo": "https://crests.football-data.org/524.png"
-        },
-        "awayTeam": {
-          "id": 548,
-          "name": "AS Monaco FC",
-          "logo": "https://crests.football-data.org/548.png"
+          "id": 498,
+          "name": "AS Monaco",
+          "logo": "https://crests.football-data.org/498.png"
         },
         "homeScore": {
           "display": "-"
@@ -187,17 +157,17 @@
     },
     {
       "match": {
-        "id": 542623,
-        "startTimestamp": 1772899200,
+        "id": 15543202,
+        "startTimestamp": 1772847600,
         "homeTeam": {
-          "id": 543,
-          "name": "FC Nantes",
-          "logo": "https://crests.football-data.org/543.png"
+          "id": 506,
+          "name": "Olympique Marseille",
+          "logo": "https://crests.football-data.org/506.png"
         },
         "awayTeam": {
-          "id": 532,
-          "name": "Angers SCO",
-          "logo": "https://crests.football-data.org/532.png"
+          "id": 500,
+          "name": "Toulouse",
+          "logo": "https://crests.football-data.org/500.png"
         },
         "homeScore": {
           "display": "-"
@@ -217,77 +187,17 @@
     },
     {
       "match": {
-        "id": 542622,
-        "startTimestamp": 1772906400,
+        "id": 15546001,
+        "startTimestamp": 1772844000,
         "homeTeam": {
-          "id": 519,
-          "name": "AJ Auxerre",
-          "logo": "https://crests.football-data.org/519.png"
+          "id": 471,
+          "name": "Napoli",
+          "logo": "https://crests.football-data.org/471.png"
         },
         "awayTeam": {
-          "id": 576,
-          "name": "RC Strasbourg Alsace",
-          "logo": "https://crests.football-data.org/576.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 542624,
-        "startTimestamp": 1772913900,
-        "homeTeam": {
-          "id": 511,
-          "name": "Toulouse FC",
-          "logo": "https://crests.football-data.org/511.png"
-        },
-        "awayTeam": {
-          "id": 516,
-          "name": "Olympique de Marseille",
-          "logo": "https://crests.football-data.org/516.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 537093,
-        "startTimestamp": 1772826300,
-        "homeTeam": {
-          "id": 113,
-          "name": "SSC Napoli",
-          "logo": "https://crests.football-data.org/113.png"
-        },
-        "awayTeam": {
-          "id": 586,
-          "name": "Torino FC",
-          "logo": "https://crests.football-data.org/586.png"
+          "id": 474,
+          "name": "Torino",
+          "logo": "https://crests.football-data.org/474.png"
         },
         "homeScore": {
           "display": "-"
@@ -307,17 +217,17 @@
     },
     {
       "match": {
-        "id": 537088,
-        "startTimestamp": 1772892000,
+        "id": 15546002,
+        "startTimestamp": 1772847600,
         "homeTeam": {
-          "id": 104,
-          "name": "Cagliari Calcio",
-          "logo": "https://crests.football-data.org/104.png"
+          "id": 468,
+          "name": "AC Milan",
+          "logo": "https://crests.football-data.org/468.png"
         },
         "awayTeam": {
-          "id": 7397,
-          "name": "Como 1907",
-          "logo": "https://crests.football-data.org/7397.png"
+          "id": 470,
+          "name": "Inter",
+          "logo": "https://crests.football-data.org/470.png"
         },
         "homeScore": {
           "display": "-"
@@ -337,17 +247,17 @@
     },
     {
       "match": {
-        "id": 537087,
-        "startTimestamp": 1772902800,
+        "id": 15540001,
+        "startTimestamp": 1772844000,
         "homeTeam": {
-          "id": 102,
-          "name": "Atalanta BC",
-          "logo": "https://crests.football-data.org/102.png"
+          "id": 443,
+          "name": "Bayern Munich",
+          "logo": "https://crests.football-data.org/443.png"
         },
         "awayTeam": {
-          "id": 115,
-          "name": "Udinese Calcio",
-          "logo": "https://crests.football-data.org/115.png"
+          "id": 4,
+          "name": "Borussia Mönchengladbach",
+          "logo": "https://crests.football-data.org/4.png"
         },
         "homeScore": {
           "display": "-"
@@ -356,9 +266,9 @@
           "display": "-"
         },
         "tournament": {
-          "id": 23,
-          "name": "Serie A",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+          "id": 35,
+          "name": "Bundesliga",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
         },
         "status": {
           "type": "notstarted"
@@ -367,17 +277,17 @@
     },
     {
       "match": {
-        "id": 537091,
-        "startTimestamp": 1772912700,
+        "id": 15540002,
+        "startTimestamp": 1772847600,
         "homeTeam": {
-          "id": 109,
-          "name": "Juventus FC",
-          "logo": "https://crests.football-data.org/109.png"
+          "id": 446,
+          "name": "Borussia Dortmund",
+          "logo": "https://crests.football-data.org/446.png"
         },
         "awayTeam": {
-          "id": 487,
-          "name": "AC Pisa 1909",
-          "logo": "https://crests.football-data.org/487.png"
+          "id": 449,
+          "name": "RB Leipzig",
+          "logo": "https://crests.football-data.org/449.png"
         },
         "homeScore": {
           "display": "-"
@@ -386,9 +296,9 @@
           "display": "-"
         },
         "tournament": {
-          "id": 23,
-          "name": "Serie A",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+          "id": 35,
+          "name": "Bundesliga",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
         },
         "status": {
           "type": "notstarted"
