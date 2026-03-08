@@ -3,1456 +3,6 @@
   "matches": [
     {
       "match": {
-        "id": 14138554,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "13:30",
-        "broadcaster": "beIN Sports / TRT Spor",
-        "homeTeam": {
-          "id": 55603,
-          "name": "Erzurumspor FK",
-          "logo": "https://api.sofascore.app/api/v1/team/55603/image"
-        },
-        "awayTeam": {
-          "id": 202391,
-          "name": "Manisa FK",
-          "logo": "https://api.sofascore.app/api/v1/team/202391/image"
-        },
-        "homeScore": {
-          "display": 8
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 98,
-          "name": "Trendyol 1.Lig",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14143636,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "13:30",
-        "broadcaster": "beIN Sports / TRT Spor",
-        "homeTeam": {
-          "id": 3076,
-          "name": "Sivasspor",
-          "logo": "https://api.sofascore.app/api/v1/team/3076/image"
-        },
-        "awayTeam": {
-          "id": 6366,
-          "name": "Keçiörengücü",
-          "logo": "https://api.sofascore.app/api/v1/team/6366/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 98,
-          "name": "Trendyol 1.Lig",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15558874,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "13:30",
-        "broadcaster": "TRT / Tabii",
-        "homeTeam": {
-          "id": 271834,
-          "name": "Gokulam Kerala FC",
-          "logo": "https://api.sofascore.app/api/v1/team/271834/image"
-        },
-        "awayTeam": {
-          "id": 494684,
-          "name": "Namdhari FC",
-          "logo": "https://api.sofascore.app/api/v1/team/494684/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 848,
-          "name": "I-League",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/848/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14530086,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "14:00",
-        "broadcaster": "CBC Sport / Yerel",
-        "homeTeam": {
-          "id": 498809,
-          "name": "FK Karvan Yevlax",
-          "logo": "https://api.sofascore.app/api/v1/team/498809/image"
-        },
-        "awayTeam": {
-          "id": 44497,
-          "name": "Sumqayıt FK",
-          "logo": "https://api.sofascore.app/api/v1/team/44497/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 709,
-          "name": "Misli Premier League",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/709/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15556600,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "15:15",
-        "broadcaster": "Tivibu / TRT Spor / Tabii",
-        "homeTeam": {
-          "id": 70,
-          "name": "Mansfield Town",
-          "logo": "https://api.sofascore.app/api/v1/team/70/image"
-        },
-        "awayTeam": {
-          "id": 42,
-          "name": "Arsenal",
-          "logo": "https://api.sofascore.app/api/v1/team/42/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 19,
-          "name": "FA Cup",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/19/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14081805,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "16:00",
-        "broadcaster": "S Sport",
-        "homeTeam": {
-          "id": 2820,
-          "name": "Osasuna",
-          "logo": "https://api.sofascore.app/api/v1/team/2820/image"
-        },
-        "awayTeam": {
-          "id": 2826,
-          "name": "Mallorca",
-          "logo": "https://api.sofascore.app/api/v1/team/2826/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 8,
-          "name": "LaLiga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14109837,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "16:00",
-        "broadcaster": "beIN Sports",
-        "homeTeam": {
-          "id": 3086,
-          "name": "Başakşehir FK",
-          "logo": "https://api.sofascore.app/api/v1/team/3086/image"
-        },
-        "awayTeam": {
-          "id": 3054,
-          "name": "Göztepe",
-          "logo": "https://api.sofascore.app/api/v1/team/3054/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 52,
-          "name": "Trendyol Süper Lig",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/52/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14138553,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "16:00",
-        "broadcaster": "beIN Sports / TRT Spor",
-        "homeTeam": {
-          "id": 44320,
-          "name": "Bandırmaspor",
-          "logo": "https://api.sofascore.app/api/v1/team/44320/image"
-        },
-        "awayTeam": {
-          "id": 3066,
-          "name": "İstanbulspor",
-          "logo": "https://api.sofascore.app/api/v1/team/3066/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 98,
-          "name": "Trendyol 1.Lig",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14138550,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "16:00",
-        "broadcaster": "beIN Sports / TRT Spor",
-        "homeTeam": {
-          "id": 77629,
-          "name": "Çorum FK",
-          "logo": "https://api.sofascore.app/api/v1/team/77629/image"
-        },
-        "awayTeam": {
-          "id": 3091,
-          "name": "Hatayspor",
-          "logo": "https://api.sofascore.app/api/v1/team/3091/image"
-        },
-        "homeScore": {
-          "display": 3
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 98,
-          "name": "Trendyol 1.Lig",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15558657,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "16:00",
-        "broadcaster": "TRT / Tabii",
-        "homeTeam": {
-          "id": 830777,
-          "name": "Chanmari FC",
-          "logo": "https://api.sofascore.app/api/v1/team/830777/image"
-        },
-        "awayTeam": {
-          "id": 403570,
-          "name": "Sreenidi Deccan FC",
-          "logo": "https://api.sofascore.app/api/v1/team/403570/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 848,
-          "name": "I-League",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/848/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 13981693,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "17:00",
-        "broadcaster": "S Sport / Tivibu Spor",
-        "homeTeam": {
-          "id": 2719,
-          "name": "Cagliari",
-          "logo": "https://api.sofascore.app/api/v1/team/2719/image"
-        },
-        "awayTeam": {
-          "id": 2704,
-          "name": "Como",
-          "logo": "https://api.sofascore.app/api/v1/team/2704/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 23,
-          "name": "Serie A",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14065186,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "17:30",
-        "broadcaster": "beIN Sports / Tivibu Spor",
-        "homeTeam": {
-          "id": 5885,
-          "name": "1. FC Heidenheim",
-          "logo": "https://api.sofascore.app/api/v1/team/5885/image"
-        },
-        "awayTeam": {
-          "id": 2569,
-          "name": "TSG Hoffenheim",
-          "logo": "https://api.sofascore.app/api/v1/team/2569/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 4
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14065179,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "17:30",
-        "broadcaster": "beIN Sports / Tivibu Spor",
-        "homeTeam": {
-          "id": 2556,
-          "name": "1. FSV Mainz 05",
-          "logo": "https://api.sofascore.app/api/v1/team/2556/image"
-        },
-        "awayTeam": {
-          "id": 2677,
-          "name": "VfB Stuttgart",
-          "logo": "https://api.sofascore.app/api/v1/team/2677/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14065180,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "17:30",
-        "broadcaster": "beIN Sports / Tivibu Spor",
-        "homeTeam": {
-          "id": 36360,
-          "name": "RB Leipzig",
-          "logo": "https://api.sofascore.app/api/v1/team/36360/image"
-        },
-        "awayTeam": {
-          "id": 2600,
-          "name": "FC Augsburg",
-          "logo": "https://api.sofascore.app/api/v1/team/2600/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14062233,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "17:30",
-        "broadcaster": "beIN Sports / Tivibu Spor",
-        "homeTeam": {
-          "id": 2538,
-          "name": "SC Freiburg",
-          "logo": "https://api.sofascore.app/api/v1/team/2538/image"
-        },
-        "awayTeam": {
-          "id": 2681,
-          "name": "Bayer 04 Leverkusen",
-          "logo": "https://api.sofascore.app/api/v1/team/2681/image"
-        },
-        "homeScore": {
-          "display": 3
-        },
-        "awayScore": {
-          "display": 3
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14065178,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "17:30",
-        "broadcaster": "beIN Sports / Tivibu Spor",
-        "homeTeam": {
-          "id": 2524,
-          "name": "VfL Wolfsburg",
-          "logo": "https://api.sofascore.app/api/v1/team/2524/image"
-        },
-        "awayTeam": {
-          "id": 2676,
-          "name": "Hamburger SV",
-          "logo": "https://api.sofascore.app/api/v1/team/2676/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15556602,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "18:00",
-        "broadcaster": "Tivibu / TRT Spor / Tabii",
-        "homeTeam": {
-          "id": 37,
-          "name": "West Ham United",
-          "logo": "https://api.sofascore.app/api/v1/team/37/image"
-        },
-        "awayTeam": {
-          "id": 50,
-          "name": "Brentford",
-          "logo": "https://api.sofascore.app/api/v1/team/50/image"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 19,
-          "name": "FA Cup",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/19/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14081802,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "18:15",
-        "broadcaster": "S Sport",
-        "homeTeam": {
-          "id": 2849,
-          "name": "Levante UD",
-          "logo": "https://api.sofascore.app/api/v1/team/2849/image"
-        },
-        "awayTeam": {
-          "id": 24264,
-          "name": "Girona FC",
-          "logo": "https://api.sofascore.app/api/v1/team/24264/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 8,
-          "name": "LaLiga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14083377,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "18:15",
-        "broadcaster": "S Sport Plus",
-        "homeTeam": {
-          "id": 24265,
-          "name": "Huesca",
-          "logo": "https://api.sofascore.app/api/v1/team/24265/image"
-        },
-        "awayTeam": {
-          "id": 2848,
-          "name": "Albacete Balompié",
-          "logo": "https://api.sofascore.app/api/v1/team/2848/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 54,
-          "name": "LaLiga 2",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/54/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14083380,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "18:15",
-        "broadcaster": "S Sport Plus",
-        "homeTeam": {
-          "id": 24360,
-          "name": "Real Sociedad B U21",
-          "logo": "https://api.sofascore.app/api/v1/team/24360/image"
-        },
-        "awayTeam": {
-          "id": 5067,
-          "name": "CD Castellón",
-          "logo": "https://api.sofascore.app/api/v1/team/5067/image"
-        },
-        "homeScore": {
-          "display": 4
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 54,
-          "name": "LaLiga 2",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/54/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14288813,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "18:30",
-        "broadcaster": "D-Smart / Spor Smart",
-        "homeTeam": {
-          "id": 190328,
-          "name": "FC Alverca",
-          "logo": "https://api.sofascore.app/api/v1/team/190328/image"
-        },
-        "awayTeam": {
-          "id": 483088,
-          "name": "AVS - Futebol SAD",
-          "logo": "https://api.sofascore.app/api/v1/team/483088/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 238,
-          "name": "Liga Portugal Betclic",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14288819,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "18:30",
-        "broadcaster": "D-Smart / Spor Smart",
-        "homeTeam": {
-          "id": 3014,
-          "name": "Moreirense",
-          "logo": "https://api.sofascore.app/api/v1/team/3014/image"
-        },
-        "awayTeam": {
-          "id": 3013,
-          "name": "CD Nacional",
-          "logo": "https://api.sofascore.app/api/v1/team/3013/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 238,
-          "name": "Liga Portugal Betclic",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14053678,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "18:30",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 2951,
-          "name": "FC Groningen",
-          "logo": "https://api.sofascore.app/api/v1/team/2951/image"
-        },
-        "awayTeam": {
-          "id": 2953,
-          "name": "AFC Ajax",
-          "logo": "https://api.sofascore.app/api/v1/team/2953/image"
-        },
-        "homeScore": {
-          "display": 3
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 37,
-          "name": "VriendenLoterij Eredivisie",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14167910,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "19:00",
-        "broadcaster": "beIN Sports",
-        "homeTeam": {
-          "id": 1647,
-          "name": "Nantes",
-          "logo": "https://api.sofascore.app/api/v1/team/1647/image"
-        },
-        "awayTeam": {
-          "id": 1684,
-          "name": "Angers",
-          "logo": "https://api.sofascore.app/api/v1/team/1684/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 13981695,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "20:00",
-        "broadcaster": "S Sport / Tivibu Spor",
-        "homeTeam": {
-          "id": 2686,
-          "name": "Atalanta",
-          "logo": "https://api.sofascore.app/api/v1/team/2686/image"
-        },
-        "awayTeam": {
-          "id": 2695,
-          "name": "Udinese",
-          "logo": "https://api.sofascore.app/api/v1/team/2695/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 23,
-          "name": "Serie A",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14109838,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "20:00",
-        "broadcaster": "beIN Sports",
-        "homeTeam": {
-          "id": 3050,
-          "name": "Beşiktaş JK",
-          "logo": "https://api.sofascore.app/api/v1/team/3050/image"
-        },
-        "awayTeam": {
-          "id": 3061,
-          "name": "Galatasaray",
-          "logo": "https://api.sofascore.app/api/v1/team/3061/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 52,
-          "name": "Trendyol Süper Lig",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/52/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14138563,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "20:00",
-        "broadcaster": "beIN Sports / TRT Spor",
-        "homeTeam": {
-          "id": 207011,
-          "name": "Amed Sportif Faaliyetler",
-          "logo": "https://api.sofascore.app/api/v1/team/207011/image"
-        },
-        "awayTeam": {
-          "id": 297102,
-          "name": "Serikspor A.Ş.",
-          "logo": "https://api.sofascore.app/api/v1/team/297102/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 98,
-          "name": "Trendyol 1.Lig",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14083602,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "20:30",
-        "broadcaster": "S Sport",
-        "homeTeam": {
-          "id": 2836,
-          "name": "Atlético Madrid",
-          "logo": "https://api.sofascore.app/api/v1/team/2836/image"
-        },
-        "awayTeam": {
-          "id": 2824,
-          "name": "Real Sociedad",
-          "logo": "https://api.sofascore.app/api/v1/team/2824/image"
-        },
-        "homeScore": {
-          "display": 3
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 8,
-          "name": "LaLiga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14065185,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "20:30",
-        "broadcaster": "beIN Sports / Tivibu Spor",
-        "homeTeam": {
-          "id": 2671,
-          "name": "1. FC Köln",
-          "logo": "https://api.sofascore.app/api/v1/team/2671/image"
-        },
-        "awayTeam": {
-          "id": 2673,
-          "name": "Borussia Dortmund",
-          "logo": "https://api.sofascore.app/api/v1/team/2673/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14083361,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "20:30",
-        "broadcaster": "S Sport Plus",
-        "homeTeam": {
-          "id": 2854,
-          "name": "Burgos Club de Fútbol",
-          "logo": "https://api.sofascore.app/api/v1/team/2854/image"
-        },
-        "awayTeam": {
-          "id": 35092,
-          "name": "Mirandés",
-          "logo": "https://api.sofascore.app/api/v1/team/35092/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 54,
-          "name": "LaLiga 2",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/54/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15556601,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "20:45",
-        "broadcaster": "Tivibu / TRT Spor / Tabii",
-        "homeTeam": {
-          "id": 64,
-          "name": "Wrexham",
-          "logo": "https://api.sofascore.app/api/v1/team/64/image"
-        },
-        "awayTeam": {
-          "id": 38,
-          "name": "Chelsea",
-          "logo": "https://api.sofascore.app/api/v1/team/38/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 4
-        },
-        "tournament": {
-          "id": 19,
-          "name": "FA Cup",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/19/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14167908,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "21:00",
-        "broadcaster": "beIN Sports",
-        "homeTeam": {
-          "id": 1646,
-          "name": "Auxerre",
-          "logo": "https://api.sofascore.app/api/v1/team/1646/image"
-        },
-        "awayTeam": {
-          "id": 1659,
-          "name": "RC Strasbourg",
-          "logo": "https://api.sofascore.app/api/v1/team/1659/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14288821,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "21:00",
-        "broadcaster": "D-Smart / Spor Smart",
-        "homeTeam": {
-          "id": 2999,
-          "name": "Sporting Braga",
-          "logo": "https://api.sofascore.app/api/v1/team/2999/image"
-        },
-        "awayTeam": {
-          "id": 3001,
-          "name": "Sporting CP",
-          "logo": "https://api.sofascore.app/api/v1/team/3001/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 238,
-          "name": "Liga Portugal Betclic",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14053691,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "22:00",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 2952,
-          "name": "PSV Eindhoven",
-          "logo": "https://api.sofascore.app/api/v1/team/2952/image"
-        },
-        "awayTeam": {
-          "id": 2950,
-          "name": "AZ Alkmaar",
-          "logo": "https://api.sofascore.app/api/v1/team/2950/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 37,
-          "name": "VriendenLoterij Eredivisie",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15227322,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "22:30",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 502355,
-          "name": "Rhode Island FC",
-          "logo": "https://api.sofascore.app/api/v1/team/502355/image"
-        },
-        "awayTeam": {
-          "id": 310969,
-          "name": "Loudoun United FC",
-          "logo": "https://api.sofascore.app/api/v1/team/310969/image"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 13981697,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "22:45",
-        "broadcaster": "S Sport / Tivibu Spor",
-        "homeTeam": {
-          "id": 2687,
-          "name": "Juventus",
-          "logo": "https://api.sofascore.app/api/v1/team/2687/image"
-        },
-        "awayTeam": {
-          "id": 2737,
-          "name": "Pisa",
-          "logo": "https://api.sofascore.app/api/v1/team/2737/image"
-        },
-        "homeScore": {
-          "display": 4
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 23,
-          "name": "Serie A",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14083597,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "23:00",
-        "broadcaster": "S Sport",
-        "homeTeam": {
-          "id": 2825,
-          "name": "Athletic Club",
-          "logo": "https://api.sofascore.app/api/v1/team/2825/image"
-        },
-        "awayTeam": {
-          "id": 2817,
-          "name": "Barcelona",
-          "logo": "https://api.sofascore.app/api/v1/team/2817/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 8,
-          "name": "LaLiga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14053669,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "23:00",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 2967,
-          "name": "Excelsior",
-          "logo": "https://api.sofascore.app/api/v1/team/2967/image"
-        },
-        "awayTeam": {
-          "id": 2964,
-          "name": "SC Heerenveen",
-          "logo": "https://api.sofascore.app/api/v1/team/2964/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 37,
-          "name": "VriendenLoterij Eredivisie",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15556597,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "23:00",
-        "broadcaster": "Tivibu / TRT Spor / Tabii",
-        "homeTeam": {
-          "id": 39,
-          "name": "Newcastle United",
-          "logo": "https://api.sofascore.app/api/v1/team/39/image"
-        },
-        "awayTeam": {
-          "id": 17,
-          "name": "Manchester City",
-          "logo": "https://api.sofascore.app/api/v1/team/17/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 3
-        },
-        "tournament": {
-          "id": 19,
-          "name": "FA Cup",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/19/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14083368,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "23:00",
-        "broadcaster": "S Sport Plus",
-        "homeTeam": {
-          "id": 2830,
-          "name": "Málaga",
-          "logo": "https://api.sofascore.app/api/v1/team/2830/image"
-        },
-        "awayTeam": {
-          "id": 2831,
-          "name": "Real Valladolid",
-          "logo": "https://api.sofascore.app/api/v1/team/2831/image"
-        },
-        "homeScore": {
-          "display": 3
-        },
-        "awayScore": {
-          "display": 3
-        },
-        "tournament": {
-          "id": 54,
-          "name": "LaLiga 2",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/54/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14167896,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "23:05",
-        "broadcaster": "beIN Sports",
-        "homeTeam": {
-          "id": 1681,
-          "name": "Toulouse",
-          "logo": "https://api.sofascore.app/api/v1/team/1681/image"
-        },
-        "awayTeam": {
-          "id": 1641,
-          "name": "Olympique de Marseille",
-          "logo": "https://api.sofascore.app/api/v1/team/1641/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 14288814,
-        "fixedDate": "2026-03-07",
-        "fixedTime": "23:30",
-        "broadcaster": "D-Smart / Spor Smart",
-        "homeTeam": {
-          "id": 4500,
-          "name": "Estoril Praia",
-          "logo": "https://api.sofascore.app/api/v1/team/4500/image"
-        },
-        "awayTeam": {
-          "id": 36365,
-          "name": "Casa Pia",
-          "logo": "https://api.sofascore.app/api/v1/team/36365/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 238,
-          "name": "Liga Portugal Betclic",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15227341,
-        "fixedDate": "2026-03-08",
-        "fixedTime": "02:00",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 22004,
-          "name": "Charleston Battery",
-          "logo": "https://api.sofascore.app/api/v1/team/22004/image"
-        },
-        "awayTeam": {
-          "id": 23635,
-          "name": "Pittsburgh Riverhounds",
-          "logo": "https://api.sofascore.app/api/v1/team/23635/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15227328,
-        "fixedDate": "2026-03-08",
-        "fixedTime": "03:30",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 1077312,
-          "name": "SC Jacksonville",
-          "logo": "https://api.sofascore.app/api/v1/team/1077312/image"
-        },
-        "awayTeam": {
-          "id": 310968,
-          "name": "Hartford Athletic",
-          "logo": "https://api.sofascore.app/api/v1/team/310968/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 3
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15227342,
-        "fixedDate": "2026-03-08",
-        "fixedTime": "04:00",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 310967,
-          "name": "Birmingham Legion FC",
-          "logo": "https://api.sofascore.app/api/v1/team/310967/image"
-        },
-        "awayTeam": {
-          "id": 41617,
-          "name": "FC Tampa Bay Rowdies",
-          "logo": "https://api.sofascore.app/api/v1/team/41617/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15227354,
-        "fixedDate": "2026-03-08",
-        "fixedTime": "04:30",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 217134,
-          "name": "San Antonio FC",
-          "logo": "https://api.sofascore.app/api/v1/team/217134/image"
-        },
-        "awayTeam": {
-          "id": 154018,
-          "name": "Phoenix Rising FC",
-          "logo": "https://api.sofascore.app/api/v1/team/154018/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15227326,
-        "fixedDate": "2026-03-08",
-        "fixedTime": "05:00",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 310532,
-          "name": "El Paso Locomotive FC",
-          "logo": "https://api.sofascore.app/api/v1/team/310532/image"
-        },
-        "awayTeam": {
-          "id": 197065,
-          "name": "Colorado Springs Switchbacks FC",
-          "logo": "https://api.sofascore.app/api/v1/team/197065/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 2
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15227351,
-        "fixedDate": "2026-03-08",
-        "fixedTime": "06:00",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 405944,
-          "name": "Monterey Bay FC",
-          "logo": "https://api.sofascore.app/api/v1/team/405944/image"
-        },
-        "awayTeam": {
-          "id": 325107,
-          "name": "Oakland Roots SC",
-          "logo": "https://api.sofascore.app/api/v1/team/325107/image"
-        },
-        "homeScore": {
-          "display": 0
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15285706,
-        "fixedDate": "2026-03-08",
-        "fixedTime": "06:00",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 217781,
-          "name": "Orange County SC",
-          "logo": "https://api.sofascore.app/api/v1/team/217781/image"
-        },
-        "awayTeam": {
-          "id": 276898,
-          "name": "Las Vegas Lights",
-          "logo": "https://api.sofascore.app/api/v1/team/276898/image"
-        },
-        "homeScore": {
-          "display": 1
-        },
-        "awayScore": {
-          "display": 1
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 15227340,
-        "fixedDate": "2026-03-08",
-        "fixedTime": "06:00",
-        "broadcaster": "TV8.5 / Exxen",
-        "homeTeam": {
-          "id": 153498,
-          "name": "Sacramento Republic FC",
-          "logo": "https://api.sofascore.app/api/v1/team/153498/image"
-        },
-        "awayTeam": {
-          "id": 197071,
-          "name": "FC Tulsa",
-          "logo": "https://api.sofascore.app/api/v1/team/197071/image"
-        },
-        "homeScore": {
-          "display": 2
-        },
-        "awayScore": {
-          "display": 0
-        },
-        "tournament": {
-          "id": 13363,
-          "name": "USL Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-        }
-      }
-    },
-    {
-      "match": {
         "id": 14109836,
         "fixedDate": "2026-03-08",
         "fixedTime": "13:30",
@@ -2599,10 +1149,10 @@
           "logo": "https://api.sofascore.app/api/v1/team/6070/image"
         },
         "homeScore": {
-          "display": 0
+          "display": 1
         },
         "awayScore": {
-          "display": 0
+          "display": 1
         },
         "tournament": {
           "id": 34,
@@ -2628,10 +1178,10 @@
           "logo": "https://api.sofascore.app/api/v1/team/2885/image"
         },
         "homeScore": {
-          "display": 0
+          "display": 1
         },
         "awayScore": {
-          "display": 1
+          "display": 2
         },
         "tournament": {
           "id": 8,
@@ -2686,10 +1236,10 @@
           "logo": "https://api.sofascore.app/api/v1/team/3009/image"
         },
         "homeScore": {
-          "display": "-"
+          "display": 2
         },
         "awayScore": {
-          "display": "-"
+          "display": 0
         },
         "tournament": {
           "id": 238,
@@ -3003,6 +1553,267 @@
           "id": 3101,
           "name": "Adana Demirspor",
           "logo": "https://api.sofascore.app/api/v1/team/3101/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 98,
+          "name": "Trendyol 1.Lig",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138560,
+        "fixedDate": "2026-03-10",
+        "fixedTime": "16:00",
+        "broadcaster": "beIN Sports / TRT Spor",
+        "homeTeam": {
+          "id": 297102,
+          "name": "Serikspor A.Ş.",
+          "logo": "https://api.sofascore.app/api/v1/team/297102/image"
+        },
+        "awayTeam": {
+          "id": 7032,
+          "name": "Pendikspor",
+          "logo": "https://api.sofascore.app/api/v1/team/7032/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 98,
+          "name": "Trendyol 1.Lig",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14530089,
+        "fixedDate": "2026-03-10",
+        "fixedTime": "18:15",
+        "broadcaster": "CBC Sport / Yerel",
+        "homeTeam": {
+          "id": 267828,
+          "name": "Sabah FK",
+          "logo": "https://api.sofascore.app/api/v1/team/267828/image"
+        },
+        "awayTeam": {
+          "id": 36952,
+          "name": "Qəbələ FK",
+          "logo": "https://api.sofascore.app/api/v1/team/36952/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 709,
+          "name": "Misli Premier League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/709/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138566,
+        "fixedDate": "2026-03-10",
+        "fixedTime": "20:00",
+        "broadcaster": "beIN Sports / TRT Spor",
+        "homeTeam": {
+          "id": 202391,
+          "name": "Manisa FK",
+          "logo": "https://api.sofascore.app/api/v1/team/202391/image"
+        },
+        "awayTeam": {
+          "id": 4952,
+          "name": "Sarıyer",
+          "logo": "https://api.sofascore.app/api/v1/team/4952/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 98,
+          "name": "Trendyol 1.Lig",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15631351,
+        "fixedDate": "2026-03-10",
+        "fixedTime": "20:45",
+        "broadcaster": "TRT / Tabii",
+        "homeTeam": {
+          "id": 3061,
+          "name": "Galatasaray",
+          "logo": "https://api.sofascore.app/api/v1/team/3061/image"
+        },
+        "awayTeam": {
+          "id": 44,
+          "name": "Liverpool",
+          "logo": "https://api.sofascore.app/api/v1/team/44/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 7,
+          "name": "UEFA Champions League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/7/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15631361,
+        "fixedDate": "2026-03-10",
+        "fixedTime": "23:00",
+        "broadcaster": "TRT / Tabii",
+        "homeTeam": {
+          "id": 2686,
+          "name": "Atalanta",
+          "logo": "https://api.sofascore.app/api/v1/team/2686/image"
+        },
+        "awayTeam": {
+          "id": 2672,
+          "name": "FC Bayern München",
+          "logo": "https://api.sofascore.app/api/v1/team/2672/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 7,
+          "name": "UEFA Champions League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/7/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15631356,
+        "fixedDate": "2026-03-10",
+        "fixedTime": "23:00",
+        "broadcaster": "TRT / Tabii",
+        "homeTeam": {
+          "id": 2836,
+          "name": "Atlético Madrid",
+          "logo": "https://api.sofascore.app/api/v1/team/2836/image"
+        },
+        "awayTeam": {
+          "id": 33,
+          "name": "Tottenham Hotspur",
+          "logo": "https://api.sofascore.app/api/v1/team/33/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 7,
+          "name": "UEFA Champions League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/7/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15631347,
+        "fixedDate": "2026-03-10",
+        "fixedTime": "23:00",
+        "broadcaster": "TRT / Tabii",
+        "homeTeam": {
+          "id": 39,
+          "name": "Newcastle United",
+          "logo": "https://api.sofascore.app/api/v1/team/39/image"
+        },
+        "awayTeam": {
+          "id": 2817,
+          "name": "Barcelona",
+          "logo": "https://api.sofascore.app/api/v1/team/2817/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 7,
+          "name": "UEFA Champions League",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/7/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138559,
+        "fixedDate": "2026-03-11",
+        "fixedTime": "13:30",
+        "broadcaster": "beIN Sports / TRT Spor",
+        "homeTeam": {
+          "id": 3091,
+          "name": "Hatayspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3091/image"
+        },
+        "awayTeam": {
+          "id": 3076,
+          "name": "Sivasspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3076/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "id": 98,
+          "name": "Trendyol 1.Lig",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138565,
+        "fixedDate": "2026-03-11",
+        "fixedTime": "13:30",
+        "broadcaster": "beIN Sports / TRT Spor",
+        "homeTeam": {
+          "id": 3066,
+          "name": "İstanbulspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3066/image"
+        },
+        "awayTeam": {
+          "id": 207011,
+          "name": "Amed Sportif Faaliyetler",
+          "logo": "https://api.sofascore.app/api/v1/team/207011/image"
         },
         "homeScore": {
           "display": "-"

@@ -15,7 +15,7 @@ const leagueConfigs = {
     238: "D-Smart / Spor Smart",        // Liga Portugal
     709: "CBC Sport / Yerel",           // Misli Premier League
     13363: "TV8.5 / Exxen",             // USL Championship
-    19: "Tivibu / TRT Spor / Tabii",    // ✅ FA Cup (Leeds maçı buraya girer)
+    19: "Tivibu / TRT Spor / Tabii",    // FA Cup
     481: "Spor Smart / D-Smart",        // AFC Şampiyonlar Ligi
     7: "TRT / Tabii",                   // UEFA Şampiyonlar Ligi
     3: "TRT / Tabii",                   // UEFA Avrupa Ligi
@@ -26,15 +26,19 @@ const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
     console.log("🚀 Veri motoru başlatılıyor...");
-  const browser = await puppeteer.launch({ 
-    headless: "new", 
-    args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-});
+    const browser = await puppeteer.launch({ 
+        headless: "new", 
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+    });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    const today = new Date().toISOString().split('T')[0];
-    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    // ✅ Türkiye Saat Dilimine Göre (UTC+3) Bugün ve Yarın Hesaplama
+    const offset = 3 * 60 * 60 * 1000; // 3 saatlik fark
+    const now = new Date();
+    
+    const today = new Date(now.getTime() + offset).toISOString().split('T')[0];
+    const tomorrow = new Date(now.getTime() + 86400000 + offset).toISOString().split('T')[0];
 
     let allEvents = [];
     for (const date of [today, tomorrow]) {
@@ -55,7 +59,7 @@ async function start() {
             seenIds.add(e.id);
             
             // ✅ TR Saati Sabitleme (UTC+3)
-            const dateTR = new Date(e.startTimestamp * 1000 + (3 * 60 * 60 * 1000));
+            const dateTR = new Date(e.startTimestamp * 1000 + offset);
             const fixedDate = dateTR.toISOString().split('T')[0];
             const fixedTime = dateTR.toISOString().split('T')[1].substring(0, 5);
 
@@ -89,7 +93,7 @@ async function start() {
 
     finalMatches.sort((a, b) => a.match.fixedDate.localeCompare(b.match.fixedDate) || a.match.fixedTime.localeCompare(b.match.fixedTime));
     fs.writeFileSync("matches.json", JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    console.log(`✅ Tamamlandı. Toplam ${finalMatches.length} maç JSON'a yazıldı.`);
+    console.log(`✅ Tamamlandı. ${today} ve ${tomorrow} tarihli toplam ${finalMatches.length} maç yazıldı.`);
     await browser.close();
 }
 start();
