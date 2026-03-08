@@ -1,23 +1,141 @@
 {
   "success": true,
-  "updatedAt": "2026-03-08T10:26:32.636Z",
-  "timestamp": 1772965592636,
-  "date": "2026-03-08",
-  "totalMatches": 23,
+  "updatedAt": "2026-03-08T11:47:13.120Z",
+  "totalMatches": 73,
   "matches": [
     {
       "match": {
-        "id": 537094,
+        "id": 13981693,
+        "startTimestamp": 1772892000,
+        "homeTeam": {
+          "id": 2719,
+          "name": "Cagliari",
+          "logo": "https://api.sofascore.app/api/v1/team/2719/image"
+        },
+        "awayTeam": {
+          "id": 2704,
+          "name": "Como",
+          "logo": "https://api.sofascore.app/api/v1/team/2704/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "Serie A",
+          "id": 23,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 13981695,
+        "startTimestamp": 1772902800,
+        "homeTeam": {
+          "id": 2686,
+          "name": "Atalanta",
+          "logo": "https://api.sofascore.app/api/v1/team/2686/image"
+        },
+        "awayTeam": {
+          "id": 2695,
+          "name": "Udinese",
+          "logo": "https://api.sofascore.app/api/v1/team/2695/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "Serie A",
+          "id": 23,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 13981697,
+        "startTimestamp": 1772912700,
+        "homeTeam": {
+          "id": 2687,
+          "name": "Juventus",
+          "logo": "https://api.sofascore.app/api/v1/team/2687/image"
+        },
+        "awayTeam": {
+          "id": 2737,
+          "name": "Pisa",
+          "logo": "https://api.sofascore.app/api/v1/team/2737/image"
+        },
+        "homeScore": {
+          "display": 4
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Serie A",
+          "id": 23,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 13981701,
         "startTimestamp": 1772969400,
         "homeTeam": {
-          "id": 5890,
-          "name": "US Lecce",
-          "logo": "https://crests.football-data.org/5890.png"
+          "id": 2689,
+          "name": "Lecce",
+          "logo": "https://api.sofascore.app/api/v1/team/2689/image"
         },
         "awayTeam": {
-          "id": 457,
-          "name": "US Cremonese",
-          "logo": "https://crests.football-data.org/457.png"
+          "id": 2761,
+          "name": "Cremonese",
+          "logo": "https://api.sofascore.app/api/v1/team/2761/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Serie A",
+          "id": 23,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+        },
+        "status": {
+          "type": "inprogress"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 13981692,
+        "startTimestamp": 1772978400,
+        "homeTeam": {
+          "id": 2685,
+          "name": "Bologna",
+          "logo": "https://api.sofascore.app/api/v1/team/2685/image"
+        },
+        "awayTeam": {
+          "id": 2701,
+          "name": "Hellas Verona",
+          "logo": "https://api.sofascore.app/api/v1/team/2701/image"
         },
         "homeScore": {
           "display": "-"
@@ -26,8 +144,8 @@
           "display": "-"
         },
         "tournament": {
-          "id": 23,
           "name": "Serie A",
+          "id": 23,
           "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
         },
         "status": {
@@ -37,47 +155,17 @@
     },
     {
       "match": {
-        "id": 544477,
-        "startTimestamp": 1772974800,
-        "homeTeam": {
-          "id": 94,
-          "name": "Villarreal CF",
-          "logo": "https://crests.football-data.org/94.png"
-        },
-        "awayTeam": {
-          "id": 285,
-          "name": "Elche CF",
-          "logo": "https://crests.football-data.org/285.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 8,
-          "name": "La Liga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 542629,
+        "id": 13981696,
         "startTimestamp": 1772978400,
         "homeTeam": {
-          "id": 546,
-          "name": "Racing Club de Lens",
-          "logo": "https://crests.football-data.org/546.png"
+          "id": 2693,
+          "name": "Fiorentina",
+          "logo": "https://api.sofascore.app/api/v1/team/2693/image"
         },
         "awayTeam": {
-          "id": 545,
-          "name": "FC Metz",
-          "logo": "https://crests.football-data.org/545.png"
+          "id": 2690,
+          "name": "Parma",
+          "logo": "https://api.sofascore.app/api/v1/team/2690/image"
         },
         "homeScore": {
           "display": "-"
@@ -86,38 +174,8 @@
           "display": "-"
         },
         "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 537090,
-        "startTimestamp": 1772978400,
-        "homeTeam": {
-          "id": 103,
-          "name": "Bologna FC 1909",
-          "logo": "https://crests.football-data.org/103.png"
-        },
-        "awayTeam": {
-          "id": 450,
-          "name": "Hellas Verona FC",
-          "logo": "https://crests.football-data.org/450.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 23,
           "name": "Serie A",
+          "id": 23,
           "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
         },
         "status": {
@@ -127,287 +185,17 @@
     },
     {
       "match": {
-        "id": 537085,
-        "startTimestamp": 1772978400,
-        "homeTeam": {
-          "id": 99,
-          "name": "ACF Fiorentina",
-          "logo": "https://crests.football-data.org/99.png"
-        },
-        "awayTeam": {
-          "id": 112,
-          "name": "Parma Calcio 1913",
-          "logo": "https://crests.football-data.org/112.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 23,
-          "name": "Serie A",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 540623,
-        "startTimestamp": 1772980200,
-        "homeTeam": {
-          "id": 20,
-          "name": "FC St. Pauli 1910",
-          "logo": "https://crests.football-data.org/20.png"
-        },
-        "awayTeam": {
-          "id": 19,
-          "name": "Eintracht Frankfurt",
-          "logo": "https://crests.football-data.org/19.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 544476,
-        "startTimestamp": 1772982900,
-        "homeTeam": {
-          "id": 82,
-          "name": "Getafe CF",
-          "logo": "https://crests.football-data.org/82.png"
-        },
-        "awayTeam": {
-          "id": 90,
-          "name": "Real Betis Balompié",
-          "logo": "https://crests.football-data.org/90.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 8,
-          "name": "La Liga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 545920,
-        "startTimestamp": 1772983800,
-        "homeTeam": {
-          "id": 9136,
-          "name": "CF Estrela da Amadora",
-          "logo": "https://crests.football-data.org/9136.png"
-        },
-        "awayTeam": {
-          "id": 5533,
-          "name": "Gil Vicente FC",
-          "logo": "https://crests.football-data.org/5533.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 238,
-          "name": "Liga Portugal Betclic",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 542625,
-        "startTimestamp": 1772986500,
-        "homeTeam": {
-          "id": 522,
-          "name": "OGC Nice",
-          "logo": "https://crests.football-data.org/522.png"
-        },
-        "awayTeam": {
-          "id": 529,
-          "name": "Stade Rennais FC 1901",
-          "logo": "https://crests.football-data.org/529.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 542627,
-        "startTimestamp": 1772986500,
-        "homeTeam": {
-          "id": 521,
-          "name": "Lille OSC",
-          "logo": "https://crests.football-data.org/521.png"
-        },
-        "awayTeam": {
-          "id": 525,
-          "name": "FC Lorient",
-          "logo": "https://crests.football-data.org/525.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 542630,
-        "startTimestamp": 1772986500,
-        "homeTeam": {
-          "id": 512,
-          "name": "Stade Brestois 29",
-          "logo": "https://crests.football-data.org/512.png"
-        },
-        "awayTeam": {
-          "id": 533,
-          "name": "Le Havre AC",
-          "logo": "https://crests.football-data.org/533.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 34,
-          "name": "Ligue 1",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 540625,
-        "startTimestamp": 1772987400,
-        "homeTeam": {
-          "id": 28,
-          "name": "1. FC Union Berlin",
-          "logo": "https://crests.football-data.org/28.png"
-        },
-        "awayTeam": {
-          "id": 12,
-          "name": "SV Werder Bremen",
-          "logo": "https://crests.football-data.org/12.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 35,
-          "name": "Bundesliga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 541139,
-        "startTimestamp": 1772987400,
-        "homeTeam": {
-          "id": 69,
-          "name": "Queens Park Rangers FC",
-          "logo": "https://crests.football-data.org/69.png"
-        },
-        "awayTeam": {
-          "id": 343,
-          "name": "Middlesbrough FC",
-          "logo": "https://crests.football-data.org/343.png"
-        },
-        "homeScore": {
-          "display": "-"
-        },
-        "awayScore": {
-          "display": "-"
-        },
-        "tournament": {
-          "id": 36,
-          "name": "Championship",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/36/image"
-        },
-        "status": {
-          "type": "notstarted"
-        }
-      }
-    },
-    {
-      "match": {
-        "id": 537089,
+        "id": 13981698,
         "startTimestamp": 1772989200,
         "homeTeam": {
-          "id": 107,
-          "name": "Genoa CFC",
-          "logo": "https://crests.football-data.org/107.png"
+          "id": 2713,
+          "name": "Genoa",
+          "logo": "https://api.sofascore.app/api/v1/team/2713/image"
         },
         "awayTeam": {
-          "id": 100,
-          "name": "AS Roma",
-          "logo": "https://crests.football-data.org/100.png"
+          "id": 2702,
+          "name": "Roma",
+          "logo": "https://api.sofascore.app/api/v1/team/2702/image"
         },
         "homeScore": {
           "display": "-"
@@ -416,8 +204,8 @@
           "display": "-"
         },
         "tournament": {
-          "id": 23,
           "name": "Serie A",
+          "id": 23,
           "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
         },
         "status": {
@@ -427,17 +215,17 @@
     },
     {
       "match": {
-        "id": 544480,
-        "startTimestamp": 1772991000,
+        "id": 13981700,
+        "startTimestamp": 1772999100,
         "homeTeam": {
-          "id": 559,
-          "name": "Sevilla FC",
-          "logo": "https://crests.football-data.org/559.png"
+          "id": 2692,
+          "name": "Milan",
+          "logo": "https://api.sofascore.app/api/v1/team/2692/image"
         },
         "awayTeam": {
-          "id": 87,
-          "name": "Rayo Vallecano de Madrid",
-          "logo": "https://crests.football-data.org/87.png"
+          "id": 2697,
+          "name": "Inter",
+          "logo": "https://api.sofascore.app/api/v1/team/2697/image"
         },
         "homeScore": {
           "display": "-"
@@ -446,8 +234,158 @@
           "display": "-"
         },
         "tournament": {
+          "name": "Serie A",
+          "id": 23,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14081805,
+        "startTimestamp": 1772888400,
+        "homeTeam": {
+          "id": 2820,
+          "name": "Osasuna",
+          "logo": "https://api.sofascore.app/api/v1/team/2820/image"
+        },
+        "awayTeam": {
+          "id": 2826,
+          "name": "Mallorca",
+          "logo": "https://api.sofascore.app/api/v1/team/2826/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "LaLiga",
           "id": 8,
-          "name": "La Liga",
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14081802,
+        "startTimestamp": 1772896500,
+        "homeTeam": {
+          "id": 2849,
+          "name": "Levante UD",
+          "logo": "https://api.sofascore.app/api/v1/team/2849/image"
+        },
+        "awayTeam": {
+          "id": 24264,
+          "name": "Girona FC",
+          "logo": "https://api.sofascore.app/api/v1/team/24264/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "LaLiga",
+          "id": 8,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14083602,
+        "startTimestamp": 1772904600,
+        "homeTeam": {
+          "id": 2836,
+          "name": "Atlético Madrid",
+          "logo": "https://api.sofascore.app/api/v1/team/2836/image"
+        },
+        "awayTeam": {
+          "id": 2824,
+          "name": "Real Sociedad",
+          "logo": "https://api.sofascore.app/api/v1/team/2824/image"
+        },
+        "homeScore": {
+          "display": 3
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "LaLiga",
+          "id": 8,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14083597,
+        "startTimestamp": 1772913600,
+        "homeTeam": {
+          "id": 2825,
+          "name": "Athletic Club",
+          "logo": "https://api.sofascore.app/api/v1/team/2825/image"
+        },
+        "awayTeam": {
+          "id": 2817,
+          "name": "Barcelona",
+          "logo": "https://api.sofascore.app/api/v1/team/2817/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "LaLiga",
+          "id": 8,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14081803,
+        "startTimestamp": 1772974800,
+        "homeTeam": {
+          "id": 2819,
+          "name": "Villarreal",
+          "logo": "https://api.sofascore.app/api/v1/team/2819/image"
+        },
+        "awayTeam": {
+          "id": 2846,
+          "name": "Elche",
+          "logo": "https://api.sofascore.app/api/v1/team/2846/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "LaLiga",
+          "id": 8,
           "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
         },
         "status": {
@@ -457,17 +395,17 @@
     },
     {
       "match": {
-        "id": 545924,
-        "startTimestamp": 1772992800,
+        "id": 14081801,
+        "startTimestamp": 1772982900,
         "homeTeam": {
-          "id": 1903,
-          "name": "Sport Lisboa e Benfica",
-          "logo": "https://crests.football-data.org/1903.png"
+          "id": 2859,
+          "name": "Getafe",
+          "logo": "https://api.sofascore.app/api/v1/team/2859/image"
         },
         "awayTeam": {
-          "id": 503,
-          "name": "FC Porto",
-          "logo": "https://crests.football-data.org/503.png"
+          "id": 2816,
+          "name": "Real Betis",
+          "logo": "https://api.sofascore.app/api/v1/team/2816/image"
         },
         "homeScore": {
           "display": "-"
@@ -476,9 +414,9 @@
           "display": "-"
         },
         "tournament": {
-          "id": 238,
-          "name": "Liga Portugal Betclic",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
+          "name": "LaLiga",
+          "id": 8,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
         },
         "status": {
           "type": "notstarted"
@@ -487,17 +425,17 @@
     },
     {
       "match": {
-        "id": 542626,
-        "startTimestamp": 1772999100,
+        "id": 14081804,
+        "startTimestamp": 1772991000,
         "homeTeam": {
-          "id": 523,
-          "name": "Olympique Lyonnais",
-          "logo": "https://crests.football-data.org/523.png"
+          "id": 2833,
+          "name": "Sevilla",
+          "logo": "https://api.sofascore.app/api/v1/team/2833/image"
         },
         "awayTeam": {
-          "id": 1045,
-          "name": "Paris FC",
-          "logo": "https://crests.football-data.org/1045.png"
+          "id": 2818,
+          "name": "Rayo Vallecano",
+          "logo": "https://api.sofascore.app/api/v1/team/2818/image"
         },
         "homeScore": {
           "display": "-"
@@ -506,8 +444,398 @@
           "display": "-"
         },
         "tournament": {
-          "id": 34,
+          "name": "LaLiga",
+          "id": 8,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14081799,
+        "startTimestamp": 1773000000,
+        "homeTeam": {
+          "id": 2828,
+          "name": "Valencia",
+          "logo": "https://api.sofascore.app/api/v1/team/2828/image"
+        },
+        "awayTeam": {
+          "id": 2885,
+          "name": "Deportivo Alavés",
+          "logo": "https://api.sofascore.app/api/v1/team/2885/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "LaLiga",
+          "id": 8,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14065186,
+        "startTimestamp": 1772893800,
+        "homeTeam": {
+          "id": 5885,
+          "name": "1. FC Heidenheim",
+          "logo": "https://api.sofascore.app/api/v1/team/5885/image"
+        },
+        "awayTeam": {
+          "id": 2569,
+          "name": "TSG Hoffenheim",
+          "logo": "https://api.sofascore.app/api/v1/team/2569/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 4
+        },
+        "tournament": {
+          "name": "Bundesliga",
+          "id": 35,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14065179,
+        "startTimestamp": 1772893800,
+        "homeTeam": {
+          "id": 2556,
+          "name": "1. FSV Mainz 05",
+          "logo": "https://api.sofascore.app/api/v1/team/2556/image"
+        },
+        "awayTeam": {
+          "id": 2677,
+          "name": "VfB Stuttgart",
+          "logo": "https://api.sofascore.app/api/v1/team/2677/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "Bundesliga",
+          "id": 35,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14065180,
+        "startTimestamp": 1772893800,
+        "homeTeam": {
+          "id": 36360,
+          "name": "RB Leipzig",
+          "logo": "https://api.sofascore.app/api/v1/team/36360/image"
+        },
+        "awayTeam": {
+          "id": 2600,
+          "name": "FC Augsburg",
+          "logo": "https://api.sofascore.app/api/v1/team/2600/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Bundesliga",
+          "id": 35,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14062233,
+        "startTimestamp": 1772893800,
+        "homeTeam": {
+          "id": 2538,
+          "name": "SC Freiburg",
+          "logo": "https://api.sofascore.app/api/v1/team/2538/image"
+        },
+        "awayTeam": {
+          "id": 2681,
+          "name": "Bayer 04 Leverkusen",
+          "logo": "https://api.sofascore.app/api/v1/team/2681/image"
+        },
+        "homeScore": {
+          "display": 3
+        },
+        "awayScore": {
+          "display": 3
+        },
+        "tournament": {
+          "name": "Bundesliga",
+          "id": 35,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14065178,
+        "startTimestamp": 1772893800,
+        "homeTeam": {
+          "id": 2524,
+          "name": "VfL Wolfsburg",
+          "logo": "https://api.sofascore.app/api/v1/team/2524/image"
+        },
+        "awayTeam": {
+          "id": 2676,
+          "name": "Hamburger SV",
+          "logo": "https://api.sofascore.app/api/v1/team/2676/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "Bundesliga",
+          "id": 35,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14065185,
+        "startTimestamp": 1772904600,
+        "homeTeam": {
+          "id": 2671,
+          "name": "1. FC Köln",
+          "logo": "https://api.sofascore.app/api/v1/team/2671/image"
+        },
+        "awayTeam": {
+          "id": 2673,
+          "name": "Borussia Dortmund",
+          "logo": "https://api.sofascore.app/api/v1/team/2673/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "Bundesliga",
+          "id": 35,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14065181,
+        "startTimestamp": 1772980200,
+        "homeTeam": {
+          "id": 2526,
+          "name": "FC St. Pauli",
+          "logo": "https://api.sofascore.app/api/v1/team/2526/image"
+        },
+        "awayTeam": {
+          "id": 2674,
+          "name": "Eintracht Frankfurt",
+          "logo": "https://api.sofascore.app/api/v1/team/2674/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Bundesliga",
+          "id": 35,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14065182,
+        "startTimestamp": 1772987400,
+        "homeTeam": {
+          "id": 2547,
+          "name": "1. FC Union Berlin",
+          "logo": "https://api.sofascore.app/api/v1/team/2547/image"
+        },
+        "awayTeam": {
+          "id": 2534,
+          "name": "SV Werder Bremen",
+          "logo": "https://api.sofascore.app/api/v1/team/2534/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Bundesliga",
+          "id": 35,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/35/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14167910,
+        "startTimestamp": 1772899200,
+        "homeTeam": {
+          "id": 1647,
+          "name": "Nantes",
+          "logo": "https://api.sofascore.app/api/v1/team/1647/image"
+        },
+        "awayTeam": {
+          "id": 1684,
+          "name": "Angers",
+          "logo": "https://api.sofascore.app/api/v1/team/1684/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
           "name": "Ligue 1",
+          "id": 34,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14167908,
+        "startTimestamp": 1772906400,
+        "homeTeam": {
+          "id": 1646,
+          "name": "Auxerre",
+          "logo": "https://api.sofascore.app/api/v1/team/1646/image"
+        },
+        "awayTeam": {
+          "id": 1659,
+          "name": "RC Strasbourg",
+          "logo": "https://api.sofascore.app/api/v1/team/1659/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Ligue 1",
+          "id": 34,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14167896,
+        "startTimestamp": 1772913900,
+        "homeTeam": {
+          "id": 1681,
+          "name": "Toulouse",
+          "logo": "https://api.sofascore.app/api/v1/team/1681/image"
+        },
+        "awayTeam": {
+          "id": 1641,
+          "name": "Olympique de Marseille",
+          "logo": "https://api.sofascore.app/api/v1/team/1641/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Ligue 1",
+          "id": 34,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14167904,
+        "startTimestamp": 1772978400,
+        "homeTeam": {
+          "id": 1648,
+          "name": "RC Lens",
+          "logo": "https://api.sofascore.app/api/v1/team/1648/image"
+        },
+        "awayTeam": {
+          "id": 1651,
+          "name": "Metz",
+          "logo": "https://api.sofascore.app/api/v1/team/1651/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Ligue 1",
+          "id": 34,
           "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
         },
         "status": {
@@ -517,17 +845,107 @@
     },
     {
       "match": {
-        "id": 537086,
+        "id": 14167906,
+        "startTimestamp": 1772986500,
+        "homeTeam": {
+          "id": 1643,
+          "name": "Lille",
+          "logo": "https://api.sofascore.app/api/v1/team/1643/image"
+        },
+        "awayTeam": {
+          "id": 1656,
+          "name": "Lorient",
+          "logo": "https://api.sofascore.app/api/v1/team/1656/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Ligue 1",
+          "id": 34,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14167900,
+        "startTimestamp": 1772986500,
+        "homeTeam": {
+          "id": 1661,
+          "name": "Nice",
+          "logo": "https://api.sofascore.app/api/v1/team/1661/image"
+        },
+        "awayTeam": {
+          "id": 1658,
+          "name": "Stade Rennais",
+          "logo": "https://api.sofascore.app/api/v1/team/1658/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Ligue 1",
+          "id": 34,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14167898,
+        "startTimestamp": 1772986500,
+        "homeTeam": {
+          "id": 1715,
+          "name": "Stade Brestois",
+          "logo": "https://api.sofascore.app/api/v1/team/1715/image"
+        },
+        "awayTeam": {
+          "id": 1662,
+          "name": "Le Havre",
+          "logo": "https://api.sofascore.app/api/v1/team/1662/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Ligue 1",
+          "id": 34,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14167902,
         "startTimestamp": 1772999100,
         "homeTeam": {
-          "id": 98,
-          "name": "AC Milan",
-          "logo": "https://crests.football-data.org/98.png"
+          "id": 1649,
+          "name": "Olympique Lyonnais",
+          "logo": "https://api.sofascore.app/api/v1/team/1649/image"
         },
         "awayTeam": {
-          "id": 108,
-          "name": "FC Internazionale Milano",
-          "logo": "https://crests.football-data.org/108.png"
+          "id": 6070,
+          "name": "Paris FC",
+          "logo": "https://api.sofascore.app/api/v1/team/6070/image"
         },
         "homeScore": {
           "display": "-"
@@ -536,9 +954,9 @@
           "display": "-"
         },
         "tournament": {
-          "id": 23,
-          "name": "Serie A",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+          "name": "Ligue 1",
+          "id": 34,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/34/image"
         },
         "status": {
           "type": "notstarted"
@@ -547,17 +965,137 @@
     },
     {
       "match": {
-        "id": 544475,
-        "startTimestamp": 1773000000,
+        "id": 14288813,
+        "startTimestamp": 1772897400,
         "homeTeam": {
-          "id": 95,
-          "name": "Valencia CF",
-          "logo": "https://crests.football-data.org/95.png"
+          "id": 190328,
+          "name": "FC Alverca",
+          "logo": "https://api.sofascore.app/api/v1/team/190328/image"
         },
         "awayTeam": {
-          "id": 263,
-          "name": "Deportivo Alavés",
-          "logo": "https://crests.football-data.org/263.png"
+          "id": 483088,
+          "name": "AVS - Futebol SAD",
+          "logo": "https://api.sofascore.app/api/v1/team/483088/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Liga Portugal Betclic",
+          "id": 238,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14288819,
+        "startTimestamp": 1772897400,
+        "homeTeam": {
+          "id": 3014,
+          "name": "Moreirense",
+          "logo": "https://api.sofascore.app/api/v1/team/3014/image"
+        },
+        "awayTeam": {
+          "id": 3013,
+          "name": "CD Nacional",
+          "logo": "https://api.sofascore.app/api/v1/team/3013/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Liga Portugal Betclic",
+          "id": 238,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14288821,
+        "startTimestamp": 1772906400,
+        "homeTeam": {
+          "id": 2999,
+          "name": "Sporting Braga",
+          "logo": "https://api.sofascore.app/api/v1/team/2999/image"
+        },
+        "awayTeam": {
+          "id": 3001,
+          "name": "Sporting CP",
+          "logo": "https://api.sofascore.app/api/v1/team/3001/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "Liga Portugal Betclic",
+          "id": 238,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14288814,
+        "startTimestamp": 1772915400,
+        "homeTeam": {
+          "id": 4500,
+          "name": "Estoril Praia",
+          "logo": "https://api.sofascore.app/api/v1/team/4500/image"
+        },
+        "awayTeam": {
+          "id": 36365,
+          "name": "Casa Pia",
+          "logo": "https://api.sofascore.app/api/v1/team/36365/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Liga Portugal Betclic",
+          "id": 238,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14288818,
+        "startTimestamp": 1772983800,
+        "homeTeam": {
+          "id": 3035,
+          "name": "CF Estrela Amadora",
+          "logo": "https://api.sofascore.app/api/v1/team/3035/image"
+        },
+        "awayTeam": {
+          "id": 3010,
+          "name": "Gil Vicente",
+          "logo": "https://api.sofascore.app/api/v1/team/3010/image"
         },
         "homeScore": {
           "display": "-"
@@ -566,9 +1104,9 @@
           "display": "-"
         },
         "tournament": {
-          "id": 8,
-          "name": "La Liga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+          "name": "Liga Portugal Betclic",
+          "id": 238,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
         },
         "status": {
           "type": "notstarted"
@@ -577,17 +1115,47 @@
     },
     {
       "match": {
-        "id": 545922,
+        "id": 14288822,
+        "startTimestamp": 1772992800,
+        "homeTeam": {
+          "id": 3006,
+          "name": "Benfica",
+          "logo": "https://api.sofascore.app/api/v1/team/3006/image"
+        },
+        "awayTeam": {
+          "id": 3002,
+          "name": "FC Porto",
+          "logo": "https://api.sofascore.app/api/v1/team/3002/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Liga Portugal Betclic",
+          "id": 238,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14288820,
         "startTimestamp": 1773001800,
         "homeTeam": {
-          "id": 5530,
-          "name": "CD Santa Clara",
-          "logo": "https://crests.football-data.org/5530.png"
+          "id": 3011,
+          "name": "Santa Clara",
+          "logo": "https://api.sofascore.app/api/v1/team/3011/image"
         },
         "awayTeam": {
-          "id": 5543,
+          "id": 3009,
           "name": "Vitória SC",
-          "logo": "https://crests.football-data.org/5543.png"
+          "logo": "https://api.sofascore.app/api/v1/team/3009/image"
         },
         "homeScore": {
           "display": "-"
@@ -596,8 +1164,8 @@
           "display": "-"
         },
         "tournament": {
-          "id": 238,
           "name": "Liga Portugal Betclic",
+          "id": 238,
           "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
         },
         "status": {
@@ -607,17 +1175,137 @@
     },
     {
       "match": {
-        "id": 537092,
-        "startTimestamp": 1773085500,
+        "id": 14053678,
+        "startTimestamp": 1772897400,
         "homeTeam": {
-          "id": 110,
-          "name": "SS Lazio",
-          "logo": "https://crests.football-data.org/110.png"
+          "id": 2951,
+          "name": "FC Groningen",
+          "logo": "https://api.sofascore.app/api/v1/team/2951/image"
         },
         "awayTeam": {
-          "id": 471,
-          "name": "US Sassuolo Calcio",
-          "logo": "https://crests.football-data.org/471.png"
+          "id": 2953,
+          "name": "AFC Ajax",
+          "logo": "https://api.sofascore.app/api/v1/team/2953/image"
+        },
+        "homeScore": {
+          "display": 3
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "VriendenLoterij Eredivisie",
+          "id": 37,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14053691,
+        "startTimestamp": 1772910000,
+        "homeTeam": {
+          "id": 2952,
+          "name": "PSV Eindhoven",
+          "logo": "https://api.sofascore.app/api/v1/team/2952/image"
+        },
+        "awayTeam": {
+          "id": 2950,
+          "name": "AZ Alkmaar",
+          "logo": "https://api.sofascore.app/api/v1/team/2950/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "VriendenLoterij Eredivisie",
+          "id": 37,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14053669,
+        "startTimestamp": 1772913600,
+        "homeTeam": {
+          "id": 2967,
+          "name": "Excelsior",
+          "logo": "https://api.sofascore.app/api/v1/team/2967/image"
+        },
+        "awayTeam": {
+          "id": 2964,
+          "name": "SC Heerenveen",
+          "logo": "https://api.sofascore.app/api/v1/team/2964/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "VriendenLoterij Eredivisie",
+          "id": 37,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14053681,
+        "startTimestamp": 1772968500,
+        "homeTeam": {
+          "id": 2960,
+          "name": "Sparta Rotterdam",
+          "logo": "https://api.sofascore.app/api/v1/team/2960/image"
+        },
+        "awayTeam": {
+          "id": 2971,
+          "name": "PEC Zwolle",
+          "logo": "https://api.sofascore.app/api/v1/team/2971/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "VriendenLoterij Eredivisie",
+          "id": 37,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
+        },
+        "status": {
+          "type": "inprogress"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14053694,
+        "startTimestamp": 1772976600,
+        "homeTeam": {
+          "id": 2957,
+          "name": "Fortuna Sittard",
+          "logo": "https://api.sofascore.app/api/v1/team/2957/image"
+        },
+        "awayTeam": {
+          "id": 2972,
+          "name": "SC Telstar",
+          "logo": "https://api.sofascore.app/api/v1/team/2972/image"
         },
         "homeScore": {
           "display": "-"
@@ -626,9 +1314,9 @@
           "display": "-"
         },
         "tournament": {
-          "id": 23,
-          "name": "Serie A",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/23/image"
+          "name": "VriendenLoterij Eredivisie",
+          "id": 37,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
         },
         "status": {
           "type": "notstarted"
@@ -637,17 +1325,17 @@
     },
     {
       "match": {
-        "id": 544474,
-        "startTimestamp": 1773086400,
+        "id": 14053675,
+        "startTimestamp": 1772976600,
         "homeTeam": {
-          "id": 80,
-          "name": "RCD Espanyol de Barcelona",
-          "logo": "https://crests.football-data.org/80.png"
+          "id": 2979,
+          "name": "Go Ahead Eagles",
+          "logo": "https://api.sofascore.app/api/v1/team/2979/image"
         },
         "awayTeam": {
-          "id": 1048,
-          "name": "Real Oviedo",
-          "logo": "https://crests.football-data.org/1048.png"
+          "id": 2955,
+          "name": "FC Twente",
+          "logo": "https://api.sofascore.app/api/v1/team/2955/image"
         },
         "homeScore": {
           "display": "-"
@@ -656,9 +1344,9 @@
           "display": "-"
         },
         "tournament": {
-          "id": 8,
-          "name": "La Liga",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/8/image"
+          "name": "VriendenLoterij Eredivisie",
+          "id": 37,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
         },
         "status": {
           "type": "notstarted"
@@ -667,17 +1355,17 @@
     },
     {
       "match": {
-        "id": 545919,
-        "startTimestamp": 1773087300,
+        "id": 14053684,
+        "startTimestamp": 1772984700,
         "homeTeam": {
-          "id": 1049,
-          "name": "CD Tondela",
-          "logo": "https://crests.football-data.org/1049.png"
+          "id": 2947,
+          "name": "NAC Breda",
+          "logo": "https://api.sofascore.app/api/v1/team/2947/image"
         },
         "awayTeam": {
-          "id": 496,
-          "name": "Rio Ave FC",
-          "logo": "https://crests.football-data.org/496.png"
+          "id": 2959,
+          "name": "Feyenoord",
+          "logo": "https://api.sofascore.app/api/v1/team/2959/image"
         },
         "homeScore": {
           "display": "-"
@@ -686,9 +1374,819 @@
           "display": "-"
         },
         "tournament": {
-          "id": 238,
-          "name": "Liga Portugal Betclic",
-          "logo": "https://api.sofascore.app/api/v1/unique-tournament/238/image"
+          "name": "VriendenLoterij Eredivisie",
+          "id": 37,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14053672,
+        "startTimestamp": 1772996400,
+        "homeTeam": {
+          "id": 2962,
+          "name": "NEC Nijmegen",
+          "logo": "https://api.sofascore.app/api/v1/team/2962/image"
+        },
+        "awayTeam": {
+          "id": 2968,
+          "name": "FC Volendam",
+          "logo": "https://api.sofascore.app/api/v1/team/2968/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "VriendenLoterij Eredivisie",
+          "id": 37,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/37/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14109837,
+        "startTimestamp": 1772888400,
+        "homeTeam": {
+          "id": 3086,
+          "name": "Başakşehir FK",
+          "logo": "https://api.sofascore.app/api/v1/team/3086/image"
+        },
+        "awayTeam": {
+          "id": 3054,
+          "name": "Göztepe",
+          "logo": "https://api.sofascore.app/api/v1/team/3054/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Trendyol Süper Lig",
+          "id": 52,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/52/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14109838,
+        "startTimestamp": 1772902800,
+        "homeTeam": {
+          "id": 3050,
+          "name": "Beşiktaş JK",
+          "logo": "https://api.sofascore.app/api/v1/team/3050/image"
+        },
+        "awayTeam": {
+          "id": 3061,
+          "name": "Galatasaray",
+          "logo": "https://api.sofascore.app/api/v1/team/3061/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Trendyol Süper Lig",
+          "id": 52,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/52/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14109836,
+        "startTimestamp": 1772965800,
+        "homeTeam": {
+          "id": 5138,
+          "name": "Gaziantep FK",
+          "logo": "https://api.sofascore.app/api/v1/team/5138/image"
+        },
+        "awayTeam": {
+          "id": 4954,
+          "name": "Fatih Karagümrük",
+          "logo": "https://api.sofascore.app/api/v1/team/4954/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Trendyol Süper Lig",
+          "id": 52,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/52/image"
+        },
+        "status": {
+          "type": "inprogress"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14109832,
+        "startTimestamp": 1772965800,
+        "homeTeam": {
+          "id": 3064,
+          "name": "Çaykur Rizespor",
+          "logo": "https://api.sofascore.app/api/v1/team/3064/image"
+        },
+        "awayTeam": {
+          "id": 3056,
+          "name": "Antalyaspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3056/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Trendyol Süper Lig",
+          "id": 52,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/52/image"
+        },
+        "status": {
+          "type": "inprogress"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14109830,
+        "startTimestamp": 1772974800,
+        "homeTeam": {
+          "id": 3085,
+          "name": "Konyaspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3085/image"
+        },
+        "awayTeam": {
+          "id": 6063,
+          "name": "Kasımpaşa",
+          "logo": "https://api.sofascore.app/api/v1/team/6063/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Trendyol Süper Lig",
+          "id": 52,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/52/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14109834,
+        "startTimestamp": 1772989200,
+        "homeTeam": {
+          "id": 3052,
+          "name": "Fenerbahçe",
+          "logo": "https://api.sofascore.app/api/v1/team/3052/image"
+        },
+        "awayTeam": {
+          "id": 3053,
+          "name": "Samsunspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3053/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Trendyol Süper Lig",
+          "id": 52,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/52/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138554,
+        "startTimestamp": 1772879400,
+        "homeTeam": {
+          "id": 55603,
+          "name": "Erzurumspor FK",
+          "logo": "https://api.sofascore.app/api/v1/team/55603/image"
+        },
+        "awayTeam": {
+          "id": 202391,
+          "name": "Manisa FK",
+          "logo": "https://api.sofascore.app/api/v1/team/202391/image"
+        },
+        "homeScore": {
+          "display": 8
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Trendyol 1.Lig",
+          "id": 98,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14143636,
+        "startTimestamp": 1772879400,
+        "homeTeam": {
+          "id": 3076,
+          "name": "Sivasspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3076/image"
+        },
+        "awayTeam": {
+          "id": 6366,
+          "name": "Keçiörengücü",
+          "logo": "https://api.sofascore.app/api/v1/team/6366/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Trendyol 1.Lig",
+          "id": 98,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138553,
+        "startTimestamp": 1772888400,
+        "homeTeam": {
+          "id": 44320,
+          "name": "Bandırmaspor",
+          "logo": "https://api.sofascore.app/api/v1/team/44320/image"
+        },
+        "awayTeam": {
+          "id": 3066,
+          "name": "İstanbulspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3066/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Trendyol 1.Lig",
+          "id": 98,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138550,
+        "startTimestamp": 1772888400,
+        "homeTeam": {
+          "id": 77629,
+          "name": "Çorum FK",
+          "logo": "https://api.sofascore.app/api/v1/team/77629/image"
+        },
+        "awayTeam": {
+          "id": 3091,
+          "name": "Hatayspor",
+          "logo": "https://api.sofascore.app/api/v1/team/3091/image"
+        },
+        "homeScore": {
+          "display": 3
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Trendyol 1.Lig",
+          "id": 98,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138563,
+        "startTimestamp": 1772902800,
+        "homeTeam": {
+          "id": 207011,
+          "name": "Amed Sportif Faaliyetler",
+          "logo": "https://api.sofascore.app/api/v1/team/207011/image"
+        },
+        "awayTeam": {
+          "id": 297102,
+          "name": "Serikspor A.Ş.",
+          "logo": "https://api.sofascore.app/api/v1/team/297102/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Trendyol 1.Lig",
+          "id": 98,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138552,
+        "startTimestamp": 1772974800,
+        "homeTeam": {
+          "id": 6414,
+          "name": "Boluspor",
+          "logo": "https://api.sofascore.app/api/v1/team/6414/image"
+        },
+        "awayTeam": {
+          "id": 388264,
+          "name": "Iğdır FK",
+          "logo": "https://api.sofascore.app/api/v1/team/388264/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Trendyol 1.Lig",
+          "id": 98,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14138555,
+        "startTimestamp": 1772989200,
+        "homeTeam": {
+          "id": 202390,
+          "name": "Bodrum FK",
+          "logo": "https://api.sofascore.app/api/v1/team/202390/image"
+        },
+        "awayTeam": {
+          "id": 262480,
+          "name": "Esenler Erokspor",
+          "logo": "https://api.sofascore.app/api/v1/team/262480/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Trendyol 1.Lig",
+          "id": 98,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227322,
+        "startTimestamp": 1772911800,
+        "homeTeam": {
+          "id": 502355,
+          "name": "Rhode Island FC",
+          "logo": "https://api.sofascore.app/api/v1/team/502355/image"
+        },
+        "awayTeam": {
+          "id": 310969,
+          "name": "Loudoun United FC",
+          "logo": "https://api.sofascore.app/api/v1/team/310969/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "postponed"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227341,
+        "startTimestamp": 1772924400,
+        "homeTeam": {
+          "id": 22004,
+          "name": "Charleston Battery",
+          "logo": "https://api.sofascore.app/api/v1/team/22004/image"
+        },
+        "awayTeam": {
+          "id": 23635,
+          "name": "Pittsburgh Riverhounds",
+          "logo": "https://api.sofascore.app/api/v1/team/23635/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227328,
+        "startTimestamp": 1772929800,
+        "homeTeam": {
+          "id": 1077312,
+          "name": "SC Jacksonville",
+          "logo": "https://api.sofascore.app/api/v1/team/1077312/image"
+        },
+        "awayTeam": {
+          "id": 310968,
+          "name": "Hartford Athletic",
+          "logo": "https://api.sofascore.app/api/v1/team/310968/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 3
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227342,
+        "startTimestamp": 1772931600,
+        "homeTeam": {
+          "id": 310967,
+          "name": "Birmingham Legion FC",
+          "logo": "https://api.sofascore.app/api/v1/team/310967/image"
+        },
+        "awayTeam": {
+          "id": 41617,
+          "name": "FC Tampa Bay Rowdies",
+          "logo": "https://api.sofascore.app/api/v1/team/41617/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227354,
+        "startTimestamp": 1772933400,
+        "homeTeam": {
+          "id": 217134,
+          "name": "San Antonio FC",
+          "logo": "https://api.sofascore.app/api/v1/team/217134/image"
+        },
+        "awayTeam": {
+          "id": 154018,
+          "name": "Phoenix Rising FC",
+          "logo": "https://api.sofascore.app/api/v1/team/154018/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227326,
+        "startTimestamp": 1772935200,
+        "homeTeam": {
+          "id": 310532,
+          "name": "El Paso Locomotive FC",
+          "logo": "https://api.sofascore.app/api/v1/team/310532/image"
+        },
+        "awayTeam": {
+          "id": 197065,
+          "name": "Colorado Springs Switchbacks FC",
+          "logo": "https://api.sofascore.app/api/v1/team/197065/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 2
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227351,
+        "startTimestamp": 1772938800,
+        "homeTeam": {
+          "id": 405944,
+          "name": "Monterey Bay FC",
+          "logo": "https://api.sofascore.app/api/v1/team/405944/image"
+        },
+        "awayTeam": {
+          "id": 325107,
+          "name": "Oakland Roots SC",
+          "logo": "https://api.sofascore.app/api/v1/team/325107/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15285706,
+        "startTimestamp": 1772938800,
+        "homeTeam": {
+          "id": 217781,
+          "name": "Orange County SC",
+          "logo": "https://api.sofascore.app/api/v1/team/217781/image"
+        },
+        "awayTeam": {
+          "id": 276898,
+          "name": "Las Vegas Lights",
+          "logo": "https://api.sofascore.app/api/v1/team/276898/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227340,
+        "startTimestamp": 1772938800,
+        "homeTeam": {
+          "id": 153498,
+          "name": "Sacramento Republic FC",
+          "logo": "https://api.sofascore.app/api/v1/team/153498/image"
+        },
+        "awayTeam": {
+          "id": 197071,
+          "name": "FC Tulsa",
+          "logo": "https://api.sofascore.app/api/v1/team/197071/image"
+        },
+        "homeScore": {
+          "display": 2
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 15227346,
+        "startTimestamp": 1772996400,
+        "homeTeam": {
+          "id": 1158835,
+          "name": "Brooklyn FC",
+          "logo": "https://api.sofascore.app/api/v1/team/1158835/image"
+        },
+        "awayTeam": {
+          "id": 148992,
+          "name": "Indy Eleven",
+          "logo": "https://api.sofascore.app/api/v1/team/148992/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "USL Championship",
+          "id": 13363,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
+        },
+        "status": {
+          "type": "notstarted"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14530086,
+        "startTimestamp": 1772881200,
+        "homeTeam": {
+          "id": 498809,
+          "name": "FK Karvan Yevlax",
+          "logo": "https://api.sofascore.app/api/v1/team/498809/image"
+        },
+        "awayTeam": {
+          "id": 44497,
+          "name": "Sumqayıt FK",
+          "logo": "https://api.sofascore.app/api/v1/team/44497/image"
+        },
+        "homeScore": {
+          "display": 1
+        },
+        "awayScore": {
+          "display": 1
+        },
+        "tournament": {
+          "name": "Misli Premier League",
+          "id": 709,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/709/image"
+        },
+        "status": {
+          "type": "finished"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14530087,
+        "startTimestamp": 1772967600,
+        "homeTeam": {
+          "id": 24036,
+          "name": "Şamaxı FK",
+          "logo": "https://api.sofascore.app/api/v1/team/24036/image"
+        },
+        "awayTeam": {
+          "id": 452296,
+          "name": "İmişli FK",
+          "logo": "https://api.sofascore.app/api/v1/team/452296/image"
+        },
+        "homeScore": {
+          "display": 0
+        },
+        "awayScore": {
+          "display": 0
+        },
+        "tournament": {
+          "name": "Misli Premier League",
+          "id": 709,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/709/image"
+        },
+        "status": {
+          "type": "inprogress"
+        }
+      }
+    },
+    {
+      "match": {
+        "id": 14530085,
+        "startTimestamp": 1772982900,
+        "homeTeam": {
+          "id": 5962,
+          "name": "Qarabağ FK",
+          "logo": "https://api.sofascore.app/api/v1/team/5962/image"
+        },
+        "awayTeam": {
+          "id": 119066,
+          "name": "Araz Naxçıvan",
+          "logo": "https://api.sofascore.app/api/v1/team/119066/image"
+        },
+        "homeScore": {
+          "display": "-"
+        },
+        "awayScore": {
+          "display": "-"
+        },
+        "tournament": {
+          "name": "Misli Premier League",
+          "id": 709,
+          "logo": "https://api.sofascore.app/api/v1/unique-tournament/709/image"
         },
         "status": {
           "type": "notstarted"
