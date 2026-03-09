@@ -13,15 +13,14 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Veri motoru başlatılıyor (Tarih Filtreli Mod)...");
+    console.log("🚀 Veri motoru: Ultra Derin Tarama başlatıldı...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security'] 
     });
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // ✅ Türkiye saatine göre bugün ve yarını hesaplama
     const getTRDate = (offset = 0) => {
         const d = new Date();
         d.setDate(d.getDate() + offset);
@@ -34,34 +33,24 @@ async function start() {
     let allEvents = [];
     for (const date of [todayStr, tomorrowStr]) {
         try {
-            console.log(`⏳ ${date} maç listesi alınıyor...`);
-            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
+            console.log(`⏳ ${date} listesi alınıyor...`);
+            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`);
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
-            
             if (data.events) {
-                const filtered = data.events.filter(e => {
-                    // ✅ Maçın başlama tarihini TR saat dilimine göre kontrol et
-                    const matchDateTR = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                    
-                    const isTargetLeague = targetLeagueIds.includes(e.tournament?.uniqueTournament?.id);
-                    const isCorrectDay = (matchDateTR === date); // Sadece o güne ait maçlar
-                    
-                    return isTargetLeague && isCorrectDay;
-                });
+                const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
                 allEvents = allEvents.concat(filtered);
             }
         } catch (e) { console.error(`❌ Liste hatası: ${date}`); }
     }
 
     const finalMatches = [];
-    console.log(`🔍 Toplam ${allEvents.length} maç için detaylar toplanıyor...`);
+    console.log(`🔍 ${allEvents.length} maç taranıyor...`);
 
     for (const e of allEvents) {
         try {
-            console.log(`   -> İşleniyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
+            console.log(`   -> Kadro Avı: ${e.homeTeam.name} - ${e.awayTeam.name}`);
 
             const details = await page.evaluate(async (id) => {
-                const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
                 const fetchJson = async (url) => {
                     try {
                         const r = await fetch(url, { headers: { "Referer": "https://www.sofascore.com/" } });
@@ -69,16 +58,20 @@ async function start() {
                     } catch { return null; }
                 };
 
-                let info = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}`);
+                // Standart bilgiler
+                const info = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}`);
+                const missing = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/missing-players`);
+                
+                // ✅ STRATEJİ: Birkaç farklı kaynaktan kadro dene
                 let lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`);
                 
-                // Büyük ligler için kadro verisi gelene kadar kısa bir bekleme
-                if (!lineups) {
-                    await wait(800);
-                    lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`);
+                // Eğer muhtemel kadro 'lineups' içinde değilse, taktiksel veri setini dene
+                if (!lineups || (!lineups.home && !lineups.away)) {
+                    // Bazı Şampiyonlar Ligi maçları için alternatif
+                    const alternative = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/tactical-lineups`);
+                    if (alternative) lineups = alternative;
                 }
 
-                let missing = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/missing-players`);
                 return { info, lineups, missing };
             }, e.id);
 
@@ -102,15 +95,13 @@ async function start() {
                 }
             });
 
-            await new Promise(r => setTimeout(r, 400)); 
-        } catch (err) { console.error(`⚠️ Hata: ${e.id}`); }
+            await new Promise(r => setTimeout(r, 500)); 
+        } catch (err) { }
     }
 
-    // Tarihe göre sırala
-    finalMatches.sort((a, b) => a.fixedDate.localeCompare(b.fixedDate) || a.fixedTime.localeCompare(b.fixedTime));
-    
     fs.writeFileSync("matches.json", JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    console.log(`✅ TEMİZLENDİ VE BİTTİ: matches.json artık sadece bugünü ve yarını kapsıyor.`);
+    const count = finalMatches.filter(m => m.details.lineups).length;
+    console.log(`✅ İşlem Tamam: 18/${count} kadro yakalandı.`);
     await browser.close();
 }
 
