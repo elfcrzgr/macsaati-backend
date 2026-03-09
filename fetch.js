@@ -13,62 +13,73 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Veri motoru başlatılıyor...");
+    console.log("🚀 Veri motoru başlatılıyor (Tarih Filtreli Mod)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security'] 
     });
     const page = await browser.newPage();
-    
-    await page.setRequestInterception(true);
-    page.on('request', (req) => {
-        if (['image', 'stylesheet', 'font'].includes(req.resourceType())) req.abort();
-        else req.continue();
-    });
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
-    // ✅ TÜRKİYE SAATİNE GÖRE BUGÜN VE YARIN
-    const now = new Date();
-    const today = now.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-    const tomorrowDate = new Date(now);
-    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-    const tomorrow = tomorrowDate.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+    // ✅ Türkiye saatine göre bugün ve yarını hesaplama
+    const getTRDate = (offset = 0) => {
+        const d = new Date();
+        d.setDate(d.getDate() + offset);
+        return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+    };
 
-    console.log(`📅 Hedeflenen Tarihler: Bugün: ${today} | Yarın: ${tomorrow}`);
+    const todayStr = getTRDate(0);
+    const tomorrowStr = getTRDate(1);
 
     let allEvents = [];
-    for (const targetDate of [today, tomorrow]) {
+    for (const date of [todayStr, tomorrowStr]) {
         try {
-            console.log(`⏳ ${targetDate} listesi çekiliyor...`);
-            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${targetDate}`, { waitUntil: 'networkidle2' });
+            console.log(`⏳ ${date} maç listesi alınıyor...`);
+            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             
             if (data.events) {
-                // 🔥 KRİTİK FİLTRE: Sadece o güne ait olan maçları al (Dünden sarkanları ele)
                 const filtered = data.events.filter(e => {
-                    const eventDate = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                    const isCorrectLeague = targetLeagueIds.includes(e.tournament?.uniqueTournament?.id);
-                    return eventDate === targetDate && isCorrectLeague;
+                    // ✅ Maçın başlama tarihini TR saat dilimine göre kontrol et
+                    const matchDateTR = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                    
+                    const isTargetLeague = targetLeagueIds.includes(e.tournament?.uniqueTournament?.id);
+                    const isCorrectDay = (matchDateTR === date); // Sadece o güne ait maçlar
+                    
+                    return isTargetLeague && isCorrectDay;
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`❌ Liste hatası: ${targetDate}`); }
+        } catch (e) { console.error(`❌ Liste hatası: ${date}`); }
     }
 
     const finalMatches = [];
+    console.log(`🔍 Toplam ${allEvents.length} maç için detaylar toplanıyor...`);
+
     for (const e of allEvents) {
         try {
-            console.log(`   -> Detay çekiliyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
+            console.log(`   -> İşleniyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
 
             const details = await page.evaluate(async (id) => {
+                const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
                 const fetchJson = async (url) => {
-                    const r = await fetch(url);
-                    return r.ok ? r.json() : null;
+                    try {
+                        const r = await fetch(url, { headers: { "Referer": "https://www.sofascore.com/" } });
+                        return r.ok ? await r.json() : null;
+                    } catch { return null; }
                 };
-                return {
-                    info: await fetchJson(`https://api.sofascore.com/api/v1/event/${id}`),
-                    lineups: await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`),
-                    missing: await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/missing-players`)
-                };
+
+                let info = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}`);
+                let lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`);
+                
+                // Büyük ligler için kadro verisi gelene kadar kısa bir bekleme
+                if (!lineups) {
+                    await wait(800);
+                    lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`);
+                }
+
+                let missing = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/missing-players`);
+                return { info, lineups, missing };
             }, e.id);
 
             const dateTR = new Date(e.startTimestamp * 1000);
@@ -90,13 +101,16 @@ async function start() {
                     missingPlayers: details.missing
                 }
             });
-            await new Promise(r => setTimeout(r, 200)); 
+
+            await new Promise(r => setTimeout(r, 400)); 
         } catch (err) { console.error(`⚠️ Hata: ${e.id}`); }
     }
 
+    // Tarihe göre sırala
     finalMatches.sort((a, b) => a.fixedDate.localeCompare(b.fixedDate) || a.fixedTime.localeCompare(b.fixedTime));
+    
     fs.writeFileSync("matches.json", JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    console.log(`✅ İşlem BİTTİ. Sadece ${today} ve ${tomorrow} maçları kaydedildi.`);
+    console.log(`✅ TEMİZLENDİ VE BİTTİ: matches.json artık sadece bugünü ve yarını kapsıyor.`);
     await browser.close();
 }
 
