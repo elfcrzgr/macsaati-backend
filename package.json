@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "express": "^5.2.1",
+    "puppeteer": "^24.38.0"
+  },
+  "name": "macsaati-backend",
+  "version": "1.0.0",
+  "main": "api_service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elfcrzgr/macsaati-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elfcrzgr/macsaati-backend/issues"
+  },
+  "homepage": "https://github.com/elfcrzgr/macsaati-backend#readme",
+  "description": ""
+}

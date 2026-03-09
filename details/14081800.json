@@ -1,0 +1,1389 @@
+{
+  "venue": "RCDE Stadium",
+  "referee": "Javier Alberola Rojas",
+  "lineups": {
+    "confirmed": false,
+    "home": {
+      "players": [
+        {
+          "avgRating": 7,
+          "player": {
+            "name": "Marko Dmitrović",
+            "slug": "marko-dmitrovic",
+            "shortName": "M. Dmitrović",
+            "position": "G",
+            "jerseyNumber": "13",
+            "height": 194,
+            "userCount": 1185,
+            "gender": "M",
+            "country": {
+              "alpha2": "RS",
+              "alpha3": "SRB",
+              "name": "Serbia",
+              "slug": "serbia"
+            },
+            "id": 94527,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 696211200,
+            "proposedMarketValueRaw": {
+              "value": 740000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "ماركو ديميتروفيتش",
+                "bn": "মার্ক দিমিত্রোভিচ",
+                "hi": "मार्को दिमित्रोविक"
+              },
+              "shortNameTranslation": {
+                "ar": "م. ديميتروفيتش",
+                "bn": "এম. দিমিত্রোভিচ",
+                "hi": "एम. दिमित्रोविक"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 13,
+          "jerseyNumber": "13",
+          "position": "G",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.7,
+          "player": {
+            "name": "Omar El Hilali",
+            "slug": "omar-el-hilali",
+            "shortName": "O. E. Hilali",
+            "position": "D",
+            "jerseyNumber": "23",
+            "height": 183,
+            "userCount": 6673,
+            "gender": "M",
+            "country": {
+              "alpha2": "MA",
+              "alpha3": "MAR",
+              "name": "Morocco",
+              "slug": "morocco"
+            },
+            "id": 1064026,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 1063324800,
+            "proposedMarketValueRaw": {
+              "value": 15900000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "عمر الهلالي",
+                "bn": "ওমর এল হিলালী",
+                "hi": "उमर अल हिलाली"
+              },
+              "shortNameTranslation": {
+                "ar": "ع. الهلالي",
+                "bn": "ও. ই. হিলালী",
+                "hi": "ओ.ई. हिलाली"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 23,
+          "jerseyNumber": "23",
+          "position": "D",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.85,
+          "player": {
+            "name": "Fernando Calero",
+            "slug": "fernando-calero",
+            "shortName": "F. Calero",
+            "position": "D",
+            "jerseyNumber": "5",
+            "height": 183,
+            "userCount": 296,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 857205,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 811036800,
+            "proposedMarketValueRaw": {
+              "value": 2100000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "فرناندو كاليرو",
+                "bn": "ফার্নান্দো ক্যালেরো",
+                "hi": "फर्नांडो कैलेरो"
+              },
+              "shortNameTranslation": {
+                "ar": "ف. كاليرو",
+                "bn": "এফ. ক্যালেরো",
+                "hi": "एफ. कैलेरो"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 5,
+          "jerseyNumber": "5",
+          "position": "D",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.81,
+          "player": {
+            "name": "Leandro Cabrera",
+            "slug": "leandro-cabrera",
+            "shortName": "L. Cabrera",
+            "position": "D",
+            "jerseyNumber": "6",
+            "height": 190,
+            "userCount": 818,
+            "gender": "M",
+            "country": {
+              "alpha2": "UY",
+              "alpha3": "URY",
+              "name": "Uruguay",
+              "slug": "uruguay"
+            },
+            "id": 81992,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 677116800,
+            "proposedMarketValueRaw": {
+              "value": 1000000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "لياندرو كابريرا",
+                "bn": "লিয়েন্দ্রো ক্যাব্রেরা",
+                "hi": "लिआंड्रो कैबरेरा"
+              },
+              "shortNameTranslation": {
+                "ar": "ل. كابريرا",
+                "bn": "এল. ক্যাব্রেরা",
+                "hi": "एल. कैबरेरा"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 6,
+          "jerseyNumber": "6",
+          "position": "D",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.93,
+          "player": {
+            "name": "Carlos Romero",
+            "firstName": "Carlos Romero",
+            "slug": "carlos-romero",
+            "shortName": "C. Romero",
+            "position": "D",
+            "jerseyNumber": "22",
+            "height": 174,
+            "userCount": 1088,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 1396048,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 1004313600,
+            "proposedMarketValueRaw": {
+              "value": 14600000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "كارلوس روميرو",
+                "bn": "কার্লোস রোমেরো",
+                "hi": "कार्लोस रोमेरो"
+              },
+              "shortNameTranslation": {
+                "ar": "ك. روميرو",
+                "bn": "সি. রোমেরো",
+                "hi": "सी. रोमेरो"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 22,
+          "jerseyNumber": "22",
+          "position": "D",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.74,
+          "player": {
+            "name": "Tyrhys Dolan",
+            "firstName": "Tyrhys Dolan",
+            "slug": "tyrhys-dolan",
+            "shortName": "T. Dolan",
+            "position": "M",
+            "jerseyNumber": "24",
+            "height": 170,
+            "userCount": 717,
+            "gender": "M",
+            "country": {
+              "alpha2": "EN",
+              "alpha3": "ENG",
+              "name": "England",
+              "slug": "england"
+            },
+            "id": 1063015,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 1009497600,
+            "proposedMarketValueRaw": {
+              "value": 10800000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "تيرهيز دولان"
+              },
+              "shortNameTranslation": {
+                "ar": "ت. دولان"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 24,
+          "jerseyNumber": "24",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.66,
+          "player": {
+            "name": "Urko González",
+            "slug": "urko-gonzalez",
+            "shortName": "U. González",
+            "position": "M",
+            "jerseyNumber": "4",
+            "height": 189,
+            "userCount": 445,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 1064009,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 985046400,
+            "proposedMarketValueRaw": {
+              "value": 4900000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "أوركو غونزاليس",
+                "bn": "উরকো গঞ্জালেজ",
+                "hi": "उरको गोंजालेज"
+              },
+              "shortNameTranslation": {
+                "ar": "أ. غونزاليس",
+                "bn": "ইউ. গনজালেজ",
+                "hi": "यू. गोंजालेज"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 4,
+          "jerseyNumber": "4",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.68,
+          "player": {
+            "name": "Pol Lozano",
+            "slug": "pol-lozano",
+            "shortName": "P. Lozano",
+            "position": "M",
+            "jerseyNumber": "10",
+            "height": 176,
+            "userCount": 536,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 826010,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 939168000,
+            "proposedMarketValueRaw": {
+              "value": 5800000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "بول لوزانو",
+                "bn": "পল লোজানো",
+                "hi": "पोल लोज़ानो"
+              },
+              "shortNameTranslation": {
+                "ar": "ب. لوزانو",
+                "bn": "পি. লোজানো",
+                "hi": "पी. लोज़ानो"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 10,
+          "jerseyNumber": "10",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.62,
+          "player": {
+            "name": "Jofre Carreras",
+            "slug": "jofre",
+            "shortName": "J. Carreras",
+            "position": "M",
+            "jerseyNumber": "17",
+            "height": 175,
+            "userCount": 342,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 1019236,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 992736000,
+            "proposedMarketValueRaw": {
+              "value": 2800000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "جوفري",
+                "bn": "জোফ্রে",
+                "hi": "जोफ़्रे"
+              },
+              "shortNameTranslation": {
+                "ar": "جوفري",
+                "bn": "জোফ্রে",
+                "hi": "जोफ़्रे"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 17,
+          "jerseyNumber": "17",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.68,
+          "player": {
+            "name": "Ramón Terrats",
+            "firstName": "Ramón Terrats",
+            "slug": "ramon-terrats",
+            "shortName": "R. Terrats",
+            "position": "M",
+            "jerseyNumber": "14",
+            "height": 179,
+            "userCount": 513,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 1088565,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 971827200,
+            "proposedMarketValueRaw": {
+              "value": 3200000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "رامون تيراتس",
+                "bn": "রামন টেরেটস",
+                "hi": "रामोन टेराट्स"
+              },
+              "shortNameTranslation": {
+                "ar": "ر. تيراتس",
+                "bn": "আর. টেরাটাস",
+                "hi": "आर. टेराट्स"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 14,
+          "jerseyNumber": "14",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.69,
+          "player": {
+            "name": "Kike García",
+            "slug": "kike-garcia",
+            "shortName": "K. García",
+            "position": "F",
+            "jerseyNumber": "19",
+            "height": 186,
+            "userCount": 988,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 84972,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 627955200,
+            "proposedMarketValueRaw": {
+              "value": 825000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "كيكي غارسيا",
+                "bn": "কাইক গার্সিয়া",
+                "hi": "किके गार्सिया"
+              },
+              "shortNameTranslation": {
+                "ar": "ك. غارسيا",
+                "bn": "কে. গার্সিয়া",
+                "hi": "के. गार्सिया"
+              }
+            }
+          },
+          "teamId": 2814,
+          "shirtNumber": 19,
+          "jerseyNumber": "19",
+          "position": "F",
+          "substitute": false
+        }
+      ],
+      "supportStaff": [],
+      "formation": "4-4-1-1",
+      "playerColor": {
+        "primary": "1b549b",
+        "number": "ffffff",
+        "outline": "1b549b",
+        "fancyNumber": "ffffff"
+      },
+      "goalkeeperColor": {
+        "primary": "873b62",
+        "number": "ffffff",
+        "outline": "873b62",
+        "fancyNumber": "ffffff"
+      },
+      "missingPlayers": [
+        {
+          "player": {
+            "name": "Antoniu Roca",
+            "slug": "antoniu-roca",
+            "shortName": "A. Roca",
+            "position": "M",
+            "jerseyNumber": "20",
+            "height": 180,
+            "userCount": 173,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 1099344,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 1031184000,
+            "proposedMarketValueRaw": {
+              "value": 1600000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "أنتونيو روكا"
+              },
+              "shortNameTranslation": {
+                "ar": "أ. روكا"
+              }
+            }
+          },
+          "type": "doubtful",
+          "reason": 1,
+          "description": "Shoulder Injury",
+          "externalType": 5,
+          "expectedEndDate": "2026-03-10T00:00:00+00:00"
+        },
+        {
+          "player": {
+            "name": "Charles Pickel",
+            "slug": "charles-pickel",
+            "shortName": "C. Pickel",
+            "position": "M",
+            "jerseyNumber": "18",
+            "height": 184,
+            "userCount": 11601,
+            "gender": "M",
+            "sofascoreId": "charlespickel",
+            "country": {
+              "alpha2": "CD",
+              "alpha3": "COD",
+              "name": "DR Congo",
+              "slug": "dr-congo"
+            },
+            "id": 758664,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 863654400,
+            "proposedMarketValueRaw": {
+              "value": 2700000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "تشارلز بيكل",
+                "bn": "চার্লস পিকেল",
+                "hi": "चार्ल्स पिकेल"
+              },
+              "shortNameTranslation": {
+                "ar": "ت. بيكل",
+                "bn": "সি. পিকেল",
+                "hi": "सी. पिकेल"
+              }
+            }
+          },
+          "type": "missing",
+          "reason": 12,
+          "description": "Red card suspension",
+          "externalType": 5
+        },
+        {
+          "player": {
+            "name": "Edu Expósito",
+            "slug": "edu-exposito",
+            "shortName": "E. Expósito",
+            "position": "M",
+            "jerseyNumber": "8",
+            "height": 175,
+            "userCount": 976,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 877262,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 838857600,
+            "proposedMarketValueRaw": {
+              "value": 3600000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "إيدو إكسبوسيتو",
+                "bn": "এডু এক্সপোসিটো",
+                "hi": "एड्यु एक्सपोसिटो"
+              },
+              "shortNameTranslation": {
+                "ar": "إ. إكسبوسيتو",
+                "bn": "ই. এক্সপোসিটো",
+                "hi": "ई. एक्सपोसिटो"
+              }
+            }
+          },
+          "type": "missing",
+          "reason": 11,
+          "externalType": 5
+        },
+        {
+          "player": {
+            "name": "Javi Puado",
+            "slug": "javi-puado",
+            "shortName": "J. Puado",
+            "position": "M",
+            "jerseyNumber": "7",
+            "height": 178,
+            "userCount": 1309,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 891511,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 896054400,
+            "proposedMarketValueRaw": {
+              "value": 9300000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "خافي بوادو",
+                "bn": "জাভি পুয়াডো",
+                "hi": "जावी पुआदो"
+              },
+              "shortNameTranslation": {
+                "ar": "خ. بوادو",
+                "bn": "জে. পুয়াডো",
+                "hi": "जे. पुआदो"
+              }
+            }
+          },
+          "type": "missing",
+          "reason": 1,
+          "description": "ACL Knee Injury",
+          "externalType": 5,
+          "expectedEndDate": "2026-10-16T00:00:00+00:00"
+        }
+      ]
+    },
+    "away": {
+      "players": [
+        {
+          "avgRating": 7.25,
+          "player": {
+            "name": "Aarón Escandell",
+            "slug": "aaron-escandell",
+            "shortName": "A. Escandell",
+            "position": "G",
+            "jerseyNumber": "13",
+            "height": 188,
+            "userCount": 1004,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 368922,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 812160000,
+            "proposedMarketValueRaw": {
+              "value": 1900000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "آرون إسكانديل",
+                "bn": "অ্যারন এসকান্ডেল",
+                "hi": "आरोन एस्कैंडेल"
+              },
+              "shortNameTranslation": {
+                "ar": "آ. إسكانديل",
+                "bn": "এ. এসকানডেল",
+                "hi": "ए. एस्कैंडेल"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 13,
+          "jerseyNumber": "13",
+          "position": "G",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.65,
+          "player": {
+            "name": "Nacho Vidal",
+            "slug": "nacho-vidal",
+            "shortName": "N. Vidal",
+            "position": "D",
+            "jerseyNumber": "22",
+            "height": 180,
+            "userCount": 321,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 844752,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 790905600,
+            "proposedMarketValueRaw": {
+              "value": 1700000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "ناتشو فيدال",
+                "bn": "নাচো ভিদাল",
+                "hi": "नाचो विडाल"
+              },
+              "shortNameTranslation": {
+                "ar": "ن. فيدال",
+                "bn": "এন. ভিদাল",
+                "hi": "एन. विडाल"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 22,
+          "jerseyNumber": "22",
+          "position": "D",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.85,
+          "player": {
+            "name": "Dani Calvo",
+            "slug": "dani-calvo",
+            "shortName": "D. Calvo",
+            "position": "D",
+            "jerseyNumber": "12",
+            "height": 190,
+            "userCount": 182,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 560756,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 765158400,
+            "proposedMarketValueRaw": {
+              "value": 940000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "داني كالفو",
+                "bn": "দানি ক্যালভো",
+                "hi": "दानी कैल्वो"
+              },
+              "shortNameTranslation": {
+                "ar": "د. كالفو",
+                "bn": "ডি. ক্যালভো",
+                "hi": "डी. कैल्वो"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 12,
+          "jerseyNumber": "12",
+          "position": "D",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.8,
+          "player": {
+            "name": "David Carmo",
+            "slug": "david-carmo",
+            "shortName": "D. Carmo",
+            "position": "D",
+            "jerseyNumber": "16",
+            "height": 196,
+            "userCount": 2248,
+            "gender": "M",
+            "country": {
+              "alpha2": "AO",
+              "alpha3": "AGO",
+              "name": "Angola",
+              "slug": "angola"
+            },
+            "id": 892235,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 932342400,
+            "proposedMarketValueRaw": {
+              "value": 9200000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "دافيد كارمو",
+                "bn": "ডেভিড কারমো",
+                "hi": "डेविड कार्मो"
+              },
+              "shortNameTranslation": {
+                "ar": "د. كارمو",
+                "bn": "ডি. কারমো",
+                "hi": "डी. कार्मो"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 16,
+          "jerseyNumber": "16",
+          "position": "D",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.54,
+          "player": {
+            "name": "Javi López",
+            "slug": "lopez-javi",
+            "shortName": "J. López",
+            "position": "D",
+            "jerseyNumber": "25",
+            "height": 183,
+            "userCount": 411,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 945404,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 1017014400,
+            "proposedMarketValueRaw": {
+              "value": 5400000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "لوبيز، جافي",
+                "bn": "লোপেজ, জাভি",
+                "hi": "लोपेज़, जावी"
+              },
+              "shortNameTranslation": {
+                "ar": "ج. لوبيز",
+                "bn": "জে. লোপেজ",
+                "hi": "जे. लोपेज़"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 25,
+          "jerseyNumber": "25",
+          "position": "D",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.85,
+          "player": {
+            "name": "Haissem Hassan",
+            "slug": "haissem-hassan",
+            "shortName": "H. Hassan",
+            "position": "M",
+            "jerseyNumber": "10",
+            "height": 173,
+            "userCount": 5667,
+            "gender": "M",
+            "country": {
+              "alpha2": "FR",
+              "alpha3": "FRA",
+              "name": "France",
+              "slug": "france"
+            },
+            "id": 942836,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 1013126400,
+            "proposedMarketValueRaw": {
+              "value": 5200000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "هيثم حسن",
+                "bn": "হাইসেম হাসান",
+                "hi": "हैसेम हसन"
+              },
+              "shortNameTranslation": {
+                "ar": "ه. حسن",
+                "bn": "এইচ. হাসান",
+                "hi": "एच. हसन"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 10,
+          "jerseyNumber": "10",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.56,
+          "player": {
+            "name": "Kwasi Sibo",
+            "slug": "kwasi-sibo",
+            "shortName": "K. Sibo",
+            "position": "M",
+            "jerseyNumber": "6",
+            "height": 182,
+            "userCount": 4525,
+            "gender": "M",
+            "country": {
+              "alpha2": "GH",
+              "alpha3": "GHA",
+              "name": "Ghana",
+              "slug": "ghana"
+            },
+            "id": 905639,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 898646400,
+            "proposedMarketValueRaw": {
+              "value": 1500000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "كواسي سيبو"
+              },
+              "shortNameTranslation": {
+                "ar": "ك. سيبو"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 6,
+          "jerseyNumber": "6",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.67,
+          "player": {
+            "name": "Nicolas Fonseca",
+            "slug": "nicolas-fonseca",
+            "shortName": "N. Fonseca",
+            "position": "M",
+            "jerseyNumber": "4",
+            "height": 179,
+            "userCount": 617,
+            "gender": "M",
+            "country": {
+              "alpha2": "UY",
+              "alpha3": "URY",
+              "name": "Uruguay",
+              "slug": "uruguay"
+            },
+            "id": 944629,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 908755200,
+            "proposedMarketValueRaw": {
+              "value": 2900000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "نيكولاس فونسيكا"
+              },
+              "shortNameTranslation": {
+                "ar": "ن. فونسيكا"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 23,
+          "jerseyNumber": "23",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.56,
+          "player": {
+            "name": "Ilyas Chaira",
+            "slug": "ilyas-chaira",
+            "shortName": "I. Chaira",
+            "position": "M",
+            "jerseyNumber": "7",
+            "height": 179,
+            "userCount": 2659,
+            "gender": "M",
+            "country": {
+              "alpha2": "MA",
+              "alpha3": "MAR",
+              "name": "Morocco",
+              "slug": "morocco"
+            },
+            "id": 1008037,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 981072000,
+            "proposedMarketValueRaw": {
+              "value": 3800000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "إلياس شيرا"
+              },
+              "shortNameTranslation": {
+                "ar": "إ. شيرا"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 7,
+          "jerseyNumber": "7",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.6,
+          "player": {
+            "name": "Alberto Reina",
+            "slug": "alberto-reina-campos",
+            "shortName": "A. Reina",
+            "position": "M",
+            "jerseyNumber": "5",
+            "height": 179,
+            "userCount": 361,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 882475,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 873763200,
+            "proposedMarketValueRaw": {
+              "value": 1400000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "ألبرتو رينا"
+              },
+              "shortNameTranslation": {
+                "ar": "أ. رينا"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 5,
+          "jerseyNumber": "5",
+          "position": "M",
+          "substitute": false
+        },
+        {
+          "avgRating": 6.84,
+          "player": {
+            "name": "Federico Viñas",
+            "slug": "federico-vinas",
+            "shortName": "F. Viñas",
+            "position": "F",
+            "jerseyNumber": "9",
+            "height": 180,
+            "userCount": 1385,
+            "gender": "M",
+            "country": {
+              "alpha2": "UY",
+              "alpha3": "URY",
+              "name": "Uruguay",
+              "slug": "uruguay"
+            },
+            "id": 976104,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 899164800,
+            "proposedMarketValueRaw": {
+              "value": 3600000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "فيديريكو فيناس"
+              },
+              "shortNameTranslation": {
+                "ar": "ف. فيناس"
+              }
+            }
+          },
+          "teamId": 2851,
+          "shirtNumber": 9,
+          "jerseyNumber": "9",
+          "position": "F",
+          "substitute": false
+        }
+      ],
+      "supportStaff": [],
+      "formation": "4-4-2",
+      "playerColor": {
+        "primary": "fbf02e",
+        "number": "0d2351",
+        "outline": "fbf02e",
+        "fancyNumber": "222226"
+      },
+      "goalkeeperColor": {
+        "primary": "a9e2bf",
+        "number": "000800",
+        "outline": "a9e2bf",
+        "fancyNumber": "222226"
+      },
+      "missingPlayers": [
+        {
+          "player": {
+            "name": "David Costas",
+            "slug": "david-costas",
+            "shortName": "D. Costas",
+            "position": "D",
+            "jerseyNumber": "4",
+            "height": 183,
+            "userCount": 272,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 345333,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 796176000,
+            "proposedMarketValueRaw": {
+              "value": 1500000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "ديفيد كوستاس",
+                "bn": "ডেভিড কোস্টাস",
+                "hi": "डेविड कोस्टास"
+              },
+              "shortNameTranslation": {
+                "ar": "د. كوستاس",
+                "bn": "ডি. কোস্টাস",
+                "hi": "डी. कोस्टास"
+              }
+            }
+          },
+          "type": "doubtful",
+          "reason": 1,
+          "externalType": 5
+        },
+        {
+          "player": {
+            "name": "Eric Bailly",
+            "firstName": "",
+            "lastName": "",
+            "slug": "eric-bailly",
+            "shortName": "E. Bailly",
+            "position": "D",
+            "jerseyNumber": "2",
+            "height": 187,
+            "userCount": 4295,
+            "gender": "M",
+            "sofascoreId": "ericbailly",
+            "country": {
+              "alpha2": "CI",
+              "alpha3": "CIV",
+              "name": "Côte d'Ivoire",
+              "slug": "cote-divoire"
+            },
+            "id": 606346,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 766108800,
+            "proposedMarketValueRaw": {
+              "value": 1500000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "إيريك بايي",
+                "bn": "এরিক বেলি",
+                "hi": "एरिक बैली"
+              },
+              "shortNameTranslation": {
+                "ar": "إ. بايي",
+                "bn": "ই. বেলি",
+                "hi": "ई. बैली"
+              }
+            }
+          },
+          "type": "doubtful",
+          "reason": 1,
+          "description": "Muscle Injury",
+          "externalType": 5,
+          "expectedEndDate": "2026-03-10T00:00:00+00:00"
+        },
+        {
+          "player": {
+            "name": "Leander Dendoncker",
+            "slug": "leander-dendoncker",
+            "shortName": "L. Dendoncker",
+            "position": "M",
+            "jerseyNumber": "20",
+            "height": 188,
+            "userCount": 1633,
+            "gender": "M",
+            "country": {
+              "alpha2": "BE",
+              "alpha3": "BEL",
+              "name": "Belgium",
+              "slug": "belgium"
+            },
+            "id": 190405,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 797904000,
+            "proposedMarketValueRaw": {
+              "value": 3700000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "لياندير ديندونكير",
+                "bn": "লিয়েন্ডার ডেনডনকার",
+                "hi": "लिऐंडर डेन्डोन्कर"
+              },
+              "shortNameTranslation": {
+                "ar": "ل. ديندونكير",
+                "bn": "এল. ডেনডনকার",
+                "hi": "एल. डेन्डोन्कर"
+              }
+            }
+          },
+          "type": "doubtful",
+          "reason": 1,
+          "description": "Unknown",
+          "externalType": 5,
+          "expectedEndDate": "2026-03-10T00:00:00+00:00"
+        },
+        {
+          "player": {
+            "name": "Ovie Ejaria",
+            "firstName": "",
+            "lastName": "",
+            "slug": "ovie-ejaria",
+            "shortName": "O. Ejaria",
+            "position": "M",
+            "jerseyNumber": "14",
+            "height": 188,
+            "userCount": 373,
+            "gender": "M",
+            "country": {
+              "alpha2": "EN",
+              "alpha3": "ENG",
+              "name": "England",
+              "slug": "england"
+            },
+            "id": 845025,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 879811200,
+            "proposedMarketValueRaw": {
+              "value": 535000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "أوفي إجاريا"
+              },
+              "shortNameTranslation": {
+                "ar": "أ. إجاريا"
+              }
+            }
+          },
+          "type": "doubtful",
+          "reason": 1,
+          "description": "Muscle Injury",
+          "externalType": 5,
+          "expectedEndDate": "2026-03-10T00:00:00+00:00"
+        },
+        {
+          "player": {
+            "name": "Thiago Borbas",
+            "slug": "thiago-borbas",
+            "shortName": "T. Borbas",
+            "position": "F",
+            "jerseyNumber": "17",
+            "height": 186,
+            "userCount": 804,
+            "gender": "M",
+            "country": {
+              "alpha2": "UY",
+              "alpha3": "URY",
+              "name": "Uruguay",
+              "slug": "uruguay"
+            },
+            "id": 1018547,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 1018137600,
+            "proposedMarketValueRaw": {
+              "value": 3800000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "تياغو بورباس",
+                "bn": "থিয়াগো বোরবাস",
+                "hi": "थियागो बोरबास"
+              },
+              "shortNameTranslation": {
+                "ar": "ت. بورباس",
+                "bn": "টি. বোরবাস",
+                "hi": "टी. बोरबास"
+              }
+            }
+          },
+          "type": "doubtful",
+          "reason": 1,
+          "description": "Unknown",
+          "externalType": 5,
+          "expectedEndDate": "2026-03-13T00:00:00+00:00"
+        },
+        {
+          "player": {
+            "name": "Lucas Ahijado",
+            "slug": "lucas-ahijado",
+            "shortName": "L. Ahijado",
+            "position": "D",
+            "jerseyNumber": "24",
+            "height": 173,
+            "userCount": 110,
+            "gender": "M",
+            "country": {
+              "alpha2": "ES",
+              "alpha3": "ESP",
+              "name": "Spain",
+              "slug": "spain"
+            },
+            "id": 597876,
+            "marketValueCurrency": "EUR",
+            "dateOfBirthTimestamp": 791424000,
+            "proposedMarketValueRaw": {
+              "value": 750000,
+              "currency": "EUR"
+            },
+            "fieldTranslations": {
+              "nameTranslation": {
+                "ar": "لوكاس أهيخادو"
+              },
+              "shortNameTranslation": {
+                "ar": "ل. أهيخادو"
+              }
+            }
+          },
+          "type": "missing",
+          "reason": 1,
+          "description": "Unknown",
+          "externalType": 72,
+          "expectedEndDate": "2026-03-15T00:00:00+00:00"
+        }
+      ]
+    },
+    "statisticalVersion": 3
+  },
+  "missingPlayers": {
+    "error": {
+      "code": 404,
+      "message": "Not Found"
+    }
+  },
+  "city": "Cornella"
+}
