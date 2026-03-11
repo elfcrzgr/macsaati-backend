@@ -13,12 +13,13 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Veri motoru: Derin Sorgulama + Sıralama Modu...");
+    console.log("🚀 Veri motoru: Derin Sorgulama Modu (V2)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
     });
     const page = await browser.newPage();
+    // ✅ Gerçekçi tarayıcı kimliği
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     const getTRDate = (offset = 0) => {
@@ -39,10 +40,7 @@ async function start() {
             if (data.events) {
                 const filtered = data.events.filter(e => {
                     const matchDateTR = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                    // Sadece bitmemiş maçları ve hedef ligleri al
-                    return targetLeagueIds.includes(e.tournament?.uniqueTournament?.id) && 
-                           (matchDateTR === date) && 
-                           (e.status.type !== 'finished');
+                    return targetLeagueIds.includes(e.tournament?.uniqueTournament?.id) && (matchDateTR === date);
                 });
                 allEvents = allEvents.concat(filtered);
             }
@@ -50,11 +48,11 @@ async function start() {
     }
 
     const finalMatches = [];
-    console.log(`🔍 ${allEvents.length} maç için detaylar toplanıyor...`);
+    console.log(`🔍 ${allEvents.length} maç için kadro derinliği taranıyor...`);
 
     for (const e of allEvents) {
         try {
-            console.log(`   -> İşleniyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
+            console.log(`   -> Sorgulanıyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
 
             const details = await page.evaluate(async (id) => {
                 const fetchJson = async (url) => {
@@ -64,38 +62,32 @@ async function start() {
                     } catch { return null; }
                 };
 
+                // ✅ Çoklu kaynak taraması
                 let info = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}`);
-                let lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`) || 
-                              await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/tactical-lineups`);
+                let lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`);
+                
+                // Eğer standart lineups boşsa, alternatif yolları dene (Şampiyonlar Ligi için)
+                if (!lineups) {
+                    lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/tactical-lineups`);
+                }
+                
                 let missing = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/missing-players`);
                 
                 return { info, lineups, missing };
             }, e.id);
 
             const dateTR = new Date(e.startTimestamp * 1000);
-            const leagueId = e.tournament.uniqueTournament.id;
             
             finalMatches.push({
                 id: e.id,
-                timestamp: e.startTimestamp, // Sıralama için eklendi
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
-                broadcaster: leagueConfigs[leagueId] || "Yerel Yayın",
-                homeTeam: { 
-                    name: e.homeTeam.name, 
-                    logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` 
-                },
-                awayTeam: { 
-                    name: e.awayTeam.name, 
-                    logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` 
-                },
+                broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
+                homeTeam: { name: e.homeTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` },
+                awayTeam: { name: e.awayTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` },
                 homeScore: e.homeScore?.display ?? "-",
                 awayScore: e.awayScore?.display ?? "-",
-                // Lig hem isim hem logo olarak güncellendi
-                tournament: {
-                    name: e.tournament.uniqueTournament.name,
-                    logo: `https://api.sofascore.app/api/v1/unique-tournament/${leagueId}/image`
-                },
+                tournament: e.tournament.uniqueTournament.name,
                 details: {
                     stadium: details.info?.event?.venue?.name || "Bilinmiyor",
                     referee: details.info?.event?.referee?.name || "Açıklanmadı",
@@ -108,13 +100,9 @@ async function start() {
         } catch (err) { }
     }
 
-    // ✅ SAAT BAZLI SIRALAMA (Küçükten büyüğe)
-    finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-
-    // Kayıt
     fs.writeFileSync("matches.json", JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    
-    console.log(`✅ TAMAMLANDI: ${finalMatches.length} maç zamana göre sıralandı.`);
+    const lineupCount = finalMatches.filter(m => m.details.lineups).length;
+    console.log(`✅ TAMAMLANDI: ${finalMatches.length}/${lineupCount} kadro çekildi.`);
     await browser.close();
 }
 

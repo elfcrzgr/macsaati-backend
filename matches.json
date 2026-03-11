@@ -2,143 +2,7 @@
   "success": true,
   "matches": [
     {
-      "id": 14138559,
-      "timestamp": 1773225000,
-      "fixedDate": "2026-03-11",
-      "fixedTime": "13:30",
-      "broadcaster": "beIN Sports / TRT Spor",
-      "homeTeam": {
-        "name": "Hatayspor",
-        "logo": "https://api.sofascore.app/api/v1/team/3091/image"
-      },
-      "awayTeam": {
-        "name": "Sivasspor",
-        "logo": "https://api.sofascore.app/api/v1/team/3076/image"
-      },
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": {
-        "name": "Trendyol 1.Lig",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-      },
-      "details": {
-        "stadium": "Fuat Tosyali Stadium",
-        "referee": "Erdem Mertoglu",
-        "lineups": null,
-        "missingPlayers": null
-      }
-    },
-    {
-      "id": 14138565,
-      "timestamp": 1773225000,
-      "fixedDate": "2026-03-11",
-      "fixedTime": "13:30",
-      "broadcaster": "beIN Sports / TRT Spor",
-      "homeTeam": {
-        "name": "İstanbulspor",
-        "logo": "https://api.sofascore.app/api/v1/team/3066/image"
-      },
-      "awayTeam": {
-        "name": "Amed Sportif Faaliyetler",
-        "logo": "https://api.sofascore.app/api/v1/team/207011/image"
-      },
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": {
-        "name": "Trendyol 1.Lig",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-      },
-      "details": {
-        "stadium": "Esenyurt Necmi Kadioglu Stadi",
-        "referee": "Kadir Saglam",
-        "lineups": null,
-        "missingPlayers": null
-      }
-    },
-    {
-      "id": 14138562,
-      "timestamp": 1773234000,
-      "fixedDate": "2026-03-11",
-      "fixedTime": "16:00",
-      "broadcaster": "beIN Sports / TRT Spor",
-      "homeTeam": {
-        "name": "Ümraniyespor",
-        "logo": "https://api.sofascore.app/api/v1/team/55625/image"
-      },
-      "awayTeam": {
-        "name": "Erzurumspor FK",
-        "logo": "https://api.sofascore.app/api/v1/team/55603/image"
-      },
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": {
-        "name": "Trendyol 1.Lig",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-      },
-      "details": {
-        "stadium": "Ümraniye Belediyesi Sehir Stadi",
-        "referee": "Erhan Sonmez",
-        "lineups": null,
-        "missingPlayers": null
-      }
-    },
-    {
-      "id": 15285658,
-      "timestamp": 1773244800,
-      "fixedDate": "2026-03-11",
-      "fixedTime": "19:00",
-      "broadcaster": "TV8.5 / Exxen",
-      "homeTeam": {
-        "name": "Birmingham Legion FC",
-        "logo": "https://api.sofascore.app/api/v1/team/310967/image"
-      },
-      "awayTeam": {
-        "name": "Hartford Athletic",
-        "logo": "https://api.sofascore.app/api/v1/team/310968/image"
-      },
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": {
-        "name": "USL Championship",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/13363/image"
-      },
-      "details": {
-        "stadium": "BBVA Field",
-        "referee": "Açıklanmadı",
-        "lineups": null,
-        "missingPlayers": null
-      }
-    },
-    {
-      "id": 14143639,
-      "timestamp": 1773248400,
-      "fixedDate": "2026-03-11",
-      "fixedTime": "20:00",
-      "broadcaster": "beIN Sports / TRT Spor",
-      "homeTeam": {
-        "name": "Keçiörengücü",
-        "logo": "https://api.sofascore.app/api/v1/team/6366/image"
-      },
-      "awayTeam": {
-        "name": "Sakaryaspor",
-        "logo": "https://api.sofascore.app/api/v1/team/3080/image"
-      },
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": {
-        "name": "Trendyol 1.Lig",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-      },
-      "details": {
-        "stadium": "Aktepe Stadium",
-        "referee": "Batuhan Kolak",
-        "lineups": null,
-        "missingPlayers": null
-      }
-    },
-    {
       "id": 15631363,
-      "timestamp": 1773251100,
       "fixedDate": "2026-03-11",
       "fixedTime": "20:45",
       "broadcaster": "TRT / Tabii",
@@ -152,10 +16,7 @@
       },
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": {
-        "name": "UEFA Champions League",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/7/image"
-      },
+      "tournament": "UEFA Champions League",
       "details": {
         "stadium": "BayArena",
         "referee": "Halil Umut Meler",
@@ -1711,7 +1572,6 @@
     },
     {
       "id": 15631335,
-      "timestamp": 1773259200,
       "fixedDate": "2026-03-11",
       "fixedTime": "23:00",
       "broadcaster": "TRT / Tabii",
@@ -1725,10 +1585,7 @@
       },
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": {
-        "name": "UEFA Champions League",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/7/image"
-      },
+      "tournament": "UEFA Champions League",
       "details": {
         "stadium": "Aspmyra Stadion",
         "referee": "Ivan Kružliak",
@@ -3001,7 +2858,6 @@
     },
     {
       "id": 15631341,
-      "timestamp": 1773259200,
       "fixedDate": "2026-03-11",
       "fixedTime": "23:00",
       "broadcaster": "TRT / Tabii",
@@ -3015,10 +2871,7 @@
       },
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": {
-        "name": "UEFA Champions League",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/7/image"
-      },
+      "tournament": "UEFA Champions League",
       "details": {
         "stadium": "Parc des Princes",
         "referee": "Alejandro Hernandez",
@@ -4274,7 +4127,6 @@
     },
     {
       "id": 15631329,
-      "timestamp": 1773259200,
       "fixedDate": "2026-03-11",
       "fixedTime": "23:00",
       "broadcaster": "TRT / Tabii",
@@ -4288,10 +4140,7 @@
       },
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": {
-        "name": "UEFA Champions League",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/7/image"
-      },
+      "tournament": "UEFA Champions League",
       "details": {
         "stadium": "Bernabéu",
         "referee": "Maurizio Mariani",
@@ -5833,8 +5682,122 @@
       }
     },
     {
+      "id": 14138559,
+      "fixedDate": "2026-03-11",
+      "fixedTime": "13:30",
+      "broadcaster": "beIN Sports / TRT Spor",
+      "homeTeam": {
+        "name": "Hatayspor",
+        "logo": "https://api.sofascore.app/api/v1/team/3091/image"
+      },
+      "awayTeam": {
+        "name": "Sivasspor",
+        "logo": "https://api.sofascore.app/api/v1/team/3076/image"
+      },
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Trendyol 1.Lig",
+      "details": {
+        "stadium": "Fuat Tosyali Stadium",
+        "referee": "Erdem Mertoglu",
+        "lineups": null,
+        "missingPlayers": null
+      }
+    },
+    {
+      "id": 14138565,
+      "fixedDate": "2026-03-11",
+      "fixedTime": "13:30",
+      "broadcaster": "beIN Sports / TRT Spor",
+      "homeTeam": {
+        "name": "İstanbulspor",
+        "logo": "https://api.sofascore.app/api/v1/team/3066/image"
+      },
+      "awayTeam": {
+        "name": "Amed Sportif Faaliyetler",
+        "logo": "https://api.sofascore.app/api/v1/team/207011/image"
+      },
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Trendyol 1.Lig",
+      "details": {
+        "stadium": "Esenyurt Necmi Kadioglu Stadi",
+        "referee": "Kadir Saglam",
+        "lineups": null,
+        "missingPlayers": null
+      }
+    },
+    {
+      "id": 14138562,
+      "fixedDate": "2026-03-11",
+      "fixedTime": "16:00",
+      "broadcaster": "beIN Sports / TRT Spor",
+      "homeTeam": {
+        "name": "Ümraniyespor",
+        "logo": "https://api.sofascore.app/api/v1/team/55625/image"
+      },
+      "awayTeam": {
+        "name": "Erzurumspor FK",
+        "logo": "https://api.sofascore.app/api/v1/team/55603/image"
+      },
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Trendyol 1.Lig",
+      "details": {
+        "stadium": "Ümraniye Belediyesi Sehir Stadi",
+        "referee": "Erhan Sonmez",
+        "lineups": null,
+        "missingPlayers": null
+      }
+    },
+    {
+      "id": 14143639,
+      "fixedDate": "2026-03-11",
+      "fixedTime": "20:00",
+      "broadcaster": "beIN Sports / TRT Spor",
+      "homeTeam": {
+        "name": "Keçiörengücü",
+        "logo": "https://api.sofascore.app/api/v1/team/6366/image"
+      },
+      "awayTeam": {
+        "name": "Sakaryaspor",
+        "logo": "https://api.sofascore.app/api/v1/team/3080/image"
+      },
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Trendyol 1.Lig",
+      "details": {
+        "stadium": "Aktepe Stadium",
+        "referee": "Batuhan Kolak",
+        "lineups": null,
+        "missingPlayers": null
+      }
+    },
+    {
+      "id": 15285658,
+      "fixedDate": "2026-03-11",
+      "fixedTime": "19:00",
+      "broadcaster": "TV8.5 / Exxen",
+      "homeTeam": {
+        "name": "Birmingham Legion FC",
+        "logo": "https://api.sofascore.app/api/v1/team/310967/image"
+      },
+      "awayTeam": {
+        "name": "Hartford Athletic",
+        "logo": "https://api.sofascore.app/api/v1/team/310968/image"
+      },
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "USL Championship",
+      "details": {
+        "stadium": "BBVA Field",
+        "referee": "Açıklanmadı",
+        "lineups": null,
+        "missingPlayers": null
+      }
+    },
+    {
       "id": 14138568,
-      "timestamp": 1773311400,
       "fixedDate": "2026-03-12",
       "fixedTime": "13:30",
       "broadcaster": "beIN Sports / TRT Spor",
@@ -5848,10 +5811,7 @@
       },
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": {
-        "name": "Trendyol 1.Lig",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-      },
+      "tournament": "Trendyol 1.Lig",
       "details": {
         "stadium": "Igdir Kisla Semt Sahasi",
         "referee": "Açıklanmadı",
@@ -5861,7 +5821,6 @@
     },
     {
       "id": 14138561,
-      "timestamp": 1773320400,
       "fixedDate": "2026-03-12",
       "fixedTime": "16:00",
       "broadcaster": "beIN Sports / TRT Spor",
@@ -5875,10 +5834,7 @@
       },
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": {
-        "name": "Trendyol 1.Lig",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-      },
+      "tournament": "Trendyol 1.Lig",
       "details": {
         "stadium": "Bolu Atatürk Stadium",
         "referee": "Açıklanmadı",
@@ -5887,35 +5843,7 @@
       }
     },
     {
-      "id": 15558656,
-      "timestamp": 1773320400,
-      "fixedDate": "2026-03-12",
-      "fixedTime": "16:00",
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Chanmari FC",
-        "logo": "https://api.sofascore.app/api/v1/team/830777/image"
-      },
-      "awayTeam": {
-        "name": "Dempo SC",
-        "logo": "https://api.sofascore.app/api/v1/team/34217/image"
-      },
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": {
-        "name": "I-League",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/848/image"
-      },
-      "details": {
-        "stadium": "Bilinmiyor",
-        "referee": "Açıklanmadı",
-        "lineups": null,
-        "missingPlayers": null
-      }
-    },
-    {
       "id": 14138567,
-      "timestamp": 1773334800,
       "fixedDate": "2026-03-12",
       "fixedTime": "20:00",
       "broadcaster": "beIN Sports / TRT Spor",
@@ -5929,12 +5857,32 @@
       },
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": {
-        "name": "Trendyol 1.Lig",
-        "logo": "https://api.sofascore.app/api/v1/unique-tournament/98/image"
-      },
+      "tournament": "Trendyol 1.Lig",
       "details": {
         "stadium": "Esenler Stadium",
+        "referee": "Açıklanmadı",
+        "lineups": null,
+        "missingPlayers": null
+      }
+    },
+    {
+      "id": 15558656,
+      "fixedDate": "2026-03-12",
+      "fixedTime": "16:00",
+      "broadcaster": "TRT / Tabii",
+      "homeTeam": {
+        "name": "Chanmari FC",
+        "logo": "https://api.sofascore.app/api/v1/team/830777/image"
+      },
+      "awayTeam": {
+        "name": "Dempo SC",
+        "logo": "https://api.sofascore.app/api/v1/team/34217/image"
+      },
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "I-League",
+      "details": {
+        "stadium": "Bilinmiyor",
         "referee": "Açıklanmadı",
         "lineups": null,
         "missingPlayers": null
