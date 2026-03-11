@@ -13,7 +13,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Canlı ve Gelecek Maçlar Filtreleniyor...");
+    console.log("🚀 Saat Sıralamalı ve Filtreli Veri Motoru Çalışıyor...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -27,7 +27,6 @@ async function start() {
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    // Bugün ve yarını tara
     const dates = [getTRDate(0), getTRDate(1)];
     let allEvents = [];
 
@@ -36,10 +35,9 @@ async function start() {
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
-                // Filtreleme: Hedef liglerde olacak VE maç bitmemiş (status.type != 'finished') olacak
                 const filtered = data.events.filter(e => {
                     const isTargetLeague = targetLeagueIds.includes(e.tournament?.uniqueTournament?.id);
-                    const isNotFinished = e.status?.type !== 'finished'; // Bitmiş maçları ele
+                    const isNotFinished = e.status?.type !== 'finished'; 
                     return isTargetLeague && isNotFinished;
                 });
                 allEvents = allEvents.concat(filtered);
@@ -47,16 +45,15 @@ async function start() {
         } catch (e) { console.error(`Hata: ${date}`); }
     }
 
-    // ✅ Tekrarlı Maçları Engelle (Unique ID kontrolü)
     const seenIds = new Set();
     const finalMatches = [];
 
     for (const e of allEvents) {
-        if (seenIds.has(e.id)) continue; // Eğer bu ID daha önce eklendiyse atla
+        if (seenIds.has(e.id)) continue;
         seenIds.add(e.id);
 
         try {
-            console.log(`🔍 İnceleniyor: ${e.homeTeam.name} - ${e.awayTeam.name} (${e.status.description})`);
+            console.log(`🔍 İnceleniyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
             
             const details = await page.evaluate(async (id) => {
                 const f = async (u) => {
@@ -74,9 +71,11 @@ async function start() {
             
             finalMatches.push({
                 id: e.id,
+                // Sıralama için bu değeri saklı tutuyoruz
+                rawTimestamp: e.startTimestamp, 
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
-                status: e.status.description, // Canlı skor takibi için durum bilgisini ekledik
+                status: e.status.description,
                 broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
                 homeTeam: { name: e.homeTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` },
                 awayTeam: { name: e.awayTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` },
@@ -94,9 +93,13 @@ async function start() {
         } catch (err) { }
     }
 
-    // Uygulamanın beklediği formatta kaydet
+    // ✅ SAAT BAZLI SIRALAMA (En erken maç en üstte)
+    finalMatches.sort((a, b) => a.rawTimestamp - b.rawTimestamp);
+
+    // Uygulamanın tertemiz bir liste görmesi için sıralama bittikten sonra matches.json'a yazıyoruz
     fs.writeFileSync("matches.json", JSON.stringify({ matches: finalMatches }, null, 2));
-    console.log(`🎉 İşlem tamam! ${finalMatches.length} aktif maç listelendi.`);
+    
+    console.log(`✅ SIRALAMA TAMAM: ${finalMatches.length} maç zamana göre dizildi.`);
     await browser.close();
 }
 
