@@ -7,20 +7,26 @@ const leagueConfigs = {
     35: "beIN Sports / Tivibu Spor", 34: "beIN Sports", 37: "TV8.5 / Exxen",
     238: "D-Smart / Spor Smart", 709: "CBC Sport / Yerel", 13363: "TV8.5 / Exxen",
     19: "Tivibu / TRT Spor / Tabii", 481: "Spor Smart / D-Smart",
-    7: "TRT / Tabii", 3: "TRT / Tabii", 848: "TRT / Tabii"
+    7: "TRT / Tabii", 3: "TRT / Tabii", 848: "TRT / Tabii", 912: "S Sport"
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
+// ✅ Telefonlarda engel aşan, hafif logo URL'si (Base64 değil, link)
+const getSafeLogo = (type, id) => {
+    const originalUrl = `https://www.sofascore.com/api/v1/${type}/${id}/image`;
+    // wsrv.nl yerine alternatif ve hızlı bir proxy kullanıyoruz
+    return `https://images.weserv.nl/?url=${encodeURIComponent(originalUrl)}&default=https://www.sofascore.com/static/images/placeholders/team.png&nocache`;
+};
+
 async function start() {
-    console.log("🚀 Veri motoru: Derin Sorgulama Modu (V2)...");
+    console.log("🚀 Veri motoru: Hafif ve Uyumlu Mod (V5)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
     });
     const page = await browser.newPage();
-    // ✅ Gerçekçi tarayıcı kimliği
-    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     const getTRDate = (offset = 0) => {
         const d = new Date();
@@ -35,7 +41,7 @@ async function start() {
     for (const date of [todayStr, tomorrowStr]) {
         try {
             console.log(`⏳ ${date} maç listesi taranıyor...`);
-            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`);
+            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
                 const filtered = data.events.filter(e => {
@@ -48,12 +54,9 @@ async function start() {
     }
 
     const finalMatches = [];
-    console.log(`🔍 ${allEvents.length} maç için kadro derinliği taranıyor...`);
-
     for (const e of allEvents) {
         try {
             console.log(`   -> Sorgulanıyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
-
             const details = await page.evaluate(async (id) => {
                 const fetchJson = async (url) => {
                     try {
@@ -61,33 +64,26 @@ async function start() {
                         return r.ok ? await r.json() : null;
                     } catch { return null; }
                 };
-
-                // ✅ Çoklu kaynak taraması
                 let info = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}`);
                 let lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`);
-                
-                // Eğer standart lineups boşsa, alternatif yolları dene (Şampiyonlar Ligi için)
-                if (!lineups) {
-                    lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/tactical-lineups`);
-                }
-                
+                if (!lineups) lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/tactical-lineups`);
                 let missing = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/missing-players`);
-                
                 return { info, lineups, missing };
             }, e.id);
 
             const dateTR = new Date(e.startTimestamp * 1000);
+            const leagueId = e.tournament.uniqueTournament.id;
             
             finalMatches.push({
                 id: e.id,
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
-                broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
-                homeTeam: { name: e.homeTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` },
-                awayTeam: { name: e.awayTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` },
+                broadcaster: leagueConfigs[leagueId] || "Yerel Yayın",
+                homeTeam: { name: e.homeTeam.name, logo: getSafeLogo('team', e.homeTeam.id) },
+                awayTeam: { name: e.awayTeam.name, logo: getSafeLogo('team', e.awayTeam.id) },
                 homeScore: e.homeScore?.display ?? "-",
                 awayScore: e.awayScore?.display ?? "-",
-                tournament: e.tournament.uniqueTournament.name,
+                tournament: { name: e.tournament.uniqueTournament.name, logo: getSafeLogo('unique-tournament', leagueId) },
                 details: {
                     stadium: details.info?.event?.venue?.name || "Bilinmiyor",
                     referee: details.info?.event?.referee?.name || "Açıklanmadı",
@@ -95,14 +91,12 @@ async function start() {
                     missingPlayers: details.missing
                 }
             });
-
             await new Promise(r => setTimeout(r, 600)); 
         } catch (err) { }
     }
 
     fs.writeFileSync("matches.json", JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    const lineupCount = finalMatches.filter(m => m.details.lineups).length;
-    console.log(`✅ TAMAMLANDI: ${finalMatches.length}/${lineupCount} kadro çekildi.`);
+    console.log(`✅ İşlem bitti. Dosya boyutu korundu, Xiaomi uyumluluğu eklendi.`);
     await browser.close();
 }
 
