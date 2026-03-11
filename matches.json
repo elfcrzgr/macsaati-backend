@@ -1,9 +1,9 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-11T08:41:46.739Z",
-  "cacheKey": 1773218506740,
+  "lastUpdated": "2026-03-11T10:40:21.582Z",
+  "cacheKey": 1773225621583,
   "totalMatches": 13,
-  "matchesWithLineup": 4,
+  "matchesWithLineup": 6,
   "matches": [
     {
       "id": 14138559,
@@ -20,13 +20,2360 @@
         "id": 3076,
         "logo": "https://api.sofascore.app/api/v1/team/3076/image"
       },
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": 0,
+      "awayScore": 0,
       "tournament": "Trendyol 1.Lig",
       "details": {
         "stadium": "Fuat Tosyali Stadium",
         "referee": "Erdem Mertoglu",
-        "lineups": null,
+        "lineups": {
+          "confirmed": true,
+          "home": {
+            "players": [
+              {
+                "player": {
+                  "name": "Emir Dadük",
+                  "firstName": "Emir Dadük",
+                  "slug": "emir-daduk",
+                  "shortName": "E. Dadük",
+                  "position": "G",
+                  "jerseyNumber": "78",
+                  "height": 191,
+                  "userCount": 24,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1618350,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1202860800,
+                  "proposedMarketValueRaw": {
+                    "value": 205000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "إمير دادوك"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "إ. دادوك"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 78,
+                "jerseyNumber": "78",
+                "position": "G",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 4,
+                  "accuratePass": 2,
+                  "totalLongBalls": 3,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 3,
+                  "ballRecovery": 1,
+                  "savedShotsFromInsideTheBox": 2,
+                  "saves": 2,
+                  "minutesPlayed": 10,
+                  "touches": 6,
+                  "rating": 6.8,
+                  "possessionLostCtrl": 2,
+                  "keeperSaveValue": 0.1472,
+                  "ratingVersions": {
+                    "original": 6.8,
+                    "alternative": 6.9
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.02,
+                  "defensiveValueNormalized": 0.15,
+                  "goalkeeperValueNormalized": 0.17,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Seyit Gazanfer",
+                  "firstName": "Seyit Gazanfer",
+                  "lastName": "",
+                  "slug": "seyit-gazanfer",
+                  "shortName": "S. Gazanfer",
+                  "position": "D",
+                  "jerseyNumber": "21",
+                  "height": 180,
+                  "userCount": 1,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1165298,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 904953600,
+                  "proposedMarketValueRaw": {
+                    "value": 73000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "هارداردوتير، دريفا"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "س. غازانفير"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 21,
+                "jerseyNumber": "21",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 2,
+                  "accurateOwnHalfPasses": 2,
+                  "totalOwnHalfPasses": 2,
+                  "duelWon": 3,
+                  "ballRecovery": 1,
+                  "totalTackle": 2,
+                  "wonTackle": 2,
+                  "wasFouled": 1,
+                  "minutesPlayed": 10,
+                  "touches": 7,
+                  "rating": 6.8,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 4.1837783163069,
+                  "ballCarriesCount": 1,
+                  "totalProgression": -2.5468549164642,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.8,
+                    "alternative": 6.9
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0,
+                  "dribbleValueNormalized": 0.01,
+                  "defensiveValueNormalized": 0.2,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Melih Sen",
+                  "firstName": "Melih Sen",
+                  "slug": "melih-sen",
+                  "shortName": "M. Sen",
+                  "position": "D",
+                  "jerseyNumber": "97",
+                  "height": 190,
+                  "userCount": 1,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2124249,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1151625600,
+                  "proposedMarketValueRaw": {
+                    "value": 23000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "سين، ميليح"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. سين"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 97,
+                "jerseyNumber": "97",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 1,
+                  "totalLongBalls": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "totalClearance": 1,
+                  "minutesPlayed": 10,
+                  "touches": 3,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.01,
+                  "defensiveValueNormalized": 0.19,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Yigit Ali Buz",
+                  "slug": "yigit-ali-buz",
+                  "shortName": "Y. A. Buz",
+                  "position": "D",
+                  "jerseyNumber": "95",
+                  "height": 188,
+                  "userCount": 16,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2010670,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1174521600,
+                  "proposedMarketValueRaw": {
+                    "value": 105000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "علي بوز، ييغيت"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ي. علي بوز"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 95,
+                "jerseyNumber": "95",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 3,
+                  "accurateOwnHalfPasses": 3,
+                  "totalOwnHalfPasses": 3,
+                  "minutesPlayed": 10,
+                  "touches": 4,
+                  "rating": 6.5,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.01,
+                  "defensiveValueNormalized": -0.01,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Sinan Ozen",
+                  "firstName": "Sinan Özen",
+                  "slug": "sinan-ozen",
+                  "shortName": "S. Özen",
+                  "position": "D",
+                  "jerseyNumber": "47",
+                  "height": 185,
+                  "userCount": 2,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "NL",
+                    "alpha3": "NLD",
+                    "name": "Netherlands",
+                    "slug": "netherlands"
+                  },
+                  "id": 2462522,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1106006400
+                },
+                "teamId": 3091,
+                "shirtNumber": 47,
+                "jerseyNumber": "47",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 1,
+                  "totalLongBalls": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "aerialLost": 1,
+                  "duelLost": 1,
+                  "minutesPlayed": 10,
+                  "touches": 3,
+                  "rating": 6.4,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 4.0599656402487,
+                  "ballCarriesCount": 1,
+                  "totalProgression": 0.83741631281174,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.4,
+                    "alternative": 6.4
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.02,
+                  "dribbleValueNormalized": -0.01,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Muhammed Gönülaçar",
+                  "slug": "muhammed-gonulacar",
+                  "shortName": "M. Gönülaçar",
+                  "position": "M",
+                  "jerseyNumber": "4",
+                  "height": 187,
+                  "userCount": 7,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 803355,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 780624000,
+                  "proposedMarketValueRaw": {
+                    "value": 135000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "محمد غونولاچار"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. غونولاچار"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 4,
+                "jerseyNumber": "4",
+                "position": "M",
+                "substitute": false,
+                "captain": true,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 3,
+                  "accurateOwnHalfPasses": 2,
+                  "totalOwnHalfPasses": 2,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "minutesPlayed": 10,
+                  "touches": 3,
+                  "rating": 6.5,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.03,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Sharif Osman",
+                  "firstName": "Sharif Osman",
+                  "slug": "sharif-osman",
+                  "shortName": "S. Osman",
+                  "position": "M",
+                  "jerseyNumber": "48",
+                  "height": 185,
+                  "userCount": 18,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "GH",
+                    "alpha3": "GHA",
+                    "name": "Ghana",
+                    "slug": "ghana"
+                  },
+                  "id": 2052057,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1037145600,
+                  "proposedMarketValueRaw": {
+                    "value": 135000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "شريف عثمان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ش. عثمان"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 48,
+                "jerseyNumber": "48",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 1,
+                  "accuratePass": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "ballRecovery": 1,
+                  "minutesPlayed": 10,
+                  "touches": 1,
+                  "rating": 6.5,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Yunus Azrak",
+                  "firstName": "Yunus Azrak",
+                  "slug": "yunus-azrak",
+                  "shortName": "Y. Azrak",
+                  "position": "F",
+                  "jerseyNumber": "25",
+                  "height": 170,
+                  "userCount": 95,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1906706,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1226361600,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "يونس أزراك"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ي. أزراك"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 25,
+                "jerseyNumber": "25",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 1,
+                  "totalOwnHalfPasses": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "totalCross": 1,
+                  "duelLost": 1,
+                  "fouls": 1,
+                  "minutesPlayed": 10,
+                  "touches": 3,
+                  "rating": 6.4,
+                  "possessionLostCtrl": 2,
+                  "ratingVersions": {
+                    "original": 6.4,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.05,
+                  "defensiveValueNormalized": -0.01,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Rakhim Chaadaev",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "rakhim-chaadaev",
+                  "shortName": "R. Chaadaev",
+                  "position": "M",
+                  "jerseyNumber": "81",
+                  "height": 180,
+                  "userCount": 14,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "RU",
+                    "alpha3": "RUS",
+                    "name": "Russia",
+                    "slug": "russia"
+                  },
+                  "id": 1436396,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1115769600,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "رحيم تشاداييف"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ر. تشاداييف"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 81,
+                "jerseyNumber": "81",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 2,
+                  "minutesPlayed": 10,
+                  "touches": 3,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.02,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Ünal-Emre Durmushan",
+                  "firstName": "Ünal-Emre Durmushan",
+                  "lastName": "",
+                  "slug": "unal-emre-durmushan",
+                  "shortName": "Ü. Durmushan",
+                  "position": "M",
+                  "jerseyNumber": "18",
+                  "height": 175,
+                  "userCount": 6,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "DE",
+                    "alpha3": "DEU",
+                    "name": "Germany",
+                    "slug": "germany"
+                  },
+                  "id": 1391929,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1066608000,
+                  "proposedMarketValueRaw": {
+                    "value": 160000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أونال-إيمري دورموشان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. دورموشان"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 18,
+                "jerseyNumber": "18",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "duelWon": 1,
+                  "totalTackle": 1,
+                  "minutesPlayed": 10,
+                  "touches": 2,
+                  "rating": 6.6,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Yilmaz Cin",
+                  "firstName": "Yilmaz Gin",
+                  "slug": "yilmaz-gin",
+                  "shortName": "Y. Cin",
+                  "position": "F",
+                  "jerseyNumber": "17",
+                  "height": 185,
+                  "userCount": 17,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1990563,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1215734400,
+                  "proposedMarketValueRaw": {
+                    "value": 26000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "جين، يلماز"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ي. جين"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 17,
+                "jerseyNumber": "17",
+                "position": "F",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 4,
+                  "accuratePass": 2,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 2,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 2,
+                  "duelLost": 1,
+                  "duelWon": 1,
+                  "wasFouled": 1,
+                  "fouls": 1,
+                  "minutesPlayed": 10,
+                  "touches": 6,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 2,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0,
+                  "defensiveValueNormalized": -0.04,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Demir Sarıcalı",
+                  "firstName": "Demir Saricali",
+                  "slug": "demir-saricali",
+                  "shortName": "D. Sarıcalı",
+                  "position": "G",
+                  "jerseyNumber": "34",
+                  "height": 195,
+                  "userCount": 17,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1548585,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1104537600,
+                  "proposedMarketValueRaw": {
+                    "value": 130000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ديمير ساركالي"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. ساركالي"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 34,
+                "jerseyNumber": "34",
+                "position": "G",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Cenk Dogan",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "dogan-cenk",
+                  "shortName": "C. Dogan",
+                  "position": "D",
+                  "jerseyNumber": "23",
+                  "userCount": 1,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 934244,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 890352000,
+                  "proposedMarketValueRaw": {
+                    "value": 71000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "دوغان، جنك"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ج. دوغان"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 23,
+                "jerseyNumber": "23",
+                "position": "D",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Ersin Aydemir",
+                  "firstName": "Ersin Aydemir",
+                  "slug": "ersin-aydemir",
+                  "shortName": "E. Aydemir",
+                  "position": "D",
+                  "jerseyNumber": "33",
+                  "height": 178,
+                  "userCount": 3,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2124247,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1138320000,
+                  "proposedMarketValueRaw": {
+                    "value": 80000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "إرسين أيديمير"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "إ. أيديمير"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 33,
+                "jerseyNumber": "33",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Ali Yıldız",
+                  "slug": "ali-yildiz",
+                  "shortName": "A. Yıldız",
+                  "position": "M",
+                  "jerseyNumber": "20",
+                  "height": 173,
+                  "userCount": 26,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1516749,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1173657600,
+                  "proposedMarketValueRaw": {
+                    "value": 135000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "علي يلدز"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ع. يلدز"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 20,
+                "jerseyNumber": "20",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Cemil Aksu",
+                  "firstName": "Cemil Aksu",
+                  "slug": "cemil-aksu",
+                  "shortName": "C. Aksu",
+                  "position": "M",
+                  "jerseyNumber": "19",
+                  "userCount": 1,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2369004,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1137283200,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "جميل أكسو"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ج. أكسو"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 19,
+                "jerseyNumber": "19",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mustafa Aydin",
+                  "firstName": "Mustafa Aydin",
+                  "slug": "mustafa-aydin",
+                  "shortName": "M. Aydin",
+                  "position": "M",
+                  "jerseyNumber": "98",
+                  "userCount": 5,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "EG",
+                    "alpha3": "EGY",
+                    "name": "Egypt",
+                    "slug": "egypt"
+                  },
+                  "id": 2265886,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1195171200,
+                  "proposedMarketValueRaw": {
+                    "value": 80000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مصطفى أيدين"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. أيدين"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 98,
+                "jerseyNumber": "98",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Halil Can Cemali",
+                  "firstName": "Halil Can Cemali",
+                  "lastName": "",
+                  "slug": "halil-can-cemali",
+                  "shortName": "H. C. Cemali",
+                  "position": "M",
+                  "jerseyNumber": "84",
+                  "height": 179,
+                  "userCount": 0,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1480625,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1044835200,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "حليل جان جيمالي"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ح. جيمالي"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 84,
+                "jerseyNumber": "84",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Prince Ating",
+                  "firstName": "Prince Ating",
+                  "slug": "prince-ating",
+                  "shortName": "P. Ating",
+                  "position": "F",
+                  "jerseyNumber": "90",
+                  "height": 185,
+                  "userCount": 7,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "NG",
+                    "alpha3": "NGA",
+                    "name": "Nigeria",
+                    "slug": "nigeria"
+                  },
+                  "id": 2462521,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1185926400
+                },
+                "teamId": 3091,
+                "shirtNumber": 90,
+                "jerseyNumber": "90",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Deniz Aksoy",
+                  "firstName": "Deniz",
+                  "lastName": "Aksoy",
+                  "slug": "deniz-aksoy",
+                  "shortName": "D. Aksoy",
+                  "position": "F",
+                  "jerseyNumber": "9",
+                  "height": 170,
+                  "userCount": 8,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2026680,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1173657600,
+                  "proposedMarketValueRaw": {
+                    "value": 155000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أكصوي، دينيز"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. أكصوي"
+                    }
+                  }
+                },
+                "teamId": 3091,
+                "shirtNumber": 9,
+                "jerseyNumber": "9",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Musa Abdulahi",
+                  "firstName": "Musa Abdulahi",
+                  "slug": "musa-abdulahi",
+                  "shortName": "M. Abdulahi",
+                  "jerseyNumber": "57",
+                  "userCount": 2,
+                  "gender": "M",
+                  "country": {},
+                  "id": 2462520,
+                  "marketValueCurrency": "EUR"
+                },
+                "teamId": 3091,
+                "shirtNumber": 57,
+                "jerseyNumber": "57",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              }
+            ],
+            "supportStaff": [],
+            "formation": "4-2-3-1",
+            "playerColor": {
+              "primary": "ffffff",
+              "number": "811313",
+              "outline": "ffffff",
+              "fancyNumber": "222226"
+            },
+            "goalkeeperColor": {
+              "primary": "75d51e",
+              "number": "ffffff",
+              "outline": "75d51e",
+              "fancyNumber": "222226"
+            }
+          },
+          "away": {
+            "players": [
+              {
+                "player": {
+                  "name": "Mehmet Göktuğ Bakırbaş",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "mehmet-goktug-bakirbas",
+                  "shortName": "M. G. Bakırbaş",
+                  "position": "G",
+                  "jerseyNumber": "1",
+                  "height": 196,
+                  "userCount": 20,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 816223,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 833587200,
+                  "proposedMarketValueRaw": {
+                    "value": 290000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "محمد غوكطوغ باكيرباش"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. باكيرباش"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 1,
+                "jerseyNumber": "1",
+                "position": "G",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 2,
+                  "totalLongBalls": 1,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "minutesPlayed": 10,
+                  "touches": 2,
+                  "rating": 6.3,
+                  "totalBallCarriesDistance": 7.799093280632,
+                  "ballCarriesCount": 1,
+                  "totalProgression": 1.6511112026108,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.3,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.02,
+                  "dribbleValueNormalized": -0.9,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Murat Paluli",
+                  "slug": "murat-paluli",
+                  "shortName": "M. Paluli",
+                  "position": "D",
+                  "jerseyNumber": "7",
+                  "height": 175,
+                  "userCount": 36,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 893014,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 776390400,
+                  "proposedMarketValueRaw": {
+                    "value": 495000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مراد بالولي"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. بالولي"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 7,
+                "jerseyNumber": "7",
+                "position": "D",
+                "substitute": false,
+                "captain": true,
+                "statistics": {
+                  "shotOffTarget": 1,
+                  "totalClearance": 1,
+                  "minutesPlayed": 10,
+                  "touches": 2,
+                  "rating": 6.5,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 1,
+                  "shotValueNormalized": 0,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Aaron Appindangoyé",
+                  "slug": "aaron-appindangoye",
+                  "shortName": "A. Appindangoyé",
+                  "position": "D",
+                  "jerseyNumber": "2",
+                  "height": 185,
+                  "userCount": 330,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "GA",
+                    "alpha3": "GAB",
+                    "name": "Gabon",
+                    "slug": "gabon"
+                  },
+                  "id": 785850,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 698544000,
+                  "proposedMarketValueRaw": {
+                    "value": 285000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "هارون أبيندانغويه",
+                      "bn": "হারুন আপিন্দনগয়ে",
+                      "hi": "आरोन अप्पिनडांगोये"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ه. أبيندانغويه",
+                      "bn": "এ. আপিন্দনগয়ে",
+                      "hi": "ए. अप्पिनडांगोये"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 2,
+                "jerseyNumber": "2",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 3,
+                  "totalLongBalls": 1,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 3,
+                  "totalOwnHalfPasses": 3,
+                  "accurateOppositionHalfPasses": 0,
+                  "totalOppositionHalfPasses": 0,
+                  "totalCross": 1,
+                  "accurateCross": 1,
+                  "duelLost": 1,
+                  "duelWon": 1,
+                  "dispossessed": 1,
+                  "wasFouled": 1,
+                  "minutesPlayed": 10,
+                  "touches": 9,
+                  "rating": 6.8,
+                  "possessionLostCtrl": 2,
+                  "totalBallCarriesDistance": 37.481814245103,
+                  "ballCarriesCount": 3,
+                  "totalProgression": 29.508981494193,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.8,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.28,
+                  "dribbleValueNormalized": 0.01,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Okan Erdoğan",
+                  "slug": "okan-erdogan",
+                  "shortName": "O. Erdoğan",
+                  "position": "D",
+                  "jerseyNumber": "3",
+                  "height": 185,
+                  "userCount": 53,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "DE",
+                    "alpha3": "DEU",
+                    "name": "Germany",
+                    "slug": "germany"
+                  },
+                  "id": 881213,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 907027200,
+                  "proposedMarketValueRaw": {
+                    "value": 680000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أوكان إردوغان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. إردوغان"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 3,
+                "jerseyNumber": "3",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 4,
+                  "accuratePass": 4,
+                  "accurateOwnHalfPasses": 3,
+                  "totalOwnHalfPasses": 3,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "duelLost": 1,
+                  "duelWon": 1,
+                  "interceptionWon": 1,
+                  "wasFouled": 1,
+                  "fouls": 1,
+                  "minutesPlayed": 10,
+                  "touches": 6,
+                  "rating": 6.6,
+                  "totalBallCarriesDistance": 61.737335277727,
+                  "ballCarriesCount": 2,
+                  "totalProgression": 52.259743850665,
+                  "bestBallCarryProgression": 31.106957064783,
+                  "totalProgressiveBallCarriesDistance": 33.595362194803,
+                  "progressiveBallCarriesCount": 1,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.07,
+                  "dribbleValueNormalized": 0.02,
+                  "defensiveValueNormalized": -0.02,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Emirhan Başyiğit",
+                  "firstName": "Emirhan Basyigit",
+                  "slug": "emirhan-basyigit",
+                  "shortName": "E. Başyiğit",
+                  "position": "D",
+                  "jerseyNumber": "5",
+                  "height": 190,
+                  "userCount": 97,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1149004,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1114387200,
+                  "proposedMarketValueRaw": {
+                    "value": 620000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مايكل سير"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. سير"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 5,
+                "jerseyNumber": "5",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 1,
+                  "totalLongBalls": 2,
+                  "accurateLongBalls": 1,
+                  "totalOwnHalfPasses": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "totalClearance": 1,
+                  "minutesPlayed": 10,
+                  "touches": 4,
+                  "rating": 6.6,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 21.306170467731,
+                  "ballCarriesCount": 1,
+                  "totalProgression": 16.422933897807,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.04,
+                  "dribbleValueNormalized": 0,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Daniel Avramovski",
+                  "slug": "daniel-avramovski",
+                  "shortName": "D. Avramovski",
+                  "position": "M",
+                  "jerseyNumber": "72",
+                  "height": 184,
+                  "userCount": 95,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "MK",
+                    "alpha3": "MKD",
+                    "name": "North Macedonia",
+                    "slug": "north-macedonia"
+                  },
+                  "id": 157615,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 793238400,
+                  "proposedMarketValueRaw": {
+                    "value": 360000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "دانييل أفراموفسكي",
+                      "bn": "ড্যানিয়েল আভ্রামোভস্কি",
+                      "hi": "डैनियल अव्रामोव्स्की"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. أفراموفسكي",
+                      "bn": "ডি. আভ্রামোভস্কি",
+                      "hi": "डी. अव्रामोव्स्की"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 72,
+                "jerseyNumber": "72",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 3,
+                  "accurateOppositionHalfPasses": 3,
+                  "totalOppositionHalfPasses": 3,
+                  "ballRecovery": 1,
+                  "minutesPlayed": 10,
+                  "touches": 4,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.02,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mert Çelik",
+                  "slug": "mert-celik",
+                  "shortName": "M. Çelik",
+                  "position": "D",
+                  "jerseyNumber": "20",
+                  "height": 186,
+                  "userCount": 195,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "AZ",
+                    "alpha3": "AZE",
+                    "name": "Azerbaijan",
+                    "slug": "azerbaijan"
+                  },
+                  "id": 973624,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 960595200,
+                  "proposedMarketValueRaw": {
+                    "value": 230000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ميرت تشيليك",
+                      "bn": "মের্ট সেলিক",
+                      "hi": "मर्ट सेलिक"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. تشيليك",
+                      "bn": "এম. সেলিক",
+                      "hi": "एम. सेलिक"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 20,
+                "jerseyNumber": "20",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 2,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "totalClearance": 1,
+                  "minutesPlayed": 10,
+                  "touches": 3,
+                  "rating": 6.5,
+                  "keyPass": 1,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.02,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Cihat Çelik",
+                  "slug": "cihat-celik",
+                  "shortName": "C. Celik",
+                  "position": "M",
+                  "jerseyNumber": "80",
+                  "height": 182,
+                  "userCount": 27,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "NL",
+                    "alpha3": "NLD",
+                    "name": "Netherlands",
+                    "slug": "netherlands"
+                  },
+                  "id": 339253,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 820540800,
+                  "proposedMarketValueRaw": {
+                    "value": 370000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "جيهات تشيليك"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ج. تشيليك"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 80,
+                "jerseyNumber": "80",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 4,
+                  "accuratePass": 4,
+                  "totalLongBalls": 1,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "accurateOppositionHalfPasses": 3,
+                  "totalOppositionHalfPasses": 3,
+                  "interceptionWon": 1,
+                  "ballRecovery": 3,
+                  "minutesPlayed": 10,
+                  "touches": 5,
+                  "rating": 6.6,
+                  "keyPass": 1,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.8
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.09,
+                  "defensiveValueNormalized": 0.14,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Emre Gökay",
+                  "firstName": "Emre Gökay",
+                  "lastName": "",
+                  "slug": "emre-gokay",
+                  "shortName": "E. Gökay",
+                  "position": "F",
+                  "jerseyNumber": "19",
+                  "height": 181,
+                  "userCount": 133,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1393928,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1140220800,
+                  "proposedMarketValueRaw": {
+                    "value": 545000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "إمري جوكاي"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "إ. جوكاي"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 19,
+                "jerseyNumber": "19",
+                "position": "F",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "totalOppositionHalfPasses": 2,
+                  "aerialWon": 1,
+                  "duelWon": 1,
+                  "onTargetScoringAttempt": 2,
+                  "minutesPlayed": 10,
+                  "touches": 5,
+                  "rating": 7,
+                  "possessionLostCtrl": 2,
+                  "totalBallCarriesDistance": 58.703340910746,
+                  "ballCarriesCount": 3,
+                  "totalProgression": 40.31398565157,
+                  "bestBallCarryProgression": 30.681431799602,
+                  "totalProgressiveBallCarriesDistance": 47.518006762854,
+                  "progressiveBallCarriesCount": 2,
+                  "ratingVersions": {
+                    "original": 7,
+                    "alternative": 7
+                  },
+                  "totalShots": 2,
+                  "shotValueNormalized": -0.8,
+                  "passValueNormalized": -0.06,
+                  "dribbleValueNormalized": 1,
+                  "defensiveValueNormalized": -0.01,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Bekir Turaç Böke",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "turac-boke",
+                  "shortName": "B. T. Böke",
+                  "position": "F",
+                  "jerseyNumber": "14",
+                  "height": 190,
+                  "userCount": 70,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 997681,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 929923200,
+                  "proposedMarketValueRaw": {
+                    "value": 1000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "بكير توراج بوكه"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ب. بوكه"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 14,
+                "jerseyNumber": "14",
+                "position": "F",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 2,
+                  "totalOffside": 1,
+                  "minutesPlayed": 10,
+                  "touches": 2,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 7.9208585393251,
+                  "ballCarriesCount": 1,
+                  "totalProgression": 4.2332038426857,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.27,
+                  "dribbleValueNormalized": 0.25,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Valon Ethemi",
+                  "slug": "valon-ethemi",
+                  "shortName": "V. Ethemi",
+                  "position": "M",
+                  "jerseyNumber": "27",
+                  "height": 179,
+                  "userCount": 127,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "MK",
+                    "alpha3": "MKD",
+                    "name": "North Macedonia",
+                    "slug": "north-macedonia"
+                  },
+                  "id": 904945,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 875836800,
+                  "proposedMarketValueRaw": {
+                    "value": 600000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فالون إثيمي",
+                      "bn": "ভ্যালন এথেমি",
+                      "hi": "वैलोन एथेमी"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ف. إثيمي",
+                      "bn": "ভি. এথেমি",
+                      "hi": "वी. एथेमी"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 27,
+                "jerseyNumber": "27",
+                "position": "F",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 3,
+                  "totalLongBalls": 1,
+                  "accurateLongBalls": 1,
+                  "accurateOppositionHalfPasses": 3,
+                  "totalOppositionHalfPasses": 3,
+                  "totalCross": 1,
+                  "accurateCross": 1,
+                  "duelLost": 2,
+                  "duelWon": 1,
+                  "totalContest": 2,
+                  "wasFouled": 1,
+                  "totalOffside": 1,
+                  "minutesPlayed": 10,
+                  "touches": 8,
+                  "rating": 6.4,
+                  "possessionLostCtrl": 2,
+                  "totalBallCarriesDistance": 16.595184939346,
+                  "ballCarriesCount": 3,
+                  "totalProgression": 9.3612458597842,
+                  "progressiveBallCarriesCount": 0,
+                  "keyPass": 1,
+                  "ratingVersions": {
+                    "original": 6.4,
+                    "alternative": 6.7
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.02,
+                  "dribbleValueNormalized": -0.38,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Arda Erdursun",
+                  "slug": "arda-erdusun",
+                  "shortName": "A. Erdusun",
+                  "position": "G",
+                  "jerseyNumber": "16",
+                  "height": 193,
+                  "userCount": 6,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2027618,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1173312000,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "إردورسن، أردا"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. إردورسن"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 16,
+                "jerseyNumber": "16",
+                "position": "G",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Gökhan Akkan",
+                  "slug": "gokhan-akkan",
+                  "shortName": "G. Akkan",
+                  "position": "G",
+                  "jerseyNumber": "22",
+                  "height": 188,
+                  "userCount": 103,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 225012,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 788918400,
+                  "proposedMarketValueRaw": {
+                    "value": 420000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "جوخان أكان",
+                      "bn": "গোখন আক্কান",
+                      "hi": "गोखान अक्कन"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ج. أكان",
+                      "bn": "জি. আক্কান",
+                      "hi": "जी. अक्कन"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 22,
+                "jerseyNumber": "22",
+                "position": "G",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Ali Ayberk Selvili",
+                  "firstName": "Ali Ayberk Selvili",
+                  "slug": "ali-ayberk-selvili",
+                  "shortName": "A. A. Selvili",
+                  "position": "D",
+                  "jerseyNumber": "95",
+                  "userCount": 1,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2404785,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1172707200,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "علي أيبرك سيلفلي"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ع. سيلفلي"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 95,
+                "jerseyNumber": "95",
+                "position": "D",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mehmet Feyzi Yıldırım",
+                  "slug": "mehmet-feyzi-yildirim",
+                  "shortName": "M. F. Yıldırım",
+                  "position": "D",
+                  "jerseyNumber": "26",
+                  "height": 175,
+                  "userCount": 17,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 787897,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 822355200,
+                  "proposedMarketValueRaw": {
+                    "value": 145000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "محمد فيزي يلدريم"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. يلدريم"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 26,
+                "jerseyNumber": "26",
+                "position": "D",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Savas Ala",
+                  "slug": "savas-ala",
+                  "shortName": "S. Ala",
+                  "position": "M",
+                  "jerseyNumber": "92",
+                  "userCount": 2,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2054858,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1185321600,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "سافاش ألا"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "س. ألا"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 92,
+                "jerseyNumber": "92",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Özkan Yigiter",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "ozkan-yigiter",
+                  "shortName": "Ö. Yigiter",
+                  "position": "M",
+                  "jerseyNumber": "6",
+                  "height": 190,
+                  "userCount": 13,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1131626,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 947203200,
+                  "proposedMarketValueRaw": {
+                    "value": 375000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أوزكان ييغيتر"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. ييغيتر"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 6,
+                "jerseyNumber": "6",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Kerem Atakan Kesgin",
+                  "slug": "kerem-atakan-kesgin",
+                  "shortName": "K. A. Kesgin",
+                  "position": "M",
+                  "jerseyNumber": "17",
+                  "height": 174,
+                  "userCount": 131,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 857745,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 973382400,
+                  "proposedMarketValueRaw": {
+                    "value": 340000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "كيرم أتاكان كيسجين",
+                      "bn": "কেরাম আতাকান কেসগিন",
+                      "hi": "केरेम अताकन केसगिन"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ك. أ. كيسجين",
+                      "bn": "কে. এ. কেসগিন",
+                      "hi": "के.ए. केसगिन"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 17,
+                "jerseyNumber": "17",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Kamil Fidan",
+                  "firstName": "Kamil Fidan",
+                  "slug": "kamil-fidan",
+                  "shortName": "K. Fidan",
+                  "position": "M",
+                  "jerseyNumber": "15",
+                  "height": 185,
+                  "userCount": 12,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1618310,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1041120000,
+                  "proposedMarketValueRaw": {
+                    "value": 410000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فيدن، كامل"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ك. فيدن"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 15,
+                "jerseyNumber": "15",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Aliou Badji",
+                  "slug": "aliou-badji",
+                  "shortName": "A. Badji",
+                  "position": "F",
+                  "jerseyNumber": "11",
+                  "height": 188,
+                  "userCount": 488,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "SN",
+                    "alpha3": "SEN",
+                    "name": "Senegal",
+                    "slug": "senegal"
+                  },
+                  "id": 869845,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 876441600,
+                  "proposedMarketValueRaw": {
+                    "value": 575000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "اليو بادجي"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ا. بادجي"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 11,
+                "jerseyNumber": "11",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Aly Mallé",
+                  "slug": "aly-malle",
+                  "shortName": "A. Mallé",
+                  "position": "F",
+                  "jerseyNumber": "12",
+                  "height": 177,
+                  "userCount": 194,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "ML",
+                    "alpha3": "MLI",
+                    "name": "Mali",
+                    "slug": "mali"
+                  },
+                  "id": 822694,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 891561600,
+                  "proposedMarketValueRaw": {
+                    "value": 370000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "علي ماليه",
+                      "bn": "আলি মালে",
+                      "hi": "एली माले"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ع. ماليه",
+                      "bn": "এ. মালে",
+                      "hi": "ए. माले"
+                    }
+                  }
+                },
+                "teamId": 3076,
+                "shirtNumber": 12,
+                "jerseyNumber": "12",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              }
+            ],
+            "supportStaff": [],
+            "formation": "4-3-3",
+            "playerColor": {
+              "primary": "f8f7f7",
+              "number": "000000",
+              "outline": "f8f7f7",
+              "fancyNumber": "222226"
+            },
+            "goalkeeperColor": {
+              "primary": "d9ef5e",
+              "number": "ffffff",
+              "outline": "d9ef5e",
+              "fancyNumber": "222226"
+            }
+          },
+          "statisticalVersion": 3
+        },
         "missingPlayers": null
       }
     },
@@ -45,13 +2392,2506 @@
         "id": 207011,
         "logo": "https://api.sofascore.app/api/v1/team/207011/image"
       },
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": 0,
+      "awayScore": 0,
       "tournament": "Trendyol 1.Lig",
       "details": {
         "stadium": "Esenyurt Necmi Kadioglu Stadi",
         "referee": "Kadir Saglam",
-        "lineups": null,
+        "lineups": {
+          "confirmed": true,
+          "home": {
+            "players": [
+              {
+                "player": {
+                  "name": "Alp Tutar",
+                  "slug": "alp-tutar",
+                  "shortName": "A. Tutar",
+                  "position": "G",
+                  "jerseyNumber": "28",
+                  "height": 196,
+                  "userCount": 7,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 999490,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 864777600,
+                  "proposedMarketValueRaw": {
+                    "value": 155000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ألب توتر"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. توتر"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 28,
+                "jerseyNumber": "28",
+                "position": "G",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 10,
+                  "accuratePass": 7,
+                  "totalLongBalls": 5,
+                  "accurateLongBalls": 2,
+                  "accurateOwnHalfPasses": 5,
+                  "totalOwnHalfPasses": 5,
+                  "accurateOppositionHalfPasses": 2,
+                  "totalOppositionHalfPasses": 5,
+                  "duelWon": 1,
+                  "wasFouled": 1,
+                  "minutesPlayed": 10,
+                  "touches": 11,
+                  "rating": 6.6,
+                  "possessionLostCtrl": 3,
+                  "totalBallCarriesDistance": 22.135571375335,
+                  "ballCarriesCount": 4,
+                  "totalProgression": 9.2213172296427,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.01,
+                  "dribbleValueNormalized": 0,
+                  "defensiveValueNormalized": 0.14,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Demeaco Duhaney",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "duhaney-demeaco",
+                  "shortName": "D. Duhaney",
+                  "position": "D",
+                  "jerseyNumber": "21",
+                  "height": 180,
+                  "userCount": 26,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "EN",
+                    "alpha3": "ENG",
+                    "name": "England",
+                    "slug": "england"
+                  },
+                  "id": 851095,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 908236800,
+                  "proposedMarketValueRaw": {
+                    "value": 265000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "دوهايني، ديمياكو"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. دوهايني"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 21,
+                "jerseyNumber": "21",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 4,
+                  "accuratePass": 3,
+                  "accurateOwnHalfPasses": 3,
+                  "totalOwnHalfPasses": 3,
+                  "totalOppositionHalfPasses": 1,
+                  "minutesPlayed": 8,
+                  "touches": 5,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 13.862050653051,
+                  "ballCarriesCount": 3,
+                  "totalProgression": -1.2176893529043,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.03,
+                  "dribbleValueNormalized": -0.14,
+                  "defensiveValueNormalized": 0.15,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Elvin Mendy",
+                  "firstName": "Elvin Mendy",
+                  "slug": "elvin-mendy",
+                  "shortName": "E. Mendy",
+                  "position": "M",
+                  "jerseyNumber": "15",
+                  "height": 182,
+                  "userCount": 34,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "GM",
+                    "alpha3": "GMB",
+                    "name": "Gambia",
+                    "slug": "gambia"
+                  },
+                  "id": 2463237,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1166832000
+                },
+                "teamId": 3066,
+                "shirtNumber": 15,
+                "jerseyNumber": "15",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 10,
+                  "accuratePass": 9,
+                  "accurateOwnHalfPasses": 6,
+                  "totalOwnHalfPasses": 7,
+                  "accurateOppositionHalfPasses": 3,
+                  "totalOppositionHalfPasses": 3,
+                  "interceptionWon": 1,
+                  "minutesPlayed": 10,
+                  "touches": 11,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 29.668906932206,
+                  "ballCarriesCount": 5,
+                  "totalProgression": 10.568933051092,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.01,
+                  "dribbleValueNormalized": 0.01,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Fatih Tultak",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "tultak-fatih",
+                  "shortName": "F. Tultak",
+                  "position": "D",
+                  "jerseyNumber": "4",
+                  "height": 186,
+                  "userCount": 12,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 945244,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 983318400,
+                  "proposedMarketValueRaw": {
+                    "value": 415000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "تولتاك، فاتح"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ف. تولتاك"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 4,
+                "jerseyNumber": "4",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 12,
+                  "accuratePass": 8,
+                  "totalLongBalls": 4,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 6,
+                  "totalOwnHalfPasses": 7,
+                  "accurateOppositionHalfPasses": 2,
+                  "totalOppositionHalfPasses": 5,
+                  "aerialWon": 1,
+                  "duelWon": 2,
+                  "outfielderBlock": 1,
+                  "wasFouled": 1,
+                  "minutesPlayed": 10,
+                  "touches": 14,
+                  "rating": 6.9,
+                  "possessionLostCtrl": 4,
+                  "totalBallCarriesDistance": 36.931928348367,
+                  "ballCarriesCount": 6,
+                  "totalProgression": 11.526949954191,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.9,
+                    "alternative": 6.7
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0,
+                  "dribbleValueNormalized": 0.01,
+                  "defensiveValueNormalized": 0.36,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Turan Deniz Tuncer",
+                  "firstName": "Turan Deniz Tuncer",
+                  "slug": "turan-deniz-tuncer",
+                  "shortName": "T. D. Tuncer",
+                  "position": "D",
+                  "jerseyNumber": "18",
+                  "height": 181,
+                  "userCount": 23,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1974427,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1168214400,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "توران دينيز تونجر"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ت. تونجر"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 18,
+                "jerseyNumber": "18",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 6,
+                  "accuratePass": 6,
+                  "accurateOwnHalfPasses": 3,
+                  "totalOwnHalfPasses": 3,
+                  "accurateOppositionHalfPasses": 3,
+                  "totalOppositionHalfPasses": 3,
+                  "duelLost": 1,
+                  "duelWon": 1,
+                  "dispossessed": 1,
+                  "ballRecovery": 1,
+                  "totalTackle": 1,
+                  "wonTackle": 1,
+                  "minutesPlayed": 10,
+                  "touches": 10,
+                  "rating": 6.7,
+                  "possessionLostCtrl": 2,
+                  "totalBallCarriesDistance": 20.525367726682,
+                  "ballCarriesCount": 2,
+                  "totalProgression": -3.0770813812829,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.7,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.04,
+                  "dribbleValueNormalized": 0.01,
+                  "defensiveValueNormalized": 0.17,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Modestas Vorobjovas",
+                  "slug": "modestas-vorobjovas",
+                  "shortName": "M. Vorobjovas",
+                  "position": "M",
+                  "jerseyNumber": "6",
+                  "height": 177,
+                  "userCount": 73,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "LT",
+                    "alpha3": "LTU",
+                    "name": "Lithuania",
+                    "slug": "lithuania"
+                  },
+                  "id": 319751,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 820281600,
+                  "proposedMarketValueRaw": {
+                    "value": 465000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "موديستاس فوروبيوفاس",
+                      "bn": "মোডেস্তাস ভোরোবিভ",
+                      "hi": "मोडेस्टा वोरोबजोवास"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. فوروبيوفاس",
+                      "bn": "এম. ভোরোবজোভাস",
+                      "hi": "एम. वोरोबजोवास"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 6,
+                "jerseyNumber": "6",
+                "position": "M",
+                "substitute": false,
+                "captain": true,
+                "statistics": {
+                  "totalPass": 6,
+                  "accuratePass": 5,
+                  "accurateOwnHalfPasses": 3,
+                  "totalOwnHalfPasses": 3,
+                  "accurateOppositionHalfPasses": 2,
+                  "totalOppositionHalfPasses": 3,
+                  "ballRecovery": 1,
+                  "minutesPlayed": 10,
+                  "touches": 7,
+                  "rating": 6.6,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 32.173067821256,
+                  "ballCarriesCount": 2,
+                  "totalProgression": -31.734443596743,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.01,
+                  "dribbleValueNormalized": 0.01,
+                  "defensiveValueNormalized": 0.14,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Özcan Şahan",
+                  "firstName": "Özcan Sahan",
+                  "lastName": "",
+                  "slug": "sahan-ozcan",
+                  "shortName": "Ö. Şahan",
+                  "position": "D",
+                  "jerseyNumber": "20",
+                  "height": 176,
+                  "userCount": 17,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1170353,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 915753600,
+                  "proposedMarketValueRaw": {
+                    "value": 380000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أوزجان شاهان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. شاهان"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 20,
+                "jerseyNumber": "20",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 6,
+                  "accuratePass": 6,
+                  "accurateOwnHalfPasses": 2,
+                  "totalOwnHalfPasses": 2,
+                  "accurateOppositionHalfPasses": 4,
+                  "totalOppositionHalfPasses": 4,
+                  "totalCross": 1,
+                  "aerialLost": 1,
+                  "duelLost": 1,
+                  "interceptionWon": 1,
+                  "ballRecovery": 1,
+                  "minutesPlayed": 10,
+                  "touches": 8,
+                  "rating": 6.3,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 30.111537916421,
+                  "ballCarriesCount": 3,
+                  "totalProgression": -18.894671560801,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.3,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.05,
+                  "dribbleValueNormalized": -0.61,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Yusuf Ali Özer",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "yusuf-ali-ozer",
+                  "shortName": "Y. A. Özer",
+                  "position": "M",
+                  "jerseyNumber": "44",
+                  "height": 178,
+                  "userCount": 20,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1035355,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1024444800,
+                  "proposedMarketValueRaw": {
+                    "value": 335000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "يوسف علي أوزر"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ي. أوزر"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 44,
+                "jerseyNumber": "44",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "unsuccessfulTouch": 1,
+                  "minutesPlayed": 10,
+                  "touches": 1,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Ömer Faruk Duymaz",
+                  "firstName": "Ömer Faruk Duymaz",
+                  "slug": "omer-faruk-duymaz",
+                  "shortName": "Ö. F. Duymaz",
+                  "position": "M",
+                  "jerseyNumber": "52",
+                  "height": 181,
+                  "userCount": 65,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1974386,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1147737600,
+                  "proposedMarketValueRaw": {
+                    "value": 97000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أومر فاروق دويمز"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. دويمز"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 52,
+                "jerseyNumber": "52",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 2,
+                  "accurateOppositionHalfPasses": 2,
+                  "totalOppositionHalfPasses": 3,
+                  "unsuccessfulTouch": 1,
+                  "minutesPlayed": 10,
+                  "touches": 5,
+                  "rating": 6.6,
+                  "possessionLostCtrl": 2,
+                  "totalBallCarriesDistance": 15.40821611998,
+                  "ballCarriesCount": 1,
+                  "totalProgression": 14.325914821197,
+                  "bestBallCarryProgression": 14.325914821197,
+                  "totalProgressiveBallCarriesDistance": 15.40821611998,
+                  "progressiveBallCarriesCount": 1,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.07,
+                  "dribbleValueNormalized": 0.1,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Phellipe Cardoso Araujo",
+                  "firstName": "Phellipe Cardoso Araujo",
+                  "slug": "phellipe-cardoso-araujo",
+                  "shortName": "P. C. Araujo",
+                  "position": "M",
+                  "jerseyNumber": "37",
+                  "height": 175,
+                  "userCount": 28,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "BR",
+                    "alpha3": "BRA",
+                    "name": "Brazil",
+                    "slug": "brazil"
+                  },
+                  "id": 2026566,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1082678400,
+                  "proposedMarketValueRaw": {
+                    "value": 97000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فيلبي كاردوسو أراوجو"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ف. أراوجو"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 37,
+                "jerseyNumber": "37",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 2,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 2,
+                  "minutesPlayed": 10,
+                  "touches": 3,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 17.196358928049,
+                  "ballCarriesCount": 2,
+                  "totalProgression": 1.7544796132241,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": -0.01,
+                  "dribbleValueNormalized": 0.02,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mustafa Sol",
+                  "slug": "mustafa-sol",
+                  "shortName": "M. Sol",
+                  "position": "F",
+                  "jerseyNumber": "99",
+                  "height": 188,
+                  "userCount": 10,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 997721,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1024531200,
+                  "proposedMarketValueRaw": {
+                    "value": 235000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مصطفى سول"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. سول"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 99,
+                "jerseyNumber": "99",
+                "position": "F",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 6,
+                  "accuratePass": 6,
+                  "accurateOwnHalfPasses": 2,
+                  "totalOwnHalfPasses": 2,
+                  "accurateOppositionHalfPasses": 4,
+                  "totalOppositionHalfPasses": 4,
+                  "aerialWon": 1,
+                  "duelWon": 1,
+                  "minutesPlayed": 10,
+                  "touches": 6,
+                  "rating": 6.7,
+                  "totalBallCarriesDistance": 7.6278502869419,
+                  "ballCarriesCount": 1,
+                  "totalProgression": -5.8842491504753,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.7,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.13,
+                  "dribbleValueNormalized": -0.07,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Yunus Bahadir",
+                  "slug": "yunus-bahadir",
+                  "shortName": "Y. Bahadir",
+                  "position": "D",
+                  "jerseyNumber": "2",
+                  "height": 170,
+                  "userCount": 43,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 964756,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1028678400,
+                  "proposedMarketValueRaw": {
+                    "value": 465000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "يونس باهاردي"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ي. باهاردي"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 2,
+                "jerseyNumber": "2",
+                "position": "D",
+                "substitute": true,
+                "statistics": {
+                  "totalPass": 1,
+                  "accuratePass": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "minutesPlayed": 2,
+                  "touches": 1,
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mücahit Serbest",
+                  "slug": "serbest-mucahit",
+                  "shortName": "M. Serbest",
+                  "position": "G",
+                  "jerseyNumber": "26",
+                  "height": 190,
+                  "userCount": 19,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1174228,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1101168000,
+                  "proposedMarketValueRaw": {
+                    "value": 155000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مُجاهد سيربيست"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. سيربيست"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 26,
+                "jerseyNumber": "26",
+                "position": "G",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Duran Sahin",
+                  "firstName": "Duran Sahin",
+                  "slug": "duran-sahin",
+                  "shortName": "D. Sahin",
+                  "position": "D",
+                  "jerseyNumber": "14",
+                  "height": 189,
+                  "userCount": 15,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2268782,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1122249600,
+                  "proposedMarketValueRaw": {
+                    "value": 190000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "دوران شاهين"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. شاهين"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 14,
+                "jerseyNumber": "14",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Isa Dayakli",
+                  "firstName": "Isa Dayakli",
+                  "slug": "isa-dayakli",
+                  "shortName": "I. Dayakli",
+                  "position": "M",
+                  "jerseyNumber": "83",
+                  "height": 184,
+                  "userCount": 11,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "AT",
+                    "alpha3": "AUT",
+                    "name": "Austria",
+                    "slug": "austria"
+                  },
+                  "id": 1512825,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1010188800,
+                  "proposedMarketValueRaw": {
+                    "value": 205000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "داياكلي، عيسى"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ع. داياكلي"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 83,
+                "jerseyNumber": "83",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Abdullah Dijlan Aydin",
+                  "slug": "aydin-abdullah-dijlan",
+                  "shortName": "A. D. Aydin",
+                  "position": "M",
+                  "jerseyNumber": "11",
+                  "height": 183,
+                  "userCount": 11,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 992580,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 961113600,
+                  "proposedMarketValueRaw": {
+                    "value": 340000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أيدين، عبد الله ديجلان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ع. الله أيدين"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 11,
+                "jerseyNumber": "11",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Fahri Ay",
+                  "firstName": "Fahri Kerem Ay",
+                  "lastName": "",
+                  "slug": "fahri-kerem-ay",
+                  "shortName": "F. Ay",
+                  "position": "M",
+                  "jerseyNumber": "33",
+                  "height": 178,
+                  "userCount": 660,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1195756,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1104537600,
+                  "proposedMarketValueRaw": {
+                    "value": 215000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فخري أي"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ف. أي"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 33,
+                "jerseyNumber": "33",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mendy Mamadou",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "mendy-mamadou",
+                  "shortName": "M. Mamadou",
+                  "position": "M",
+                  "jerseyNumber": "66",
+                  "height": 185,
+                  "userCount": 493,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "SN",
+                    "alpha3": "SEN",
+                    "name": "Senegal",
+                    "slug": "senegal"
+                  },
+                  "id": 929718,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 907459200,
+                  "proposedMarketValueRaw": {
+                    "value": 530000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مندي مامادو",
+                      "bn": "মেন্ডি মামাদু",
+                      "hi": "मेंडी मामादौ"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. مامادو",
+                      "bn": "এম. মামাদু",
+                      "hi": "एम. मामादौ"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 66,
+                "jerseyNumber": "66",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "David Sambissa",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "david-sambissa",
+                  "shortName": "D. Sambissa",
+                  "position": "M",
+                  "jerseyNumber": "7",
+                  "height": 177,
+                  "userCount": 224,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "GA",
+                    "alpha3": "GAB",
+                    "name": "Gabon",
+                    "slug": "gabon"
+                  },
+                  "id": 280459,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 821318400,
+                  "proposedMarketValueRaw": {
+                    "value": 410000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ديفيد سامبيسا",
+                      "bn": "ডেভিড সাম্বিসা",
+                      "hi": "डेविड सम्बिस्सा"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. سامبيسا",
+                      "bn": "ডি. সাম্বিসা",
+                      "hi": "डी. सम्बिस्सा"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 7,
+                "jerseyNumber": "7",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Vefa Temel",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "temel-vefa",
+                  "shortName": "V. Temel",
+                  "position": "M",
+                  "jerseyNumber": "8",
+                  "height": 176,
+                  "userCount": 40,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1067329,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1036281600,
+                  "proposedMarketValueRaw": {
+                    "value": 220000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "تيميل، وفا"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "و. تيميل"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 8,
+                "jerseyNumber": "8",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mario Krstovski",
+                  "slug": "mario-krstovski",
+                  "shortName": "M. Krstovski",
+                  "position": "F",
+                  "jerseyNumber": "77",
+                  "height": 183,
+                  "userCount": 35,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "MK",
+                    "alpha3": "MKD",
+                    "name": "North Macedonia",
+                    "slug": "north-macedonia"
+                  },
+                  "id": 826300,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 891561600,
+                  "proposedMarketValueRaw": {
+                    "value": 320000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "كريستوفيسكي، ماريو",
+                      "bn": "ক্রস্টভস্কি, মারিও",
+                      "hi": "क्रस्टोव्स्की, मारियो"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. كريستوفيسكي",
+                      "bn": "এম. ক্রসটোভস্কি",
+                      "hi": "एम. क्रस्टोव्स्की"
+                    }
+                  }
+                },
+                "teamId": 3066,
+                "shirtNumber": 77,
+                "jerseyNumber": "77",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              }
+            ],
+            "supportStaff": [],
+            "formation": "4-1-4-1",
+            "playerColor": {
+              "primary": "ecc432",
+              "number": "ffffff",
+              "outline": "ecc432",
+              "fancyNumber": "222226"
+            },
+            "goalkeeperColor": {
+              "primary": "990303",
+              "number": "ffffff",
+              "outline": "990303",
+              "fancyNumber": "ffffff"
+            }
+          },
+          "away": {
+            "players": [
+              {
+                "player": {
+                  "name": "Erce Kardeşler",
+                  "slug": "erce-kardesler",
+                  "shortName": "E. Kardeşler",
+                  "position": "G",
+                  "jerseyNumber": "31",
+                  "height": 186,
+                  "userCount": 96,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 758606,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 763603200,
+                  "proposedMarketValueRaw": {
+                    "value": 375000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "إرتشي كارديشلر",
+                      "bn": "আর্সে কার্ডেসলার",
+                      "hi": "एर्स कार्देसलर"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "إ. كارديشلر",
+                      "bn": "ই. কার্ডেসলার",
+                      "hi": "ई. कार्देसलर"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 31,
+                "jerseyNumber": "31",
+                "position": "G",
+                "substitute": false,
+                "captain": true,
+                "statistics": {
+                  "totalPass": 1,
+                  "accuratePass": 1,
+                  "totalLongBalls": 1,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "saves": 1,
+                  "minutesPlayed": 10,
+                  "touches": 2,
+                  "rating": 6.5,
+                  "totalBallCarriesDistance": 6.8094852228344,
+                  "ballCarriesCount": 1,
+                  "totalProgression": -5.1680814812588,
+                  "progressiveBallCarriesCount": 0,
+                  "keeperSaveValue": 0.0003,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.7
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.02,
+                  "dribbleValueNormalized": -0.03,
+                  "defensiveValueNormalized": 0.13,
+                  "goalkeeperValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mehmet Murat Uçar",
+                  "slug": "mehmet-murat-ucar",
+                  "shortName": "M. M. Uçar",
+                  "position": "D",
+                  "jerseyNumber": "7",
+                  "height": 172,
+                  "userCount": 37,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 816407,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 681004800,
+                  "proposedMarketValueRaw": {
+                    "value": 165000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "محمد مراد أوشار"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. أوشار"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 7,
+                "jerseyNumber": "7",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 5,
+                  "accuratePass": 4,
+                  "totalLongBalls": 1,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 3,
+                  "totalOwnHalfPasses": 4,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "aerialWon": 1,
+                  "duelWon": 1,
+                  "minutesPlayed": 10,
+                  "touches": 7,
+                  "rating": 6.7,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 27.820227149198,
+                  "ballCarriesCount": 2,
+                  "totalProgression": -18.559041189068,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.7,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.03,
+                  "dribbleValueNormalized": 0.02,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mehmet Yeşil",
+                  "slug": "mehmet-yesil",
+                  "shortName": "M. Yeşil",
+                  "position": "D",
+                  "jerseyNumber": "21",
+                  "height": 188,
+                  "userCount": 51,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 840639,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 896572800,
+                  "proposedMarketValueRaw": {
+                    "value": 670000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "محمد ياشيل"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. ياشيل"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 21,
+                "jerseyNumber": "21",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 2,
+                  "totalLongBalls": 2,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 2,
+                  "totalOwnHalfPasses": 2,
+                  "totalOppositionHalfPasses": 1,
+                  "totalClearance": 3,
+                  "minutesPlayed": 10,
+                  "touches": 6,
+                  "rating": 6.6,
+                  "possessionLostCtrl": 1,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.01,
+                  "defensiveValueNormalized": 0.17,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Oleksandr Syrota",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "oleksandr-syrota",
+                  "shortName": "O. Syrota",
+                  "position": "D",
+                  "jerseyNumber": "34",
+                  "height": 193,
+                  "userCount": 166,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "UA",
+                    "alpha3": "UKR",
+                    "name": "Ukraine",
+                    "slug": "ukraine"
+                  },
+                  "id": 976367,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 960681600,
+                  "proposedMarketValueRaw": {
+                    "value": 1000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أولكسندر سيروتا",
+                      "bn": "অলেক্সান্ডার সিরোটা",
+                      "hi": "ओलेक्सांद्र सिरोटा"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. سيروتا",
+                      "bn": "ও. সিরোটা",
+                      "hi": "ओ. सिरोटा"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 34,
+                "jerseyNumber": "34",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 2,
+                  "accuratePass": 2,
+                  "totalLongBalls": 1,
+                  "accurateLongBalls": 1,
+                  "accurateOppositionHalfPasses": 2,
+                  "totalOppositionHalfPasses": 2,
+                  "duelLost": 1,
+                  "fouls": 1,
+                  "minutesPlayed": 10,
+                  "touches": 2,
+                  "rating": 6.5,
+                  "totalBallCarriesDistance": 35.381311753937,
+                  "ballCarriesCount": 2,
+                  "totalProgression": 33.555697573127,
+                  "bestBallCarryProgression": 21.449351881965,
+                  "totalProgressiveBallCarriesDistance": 22.263738769578,
+                  "progressiveBallCarriesCount": 1,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.02,
+                  "dribbleValueNormalized": 0.04,
+                  "defensiveValueNormalized": -0.01,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Celal Hanalp",
+                  "slug": "celal-hanalp",
+                  "shortName": "C. Hanalp",
+                  "position": "D",
+                  "jerseyNumber": "77",
+                  "height": 178,
+                  "userCount": 19,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 816287,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 830908800,
+                  "proposedMarketValueRaw": {
+                    "value": 195000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "جلال هانالب"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ج. هانالب"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 77,
+                "jerseyNumber": "77",
+                "position": "D",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 3,
+                  "totalLongBalls": 1,
+                  "accurateLongBalls": 1,
+                  "accurateOwnHalfPasses": 2,
+                  "totalOwnHalfPasses": 2,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "totalCross": 1,
+                  "minutesPlayed": 10,
+                  "touches": 7,
+                  "rating": 6.6,
+                  "possessionLostCtrl": 1,
+                  "totalBallCarriesDistance": 15.322879703106,
+                  "ballCarriesCount": 2,
+                  "totalProgression": -10.179565615167,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0,
+                  "dribbleValueNormalized": -0.13,
+                  "defensiveValueNormalized": 0.14,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Cem Üstündag",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "cem-ustundag",
+                  "shortName": "C. Üstündag",
+                  "position": "M",
+                  "jerseyNumber": "6",
+                  "height": 178,
+                  "userCount": 50,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "AT",
+                    "alpha3": "AUT",
+                    "name": "Austria",
+                    "slug": "austria"
+                  },
+                  "id": 1387006,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 979948800,
+                  "proposedMarketValueRaw": {
+                    "value": 310000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "جيم أويستونداج"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ج. أويستونداج"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 6,
+                "jerseyNumber": "6",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 1,
+                  "accuratePass": 1,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 1,
+                  "minutesPlayed": 10,
+                  "touches": 1,
+                  "rating": 6.7,
+                  "keyPass": 1,
+                  "ratingVersions": {
+                    "original": 6.7,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.11,
+                  "defensiveValueNormalized": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Sinan Kurt",
+                  "slug": "sinan-kurt",
+                  "shortName": "S. Kurt",
+                  "position": "M",
+                  "jerseyNumber": "5",
+                  "height": 178,
+                  "userCount": 59,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "DE",
+                    "alpha3": "DEU",
+                    "name": "Germany",
+                    "slug": "germany"
+                  },
+                  "id": 381560,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 794102400,
+                  "proposedMarketValueRaw": {
+                    "value": 435000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "سنان كورت"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "س. كورت"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 5,
+                "jerseyNumber": "5",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 6,
+                  "accuratePass": 3,
+                  "totalLongBalls": 1,
+                  "accurateOwnHalfPasses": 2,
+                  "totalOwnHalfPasses": 4,
+                  "accurateOppositionHalfPasses": 1,
+                  "totalOppositionHalfPasses": 2,
+                  "aerialLost": 2,
+                  "duelLost": 2,
+                  "minutesPlayed": 10,
+                  "touches": 8,
+                  "rating": 6.4,
+                  "possessionLostCtrl": 3,
+                  "ratingVersions": {
+                    "original": 6.4,
+                    "alternative": 6.4
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.04,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Felix Afena-Gyan",
+                  "firstName": "Felix",
+                  "lastName": "Afena-Gyan",
+                  "slug": "felix-afena-gyan",
+                  "shortName": "F. Afena-Gyan",
+                  "position": "F",
+                  "jerseyNumber": "33",
+                  "height": 175,
+                  "userCount": 3194,
+                  "gender": "M",
+                  "sofascoreId": "ohenegyanfelix9",
+                  "country": {
+                    "alpha2": "GH",
+                    "alpha3": "GHA",
+                    "name": "Ghana",
+                    "slug": "ghana"
+                  },
+                  "id": 1108921,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1042934400,
+                  "proposedMarketValueRaw": {
+                    "value": 1700000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فيليكس أفينا-جيان",
+                      "bn": "ফেলিক্স আফেনা-জ্ঞান",
+                      "hi": "फेलिक्स अफ़ेना-ग्यान"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ف. أفينا-جيان",
+                      "bn": "এফ. আফেনা-জ্ঞান",
+                      "hi": "एफ. अफ़ेना-ग्यान"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 33,
+                "jerseyNumber": "33",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 4,
+                  "accuratePass": 3,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 2,
+                  "accurateOppositionHalfPasses": 2,
+                  "totalOppositionHalfPasses": 2,
+                  "totalCross": 1,
+                  "accurateCross": 1,
+                  "duelLost": 1,
+                  "duelWon": 1,
+                  "dispossessed": 1,
+                  "ballRecovery": 1,
+                  "totalTackle": 1,
+                  "wonTackle": 1,
+                  "minutesPlayed": 10,
+                  "touches": 7,
+                  "rating": 6.7,
+                  "possessionLostCtrl": 2,
+                  "totalBallCarriesDistance": 77.697477438373,
+                  "ballCarriesCount": 3,
+                  "totalProgression": 15.944880349078,
+                  "bestBallCarryProgression": 19.136317435979,
+                  "totalProgressiveBallCarriesDistance": 61.18510967963,
+                  "progressiveBallCarriesCount": 2,
+                  "keyPass": 1,
+                  "ratingVersions": {
+                    "original": 6.7,
+                    "alternative": 6.7
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0.16,
+                  "dribbleValueNormalized": 0.11,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Florent Hasani",
+                  "slug": "florent-hasani",
+                  "shortName": "F. Hasani",
+                  "position": "M",
+                  "jerseyNumber": "20",
+                  "height": 183,
+                  "userCount": 183,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "XK",
+                    "alpha3": "XKX",
+                    "name": "Kosovo",
+                    "slug": "kosovo"
+                  },
+                  "id": 885048,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 859680000,
+                  "proposedMarketValueRaw": {
+                    "value": 825000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فلوران الحسني",
+                      "bn": "ফ্লোরেন্ট হাসানী",
+                      "hi": "फ्लोरेंट हसानी"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ف. الحسني",
+                      "bn": "এফ. হাসানী",
+                      "hi": "एफ. हसानी"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 20,
+                "jerseyNumber": "20",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 3,
+                  "accuratePass": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 3,
+                  "totalOppositionHalfPasses": 0,
+                  "totalCross": 2,
+                  "shotOffTarget": 1,
+                  "minutesPlayed": 10,
+                  "touches": 6,
+                  "rating": 6.3,
+                  "possessionLostCtrl": 4,
+                  "totalBallCarriesDistance": 10.302052781551,
+                  "ballCarriesCount": 2,
+                  "totalProgression": -0.23974301163637,
+                  "progressiveBallCarriesCount": 0,
+                  "ratingVersions": {
+                    "original": 6.3,
+                    "alternative": 6.7
+                  },
+                  "totalShots": 1,
+                  "shotValueNormalized": -0.51,
+                  "passValueNormalized": -0.16,
+                  "dribbleValueNormalized": 0.03,
+                  "defensiveValueNormalized": -0.01,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Zdravko Dimitrov",
+                  "slug": "zdravko-dimitrov",
+                  "shortName": "Z. Dimitrov",
+                  "position": "M",
+                  "jerseyNumber": "22",
+                  "height": 180,
+                  "userCount": 222,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "BG",
+                    "alpha3": "BGR",
+                    "name": "Bulgaria",
+                    "slug": "bulgaria"
+                  },
+                  "id": 871342,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 903916800,
+                  "proposedMarketValueRaw": {
+                    "value": 555000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "زدرافكو ديميتروف",
+                      "bn": "জেড্রাভকো দিমিত্রভ",
+                      "hi": "ज़द्रावको दिमित्रोव"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ز. ديميتروف",
+                      "bn": "জেড. দিমিত্রভ",
+                      "hi": "ज़ेड. दिमित्रोव"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 22,
+                "jerseyNumber": "22",
+                "position": "M",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 4,
+                  "accuratePass": 4,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "accurateOppositionHalfPasses": 3,
+                  "totalOppositionHalfPasses": 3,
+                  "ballRecovery": 2,
+                  "minutesPlayed": 10,
+                  "touches": 4,
+                  "rating": 6.6,
+                  "totalBallCarriesDistance": 51.517382203815,
+                  "ballCarriesCount": 3,
+                  "totalProgression": 35.392965802717,
+                  "bestBallCarryProgression": 30.416177143319,
+                  "totalProgressiveBallCarriesDistance": 39.820911202533,
+                  "progressiveBallCarriesCount": 1,
+                  "ratingVersions": {
+                    "original": 6.6,
+                    "alternative": 6.6
+                  },
+                  "totalShots": 0,
+                  "passValueNormalized": 0,
+                  "dribbleValueNormalized": 0.13,
+                  "defensiveValueNormalized": 0.13,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Mbaye Diagne",
+                  "slug": "mbaye-diagne",
+                  "shortName": "M. Diagne",
+                  "position": "F",
+                  "jerseyNumber": "45",
+                  "height": 191,
+                  "userCount": 1447,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "SN",
+                    "alpha3": "SEN",
+                    "name": "Senegal",
+                    "slug": "senegal"
+                  },
+                  "id": 346790,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 688608000,
+                  "proposedMarketValueRaw": {
+                    "value": 825000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مباي دياني",
+                      "bn": "এমবায়ে ডায়াগন",
+                      "hi": "मबाये डायग्ने"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. دياني",
+                      "bn": "এম. ডায়াগন",
+                      "hi": "एम. डायग्ने"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 45,
+                "jerseyNumber": "45",
+                "position": "F",
+                "substitute": false,
+                "statistics": {
+                  "totalPass": 1,
+                  "accuratePass": 1,
+                  "accurateOwnHalfPasses": 1,
+                  "totalOwnHalfPasses": 1,
+                  "aerialWon": 1,
+                  "duelLost": 1,
+                  "duelWon": 1,
+                  "blockedScoringAttempt": 1,
+                  "unsuccessfulTouch": 1,
+                  "fouls": 1,
+                  "minutesPlayed": 10,
+                  "touches": 3,
+                  "rating": 6.5,
+                  "possessionLostCtrl": 1,
+                  "ratingVersions": {
+                    "original": 6.5,
+                    "alternative": 6.5
+                  },
+                  "totalShots": 1,
+                  "shotValueNormalized": -0.11,
+                  "passValueNormalized": 0,
+                  "defensiveValueNormalized": -0.01,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Abdulsamed Damlu",
+                  "slug": "abdulsamed-damlu",
+                  "shortName": "A. Damlu",
+                  "position": "G",
+                  "jerseyNumber": "1",
+                  "height": 191,
+                  "userCount": 38,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 847749,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 932860800,
+                  "proposedMarketValueRaw": {
+                    "value": 140000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "عبد الصمد دملو",
+                      "bn": "আব্দুলসামেদ দামলু",
+                      "hi": "अब्दुलसामेद दमलू"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ع. دملو",
+                      "bn": "এ. দামলু",
+                      "hi": "ए. दमलू"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 1,
+                "jerseyNumber": "1",
+                "position": "G",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Kahraman Demirtaş",
+                  "slug": "kahraman-demirtas",
+                  "shortName": "K. Demirtaş",
+                  "position": "D",
+                  "jerseyNumber": "47",
+                  "height": 184,
+                  "userCount": 28,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 845313,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 762480000,
+                  "proposedMarketValueRaw": {
+                    "value": 94000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "كهرمان ديميرتاش"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ك. ديميرتاش"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 47,
+                "jerseyNumber": "47",
+                "position": "D",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Tarkan Serbest",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "tarkan-serbest",
+                  "shortName": "T. Serbest",
+                  "position": "D",
+                  "jerseyNumber": "15",
+                  "height": 184,
+                  "userCount": 58,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 164099,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 767836800,
+                  "proposedMarketValueRaw": {
+                    "value": 270000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "طارق سيربيست",
+                      "bn": "তারকান সার্বেস্ট",
+                      "hi": "टार्कन सर्बेस्ट"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ط. سيربيست",
+                      "bn": "টি. সার্বস্ট",
+                      "hi": "टी. सर्बेस्ट"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 15,
+                "jerseyNumber": "15",
+                "position": "D",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Oguzhan Matur",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "oguzhan-matur",
+                  "shortName": "O. Matur",
+                  "position": "D",
+                  "jerseyNumber": "23",
+                  "height": 173,
+                  "userCount": 27,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "DE",
+                    "alpha3": "DEU",
+                    "name": "Germany",
+                    "slug": "germany"
+                  },
+                  "id": 926396,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 935020800,
+                  "proposedMarketValueRaw": {
+                    "value": 130000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أوغوزهان ماتور"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. ماتور"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 23,
+                "jerseyNumber": "23",
+                "position": "D",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Ayaz Arslan",
+                  "firstName": "Ayaz Arslan",
+                  "slug": "ayaz-arslan",
+                  "shortName": "A. Arslan",
+                  "position": "D",
+                  "jerseyNumber": "97",
+                  "userCount": 9,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 2216074,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1138233600,
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أياذ أرسلان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. أرسلان"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 97,
+                "jerseyNumber": "97",
+                "position": "D",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Dia Saba",
+                  "slug": "dia-saba",
+                  "shortName": "D. Saba",
+                  "position": "M",
+                  "jerseyNumber": "91",
+                  "height": 172,
+                  "userCount": 351,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "IL",
+                    "alpha3": "ISR",
+                    "name": "Israel",
+                    "slug": "israel"
+                  },
+                  "id": 609926,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 722044800,
+                  "proposedMarketValueRaw": {
+                    "value": 960000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ديا سابا",
+                      "bn": "দিয়া সাবা",
+                      "hi": "दीया सबा"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. سابا",
+                      "bn": "ডি. সাবা",
+                      "hi": "डी. सबा"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 91,
+                "jerseyNumber": "91",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Çekdar Orhan",
+                  "slug": "cekdar-orhan",
+                  "shortName": "C. Orhan",
+                  "position": "M",
+                  "jerseyNumber": "10",
+                  "height": 172,
+                  "userCount": 74,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 992598,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 889315200,
+                  "proposedMarketValueRaw": {
+                    "value": 210000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "تشكدار أورهان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ت. أورهان"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 10,
+                "jerseyNumber": "10",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Atakan Mujde",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "mujde-atakan",
+                  "shortName": "A. Mujde",
+                  "position": "M",
+                  "jerseyNumber": "4",
+                  "height": 182,
+                  "userCount": 21,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1134704,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1067040000,
+                  "proposedMarketValueRaw": {
+                    "value": 47000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مجدي، أتاكان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. مجدي"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 4,
+                "jerseyNumber": "4",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Emrah Başsan",
+                  "slug": "emrah-bassan",
+                  "shortName": "E. Başsan",
+                  "position": "M",
+                  "jerseyNumber": "14",
+                  "height": 177,
+                  "userCount": 62,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 174141,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 703468800,
+                  "proposedMarketValueRaw": {
+                    "value": 195000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "إمره باشسان"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "إ. باشسان"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 14,
+                "jerseyNumber": "14",
+                "position": "M",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              },
+              {
+                "player": {
+                  "name": "Daniel Moreno",
+                  "slug": "daniel-moreno",
+                  "shortName": "D. Moreno",
+                  "position": "F",
+                  "jerseyNumber": "27",
+                  "height": 180,
+                  "userCount": 286,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "CO",
+                    "alpha3": "COL",
+                    "name": "Colombia",
+                    "slug": "colombia"
+                  },
+                  "id": 941637,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 790300800,
+                  "proposedMarketValueRaw": {
+                    "value": 365000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "دانيال مورينو"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. مورينو"
+                    }
+                  }
+                },
+                "teamId": 207011,
+                "shirtNumber": 27,
+                "jerseyNumber": "27",
+                "position": "F",
+                "substitute": true,
+                "statistics": {
+                  "totalShots": 0,
+                  "statisticsType": {
+                    "sportSlug": "football",
+                    "statisticsType": "player"
+                  }
+                }
+              }
+            ],
+            "supportStaff": [],
+            "formation": "4-2-3-1",
+            "playerColor": {
+              "primary": "28592b",
+              "number": "c99b36",
+              "outline": "28592b",
+              "fancyNumber": "ffffff"
+            },
+            "goalkeeperColor": {
+              "primary": "558aec",
+              "number": "ffffff",
+              "outline": "558aec",
+              "fancyNumber": "222226"
+            }
+          },
+          "statisticalVersion": 3
+        },
         "missingPlayers": null
       }
     },
