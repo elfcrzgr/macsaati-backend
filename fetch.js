@@ -13,7 +13,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Saat Sıralamalı ve Filtreli Veri Motoru Çalışıyor...");
+    console.log("🚀 Veri Motoru Yayında: Sıralı ve Sade Mod...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -27,34 +27,30 @@ async function start() {
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    const dates = [getTRDate(0), getTRDate(1)];
     let allEvents = [];
-
-    for (const date of dates) {
+    for (const date of [getTRDate(0), getTRDate(1)]) {
         try {
+            console.log(`⏳ ${date} verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
                 const filtered = data.events.filter(e => {
-                    const isTargetLeague = targetLeagueIds.includes(e.tournament?.uniqueTournament?.id);
-                    const isNotFinished = e.status?.type !== 'finished'; 
-                    return isTargetLeague && isNotFinished;
+                    return targetLeagueIds.includes(e.tournament?.uniqueTournament?.id) && e.status?.type !== 'finished';
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`Hata: ${date}`); }
+        } catch (e) { console.error(`Hata: ${e.message}`); }
     }
 
     const seenIds = new Set();
     const finalMatches = [];
 
     for (const e of allEvents) {
-        if (seenIds.has(e.id)) continue;
+        if (seenIds.has(e.id)) continue; 
         seenIds.add(e.id);
 
         try {
-            console.log(`🔍 İnceleniyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
-            
+            console.log(`🔍 Detay: ${e.homeTeam.name} - ${e.awayTeam.name}`);
             const details = await page.evaluate(async (id) => {
                 const f = async (u) => {
                     const r = await fetch(u, { headers: { "Referer": "https://www.sofascore.com/" } });
@@ -71,7 +67,6 @@ async function start() {
             
             finalMatches.push({
                 id: e.id,
-                // Sıralama için bu değeri saklı tutuyoruz
                 rawTimestamp: e.startTimestamp, 
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
@@ -89,17 +84,16 @@ async function start() {
                     missingPlayers: details.missing
                 }
             });
-            await new Promise(r => setTimeout(r, 600)); 
+            await new Promise(r => setTimeout(r, 700)); 
         } catch (err) { }
     }
 
-    // ✅ SAAT BAZLI SIRALAMA (En erken maç en üstte)
+    // ✅ SAAT SIRALAMASI
     finalMatches.sort((a, b) => a.rawTimestamp - b.rawTimestamp);
 
-    // Uygulamanın tertemiz bir liste görmesi için sıralama bittikten sonra matches.json'a yazıyoruz
+    // Uygulamanın tam istediği format
     fs.writeFileSync("matches.json", JSON.stringify({ matches: finalMatches }, null, 2));
-    
-    console.log(`✅ SIRALAMA TAMAM: ${finalMatches.length} maç zamana göre dizildi.`);
+    console.log(`✅ TAMAMLANDI: ${finalMatches.length} maç saatine göre dizildi.`);
     await browser.close();
 }
 
