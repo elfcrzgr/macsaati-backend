@@ -13,13 +13,12 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Veri motoru: Derin Sorgulama Modu (V2)...");
+    console.log("🚀 Veri motoru: Derin Sorgulama Modu (V3 - Geniş Tarih Aralığı)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
     });
     const page = await browser.newPage();
-    // ✅ Gerçekçi tarayıcı kimliği
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     const getTRDate = (offset = 0) => {
@@ -28,11 +27,11 @@ async function start() {
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    const todayStr = getTRDate(0);
-    const tomorrowStr = getTRDate(1);
+    // 🔥 K��K SORUN ÇÖZÜMÜ: Geniş tarih aralığı (bugün + yarın + sonrası)
+    const dates = [getTRDate(0), getTRDate(1), getTRDate(2)];
 
     let allEvents = [];
-    for (const date of [todayStr, tomorrowStr]) {
+    for (const date of dates) {
         try {
             console.log(`⏳ ${date} maç listesi taranıyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`);
@@ -42,10 +41,15 @@ async function start() {
                     const matchDateTR = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                     return targetLeagueIds.includes(e.tournament?.uniqueTournament?.id) && (matchDateTR === date);
                 });
+                console.log(`   ✓ ${date} için ${filtered.length} maç bulundu`);
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`❌ Liste hatası: ${date}`); }
+        } catch (e) { 
+            console.error(`❌ Liste hatası: ${date}`); 
+        }
     }
+
+    console.log(`\n📊 Toplam ${allEvents.length} maç bulundu`);
 
     const finalMatches = [];
     console.log(`🔍 ${allEvents.length} maç için kadro derinliği taranıyor...`);
@@ -62,11 +66,9 @@ async function start() {
                     } catch { return null; }
                 };
 
-                // ✅ Çoklu kaynak taraması
                 let info = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}`);
                 let lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/lineups`);
                 
-                // Eğer standart lineups boşsa, alternatif yolları dene (Şampiyonlar Ligi için)
                 if (!lineups) {
                     lineups = await fetchJson(`https://api.sofascore.com/api/v1/event/${id}/tactical-lineups`);
                 }
@@ -105,10 +107,12 @@ async function start() {
             });
 
             await new Promise(r => setTimeout(r, 600)); 
-        } catch (err) { }
+        } catch (err) { 
+            console.error(`   ❌ Hata: ${err.message}`);
+        }
     }
 
-    // ✅ Tekrarlanan maçları kaldır (deduplicate)
+    // ✅ Deduplicate
     const uniqueMatches = {};
     finalMatches.forEach(match => {
         if (!uniqueMatches[match.id]) {
@@ -118,24 +122,35 @@ async function start() {
 
     const finalMatchesNoDuplicates = Object.values(uniqueMatches);
 
-    // ✅ Saat bazında sıralama (lig bazında değil)
+    // ✅ Saat bazında sıralama
     finalMatchesNoDuplicates.sort((a, b) => {
         const timeA = new Date(`${a.fixedDate} ${a.fixedTime}`).getTime();
         const timeB = new Date(`${b.fixedDate} ${b.fixedTime}`).getTime();
         return timeA - timeB;
     });
 
-    // ✅ JSON dosyasına yaz
+    // ✅ SADECE bugün ve yarının maçlarını tut
+    const todayStr = getTRDate(0);
+    const tomorrowStr = getTRDate(1);
+    const filteredMatches = finalMatchesNoDuplicates.filter(m => 
+        m.fixedDate === todayStr || m.fixedDate === tomorrowStr
+    );
+
     fs.writeFileSync("matches.json", JSON.stringify({ 
         success: true, 
-        matches: finalMatchesNoDuplicates,
-        totalMatches: finalMatchesNoDuplicates.length,
-        matchesWithLineup: finalMatchesNoDuplicates.filter(m => m.details.lineups).length
+        matches: filteredMatches,
+        totalMatches: filteredMatches.length,
+        matchesWithLineup: filteredMatches.filter(m => m.details.lineups).length,
+        generatedAt: new Date().toISOString()
     }, null, 2));
 
-    const lineupCount = finalMatchesNoDuplicates.filter(m => m.details.lineups).length;
-    console.log(`✅ TAMAMLANDI: ${finalMatchesNoDuplicates.length} maç bulundu, ${lineupCount} kadro çekildi.`);
-    console.log(`📊 Tekrarlanan maçlar kaldırıldı. Saat bazında sıralanmıştır.`);
+    const lineupCount = filteredMatches.filter(m => m.details.lineups).length;
+    console.log(`\n✅ TAMAMLANDI:`);
+    console.log(`   📅 ${filteredMatches.length} maç (${todayStr} ve ${tomorrowStr})`);
+    console.log(`   🎬 ${lineupCount} kadro çekildi`);
+    console.log(`   📊 Saat bazında sıralandı`);
+    console.log(`   🔄 Tekrarlanan maçlar kaldırıldı`);
+    
     await browser.close();
 }
 
