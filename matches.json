@@ -1,11 +1,11 @@
 {
-  "success": true,
   "matches": [
     {
       "id": 14138559,
-      "timestamp": 1773225000,
+      "rawTimestamp": 1773225000,
       "fixedDate": "2026-03-11",
       "fixedTime": "13:30",
+      "status": "Not started",
       "broadcaster": "beIN Sports / TRT Spor",
       "homeTeam": {
         "name": "Hatayspor",
@@ -30,9 +30,10 @@
     },
     {
       "id": 14138565,
-      "timestamp": 1773225000,
+      "rawTimestamp": 1773225000,
       "fixedDate": "2026-03-11",
       "fixedTime": "13:30",
+      "status": "Not started",
       "broadcaster": "beIN Sports / TRT Spor",
       "homeTeam": {
         "name": "İstanbulspor",
@@ -57,9 +58,10 @@
     },
     {
       "id": 14138562,
-      "timestamp": 1773234000,
+      "rawTimestamp": 1773234000,
       "fixedDate": "2026-03-11",
       "fixedTime": "16:00",
+      "status": "Not started",
       "broadcaster": "beIN Sports / TRT Spor",
       "homeTeam": {
         "name": "Ümraniyespor",
@@ -84,9 +86,10 @@
     },
     {
       "id": 15285658,
-      "timestamp": 1773244800,
+      "rawTimestamp": 1773244800,
       "fixedDate": "2026-03-11",
       "fixedTime": "19:00",
+      "status": "Not started",
       "broadcaster": "TV8.5 / Exxen",
       "homeTeam": {
         "name": "Birmingham Legion FC",
@@ -111,9 +114,10 @@
     },
     {
       "id": 14143639,
-      "timestamp": 1773248400,
+      "rawTimestamp": 1773248400,
       "fixedDate": "2026-03-11",
       "fixedTime": "20:00",
+      "status": "Not started",
       "broadcaster": "beIN Sports / TRT Spor",
       "homeTeam": {
         "name": "Keçiörengücü",
@@ -138,9 +142,10 @@
     },
     {
       "id": 15631363,
-      "timestamp": 1773251100,
+      "rawTimestamp": 1773251100,
       "fixedDate": "2026-03-11",
       "fixedTime": "20:45",
+      "status": "Not started",
       "broadcaster": "TRT / Tabii",
       "homeTeam": {
         "name": "Bayer 04 Leverkusen",
@@ -1711,9 +1716,10 @@
     },
     {
       "id": 15631335,
-      "timestamp": 1773259200,
+      "rawTimestamp": 1773259200,
       "fixedDate": "2026-03-11",
       "fixedTime": "23:00",
+      "status": "Not started",
       "broadcaster": "TRT / Tabii",
       "homeTeam": {
         "name": "Bodø/Glimt",
@@ -3001,9 +3007,10 @@
     },
     {
       "id": 15631341,
-      "timestamp": 1773259200,
+      "rawTimestamp": 1773259200,
       "fixedDate": "2026-03-11",
       "fixedTime": "23:00",
+      "status": "Not started",
       "broadcaster": "TRT / Tabii",
       "homeTeam": {
         "name": "Paris Saint-Germain",
@@ -4274,9 +4281,10 @@
     },
     {
       "id": 15631329,
-      "timestamp": 1773259200,
+      "rawTimestamp": 1773259200,
       "fixedDate": "2026-03-11",
       "fixedTime": "23:00",
+      "status": "Not started",
       "broadcaster": "TRT / Tabii",
       "homeTeam": {
         "name": "Real Madrid",
@@ -5834,9 +5842,10 @@
     },
     {
       "id": 14138568,
-      "timestamp": 1773311400,
+      "rawTimestamp": 1773311400,
       "fixedDate": "2026-03-12",
       "fixedTime": "13:30",
+      "status": "Not started",
       "broadcaster": "beIN Sports / TRT Spor",
       "homeTeam": {
         "name": "Iğdır FK",
@@ -5861,9 +5870,10 @@
     },
     {
       "id": 14138561,
-      "timestamp": 1773320400,
+      "rawTimestamp": 1773320400,
       "fixedDate": "2026-03-12",
       "fixedTime": "16:00",
+      "status": "Not started",
       "broadcaster": "beIN Sports / TRT Spor",
       "homeTeam": {
         "name": "Boluspor",
@@ -5888,9 +5898,10 @@
     },
     {
       "id": 15558656,
-      "timestamp": 1773320400,
+      "rawTimestamp": 1773320400,
       "fixedDate": "2026-03-12",
       "fixedTime": "16:00",
+      "status": "Not started",
       "broadcaster": "TRT / Tabii",
       "homeTeam": {
         "name": "Chanmari FC",
@@ -5915,9 +5926,10 @@
     },
     {
       "id": 14138567,
-      "timestamp": 1773334800,
+      "rawTimestamp": 1773334800,
       "fixedDate": "2026-03-12",
       "fixedTime": "20:00",
+      "status": "Not started",
       "broadcaster": "beIN Sports / TRT Spor",
       "homeTeam": {
         "name": "Esenler Erokspor",
@@ -5935,6 +5947,34 @@
       },
       "details": {
         "stadium": "Esenler Stadium",
+        "referee": "Açıklanmadı",
+        "lineups": null,
+        "missingPlayers": null
+      }
+    },
+    {
+      "id": 15558665,
+      "rawTimestamp": 1773397800,
+      "fixedDate": "2026-03-13",
+      "fixedTime": "13:30",
+      "status": "Not started",
+      "broadcaster": "TRT / Tabii",
+      "homeTeam": {
+        "name": "Rajasthan United FC",
+        "logo": "https://api.sofascore.app/api/v1/team/387698/image"
+      },
+      "awayTeam": {
+        "name": "Namdhari FC",
+        "logo": "https://api.sofascore.app/api/v1/team/494684/image"
+      },
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": {
+        "name": "I-League",
+        "logo": "https://api.sofascore.app/api/v1/unique-tournament/848/image"
+      },
+      "details": {
+        "stadium": "Rajasthan University Stadium",
         "referee": "Açıklanmadı",
         "lineups": null,
         "missingPlayers": null
