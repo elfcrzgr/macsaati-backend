@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const path = require('path');
 
 const leagueConfigs = {
     52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
@@ -13,7 +14,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Veri motoru: Derin Sorgulama Modu (V3 - Geniş Tarih Aralığı)...");
+    console.log("🚀 Veri motoru: Derin Sorgulama Modu (V4 - Tekrarlama Düzeltmesi)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -27,7 +28,6 @@ async function start() {
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    // 🔥 K��K SORUN ÇÖZÜMÜ: Geniş tarih aralığı (bugün + yarın + sonrası)
     const dates = [getTRDate(0), getTRDate(1), getTRDate(2)];
 
     let allEvents = [];
@@ -49,14 +49,29 @@ async function start() {
         }
     }
 
-    console.log(`\n📊 Toplam ${allEvents.length} maç bulundu`);
+    console.log(`\n📊 API'den ${allEvents.length} maç bulundu`);
+
+    // ✅ ÖNEMLİ: Deduplicate ÖNCESİ yapılmalı
+    const seenIds = new Set();
+    const uniqueEvents = [];
+    
+    for (const event of allEvents) {
+        if (!seenIds.has(event.id)) {
+            seenIds.add(event.id);
+            uniqueEvents.push(event);
+        } else {
+            console.log(`   🔄 Tekrarlanan maç kaldırıldı: ${event.homeTeam.name} vs ${event.awayTeam.name} (ID: ${event.id})`);
+        }
+    }
+
+    console.log(`✅ Tekrarlama sonrası: ${uniqueEvents.length} maç`);
 
     const finalMatches = [];
-    console.log(`🔍 ${allEvents.length} maç için kadro derinliği taranıyor...`);
+    console.log(`🔍 Maçlar için detay taranıyor...`);
 
-    for (const e of allEvents) {
+    for (const e of uniqueEvents) {
         try {
-            console.log(`   -> Sorgulanıyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
+            console.log(`   -> ${e.homeTeam.name} - ${e.awayTeam.name}`);
 
             const details = await page.evaluate(async (id) => {
                 const fetchJson = async (url) => {
@@ -112,18 +127,8 @@ async function start() {
         }
     }
 
-    // ✅ Deduplicate
-    const uniqueMatches = {};
-    finalMatches.forEach(match => {
-        if (!uniqueMatches[match.id]) {
-            uniqueMatches[match.id] = match;
-        }
-    });
-
-    const finalMatchesNoDuplicates = Object.values(uniqueMatches);
-
     // ✅ Saat bazında sıralama
-    finalMatchesNoDuplicates.sort((a, b) => {
+    finalMatches.sort((a, b) => {
         const timeA = new Date(`${a.fixedDate} ${a.fixedTime}`).getTime();
         const timeB = new Date(`${b.fixedDate} ${b.fixedTime}`).getTime();
         return timeA - timeB;
@@ -132,24 +137,28 @@ async function start() {
     // ✅ SADECE bugün ve yarının maçlarını tut
     const todayStr = getTRDate(0);
     const tomorrowStr = getTRDate(1);
-    const filteredMatches = finalMatchesNoDuplicates.filter(m => 
+    const filteredMatches = finalMatches.filter(m => 
         m.fixedDate === todayStr || m.fixedDate === tomorrowStr
     );
 
-    fs.writeFileSync("matches.json", JSON.stringify({ 
-        success: true, 
-        matches: filteredMatches,
+    // ✅ FINAL JSON YAPISI
+    const jsonData = {
+        success: true,
+        lastUpdated: new Date().toISOString(),
+        cacheKey: Date.now(), // Her güncelleme için unique key
         totalMatches: filteredMatches.length,
         matchesWithLineup: filteredMatches.filter(m => m.details.lineups).length,
-        generatedAt: new Date().toISOString()
-    }, null, 2));
+        matches: filteredMatches // Array son sırada
+    };
 
-    const lineupCount = filteredMatches.filter(m => m.details.lineups).length;
+    // ✅ JSON'u yaz
+    fs.writeFileSync("matches.json", JSON.stringify(jsonData, null, 2));
+
     console.log(`\n✅ TAMAMLANDI:`);
-    console.log(`   📅 ${filteredMatches.length} maç (${todayStr} ve ${tomorrowStr})`);
-    console.log(`   🎬 ${lineupCount} kadro çekildi`);
-    console.log(`   📊 Saat bazında sıralandı`);
-    console.log(`   🔄 Tekrarlanan maçlar kaldırıldı`);
+    console.log(`   📅 ${filteredMatches.length} maç`);
+    console.log(`   🎬 ${jsonData.matchesWithLineup} kadro çekildi`);
+    console.log(`   ⏰ ${new Date().toLocaleTimeString('tr-TR')}`);
+    console.log(`   🔑 Cache Key: ${jsonData.cacheKey}`);
     
     await browser.close();
 }

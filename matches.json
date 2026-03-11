@@ -1,5 +1,9 @@
 {
   "success": true,
+  "lastUpdated": "2026-03-11T08:41:46.739Z",
+  "cacheKey": 1773218506740,
+  "totalMatches": 13,
+  "matchesWithLineup": 4,
   "matches": [
     {
       "id": 14138559,
@@ -1689,1564 +1693,6 @@
                 "reason": 1,
                 "description": "Muscle Injury",
                 "externalType": 5
-              }
-            ]
-          },
-          "statisticalVersion": 3
-        },
-        "missingPlayers": null
-      }
-    },
-    {
-      "id": 15631329,
-      "fixedDate": "2026-03-11",
-      "fixedTime": "23:00",
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Real Madrid",
-        "id": 2829,
-        "logo": "https://api.sofascore.app/api/v1/team/2829/image"
-      },
-      "awayTeam": {
-        "name": "Manchester City",
-        "id": 17,
-        "logo": "https://api.sofascore.app/api/v1/team/17/image"
-      },
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "UEFA Champions League",
-      "details": {
-        "stadium": "Bernabéu",
-        "referee": "Maurizio Mariani",
-        "lineups": {
-          "confirmed": false,
-          "home": {
-            "players": [
-              {
-                "avgRating": 7.19,
-                "player": {
-                  "name": "Thibaut Courtois",
-                  "slug": "thibaut-courtois",
-                  "shortName": "T. Courtois",
-                  "position": "G",
-                  "jerseyNumber": "1",
-                  "height": 200,
-                  "userCount": 198935,
-                  "gender": "M",
-                  "sofascoreId": "TheOctopus",
-                  "country": {
-                    "alpha2": "BE",
-                    "alpha3": "BEL",
-                    "name": "Belgium",
-                    "slug": "belgium"
-                  },
-                  "id": 70988,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 705542400,
-                  "proposedMarketValueRaw": {
-                    "value": 17400000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "تيبو كورتوا",
-                      "bn": "থিবাউট কোর্টোইস",
-                      "hi": "थिबाउट कोर्टोइस"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ت. كورتوا",
-                      "bn": "টি. কোর্টোইস",
-                      "hi": "टी. कोर्टोइस"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 1,
-                "jerseyNumber": "1",
-                "position": "G",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.75,
-                "player": {
-                  "name": "Trent Alexander-Arnold",
-                  "slug": "trent-alexander-arnold",
-                  "shortName": "T. Alexander-Arnold",
-                  "position": "D",
-                  "jerseyNumber": "12",
-                  "height": 180,
-                  "userCount": 210221,
-                  "gender": "M",
-                  "sofascoreId": "TrentAA",
-                  "country": {
-                    "alpha2": "EN",
-                    "alpha3": "ENG",
-                    "name": "England",
-                    "slug": "england"
-                  },
-                  "id": 795064,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 907718400,
-                  "proposedMarketValueRaw": {
-                    "value": 72000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "ترنت ألكسندر-أرنولد",
-                      "bn": "ট্রেন্ট আলেকজান্ডার-আর্নল্ড",
-                      "hi": "ट्रेंट अलेक्जेंडर-अर्नोल्ड"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ت. ألكسندر-أرنولد",
-                      "bn": "টি. আলেকজান্ডার-আর্নল্ড",
-                      "hi": "टी. अलेक्जेंडर-अर्नोल्ड"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 12,
-                "jerseyNumber": "12",
-                "position": "D",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.71,
-                "player": {
-                  "name": "Raúl Asencio",
-                  "slug": "raul-asencio",
-                  "shortName": "R. Asencio",
-                  "position": "D",
-                  "jerseyNumber": "17",
-                  "height": 184,
-                  "userCount": 122238,
-                  "gender": "M",
-                  "sofascoreId": "asencio",
-                  "country": {
-                    "alpha2": "ES",
-                    "alpha3": "ESP",
-                    "name": "Spain",
-                    "slug": "spain"
-                  },
-                  "id": 1156645,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1045094400,
-                  "proposedMarketValueRaw": {
-                    "value": 27000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "راؤول أسينسيو",
-                      "bn": "রাউল আসেনসিও",
-                      "hi": "राउल असेंशियो"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ر. أسينسيو",
-                      "bn": "আর. অ্যাসেনসিও",
-                      "hi": "आर. असेंशियो"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 17,
-                "jerseyNumber": "17",
-                "position": "D",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.53,
-                "player": {
-                  "name": "Antonio Rüdiger",
-                  "slug": "antonio-rudiger",
-                  "shortName": "A. Rüdiger",
-                  "position": "D",
-                  "jerseyNumber": "22",
-                  "height": 191,
-                  "userCount": 187041,
-                  "gender": "M",
-                  "sofascoreId": "ARüdiger",
-                  "country": {
-                    "alpha2": "DE",
-                    "alpha3": "DEU",
-                    "name": "Germany",
-                    "slug": "germany"
-                  },
-                  "id": 142622,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 731116800,
-                  "proposedMarketValueRaw": {
-                    "value": 12400000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "أنطونيو روديغر",
-                      "bn": "আন্তোনিও রুডিগার",
-                      "hi": "एंटोनियो रुडिगर"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "أ. روديغر",
-                      "bn": "এ. রুডিগার",
-                      "hi": "ए. रुडिगर"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 22,
-                "jerseyNumber": "22",
-                "position": "D",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.2,
-                "player": {
-                  "name": "Ferland Mendy",
-                  "slug": "ferland-mendy",
-                  "shortName": "F. Mendy",
-                  "position": "D",
-                  "jerseyNumber": "23",
-                  "height": 178,
-                  "userCount": 69633,
-                  "gender": "M",
-                  "sofascoreId": "FerMendy",
-                  "country": {
-                    "alpha2": "FR",
-                    "alpha3": "FRA",
-                    "name": "France",
-                    "slug": "france"
-                  },
-                  "id": 792073,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 802569600,
-                  "proposedMarketValueRaw": {
-                    "value": 8500000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "فيرلاند ميندي",
-                      "bn": "ফেরল্যান্ড মেন্ডি",
-                      "hi": "फेरलैंड मेंडी"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ف. ميندي",
-                      "bn": "এফ. মেন্ডি",
-                      "hi": "एफ. मेंडी"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 23,
-                "jerseyNumber": "23",
-                "position": "D",
-                "substitute": false
-              },
-              {
-                "avgRating": 7.06,
-                "player": {
-                  "name": "Federico Valverde",
-                  "slug": "federico-valverde",
-                  "shortName": "F. Valverde",
-                  "position": "M",
-                  "jerseyNumber": "8",
-                  "height": 181,
-                  "userCount": 373752,
-                  "gender": "M",
-                  "sofascoreId": "Fede",
-                  "country": {
-                    "alpha2": "UY",
-                    "alpha3": "URY",
-                    "name": "Uruguay",
-                    "slug": "uruguay"
-                  },
-                  "id": 831808,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 901065600,
-                  "proposedMarketValueRaw": {
-                    "value": 116000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "فيديريكو فالفيردي",
-                      "bn": "ফেদেরিকো ভালভার্দে",
-                      "hi": "फेडेरिको वेलवेर्डे"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ف. فالفيردي",
-                      "bn": "এফ. ভালভার্দে",
-                      "hi": "एफ. वेलवेर्डे"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 8,
-                "jerseyNumber": "8",
-                "position": "M",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.9,
-                "player": {
-                  "name": "Arda Güler",
-                  "firstName": "Arda Guler",
-                  "slug": "arda-guler",
-                  "shortName": "A. Güler",
-                  "position": "M",
-                  "jerseyNumber": "15",
-                  "height": 176,
-                  "userCount": 393444,
-                  "gender": "M",
-                  "sofascoreId": "AGüler",
-                  "country": {
-                    "alpha2": "TR",
-                    "alpha3": "TUR",
-                    "name": "Türkiye",
-                    "slug": "turkiye"
-                  },
-                  "id": 1091116,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1109289600,
-                  "proposedMarketValueRaw": {
-                    "value": 87000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "أردا غولر",
-                      "bn": "আরদা গুলার",
-                      "hi": "अर्डा गुलेर"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "أ. غولر",
-                      "bn": "এ.গুলার",
-                      "hi": "ए. गुलेर"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 15,
-                "jerseyNumber": "15",
-                "position": "M",
-                "substitute": false
-              },
-              {
-                "avgRating": 7.11,
-                "player": {
-                  "name": "Aurélien Tchouaméni",
-                  "slug": "aurelien-tchouameni",
-                  "shortName": "A. Tchouaméni",
-                  "position": "M",
-                  "jerseyNumber": "14",
-                  "height": 188,
-                  "userCount": 143031,
-                  "gender": "M",
-                  "sofascoreId": "ATchouaméni",
-                  "country": {
-                    "alpha2": "FR",
-                    "alpha3": "FRA",
-                    "name": "France",
-                    "slug": "france"
-                  },
-                  "id": 859025,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 948931200,
-                  "proposedMarketValueRaw": {
-                    "value": 78000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "أوريليان تشواميني",
-                      "bn": "অরেলিয়ান চৌমেনি",
-                      "hi": "ऑरेलियन टचौमेनी"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "أ. تشواميني",
-                      "bn": "এ. চৌমেনি",
-                      "hi": "ए. टचौमेनी"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 14,
-                "jerseyNumber": "14",
-                "position": "M",
-                "substitute": false
-              },
-              {
-                "avgRating": 7.1,
-                "player": {
-                  "name": "Eduardo Camavinga",
-                  "slug": "camavinga-eduardo",
-                  "shortName": "E. Camavinga",
-                  "position": "M",
-                  "jerseyNumber": "6",
-                  "height": 182,
-                  "userCount": 189599,
-                  "gender": "M",
-                  "sofascoreId": "Tacklevinga",
-                  "country": {
-                    "alpha2": "FR",
-                    "alpha3": "FRA",
-                    "name": "France",
-                    "slug": "france"
-                  },
-                  "id": 973887,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1036886400,
-                  "proposedMarketValueRaw": {
-                    "value": 48000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "كامافينغا، إدواردو",
-                      "bn": "কামাভিঙ্গা, এডুয়ার্ডো",
-                      "hi": "कैमाविंगा, एडुआर्डो"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "إ. كامافينغا",
-                      "bn": "ই. কামাভিঙ্গা",
-                      "hi": "ई. एडुआर्डो"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 6,
-                "jerseyNumber": "6",
-                "position": "M",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.44,
-                "player": {
-                  "name": "Gonzalo García",
-                  "firstName": "Gonzalo García",
-                  "slug": "gonzalo-garcia",
-                  "shortName": "G. García",
-                  "position": "F",
-                  "jerseyNumber": "16",
-                  "height": 182,
-                  "userCount": 102419,
-                  "gender": "M",
-                  "country": {
-                    "alpha2": "ES",
-                    "alpha3": "ESP",
-                    "name": "Spain",
-                    "slug": "spain"
-                  },
-                  "id": 1402716,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1080086400,
-                  "proposedMarketValueRaw": {
-                    "value": 15500000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "غونزالو غارسيا",
-                      "bn": "গঞ্জালো গার্সিয়া",
-                      "hi": "गोंजालो गार्सिया"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "غ. غارسيا",
-                      "bn": "জি. গার্সিয়া",
-                      "hi": "जी. गार्सिया"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 16,
-                "jerseyNumber": "16",
-                "position": "F",
-                "substitute": false
-              },
-              {
-                "avgRating": 7.33,
-                "player": {
-                  "name": "Vinicius Júnior",
-                  "slug": "vinicius-junior",
-                  "shortName": "Vinícius Jr.",
-                  "position": "F",
-                  "jerseyNumber": "7",
-                  "height": 176,
-                  "userCount": 1218677,
-                  "gender": "M",
-                  "sofascoreId": "ViniJr",
-                  "country": {
-                    "alpha2": "BR",
-                    "alpha3": "BRA",
-                    "name": "Brazil",
-                    "slug": "brazil"
-                  },
-                  "id": 868812,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 963360000,
-                  "proposedMarketValueRaw": {
-                    "value": 156000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "فينيسيوس جونيور",
-                      "bn": "ভিনিসিয়াস জুনিয়র",
-                      "hi": "विनीसियस जूनियर"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "فينيسيوس",
-                      "bn": "ভিনিসিয়াস",
-                      "hi": "विनीसियस"
-                    }
-                  }
-                },
-                "teamId": 2829,
-                "shirtNumber": 7,
-                "jerseyNumber": "7",
-                "position": "F",
-                "substitute": false
-              }
-            ],
-            "supportStaff": [],
-            "formation": "4-4-2",
-            "playerColor": {
-              "primary": "ffffff",
-              "number": "000000",
-              "outline": "ffffff",
-              "fancyNumber": "222226"
-            },
-            "goalkeeperColor": {
-              "primary": "535353",
-              "number": "ffffff",
-              "outline": "535353",
-              "fancyNumber": "ffffff"
-            },
-            "missingPlayers": [
-              {
-                "player": {
-                  "name": "Jude Bellingham",
-                  "slug": "jude-bellingham",
-                  "shortName": "J. Bellingham",
-                  "position": "M",
-                  "jerseyNumber": "5",
-                  "height": 188,
-                  "userCount": 1042622,
-                  "gender": "M",
-                  "sofascoreId": "JudeBell",
-                  "country": {
-                    "alpha2": "EN",
-                    "alpha3": "ENG",
-                    "name": "England",
-                    "slug": "england"
-                  },
-                  "id": 991011,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1056844800,
-                  "proposedMarketValueRaw": {
-                    "value": 151000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "جود بيلينغهام",
-                      "bn": "জুড বেলিংহাম",
-                      "hi": "जूड बेलिंघम"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ج. بيلينغهام",
-                      "bn": "জে. বেলিংহাম",
-                      "hi": "जे. बेलिंघम"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "Hamstring",
-                "externalType": 5,
-                "expectedEndDate": "2026-04-06T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "Kylian Mbappé",
-                  "slug": "kylian-mbappe",
-                  "shortName": "K. Mbappé",
-                  "position": "F",
-                  "jerseyNumber": "9",
-                  "height": 178,
-                  "userCount": 1806446,
-                  "gender": "M",
-                  "sofascoreId": "KMbappé",
-                  "country": {
-                    "alpha2": "FR",
-                    "alpha3": "FRA",
-                    "name": "France",
-                    "slug": "france"
-                  },
-                  "id": 826643,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 914112000,
-                  "proposedMarketValueRaw": {
-                    "value": 212000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "كيليان مبابي",
-                      "bn": "কিলিয়ান এমবাপ্পে",
-                      "hi": "किलियन एमबाप्पे"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ك. مبابي",
-                      "bn": "কে. এমবাপ্পে",
-                      "hi": "के. एमबाप्पे"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "LCL Knee Injury",
-                "externalType": 5,
-                "expectedEndDate": "2026-03-23T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "Rodrygo",
-                  "slug": "rodrygo",
-                  "shortName": "Rodrygo",
-                  "position": "F",
-                  "jerseyNumber": "11",
-                  "height": 174,
-                  "userCount": 726946,
-                  "gender": "M",
-                  "sofascoreId": "Rodrygo",
-                  "country": {
-                    "alpha2": "BR",
-                    "alpha3": "BRA",
-                    "name": "Brazil",
-                    "slug": "brazil"
-                  },
-                  "id": 910536,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 978912000,
-                  "proposedMarketValueRaw": {
-                    "value": 64000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "رودريغو",
-                      "bn": "রড্রিগো",
-                      "hi": "रोड्रिगो"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "رودريغو",
-                      "bn": "রড্রিগো",
-                      "hi": "रोड्रिगो"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "ACL Knee Injury",
-                "externalType": 5,
-                "expectedEndDate": "2026-10-15T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "Éder Militão",
-                  "slug": "eder-militao",
-                  "shortName": "É. Militão",
-                  "position": "D",
-                  "jerseyNumber": "3",
-                  "height": 186,
-                  "userCount": 146727,
-                  "gender": "M",
-                  "sofascoreId": "EMilitão",
-                  "country": {
-                    "alpha2": "BR",
-                    "alpha3": "BRA",
-                    "name": "Brazil",
-                    "slug": "brazil"
-                  },
-                  "id": 822519,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 885081600,
-                  "proposedMarketValueRaw": {
-                    "value": 31000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "إيدير ميليتاو",
-                      "bn": "এডার মিলিটাও",
-                      "hi": "एडर मिलिटाओ"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "إ. ميليتاو",
-                      "bn": "এ. মিলিটাও",
-                      "hi": "ई. मिलिटाओ"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "Hamstring",
-                "externalType": 5,
-                "expectedEndDate": "2026-03-23T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "Álvaro Carreras",
-                  "slug": "alvaro-carreras",
-                  "shortName": "Á. Carreras",
-                  "position": "D",
-                  "jerseyNumber": "18",
-                  "height": 186,
-                  "userCount": 82857,
-                  "gender": "M",
-                  "country": {
-                    "alpha2": "ES",
-                    "alpha3": "ESP",
-                    "name": "Spain",
-                    "slug": "spain"
-                  },
-                  "id": 1085081,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1048377600,
-                  "proposedMarketValueRaw": {
-                    "value": 64000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "ألفارو كاريراس",
-                      "bn": "আলভারো ক্যারেরাস",
-                      "hi": "अल्वारो कैरेरास"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "أ. كاريراس",
-                      "bn": "আ. ক্যারেরাস",
-                      "hi": "ए. कैरेरास"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "Calf Injury",
-                "externalType": 5,
-                "expectedEndDate": "2026-03-12T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "Dani Ceballos",
-                  "slug": "dani-ceballos",
-                  "shortName": "D. Ceballos",
-                  "position": "M",
-                  "jerseyNumber": "19",
-                  "height": 179,
-                  "userCount": 69793,
-                  "gender": "M",
-                  "sofascoreId": "Danifuli10",
-                  "country": {
-                    "alpha2": "ES",
-                    "alpha3": "ESP",
-                    "name": "Spain",
-                    "slug": "spain"
-                  },
-                  "id": 547838,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 839376000,
-                  "proposedMarketValueRaw": {
-                    "value": 8400000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "داني سيبايوس",
-                      "bn": "দানি সেবেলোস",
-                      "hi": "दानी सेबालोस"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "د. سيبايوس",
-                      "bn": "ডি. সেবেলোস",
-                      "hi": "डी. सेबालोस"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "Calf Injury",
-                "externalType": 5,
-                "expectedEndDate": "2026-04-13T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "David Alaba",
-                  "slug": "david-alaba",
-                  "shortName": "D. Alaba",
-                  "position": "D",
-                  "jerseyNumber": "4",
-                  "height": 180,
-                  "userCount": 91931,
-                  "gender": "M",
-                  "sofascoreId": "DAlaba",
-                  "country": {
-                    "alpha2": "AT",
-                    "alpha3": "AUT",
-                    "name": "Austria",
-                    "slug": "austria"
-                  },
-                  "id": 66492,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 709344000,
-                  "proposedMarketValueRaw": {
-                    "value": 3600000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "ديفيد ألابا",
-                      "bn": "ডেভিড আলাবা",
-                      "hi": "डेविड अलाबा"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "د. ألابا",
-                      "bn": "ডি. আলাবা",
-                      "hi": "डी. अलाबा"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "Calf Injury",
-                "externalType": 5,
-                "expectedEndDate": "2026-03-12T00:00:00+00:00"
-              }
-            ]
-          },
-          "away": {
-            "players": [
-              {
-                "avgRating": 7.03,
-                "player": {
-                  "name": "Gianluigi Donnarumma",
-                  "slug": "gianluigi-donnarumma",
-                  "shortName": "G. Donnarumma",
-                  "position": "G",
-                  "jerseyNumber": "25",
-                  "height": 196,
-                  "userCount": 70290,
-                  "gender": "M",
-                  "sofascoreId": "donnarumma",
-                  "country": {
-                    "alpha2": "IT",
-                    "alpha3": "ITA",
-                    "name": "Italy",
-                    "slug": "italy"
-                  },
-                  "id": 824509,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 919900800,
-                  "proposedMarketValueRaw": {
-                    "value": 46000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "جيانلويجي دوناروما",
-                      "bn": "জিয়ানলুইগি ডোনারুম্মা",
-                      "hi": "जियानलुइगी डोनारुम्मा"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ج. دوناروما",
-                      "bn": "জি. ডোনারুম্মা",
-                      "hi": "जी. डोनारुम्मा"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 25,
-                "jerseyNumber": "25",
-                "position": "G",
-                "substitute": false
-              },
-              {
-                "avgRating": 7.02,
-                "player": {
-                  "name": "Matheus Nunes",
-                  "firstName": "",
-                  "lastName": "",
-                  "slug": "matheus-nunes",
-                  "shortName": "M. Nunes",
-                  "position": "D",
-                  "jerseyNumber": "27",
-                  "height": 183,
-                  "userCount": 19791,
-                  "gender": "M",
-                  "sofascoreId": "matheusnunes",
-                  "country": {
-                    "alpha2": "PT",
-                    "alpha3": "PRT",
-                    "name": "Portugal",
-                    "slug": "portugal"
-                  },
-                  "id": 945122,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 904176000,
-                  "proposedMarketValueRaw": {
-                    "value": 36000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "ماثيوس نونيز",
-                      "bn": "ম্যাথিউস নুনেস",
-                      "hi": "मैथियस नून्स"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "م. نونيز",
-                      "bn": "এম. নুনেস",
-                      "hi": "एम. नून्स"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 27,
-                "jerseyNumber": "27",
-                "position": "D",
-                "substitute": false
-              },
-              {
-                "avgRating": 7.16,
-                "player": {
-                  "name": "Rúben Dias",
-                  "slug": "ruben-dias",
-                  "shortName": "R. Dias",
-                  "position": "D",
-                  "jerseyNumber": "3",
-                  "height": 188,
-                  "userCount": 40020,
-                  "gender": "M",
-                  "sofascoreId": "RúbenD",
-                  "country": {
-                    "alpha2": "PT",
-                    "alpha3": "PRT",
-                    "name": "Portugal",
-                    "slug": "portugal"
-                  },
-                  "id": 318941,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 863568000,
-                  "proposedMarketValueRaw": {
-                    "value": 65000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "روبن دياز",
-                      "bn": "রুবেন ডায়াস",
-                      "hi": "रुबेन डियास"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ر. دياز",
-                      "bn": "আর. ডায়াস",
-                      "hi": "आर. डियास"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 3,
-                "jerseyNumber": "3",
-                "position": "D",
-                "substitute": false
-              },
-              {
-                "player": {
-                  "name": "Marc Guéhi",
-                  "slug": "marc-guehi",
-                  "shortName": "M. Guéhi",
-                  "position": "D",
-                  "jerseyNumber": "15",
-                  "height": 182,
-                  "userCount": 24789,
-                  "gender": "M",
-                  "sofascoreId": "MarcGuehi13",
-                  "country": {
-                    "alpha2": "EN",
-                    "alpha3": "ENG",
-                    "name": "England",
-                    "slug": "england"
-                  },
-                  "id": 877994,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 963446400,
-                  "proposedMarketValueRaw": {
-                    "value": 52000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "مارك غيهي",
-                      "bn": "মার্ক গুয়েহি",
-                      "hi": "मार्क गुएही"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "م. غيهي",
-                      "bn": "এম. গুয়েহি",
-                      "hi": "एम. गुएही"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 15,
-                "jerseyNumber": "15",
-                "position": "D",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.98,
-                "player": {
-                  "name": "Rayan Aït-Nouri",
-                  "slug": "rayan-ait-nouri",
-                  "shortName": "R. A. Nouri",
-                  "position": "M",
-                  "jerseyNumber": "21",
-                  "height": 179,
-                  "userCount": 46201,
-                  "gender": "M",
-                  "sofascoreId": "r_aitnouri",
-                  "country": {
-                    "alpha2": "DZ",
-                    "alpha3": "DZA",
-                    "name": "Algeria",
-                    "slug": "algeria"
-                  },
-                  "id": 931278,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 991785600,
-                  "proposedMarketValueRaw": {
-                    "value": 39000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "ريان آيت نوري",
-                      "bn": "রায়ান আইত নুরী",
-                      "hi": "रेयान ऐत नूरी"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ر. أ. نوري",
-                      "bn": "আর. এ. নুরী",
-                      "hi": "आर. ऐ. नूरी"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 21,
-                "jerseyNumber": "21",
-                "position": "M",
-                "substitute": false
-              },
-              {
-                "avgRating": 7,
-                "player": {
-                  "name": "Rodri",
-                  "firstName": "",
-                  "lastName": "",
-                  "slug": "rodri",
-                  "shortName": "Rodri",
-                  "position": "M",
-                  "jerseyNumber": "16",
-                  "height": 191,
-                  "userCount": 85493,
-                  "gender": "M",
-                  "sofascoreId": "Rodri",
-                  "country": {
-                    "alpha2": "ES",
-                    "alpha3": "ESP",
-                    "name": "Spain",
-                    "slug": "spain"
-                  },
-                  "id": 827606,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 835401600,
-                  "proposedMarketValueRaw": {
-                    "value": 68000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "رودري",
-                      "bn": "রডরি",
-                      "hi": "रोड्री"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "رودري",
-                      "bn": "রডরি",
-                      "hi": "रोड्री"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 16,
-                "jerseyNumber": "16",
-                "position": "M",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.87,
-                "player": {
-                  "name": "Bernardo Silva",
-                  "slug": "bernardo-silva",
-                  "shortName": "B. Silva",
-                  "position": "M",
-                  "jerseyNumber": "20",
-                  "height": 173,
-                  "userCount": 61251,
-                  "gender": "M",
-                  "sofascoreId": "BSilva",
-                  "country": {
-                    "alpha2": "PT",
-                    "alpha3": "PRT",
-                    "name": "Portugal",
-                    "slug": "portugal"
-                  },
-                  "id": 331209,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 776476800,
-                  "proposedMarketValueRaw": {
-                    "value": 26000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "بيرناردو سيلفا",
-                      "bn": "বার্নার্ডো সিলভা",
-                      "hi": "बर्नार्डो सिल्वा"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ب. سيلفا",
-                      "bn": "বি. সিলভা",
-                      "hi": "बी. सिल्वा"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 20,
-                "jerseyNumber": "20",
-                "position": "M",
-                "substitute": false
-              },
-              {
-                "avgRating": 7.58,
-                "player": {
-                  "name": "Rayan Cherki",
-                  "firstName": "",
-                  "lastName": "",
-                  "slug": "cherki-rayan",
-                  "shortName": "R. Cherki",
-                  "position": "M",
-                  "jerseyNumber": "10",
-                  "height": 176,
-                  "userCount": 78161,
-                  "gender": "M",
-                  "sofascoreId": "rayan_cherki",
-                  "country": {
-                    "alpha2": "FR",
-                    "alpha3": "FRA",
-                    "name": "France",
-                    "slug": "france"
-                  },
-                  "id": 979128,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1061078400,
-                  "proposedMarketValueRaw": {
-                    "value": 54000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "شرقي، ريان",
-                      "bn": "চেরকি, রায়ান",
-                      "hi": "चेरकी, रायन"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ر. شرقي",
-                      "bn": "আর. চেরকি",
-                      "hi": "आर. चेरकी"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 10,
-                "jerseyNumber": "10",
-                "position": "M",
-                "substitute": false
-              },
-              {
-                "avgRating": 6.81,
-                "player": {
-                  "name": "Nico O'Reilly",
-                  "firstName": "Nico",
-                  "lastName": "O’Reilly",
-                  "slug": "nico-o-reilly",
-                  "shortName": "N. O’Reilly",
-                  "position": "D",
-                  "jerseyNumber": "33",
-                  "height": 193,
-                  "userCount": 20740,
-                  "gender": "M",
-                  "country": {
-                    "alpha2": "EN",
-                    "alpha3": "ENG",
-                    "name": "England",
-                    "slug": "england"
-                  },
-                  "id": 1142703,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1111363200,
-                  "proposedMarketValueRaw": {
-                    "value": 43000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "نيكو أوريلي",
-                      "bn": "নিকো ও'রেইলি",
-                      "hi": "निको ओ'रेली"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ن. أوريلي",
-                      "bn": "এন. ও'রেইলি",
-                      "hi": "एन. ओ'रेली"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 33,
-                "jerseyNumber": "33",
-                "position": "D",
-                "substitute": false
-              },
-              {
-                "avgRating": 7.43,
-                "player": {
-                  "name": "Erling Haaland",
-                  "slug": "erling-haaland",
-                  "shortName": "E. Haaland",
-                  "position": "F",
-                  "jerseyNumber": "9",
-                  "height": 194,
-                  "userCount": 859932,
-                  "gender": "M",
-                  "sofascoreId": "EHaaland",
-                  "country": {
-                    "alpha2": "NO",
-                    "alpha3": "NOR",
-                    "name": "Norway",
-                    "slug": "norway"
-                  },
-                  "id": 839956,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 964137600,
-                  "proposedMarketValueRaw": {
-                    "value": 218000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "إيرلينغ هالاند",
-                      "bn": "এরলিং হালান্ড",
-                      "hi": "एर्लिंग हालैंड"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "إ. هالاند",
-                      "bn": "ই. হালান্ড",
-                      "hi": "ई. हालैंड"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 9,
-                "jerseyNumber": "9",
-                "position": "F",
-                "substitute": false
-              },
-              {
-                "player": {
-                  "name": "Antoine Semenyo",
-                  "slug": "antoine-semenyo",
-                  "shortName": "A. Semenyo",
-                  "position": "M",
-                  "jerseyNumber": "42",
-                  "height": 185,
-                  "userCount": 100668,
-                  "gender": "M",
-                  "sofascoreId": "antoinesemenyo42",
-                  "country": {
-                    "alpha2": "GH",
-                    "alpha3": "GHA",
-                    "name": "Ghana",
-                    "slug": "ghana"
-                  },
-                  "id": 934354,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 947203200,
-                  "proposedMarketValueRaw": {
-                    "value": 69000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "أنطوان سيمينيو",
-                      "bn": "অ্যান্টোইন সেমেনিও",
-                      "hi": "एंटोनी सेमेन्यो"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "أ. سيمينيو",
-                      "bn": "এ. সেমেনিও",
-                      "hi": "ए. सेमेन्यो"
-                    }
-                  }
-                },
-                "teamId": 17,
-                "shirtNumber": 42,
-                "jerseyNumber": "42",
-                "position": "M",
-                "substitute": false
-              }
-            ],
-            "supportStaff": [],
-            "formation": "4-1-3-2",
-            "playerColor": {
-              "primary": "000000",
-              "number": "ffffff",
-              "outline": "000000",
-              "fancyNumber": "ffffff"
-            },
-            "goalkeeperColor": {
-              "primary": "008b48",
-              "number": "feb139",
-              "outline": "008b48",
-              "fancyNumber": "ffffff"
-            },
-            "missingPlayers": [
-              {
-                "player": {
-                  "name": "Joško Gvardiol",
-                  "slug": "josko-gvardiol",
-                  "shortName": "J. Gvardiol",
-                  "position": "D",
-                  "jerseyNumber": "24",
-                  "height": 186,
-                  "userCount": 49713,
-                  "gender": "M",
-                  "sofascoreId": "JGvardiol",
-                  "country": {
-                    "alpha2": "HR",
-                    "alpha3": "HRV",
-                    "name": "Croatia",
-                    "slug": "croatia"
-                  },
-                  "id": 964994,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1011744000,
-                  "proposedMarketValueRaw": {
-                    "value": 64000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "يوشكو غفارديول",
-                      "bn": "জোসকো গোওয়ারদিওল",
-                      "hi": "जोस्को ग्वार्डिओल"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ي. غفارديول",
-                      "bn": "জে. গোওয়ারদিওল",
-                      "hi": "जे. ग्वार्डिओल"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "Broken Leg",
-                "externalType": 5,
-                "expectedEndDate": "2026-05-25T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "Mateo Kovačić",
-                  "slug": "mateo-kovacic",
-                  "shortName": "M. Kovačić",
-                  "position": "M",
-                  "jerseyNumber": "8",
-                  "height": 178,
-                  "userCount": 33473,
-                  "gender": "M",
-                  "sofascoreId": "Kova8",
-                  "country": {
-                    "alpha2": "HR",
-                    "alpha3": "HRV",
-                    "name": "Croatia",
-                    "slug": "croatia"
-                  },
-                  "id": 136710,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 768182400,
-                  "proposedMarketValueRaw": {
-                    "value": 14500000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "ماتيو كوفاسيتش",
-                      "bn": "মাতেও কোভাসিক",
-                      "hi": "माटेओ कोवासिक"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "م. كوفاسيتش",
-                      "bn": "এম. কোভাসিচ",
-                      "hi": "एम. कोवासिक"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "Ankle Injury",
-                "externalType": 5,
-                "expectedEndDate": "2026-05-25T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "Max Alleyne",
-                  "slug": "alleyne-max",
-                  "shortName": "M. Alleyne",
-                  "position": "D",
-                  "jerseyNumber": "68",
-                  "height": 185,
-                  "userCount": 11200,
-                  "gender": "M",
-                  "country": {
-                    "alpha2": "EN",
-                    "alpha3": "ENG",
-                    "name": "England",
-                    "slug": "england"
-                  },
-                  "id": 1168513,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1121904000,
-                  "proposedMarketValueRaw": {
-                    "value": 775000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "أليين، ماكس",
-                      "bn": "অ্যালেন, ম্যাক্স",
-                      "hi": "एलीने, मैक्स"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "م. أليين",
-                      "bn": "এম. অ্যালেন",
-                      "hi": "एम. एलीने"
-                    }
-                  }
-                },
-                "type": "missing",
-                "reason": 1,
-                "description": "Knock",
-                "externalType": 5
-              },
-              {
-                "player": {
-                  "name": "Rico Lewis",
-                  "firstName": "Rico Lewis",
-                  "lastName": "",
-                  "slug": "rico-lewis",
-                  "shortName": "R. Lewis",
-                  "position": "D",
-                  "jerseyNumber": "82",
-                  "height": 170,
-                  "userCount": 17393,
-                  "gender": "M",
-                  "sofascoreId": "Rico_Lewis",
-                  "country": {
-                    "alpha2": "EN",
-                    "alpha3": "ENG",
-                    "name": "England",
-                    "slug": "england"
-                  },
-                  "id": 1136731,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1100995200,
-                  "proposedMarketValueRaw": {
-                    "value": 32000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "ريكو لويس",
-                      "bn": "রিকো লুইস",
-                      "hi": "रिको लुईस"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ر. لويس",
-                      "bn": "আর. লুইস",
-                      "hi": "आर. लुईस"
-                    }
-                  }
-                },
-                "type": "doubtful",
-                "reason": 1,
-                "description": "Ankle Injury",
-                "externalType": 5,
-                "expectedEndDate": "2026-03-12T00:00:00+00:00"
-              },
-              {
-                "player": {
-                  "name": "Nico O'Reilly",
-                  "firstName": "Nico",
-                  "lastName": "O’Reilly",
-                  "slug": "nico-o-reilly",
-                  "shortName": "N. O’Reilly",
-                  "position": "D",
-                  "jerseyNumber": "33",
-                  "height": 193,
-                  "userCount": 20740,
-                  "gender": "M",
-                  "country": {
-                    "alpha2": "EN",
-                    "alpha3": "ENG",
-                    "name": "England",
-                    "slug": "england"
-                  },
-                  "id": 1142703,
-                  "marketValueCurrency": "EUR",
-                  "dateOfBirthTimestamp": 1111363200,
-                  "proposedMarketValueRaw": {
-                    "value": 43000000,
-                    "currency": "EUR"
-                  },
-                  "fieldTranslations": {
-                    "nameTranslation": {
-                      "ar": "نيكو أوريلي",
-                      "bn": "নিকো ও'রেইলি",
-                      "hi": "निको ओ'रेली"
-                    },
-                    "shortNameTranslation": {
-                      "ar": "ن. أوريلي",
-                      "bn": "এন. ও'রেইলি",
-                      "hi": "एन. ओ'रेली"
-                    }
-                  }
-                },
-                "type": "doubtful",
-                "reason": 1,
-                "description": "Ankle Injury",
-                "externalType": 5,
-                "expectedEndDate": "2026-03-15T00:00:00+00:00"
               }
             ]
           },
@@ -5815,6 +4261,1564 @@
       }
     },
     {
+      "id": 15631329,
+      "fixedDate": "2026-03-11",
+      "fixedTime": "23:00",
+      "broadcaster": "TRT / Tabii",
+      "homeTeam": {
+        "name": "Real Madrid",
+        "id": 2829,
+        "logo": "https://api.sofascore.app/api/v1/team/2829/image"
+      },
+      "awayTeam": {
+        "name": "Manchester City",
+        "id": 17,
+        "logo": "https://api.sofascore.app/api/v1/team/17/image"
+      },
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UEFA Champions League",
+      "details": {
+        "stadium": "Bernabéu",
+        "referee": "Maurizio Mariani",
+        "lineups": {
+          "confirmed": false,
+          "home": {
+            "players": [
+              {
+                "avgRating": 7.19,
+                "player": {
+                  "name": "Thibaut Courtois",
+                  "slug": "thibaut-courtois",
+                  "shortName": "T. Courtois",
+                  "position": "G",
+                  "jerseyNumber": "1",
+                  "height": 200,
+                  "userCount": 198935,
+                  "gender": "M",
+                  "sofascoreId": "TheOctopus",
+                  "country": {
+                    "alpha2": "BE",
+                    "alpha3": "BEL",
+                    "name": "Belgium",
+                    "slug": "belgium"
+                  },
+                  "id": 70988,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 705542400,
+                  "proposedMarketValueRaw": {
+                    "value": 17400000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "تيبو كورتوا",
+                      "bn": "থিবাউট কোর্টোইস",
+                      "hi": "थिबाउट कोर्टोइस"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ت. كورتوا",
+                      "bn": "টি. কোর্টোইস",
+                      "hi": "टी. कोर्टोइस"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 1,
+                "jerseyNumber": "1",
+                "position": "G",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.75,
+                "player": {
+                  "name": "Trent Alexander-Arnold",
+                  "slug": "trent-alexander-arnold",
+                  "shortName": "T. Alexander-Arnold",
+                  "position": "D",
+                  "jerseyNumber": "12",
+                  "height": 180,
+                  "userCount": 210221,
+                  "gender": "M",
+                  "sofascoreId": "TrentAA",
+                  "country": {
+                    "alpha2": "EN",
+                    "alpha3": "ENG",
+                    "name": "England",
+                    "slug": "england"
+                  },
+                  "id": 795064,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 907718400,
+                  "proposedMarketValueRaw": {
+                    "value": 72000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ترنت ألكسندر-أرنولد",
+                      "bn": "ট্রেন্ট আলেকজান্ডার-আর্নল্ড",
+                      "hi": "ट्रेंट अलेक्जेंडर-अर्नोल्ड"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ت. ألكسندر-أرنولد",
+                      "bn": "টি. আলেকজান্ডার-আর্নল্ড",
+                      "hi": "टी. अलेक्जेंडर-अर्नोल्ड"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 12,
+                "jerseyNumber": "12",
+                "position": "D",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.71,
+                "player": {
+                  "name": "Raúl Asencio",
+                  "slug": "raul-asencio",
+                  "shortName": "R. Asencio",
+                  "position": "D",
+                  "jerseyNumber": "17",
+                  "height": 184,
+                  "userCount": 122238,
+                  "gender": "M",
+                  "sofascoreId": "asencio",
+                  "country": {
+                    "alpha2": "ES",
+                    "alpha3": "ESP",
+                    "name": "Spain",
+                    "slug": "spain"
+                  },
+                  "id": 1156645,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1045094400,
+                  "proposedMarketValueRaw": {
+                    "value": 27000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "راؤول أسينسيو",
+                      "bn": "রাউল আসেনসিও",
+                      "hi": "राउल असेंशियो"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ر. أسينسيو",
+                      "bn": "আর. অ্যাসেনসিও",
+                      "hi": "आर. असेंशियो"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 17,
+                "jerseyNumber": "17",
+                "position": "D",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.53,
+                "player": {
+                  "name": "Antonio Rüdiger",
+                  "slug": "antonio-rudiger",
+                  "shortName": "A. Rüdiger",
+                  "position": "D",
+                  "jerseyNumber": "22",
+                  "height": 191,
+                  "userCount": 187041,
+                  "gender": "M",
+                  "sofascoreId": "ARüdiger",
+                  "country": {
+                    "alpha2": "DE",
+                    "alpha3": "DEU",
+                    "name": "Germany",
+                    "slug": "germany"
+                  },
+                  "id": 142622,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 731116800,
+                  "proposedMarketValueRaw": {
+                    "value": 12400000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أنطونيو روديغر",
+                      "bn": "আন্তোনিও রুডিগার",
+                      "hi": "एंटोनियो रुडिगर"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. روديغر",
+                      "bn": "এ. রুডিগার",
+                      "hi": "ए. रुडिगर"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 22,
+                "jerseyNumber": "22",
+                "position": "D",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.2,
+                "player": {
+                  "name": "Ferland Mendy",
+                  "slug": "ferland-mendy",
+                  "shortName": "F. Mendy",
+                  "position": "D",
+                  "jerseyNumber": "23",
+                  "height": 178,
+                  "userCount": 69633,
+                  "gender": "M",
+                  "sofascoreId": "FerMendy",
+                  "country": {
+                    "alpha2": "FR",
+                    "alpha3": "FRA",
+                    "name": "France",
+                    "slug": "france"
+                  },
+                  "id": 792073,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 802569600,
+                  "proposedMarketValueRaw": {
+                    "value": 8500000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فيرلاند ميندي",
+                      "bn": "ফেরল্যান্ড মেন্ডি",
+                      "hi": "फेरलैंड मेंडी"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ف. ميندي",
+                      "bn": "এফ. মেন্ডি",
+                      "hi": "एफ. मेंडी"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 23,
+                "jerseyNumber": "23",
+                "position": "D",
+                "substitute": false
+              },
+              {
+                "avgRating": 7.06,
+                "player": {
+                  "name": "Federico Valverde",
+                  "slug": "federico-valverde",
+                  "shortName": "F. Valverde",
+                  "position": "M",
+                  "jerseyNumber": "8",
+                  "height": 181,
+                  "userCount": 373752,
+                  "gender": "M",
+                  "sofascoreId": "Fede",
+                  "country": {
+                    "alpha2": "UY",
+                    "alpha3": "URY",
+                    "name": "Uruguay",
+                    "slug": "uruguay"
+                  },
+                  "id": 831808,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 901065600,
+                  "proposedMarketValueRaw": {
+                    "value": 116000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فيديريكو فالفيردي",
+                      "bn": "ফেদেরিকো ভালভার্দে",
+                      "hi": "फेडेरिको वेलवेर्डे"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ف. فالفيردي",
+                      "bn": "এফ. ভালভার্দে",
+                      "hi": "एफ. वेलवेर्डे"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 8,
+                "jerseyNumber": "8",
+                "position": "M",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.9,
+                "player": {
+                  "name": "Arda Güler",
+                  "firstName": "Arda Guler",
+                  "slug": "arda-guler",
+                  "shortName": "A. Güler",
+                  "position": "M",
+                  "jerseyNumber": "15",
+                  "height": 176,
+                  "userCount": 393444,
+                  "gender": "M",
+                  "sofascoreId": "AGüler",
+                  "country": {
+                    "alpha2": "TR",
+                    "alpha3": "TUR",
+                    "name": "Türkiye",
+                    "slug": "turkiye"
+                  },
+                  "id": 1091116,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1109289600,
+                  "proposedMarketValueRaw": {
+                    "value": 87000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أردا غولر",
+                      "bn": "আরদা গুলার",
+                      "hi": "अर्डा गुलेर"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. غولر",
+                      "bn": "এ.গুলার",
+                      "hi": "ए. गुलेर"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 15,
+                "jerseyNumber": "15",
+                "position": "M",
+                "substitute": false
+              },
+              {
+                "avgRating": 7.11,
+                "player": {
+                  "name": "Aurélien Tchouaméni",
+                  "slug": "aurelien-tchouameni",
+                  "shortName": "A. Tchouaméni",
+                  "position": "M",
+                  "jerseyNumber": "14",
+                  "height": 188,
+                  "userCount": 143031,
+                  "gender": "M",
+                  "sofascoreId": "ATchouaméni",
+                  "country": {
+                    "alpha2": "FR",
+                    "alpha3": "FRA",
+                    "name": "France",
+                    "slug": "france"
+                  },
+                  "id": 859025,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 948931200,
+                  "proposedMarketValueRaw": {
+                    "value": 78000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أوريليان تشواميني",
+                      "bn": "অরেলিয়ান চৌমেনি",
+                      "hi": "ऑरेलियन टचौमेनी"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. تشواميني",
+                      "bn": "এ. চৌমেনি",
+                      "hi": "ए. टचौमेनी"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 14,
+                "jerseyNumber": "14",
+                "position": "M",
+                "substitute": false
+              },
+              {
+                "avgRating": 7.1,
+                "player": {
+                  "name": "Eduardo Camavinga",
+                  "slug": "camavinga-eduardo",
+                  "shortName": "E. Camavinga",
+                  "position": "M",
+                  "jerseyNumber": "6",
+                  "height": 182,
+                  "userCount": 189599,
+                  "gender": "M",
+                  "sofascoreId": "Tacklevinga",
+                  "country": {
+                    "alpha2": "FR",
+                    "alpha3": "FRA",
+                    "name": "France",
+                    "slug": "france"
+                  },
+                  "id": 973887,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1036886400,
+                  "proposedMarketValueRaw": {
+                    "value": 48000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "كامافينغا، إدواردو",
+                      "bn": "কামাভিঙ্গা, এডুয়ার্ডো",
+                      "hi": "कैमाविंगा, एडुआर्डो"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "إ. كامافينغا",
+                      "bn": "ই. কামাভিঙ্গা",
+                      "hi": "ई. एडुआर्डो"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 6,
+                "jerseyNumber": "6",
+                "position": "M",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.44,
+                "player": {
+                  "name": "Gonzalo García",
+                  "firstName": "Gonzalo García",
+                  "slug": "gonzalo-garcia",
+                  "shortName": "G. García",
+                  "position": "F",
+                  "jerseyNumber": "16",
+                  "height": 182,
+                  "userCount": 102419,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "ES",
+                    "alpha3": "ESP",
+                    "name": "Spain",
+                    "slug": "spain"
+                  },
+                  "id": 1402716,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1080086400,
+                  "proposedMarketValueRaw": {
+                    "value": 15500000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "غونزالو غارسيا",
+                      "bn": "গঞ্জালো গার্সিয়া",
+                      "hi": "गोंजालो गार्सिया"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "غ. غارسيا",
+                      "bn": "জি. গার্সিয়া",
+                      "hi": "जी. गार्सिया"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 16,
+                "jerseyNumber": "16",
+                "position": "F",
+                "substitute": false
+              },
+              {
+                "avgRating": 7.33,
+                "player": {
+                  "name": "Vinicius Júnior",
+                  "slug": "vinicius-junior",
+                  "shortName": "Vinícius Jr.",
+                  "position": "F",
+                  "jerseyNumber": "7",
+                  "height": 176,
+                  "userCount": 1218677,
+                  "gender": "M",
+                  "sofascoreId": "ViniJr",
+                  "country": {
+                    "alpha2": "BR",
+                    "alpha3": "BRA",
+                    "name": "Brazil",
+                    "slug": "brazil"
+                  },
+                  "id": 868812,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 963360000,
+                  "proposedMarketValueRaw": {
+                    "value": 156000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "فينيسيوس جونيور",
+                      "bn": "ভিনিসিয়াস জুনিয়র",
+                      "hi": "विनीसियस जूनियर"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "فينيسيوس",
+                      "bn": "ভিনিসিয়াস",
+                      "hi": "विनीसियस"
+                    }
+                  }
+                },
+                "teamId": 2829,
+                "shirtNumber": 7,
+                "jerseyNumber": "7",
+                "position": "F",
+                "substitute": false
+              }
+            ],
+            "supportStaff": [],
+            "formation": "4-4-2",
+            "playerColor": {
+              "primary": "ffffff",
+              "number": "000000",
+              "outline": "ffffff",
+              "fancyNumber": "222226"
+            },
+            "goalkeeperColor": {
+              "primary": "535353",
+              "number": "ffffff",
+              "outline": "535353",
+              "fancyNumber": "ffffff"
+            },
+            "missingPlayers": [
+              {
+                "player": {
+                  "name": "Jude Bellingham",
+                  "slug": "jude-bellingham",
+                  "shortName": "J. Bellingham",
+                  "position": "M",
+                  "jerseyNumber": "5",
+                  "height": 188,
+                  "userCount": 1042622,
+                  "gender": "M",
+                  "sofascoreId": "JudeBell",
+                  "country": {
+                    "alpha2": "EN",
+                    "alpha3": "ENG",
+                    "name": "England",
+                    "slug": "england"
+                  },
+                  "id": 991011,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1056844800,
+                  "proposedMarketValueRaw": {
+                    "value": 151000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "جود بيلينغهام",
+                      "bn": "জুড বেলিংহাম",
+                      "hi": "जूड बेलिंघम"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ج. بيلينغهام",
+                      "bn": "জে. বেলিংহাম",
+                      "hi": "जे. बेलिंघम"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "Hamstring",
+                "externalType": 5,
+                "expectedEndDate": "2026-04-06T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "Kylian Mbappé",
+                  "slug": "kylian-mbappe",
+                  "shortName": "K. Mbappé",
+                  "position": "F",
+                  "jerseyNumber": "9",
+                  "height": 178,
+                  "userCount": 1806446,
+                  "gender": "M",
+                  "sofascoreId": "KMbappé",
+                  "country": {
+                    "alpha2": "FR",
+                    "alpha3": "FRA",
+                    "name": "France",
+                    "slug": "france"
+                  },
+                  "id": 826643,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 914112000,
+                  "proposedMarketValueRaw": {
+                    "value": 212000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "كيليان مبابي",
+                      "bn": "কিলিয়ান এমবাপ্পে",
+                      "hi": "किलियन एमबाप्पे"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ك. مبابي",
+                      "bn": "কে. এমবাপ্পে",
+                      "hi": "के. एमबाप्पे"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "LCL Knee Injury",
+                "externalType": 5,
+                "expectedEndDate": "2026-03-23T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "Rodrygo",
+                  "slug": "rodrygo",
+                  "shortName": "Rodrygo",
+                  "position": "F",
+                  "jerseyNumber": "11",
+                  "height": 174,
+                  "userCount": 726946,
+                  "gender": "M",
+                  "sofascoreId": "Rodrygo",
+                  "country": {
+                    "alpha2": "BR",
+                    "alpha3": "BRA",
+                    "name": "Brazil",
+                    "slug": "brazil"
+                  },
+                  "id": 910536,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 978912000,
+                  "proposedMarketValueRaw": {
+                    "value": 64000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "رودريغو",
+                      "bn": "রড্রিগো",
+                      "hi": "रोड्रिगो"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "رودريغو",
+                      "bn": "রড্রিগো",
+                      "hi": "रोड्रिगो"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "ACL Knee Injury",
+                "externalType": 5,
+                "expectedEndDate": "2026-10-15T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "Éder Militão",
+                  "slug": "eder-militao",
+                  "shortName": "É. Militão",
+                  "position": "D",
+                  "jerseyNumber": "3",
+                  "height": 186,
+                  "userCount": 146727,
+                  "gender": "M",
+                  "sofascoreId": "EMilitão",
+                  "country": {
+                    "alpha2": "BR",
+                    "alpha3": "BRA",
+                    "name": "Brazil",
+                    "slug": "brazil"
+                  },
+                  "id": 822519,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 885081600,
+                  "proposedMarketValueRaw": {
+                    "value": 31000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "إيدير ميليتاو",
+                      "bn": "এডার মিলিটাও",
+                      "hi": "एडर मिलिटाओ"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "إ. ميليتاو",
+                      "bn": "এ. মিলিটাও",
+                      "hi": "ई. मिलिटाओ"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "Hamstring",
+                "externalType": 5,
+                "expectedEndDate": "2026-03-23T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "Álvaro Carreras",
+                  "slug": "alvaro-carreras",
+                  "shortName": "Á. Carreras",
+                  "position": "D",
+                  "jerseyNumber": "18",
+                  "height": 186,
+                  "userCount": 82857,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "ES",
+                    "alpha3": "ESP",
+                    "name": "Spain",
+                    "slug": "spain"
+                  },
+                  "id": 1085081,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1048377600,
+                  "proposedMarketValueRaw": {
+                    "value": 64000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ألفارو كاريراس",
+                      "bn": "আলভারো ক্যারেরাস",
+                      "hi": "अल्वारो कैरेरास"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. كاريراس",
+                      "bn": "আ. ক্যারেরাস",
+                      "hi": "ए. कैरेरास"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "Calf Injury",
+                "externalType": 5,
+                "expectedEndDate": "2026-03-12T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "Dani Ceballos",
+                  "slug": "dani-ceballos",
+                  "shortName": "D. Ceballos",
+                  "position": "M",
+                  "jerseyNumber": "19",
+                  "height": 179,
+                  "userCount": 69793,
+                  "gender": "M",
+                  "sofascoreId": "Danifuli10",
+                  "country": {
+                    "alpha2": "ES",
+                    "alpha3": "ESP",
+                    "name": "Spain",
+                    "slug": "spain"
+                  },
+                  "id": 547838,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 839376000,
+                  "proposedMarketValueRaw": {
+                    "value": 8400000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "داني سيبايوس",
+                      "bn": "দানি সেবেলোস",
+                      "hi": "दानी सेबालोस"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. سيبايوس",
+                      "bn": "ডি. সেবেলোস",
+                      "hi": "डी. सेबालोस"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "Calf Injury",
+                "externalType": 5,
+                "expectedEndDate": "2026-04-13T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "David Alaba",
+                  "slug": "david-alaba",
+                  "shortName": "D. Alaba",
+                  "position": "D",
+                  "jerseyNumber": "4",
+                  "height": 180,
+                  "userCount": 91931,
+                  "gender": "M",
+                  "sofascoreId": "DAlaba",
+                  "country": {
+                    "alpha2": "AT",
+                    "alpha3": "AUT",
+                    "name": "Austria",
+                    "slug": "austria"
+                  },
+                  "id": 66492,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 709344000,
+                  "proposedMarketValueRaw": {
+                    "value": 3600000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ديفيد ألابا",
+                      "bn": "ডেভিড আলাবা",
+                      "hi": "डेविड अलाबा"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "د. ألابا",
+                      "bn": "ডি. আলাবা",
+                      "hi": "डी. अलाबा"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "Calf Injury",
+                "externalType": 5,
+                "expectedEndDate": "2026-03-12T00:00:00+00:00"
+              }
+            ]
+          },
+          "away": {
+            "players": [
+              {
+                "avgRating": 7.03,
+                "player": {
+                  "name": "Gianluigi Donnarumma",
+                  "slug": "gianluigi-donnarumma",
+                  "shortName": "G. Donnarumma",
+                  "position": "G",
+                  "jerseyNumber": "25",
+                  "height": 196,
+                  "userCount": 70290,
+                  "gender": "M",
+                  "sofascoreId": "donnarumma",
+                  "country": {
+                    "alpha2": "IT",
+                    "alpha3": "ITA",
+                    "name": "Italy",
+                    "slug": "italy"
+                  },
+                  "id": 824509,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 919900800,
+                  "proposedMarketValueRaw": {
+                    "value": 46000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "جيانلويجي دوناروما",
+                      "bn": "জিয়ানলুইগি ডোনারুম্মা",
+                      "hi": "जियानलुइगी डोनारुम्मा"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ج. دوناروما",
+                      "bn": "জি. ডোনারুম্মা",
+                      "hi": "जी. डोनारुम्मा"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 25,
+                "jerseyNumber": "25",
+                "position": "G",
+                "substitute": false
+              },
+              {
+                "avgRating": 7.02,
+                "player": {
+                  "name": "Matheus Nunes",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "matheus-nunes",
+                  "shortName": "M. Nunes",
+                  "position": "D",
+                  "jerseyNumber": "27",
+                  "height": 183,
+                  "userCount": 19791,
+                  "gender": "M",
+                  "sofascoreId": "matheusnunes",
+                  "country": {
+                    "alpha2": "PT",
+                    "alpha3": "PRT",
+                    "name": "Portugal",
+                    "slug": "portugal"
+                  },
+                  "id": 945122,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 904176000,
+                  "proposedMarketValueRaw": {
+                    "value": 36000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ماثيوس نونيز",
+                      "bn": "ম্যাথিউস নুনেস",
+                      "hi": "मैथियस नून्स"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. نونيز",
+                      "bn": "এম. নুনেস",
+                      "hi": "एम. नून्स"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 27,
+                "jerseyNumber": "27",
+                "position": "D",
+                "substitute": false
+              },
+              {
+                "avgRating": 7.16,
+                "player": {
+                  "name": "Rúben Dias",
+                  "slug": "ruben-dias",
+                  "shortName": "R. Dias",
+                  "position": "D",
+                  "jerseyNumber": "3",
+                  "height": 188,
+                  "userCount": 40020,
+                  "gender": "M",
+                  "sofascoreId": "RúbenD",
+                  "country": {
+                    "alpha2": "PT",
+                    "alpha3": "PRT",
+                    "name": "Portugal",
+                    "slug": "portugal"
+                  },
+                  "id": 318941,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 863568000,
+                  "proposedMarketValueRaw": {
+                    "value": 65000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "روبن دياز",
+                      "bn": "রুবেন ডায়াস",
+                      "hi": "रुबेन डियास"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ر. دياز",
+                      "bn": "আর. ডায়াস",
+                      "hi": "आर. डियास"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 3,
+                "jerseyNumber": "3",
+                "position": "D",
+                "substitute": false
+              },
+              {
+                "player": {
+                  "name": "Marc Guéhi",
+                  "slug": "marc-guehi",
+                  "shortName": "M. Guéhi",
+                  "position": "D",
+                  "jerseyNumber": "15",
+                  "height": 182,
+                  "userCount": 24789,
+                  "gender": "M",
+                  "sofascoreId": "MarcGuehi13",
+                  "country": {
+                    "alpha2": "EN",
+                    "alpha3": "ENG",
+                    "name": "England",
+                    "slug": "england"
+                  },
+                  "id": 877994,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 963446400,
+                  "proposedMarketValueRaw": {
+                    "value": 52000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "مارك غيهي",
+                      "bn": "মার্ক গুয়েহি",
+                      "hi": "मार्क गुएही"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. غيهي",
+                      "bn": "এম. গুয়েহি",
+                      "hi": "एम. गुएही"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 15,
+                "jerseyNumber": "15",
+                "position": "D",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.98,
+                "player": {
+                  "name": "Rayan Aït-Nouri",
+                  "slug": "rayan-ait-nouri",
+                  "shortName": "R. A. Nouri",
+                  "position": "M",
+                  "jerseyNumber": "21",
+                  "height": 179,
+                  "userCount": 46201,
+                  "gender": "M",
+                  "sofascoreId": "r_aitnouri",
+                  "country": {
+                    "alpha2": "DZ",
+                    "alpha3": "DZA",
+                    "name": "Algeria",
+                    "slug": "algeria"
+                  },
+                  "id": 931278,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 991785600,
+                  "proposedMarketValueRaw": {
+                    "value": 39000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ريان آيت نوري",
+                      "bn": "রায়ান আইত নুরী",
+                      "hi": "रेयान ऐत नूरी"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ر. أ. نوري",
+                      "bn": "আর. এ. নুরী",
+                      "hi": "आर. ऐ. नूरी"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 21,
+                "jerseyNumber": "21",
+                "position": "M",
+                "substitute": false
+              },
+              {
+                "avgRating": 7,
+                "player": {
+                  "name": "Rodri",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "rodri",
+                  "shortName": "Rodri",
+                  "position": "M",
+                  "jerseyNumber": "16",
+                  "height": 191,
+                  "userCount": 85493,
+                  "gender": "M",
+                  "sofascoreId": "Rodri",
+                  "country": {
+                    "alpha2": "ES",
+                    "alpha3": "ESP",
+                    "name": "Spain",
+                    "slug": "spain"
+                  },
+                  "id": 827606,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 835401600,
+                  "proposedMarketValueRaw": {
+                    "value": 68000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "رودري",
+                      "bn": "রডরি",
+                      "hi": "रोड्री"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "رودري",
+                      "bn": "রডরি",
+                      "hi": "रोड्री"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 16,
+                "jerseyNumber": "16",
+                "position": "M",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.87,
+                "player": {
+                  "name": "Bernardo Silva",
+                  "slug": "bernardo-silva",
+                  "shortName": "B. Silva",
+                  "position": "M",
+                  "jerseyNumber": "20",
+                  "height": 173,
+                  "userCount": 61251,
+                  "gender": "M",
+                  "sofascoreId": "BSilva",
+                  "country": {
+                    "alpha2": "PT",
+                    "alpha3": "PRT",
+                    "name": "Portugal",
+                    "slug": "portugal"
+                  },
+                  "id": 331209,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 776476800,
+                  "proposedMarketValueRaw": {
+                    "value": 26000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "بيرناردو سيلفا",
+                      "bn": "বার্নার্ডো সিলভা",
+                      "hi": "बर्नार्डो सिल्वा"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ب. سيلفا",
+                      "bn": "বি. সিলভা",
+                      "hi": "बी. सिल्वा"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 20,
+                "jerseyNumber": "20",
+                "position": "M",
+                "substitute": false
+              },
+              {
+                "avgRating": 7.58,
+                "player": {
+                  "name": "Rayan Cherki",
+                  "firstName": "",
+                  "lastName": "",
+                  "slug": "cherki-rayan",
+                  "shortName": "R. Cherki",
+                  "position": "M",
+                  "jerseyNumber": "10",
+                  "height": 176,
+                  "userCount": 78161,
+                  "gender": "M",
+                  "sofascoreId": "rayan_cherki",
+                  "country": {
+                    "alpha2": "FR",
+                    "alpha3": "FRA",
+                    "name": "France",
+                    "slug": "france"
+                  },
+                  "id": 979128,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1061078400,
+                  "proposedMarketValueRaw": {
+                    "value": 54000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "شرقي، ريان",
+                      "bn": "চেরকি, রায়ান",
+                      "hi": "चेरकी, रायन"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ر. شرقي",
+                      "bn": "আর. চেরকি",
+                      "hi": "आर. चेरकी"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 10,
+                "jerseyNumber": "10",
+                "position": "M",
+                "substitute": false
+              },
+              {
+                "avgRating": 6.81,
+                "player": {
+                  "name": "Nico O'Reilly",
+                  "firstName": "Nico",
+                  "lastName": "O’Reilly",
+                  "slug": "nico-o-reilly",
+                  "shortName": "N. O’Reilly",
+                  "position": "D",
+                  "jerseyNumber": "33",
+                  "height": 193,
+                  "userCount": 20740,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "EN",
+                    "alpha3": "ENG",
+                    "name": "England",
+                    "slug": "england"
+                  },
+                  "id": 1142703,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1111363200,
+                  "proposedMarketValueRaw": {
+                    "value": 43000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "نيكو أوريلي",
+                      "bn": "নিকো ও'রেইলি",
+                      "hi": "निको ओ'रेली"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ن. أوريلي",
+                      "bn": "এন. ও'রেইলি",
+                      "hi": "एन. ओ'रेली"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 33,
+                "jerseyNumber": "33",
+                "position": "D",
+                "substitute": false
+              },
+              {
+                "avgRating": 7.43,
+                "player": {
+                  "name": "Erling Haaland",
+                  "slug": "erling-haaland",
+                  "shortName": "E. Haaland",
+                  "position": "F",
+                  "jerseyNumber": "9",
+                  "height": 194,
+                  "userCount": 859932,
+                  "gender": "M",
+                  "sofascoreId": "EHaaland",
+                  "country": {
+                    "alpha2": "NO",
+                    "alpha3": "NOR",
+                    "name": "Norway",
+                    "slug": "norway"
+                  },
+                  "id": 839956,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 964137600,
+                  "proposedMarketValueRaw": {
+                    "value": 218000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "إيرلينغ هالاند",
+                      "bn": "এরলিং হালান্ড",
+                      "hi": "एर्लिंग हालैंड"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "إ. هالاند",
+                      "bn": "ই. হালান্ড",
+                      "hi": "ई. हालैंड"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 9,
+                "jerseyNumber": "9",
+                "position": "F",
+                "substitute": false
+              },
+              {
+                "player": {
+                  "name": "Antoine Semenyo",
+                  "slug": "antoine-semenyo",
+                  "shortName": "A. Semenyo",
+                  "position": "M",
+                  "jerseyNumber": "42",
+                  "height": 185,
+                  "userCount": 100668,
+                  "gender": "M",
+                  "sofascoreId": "antoinesemenyo42",
+                  "country": {
+                    "alpha2": "GH",
+                    "alpha3": "GHA",
+                    "name": "Ghana",
+                    "slug": "ghana"
+                  },
+                  "id": 934354,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 947203200,
+                  "proposedMarketValueRaw": {
+                    "value": 69000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أنطوان سيمينيو",
+                      "bn": "অ্যান্টোইন সেমেনিও",
+                      "hi": "एंटोनी सेमेन्यो"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "أ. سيمينيو",
+                      "bn": "এ. সেমেনিও",
+                      "hi": "ए. सेमेन्यो"
+                    }
+                  }
+                },
+                "teamId": 17,
+                "shirtNumber": 42,
+                "jerseyNumber": "42",
+                "position": "M",
+                "substitute": false
+              }
+            ],
+            "supportStaff": [],
+            "formation": "4-1-3-2",
+            "playerColor": {
+              "primary": "000000",
+              "number": "ffffff",
+              "outline": "000000",
+              "fancyNumber": "ffffff"
+            },
+            "goalkeeperColor": {
+              "primary": "008b48",
+              "number": "feb139",
+              "outline": "008b48",
+              "fancyNumber": "ffffff"
+            },
+            "missingPlayers": [
+              {
+                "player": {
+                  "name": "Joško Gvardiol",
+                  "slug": "josko-gvardiol",
+                  "shortName": "J. Gvardiol",
+                  "position": "D",
+                  "jerseyNumber": "24",
+                  "height": 186,
+                  "userCount": 49713,
+                  "gender": "M",
+                  "sofascoreId": "JGvardiol",
+                  "country": {
+                    "alpha2": "HR",
+                    "alpha3": "HRV",
+                    "name": "Croatia",
+                    "slug": "croatia"
+                  },
+                  "id": 964994,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1011744000,
+                  "proposedMarketValueRaw": {
+                    "value": 64000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "يوشكو غفارديول",
+                      "bn": "জোসকো গোওয়ারদিওল",
+                      "hi": "जोस्को ग्वार्डिओल"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ي. غفارديول",
+                      "bn": "জে. গোওয়ারদিওল",
+                      "hi": "जे. ग्वार्डिओल"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "Broken Leg",
+                "externalType": 5,
+                "expectedEndDate": "2026-05-25T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "Mateo Kovačić",
+                  "slug": "mateo-kovacic",
+                  "shortName": "M. Kovačić",
+                  "position": "M",
+                  "jerseyNumber": "8",
+                  "height": 178,
+                  "userCount": 33473,
+                  "gender": "M",
+                  "sofascoreId": "Kova8",
+                  "country": {
+                    "alpha2": "HR",
+                    "alpha3": "HRV",
+                    "name": "Croatia",
+                    "slug": "croatia"
+                  },
+                  "id": 136710,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 768182400,
+                  "proposedMarketValueRaw": {
+                    "value": 14500000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ماتيو كوفاسيتش",
+                      "bn": "মাতেও কোভাসিক",
+                      "hi": "माटेओ कोवासिक"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. كوفاسيتش",
+                      "bn": "এম. কোভাসিচ",
+                      "hi": "एम. कोवासिक"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "Ankle Injury",
+                "externalType": 5,
+                "expectedEndDate": "2026-05-25T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "Max Alleyne",
+                  "slug": "alleyne-max",
+                  "shortName": "M. Alleyne",
+                  "position": "D",
+                  "jerseyNumber": "68",
+                  "height": 185,
+                  "userCount": 11200,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "EN",
+                    "alpha3": "ENG",
+                    "name": "England",
+                    "slug": "england"
+                  },
+                  "id": 1168513,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1121904000,
+                  "proposedMarketValueRaw": {
+                    "value": 775000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "أليين، ماكس",
+                      "bn": "অ্যালেন, ম্যাক্স",
+                      "hi": "एलीने, मैक्स"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "م. أليين",
+                      "bn": "এম. অ্যালেন",
+                      "hi": "एम. एलीने"
+                    }
+                  }
+                },
+                "type": "missing",
+                "reason": 1,
+                "description": "Knock",
+                "externalType": 5
+              },
+              {
+                "player": {
+                  "name": "Rico Lewis",
+                  "firstName": "Rico Lewis",
+                  "lastName": "",
+                  "slug": "rico-lewis",
+                  "shortName": "R. Lewis",
+                  "position": "D",
+                  "jerseyNumber": "82",
+                  "height": 170,
+                  "userCount": 17393,
+                  "gender": "M",
+                  "sofascoreId": "Rico_Lewis",
+                  "country": {
+                    "alpha2": "EN",
+                    "alpha3": "ENG",
+                    "name": "England",
+                    "slug": "england"
+                  },
+                  "id": 1136731,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1100995200,
+                  "proposedMarketValueRaw": {
+                    "value": 32000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "ريكو لويس",
+                      "bn": "রিকো লুইস",
+                      "hi": "रिको लुईस"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ر. لويس",
+                      "bn": "আর. লুইস",
+                      "hi": "आर. लुईस"
+                    }
+                  }
+                },
+                "type": "doubtful",
+                "reason": 1,
+                "description": "Ankle Injury",
+                "externalType": 5,
+                "expectedEndDate": "2026-03-12T00:00:00+00:00"
+              },
+              {
+                "player": {
+                  "name": "Nico O'Reilly",
+                  "firstName": "Nico",
+                  "lastName": "O’Reilly",
+                  "slug": "nico-o-reilly",
+                  "shortName": "N. O’Reilly",
+                  "position": "D",
+                  "jerseyNumber": "33",
+                  "height": 193,
+                  "userCount": 20740,
+                  "gender": "M",
+                  "country": {
+                    "alpha2": "EN",
+                    "alpha3": "ENG",
+                    "name": "England",
+                    "slug": "england"
+                  },
+                  "id": 1142703,
+                  "marketValueCurrency": "EUR",
+                  "dateOfBirthTimestamp": 1111363200,
+                  "proposedMarketValueRaw": {
+                    "value": 43000000,
+                    "currency": "EUR"
+                  },
+                  "fieldTranslations": {
+                    "nameTranslation": {
+                      "ar": "نيكو أوريلي",
+                      "bn": "নিকো ও'রেইলি",
+                      "hi": "निको ओ'रेली"
+                    },
+                    "shortNameTranslation": {
+                      "ar": "ن. أوريلي",
+                      "bn": "এন. ও'রেইলি",
+                      "hi": "एन. ओ'रेली"
+                    }
+                  }
+                },
+                "type": "doubtful",
+                "reason": 1,
+                "description": "Ankle Injury",
+                "externalType": 5,
+                "expectedEndDate": "2026-03-15T00:00:00+00:00"
+              }
+            ]
+          },
+          "statisticalVersion": 3
+        },
+        "missingPlayers": null
+      }
+    },
+    {
       "id": 14138568,
       "fixedDate": "2026-03-12",
       "fixedTime": "13:30",
@@ -5914,8 +5918,5 @@
         "missingPlayers": null
       }
     }
-  ],
-  "totalMatches": 13,
-  "matchesWithLineup": 4,
-  "generatedAt": "2026-03-11T08:35:10.032Z"
+  ]
 }
