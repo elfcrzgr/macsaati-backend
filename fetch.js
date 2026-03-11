@@ -12,14 +12,8 @@ const leagueConfigs = {
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
-// ✅ Casper ve diğer telefonlarda görsel engelini aşan Google Proxy fonksiyonu
-const getSafeLogo = (type, id) => {
-    const originalUrl = `https://www.sofascore.com/api/v1/${type}/${id}/image`;
-    return `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(originalUrl)}`;
-};
-
 async function start() {
-    console.log("🚀 Veri motoru: Saat Sıralı & Proxy Logo Modu (V3.0)...");
+    console.log("🚀 Saat Sıralamalı ve Filtreli Veri Motoru Çalışıyor...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -55,11 +49,11 @@ async function start() {
     const finalMatches = [];
 
     for (const e of allEvents) {
-        if (seenIds.has(e.id)) continue; // ✅ Tekrarlı veriyi kod seviyesinde engelliyoruz
+        if (seenIds.has(e.id)) continue;
         seenIds.add(e.id);
 
         try {
-            console.log(`🔍 Çekiliyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
+            console.log(`🔍 İnceleniyor: ${e.homeTeam.name} - ${e.awayTeam.name}`);
             
             const details = await page.evaluate(async (id) => {
                 const f = async (u) => {
@@ -74,29 +68,20 @@ async function start() {
             }, e.id);
 
             const dateTR = new Date(e.startTimestamp * 1000);
-            const leagueId = e.tournament?.uniqueTournament?.id;
             
             finalMatches.push({
                 id: e.id,
+                // Sıralama için bu değeri saklı tutuyoruz
                 rawTimestamp: e.startTimestamp, 
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
                 status: e.status.description,
-                broadcaster: leagueConfigs[leagueId] || "Yerel Yayın",
-                homeTeam: { 
-                    name: e.homeTeam.name, 
-                    logo: getSafeLogo('team', e.homeTeam.id) 
-                },
-                awayTeam: { 
-                    name: e.awayTeam.name, 
-                    logo: getSafeLogo('team', e.awayTeam.id) 
-                },
+                broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
+                homeTeam: { name: e.homeTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` },
+                awayTeam: { name: e.awayTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` },
                 homeScore: e.homeScore?.display ?? "-",
                 awayScore: e.awayScore?.display ?? "-",
-                tournament: {
-                    name: e.tournament?.uniqueTournament?.name || "Bilinmeyen Lig",
-                    logo: getSafeLogo('unique-tournament', leagueId) // ✅ Lig logoları geri geldi
-                },
+                tournament: e.tournament.uniqueTournament.name,
                 details: {
                     stadium: details.info?.event?.venue?.name || "Bilinmiyor",
                     referee: details.info?.event?.referee?.name || "Açıklanmadı",
@@ -104,17 +89,17 @@ async function start() {
                     missingPlayers: details.missing
                 }
             });
-            await new Promise(r => setTimeout(r, 650)); 
+            await new Promise(r => setTimeout(r, 600)); 
         } catch (err) { }
     }
 
-    // ✅ SAAT BAZLI SIRALAMA
+    // ✅ SAAT BAZLI SIRALAMA (En erken maç en üstte)
     finalMatches.sort((a, b) => a.rawTimestamp - b.rawTimestamp);
 
-    // Sadeleştirilmiş çıktı (Uygulamanın beklediği tekil 'matches' objesi)
+    // Uygulamanın tertemiz bir liste görmesi için sıralama bittikten sonra matches.json'a yazıyoruz
     fs.writeFileSync("matches.json", JSON.stringify({ matches: finalMatches }, null, 2));
     
-    console.log(`✅ TAMAMLANDI: ${finalMatches.length} maç saatine göre dizildi ve lig logoları eklendi.`);
+    console.log(`✅ SIRALAMA TAMAM: ${finalMatches.length} maç zamana göre dizildi.`);
     await browser.close();
 }
 
