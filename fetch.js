@@ -83,8 +83,16 @@ async function start() {
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
                 broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
-                homeTeam: { name: e.homeTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` },
-                awayTeam: { name: e.awayTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` },
+                homeTeam: { 
+                    name: e.homeTeam.name, 
+                    id: e.homeTeam.id,
+                    logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` 
+                },
+                awayTeam: { 
+                    name: e.awayTeam.name, 
+                    id: e.awayTeam.id,
+                    logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` 
+                },
                 homeScore: e.homeScore?.display ?? "-",
                 awayScore: e.awayScore?.display ?? "-",
                 tournament: e.tournament.uniqueTournament.name,
@@ -100,9 +108,34 @@ async function start() {
         } catch (err) { }
     }
 
-    fs.writeFileSync("matches.json", JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    const lineupCount = finalMatches.filter(m => m.details.lineups).length;
-    console.log(`✅ TAMAMLANDI: ${finalMatches.length}/${lineupCount} kadro çekildi.`);
+    // ✅ Tekrarlanan maçları kaldır (deduplicate)
+    const uniqueMatches = {};
+    finalMatches.forEach(match => {
+        if (!uniqueMatches[match.id]) {
+            uniqueMatches[match.id] = match;
+        }
+    });
+
+    const finalMatchesNoDuplicates = Object.values(uniqueMatches);
+
+    // ✅ Saat bazında sıralama (lig bazında değil)
+    finalMatchesNoDuplicates.sort((a, b) => {
+        const timeA = new Date(`${a.fixedDate} ${a.fixedTime}`).getTime();
+        const timeB = new Date(`${b.fixedDate} ${b.fixedTime}`).getTime();
+        return timeA - timeB;
+    });
+
+    // ✅ JSON dosyasına yaz
+    fs.writeFileSync("matches.json", JSON.stringify({ 
+        success: true, 
+        matches: finalMatchesNoDuplicates,
+        totalMatches: finalMatchesNoDuplicates.length,
+        matchesWithLineup: finalMatchesNoDuplicates.filter(m => m.details.lineups).length
+    }, null, 2));
+
+    const lineupCount = finalMatchesNoDuplicates.filter(m => m.details.lineups).length;
+    console.log(`✅ TAMAMLANDI: ${finalMatchesNoDuplicates.length} maç bulundu, ${lineupCount} kadro çekildi.`);
+    console.log(`📊 Tekrarlanan maçlar kaldırıldı. Saat bazında sıralanmıştır.`);
     await browser.close();
 }
 
