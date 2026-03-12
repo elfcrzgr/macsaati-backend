@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const path = require('path');
 
 const leagueConfigs = {
     52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
@@ -14,7 +13,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Veri motoru: Derin Sorgulama Modu (V4 - Tekrarlama Düzeltmesi)...");
+    console.log("🚀 Veri motoru başlatılıyor...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -28,12 +27,21 @@ async function start() {
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    const dates = [getTRDate(0), getTRDate(1), getTRDate(2)];
+    // ✅ 5 GÜN TARA (bugün + 4 gün)
+    const dates = [
+        getTRDate(0),
+        getTRDate(1),
+        getTRDate(2),
+        getTRDate(3),
+        getTRDate(4)
+    ];
+
+    console.log(`📅 Tarama aralığı: ${dates[0]} - ${dates[dates.length - 1]}\n`);
 
     let allEvents = [];
     for (const date of dates) {
         try {
-            console.log(`⏳ ${date} maç listesi taranıyor...`);
+            console.log(`⏳ ${date} çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`);
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
@@ -41,37 +49,21 @@ async function start() {
                     const matchDateTR = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                     return targetLeagueIds.includes(e.tournament?.uniqueTournament?.id) && (matchDateTR === date);
                 });
-                console.log(`   ✓ ${date} için ${filtered.length} maç bulundu`);
+                console.log(`   ✓ ${filtered.length} maç`);
                 allEvents = allEvents.concat(filtered);
             }
         } catch (e) { 
-            console.error(`❌ Liste hatası: ${date}`); 
+            console.error(`❌ ${date} hatası`); 
         }
     }
 
-    console.log(`\n📊 API'den ${allEvents.length} maç bulundu`);
-
-    // ✅ ÖNEMLİ: Deduplicate ÖNCESİ yapılmalı
-    const seenIds = new Set();
-    const uniqueEvents = [];
-    
-    for (const event of allEvents) {
-        if (!seenIds.has(event.id)) {
-            seenIds.add(event.id);
-            uniqueEvents.push(event);
-        } else {
-            console.log(`   🔄 Tekrarlanan maç kaldırıldı: ${event.homeTeam.name} vs ${event.awayTeam.name} (ID: ${event.id})`);
-        }
-    }
-
-    console.log(`✅ Tekrarlama sonrası: ${uniqueEvents.length} maç`);
+    console.log(`\n📊 TOPLAM ${allEvents.length} maç\n`);
 
     const finalMatches = [];
-    console.log(`🔍 Maçlar için detay taranıyor...`);
 
-    for (const e of uniqueEvents) {
+    for (const e of allEvents) {
         try {
-            console.log(`   -> ${e.homeTeam.name} - ${e.awayTeam.name}`);
+            console.log(`🔍 ${e.homeTeam.name} - ${e.awayTeam.name}`);
 
             const details = await page.evaluate(async (id) => {
                 const fetchJson = async (url) => {
@@ -99,6 +91,7 @@ async function start() {
                 id: e.id,
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
+                timestamp: dateTR.getTime(),
                 broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
                 homeTeam: { 
                     name: e.homeTeam.name, 
@@ -122,45 +115,35 @@ async function start() {
             });
 
             await new Promise(r => setTimeout(r, 600)); 
-        } catch (err) { 
-            console.error(`   ❌ Hata: ${err.message}`);
-        }
+        } catch (err) { }
     }
 
-    // ✅ Saat bazında sıralama
-    finalMatches.sort((a, b) => {
-        const timeA = new Date(`${a.fixedDate} ${a.fixedTime}`).getTime();
-        const timeB = new Date(`${b.fixedDate} ${b.fixedTime}`).getTime();
-        return timeA - timeB;
-    });
+    // ✅ SAAT SIRASINA GÖRE SIRALA
+    finalMatches.sort((a, b) => a.timestamp - b.timestamp);
 
-    // ✅ SADECE bugün ve yarının maçlarını tut
-    const todayStr = getTRDate(0);
-    const tomorrowStr = getTRDate(1);
-    const filteredMatches = finalMatches.filter(m => 
-        m.fixedDate === todayStr || m.fixedDate === tomorrowStr
-    );
-
-    // ✅ FINAL JSON YAPISI
-    const jsonData = {
+    const jsonOutput = {
         success: true,
+        version: Date.now(),
         lastUpdated: new Date().toISOString(),
-        cacheKey: Date.now(), // Her güncelleme için unique key
-        totalMatches: filteredMatches.length,
-        matchesWithLineup: filteredMatches.filter(m => m.details.lineups).length,
-        matches: filteredMatches // Array son sırada
+        generatedAt: new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }),
+        dateRange: `${dates[0]} - ${dates[dates.length - 1]}`,
+        totalMatches: finalMatches.length,
+        matchesWithLineup: finalMatches.filter(m => m.details.lineups).length,
+        matches: finalMatches
     };
 
-    // ✅ JSON'u yaz
-    fs.writeFileSync("matches.json", JSON.stringify(jsonData, null, 2));
+    fs.writeFileSync("matches.json", JSON.stringify(jsonOutput, null, 2));
 
-    console.log(`\n✅ TAMAMLANDI:`);
-    console.log(`   📅 ${filteredMatches.length} maç`);
-    console.log(`   🎬 ${jsonData.matchesWithLineup} kadro çekildi`);
-    console.log(`   ⏰ ${new Date().toLocaleTimeString('tr-TR')}`);
-    console.log(`   🔑 Cache Key: ${jsonData.cacheKey}`);
+    console.log(`\n✅ TAMAMLANDI`);
+    console.log(`   📊 ${finalMatches.length} maç (5 gün)`);
+    console.log(`   🎬 ${jsonOutput.matchesWithLineup} kadro`);
+    console.log(`   📅 ${jsonOutput.dateRange}`);
+    console.log(`   ⏰ ${new Date().toLocaleTimeString('tr-TR')}\n`);
     
     await browser.close();
 }
 
-start();
+start().catch(err => {
+    console.error("❌ HATA:", err);
+    process.exit(1);
+});
