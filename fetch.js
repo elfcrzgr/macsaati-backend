@@ -27,8 +27,21 @@ async function start() {
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
+<<<<<<< HEAD
     const todayStr = getTRDate(0);
     const tomorrowStr = getTRDate(1);
+=======
+    // ✅ 5 GÜN TARA (bugün + 4 gün)
+    const dates = [
+        getTRDate(0),
+        getTRDate(1),
+        getTRDate(2),
+        getTRDate(3),
+        getTRDate(4)
+    ];
+
+    console.log(`📅 Tarama aralığı: ${dates[0]} - ${dates[dates.length - 1]}\n`);
+>>>>>>> 2db79510488ace5343ee9878b0f6edc0e1c2901f
 
     let allEvents = [];
     for (const date of [todayStr, tomorrowStr]) {
@@ -41,6 +54,10 @@ async function start() {
                     const matchDateTR = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                     return targetLeagueIds.includes(e.tournament?.uniqueTournament?.id) && (matchDateTR === date);
                 });
+<<<<<<< HEAD
+=======
+                console.log(`   ✓ ${filtered.length} maç`);
+>>>>>>> 2db79510488ace5343ee9878b0f6edc0e1c2901f
                 allEvents = allEvents.concat(filtered);
             }
         } catch (e) { 
@@ -107,7 +124,11 @@ async function start() {
         } catch (err) { }
     }
 
+<<<<<<< HEAD
     // ✅ SAAT SIRASINA GÖRE SIRALA (Backend'de)
+=======
+    // ✅ SAAT SIRASINA GÖRE SIRALA
+>>>>>>> 2db79510488ace5343ee9878b0f6edc0e1c2901f
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
 
     // ✅ JSON Yapısı
