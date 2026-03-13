@@ -2,12 +2,17 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 const leagueConfigs = {
+    // Mevcut ligler
     52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
     8: "S Sport", 54: "S Sport Plus", 23: "S Sport / Tivibu Spor",
     35: "beIN Sports / Tivibu Spor", 34: "beIN Sports", 37: "TV8.5 / Exxen",
     238: "D-Smart / Spor Smart", 709: "CBC Sport / Yerel", 13363: "TV8.5 / Exxen",
     19: "Tivibu / TRT Spor / Tabii", 481: "Spor Smart / D-Smart",
-    7: "TRT / Tabii", 3: "TRT / Tabii", 848: "TRT / Tabii"
+    7: "TRT / Tabii", 3: "TRT / Tabii", 848: "TRT / Tabii",
+
+    // Yeni eklenenler
+    679: "TRT / Tabii",           // UEFA Avrupa Ligi (Alternatif ID)
+    17015: "TRT / Tabii"          // UEFA Konferans Ligi
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
