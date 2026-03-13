@@ -2,9 +2,9 @@ name: Mac Saati Veri Guncelleme
 
 on:
   schedule:
-    # Türkiye saatiyle sabah 09:00 - gece 02:00 arası her 2 saatte bir (UTC saatine göre)
+    # Türkiye saatiyle sabah 09:00 - gece 02:00 arası her 2 saatte bir
     - cron: '0 6,8,10,12,14,16,18,20,22,0 * * *'
-  workflow_dispatch: # Manuel çalıştırma düğmesi ekler
+  workflow_dispatch: 
 
 jobs:
   build:
@@ -12,12 +12,12 @@ jobs:
     
     steps:
       - name: Depoyu Kontrol Et
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # v3 -> v4 yapıldı (Uyarıyı çözer)
 
       - name: Node.js Kur
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4 # v3 -> v4 yapıldı (Uyarıyı çözer)
         with:
-          node-version: '20'
+          node-version: '20' # Projenin içindeki Node sürümü 20 kalabilir, sorun değil
 
       - name: Tarayici ve Sistem Paketlerini Kur
         run: |
@@ -36,6 +36,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add matches.json
-          # Eğer değişiklik yoksa hata vermemesi için || echo kullanıyoruz
           git commit -m "Otomatik Guncelleme: $(date)" || echo "Degisiklik yok"
           git push
