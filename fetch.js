@@ -2,17 +2,23 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 const leagueConfigs = {
-    // Mevcut ligler
+    // Mevcut Ligler
     52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
     8: "S Sport", 54: "S Sport Plus", 23: "S Sport / Tivibu Spor",
     35: "beIN Sports / Tivibu Spor", 34: "beIN Sports", 37: "TV8.5 / Exxen",
     238: "D-Smart / Spor Smart", 709: "CBC Sport / Yerel", 13363: "TV8.5 / Exxen",
     19: "Tivibu / TRT Spor / Tabii", 481: "Spor Smart / D-Smart",
     7: "TRT / Tabii", 3: "TRT / Tabii", 848: "TRT / Tabii",
-
-    // Yeni eklenenler
+    
+    // Yeni Eklenen Avrupa Kupaları
     679: "TRT / Tabii",           // UEFA Avrupa Ligi (Alternatif ID)
-    17015: "TRT / Tabii"          // UEFA Konferans Ligi
+    17015: "TRT / Tabii",         // UEFA Konferans Ligi
+
+    // Yeni Eklenen Dünya Ligleri
+    325: "S Sport Plus / D-Smart", // Brezilya Serie A (Brasileirão)
+    155: "S Sport Plus / D-Smart", // Arjantin Liga Profesional
+    44: "beIN Sports / Tivibu",    // Almanya 2. Bundesliga
+    955: "S Sport Plus / TV8.5"    // Suudi Arabistan Pro League
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
