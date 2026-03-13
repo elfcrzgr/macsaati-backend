@@ -2,12 +2,14 @@ name: Mac Saati Veri Guncelleme
 
 on:
   schedule:
-    - cron: '5 21 * * *'
-  workflow_dispatch:
+    # Türkiye saatiyle sabah 09:00 - gece 02:00 arası her 2 saatte bir (UTC saatine göre)
+    - cron: '0 6,8,10,12,14,16,18,20,22,0 * * *'
+  workflow_dispatch: # Manuel çalıştırma düğmesi ekler
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Depoyu Kontrol Et
         uses: actions/checkout@v3
@@ -17,18 +19,23 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Tarayici ve Sistem Paketlerini Kur
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev google-chrome-stable
+
       - name: Bağımlılıkları Yukle
         run: |
-          npm init -y
-          npm install puppeteer
+          npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 
-      - name: Verileri Cek
+      - name: Verileri Cek (Scraper Calistir)
         run: node fetch.js
 
-      - name: Degisiklikleri Kaydet
+      - name: Degisiklikleri Kaydet ve Pushla
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add matches.json
+          # Eğer değişiklik yoksa hata vermemesi için || echo kullanıyoruz
           git commit -m "Otomatik Guncelleme: $(date)" || echo "Degisiklik yok"
           git push
