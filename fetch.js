@@ -19,13 +19,14 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Maç Saati Veri Motoru Başlatıldı...");
+    console.log("🚀 Veri motoru başlatılıyor...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-blink-features=AutomationControlled'] 
     });
 
     const page = await browser.newPage();
+    // Tarayıcı gibi görünmek için User Agent şart
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     const getTRDate = (offset = 0) => {
@@ -40,7 +41,8 @@ async function start() {
 
     for (const date of [todayStr, tomorrowStr]) {
         try {
-            console.log(`⏳ ${date} maçları listeleniyor...`);
+            console.log(`⏳ ${date} verisi çekiliyor...`);
+            // waitUntil eklendi: Sayfanın tam yüklendiğinden emin olur
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
@@ -50,13 +52,14 @@ async function start() {
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} verisi alınamadı.`); }
+        } catch (e) { console.error(`${date} listesi alınamadı.`); }
     }
 
     const finalMatches = [];
     for (const e of allEvents) {
         try {
             const details = await page.evaluate(async (id) => {
+                // Referer eklendi: Sunucu bot olduğumuzu anlamasın
                 const headers = { "Referer": "https://www.sofascore.com/" };
                 const r = await fetch(`https://api.sofascore.com/api/v1/event/${id}`, { headers });
                 const info = r.ok ? await r.json() : null;
@@ -69,13 +72,7 @@ async function start() {
             }, e.id);
 
             const dateTR = new Date(e.startTimestamp * 1000);
-            
-            // 🔥 WSRV.NL Proxy (Resim sorununu kökten çözer)
-            const getProxyLogo = (teamId) => {
-                const originalUrl = `https://www.sofascore.com/static3/images/team-logo/${teamId}`;
-                // encodeURIComponent ile linki güvenli hale getiriyoruz
-                return `https://wsrv.nl/?url=${encodeURIComponent(originalUrl)}&output=png`;
-            };
+            const GITHUB_BASE = "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/logos/";
 
             finalMatches.push({
                 id: e.id,
@@ -83,8 +80,8 @@ async function start() {
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
                 timestamp: dateTR.getTime(),
                 broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
-                homeTeam: { name: e.homeTeam.name, logo: getProxyLogo(e.homeTeam.id) },
-                awayTeam: { name: e.awayTeam.name, logo: getProxyLogo(e.awayTeam.id) },
+                homeTeam: { name: e.homeTeam.name, logo: `${GITHUB_BASE}${e.homeTeam.id}.png` },
+                awayTeam: { name: e.awayTeam.name, logo: `${GITHUB_BASE}${e.awayTeam.id}.png` },
                 homeScore: e.homeScore?.display ?? "-",
                 awayScore: e.awayScore?.display ?? "-",
                 tournament: e.tournament.uniqueTournament.name,
@@ -94,15 +91,9 @@ async function start() {
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    const jsonOutput = { 
-        success: true, 
-        version: Date.now(), 
-        lastUpdated: new Date().toISOString(), 
-        matches: finalMatches 
-    };
-
+    const jsonOutput = { success: true, version: Date.now(), lastUpdated: new Date().toISOString(), matches: finalMatches };
     fs.writeFileSync("matches.json", JSON.stringify(jsonOutput));
-    console.log("✅ matches.json (Weserv Proxy Aktif) başarıyla oluşturuldu.");
+    console.log("✅ matches.json başarıyla oluşturuldu.");
     await browser.close();
 }
 start();
