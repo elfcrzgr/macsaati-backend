@@ -20,27 +20,15 @@ jobs:
           sudo apt-get install -y libgbm-dev google-chrome-stable
 
       - name: Install Dependencies
-        run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
+        run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 
       - name: Fetch Matches
         run: node fetch.js
 
-      - name: Fetch Logos (Only Midnight or Manual)
-        if: github.event.schedule == '0 0 * * *' || github.event_name == 'workflow_dispatch'
-        run: node fetch-logo.js
-
-      - name: Degisiklikleri Kaydet ve Pushla
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Hata almamak için her şeyi ekliyoruz
           git add matches.json
-          
-          # Eğer logos klasörü varsa ve içinde png varsa ekle, yoksa hata verme
-          if [ -d "logos" ]; then
-            git add logos/*.png || echo "Yeni logo bulunamadı."
-          fi
-          
-          git commit -m "Otomatik Guncelleme: $(date)" || echo "Degisiklik yok, commit edilmedi."
+          git commit -m "Veri Guncelleme: $(date)" || echo "Degisiklik yok"
           git push
