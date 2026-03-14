@@ -19,7 +19,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Veri motoru başlatılıyor...");
+    console.log("🚀 Maç Saati Veri Motoru Başlatıldı...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -40,7 +40,7 @@ async function start() {
 
     for (const date of [todayStr, tomorrowStr]) {
         try {
-            console.log(`⏳ ${date} verisi çekiliyor...`);
+            console.log(`⏳ ${date} maçları listeleniyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
@@ -50,7 +50,7 @@ async function start() {
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} listesi alınamadı.`); }
+        } catch (e) { console.error(`${date} verisi alınamadı.`); }
     }
 
     const finalMatches = [];
@@ -70,10 +70,11 @@ async function start() {
 
             const dateTR = new Date(e.startTimestamp * 1000);
             
-            // GOOGLE PROXY LOGO FONKSİYONU
+            // 🔥 WSRV.NL Proxy (Resim sorununu kökten çözer)
             const getProxyLogo = (teamId) => {
                 const originalUrl = `https://www.sofascore.com/static3/images/team-logo/${teamId}`;
-                return `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(originalUrl)}`;
+                // encodeURIComponent ile linki güvenli hale getiriyoruz
+                return `https://wsrv.nl/?url=${encodeURIComponent(originalUrl)}&output=png`;
             };
 
             finalMatches.push({
@@ -93,9 +94,15 @@ async function start() {
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    const jsonOutput = { success: true, version: Date.now(), lastUpdated: new Date().toISOString(), matches: finalMatches };
+    const jsonOutput = { 
+        success: true, 
+        version: Date.now(), 
+        lastUpdated: new Date().toISOString(), 
+        matches: finalMatches 
+    };
+
     fs.writeFileSync("matches.json", JSON.stringify(jsonOutput));
-    console.log("✅ matches.json güncellendi (Google Proxy aktif).");
+    console.log("✅ matches.json (Weserv Proxy Aktif) başarıyla oluşturuldu.");
     await browser.close();
 }
 start();
