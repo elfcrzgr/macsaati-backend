@@ -2,39 +2,37 @@ name: Mac Saati Veri Guncelleme
 
 on:
   schedule:
-    # Türkiye saatiyle sabah 09:00 - gece 02:00 arası her 2 saatte bir
     - cron: '0 6,8,10,12,14,16,18,20,22,0 * * *'
   workflow_dispatch: 
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Depoyu Kontrol Et
-        uses: actions/checkout@v4 # v3 -> v4 yapıldı (Uyarıyı çözer)
-
-      - name: Node.js Kur
-        uses: actions/setup-node@v4 # v3 -> v4 yapıldı (Uyarıyı çözer)
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20' # Projenin içindeki Node sürümü 20 kalabilir, sorun değil
+          node-version: '20'
 
-      - name: Tarayici ve Sistem Paketlerini Kur
+      - name: Install System Packages
         run: |
           sudo apt-get update
           sudo apt-get install -y libgbm-dev google-chrome-stable
 
-      - name: Bağımlılıkları Yukle
-        run: |
-          npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
+      - name: Install Dependencies
+        run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
 
-      - name: Verileri Cek (Scraper Calistir)
+      - name: Fetch Matches
         run: node fetch.js
 
-      - name: Degisiklikleri Kaydet ve Pushla
+      - name: Fetch Logos (Only Midnight or Manual)
+        if: github.event.schedule == '0 0 * * *' || github.event_name == 'workflow_dispatch'
+        run: node fetch-logo.js
+
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add matches.json
-          git commit -m "Otomatik Guncelleme: $(date)" || echo "Degisiklik yok"
+          git add matches.json logos/*.png
+          git commit -m "Auto Update" || echo "No changes"
           git push
