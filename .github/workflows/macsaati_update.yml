@@ -29,10 +29,18 @@ jobs:
         if: github.event.schedule == '0 0 * * *' || github.event_name == 'workflow_dispatch'
         run: node fetch-logo.js
 
-      - name: Commit and Push
+      - name: Degisiklikleri Kaydet ve Pushla
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add matches.json logos/*.png
-          git commit -m "Auto Update" || echo "No changes"
+          
+          # Hata almamak için her şeyi ekliyoruz
+          git add matches.json
+          
+          # Eğer logos klasörü varsa ve içinde png varsa ekle, yoksa hata verme
+          if [ -d "logos" ]; then
+            git add logos/*.png || echo "Yeni logo bulunamadı."
+          fi
+          
+          git commit -m "Otomatik Guncelleme: $(date)" || echo "Degisiklik yok, commit edilmedi."
           git push
