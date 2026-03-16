@@ -4,7 +4,6 @@ const fs = require('fs');
 
 puppeteer.use(StealthPlugin());
 
-// Lig yayıncı bilgileri
 const leagueConfigs = {
     52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
     8: "S Sport", 54: "S Sport Plus", 23: "S Sport / Tivibu Spor",
@@ -20,14 +19,13 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Veri çekme işlemi başlatıldı...");
+    console.log("🚀 Veri çekme motoru başlatılıyor...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
     });
 
     const page = await browser.newPage();
-    // Kendimizi gerçek bir tarayıcı gibi tanıtıyoruz
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     const getTRDate = (offset = 0) => {
@@ -42,10 +40,9 @@ async function start() {
 
     for (const date of [todayStr, tomorrowStr]) {
         try {
-            console.log(`⏳ ${date} maçları alınıyor...`);
+            console.log(`⏳ ${date} verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
-            
             if (data.events) {
                 const filtered = data.events.filter(e => {
                     const matchDateTR = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
@@ -53,9 +50,7 @@ async function start() {
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) {
-            console.error(`${date} verisi çekilirken hata oluştu:`, e.message);
-        }
+        } catch (e) { console.error(`${date} listesi alınamadı.`); }
     }
 
     const finalMatches = [];
@@ -74,46 +69,34 @@ async function start() {
             }, e.id);
 
             const dateTR = new Date(e.startTimestamp * 1000);
-
-            // LOGOLARIN DOĞRUDAN SOFASCORE ÜZERİNDEN ÇEKİLDİĞİ KISIM
+            
             finalMatches.push({
                 id: e.id,
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
                 timestamp: dateTR.getTime(),
                 broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
+                // Buradaki Link Yapısı Önemli: www yerine api, static3 yerine image
                 homeTeam: { 
                     name: e.homeTeam.name, 
-                    logo: `https://www.sofascore.com/static3/images/team-logo/${e.homeTeam.id}` 
+                    logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` 
                 },
                 awayTeam: { 
                     name: e.awayTeam.name, 
-                    logo: `https://www.sofascore.com/static3/images/team-logo/${e.awayTeam.id}` 
+                    logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` 
                 },
                 homeScore: e.homeScore?.display ?? "-",
                 awayScore: e.awayScore?.display ?? "-",
                 tournament: e.tournament.uniqueTournament.name,
                 details: details
             });
-        } catch (err) {
-            console.error(`Maç detay hatası (ID: ${e.id}):`, err.message);
-        }
+        } catch (err) {}
     }
 
-    // Zaman sıralaması
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-
-    const jsonOutput = {
-        success: true,
-        version: Date.now(),
-        lastUpdated: new Date().toISOString(),
-        matches: finalMatches
-    };
-
+    const jsonOutput = { success: true, version: Date.now(), lastUpdated: new Date().toISOString(), matches: finalMatches };
     fs.writeFileSync("matches.json", JSON.stringify(jsonOutput, null, 2));
-    console.log(`✅ İşlem tamamlandı. ${finalMatches.length} maç matches.json dosyasına yazıldı.`);
-    
+    console.log("✅ matches.json eski çalışan API düzeninde oluşturuldu.");
     await browser.close();
 }
-
 start();
