@@ -1,9 +1,6 @@
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const fs = require('fs');
-const path = require('path');
-const https = require('https');
-const http = require('http');
 
 puppeteer.use(StealthPlugin());
 
@@ -20,62 +17,6 @@ const leagueConfigs = {
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
-
-// Logo cache dizini
-const logosDir = path.join(__dirname, 'team-logos');
-if (!fs.existsSync(logosDir)) {
-    fs.mkdirSync(logosDir, { recursive: true });
-}
-
-// Logo'yu indir ve cache'le
-const cacheTeamLogo = (teamId, logoUrl) => {
-    return new Promise((resolve) => {
-        if (!logoUrl) {
-            resolve(null);
-            return;
-        }
-
-        const logoPath = path.join(logosDir, `${teamId}.png`);
-        
-        // Zaten cache'de varsa
-        if (fs.existsSync(logoPath)) {
-            const stats = fs.statSync(logoPath);
-            if (stats.size > 100) {
-                resolve(`local://${teamId}.png`);
-                return;
-            }
-        }
-
-        // URL'yi düzelt
-        if (logoUrl.startsWith('//')) logoUrl = 'https:' + logoUrl;
-        if (!logoUrl.startsWith('http')) logoUrl = 'https://www.sofascore.com' + logoUrl;
-
-        const protocol = logoUrl.startsWith('https') ? https : http;
-        const file = fs.createWriteStream(logoPath);
-
-        protocol.get(logoUrl, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0',
-                'Referer': 'https://www.sofascore.com/'
-            }
-        }, (response) => {
-            response.pipe(file);
-            file.on('finish', () => {
-                file.close();
-                const stats = fs.statSync(logoPath);
-                if (stats.size > 100) {
-                    resolve(`local://${teamId}.png`);
-                } else {
-                    fs.unlinkSync(logoPath);
-                    resolve(null);
-                }
-            });
-        }).on('error', () => {
-            fs.unlink(logoPath, () => {});
-            resolve(null);
-        });
-    });
-};
 
 async function start() {
     console.log("🚀 Veri çekme motoru başlatılıyor...");
@@ -113,8 +54,6 @@ async function start() {
     }
 
     const finalMatches = [];
-    const cachedTeams = {};
-
     for (const e of allEvents) {
         try {
             const details = await page.evaluate(async (id) => {
@@ -131,41 +70,20 @@ async function start() {
 
             const dateTR = new Date(e.startTimestamp * 1000);
             
-            // Home Team Logo'yu cache'le
-            let homeLogoUrl = null;
-            if (!cachedTeams[e.homeTeam.id]) {
-                console.log(`🖼️  ${e.homeTeam.name} logosu cache'leniyor...`);
-                homeLogoUrl = await cacheTeamLogo(e.homeTeam.id, `https://api.sofascore.com/api/v1/team/${e.homeTeam.id}/image`);
-                cachedTeams[e.homeTeam.id] = homeLogoUrl;
-            } else {
-                homeLogoUrl = cachedTeams[e.homeTeam.id];
-            }
-
-            // Away Team Logo'yu cache'le
-            let awayLogoUrl = null;
-            if (!cachedTeams[e.awayTeam.id]) {
-                console.log(`🖼️  ${e.awayTeam.name} logosu cache'leniyor...`);
-                awayLogoUrl = await cacheTeamLogo(e.awayTeam.id, `https://api.sofascore.com/api/v1/team/${e.awayTeam.id}/image`);
-                cachedTeams[e.awayTeam.id] = awayLogoUrl;
-            } else {
-                awayLogoUrl = cachedTeams[e.awayTeam.id];
-            }
-            
             finalMatches.push({
                 id: e.id,
                 fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
                 fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
                 timestamp: dateTR.getTime(),
                 broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
+                // Buradaki Link Yapısı Önemli: www yerine api, static3 yerine image
                 homeTeam: { 
-                    name: e.homeTeam.name,
-                    id: e.homeTeam.id,
-                    logo: homeLogoUrl || `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/team-logos/${e.homeTeam.id}.png`
+                    name: e.homeTeam.name, 
+                    logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` 
                 },
                 awayTeam: { 
-                    name: e.awayTeam.name,
-                    id: e.awayTeam.id,
-                    logo: awayLogoUrl || `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/team-logos/${e.awayTeam.id}.png`
+                    name: e.awayTeam.name, 
+                    logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` 
                 },
                 homeScore: e.homeScore?.display ?? "-",
                 awayScore: e.awayScore?.display ?? "-",
@@ -178,8 +96,7 @@ async function start() {
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
     const jsonOutput = { success: true, version: Date.now(), lastUpdated: new Date().toISOString(), matches: finalMatches };
     fs.writeFileSync("matches.json", JSON.stringify(jsonOutput, null, 2));
-    console.log("✅ matches.json oluşturuldu.");
-    console.log(`📂 ${Object.keys(cachedTeams).length} takım logosu cache'lendi!`);
+    console.log("✅ matches.json eski çalışan API düzeninde oluşturuldu.");
     await browser.close();
 }
 start();
