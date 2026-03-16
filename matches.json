@@ -1,7 +1,7 @@
 {
   "success": true,
-  "version": 1773684915625,
-  "lastUpdated": "2026-03-16T18:15:15.625Z",
+  "version": 1773688386401,
+  "lastUpdated": "2026-03-16T19:13:06.401Z",
   "matches": [
     {
       "id": 15237942,
@@ -247,8 +247,8 @@
         "name": "Huracán",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/logos/7629.png"
       },
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": 0,
+      "awayScore": 0,
       "tournament": "Liga Profesional de Fútbol",
       "details": {
         "stadium": "Estadio Jose Maria Minella",
@@ -270,8 +270,8 @@
         "name": "Atlético Tucumán",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/logos/36833.png"
       },
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": 1,
+      "awayScore": 0,
       "tournament": "Liga Profesional de Fútbol",
       "details": {
         "stadium": "Estadio Claudio Chiqui Tapia",
@@ -299,7 +299,7 @@
       "details": {
         "stadium": "Carlos Belmonte",
         "referee": "Manuel Angel Perez Hernandez",
-        "hasLineup": false
+        "hasLineup": true
       }
     },
     {
