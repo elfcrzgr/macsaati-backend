@@ -8,6 +8,8 @@ puppeteer.use(StealthPlugin());
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; // Deponun tam adı neyse o
 const GITHUB_BASE_URL = "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/logos/";
+
+const TOURNAMENT_LOGO_BASE = "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tournament_logos/";
 // -----------------------------------------
 
 const leagueConfigs = {
@@ -94,6 +96,7 @@ async function start() {
                 homeScore: e.homeScore?.display ?? "-",
                 awayScore: e.awayScore?.display ?? "-",
                 tournament: e.tournament.uniqueTournament.name,
+                tournamentLogo: `${TOURNAMENT_LOGO_BASE}${e.tournament.uniqueTournament.id}.png`,
                 details: details
             });
         } catch (err) {}
