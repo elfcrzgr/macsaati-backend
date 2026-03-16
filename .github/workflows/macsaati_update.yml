@@ -2,33 +2,39 @@ name: Mac Saati Veri Guncelleme
 
 on:
   schedule:
+    # Her 2 saatte bir çalışır
     - cron: '0 6,8,10,12,14,16,18,20,22,0 * * *'
-  workflow_dispatch: 
+  workflow_dispatch: # Manuel çalıştırma butonu
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install System Packages
+      - name: Install System Dependencies (For Puppeteer)
         run: |
           sudo apt-get update
           sudo apt-get install -y libgbm-dev google-chrome-stable
 
-      - name: Install Dependencies
-        run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
+      - name: Install Node Dependencies
+        run: |
+          npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 
-      - name: Fetch Matches
+      - name: Run Fetch Script
         run: node fetch.js
 
-      - name: Commit and Push
+      - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add matches.json
-          git commit -m "Veri Guncelleme: $(date)" || echo "No changes"
+          git commit -m "Veri Guncelleme: $(date)" || echo "Degisiklik yok"
           git push
