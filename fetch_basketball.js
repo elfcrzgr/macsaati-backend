@@ -23,7 +23,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatılıyor (NBA G League Filtresi Aktif)...");
+    console.log("🏀 Basketbol motoru başlatılıyor (Futbol mantığıyla senkronize)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -34,9 +34,12 @@ async function start() {
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
+    const trToday = getTRDate(0);
+    const trTomorrow = getTRDate(1);
+
     let allEvents = [];
-    // Sadece Bugün ve Yarın (Dün taramasını G League kirliliği yapmasın diye çıkardık veya daralttık)
-    for (const date of [getTRDate(0), getTRDate(1)]) {
+    // NBA sarkan maçları için dünü tara, ama sadece bugün/yarın olanları alacağız
+    for (const date of [getTRDate(-1), trToday, trTomorrow]) {
         try {
             console.log(`⏳ ${date} verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
@@ -49,9 +52,7 @@ async function start() {
                     const utId = e.tournament?.uniqueTournament?.id;
                     const tName = (e.tournament?.name || "").toUpperCase();
                     
-                    // KRİTİK FİLTRE: 
-                    // 1. ID listede olacak VEYA isimde NBA geçecek
-                    // 2. AMA isimde "G LEAGUE" veya "WOMEN" GEÇMEYECEK
+                    // KRİTİK: Ana NBA ligi olsun, alt ligler (G League) gelmesin
                     const isMainNBA = tName.includes("NBA") && !tName.includes("G LEAGUE") && !tName.includes("WOMEN");
                     
                     return targetLeagueIds.includes(utId) || isMainNBA;
@@ -68,13 +69,16 @@ async function start() {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
+        // SADECE BUGÜN VE YARIN (Futbol kodundaki gibi temiz liste)
+        if (dayStr !== trToday && dayStr !== trTomorrow) continue;
+
         const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}`;
         if (duplicateTracker.has(matchKey)) continue;
 
         const tournamentName = e.tournament?.name || "";
         const utId = e.tournament?.uniqueTournament?.id;
         const isNBA = (utId === 3547 || (tournamentName.toUpperCase().includes("NBA") && !tournamentName.toUpperCase().includes("G LEAGUE")));
-
+        
         const isFinished = e.status?.type === 'finished';
 
         finalMatches.push({
@@ -100,11 +104,11 @@ async function start() {
         duplicateTracker.add(matchKey);
     }
 
-    // Zaman sıralaması (Android handleAutoScroll için düz liste)
+    // Futbol kodundaki gibi Timestamp sıralaması
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
 
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    console.log(`✅ Temiz liste hazır: NBA G League ayıklandı, toplam ${finalMatches.length} maç.`);
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches: finalMatches }, null, 2));
+    console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
