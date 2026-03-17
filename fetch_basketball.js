@@ -22,46 +22,52 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatılıyor (TR Takvim Günü Filtresi)...");
+    console.log("🏀 Basketbol motoru başlatılıyor (NBA Gece Maçları Fix)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // TR Saatine göre tarih dizesi üreten fonksiyon (yyyy-mm-dd)
+    // TR Saatine göre yyyy-mm-dd formatında tarih veren fonksiyon
     const getTRDateString = (offset = 0) => {
         const d = new Date();
         d.setDate(d.getDate() + offset);
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
+    const trToday = getTRDateString(0);
+    const trTomorrow = getTRDateString(1);
+    const trYesterday = getTRDateString(-1);
+
     let allEvents = [];
-    // SofaScore'un veri kaçırmaması için -1, 0, +1 günlerini tara
-    for (const date of [getTRDateString(-1), getTRDateString(0), getTRDateString(1)]) {
+    // NBA maçları sabaha karşı bittiği için SofaScore onları 'Dün' (Yesterday) listesinde tutuyor olabilir.
+    // Bu yüzden 3 günü de tarıyoruz.
+    for (const date of [trYesterday, trToday, trTomorrow]) {
         try {
-            console.log(`⏳ ${date} ham verisi çekiliyor...`);
+            console.log(`⏳ ${date} verisi çekiliyor...`);
+            // En stabil endpoint: scheduled-events
             await page.goto(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
-            if (data.events) {
+            const data = await page.evaluate(() => {
+                try { return JSON.parse(document.body.innerText); } catch(e) { return { events: [] }; }
+            });
+            
+            if (data.events && data.events.length > 0) {
                 const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
                 allEvents = allEvents.concat(filtered);
+                console.log(`✅ ${date} için ${filtered.length} maç bulundu.`);
             }
-        } catch (e) { console.error(`${date} hatası.`); }
+        } catch (e) { console.error(`${date} verisi çekilemedi: ${e.message}`); }
     }
 
     const finalMatches = [];
     const duplicateTracker = new Set();
-    
-    // Uygulamanın göstereceği net TR günleri
-    const trToday = getTRDateString(0);
-    const trTomorrow = getTRDateString(1);
 
     for (const e of allEvents) {
-        // Her maçın timestamp'ini TR saatine çevirip "Hangi takvim gününe" düştüğünü buluyoruz
         const dateObject = new Date(e.startTimestamp * 1000);
+        // Maçın TR takvimindeki gerçek günü ve saati
         const matchDateTR = dateObject.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         const matchTimeTR = dateObject.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
 
-        // KRİTİK FİLTRE: Maçın TR saatiyle karşılığı sadece Bugün veya Yarın ise listeye al
+        // Sadece BUGÜN ve YARIN takvim gününe düşen maçları alıyoruz (00:00 - 23:59 kuralı)
         if (matchDateTR !== trToday && matchDateTR !== trTomorrow) continue;
 
         const matchKey = `${matchDateTR}_${e.homeTeam.name}_${e.awayTeam.name}`;
@@ -74,8 +80,8 @@ async function start() {
 
         finalMatches.push({
             id: e.id,
-            fixedDate: matchDateTR, // TR Takvim Günü (00:00-23:59 arası değişmez)
-            fixedTime: matchTimeTR, // TR Saati
+            fixedDate: matchDateTR,
+            fixedTime: matchTimeTR,
             timestamp: dateObject.getTime(),
             broadcaster: leagueConfigs[utId] || "Yerel Yayın",
             homeTeam: { 
@@ -95,9 +101,17 @@ async function start() {
         duplicateTracker.add(matchKey);
     }
 
+    // Saate göre sırala
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    console.log(`✅ TR Takvimine göre ${finalMatches.length} maç kaydedildi.`);
+
+    const jsonOutput = { 
+        success: true, 
+        lastUpdated: new Date().toISOString(), 
+        matches: finalMatches 
+    };
+
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(jsonOutput, null, 2));
+    console.log(`🏁 BİTTİ: Toplam ${finalMatches.length} maç JSON'a yazıldı.`);
     await browser.close();
 }
 
