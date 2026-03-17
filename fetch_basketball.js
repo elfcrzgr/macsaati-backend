@@ -12,27 +12,19 @@ const BASKETBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_US
 const BASKETBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/`;
 const OUTPUT_FILE = "matches_basketball.json";
 
-// Lig Yayıncıları - Tüm konuştuğumuz ligler eklendi
+// Lig Yayıncı Bilgileri
 const leagueConfigs = {
-    3547: "S Sport / NBA TV",      // NBA
-    138: "S Sport",                // EuroLeague
-    139: "beIN Sports",            // Türkiye BSL
-    9357: "beIN Sports / Tivibu",  // Champions League
-    141: "S Sport Plus",           // İtalya / EuroCup
-    168: "S Sport Plus / Tivibu",  // EuroCup
-    215: "S Sport",                // İspanya ACB
-    227: "beIN Sports",            // Fransa Élite / Almanya
-    235: "S Sport Plus",           // ABA / Litvanya
-    132: "S Sport Plus",           // ABA Ligi
-    405: "Spor SMART",             // Çin CBA
-    304: "S Sport Plus",           // Avustralya NBL
-    137: "Tivibu Spor"             // İtalya Lega A
+    3547: "S Sport / NBA TV", 138: "S Sport", 139: "beIN Sports", 
+    9357: "beIN Sports / Tivibu", 168: "S Sport Plus / Tivibu", 
+    215: "S Sport", 227: "beIN Sports", 141: "S Sport Plus", 
+    235: "S Sport Plus", 262: "S Sport Plus", 264: "S Sport Plus", 
+    405: "Spor SMART", 304: "S Sport Plus", 137: "Tivibu Spor"
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatılıyor (Genişletilmiş Lig Listesi)...");
+    console.log("🏀 Basketbol motoru başlatılıyor (Sadece biten maç skorları)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -47,7 +39,7 @@ async function start() {
     };
 
     let allEvents = [];
-    // Gece biten NBA maçlarını kaçırmamak için: Dün, Bugün, Yarın
+    // Gece biten NBA maçlarını yakalamak için: Dün, Bugün, Yarın
     for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
         try {
             console.log(`⏳ ${date} verisi çekiliyor...`);
@@ -57,7 +49,6 @@ async function start() {
             });
 
             if (data.events) {
-                // Filtreleme: Ya ID listede olacak ya da isimde NBA geçecek
                 const filtered = data.events.filter(e => {
                     const utId = e.tournament?.uniqueTournament?.id;
                     const tName = e.tournament?.name || "";
@@ -77,20 +68,26 @@ async function start() {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
-        // Sadece Bugün ve Yarın'ın maçlarını göster (00:00 - 23:59 kuralı)
+        // Sadece Bugün ve Yarın'ın maçlarını göster (Takvim günü)
         if (dayStr !== trToday && dayStr !== trTomorrow) continue;
 
         const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}`;
         if (duplicateTracker.has(matchKey)) continue;
 
-        // --- NBA KONTROLÜ ---
+        // NBA Kontrolü
         const tournamentName = e.tournament?.name || "";
         const utId = e.tournament?.uniqueTournament?.id;
         const isNBA = (utId === 3547 || tournamentName.toUpperCase().includes("NBA"));
-        
         const logoPathSuffix = isNBA ? "NBA/" : "";
 
-        const matchObject = {
+        // --- CANLI SKOR ENGELLEME MANTIĞI ---
+        // Sadece maç statüsü 'finished' ise skorları al, aksi halde '-' bas.
+        const isFinished = e.status?.type === 'finished';
+        
+        const homeScoreFinal = isFinished && e.homeScore && e.homeScore.display !== undefined ? String(e.homeScore.display) : "-";
+        const awayScoreFinal = isFinished && e.awayScore && e.awayScore.display !== undefined ? String(e.awayScore.display) : "-";
+
+        finalMatches.push({
             id: e.id,
             fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
@@ -105,19 +102,18 @@ async function start() {
                 logo: BASKETBALL_TEAM_LOGO_BASE + logoPathSuffix + e.awayTeam.id + ".png" 
             },
             tournamentLogo: BASKETBALL_TOURNAMENT_LOGO_BASE + (isNBA ? "3547" : utId) + ".png",
-            homeScore: (e.homeScore && e.homeScore.display !== undefined) ? String(e.homeScore.display) : "-",
-            awayScore: (e.awayScore && e.awayScore.display !== undefined) ? String(e.awayScore.display) : "-",
+            homeScore: homeScoreFinal,
+            awayScore: awayScoreFinal,
             tournament: isNBA ? "NBA" : (e.tournament.uniqueTournament.name || "Basketbol")
-        };
+        });
 
-        finalMatches.push(matchObject);
         duplicateTracker.add(matchKey);
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
     
-    console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} maç kaydedildi.`);
+    console.log(`✅ İşlem tamam. Biten maçların skorları eklendi, canlı skorlar gizlendi.`);
     await browser.close();
 }
 
