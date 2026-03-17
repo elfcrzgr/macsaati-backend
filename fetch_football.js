@@ -4,15 +4,12 @@ const fs = require('fs');
 
 puppeteer.use(StealthPlugin());
 
-// --- GÜNCEL KLASÖR VE GITHUB AYARLARI ---
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
 
-// Logolar artık bu klasörlerden okunacak
 const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
-// -----------------------------------------
 
 const leagueConfigs = {
     52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
@@ -29,12 +26,8 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Futbol veri çekme motoru başlatılıyor...");
-    const browser = await puppeteer.launch({ 
-        headless: "new", 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-    });
-
+    console.log("🚀 Futbol motoru başlatılıyor (Mükerrer kontrolü aktif)...");
+    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
@@ -45,31 +38,38 @@ async function start() {
     };
 
     let allEvents = [];
-    // Bugün ve yarının maçlarını çekiyoruz
     for (const date of [getTRDate(0), getTRDate(1)]) {
         try {
-            console.log(`⏳ ${date} futbol verisi çekiliyor...`);
+            console.log(`⏳ ${date} verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
                 const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} listesi alınamadı.`); }
+        } catch (e) { console.error(`${date} hatası.`); }
     }
 
     const finalMatches = [];
-    const seenIds = new Set(); // Aynı maçın tekrar etmesini önlemek için
+    const duplicateTracker = new Set(); // Benzersizlik kontrolü için
 
     for (const e of allEvents) {
-        // Mükerrer kayıt kontrolü
-        if (seenIds.has(e.id)) continue;
-
         const dateTR = new Date(e.startTimestamp * 1000);
+        const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
+        // --- KRİTİK NOKTA: Benzersiz bir anahtar oluşturuyoruz ---
+        // Örn: "2026-03-17_Fenerbahçe_Beşiktaş"
+        const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}`;
+
+        // Eğer bu maç (aynı gün, aynı takımlar) zaten eklenmişse pas geç
+        if (duplicateTracker.has(matchKey)) {
+            console.log(`⚠️ Çift kayıt engellendi: ${matchKey}`);
+            continue;
+        }
+
         const matchObject = {
             id: e.id,
-            fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
+            fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: dateTR.getTime(),
             broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
@@ -88,20 +88,13 @@ async function start() {
         };
 
         finalMatches.push(matchObject);
-        seenIds.add(e.id);
+        duplicateTracker.add(matchKey); // Maçı anahtarıyla beraber sete ekle
     }
 
-    // Maçları zamana göre sırala
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    
-    const jsonOutput = { 
-        success: true, 
-        lastUpdated: new Date().toISOString(), 
-        matches: finalMatches 
-    };
-
+    const jsonOutput = { success: true, lastUpdated: new Date().toISOString(), matches: finalMatches };
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(jsonOutput, null, 2));
-    console.log(`✅ ${OUTPUT_FILE} başarıyla oluşturuldu. (Toplam: ${finalMatches.length} maç)`);
+    console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} benzersiz maç kaydedildi.`);
     await browser.close();
 }
 

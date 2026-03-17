@@ -4,16 +4,12 @@ const fs = require('fs');
 
 puppeteer.use(StealthPlugin());
 
-// --- GÜNCEL KLASÖR YAPISI AYARLARI ---
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
 
-// Takım logoları artık football/logos klasöründe
 const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
-
-// Turnuva logoları artık football/tournament_logos klasöründe
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
-// -----------------------------------------
+const OUTPUT_FILE = "matches_football.json";
 
 const leagueConfigs = {
     52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
@@ -30,12 +26,8 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Futbol veri çekme motoru başlatılıyor (Yeni Klasör Düzeni)...");
-    const browser = await puppeteer.launch({ 
-        headless: "new", 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-    });
-
+    console.log("🚀 Futbol motoru başlatılıyor (Mükerrer kontrolü aktif)...");
+    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
@@ -45,73 +37,65 @@ async function start() {
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    const todayStr = getTRDate(0);
-    const tomorrowStr = getTRDate(1);
     let allEvents = [];
-
-    for (const date of [todayStr, tomorrowStr]) {
+    for (const date of [getTRDate(0), getTRDate(1)]) {
         try {
-            console.log(`⏳ ${date} futbol verisi çekiliyor...`);
+            console.log(`⏳ ${date} verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
-                const filtered = data.events.filter(e => {
-                    const matchDateTR = new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                    return targetLeagueIds.includes(e.tournament?.uniqueTournament?.id) && (matchDateTR === date);
-                });
+                const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} listesi alınamadı.`); }
+        } catch (e) { console.error(`${date} hatası.`); }
     }
 
     const finalMatches = [];
+    const duplicateTracker = new Set(); // Benzersizlik kontrolü için
+
     for (const e of allEvents) {
-        try {
-            const details = await page.evaluate(async (id) => {
-                const headers = { "Referer": "https://www.sofascore.com/" };
-                const r = await fetch(`https://api.sofascore.com/api/v1/event/${id}`, { headers });
-                const info = r.ok ? await r.json() : null;
-                const lR = await fetch(`https://api.sofascore.com/api/v1/event/${id}/lineups`, { headers });
-                return { 
-                    stadium: info?.event?.venue?.name || "Bilinmiyor",
-                    referee: info?.event?.referee?.name || "Açıklanmadı",
-                    hasLineup: lR.ok 
-                };
-            }, e.id);
+        const dateTR = new Date(e.startTimestamp * 1000);
+        const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        
+        // --- KRİTİK NOKTA: Benzersiz bir anahtar oluşturuyoruz ---
+        // Örn: "2026-03-17_Fenerbahçe_Beşiktaş"
+        const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}`;
 
-            const dateTR = new Date(e.startTimestamp * 1000);
-            
-            finalMatches.push({
-                id: e.id,
-                fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
-                fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
-                timestamp: dateTR.getTime(),
-                broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
-                
-                // --- LOGO YOLLARI REVİZE EDİLDİ ---
-                homeTeam: { 
-                    name: e.homeTeam.name, 
-                    logo: `${FOOTBALL_TEAM_LOGO_BASE}${e.homeTeam.id}.png` 
-                },
-                awayTeam: { 
-                    name: e.awayTeam.name, 
-                    logo: `${FOOTBALL_TEAM_LOGO_BASE}${e.awayTeam.id}.png` 
-                },
-                tournamentLogo: `${FOOTBALL_TOURNAMENT_LOGO_BASE}${e.tournament.uniqueTournament.id}.png`,
-                // ---------------------------------
+        // Eğer bu maç (aynı gün, aynı takımlar) zaten eklenmişse pas geç
+        if (duplicateTracker.has(matchKey)) {
+            console.log(`⚠️ Çift kayıt engellendi: ${matchKey}`);
+            continue;
+        }
 
-                homeScore: e.homeScore?.display ?? "-",
-                awayScore: e.awayScore?.display ?? "-",
-                tournament: e.tournament.uniqueTournament.name,
-                details: details
-            });
-        } catch (err) {}
+        const matchObject = {
+            id: e.id,
+            fixedDate: dayStr,
+            fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
+            timestamp: dateTR.getTime(),
+            broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
+            homeTeam: { 
+                name: e.homeTeam.name, 
+                logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
+            },
+            awayTeam: { 
+                name: e.awayTeam.name, 
+                logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
+            },
+            tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + e.tournament.uniqueTournament.id + ".png",
+            homeScore: (e.homeScore && e.homeScore.display !== undefined) ? String(e.homeScore.display) : "-",
+            awayScore: (e.awayScore && e.awayScore.display !== undefined) ? String(e.awayScore.display) : "-",
+            tournament: e.tournament.uniqueTournament.name
+        };
+
+        finalMatches.push(matchObject);
+        duplicateTracker.add(matchKey); // Maçı anahtarıyla beraber sete ekle
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    const jsonOutput = { success: true, version: Date.now(), lastUpdated: new Date().toISOString(), matches: finalMatches };
-    fs.writeFileSync("matches.json", JSON.stringify(jsonOutput, null, 2));
-    console.log("✅ matches.json yeni futbol klasör düzenine göre oluşturuldu.");
+    const jsonOutput = { success: true, lastUpdated: new Date().toISOString(), matches: finalMatches };
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(jsonOutput, null, 2));
+    console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} benzersiz maç kaydedildi.`);
     await browser.close();
 }
+
 start();
