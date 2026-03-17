@@ -4,15 +4,15 @@ const fs = require('fs');
 
 puppeteer.use(StealthPlugin());
 
-// --- GÜNCEL KLASÖR YAPISI ---
+// --- GÜNCEL KLASÖR VE GITHUB AYARLARI ---
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
 
-// İsimleri sabitledik
+// Logolar artık bu klasörlerden okunacak
 const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
-// ----------------------------
+// -----------------------------------------
 
 const leagueConfigs = {
     52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
@@ -45,9 +45,10 @@ async function start() {
     };
 
     let allEvents = [];
+    // Bugün ve yarının maçlarını çekiyoruz
     for (const date of [getTRDate(0), getTRDate(1)]) {
         try {
-            console.log(`⏳ ${date} verisi çekiliyor...`);
+            console.log(`⏳ ${date} futbol verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data.events) {
@@ -58,7 +59,12 @@ async function start() {
     }
 
     const finalMatches = [];
+    const seenIds = new Set(); // Aynı maçın tekrar etmesini önlemek için
+
     for (const e of allEvents) {
+        // Mükerrer kayıt kontrolü
+        if (seenIds.has(e.id)) continue;
+
         const dateTR = new Date(e.startTimestamp * 1000);
         
         const matchObject = {
@@ -75,15 +81,17 @@ async function start() {
                 name: e.awayTeam.name, 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
             },
-            // BURASI DÜZELTİLDİ: Değişken adı yukarıdakiyle aynı yapıldı.
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + e.tournament.uniqueTournament.id + ".png",
             homeScore: (e.homeScore && e.homeScore.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (e.awayScore && e.awayScore.display !== undefined) ? String(e.awayScore.display) : "-",
             tournament: e.tournament.uniqueTournament.name
         };
+
         finalMatches.push(matchObject);
+        seenIds.add(e.id);
     }
 
+    // Maçları zamana göre sırala
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
     
     const jsonOutput = { 
@@ -93,7 +101,7 @@ async function start() {
     };
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(jsonOutput, null, 2));
-    console.log(`✅ ${OUTPUT_FILE} başarıyla oluşturuldu.`);
+    console.log(`✅ ${OUTPUT_FILE} başarıyla oluşturuldu. (Toplam: ${finalMatches.length} maç)`);
     await browser.close();
 }
 
