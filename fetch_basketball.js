@@ -1,66 +1,99 @@
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const fs = require('fs');
-const path = require('path');
-const axios = require('axios');
 
-// Senin kopyaladığın metindeki takımlar ve SofaScore ID'leri
-const eurocupTeams = [
-    { name: "Hapoel Jerusalem", id: 3415 },
-    { name: "Bahçeşehir Koleji", id: 161863 },
-    { name: "Cedevita Olimpija", id: 182759 },
-    { name: "Venezia", id: 3432 },
-    { name: "Manresa", id: 3422 },
-    { name: "U-BT Cluj-Napoca", id: 41019 },
-    { name: "Aris", id: 3410 },
-    { name: "Neptūnas", id: 36720 },
-    { name: "Śląsk", id: 15450 },
-    { name: "Hamburg Towers", id: 161819 },
-    { name: "Beşiktaş", id: 3406 },
-    { name: "JL Bourg", id: 3405 },
-    { name: "Budućnost", id: 3411 },
-    { name: "Türk Telekom", id: 3430 },
-    { name: "Trento", id: 111307 },
-    { name: "Chemnitz", id: 38481 },
-    { name: "Ulm", id: 3431 },
-    { name: "London Lions", id: 41021 },
-    { name: "Lietkabelis", id: 15456 },
-    { name: "Panionios", id: 3424 }
-];
+puppeteer.use(StealthPlugin());
 
-async function downloadLogos() {
-    const dir = path.join(__dirname, 'basketball', 'logos');
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+const GITHUB_USER = "elfcrzgr"; 
+const REPO_NAME = "macsaati-backend"; 
 
-    console.log("🏀 EuroCup Logoları İndiriliyor...");
+const BASKETBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/`;
+const BASKETBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/`;
+const OUTPUT_FILE = "matches_basketball.json";
 
-    for (const team of eurocupTeams) {
-        const filePath = path.join(dir, `${team.id}.png`);
-        
-        // Zaten varsa indirme
-        if (fs.existsSync(filePath)) {
-            console.log(`⏩ ${team.name} zaten mevcut.`);
-            continue;
-        }
+// Yayıncı ve Lig Tanımlamaları
+const leagueConfigs = {
+    138: "S Sport",               // EuroLeague
+    3547: "NBA",                  // NBA
+    139: "beIN Sports",           // Basketbol Süper Ligi (BSL)
+    9357: "beIN Sports / Tivibu", // Champions League (BCL)
+    168: "S Sport Plus / Tivibu", // EuroCup
+    215: "S Sport",               // İspanya ACB
+    // İhtiyacın olan diğer ID'leri buraya ekleyebilirsin
+};
 
+const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
+
+async function start() {
+    console.log("🏀 Basketbol motoru başlatılıyor (2 Günlük Veri)...");
+    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox'] });
+    const page = await browser.newPage();
+
+    const getTRDate = (offset = 0) => {
+        const d = new Date();
+        d.setDate(d.getDate() + offset);
+        return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+    };
+
+    let allEvents = [];
+    // Bugün (0) ve Yarın (1) için döngü
+    for (const date of [getTRDate(0), getTRDate(1)]) {
         try {
-            const response = await axios({
-                url: `https://api.sofascore.app/api/v1/team/${team.id}/image`,
-                method: 'GET',
-                responseType: 'arraybuffer',
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'
-                }
-            });
-
-            fs.writeFileSync(filePath, response.data);
-            console.log(`✅ İndi: ${team.name}`);
-            
-            // Ban yememek için 1 saniye bekle
-            await new Promise(r => setTimeout(r, 1000));
-        } catch (error) {
-            console.log(`❌ Hata (${team.name}): ${error.message}`);
-        }
+            console.log(`⏳ ${date} basketbol verisi çekiliyor...`);
+            await page.goto(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
+            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
+            if (data.events) {
+                // Sadece hedef ligleri filtrele
+                const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
+                allEvents = allEvents.concat(filtered);
+            }
+        } catch (e) { console.error(`${date} çekilirken hata oluştu.`); }
     }
-    console.log("\n✨ Bitti! basketball/logos klasörüne bakabilirsin.");
+
+    const finalMatches = [];
+    const duplicateTracker = new Set();
+
+    for (const e of allEvents) {
+        const dateTR = new Date(e.startTimestamp * 1000);
+        const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}`;
+
+        if (duplicateTracker.has(matchKey)) continue;
+
+        // NBA KLASÖR MANTIĞI: Lig ID'si NBA ise "NBA/" alt klasörünü kullan
+        const isNBA = e.tournament.uniqueTournament.id === 3547;
+        const logoFolder = isNBA ? "NBA/" : "";
+
+        const matchObject = {
+            id: e.id,
+            fixedDate: dayStr,
+            fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
+            timestamp: dateTR.getTime(),
+            broadcaster: leagueConfigs[e.tournament.uniqueTournament.id] || "Yerel Yayın",
+            homeTeam: { 
+                name: e.homeTeam.name, 
+                logo: BASKETBALL_TEAM_LOGO_BASE + logoFolder + e.homeTeam.id + ".png" 
+            },
+            awayTeam: { 
+                name: e.awayTeam.name, 
+                logo: BASKETBALL_TEAM_LOGO_BASE + logoFolder + e.awayTeam.id + ".png" 
+            },
+            tournamentLogo: BASKETBALL_TOURNAMENT_LOGO_BASE + e.tournament.uniqueTournament.id + ".png",
+            homeScore: (e.homeScore && e.homeScore.display !== undefined) ? String(e.homeScore.display) : "-",
+            awayScore: (e.awayScore && e.awayScore.display !== undefined) ? String(e.awayScore.display) : "-",
+            tournament: e.tournament.uniqueTournament.name
+        };
+
+        finalMatches.push(matchObject);
+        duplicateTracker.add(matchKey);
+    }
+
+    finalMatches.sort((a, b) => a.timestamp - b.timestamp);
+    const jsonOutput = { success: true, lastUpdated: new Date().toISOString(), matches: finalMatches };
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(jsonOutput, null, 2));
+    
+    console.log(`✅ İşlem tamam. ${finalMatches.length} basketbol maçı kaydedildi.`);
+    await browser.close();
 }
 
-downloadLogos();
+start();
