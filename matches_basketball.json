@@ -1,7 +1,235 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-17T18:50:57.353Z",
+  "lastUpdated": "2026-03-17T18:53:20.620Z",
   "matches": [
+    {
+      "id": 14439259,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "02:00",
+      "timestamp": 1773702000000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Atlanta Hawks",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3423.png"
+      },
+      "awayTeam": {
+        "name": "Orlando Magic",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3437.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "124",
+      "awayScore": "112",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442492,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "02:00",
+      "timestamp": 1773702000000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Washington Wizards",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3431.png"
+      },
+      "awayTeam": {
+        "name": "Golden State Warriors",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3428.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "117",
+      "awayScore": "125",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442263,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "02:30",
+      "timestamp": 1773703800000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Boston Celtics",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3422.png"
+      },
+      "awayTeam": {
+        "name": "Phoenix Suns",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3416.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "120",
+      "awayScore": "112",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442462,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "02:30",
+      "timestamp": 1773703800000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Brooklyn Nets",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3436.png"
+      },
+      "awayTeam": {
+        "name": "Portland Trail Blazers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3414.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "95",
+      "awayScore": "114",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635913,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "02:30",
+      "timestamp": 1773703800000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Iowa Wolves",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131406.png"
+      },
+      "awayTeam": {
+        "name": "Salt Lake City Stars",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131418.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "132",
+      "awayScore": "106",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14439310,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "03:00",
+      "timestamp": 1773705600000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Chicago Bulls",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3409.png"
+      },
+      "awayTeam": {
+        "name": "Memphis Grizzlies",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3415.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "132",
+      "awayScore": "107",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442464,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "03:00",
+      "timestamp": 1773705600000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "New Orleans Pelicans",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/5539.png"
+      },
+      "awayTeam": {
+        "name": "Dallas Mavericks",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3411.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "129",
+      "awayScore": "111",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635915,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "03:00",
+      "timestamp": 1773705600000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Birmingham Squadron",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131398.png"
+      },
+      "awayTeam": {
+        "name": "Maine Celtics",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131402.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "144",
+      "awayScore": "143",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635916,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "03:00",
+      "timestamp": 1773705600000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Texas Legends",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131412.png"
+      },
+      "awayTeam": {
+        "name": "San Diego Clippers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/270118.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "116",
+      "awayScore": "108",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635914,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "03:00",
+      "timestamp": 1773705600000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Windy City Bulls",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/236883.png"
+      },
+      "awayTeam": {
+        "name": "Wisconsin Herd",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/270135.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "116",
+      "awayScore": "115",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442289,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "04:30",
+      "timestamp": 1773711000000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Houston Rockets",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3412.png"
+      },
+      "awayTeam": {
+        "name": "Los Angeles Lakers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3427.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "92",
+      "awayScore": "100",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442440,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "05:00",
+      "timestamp": 1773712800000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Los Angeles Clippers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3425.png"
+      },
+      "awayTeam": {
+        "name": "San Antonio Spurs",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3429.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "115",
+      "awayScore": "119",
+      "tournament": "NBA"
+    },
     {
       "id": 15711674,
       "fixedDate": "2026-03-17",
@@ -41,6 +269,25 @@
       "tournament": "Eurocup"
     },
     {
+      "id": 14635917,
+      "fixedDate": "2026-03-17",
+      "fixedTime": "21:00",
+      "timestamp": 1773770400000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Capital City Go-Go",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/302659.png"
+      },
+      "awayTeam": {
+        "name": "Santa Cruz Warriors",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131424.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "53",
+      "awayScore": "60",
+      "tournament": "NBA"
+    },
+    {
       "id": 15714459,
       "fixedDate": "2026-03-17",
       "fixedTime": "21:30",
@@ -55,8 +302,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/6648.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/141.png",
-      "homeScore": "17",
-      "awayScore": "20",
+      "homeScore": "18",
+      "awayScore": "23",
       "tournament": "Eurocup"
     },
     {
@@ -172,6 +419,310 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Champions League"
+    },
+    {
+      "id": 14635918,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "00:00",
+      "timestamp": 1773781200000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Raptors 905",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/206976.png"
+      },
+      "awayTeam": {
+        "name": "Motor City Cruise",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131416.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442208,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "02:00",
+      "timestamp": 1773788400000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Charlotte Hornets",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3430.png"
+      },
+      "awayTeam": {
+        "name": "Miami Heat",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3435.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14441966,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "02:00",
+      "timestamp": 1773788400000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Orlando Magic",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3437.png"
+      },
+      "awayTeam": {
+        "name": "Oklahoma City Thunder",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3418.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442359,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "02:00",
+      "timestamp": 1773788400000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Washington Wizards",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3431.png"
+      },
+      "awayTeam": {
+        "name": "Detroit Pistons",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3424.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635920,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "02:00",
+      "timestamp": 1773788400000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "College Park Skyhawks",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/334152.png"
+      },
+      "awayTeam": {
+        "name": "Austin Spurs",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131404.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635919,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "02:00",
+      "timestamp": 1773788400000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Grand Rapids Gold",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/186346.png"
+      },
+      "awayTeam": {
+        "name": "Oklahoma City Blue",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131414.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635921,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "02:00",
+      "timestamp": 1773788400000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Osceola Magic",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/270117.png"
+      },
+      "awayTeam": {
+        "name": "Long Island Nets",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/236884.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14439334,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "02:30",
+      "timestamp": 1773790200000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "New York Knicks",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3421.png"
+      },
+      "awayTeam": {
+        "name": "Indiana Pacers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3419.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442342,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "03:00",
+      "timestamp": 1773792000000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Milwaukee Bucks",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3410.png"
+      },
+      "awayTeam": {
+        "name": "Cleveland Cavaliers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3432.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442150,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "03:00",
+      "timestamp": 1773792000000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Minnesota Timberwolves",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3426.png"
+      },
+      "awayTeam": {
+        "name": "Phoenix Suns",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3416.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635922,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "03:00",
+      "timestamp": 1773792000000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Birmingham Squadron",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131398.png"
+      },
+      "awayTeam": {
+        "name": "Maine Celtics",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131402.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635923,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "03:00",
+      "timestamp": 1773792000000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Texas Legends",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131412.png"
+      },
+      "awayTeam": {
+        "name": "Rio Grande Valley Vipers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131408.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635924,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "04:00",
+      "timestamp": 1773795600000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Rip City Remix",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/492481.png"
+      },
+      "awayTeam": {
+        "name": "South Bay Lakers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131420.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14442025,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "05:00",
+      "timestamp": 1773799200000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Denver Nuggets",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3417.png"
+      },
+      "awayTeam": {
+        "name": "Philadelphia 76ers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3420.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14439242,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "05:00",
+      "timestamp": 1773799200000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Sacramento Kings",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3413.png"
+      },
+      "awayTeam": {
+        "name": "San Antonio Spurs",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3429.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
+    },
+    {
+      "id": 14635925,
+      "fixedDate": "2026-03-18",
+      "fixedTime": "05:00",
+      "timestamp": 1773799200000,
+      "broadcaster": "Yerel Yayın",
+      "homeTeam": {
+        "name": "Valley Suns",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/923729.png"
+      },
+      "awayTeam": {
+        "name": "Stockton Kings",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/131422.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
     },
     {
       "id": 15714458,
