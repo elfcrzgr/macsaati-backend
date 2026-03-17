@@ -12,22 +12,28 @@ const BASKETBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_US
 const BASKETBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/`;
 const OUTPUT_FILE = "matches_basketball.json";
 
-// Lig Yayıncı Bilgileri
+// Lig Yayıncı Bilgileri (Tüm konuştuğumuz sabit ID'ler eklendi)
 const leagueConfigs = {
-    3547: "S Sport / NBA TV",      // NBA Ana ID
+    3547: "S Sport / NBA TV",      // NBA
     138: "S Sport",                // EuroLeague
-    139: "beIN Sports",            // BSL
-    9357: "beIN Sports / Tivibu",  // BCL
+    139: "beIN Sports",            // Türkiye BSL
+    9357: "beIN Sports / Tivibu",  // BCL (Şampiyonlar Ligi)
     168: "S Sport Plus / Tivibu",  // EuroCup
     215: "S Sport",                // İspanya ACB
-    132: "S Sport Plus",           // ABA Ligi
-    137: "Tivibu Spor"             // İtalya Lega A
+    227: "beIN Sports",            // Fransa Élite (LNB Pro A)
+    141: "S Sport Plus",           // İtalya Serie A
+    235: "S Sport Plus",           // Litvanya LKL
+    262: "S Sport Plus",           // ABA Ligi
+    264: "S Sport Plus",           // VTB United League
+    405: "Spor SMART",             // Çin CBA
+    304: "S Sport Plus",           // Avustralya NBL
+    137: "Tivibu Spor"             // İtalya Lega A (Ekstra)
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatılıyor (NBA Yol Düzeltmesi Aktif)...");
+    console.log("🏀 Basketbol motoru başlatılıyor (Tüm Ligler ve NBA Filtresi Aktif)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -65,11 +71,10 @@ async function start() {
 
         if (duplicateTracker.has(matchKey)) continue;
 
-        // --- NBA YOLU İÇİN GARANTİ KONTROL ---
+        // --- NBA YOLU VE İSİM KONTROLÜ ---
         const tournamentName = e.tournament?.name || "";
         const uniqueTournamentId = e.tournament?.uniqueTournament?.id;
         
-        // Sadece ID'ye değil, isme de bakıyoruz (NBA, NBA Preseason vb. kapsar)
         const isNBA = (uniqueTournamentId === 3547 || tournamentName.toUpperCase().includes("NBA"));
         const logoFolder = isNBA ? "NBA/" : "";
 
@@ -87,11 +92,11 @@ async function start() {
                 name: e.awayTeam.name, 
                 logo: BASKETBALL_TEAM_LOGO_BASE + logoFolder + e.awayTeam.id + ".png" 
             },
-            // Eğer isNBA ise turnuva logosunu 3547.png'ye zorla, değilse gelen ID'yi kullan
+            // NBA ise 3547.png'ye zorla, diğerleri için gelen ID'yi kullan
             tournamentLogo: BASKETBALL_TOURNAMENT_LOGO_BASE + (isNBA ? "3547" : uniqueTournamentId) + ".png",
             homeScore: (e.homeScore && e.homeScore.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (e.awayScore && e.awayScore.display !== undefined) ? String(e.awayScore.display) : "-",
-            tournament: isNBA ? "NBA" : e.tournament.uniqueTournament.name
+            tournament: isNBA ? "NBA" : (e.tournament.uniqueTournament.name || tournamentName)
         };
 
         finalMatches.push(matchObject);
@@ -102,7 +107,7 @@ async function start() {
     const jsonOutput = { success: true, lastUpdated: new Date().toISOString(), matches: finalMatches };
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(jsonOutput, null, 2));
     
-    console.log(`✅ İşlem bitti. NBA logoları /NBA/ klasörüne yönlendirildi.`);
+    console.log(`✅ İşlem bitti. Toplam ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
