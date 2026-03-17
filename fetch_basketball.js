@@ -24,7 +24,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatılıyor (Sadece biten maç skorları)...");
+    console.log("🏀 Basketbol motoru başlatılıyor (Android Auto-Scroll Uyumlu)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -39,7 +39,7 @@ async function start() {
     };
 
     let allEvents = [];
-    // Gece biten NBA maçlarını yakalamak için: Dün, Bugün, Yarın
+    // 3 gün tarıyoruz (Yesterday, Today, Tomorrow)
     for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
         try {
             console.log(`⏳ ${date} verisi çekiliyor...`);
@@ -68,24 +68,21 @@ async function start() {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
-        // Sadece Bugün ve Yarın'ın maçlarını göster (Takvim günü)
+        // Sadece Bugün ve Yarın'ın maçlarını göster
         if (dayStr !== trToday && dayStr !== trTomorrow) continue;
 
         const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}`;
         if (duplicateTracker.has(matchKey)) continue;
 
-        // NBA Kontrolü
         const tournamentName = e.tournament?.name || "";
         const utId = e.tournament?.uniqueTournament?.id;
         const isNBA = (utId === 3547 || tournamentName.toUpperCase().includes("NBA"));
         const logoPathSuffix = isNBA ? "NBA/" : "";
 
-        // --- CANLI SKOR ENGELLEME MANTIĞI ---
-        // Sadece maç statüsü 'finished' ise skorları al, aksi halde '-' bas.
+        // Sadece biten maçların skorlarını gösteriyoruz (Android istediğin gibi)
         const isFinished = e.status?.type === 'finished';
-        
-        const homeScoreFinal = isFinished && e.homeScore && e.homeScore.display !== undefined ? String(e.homeScore.display) : "-";
-        const awayScoreFinal = isFinished && e.awayScore && e.awayScore.display !== undefined ? String(e.awayScore.display) : "-";
+        const homeScoreFinal = isFinished ? String(e.homeScore?.display || "-") : "-";
+        const awayScoreFinal = isFinished ? String(e.awayScore?.display || "-") : "-";
 
         finalMatches.push({
             id: e.id,
@@ -110,10 +107,12 @@ async function start() {
         duplicateTracker.add(matchKey);
     }
 
+    // --- SADECE ZAMANA GÖRE SIRALA (Android handleAutoScroll için şart) ---
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
+
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
     
-    console.log(`✅ İşlem tamam. Biten maçların skorları eklendi, canlı skorlar gizlendi.`);
+    console.log(`✅ İşlem tamam. Android auto-scroll mantığına uygun ${finalMatches.length} maç yazıldı.`);
     await browser.close();
 }
 
