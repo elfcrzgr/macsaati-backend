@@ -5,6 +5,7 @@ const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 puppeteer.use(StealthPlugin());
+//.. sil burayı
 
 // Önce matches.json'dan tüm takımları çıkar
 function extractTeamsFromMatches() {
