@@ -6,16 +6,24 @@ puppeteer.use(StealthPlugin());
 
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
-const OUTPUT_FILE = "matches_tennis.json";
 
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
+const OUTPUT_FILE = "matches_tennis.json";
 
-// Önemli Tenis Kategorileri (ATP, WTA, Grand Slam vb.)
-const targetCategoryIds = [3, 4, 5, 1396, 1397];
+// Tenis Yayıncıları (Kategori ID bazlı)
+const categoryConfigs = {
+    3: "beIN Sports / Eurosport",  // Grand Slam
+    4: "beIN Sports",              // ATP
+    5: "beIN Sports",              // WTA
+    1396: "beIN Sports",           // ATP Masters
+    1397: "beIN Sports"            // WTA 1000
+};
+
+const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
 async function start() {
-    console.log("🎾 Tenis motoru başlatılıyor (Geçmiş maçlar dahil)...");
+    console.log("🎾 Tenis motoru başlatılıyor (Dün/Bugün/Yarın kontrolü aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -27,64 +35,80 @@ async function start() {
     };
 
     let allEvents = [];
-    // DÜN (-1), BUGÜN (0) ve YARIN (1) taraması yaparak biten maçları yakalıyoruz
+    // KRİTİK DEĞİŞİKLİK: Biten maçları kaçırmamak için DÜN (-1) verisini de çekiyoruz.
     for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
         try {
-            console.log(`⏳ ${date} verisi çekiliyor...`);
+            console.log(`⏳ ${date} tenis verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const content = await page.evaluate(() => document.body.innerText);
-            const data = JSON.parse(content);
+            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             
             if (data.events) {
+                // Sadece belirlediğimiz kategorileri (ATP, WTA, GS) filtrele
                 const filtered = data.events.filter(e => targetCategoryIds.includes(e.tournament?.category?.id));
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} tarihinde veri bulunamadı.`); }
+        } catch (e) { console.error(`${date} hatası.`); }
     }
 
     const finalMatches = [];
-    const duplicateTracker = new Set();
+    const duplicateTracker = new Set(); 
 
     for (const e of allEvents) {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
-        // Mükerrer kontrolü (Aynı maçı tekrar ekleme)
+        // Benzersiz anahtar (Aynı maçın tekrar eklenmesini önler)
         const matchKey = `${e.id}`; 
-        if (duplicateTracker.has(matchKey)) continue;
 
-        // Set detaylarını oluştur (6-4, 7-5 gibi)
+        if (duplicateTracker.has(matchKey)) {
+            continue;
+        }
+
+        // --- TENİS ÖZEL: SET SKORLARI (6-4, 7-5 vb.) ---
         let setDetails = "";
         if (e.homeScore && e.homeScore.period1 !== undefined) {
             let sets = [];
             for (let i = 1; i <= 5; i++) {
                 let hS = e.homeScore[`period${i}`];
                 let aS = e.awayScore[`period${i}`];
-                if (hS !== undefined && aS !== undefined) sets.push(`${hS}-${aS}`);
+                if (hS !== undefined && aS !== undefined) {
+                    sets.push(`${hS}-${aS}`);
+                }
             }
             if (sets.length > 0) setDetails = `(${sets.join(', ')})`;
         }
 
-        finalMatches.push({
+        const matchObject = {
             id: e.id,
             fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: dateTR.getTime(),
-            broadcaster: "beIN Sports / Eurosport",
-            homeTeam: { name: e.homeTeam.name, logo: TENNIS_LOGO_BASE + e.homeTeam.id + ".png" },
-            awayTeam: { name: e.awayTeam.name, logo: TENNIS_LOGO_BASE + e.awayTeam.id + ".png" },
+            broadcaster: categoryConfigs[e.tournament?.category?.id] || "beIN / Eurosport",
+            homeTeam: { 
+                name: e.homeTeam.name, 
+                logo: TENNIS_LOGO_BASE + e.homeTeam.id + ".png" 
+            },
+            awayTeam: { 
+                name: e.awayTeam.name, 
+                logo: TENNIS_LOGO_BASE + e.awayTeam.id + ".png" 
+            },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || "default") + ".png",
             homeScore: (e.homeScore && e.homeScore.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (e.awayScore && e.awayScore.display !== undefined) ? String(e.awayScore.display) : "-",
-            setDetails: setDetails,
+            setDetails: setDetails, // Android'deki txtSetScores için
             tournament: e.tournament.name
-        });
-        duplicateTracker.add(matchKey);
+        };
+
+        finalMatches.push(matchObject);
+        duplicateTracker.add(matchKey); 
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} maç kaydedildi.`);
+    const jsonOutput = { success: true, lastUpdated: new Date().toISOString(), matches: finalMatches };
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(jsonOutput, null, 2));
+    
+    console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} tenis maçı kaydedildi.`);
     await browser.close();
 }
+
 start();
