@@ -1,482 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-20T19:39:27.115Z",
+  "lastUpdated": "2026-03-20T21:35:39.164Z",
   "matches": [
-    {
-      "id": 15558666,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "13:30",
-      "timestamp": 1773916200000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Chanmari FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/830777.png"
-      },
-      "awayTeam": {
-        "name": "Shillong Lajong FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/58741.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/848.png",
-      "homeScore": "1",
-      "awayScore": "2",
-      "tournament": "I-League"
-    },
-    {
-      "id": 14530098,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "14:00",
-      "timestamp": 1773918000000,
-      "broadcaster": "CBC Sport / Yerel",
-      "homeTeam": {
-        "name": "FK Karvan Yevlax",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/498809.png"
-      },
-      "awayTeam": {
-        "name": "Zirə FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/173406.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/709.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "tournament": "Misli Premier League"
-    },
-    {
-      "id": 14109855,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "16:00",
-      "timestamp": 1773925200000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Kayserispor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3072.png"
-      },
-      "awayTeam": {
-        "name": "Fatih Karagümrük",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4954.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/52.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "tournament": "Trendyol Süper Lig"
-    },
-    {
-      "id": 15558675,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "16:00",
-      "timestamp": 1773925200000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Sreenidi Deccan FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/403570.png"
-      },
-      "awayTeam": {
-        "name": "Namdhari FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/494684.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/848.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "tournament": "I-League"
-    },
-    {
-      "id": 14530099,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "18:15",
-      "timestamp": 1773933300000,
-      "broadcaster": "CBC Sport / Yerel",
-      "homeTeam": {
-        "name": "Sabah FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/267828.png"
-      },
-      "awayTeam": {
-        "name": "Sumqayıt FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/44497.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/709.png",
-      "homeScore": "3",
-      "awayScore": "1",
-      "tournament": "Misli Premier League"
-    },
-    {
-      "id": 14109852,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:00",
-      "timestamp": 1773939600000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Beşiktaş JK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3050.png"
-      },
-      "awayTeam": {
-        "name": "Kasımpaşa",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6063.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/52.png",
-      "homeScore": "2",
-      "awayScore": "1",
-      "tournament": "Trendyol Süper Lig"
-    },
-    {
-      "id": 14109858,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:00",
-      "timestamp": 1773939600000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Konyaspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3085.png"
-      },
-      "awayTeam": {
-        "name": "Gençlerbirliği",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7802.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/52.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "tournament": "Trendyol Süper Lig"
-    },
-    {
-      "id": 15631842,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:45",
-      "timestamp": 1773942300000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "FC Midtjylland",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1289.png"
-      },
-      "awayTeam": {
-        "name": "Nottingham Forest",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/14.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/679.png",
-      "homeScore": "1",
-      "awayScore": "2",
-      "tournament": "UEFA Europa League"
-    },
-    {
-      "id": 15631844,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:45",
-      "timestamp": 1773942300000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Olympique Lyonnais",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1649.png"
-      },
-      "awayTeam": {
-        "name": "Celta Vigo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2821.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/679.png",
-      "homeScore": "0",
-      "awayScore": "2",
-      "tournament": "UEFA Europa League"
-    },
-    {
-      "id": 15631838,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:45",
-      "timestamp": 1773942300000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "SC Freiburg",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2538.png"
-      },
-      "awayTeam": {
-        "name": "KRC Genk",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2890.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/679.png",
-      "homeScore": "5",
-      "awayScore": "1",
-      "tournament": "UEFA Europa League"
-    },
-    {
-      "id": 15632054,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:45",
-      "timestamp": 1773942300000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "1. FSV Mainz 05",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2556.png"
-      },
-      "awayTeam": {
-        "name": "SK Sigma Olomouc",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2207.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17015.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "tournament": "UEFA Conference League"
-    },
-    {
-      "id": 15632058,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:45",
-      "timestamp": 1773942300000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "AEK Athens",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3250.png"
-      },
-      "awayTeam": {
-        "name": "NK Celje",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2413.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17015.png",
-      "homeScore": "0",
-      "awayScore": "2",
-      "tournament": "UEFA Conference League"
-    },
-    {
-      "id": 15632053,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:45",
-      "timestamp": 1773942300000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "AEK Larnaca",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3404.png"
-      },
-      "awayTeam": {
-        "name": "Crystal Palace",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17015.png",
-      "homeScore": "1",
-      "awayScore": "2",
-      "tournament": "UEFA Conference League"
-    },
-    {
-      "id": 15632059,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "20:45",
-      "timestamp": 1773942300000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Raków Częstochowa",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35268.png"
-      },
-      "awayTeam": {
-        "name": "Fiorentina",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2693.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17015.png",
-      "homeScore": "1",
-      "awayScore": "2",
-      "tournament": "UEFA Conference League"
-    },
-    {
-      "id": 15631843,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "23:00",
-      "timestamp": 1773950400000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Aston Villa",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/40.png"
-      },
-      "awayTeam": {
-        "name": "Lille",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1643.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/679.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "tournament": "UEFA Europa League"
-    },
-    {
-      "id": 15631840,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "23:00",
-      "timestamp": 1773950400000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "FC Porto",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3002.png"
-      },
-      "awayTeam": {
-        "name": "VfB Stuttgart",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2677.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/679.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "tournament": "UEFA Europa League"
-    },
-    {
-      "id": 15631841,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "23:00",
-      "timestamp": 1773950400000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Real Betis",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2816.png"
-      },
-      "awayTeam": {
-        "name": "Panathinaikos FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3248.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/679.png",
-      "homeScore": "4",
-      "awayScore": "0",
-      "tournament": "UEFA Europa League"
-    },
-    {
-      "id": 15631837,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "23:00",
-      "timestamp": 1773950400000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Roma",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2702.png"
-      },
-      "awayTeam": {
-        "name": "Bologna",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2685.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/679.png",
-      "homeScore": "3",
-      "awayScore": "4",
-      "tournament": "UEFA Europa League"
-    },
-    {
-      "id": 15632057,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "23:00",
-      "timestamp": 1773950400000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "AC Sparta Praha",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2218.png"
-      },
-      "awayTeam": {
-        "name": "AZ Alkmaar",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2950.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17015.png",
-      "homeScore": "0",
-      "awayScore": "4",
-      "tournament": "UEFA Conference League"
-    },
-    {
-      "id": 15632060,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "23:00",
-      "timestamp": 1773950400000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "RC Strasbourg",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1659.png"
-      },
-      "awayTeam": {
-        "name": "HNK Rijeka",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2039.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17015.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "tournament": "UEFA Conference League"
-    },
-    {
-      "id": 15632056,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "23:00",
-      "timestamp": 1773950400000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Rayo Vallecano",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2818.png"
-      },
-      "awayTeam": {
-        "name": "Samsunspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3053.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17015.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "tournament": "UEFA Conference League"
-    },
-    {
-      "id": 15632055,
-      "fixedDate": "2026-03-19",
-      "fixedTime": "23:00",
-      "timestamp": 1773950400000,
-      "broadcaster": "TRT / Tabii",
-      "homeTeam": {
-        "name": "Shakhtar Donetsk",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3313.png"
-      },
-      "awayTeam": {
-        "name": "Lech Poznań",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3121.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17015.png",
-      "homeScore": "1",
-      "awayScore": "2",
-      "tournament": "UEFA Conference League"
-    },
-    {
-      "id": 15237951,
-      "fixedDate": "2026-03-20",
-      "fixedTime": "01:00",
-      "timestamp": 1773957600000,
-      "broadcaster": "S Sport Plus / D-Smart",
-      "homeTeam": {
-        "name": "Grêmio",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5926.png"
-      },
-      "awayTeam": {
-        "name": "Vitória",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1962.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "tournament": "Brasileirão Betano"
-    },
-    {
-      "id": 15237945,
-      "fixedDate": "2026-03-20",
-      "fixedTime": "02:00",
-      "timestamp": 1773961200000,
-      "broadcaster": "S Sport Plus / D-Smart",
-      "homeTeam": {
-        "name": "Flamengo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5981.png"
-      },
-      "awayTeam": {
-        "name": "Remo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2012.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
-      "homeScore": "3",
-      "awayScore": "0",
-      "tournament": "Brasileirão Betano"
-    },
-    {
-      "id": 15237954,
-      "fixedDate": "2026-03-20",
-      "fixedTime": "03:30",
-      "timestamp": 1773966600000,
-      "broadcaster": "S Sport Plus / D-Smart",
-      "homeTeam": {
-        "name": "Chapecoense",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/21845.png"
-      },
-      "awayTeam": {
-        "name": "Corinthians",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1957.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "tournament": "Brasileirão Betano"
-    },
     {
       "id": 15558674,
       "fixedDate": "2026-03-20",
@@ -626,7 +151,7 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/37.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "tournament": "VriendenLoterij Eredivisie"
     },
     {
@@ -644,7 +169,7 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2569.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/35.png",
-      "homeScore": "0",
+      "homeScore": "5",
       "awayScore": "0",
       "tournament": "Bundesliga"
     },
@@ -663,8 +188,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2858.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
-      "homeScore": "0",
-      "awayScore": "0",
+      "homeScore": "1",
+      "awayScore": "3",
       "tournament": "LaLiga 2"
     },
     {
@@ -682,8 +207,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2695.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/23.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "1",
       "tournament": "Serie A"
     },
     {
@@ -701,8 +226,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1684.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/34.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "5",
+      "awayScore": "1",
       "tournament": "Ligue 1"
     },
     {
@@ -720,8 +245,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
       "tournament": "Premier League"
     },
     {
@@ -739,8 +264,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2824.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/8.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "3",
+      "awayScore": "1",
       "tournament": "LaLiga"
     },
     {
@@ -758,8 +283,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36365.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/238.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "3",
+      "awayScore": "0",
       "tournament": "Liga Portugal Betclic"
     },
     {
@@ -2072,6 +1597,918 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Serie A"
+    },
+    {
+      "id": 14024021,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "15:00",
+      "timestamp": 1774180800000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Newcastle United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/39.png"
+      },
+      "awayTeam": {
+        "name": "Sunderland",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/41.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Premier League"
+    },
+    {
+      "id": 14065488,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "15:30",
+      "timestamp": 1774182600000,
+      "broadcaster": "beIN Sports / Tivibu",
+      "homeTeam": {
+        "name": "Fortuna Düsseldorf",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2588.png"
+      },
+      "awayTeam": {
+        "name": "Hertha BSC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2528.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/44.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "2. Bundesliga"
+    },
+    {
+      "id": 14065490,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "15:30",
+      "timestamp": 1774182600000,
+      "broadcaster": "beIN Sports / Tivibu",
+      "homeTeam": {
+        "name": "Preußen Münster",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2590.png"
+      },
+      "awayTeam": {
+        "name": "1. FC Magdeburg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2591.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/44.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "2. Bundesliga"
+    },
+    {
+      "id": 14065483,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "15:30",
+      "timestamp": 1774182600000,
+      "broadcaster": "beIN Sports / Tivibu",
+      "homeTeam": {
+        "name": "VfL Bochum 1848",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2542.png"
+      },
+      "awayTeam": {
+        "name": "Holstein Kiel",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2573.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/44.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "2. Bundesliga"
+    },
+    {
+      "id": 14083662,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "16:00",
+      "timestamp": 1774184400000,
+      "broadcaster": "S Sport",
+      "homeTeam": {
+        "name": "Barcelona",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2817.png"
+      },
+      "awayTeam": {
+        "name": "Rayo Vallecano",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2818.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/8.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga"
+    },
+    {
+      "id": 14083429,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "16:00",
+      "timestamp": 1774184400000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Burgos Club de Fútbol",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2854.png"
+      },
+      "awayTeam": {
+        "name": "Córdoba",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2850.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14138587,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "16:00",
+      "timestamp": 1774184400000,
+      "broadcaster": "beIN Sports / TRT Spor",
+      "homeTeam": {
+        "name": "Iğdır FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/388264.png"
+      },
+      "awayTeam": {
+        "name": "Çorum FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/77629.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/98.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Trendyol 1.Lig"
+    },
+    {
+      "id": 14138589,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "16:00",
+      "timestamp": 1774184400000,
+      "broadcaster": "beIN Sports / TRT Spor",
+      "homeTeam": {
+        "name": "İstanbulspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3066.png"
+      },
+      "awayTeam": {
+        "name": "Bodrum FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/202390.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/98.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Trendyol 1.Lig"
+    },
+    {
+      "id": 14053734,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "16:30",
+      "timestamp": 1774186200000,
+      "broadcaster": "TV8.5 / Exxen",
+      "homeTeam": {
+        "name": "FC Utrecht",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2948.png"
+      },
+      "awayTeam": {
+        "name": "Go Ahead Eagles",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2979.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/37.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "VriendenLoterij Eredivisie"
+    },
+    {
+      "id": 14053738,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "16:30",
+      "timestamp": 1774186200000,
+      "broadcaster": "TV8.5 / Exxen",
+      "homeTeam": {
+        "name": "Feyenoord",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2959.png"
+      },
+      "awayTeam": {
+        "name": "AFC Ajax",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2953.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/37.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "VriendenLoterij Eredivisie"
+    },
+    {
+      "id": 13981709,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:00",
+      "timestamp": 1774188000000,
+      "broadcaster": "S Sport / Tivibu Spor",
+      "homeTeam": {
+        "name": "Atalanta",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2686.png"
+      },
+      "awayTeam": {
+        "name": "Hellas Verona",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2701.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/23.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Serie A"
+    },
+    {
+      "id": 13981713,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:00",
+      "timestamp": 1774188000000,
+      "broadcaster": "S Sport / Tivibu Spor",
+      "homeTeam": {
+        "name": "Bologna",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2685.png"
+      },
+      "awayTeam": {
+        "name": "Lazio",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2699.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/23.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Serie A"
+    },
+    {
+      "id": 14167930,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:00",
+      "timestamp": 1774188000000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Olympique Lyonnais",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1649.png"
+      },
+      "awayTeam": {
+        "name": "AS Monaco",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1653.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/34.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Ligue 1"
+    },
+    {
+      "id": 14024014,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:15",
+      "timestamp": 1774188900000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Aston Villa",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/40.png"
+      },
+      "awayTeam": {
+        "name": "West Ham United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/37.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Premier League"
+    },
+    {
+      "id": 14024020,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:15",
+      "timestamp": 1774188900000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Tottenham Hotspur",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/33.png"
+      },
+      "awayTeam": {
+        "name": "Nottingham Forest",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/14.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Premier League"
+    },
+    {
+      "id": 14065194,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:30",
+      "timestamp": 1774189800000,
+      "broadcaster": "beIN Sports / Tivibu Spor",
+      "homeTeam": {
+        "name": "1. FSV Mainz 05",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2556.png"
+      },
+      "awayTeam": {
+        "name": "Eintracht Frankfurt",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2674.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/35.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bundesliga"
+    },
+    {
+      "id": 14083689,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "18:15",
+      "timestamp": 1774192500000,
+      "broadcaster": "S Sport",
+      "homeTeam": {
+        "name": "Celta Vigo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2821.png"
+      },
+      "awayTeam": {
+        "name": "Deportivo Alavés",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2885.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/8.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga"
+    },
+    {
+      "id": 14083442,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "18:15",
+      "timestamp": 1774192500000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Mirandés",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35092.png"
+      },
+      "awayTeam": {
+        "name": "Real Valladolid",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2831.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083453,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "18:15",
+      "timestamp": 1774192500000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Real Sociedad B U21",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24360.png"
+      },
+      "awayTeam": {
+        "name": "Granada",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/33779.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14288835,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "18:30",
+      "timestamp": 1774193400000,
+      "broadcaster": "D-Smart / Spor Smart",
+      "homeTeam": {
+        "name": "Estoril Praia",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4500.png"
+      },
+      "awayTeam": {
+        "name": "Rio Ave",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3036.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/238.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Portugal Betclic"
+    },
+    {
+      "id": 14053731,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "18:45",
+      "timestamp": 1774194300000,
+      "broadcaster": "TV8.5 / Exxen",
+      "homeTeam": {
+        "name": "FC Groningen",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2951.png"
+      },
+      "awayTeam": {
+        "name": "AZ Alkmaar",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2950.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/37.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "VriendenLoterij Eredivisie"
+    },
+    {
+      "id": 14053751,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "18:45",
+      "timestamp": 1774194300000,
+      "broadcaster": "TV8.5 / Exxen",
+      "homeTeam": {
+        "name": "SC Telstar",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2972.png"
+      },
+      "awayTeam": {
+        "name": "PSV Eindhoven",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2952.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/37.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "VriendenLoterij Eredivisie"
+    },
+    {
+      "id": 14138588,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "19:00",
+      "timestamp": 1774195200000,
+      "broadcaster": "beIN Sports / TRT Spor",
+      "homeTeam": {
+        "name": "Esenler Erokspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/262480.png"
+      },
+      "awayTeam": {
+        "name": "Erzurumspor FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/55603.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/98.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Trendyol 1.Lig"
+    },
+    {
+      "id": 14167946,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "19:15",
+      "timestamp": 1774196100000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Olympique de Marseille",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1641.png"
+      },
+      "awayTeam": {
+        "name": "Lille",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1643.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/34.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Ligue 1"
+    },
+    {
+      "id": 14167940,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "19:15",
+      "timestamp": 1774196100000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Paris FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6070.png"
+      },
+      "awayTeam": {
+        "name": "Le Havre",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1662.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/34.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Ligue 1"
+    },
+    {
+      "id": 14167934,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "19:15",
+      "timestamp": 1774196100000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Stade Rennais",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1658.png"
+      },
+      "awayTeam": {
+        "name": "Metz",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1651.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/34.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Ligue 1"
+    },
+    {
+      "id": 14065201,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "19:30",
+      "timestamp": 1774197000000,
+      "broadcaster": "beIN Sports / Tivibu Spor",
+      "homeTeam": {
+        "name": "FC St. Pauli",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2526.png"
+      },
+      "awayTeam": {
+        "name": "SC Freiburg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2538.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/35.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bundesliga"
+    },
+    {
+      "id": 13981722,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "20:00",
+      "timestamp": 1774198800000,
+      "broadcaster": "S Sport / Tivibu Spor",
+      "homeTeam": {
+        "name": "Roma",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2702.png"
+      },
+      "awayTeam": {
+        "name": "Lecce",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2689.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/23.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Serie A"
+    },
+    {
+      "id": 14083657,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "20:30",
+      "timestamp": 1774200600000,
+      "broadcaster": "S Sport",
+      "homeTeam": {
+        "name": "Athletic Club",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2825.png"
+      },
+      "awayTeam": {
+        "name": "Real Betis",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2816.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/8.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga"
+    },
+    {
+      "id": 14083439,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "20:30",
+      "timestamp": 1774200600000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Las Palmas",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6577.png"
+      },
+      "awayTeam": {
+        "name": "Sporting Gijón",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2852.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14288836,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "21:00",
+      "timestamp": 1774202400000,
+      "broadcaster": "D-Smart / Spor Smart",
+      "homeTeam": {
+        "name": "FC Alverca",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/190328.png"
+      },
+      "awayTeam": {
+        "name": "Sporting CP",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3001.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/238.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Portugal Betclic"
+    },
+    {
+      "id": 14065196,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "21:30",
+      "timestamp": 1774204200000,
+      "broadcaster": "beIN Sports / Tivibu Spor",
+      "homeTeam": {
+        "name": "FC Augsburg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2600.png"
+      },
+      "awayTeam": {
+        "name": "VfB Stuttgart",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2677.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/35.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bundesliga"
+    },
+    {
+      "id": 15270043,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "21:30",
+      "timestamp": 1774204200000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Sarmiento",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/42338.png"
+      },
+      "awayTeam": {
+        "name": "Aldosivi",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36836.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Profesional de Fútbol"
+    },
+    {
+      "id": 15237962,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "22:00",
+      "timestamp": 1774206000000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Athletico",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1967.png"
+      },
+      "awayTeam": {
+        "name": "Coritiba",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1982.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Betano"
+    },
+    {
+      "id": 15237960,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "22:00",
+      "timestamp": 1774206000000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Cruzeiro",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1954.png"
+      },
+      "awayTeam": {
+        "name": "Santos",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1968.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Betano"
+    },
+    {
+      "id": 15237964,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "22:00",
+      "timestamp": 1774206000000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Remo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2012.png"
+      },
+      "awayTeam": {
+        "name": "Bahia",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1955.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Betano"
+    },
+    {
+      "id": 15237956,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "22:00",
+      "timestamp": 1774206000000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Vasco da Gama",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1974.png"
+      },
+      "awayTeam": {
+        "name": "Grêmio",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5926.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Betano"
+    },
+    {
+      "id": 13981715,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "22:45",
+      "timestamp": 1774208700000,
+      "broadcaster": "S Sport / Tivibu Spor",
+      "homeTeam": {
+        "name": "Fiorentina",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2693.png"
+      },
+      "awayTeam": {
+        "name": "Inter",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2697.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/23.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Serie A"
+    },
+    {
+      "id": 14167936,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "22:45",
+      "timestamp": 1774208700000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Nantes",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1647.png"
+      },
+      "awayTeam": {
+        "name": "RC Strasbourg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1659.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/34.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Ligue 1"
+    },
+    {
+      "id": 14081807,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "23:00",
+      "timestamp": 1774209600000,
+      "broadcaster": "S Sport",
+      "homeTeam": {
+        "name": "Real Madrid",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2829.png"
+      },
+      "awayTeam": {
+        "name": "Atlético Madrid",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2836.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/8.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga"
+    },
+    {
+      "id": 14288839,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "23:30",
+      "timestamp": 1774211400000,
+      "broadcaster": "D-Smart / Spor Smart",
+      "homeTeam": {
+        "name": "Sporting Braga",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2999.png"
+      },
+      "awayTeam": {
+        "name": "FC Porto",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3002.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/238.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Portugal Betclic"
+    },
+    {
+      "id": 15270044,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "23:45",
+      "timestamp": 1774212300000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Estudiantes de Río Cuarto",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/266694.png"
+      },
+      "awayTeam": {
+        "name": "River Plate",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3211.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Profesional de Fútbol"
+    },
+    {
+      "id": 15237961,
+      "fixedDate": "2026-03-23",
+      "fixedTime": "00:30",
+      "timestamp": 1774215000000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Internacional",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1966.png"
+      },
+      "awayTeam": {
+        "name": "Chapecoense",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/21845.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Betano"
+    },
+    {
+      "id": 15237963,
+      "fixedDate": "2026-03-23",
+      "fixedTime": "00:30",
+      "timestamp": 1774215000000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Vitória",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1962.png"
+      },
+      "awayTeam": {
+        "name": "Mirassol",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/21982.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Betano"
+    },
+    {
+      "id": 15270037,
+      "fixedDate": "2026-03-23",
+      "fixedTime": "02:00",
+      "timestamp": 1774220400000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Boca Juniors",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3202.png"
+      },
+      "awayTeam": {
+        "name": "Instituto De Córdoba",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4937.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Profesional de Fútbol"
+    },
+    {
+      "id": 15237958,
+      "fixedDate": "2026-03-23",
+      "fixedTime": "02:30",
+      "timestamp": 1774222200000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Corinthians",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1957.png"
+      },
+      "awayTeam": {
+        "name": "Flamengo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5981.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Betano"
+    },
+    {
+      "id": 15270031,
+      "fixedDate": "2026-03-23",
+      "fixedTime": "04:15",
+      "timestamp": 1774228500000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Argentinos Juniors",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3216.png"
+      },
+      "awayTeam": {
+        "name": "Platense",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36837.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Profesional de Fútbol"
+    },
+    {
+      "id": 15270040,
+      "fixedDate": "2026-03-23",
+      "fixedTime": "04:15",
+      "timestamp": 1774228500000,
+      "broadcaster": "S Sport Plus / D-Smart",
+      "homeTeam": {
+        "name": "Independiente Rivadavia",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36842.png"
+      },
+      "awayTeam": {
+        "name": "Rosario Central",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3217.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Profesional de Fútbol"
     }
   ]
 }
