@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-21T21:30:08.278Z",
+  "lastUpdated": "2026-03-21T23:30:19.708Z",
   "matches": [
     {
       "id": 15757460,
@@ -657,9 +657,9 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/95935.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setDetails": "(7-5, 4-3)",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setDetails": "(7-5, 6-7, 6-4)",
       "tournament": "Miami, USA"
     },
     {
@@ -678,28 +678,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
       "homeScore": "1",
-      "awayScore": "0",
-      "setDetails": "(7-6, 1-1)",
-      "tournament": "Miami, USA"
-    },
-    {
-      "id": 15708881,
-      "fixedDate": "2026-03-22",
-      "fixedTime": "00:20",
-      "timestamp": 1774128000000,
-      "broadcaster": "beIN Sports / Eurosport",
-      "homeTeam": {
-        "name": "Francisco Cerundolo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/221012.png"
-      },
-      "awayTeam": {
-        "name": "Thiago Agustin Tirante",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/221515.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setDetails": "",
+      "awayScore": "2",
+      "setDetails": "(7-6, 2-6, 4-6)",
       "tournament": "Miami, USA"
     },
     {
@@ -717,16 +697,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/372312.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "setDetails": "(0-1)",
+      "homeScore": "1",
+      "awayScore": "2",
+      "setDetails": "(6-3, 2-6, 4-6)",
       "tournament": "Miami, USA"
     },
     {
       "id": 15708882,
       "fixedDate": "2026-03-22",
-      "fixedTime": "00:40",
-      "timestamp": 1774129200000,
+      "fixedTime": "01:40",
+      "timestamp": 1774132800000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Gabriel Diallo",
@@ -737,16 +717,56 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/185388.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setDetails": "",
+      "homeScore": "0",
+      "awayScore": "1",
+      "setDetails": "(1-6, 1-0)",
+      "tournament": "Miami, USA"
+    },
+    {
+      "id": 15708881,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "01:45",
+      "timestamp": 1774133100000,
+      "broadcaster": "beIN Sports / Eurosport",
+      "homeTeam": {
+        "name": "Francisco Cerundolo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/221012.png"
+      },
+      "awayTeam": {
+        "name": "Thiago Agustin Tirante",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/221515.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setDetails": "(5-4)",
+      "tournament": "Miami, USA"
+    },
+    {
+      "id": 15708883,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "02:05",
+      "timestamp": 1774134300000,
+      "broadcaster": "beIN Sports / Eurosport",
+      "homeTeam": {
+        "name": "Ben Shelton",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/385485.png"
+      },
+      "awayTeam": {
+        "name": "Alexander Shevchenko",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/264344.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setDetails": "(3-3)",
       "tournament": "Miami, USA"
     },
     {
       "id": 15708876,
       "fixedDate": "2026-03-22",
-      "fixedTime": "01:05",
-      "timestamp": 1774130700000,
+      "fixedTime": "02:30",
+      "timestamp": 1774135800000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Frances Tiafoe",
@@ -765,8 +785,8 @@
     {
       "id": 15708884,
       "fixedDate": "2026-03-22",
-      "fixedTime": "01:50",
-      "timestamp": 1774133400000,
+      "fixedTime": "02:45",
+      "timestamp": 1774136700000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Brandon Nakashima",
@@ -775,26 +795,6 @@
       "awayTeam": {
         "name": "Marin Čilić",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/15387.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setDetails": "",
-      "tournament": "Miami, USA"
-    },
-    {
-      "id": 15708883,
-      "fixedDate": "2026-03-22",
-      "fixedTime": "02:00",
-      "timestamp": 1774134000000,
-      "broadcaster": "beIN Sports / Eurosport",
-      "homeTeam": {
-        "name": "Ben Shelton",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/385485.png"
-      },
-      "awayTeam": {
-        "name": "Alexander Shevchenko",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/264344.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
       "homeScore": "-",
@@ -1135,6 +1135,26 @@
       "awayTeam": {
         "name": "Valentin Vacherot",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/158912.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setDetails": "",
+      "tournament": "Miami, USA"
+    },
+    {
+      "id": 15708854,
+      "fixedDate": "2026-03-23",
+      "fixedTime": "18:00",
+      "timestamp": 1774278000000,
+      "broadcaster": "beIN Sports / Eurosport",
+      "homeTeam": {
+        "name": "Alejandro Tabilo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/102151.png"
+      },
+      "awayTeam": {
+        "name": "Alex Michelsen",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/406728.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
       "homeScore": "-",
