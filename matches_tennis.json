@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-22T15:31:41.084Z",
+  "lastUpdated": "2026-03-22T17:29:59.021Z",
   "matches": [
     {
       "id": 15757460,
@@ -838,8 +838,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setDetails": "(2-2)",
+      "awayScore": "2",
+      "setDetails": "(3-6, 6-7)",
       "tournament": "Miami, USA"
     },
     {
@@ -857,16 +857,36 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/1083360.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setDetails": "(6-4, 5-7, 10-5)",
+      "tournament": "Miami, USA, Doubles"
+    },
+    {
+      "id": 15835129,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "19:55",
+      "timestamp": 1774198500000,
+      "broadcaster": "beIN Sports / Eurosport",
+      "homeTeam": {
+        "name": "Johnson L / Zielinski J",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/334386.png"
+      },
+      "awayTeam": {
+        "name": "Arribage T / Olivetti A",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/1133433.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setDetails": "(3-2)",
+      "setDetails": "(1-5)",
       "tournament": "Miami, USA, Doubles"
     },
     {
       "id": 15708828,
       "fixedDate": "2026-03-22",
-      "fixedTime": "19:10",
-      "timestamp": 1774195800000,
+      "fixedTime": "20:10",
+      "timestamp": 1774199400000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Rafael Jodar",
@@ -883,30 +903,10 @@
       "tournament": "Miami, USA"
     },
     {
-      "id": 15835129,
-      "fixedDate": "2026-03-22",
-      "fixedTime": "19:10",
-      "timestamp": 1774195800000,
-      "broadcaster": "beIN Sports / Eurosport",
-      "homeTeam": {
-        "name": "Johnson L / Zielinski J",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/334386.png"
-      },
-      "awayTeam": {
-        "name": "Arribage T / Olivetti A",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/1133433.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setDetails": "",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
       "id": 15708861,
       "fixedDate": "2026-03-22",
-      "fixedTime": "20:10",
-      "timestamp": 1774199400000,
+      "fixedTime": "20:25",
+      "timestamp": 1774200300000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Reilly Opelka",
@@ -923,10 +923,30 @@
       "tournament": "Miami, USA"
     },
     {
+      "id": 15835130,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "21:05",
+      "timestamp": 1774202700000,
+      "broadcaster": "beIN Sports / Eurosport",
+      "homeTeam": {
+        "name": "Heliovaara H / Patten H",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/512574.png"
+      },
+      "awayTeam": {
+        "name": "Goransson A / Michelsen A",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/1132464.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setDetails": "",
+      "tournament": "Miami, USA, Doubles"
+    },
+    {
       "id": 15708856,
       "fixedDate": "2026-03-22",
-      "fixedTime": "20:20",
-      "timestamp": 1774200000000,
+      "fixedTime": "21:20",
+      "timestamp": 1774203600000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Tommy Paul",
@@ -945,8 +965,8 @@
     {
       "id": 15835125,
       "fixedDate": "2026-03-22",
-      "fixedTime": "20:20",
-      "timestamp": 1774200000000,
+      "fixedTime": "21:20",
+      "timestamp": 1774203600000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Gonzalez S / Pel D",
@@ -963,30 +983,10 @@
       "tournament": "Miami, USA, Doubles"
     },
     {
-      "id": 15835130,
-      "fixedDate": "2026-03-22",
-      "fixedTime": "20:20",
-      "timestamp": 1774200000000,
-      "broadcaster": "beIN Sports / Eurosport",
-      "homeTeam": {
-        "name": "Heliovaara H / Patten H",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/512574.png"
-      },
-      "awayTeam": {
-        "name": "Goransson A / Michelsen A",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/1132464.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setDetails": "",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
       "id": 15708834,
       "fixedDate": "2026-03-22",
-      "fixedTime": "21:20",
-      "timestamp": 1774203600000,
+      "fixedTime": "21:35",
+      "timestamp": 1774204500000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Carlos Alcaraz",
@@ -1025,8 +1025,8 @@
     {
       "id": 15835124,
       "fixedDate": "2026-03-22",
-      "fixedTime": "22:00",
-      "timestamp": 1774206000000,
+      "fixedTime": "22:30",
+      "timestamp": 1774207800000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Melo M / Zverev A",
@@ -1085,8 +1085,8 @@
     {
       "id": 15835116,
       "fixedDate": "2026-03-22",
-      "fixedTime": "23:10",
-      "timestamp": 1774210200000,
+      "fixedTime": "23:40",
+      "timestamp": 1774212000000,
       "broadcaster": "beIN Sports / Eurosport",
       "homeTeam": {
         "name": "Hijikata R / de Minaur A",
