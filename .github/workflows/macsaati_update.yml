@@ -13,6 +13,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          # Önemli: Geçmişi (history) tam alması için
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -49,12 +52,22 @@ jobs:
       # --- 4. GITHUB'A KAYDETME (PUSH) ---
       - name: Commit and Push Changes
         run: |
+          # Git kimlik ayarları
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # JSON dosyalarını ve yeni eklenen logo klasörlerini Git'e ekliyoruz
-          git add matches_football.json matches_basketball.json matches_tennis.json football/logos/ basketball/logos/
-          
-          # Eğer değişiklik varsa commit at, yoksa "Degisiklik yok" yazıp geç
-          git commit -m "Veri & Logolar Guncellendi: $(date)" || echo "Degisiklik yok"
-          git push
+          # 1. Uzak depodaki olası değişiklikleri al ve çakışmaları otomatik çöz (Rebase)
+          # Bu adım "rejected" hatasını kökten çözer.
+          git pull origin main --rebase
+
+          # 2. Güncellenen dosyaları ve yeni logoları ekle
+          git add matches_football.json matches_basketball.json matches_tennis.json
+          git add football/logos/ basketball/logos/
+
+          # 3. Sadece değişiklik varsa commit at ve gönder
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Veri & Logolar Otomatik Guncellendi: $(date)"
+            git push origin main
+          else
+            echo "Herhangi bir değişiklik bulunamadı, push yapılmıyor."
+          fi
