@@ -12,37 +12,38 @@ const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHU
 const OUTPUT_FILE = "matches_football.json";
 
 const leagueConfigs = {
-    // --- TÜRKİYE ---
-    52: "beIN Sports",           // Trendyol Süper Lig
-    98: "beIn Sports / TRT Spor", // Trendyol 1. Lig
-    13363: "TRT Spor / Tabii",    // TFF 2. Lig (Play-off ve özel maçlar)
+    // --- TÜRKİYE LİGLERİ ---
+    52: "beIN Sports",             // Trendyol Süper Lig (Trabzon-GS, FB-BJK maçları)
+    98: "beIN Sports / TRT Spor",  // Trendyol 1. Lig (Adana Demir, Sakarya vb.)
+    13363: "TRT Spor / Tabii",     // TFF 2. Lig / Kadınlar Futbol Ligi (BJK-GS derbisi)
 
-    // --- AVRUPA KUPALARI (YENİ HAKLAR: TRT) ---
-    7: "TRT / Tabii",            // UEFA Şampiyonlar Ligi
-    3: "TRT / Tabii",            // UEFA Avrupa Ligi
-    848: "TRT / Tabii",           // UEFA Konferans Ligi
-    679: "TRT / Tabii",           // UEFA Süper Kupa
-    17015: "TRT / Tabii",         // UEFA Kadınlar ŞL
+    // --- MİLLİ MAÇLAR & ELEMELER ---
+    7544: "TRT / Tabii",           // 2026 Dünya Kupası Avrupa Elemeleri (Türkiye-Romanya vb.)
+    48: "TRT Spor / Tabii",        // UEFA U19 Avrupa Şampiyonası Elemeleri
+    12: "TRT Spor / S Sport",      // Hazırlık Maçları (İsviçre-Almanya vb.)
+
+    // --- AVRUPA KUPALARI ---
+    7: "TRT / Tabii",              // UEFA Şampiyonlar Ligi
+    3: "TRT / Tabii",              // UEFA Avrupa Ligi
+    848: "TRT / Tabii",            // UEFA Konferans Ligi
+    17015: "TRT Spor / Tabii",     // UEFA Kadınlar Şampiyonlar Ligi (Real-Barça, Arsenal-Chelsea)
 
     // --- AVRUPA LİGLERİ ---
-    17: "beIN Sports",           // Premier League (İngiltere)
-    8: "S Sport",                // La Liga (İspanya)
-    23: "S Sport",                // Serie A (İtalya)
-    35: "beIN Sports",           // Bundesliga (Almanya)
-    34: "beIN Sports",           // Ligue 1 (Fransa)
-    37: "S Sport Plus",          // Eredivisie (Hollanda - Yayıncı değişebiliyor)
-    238: "D-Smart / Spor Smart", // Liga Portugal (Portekiz)
-    
-    // --- DİĞER ---
-    19: "Tivibu Spor",           // Bundesliga (Bazen beIN ile ortak/alt lisans)
-    481: "D-Smart / Spor Smart", // Arjantin Ligi
-    325: "S Sport Plus",         // Suudi Arabistan Ligi
-    155: "S Sport Plus",         // Copa Libertadores
-    44: "Tivibu Spor",           // İskoçya Premier
-    955: "beIN Sports",          // Yunanistan Ligi
-    709: "CBC Sport / Yerel"     // Azerbaycan Ligi
-};
+    17: "beIN Sports",             // İngiltere Premier League
+    8: "S Sport",                  // İspanya La Liga (Atletico-Barça, Mallorca-Real)
+    54: "S Sport Plus",            // İspanya La Liga 2 (Malaga-Leganes vb.)
+    23: "S Sport",                 // İtalya Serie A (Inter-Roma, Napoli-Milan)
+    35: "beIN Sports",             // Almanya Bundesliga (Bayer Leverkusen-Wolfsburg)
+    34: "beIN Sports",             // Fransa Ligue 1 (PSG-Toulouse, Monaco-Marsilya)
+    19: "Tivibu / TRT Spor",       // Almanya Bundesliga 2
+    41: "beIN Sports / Tivibu",    // İngiltere FA Cup (Man City-Liverpool)
 
+    // --- DİĞER LİGLER ---
+    481: "Spor Smart / D-Smart",   // Arjantin Ligi (Boca Juniors maçı)
+    325: "S Sport Plus",           // Brezilya Serie A (Corinthians-Flamengo)
+    134: "S Sport Plus",           // ABD USL Championship (Lexington, Miami vb.)
+    709: "CBC Sport / Yerel"       // Azerbaycan Premier Ligi
+};
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {

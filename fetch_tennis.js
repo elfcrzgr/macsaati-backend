@@ -12,7 +12,7 @@ const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}
 const OUTPUT_FILE = "matches_tennis.json";
 
 const categoryConfigs = {
-    3: "S Sport",          // ATP Tour (Masters, 500, 250)
+    3: "S Sport / S Sport Plus",          // ATP Tour (Masters, 500, 250)
     4: "beIN Sports",      // WTA Tour
     5: "Eurosport",        // Genel Grand Slam verisi
     1396: "Eurosport",     // Australian Open
