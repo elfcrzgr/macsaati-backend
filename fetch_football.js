@@ -12,38 +12,54 @@ const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHU
 const OUTPUT_FILE = "matches_football.json";
 
 // --- YAYINCI BELİRLEME FONKSİYONU (Zeki Mantık) ---
-function getBroadcaster(tournamentName, utId) {
+function getBroadcaster(tournamentName) {
     const name = tournamentName.toLowerCase();
     
-    // 1. Şampiyonlar Ligi, Avrupa Ligi, Konferans Ligi
+    // 1. Avrupa Kupaları (ID bağımsız isim kontrolü)
     if (name.includes("champions league") || name.includes("europa league") || name.includes("conference league")) return "TRT / Tabii";
     
-    // 2. Türkiye Ligleri
+    // 2. Türkiye
     if (name.includes("süper lig")) return "beIN Sports";
     if (name.includes("1. lig")) return "beIN Sports / TRT Spor";
-    if (name.includes("tff 2") || name.includes("kadınlar futbol")) return "TRT Spor / Tabii";
+    if (name.includes("türkiye kupasi")) return "A Spor / ATV";
     
-    // 3. Avrupa Büyük Ligleri
+    // 3. İngiltere
     if (name.includes("premier league")) return "beIN Sports";
-    if (name.includes("laliga") || name.includes("la liga")) return "S Sport";
+    if (name.includes("championship")) return "beIN Sports / Tivibu";
+    if (name.includes("fa cup") || name.includes("efl cup")) return "beIN Sports / Tivibu";
+    
+    // 4. İspanya
+    if (name.includes("laliga") || name.includes("la liga")) {
+        if (name.includes("2")) return "S Sport Plus";
+        return "S Sport";
+    }
+    if (name.includes("copa del rey")) return "Tivibu Spor";
+    
+    // 5. İtalya
     if (name.includes("serie a")) return "S Sport";
-    if (name.includes("bundesliga")) return "beIN Sports";
-    if (name.includes("ligue 1")) return "beIN Sports";
+    if (name.includes("serie b") || name.includes("italy cup")) return "S Sport Plus";
     
-    // 4. Kupalar ve Elemeler
-    if (name.includes("fa cup")) return "beIN Sports / Tivibu";
-    if (name.includes("world cup qual") || name.includes("euro qual") || name.includes("avrupa şampiyonasi elemeleri")) return "TRT / Tabii";
+    // 6. Almanya
+    if (name.includes("bundesliga")) {
+        if (name.includes("2")) return "Tivibu / TRT Spor";
+        return "beIN Sports";
+    }
     
-    // 5. Diğerleri (Genişletilebilir)
-    if (name.includes("usl championship") || name.includes("serie a") && name.includes("brazil")) return "S Sport Plus";
+    // 7. Fransa
+    if (name.includes("ligue 1") || name.includes("ligue 2")) return "beIN Sports";
+    
+    // 8. Diğer Önemli Ligler
+    if (name.includes("liga portugal") || name.includes("primeira liga")) return "S Sport Plus";
+    if (name.includes("saudi professional league")) return "S Sport / TV+";
+    
+    // 9. Milli Takımlar
+    if (name.includes("nations league") || name.includes("world cup") || name.includes("euro 20") || name.includes("european championship")) return "TRT / Tabii";
 
-    // Fallback: Eğer hiçbir anahtar kelime tutmazsa ama ID tanıdıksa listeden al (Yedek Sistem)
-    const leagueConfigs = { 481: "Spor Smart", 709: "CBC Sport" };
-    return leagueConfigs[utId] || "Yerel Yayın";
+    return "Yerel Yayın";
 }
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (ID Bağımsız Metin Filtresi Aktif)...");
+    console.log("🚀 Futbol motoru başlatılıyor (Filtreleme: Maksimum Seviye)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -56,30 +72,39 @@ async function start() {
     };
 
     let allEvents = [];
-    // 2 günlük veri çekiyoruz
+    // Bugün ve Yarın
     for (const date of [getTRDate(0), getTRDate(1)]) {
         try {
-            console.log(`⏳ ${date} verisi SofaScore'dan çekiliyor...`);
+            console.log(`⏳ ${date} verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             
             if (data && data.events) {
-                // --- KRİTİK FİLTRELEME ---
                 const filtered = data.events.filter(e => {
                     const tName = (e.tournament?.uniqueTournament?.name || e.tournament?.name || "").toLowerCase();
                     
-                    // İstemediğimiz ligleri (Hindistan vb.) burada eliyoruz
-                    const isForbidden = tName.includes("india") || tName.includes("i-league") || tName.includes("mizoram");
+                    // --- YASAKLI FİLTRE (Hindistan, Mizoram, Gençler, Kadınlar) ---
+                    const isForbidden = tName.includes("india") || tName.includes("u19") || tName.includes("u21") || 
+                                       tName.includes("women") || tName.includes("mizoram") || tName.includes("i-league");
                     
-                    // Sadece tanıdığımız popüler kelimeler geçiyorsa listeye al
-                    const isTarget = tName.includes("league") || tName.includes("lig") || tName.includes("cup") || 
-                                     tName.includes("la liga") || tName.includes("serie a") || tName.includes("bundesliga");
+                    // --- BEYAZ LİSTE (Sadece istediğin liglerin anahtar kelimeleri) ---
+                    const whitelist = [
+                        "trendyol", "süper lig", "1. lig", "türkiye kupasi",
+                        "premier league", "championship", "fa cup", "efl cup",
+                        "bundesliga", "laliga", "la liga", "copa del rey",
+                        "serie a", "serie b", "italy cup", "ligue 1", "ligue 2",
+                        "liga portugal", "primeira liga", "saudi professional league",
+                        "champions league", "europa league", "conference league",
+                        "nations league", "world cup", "euro 20", "european championship"
+                    ];
+
+                    const isTarget = whitelist.some(word => tName.includes(word));
 
                     return isTarget && !isForbidden;
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} tarihinde hata oluştu:`, e.message); }
+        } catch (e) { console.error(`${date} hatası:`, e.message); }
     }
 
     const finalMatches = [];
@@ -100,7 +125,7 @@ async function start() {
             fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: dateTR.getTime(),
-            broadcaster: getBroadcaster(tName, utId), // Zeki fonksiyon devrede
+            broadcaster: getBroadcaster(tName), 
             homeTeam: { 
                 name: e.homeTeam.name, 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
@@ -119,9 +144,14 @@ async function start() {
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches: finalMatches }, null, 2));
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
+        success: true, 
+        lastUpdated: new Date().toISOString(), 
+        totalMatches: finalMatches.length,
+        matches: finalMatches 
+    }, null, 2));
     
-    console.log(`\n✅ İşlem bitti! ${finalMatches.length} kaliteli maç kaydedildi.`);
+    console.log(`\n✅ İşlem Tamamlandı. ${finalMatches.length} elit maç kaydedildi.`);
     await browser.close();
 }
 
