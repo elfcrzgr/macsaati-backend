@@ -14,8 +14,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          # Önemli: Geçmişi (history) tam alması için
-          fetch-depth: 0
+          fetch-depth: 0 # Tüm git geçmişini çek (Rebase için zorunlu)
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -31,40 +30,41 @@ jobs:
         run: |
           npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 
-      # --- 1. FUTBOL OPERASYONU ---
-      - name: Run Football Fetch Script
+      # --- 1. FUTBOL ---
+      - name: Run Football Fetch
         run: node fetch_football.js
 
       - name: Run Football Logo Downloader
         run: node logo_football.js
 
-      # --- 2. BASKETBOL OPERASYONU ---
-      - name: Run Basketball Fetch Script
+      # --- 2. BASKETBOL ---
+      - name: Run Basketball Fetch
         run: node fetch_basketball.js
 
       - name: Run Basketball Logo Downloader
         run: node logo_basketball.js
 
-      # --- 3. TENİS OPERASYONU ---
-      - name: Run Tennis Fetch Script
+      # --- 3. TENİS ---
+      - name: Run Tennis Fetch
         run: node fetch_tennis.js
 
-      # --- 4. GITHUB'A KAYDETME (PUSH) ---
+      # --- 4. GITHUB SYNC (Kritik Bölüm) ---
       - name: Commit and Push Changes
         run: |
-          # Git kimlik ayarları
+          # Git kimliğini bot olarak ayarla
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 1. Uzak depodaki olası değişiklikleri al ve çakışmaları otomatik çöz (Rebase)
-          # Bu adım "rejected" hatasını kökten çözer.
-          git pull origin main --rebase
-
-          # 2. Güncellenen dosyaları ve yeni logoları ekle
+          # Tüm değişiklikleri (JSON ve yeni inen logoları) 'stage' alanına al
           git add matches_football.json matches_basketball.json matches_tennis.json
           git add football/logos/ basketball/logos/
 
-          # 3. Sadece değişiklik varsa commit at ve gönder
+          # Çakışmaları önlemek için:
+          # 1. Elindeki değişiklikleri geçici olarak sakla (autostash)
+          # 2. GitHub'daki en güncel hali çek ve kendi üzerine ekle (rebase)
+          git pull origin main --rebase --autostash
+
+          # Eğer gerçekten değişen bir dosya varsa commit at ve gönder
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Veri & Logolar Otomatik Guncellendi: $(date)"
             git push origin main
