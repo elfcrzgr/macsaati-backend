@@ -20,8 +20,8 @@ const categoryConfigs = {
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
 async function start() {
-    console.log("🎾 Tenis motoru başlatılıyor (Dinamik Çift Bayrak)...");
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox'] });
+    console.log("🎾 Tenis motoru başlatılıyor (Karma Çiftler Derin Tarama Aktif)...");
+    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
@@ -36,8 +36,10 @@ async function start() {
     for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
         try {
             console.log(`⏳ ${date} verisi çekiliyor...`);
-            await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
+            await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2', timeout: 60000 });
+            const data = await page.evaluate(() => {
+                try { return JSON.parse(document.body.innerText); } catch(e) { return null; }
+            });
             if (data && data.events) {
                 const filtered = data.events.filter(e => targetCategoryIds.includes(e.tournament?.category?.id));
                 allEvents = allEvents.concat(filtered);
@@ -54,19 +56,34 @@ async function start() {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 
+        // --- KRİTİK DÜZELTME: DERİN TARAMA METODU ---
         const getLogosArray = (team) => {
             let flagList = [];
-            // 1. Takım ülkesi (Tekler)
-            if (team.country?.alpha2) flagList.push(team.country.alpha2.toLowerCase());
-            // 2. Oyuncu ülkeleri (Çiftler - Derin Tarama)
+            
+            // 1. Yol: Takım ana ülkesi (Tekler)
+            if (team.country?.alpha2) {
+                flagList.push(team.country.alpha2.toLowerCase());
+            } 
+            
+            // 2. Yol: Oyuncuların içine gir (Çiftler)
             if (team.players && team.players.length > 0) {
                 team.players.forEach(p => {
-                    const code = p.country?.alpha2 || (p.player && p.player.country && p.player.country.alpha2);
-                    if (code) flagList.push(code.toLowerCase());
+                    // SofaScore'un iki farklı veri yapısını da kontrol et:
+                    // Yapı A: p.country.alpha2
+                    // Yapı B: p.player.country.alpha2
+                    const code = (p.country?.alpha2) || (p.player?.country?.alpha2);
+                    if (code) {
+                        flagList.push(code.toLowerCase());
+                    }
                 });
             }
+
+            // Eğer hala boşsa default ekle
             if (flagList.length === 0) flagList.push("default");
+
+            // Tekrar eden ülkeleri temizle (Aynı ülkeden çiftler için)
             let uniqueFlags = [...new Set(flagList)];
+            
             return uniqueFlags.map(code => TENNIS_LOGO_BASE + code + ".png");
         };
 
@@ -78,12 +95,18 @@ async function start() {
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: dateTR.getTime(),
             broadcaster: categoryConfigs[e.tournament?.category?.id] || "beIN / Eurosport",
-            homeTeam: { name: e.homeTeam.name, logos: getLogosArray(e.homeTeam) },
-            awayTeam: { name: e.awayTeam.name, logos: getLogosArray(e.awayTeam) },
+            homeTeam: { 
+                name: e.homeTeam.name, 
+                logos: getLogosArray(e.homeTeam) 
+            },
+            awayTeam: { 
+                name: e.awayTeam.name, 
+                logos: getLogosArray(e.awayTeam) 
+            },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + tId + ".png",
             homeScore: (e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
-            setDetails: "", // Opsiyonel: set skorları mantığını buraya ekleyebilirsin
+            setDetails: "", 
             tournament: e.tournament.name
         });
         duplicateTracker.add(`${e.id}`);
