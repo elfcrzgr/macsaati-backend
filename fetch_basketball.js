@@ -15,119 +15,123 @@ const OUTPUT_FILE = "matches_basketball.json";
 const leagueConfigs = {
     // --- AMERİKA ---
     3547: "S Sport / NBA TV",           // NBA
-    9357: "S Sport Plus",               // NCAA (Amerikan Kolej Basketbolu)
+    9357: "S Sport Plus",               // NCAA
 
     // --- AVRUPA KUPALARI ---
     138: "S Sport / S Sport Plus",      // EuroLeague
-    142: "S Sport Plus",                // EuroCup (Erkekler - Beşiktaş, Bahçeşehir vb.)
-    137: "TRT Spor / Tabii",            // FIBA Şampiyonlar Ligi (Galatasaray maçı buradadır)
-    168: "TRT Spor Yıldız",             // Eurocup/Euroleague Kadınlar (ÇBK Mersin, FB, GS)
-    167: "S Sport Plus / FIBA TV",      // FIBA Europe Cup (Bilbao, Murcia maçları)
+    142: "S Sport Plus",                // EuroCup
+    137: "TRT Spor / Tabii",            // FIBA Şampiyonlar Ligi
+    168: "TRT Spor Yıldız",             // Euroleague Kadınlar
+    167: "S Sport Plus / FIBA TV",      // FIBA Europe Cup
 
     // --- TÜRKİYE LİGLERİ ---
     132: "beIN Sports 5",               // Basketbol Süper Ligi (BSL)
     139: "beIN Sports / TRT Spor",      // Kadınlar Basketbol Süper Ligi (KBSL)
-    11511: "TRT Spor Yıldız / TBF TV",  // Basketbol 1. Ligi (TBL - Çayırova, Gaziantep vb.)
-    21511: "TBF TV (YouTube)",          // Basketbol 2. Ligi (TB2L - Ege Üni, Kütahya Bld vb.)
+    11511: "TRT Spor Yıldız / TBF TV",  // Basketbol 1. Ligi (TBL)
+    21511: "TBF TV (YouTube)",          // Basketbol 2. Ligi (TB2L)
 
     // --- AVRUPA YEREL LİGLERİ ---
-    251: "S Sport Plus",                // İspanya Liga Endesa (Barcelona, Real Madrid)
-    215: "S Sport Plus",                // İtalya Lega Basket A (Olimpia Milano, Udine)
-    304: "S Sport Plus",                // Yunanistan Basket Ligi (PAO, Olympiakos)
-    227: "beIN Sports",                 // Almanya BBL (Ulm, Bonn)
-    164: "beIN Sports",                 // Fransa LNB Pro A (Monaco, Asvel)
-    235: "S Sport Plus",                // ABA League (Adriyatik Ligi - Dubai Basket)
+    251: "S Sport Plus",                // İspanya Liga Endesa
+    215: "S Sport Plus",                // İtalya Lega Basket A
+    304: "S Sport Plus",                // Yunanistan Basket Ligi
+    227: "beIN Sports",                 // Almanya BBL
+    164: "beIN Sports",                 // Fransa LNB Pro A
+    235: "S Sport Plus",                // ABA League
     405: "beIN Sports"                  // VTB United League
 };
+
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatılıyor (Futbol mantığıyla senkronize)...");
+    console.log("🏀 Basketbol motoru başlatılıyor (NBA Klasör Ayrımı & Gece Maçı Koruması Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
+    // Türkiye Saati ayarı
     const getTRDate = (offset = 0) => {
         const d = new Date();
+        d.setHours(d.getHours() + 3); 
         d.setDate(d.getDate() + offset);
-        return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        return d.toISOString().split('T')[0];
     };
 
     const trToday = getTRDate(0);
     const trTomorrow = getTRDate(1);
 
     let allEvents = [];
-    // NBA sarkan maçları için dünü tara, ama sadece bugün/yarın olanları alacağız
+    
+    // NBA sarkan maçları için dünü tara, ama filtrede sadece bugün/yarın olanları alacağız
     for (const date of [getTRDate(-1), trToday, trTomorrow]) {
         try {
             console.log(`⏳ ${date} verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => {
-                try { return JSON.parse(document.body.innerText); } catch(e) { return { events: [] }; }
+                try { return JSON.parse(document.body.innerText); } catch(e) { return null; }
             });
 
-            if (data.events) {
+            if (data && data.events) {
                 const filtered = data.events.filter(e => {
                     const utId = e.tournament?.uniqueTournament?.id;
-                    const tName = (e.tournament?.name || "").toUpperCase();
-                    
-                    // KRİTİK: Ana NBA ligi olsun, alt ligler (G League) gelmesin
-                    const isMainNBA = tName.includes("NBA") && !tName.includes("G LEAGUE") && !tName.includes("WOMEN");
-                    
-                    return targetLeagueIds.includes(utId) || isMainNBA;
+                    // SADECE LİSTEDE OLAN ID'LER GEÇEBİLİR
+                    return targetLeagueIds.includes(utId); 
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} hatası.`); }
+        } catch (e) { console.error(`${date} hatası:`, e.message); }
     }
 
     const finalMatches = [];
     const duplicateTracker = new Set();
 
     for (const e of allEvents) {
+        const utId = e.tournament?.uniqueTournament?.id;
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
-        // SADECE BUGÜN VE YARIN (Futbol kodundaki gibi temiz liste)
+        // --- KRİTİK FİLTRE: Dünden gelen eski maçları ekrana basma ---
         if (dayStr !== trToday && dayStr !== trTomorrow) continue;
 
-        const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}`;
+        const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         if (duplicateTracker.has(matchKey)) continue;
 
-        const tournamentName = e.tournament?.name || "";
-        const utId = e.tournament?.uniqueTournament?.id;
-        const isNBA = (utId === 3547 || (tournamentName.toUpperCase().includes("NBA") && !tournamentName.toUpperCase().includes("G LEAGUE")));
-        
-        const isFinished = e.status?.type === 'finished';
+        // --- NBA KONTROLÜ (Klasör ayrımı için) ---
+        const isNBA = (utId === 3547);
 
         finalMatches.push({
             id: e.id,
             fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: dateTR.getTime(),
-            broadcaster: leagueConfigs[utId] || (isNBA ? "S Sport / NBA TV" : "Yerel Yayın"),
+            broadcaster: leagueConfigs[utId], 
             homeTeam: { 
                 name: e.homeTeam.name, 
+                // Eğer maç NBA ise araya NBA/ klasörünü ekle
                 logo: BASKETBALL_TEAM_LOGO_BASE + (isNBA ? "NBA/" : "") + e.homeTeam.id + ".png" 
             },
             awayTeam: { 
                 name: e.awayTeam.name, 
+                // Aynı şekilde deplasman takımı için de
                 logo: BASKETBALL_TEAM_LOGO_BASE + (isNBA ? "NBA/" : "") + e.awayTeam.id + ".png" 
             },
-            tournamentLogo: BASKETBALL_TOURNAMENT_LOGO_BASE + (isNBA ? "3547" : utId) + ".png",
-            homeScore: isFinished ? String(e.homeScore?.display || "-") : "-",
-            awayScore: isFinished ? String(e.awayScore?.display || "-") : "-",
-            tournament: isNBA ? "NBA" : (e.tournament.uniqueTournament.name || "Basketbol")
+            tournamentLogo: BASKETBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
+            homeScore: (e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
+            awayScore: (e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
+            tournament: e.tournament?.uniqueTournament?.name || "Basketbol"
         });
 
         duplicateTracker.add(matchKey);
     }
 
-    // Futbol kodundaki gibi Timestamp sıralaması
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches: finalMatches }, null, 2));
-    console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} maç kaydedildi.`);
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
+        success: true, 
+        lastUpdated: new Date().toISOString(), 
+        totalMatches: finalMatches.length,
+        matches: finalMatches 
+    }, null, 2));
+    
+    console.log(`\n✅ İşlem tamam. Toplam ${finalMatches.length} elit basketbol maçı kaydedildi.`);
     await browser.close();
 }
 
