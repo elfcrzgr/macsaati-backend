@@ -5,7 +5,6 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 puppeteer.use(StealthPlugin());
 
-// --- ŞAŞMAZ KLASÖR YOLLARI ---
 const MATCHES_FILE = path.join(__dirname, 'matches_basketball.json');
 const LOGOS_BASE_DIR = path.join(__dirname, 'basketball', 'logos');
 const LOGOS_NBA_DIR = path.join(__dirname, 'basketball', 'logos', 'NBA');
@@ -14,80 +13,52 @@ if (!fs.existsSync(LOGOS_BASE_DIR)) fs.mkdirSync(LOGOS_BASE_DIR, { recursive: tr
 if (!fs.existsSync(LOGOS_NBA_DIR)) fs.mkdirSync(LOGOS_NBA_DIR, { recursive: true });
 
 async function start() {
-    if (!fs.existsSync(MATCHES_FILE)) {
-        return console.error("❌ JSON okunamadı! Önce fetch_basketball.js dosyasını çalıştırın.");
-    }
+    if (!fs.existsSync(MATCHES_FILE)) return console.error("❌ JSON bulunamadı.");
 
-    const data = fs.readFileSync(MATCHES_FILE, 'utf8');
-    const json = JSON.parse(data);
+    const json = JSON.parse(fs.readFileSync(MATCHES_FILE, 'utf8'));
     const teamsToProcess = new Map();
 
-    // 1. JSON'daki takımları bul (KUSURSUZ NBA KONTROLÜ)
     json.matches.forEach(m => {
-        // Artık URL'ye değil, direkt maçın hangi ligde oynandığına bakıyoruz!
-        const isNbaMatch = m.tournament === "NBA";
-
-        const homeId = m.homeTeam.logo.split('/').pop().replace('.png', '');
-        const awayId = m.awayTeam.logo.split('/').pop().replace('.png', '');
+        // ÇİFT KONTROL: Turnuva adı NBA mi? VEYA URL'de NBA/ geçiyor mu?
+        const isNba = (m.tournament === "NBA" || m.homeTeam.logo.includes("/NBA/"));
         
-        teamsToProcess.set(homeId, { name: m.homeTeam.name, isNba: isNbaMatch });
-        teamsToProcess.set(awayId, { name: m.awayTeam.name, isNba: isNbaMatch });
+        const hId = m.homeTeam.logo.split('/').pop().replace('.png', '');
+        const aId = m.awayTeam.logo.split('/').pop().replace('.png', '');
+        
+        teamsToProcess.set(hId, { name: m.homeTeam.name, isNba });
+        teamsToProcess.set(aId, { name: m.awayTeam.name, isNba });
     });
 
-    const missingTeams = [];
+    const missing = [];
     teamsToProcess.forEach((info, id) => {
-        // Takım NBA ise direkt NBA klasörüne bak, değilse normal klasöre bak
         const targetDir = info.isNba ? LOGOS_NBA_DIR : LOGOS_BASE_DIR;
-        const filePath = path.join(targetDir, `${id}.png`);
-        
-        // Eğer o doğru klasörde logo yoksa "Eksik" listesine ekle
-        if (!fs.existsSync(filePath)) {
-            missingTeams.push({ id, ...info });
+        if (!fs.existsSync(path.join(targetDir, `${id}.png`))) {
+            missing.push({ id, ...info });
         }
     });
 
-    console.log(`\n🔍 JSON tarandı. Toplam ${teamsToProcess.size} benzersiz takım bulundu.`);
-    
-    if (missingTeams.length === 0) {
-        console.log(`🎉 Harika! Tüm takım logoları KENDİ KLASÖRLERİNDE zaten mevcut. İşlem bitti.\n`);
+    console.log(`🔍 Toplam ${teamsToProcess.size} takım tarandı.`);
+    if (missing.length === 0) {
+        console.log(`🎉 Harika! Tüm logolar KENDİ KLASÖRLERİNDE (NBA dahil) mevcut.`);
         return;
     }
 
-    console.log(`⚠️ ${missingTeams.length} adet eksik logo bulundu. SofaScore güvenlik duvarı aşılıyor, tarayıcı başlatılıyor...\n`);
-
-    // --- PUPPETEER İLE GİZLİ İNDİRME OPERASYONU ---
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    console.log(`⚠️ ${missing.length} eksik bulundu. İndiriliyor...`);
+    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox'] });
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    let successCount = 0;
-
-    for (const t of missingTeams) {
-        // İndirmeden önce yine doğru klasörü hedefliyoruz
-        const targetDir = t.isNba ? LOGOS_NBA_DIR : LOGOS_BASE_DIR;
-        const filePath = path.join(targetDir, `${t.id}.png`);
-        const url = `https://api.sofascore.com/api/v1/team/${t.id}/image`;
-
+    for (const t of missing) {
+        const targetPath = path.join(t.isNba ? LOGOS_NBA_DIR : LOGOS_BASE_DIR, `${t.id}.png`);
         try {
-            const viewSource = await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-            
-            if (viewSource && viewSource.status() === 200) {
-                const buffer = await viewSource.buffer();
-                fs.writeFileSync(filePath, buffer);
-                console.log(`✅ İndirildi: ${t.name} -> ${t.isNba ? 'NBA/' : ''}${t.id}.png`);
-                successCount++;
-            } else {
-                console.error(`❌ İndirilemedi (${t.name}): API ${viewSource ? viewSource.status() : 'Bilinmeyen'} döndürdü.`);
+            const res = await page.goto(`https://api.sofascore.com/api/v1/team/${t.id}/image`, { waitUntil: 'networkidle2' });
+            if (res.status() === 200) {
+                fs.writeFileSync(targetPath, await res.buffer());
+                console.log(`✅ İndirildi: ${t.name}`);
             }
-        } catch (err) {
-            console.error(`❌ Bağlantı Hatası (${t.name}):`, err.message);
-        }
-
+        } catch (e) { console.error(`❌ Hata: ${t.name}`); }
         await new Promise(r => setTimeout(r, 1000));
     }
-
     await browser.close();
-    console.log(`\n🏁 İŞLEM BİTTİ: Toplam ${successCount} yeni logo başarıyla doğru klasörlere eklendi!\n`);
+    console.log("🏁 Bitti.");
 }
-
 start();
