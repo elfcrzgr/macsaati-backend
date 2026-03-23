@@ -4,11 +4,11 @@ const fs = require('fs');
 
 puppeteer.use(StealthPlugin());
 
+// --- GITHUB AYARLARI ---
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
 
-const BASKETBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/`;
-const BASKETBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/`;
+const BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/`;
 const OUTPUT_FILE = "matches_basketball.json";
 
 const leagueConfigs = {
@@ -25,7 +25,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatılıyor...");
+    console.log("🏀 Basketbol motoru çalışıyor (Hassas NBA Klasörleme Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -44,12 +44,14 @@ async function start() {
     for (const date of [getTRDate(-1), trToday, trTomorrow]) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            const data = await page.evaluate(() => {
+                try { return JSON.parse(document.body.innerText); } catch(e) { return null; }
+            });
             if (data && data.events) {
                 const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} hatası.`); }
+        } catch (e) { console.error(`${date} tarihinde veri çekilemedi.`); }
     }
 
     const finalMatches = [];
@@ -57,14 +59,20 @@ async function start() {
 
     for (const e of allEvents) {
         const utId = e.tournament?.uniqueTournament?.id;
+        const utName = e.tournament?.uniqueTournament?.name || "";
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
         if (dayStr !== trToday && dayStr !== trTomorrow) continue;
 
-        const isNBA = (utId === 3547);
+        // --- KRİTİK NBA KONTROLÜ (İsim veya ID üzerinden) ---
+        const isNBA = (utId === 3547 || utName.toUpperCase() === "NBA");
+        
         const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         if (duplicateTracker.has(matchKey)) continue;
+
+        // Takım logoları için klasör yolu belirleme
+        const teamLogoFolder = isNBA ? "logos/NBA/" : "logos/";
 
         finalMatches.push({
             id: e.id,
@@ -74,23 +82,29 @@ async function start() {
             broadcaster: leagueConfigs[utId], 
             homeTeam: { 
                 name: e.homeTeam.name, 
-                logo: BASKETBALL_TEAM_LOGO_BASE + (isNBA ? "NBA/" : "") + e.homeTeam.id + ".png" 
+                logo: BASE_URL + teamLogoFolder + e.homeTeam.id + ".png" 
             },
             awayTeam: { 
                 name: e.awayTeam.name, 
-                logo: BASKETBALL_TEAM_LOGO_BASE + (isNBA ? "NBA/" : "") + e.awayTeam.id + ".png" 
+                logo: BASE_URL + teamLogoFolder + e.awayTeam.id + ".png" 
             },
-            tournamentLogo: BASKETBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
+            // Tournament logoları her zaman aynı klasörde
+            tournamentLogo: BASE_URL + "tournament_logos/" + utId + ".png",
             homeScore: (e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
-            tournament: isNBA ? "NBA" : (e.tournament?.uniqueTournament?.name || "Basketbol")
+            tournament: isNBA ? "NBA" : utName
         });
         duplicateTracker.add(matchKey);
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches: finalMatches }, null, 2));
-    console.log(`✅ ${finalMatches.length} maç kaydedildi.`);
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
+        success: true, 
+        lastUpdated: new Date().toISOString(), 
+        matches: finalMatches 
+    }, null, 2));
+
+    console.log(`✅ İşlem bitti. ${finalMatches.length} maç JSON'a işlendi.`);
     await browser.close();
 }
 start();
