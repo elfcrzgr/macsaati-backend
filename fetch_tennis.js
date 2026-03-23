@@ -12,9 +12,15 @@ const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}
 const OUTPUT_FILE = "matches_tennis.json";
 
 const categoryConfigs = {
-    3: "beIN Sports / Eurosport", 4: "beIN Sports", 5: "beIN Sports",
-    1396: "beIN Sports", 1397: "beIN Sports", 1398: "beIN Sports",
-    1399: "beIN Sports", 6: "beIN Sports", 7: "beIN Sports"
+    3: "S Sport",          // ATP Tour (Masters, 500, 250)
+    4: "beIN Sports",      // WTA Tour
+    5: "Eurosport",        // Genel Grand Slam verisi
+    1396: "Eurosport",     // Australian Open
+    1397: "Eurosport",     // Roland Garros
+    1398: "S Sport",       // Wimbledon (Türkiye'de ana yayıncı S Sport'tur)
+    1399: "Eurosport",     // US Open
+    6: "beIN Sports",      // Davis Cup / Billie Jean King Cup
+    7: "S Sport"           // ATP Finals / Next Gen
 };
 
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);

@@ -12,15 +12,35 @@ const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHU
 const OUTPUT_FILE = "matches_football.json";
 
 const leagueConfigs = {
-    52: "beIN Sports", 98: "beIN Sports / TRT Spor", 17: "beIN Sports",
-    8: "S Sport", 54: "S Sport Plus", 23: "S Sport / Tivibu Spor",
-    35: "beIN Sports / Tivibu Spor", 34: "beIN Sports", 37: "TV8.5 / Exxen",
-    238: "D-Smart / Spor Smart", 709: "CBC Sport / Yerel", 13363: "TV8.5 / Exxen",
-    19: "Tivibu / TRT Spor / Tabii", 481: "Spor Smart / D-Smart",
-    7: "TRT / Tabii", 3: "TRT / Tabii", 848: "TRT / Tabii",
-    679: "TRT / Tabii", 17015: "TRT / Tabii",
-    325: "S Sport Plus / D-Smart", 155: "S Sport Plus / D-Smart",
-    44: "beIN Sports / Tivibu", 955: "S Sport Plus / TV8.5"
+    // --- TÜRKİYE ---
+    52: "beIN Sports",           // Trendyol Süper Lig
+    98: "beIn Sports / TRT Spor", // Trendyol 1. Lig
+    13363: "TRT Spor / Tabii",    // TFF 2. Lig (Play-off ve özel maçlar)
+
+    // --- AVRUPA KUPALARI (YENİ HAKLAR: TRT) ---
+    7: "TRT / Tabii",            // UEFA Şampiyonlar Ligi
+    3: "TRT / Tabii",            // UEFA Avrupa Ligi
+    848: "TRT / Tabii",           // UEFA Konferans Ligi
+    679: "TRT / Tabii",           // UEFA Süper Kupa
+    17015: "TRT / Tabii",         // UEFA Kadınlar ŞL
+
+    // --- AVRUPA LİGLERİ ---
+    17: "beIN Sports",           // Premier League (İngiltere)
+    8: "S Sport",                // La Liga (İspanya)
+    23: "S Sport",                // Serie A (İtalya)
+    35: "beIN Sports",           // Bundesliga (Almanya)
+    34: "beIN Sports",           // Ligue 1 (Fransa)
+    37: "S Sport Plus",          // Eredivisie (Hollanda - Yayıncı değişebiliyor)
+    238: "D-Smart / Spor Smart", // Liga Portugal (Portekiz)
+    
+    // --- DİĞER ---
+    19: "Tivibu Spor",           // Bundesliga (Bazen beIN ile ortak/alt lisans)
+    481: "D-Smart / Spor Smart", // Arjantin Ligi
+    325: "S Sport Plus",         // Suudi Arabistan Ligi
+    155: "S Sport Plus",         // Copa Libertadores
+    44: "Tivibu Spor",           // İskoçya Premier
+    955: "beIN Sports",          // Yunanistan Ligi
+    709: "CBC Sport / Yerel"     // Azerbaycan Ligi
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);

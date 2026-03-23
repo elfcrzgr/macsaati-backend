@@ -13,11 +13,21 @@ const BASKETBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GIT
 const OUTPUT_FILE = "matches_basketball.json";
 
 const leagueConfigs = {
-    3547: "S Sport / NBA TV", 138: "S Sport", 139: "beIN Sports", 
-    9357: "beIN Sports / Tivibu", 168: "S Sport Plus / Tivibu", 
-    215: "S Sport", 227: "beIN Sports", 141: "S Sport Plus", 
-    235: "S Sport Plus", 262: "S Sport Plus", 264: "S Sport Plus", 
-    405: "Spor SMART", 304: "S Sport Plus", 137: "Tivibu Spor"
+    3547: "S Sport / NBA TV",      // NBA
+    138: "S Sport / S Sport Plus", // EuroLeague (Tüm maçlar Plus'ta, seçili maçlar S Sport kanalında)
+    142: "S Sport Plus",           // EuroCup (Temsilcilerimiz Bahçeşehir/Beşiktaş vb.)
+    132: "beIN Sports",            // Türkiye Sigorta Basketbol Süper Ligi (BSL)
+    139: "beIN Sports",            // BSL (Alternatif ID veya Kadınlar BSL)
+    251: "S Sport Plus",           // İspanya Liga Endesa (ACB)
+    227: "beIN Sports",            // Almanya BBL
+    164: "beIN Sports",            // Fransa LNB Pro A
+    235: "S Sport Plus",           // ABA League (Adriyatik Ligi)
+    215: "S Sport Plus",           // İtalya Lega Basket A (LBA)
+    304: "S Sport Plus",           // Yunanistan Basket Ligi
+    137: "TRT Spor / Tabii",       // Basketbol Şampiyonlar Ligi (BCL - Temsilcilerimiz Galatarasay/Karşıyaka vb.)
+    9357: "S Sport Plus",          // NCAA (Amerikan Kolej Basketbolu)
+    405: "beIN Sports",            // VTB United League
+    168: "TRT Spor Yıldız"         // Kadınlar EuroLeague / EuroCup (Temsilcilerimiz FB/GS)
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
