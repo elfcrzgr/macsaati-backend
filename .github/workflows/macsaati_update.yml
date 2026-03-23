@@ -28,20 +28,33 @@ jobs:
         run: |
           npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 
+      # --- 1. FUTBOL OPERASYONU ---
       - name: Run Football Fetch Script
         run: node fetch_football.js
 
+      - name: Run Football Logo Downloader
+        run: node logo_football.js
+
+      # --- 2. BASKETBOL OPERASYONU ---
       - name: Run Basketball Fetch Script
         run: node fetch_basketball.js
 
+      - name: Run Basketball Logo Downloader
+        run: node logo_basketball.js
+
+      # --- 3. TENİS OPERASYONU ---
       - name: Run Tennis Fetch Script
         run: node fetch_tennis.js
 
+      # --- 4. GITHUB'A KAYDETME (PUSH) ---
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          # Futbol, Basketbol ve Tenis JSON dosyalarını ekliyoruz
-          git add matches_football.json matches_basketball.json matches_tennis.json
-          git commit -m "Veri Guncelleme (Futbol, Basketbol & Tenis): $(date)" || echo "Degisiklik yok"
+          
+          # JSON dosyalarını ve yeni eklenen logo klasörlerini Git'e ekliyoruz
+          git add matches_football.json matches_basketball.json matches_tennis.json football/logos/ basketball/logos/
+          
+          # Eğer değişiklik varsa commit at, yoksa "Degisiklik yok" yazıp geç
+          git commit -m "Veri & Logolar Guncellendi: $(date)" || echo "Degisiklik yok"
           git push
