@@ -7,24 +7,25 @@ puppeteer.use(StealthPlugin());
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
 
-// GitHub klasör yolları
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 const OUTPUT_FILE = "matches_tennis.json";
 
-// Yayıncı konfigürasyonu
+// 1. DOKUNUŞ: Kategori listesini genişlettim (Özellikle Masters ve 500'lük seriler için)
 const categoryConfigs = {
     3: "beIN Sports / Eurosport",  // Grand Slam
     4: "beIN Sports",              // ATP
     5: "beIN Sports",              // WTA
     1396: "beIN Sports",           // ATP Masters
-    1397: "beIN Sports"            // WTA 1000
+    1397: "beIN Sports",           // WTA 1000
+    1398: "beIN Sports",           // ATP 500
+    1399: "beIN Sports"            // WTA 500
 };
 
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
 async function start() {
-    console.log("🎾 Tenis motoru başlatılıyor (Dinamik Çift Bayrak & Derin Tarama aktif)...");
+    console.log("🎾 Tenis motoru başlatılıyor...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
@@ -39,18 +40,24 @@ async function start() {
     };
 
     let allEvents = [];
-    // Geniş zaman aralığı (Dün, Bugün, Yarın)
     for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
         try {
-            console.log(`⏳ ${date} tenis verisi çekiliyor...`);
-            await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
+            console.log(`⏳ ${date} verisi çekiliyor...`);
+            await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2', timeout: 60000 });
             
-            if (data.events) {
+            const data = await page.evaluate(() => {
+                try {
+                    return JSON.parse(document.body.innerText);
+                } catch(e) { return null; }
+            });
+            
+            if (data && data.events) {
+                // 2. DOKUNUŞ: Log ekledik, terminalde kaç maç bulduğunu göreceksin
                 const filtered = data.events.filter(e => targetCategoryIds.includes(e.tournament?.category?.id));
+                console.log(`📡 ${date}: Toplam ${data.events.length} maçtan ${filtered.length} tanesi kriterlere uygun.`);
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} verisi çekilemedi.`); }
+        } catch (e) { console.error(`${date} verisi çekilemedi: ${e.message}`); }
     }
 
     const finalMatches = [];
@@ -62,36 +69,25 @@ async function start() {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 
-        // --- GELİŞMİŞ BAYRAK ÇÖZÜCÜ (Çiftler ve Karma Uyruklar İçin) ---
         const getLogosArray = (team) => {
             let flagList = [];
+            if (team.country?.alpha2) flagList.push(team.country.alpha2.toLowerCase());
             
-            // 1. Takımın doğrudan ülke kodu varsa (Tekler veya ortak milli takım)
-            if (team.country?.alpha2) {
-                flagList.push(team.country.alpha2.toLowerCase());
-            } 
-            
-            // 2. Çiftler ise oyuncu listesini derinlemesine tara
             if (team.players && team.players.length > 0) {
                 team.players.forEach(p => {
-                    // Bazı API yanıtlarında country doğrudan p altında, bazılarında p.player altındadır.
-                    const code = (p.country?.alpha2 || p.player?.country?.alpha2);
+                    // 3. DOKUNUŞ: SofaScore bazen p.country bazen p.player.country döner, ikisini de garantiye aldık
+                    const code = p.country?.alpha2 || p.player?.country?.alpha2;
                     if (code) flagList.push(code.toLowerCase());
                 });
             }
 
-            // Hiçbir bayrak bulunamadıysa 'default' bas
             if (flagList.length === 0) flagList.push("default");
-
-            // Aynı ülkeden olan oyuncular için bayrağı teke indir (Örn: İki İtalyan varsa 1 tane göster)
             let uniqueFlags = [...new Set(flagList)];
-            
             return uniqueFlags.map(code => TENNIS_LOGO_BASE + code + ".png");
         };
 
-        // --- SET SKORLARI HESAPLAYICI ---
         let setDetails = "";
-        if (e.homeScore && e.homeScore.period1 !== undefined) {
+        if (e.homeScore && (e.homeScore.period1 !== undefined || e.homeScore.display !== undefined)) {
             let sets = [];
             for (let i = 1; i <= 5; i++) {
                 let hS = e.homeScore[`period${i}`];
@@ -101,7 +97,6 @@ async function start() {
             if (sets.length > 0) setDetails = `(${sets.join(', ')})`;
         }
 
-        // Turnuva ID Belirleme (Öncelik: Unique ID, sonra Kategori ID)
         const tournamentId = e.tournament?.uniqueTournament?.id || e.tournament?.category?.id || "default";
 
         finalMatches.push({
@@ -112,11 +107,11 @@ async function start() {
             broadcaster: categoryConfigs[e.tournament?.category?.id] || "beIN / Eurosport",
             homeTeam: { 
                 name: e.homeTeam.name, 
-                logos: getLogosArray(e.homeTeam) // Dizi (Array) olarak gönderiyoruz
+                logos: getLogosArray(e.homeTeam) 
             },
             awayTeam: { 
                 name: e.awayTeam.name, 
-                logos: getLogosArray(e.awayTeam) // Dizi (Array) olarak gönderiyoruz
+                logos: getLogosArray(e.awayTeam) 
             },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + tournamentId + ".png",
             homeScore: (e.homeScore && e.homeScore.display !== undefined) ? String(e.homeScore.display) : "-",
@@ -128,17 +123,15 @@ async function start() {
         duplicateTracker.add(`${e.id}`);
     }
 
-    // Maçları başlama saatine göre diz
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
     
-    // JSON dosyasına yaz
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
         success: true,
         lastUpdated: new Date().toISOString(),
         matches: finalMatches
     }, null, 2));
     
-    console.log(`✅ İşlem tamamlandı. Toplam ${finalMatches.length} maç JSON'a yazıldı.`);
+    console.log(`✅ İşlem tamamlandı. ${finalMatches.length} maç JSON'a yazıldı.`);
     await browser.close();
 }
 
