@@ -30,7 +30,7 @@ const leagueConfigs = {
 
     // --- İTALYA ---
     23: "S Sport",                 // Serie A
-    24: "S Sport Plus",            // Serie B
+    53: "S Sport Plus",            // Serie B
 
     // --- ALMANYA ---
     35: "beIN Sports / Tivibu",    // Bundesliga

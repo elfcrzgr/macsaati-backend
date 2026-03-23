@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-23T12:05:08.939Z",
-  "totalMatches": 36,
+  "lastUpdated": "2026-03-23T12:10:52.839Z",
+  "totalMatches": 40,
   "matches": [
     {
       "id": 14138581,
@@ -232,6 +232,63 @@
       "tournament": "HNL"
     },
     {
+      "id": 14317608,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:00",
+      "timestamp": 1774188000000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Bari",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2712.png"
+      },
+      "awayTeam": {
+        "name": "Carrarese",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2745.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/53.png",
+      "homeScore": "0",
+      "awayScore": "3",
+      "tournament": "Serie B"
+    },
+    {
+      "id": 14317611,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:00",
+      "timestamp": 1774188000000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Empoli",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2705.png"
+      },
+      "awayTeam": {
+        "name": "Pescara",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7935.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/53.png",
+      "homeScore": "4",
+      "awayScore": "2",
+      "tournament": "Serie B"
+    },
+    {
+      "id": 14317621,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "17:00",
+      "timestamp": 1774188000000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Südtirol",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2760.png"
+      },
+      "awayTeam": {
+        "name": "Frosinone",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2801.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/53.png",
+      "homeScore": "1",
+      "awayScore": "3",
+      "tournament": "Serie B"
+    },
+    {
       "id": 14024014,
       "fixedDate": "2026-03-22",
       "fixedTime": "17:15",
@@ -441,6 +498,25 @@
       "tournament": "Ligue 1"
     },
     {
+      "id": 14317617,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "19:15",
+      "timestamp": 1774196100000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Sampdoria",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2711.png"
+      },
+      "awayTeam": {
+        "name": "US Avellino 1912",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2730.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/53.png",
+      "homeScore": "2",
+      "awayScore": "1",
+      "tournament": "Serie B"
+    },
+    {
       "id": 14065201,
       "fixedDate": "2026-03-22",
       "fixedTime": "19:30",
@@ -574,6 +650,25 @@
       "tournament": "Bundesliga"
     },
     {
+      "id": 14317612,
+      "fixedDate": "2026-03-22",
+      "fixedTime": "21:30",
+      "timestamp": 1774204200000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Virtus Entella",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/43680.png"
+      },
+      "awayTeam": {
+        "name": "Reggiana",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24516.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/53.png",
+      "homeScore": "3",
+      "awayScore": "0",
+      "tournament": "Serie B"
+    },
+    {
       "id": 13981715,
       "fixedDate": "2026-03-22",
       "fixedTime": "22:45",
@@ -667,25 +762,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "LaLiga 2"
-    },
-    {
-      "id": 15591984,
-      "fixedDate": "2026-03-24",
-      "fixedTime": "22:45",
-      "timestamp": 1774381500000,
-      "broadcaster": "S Sport Plus",
-      "homeTeam": {
-        "name": "Doncaster Rovers",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/84.png"
-      },
-      "awayTeam": {
-        "name": "Port Vale",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/55.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/24.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "League One"
     }
   ]
 }
