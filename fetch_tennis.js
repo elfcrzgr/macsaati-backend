@@ -7,6 +7,7 @@ puppeteer.use(StealthPlugin());
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
 
+// Klasör yapına uygun URL'ler
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 const OUTPUT_FILE = "matches_tennis.json";
@@ -24,7 +25,10 @@ const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
 async function start() {
     console.log("🎾 Tenis motoru başlatılıyor (Dün/Bugün/Yarın kontrolü aktif)...");
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    const browser = await puppeteer.launch({ 
+        headless: "new", 
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+    });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
@@ -35,7 +39,7 @@ async function start() {
     };
 
     let allEvents = [];
-    // KRİTİK DEĞİŞİKLİK: Biten maçları kaçırmamak için DÜN (-1) verisini de çekiyoruz.
+    // Dün, Bugün ve Yarın verilerini çekiyoruz
     for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
         try {
             console.log(`⏳ ${date} tenis verisi çekiliyor...`);
@@ -43,11 +47,12 @@ async function start() {
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             
             if (data.events) {
-                // Sadece belirlediğimiz kategorileri (ATP, WTA, GS) filtrele
                 const filtered = data.events.filter(e => targetCategoryIds.includes(e.tournament?.category?.id));
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} hatası.`); }
+        } catch (e) { 
+            console.error(`${date} tarihinde veri çekilirken hata oluştu.`); 
+        }
     }
 
     const finalMatches = [];
@@ -57,14 +62,13 @@ async function start() {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
-        // Benzersiz anahtar (Aynı maçın tekrar eklenmesini önler)
         const matchKey = `${e.id}`; 
 
         if (duplicateTracker.has(matchKey)) {
             continue;
         }
 
-        // --- TENİS ÖZEL: SET SKORLARI (6-4, 7-5 vb.) ---
+        // --- SET SKORLARI (6-4, 7-5 vb.) ---
         let setDetails = "";
         if (e.homeScore && e.homeScore.period1 !== undefined) {
             let sets = [];
@@ -78,6 +82,10 @@ async function start() {
             if (sets.length > 0) setDetails = `(${sets.join(', ')})`;
         }
 
+        // Ülke kodlarını küçük harfe çevirerek bayrak dosya isimleriyle eşleştiriyoruz
+        const homeCountry = (e.homeTeam.country?.alpha2 || "default").toLowerCase();
+        const awayCountry = (e.awayTeam.country?.alpha2 || "default").toLowerCase();
+
         const matchObject = {
             id: e.id,
             fixedDate: dayStr,
@@ -86,16 +94,16 @@ async function start() {
             broadcaster: categoryConfigs[e.tournament?.category?.id] || "beIN / Eurosport",
             homeTeam: { 
                 name: e.homeTeam.name, 
-                logo: TENNIS_LOGO_BASE + e.homeTeam.id + ".png" 
+                logo: TENNIS_LOGO_BASE + homeCountry + ".png" 
             },
             awayTeam: { 
                 name: e.awayTeam.name, 
-                logo: TENNIS_LOGO_BASE + e.awayTeam.id + ".png" 
+                logo: TENNIS_LOGO_BASE + awayCountry + ".png" 
             },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || "default") + ".png",
             homeScore: (e.homeScore && e.homeScore.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (e.awayScore && e.awayScore.display !== undefined) ? String(e.awayScore.display) : "-",
-            setDetails: setDetails, // Android'deki txtSetScores için
+            setDetails: setDetails,
             tournament: e.tournament.name
         };
 
@@ -103,8 +111,15 @@ async function start() {
         duplicateTracker.add(matchKey); 
     }
 
+    // Zamana göre sırala
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    const jsonOutput = { success: true, lastUpdated: new Date().toISOString(), matches: finalMatches };
+    
+    const jsonOutput = { 
+        success: true, 
+        lastUpdated: new Date().toISOString(), 
+        matches: finalMatches 
+    };
+
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(jsonOutput, null, 2));
     
     console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} tenis maçı kaydedildi.`);
