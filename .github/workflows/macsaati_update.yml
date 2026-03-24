@@ -48,6 +48,9 @@ jobs:
       - name: Run Tennis Fetch
         run: node fetch_tennis.js
 
+      - name: Run Tennis Logo Downloader
+        run: node logo_tennis.js # BU ADIMDA logo_tennis.js ÇALIŞTIRILIYOR
+
       # --- 4. GITHUB SYNC (Kritik Bölüm) ---
       - name: Commit and Push Changes
         run: |
@@ -57,7 +60,7 @@ jobs:
           
           # Tüm değişiklikleri (JSON ve yeni inen logoları) 'stage' alanına al
           git add matches_football.json matches_basketball.json matches_tennis.json
-          git add football/logos/ basketball/logos/
+          git add football/logos/ basketball/logos/ tennis/tournament_logos/
 
           # Çakışmaları önlemek için:
           # 1. Elindeki değişiklikleri geçici olarak sakla (autostash)
