@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-24T21:26:53.689Z",
-  "totalMatches": 57,
+  "lastUpdated": "2026-03-24T22:19:27.951Z",
+  "totalMatches": 58,
   "matches": [
     {
       "id": 15708889,
@@ -1530,9 +1530,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Tomas Martin Etcheverry",
@@ -1553,8 +1553,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "2",
       "tournament": "Miami, USA"
     },
     {
@@ -1566,8 +1566,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Alex Michelsen",
@@ -1595,14 +1595,14 @@
     {
       "id": 15708845,
       "fixedDate": "2026-03-25",
-      "fixedTime": "00:40",
-      "timestamp": 1774388400000,
+      "fixedTime": "01:00",
+      "timestamp": 1774389600000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Terence Atmane",
@@ -1733,45 +1733,10 @@
       "tournament": "Miami, USA"
     },
     {
-      "id": 15711476,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "17:00",
-      "timestamp": 1774447200000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Aryna Sabalenka",
-        "countries": [
-          "by"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/by.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hailey Baptiste",
-        "countries": [
-          "us"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2587.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Miami, USA"
-    },
-    {
       "id": 15711420,
       "fixedDate": "2026-03-25",
-      "fixedTime": "17:00",
-      "timestamp": 1774447200000,
+      "fixedTime": "20:00",
+      "timestamp": 1774458000000,
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
@@ -1803,10 +1768,49 @@
       "tournament": "Miami, USA"
     },
     {
+      "id": 15739841,
+      "fixedDate": "2026-03-25",
+      "fixedTime": "20:00",
+      "timestamp": 1774458000000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Krawietz K / Oberleitner N",
+        "countries": [
+          "de",
+          "at"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Nys H / Roger-Vasselin E",
+        "countries": [
+          "mc",
+          "fr"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA, Doubles"
+    },
+    {
       "id": 15716376,
       "fixedDate": "2026-03-25",
-      "fixedTime": "17:00",
-      "timestamp": 1774447200000,
+      "fixedTime": "20:00",
+      "timestamp": 1774458000000,
       "broadcaster": "beIN Sports",
       "isDoubles": true,
       "matchStatus": {
@@ -1842,127 +1846,10 @@
       "tournament": "Miami, USA, Doubles"
     },
     {
-      "id": 15716381,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "17:00",
-      "timestamp": 1774447200000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Mertens E / Zhang S",
-        "countries": [
-          "be",
-          "cn"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hunter S / Pegula J",
-        "countries": [
-          "au",
-          "us"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2659.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
-      "id": 15739839,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "18:00",
-      "timestamp": 1774450800000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Arends S / Smith J-P",
-        "countries": [
-          "nl",
-          "au"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Cash J / Glasspool L",
-        "countries": [
-          "gb",
-          "gb"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
-      "id": 15739845,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "18:00",
-      "timestamp": 1774450800000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Bolelli S / Vavassori A",
-        "countries": [
-          "it",
-          "it"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Harrison C / Skupski N",
-        "countries": [
-          "us",
-          "gb"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
       "id": 15739837,
       "fixedDate": "2026-03-25",
-      "fixedTime": "18:00",
-      "timestamp": 1774450800000,
+      "fixedTime": "21:10",
+      "timestamp": 1774462200000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": true,
       "matchStatus": {
@@ -2000,8 +1887,8 @@
     {
       "id": 15739843,
       "fixedDate": "2026-03-25",
-      "fixedTime": "18:00",
-      "timestamp": 1774450800000,
+      "fixedTime": "21:10",
+      "timestamp": 1774462200000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": true,
       "matchStatus": {
@@ -2037,49 +1924,10 @@
       "tournament": "Miami, USA, Doubles"
     },
     {
-      "id": 15739841,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "18:00",
-      "timestamp": 1774450800000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Krawietz K / Oberleitner N",
-        "countries": [
-          "de",
-          "at"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Nys H / Roger-Vasselin E",
-        "countries": [
-          "mc",
-          "fr"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
       "id": 15708829,
       "fixedDate": "2026-03-25",
-      "fixedTime": "20:00",
-      "timestamp": 1774458000000,
+      "fixedTime": "22:00",
+      "timestamp": 1774465200000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
@@ -2103,6 +1951,193 @@
         ],
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA"
+    },
+    {
+      "id": 15739839,
+      "fixedDate": "2026-03-25",
+      "fixedTime": "22:20",
+      "timestamp": 1774466400000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Arends S / Smith J-P",
+        "countries": [
+          "nl",
+          "au"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Cash J / Glasspool L",
+        "countries": [
+          "gb",
+          "gb"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA, Doubles"
+    },
+    {
+      "id": 15716381,
+      "fixedDate": "2026-03-25",
+      "fixedTime": "22:20",
+      "timestamp": 1774466400000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Mertens E / Zhang S",
+        "countries": [
+          "be",
+          "cn"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hunter S / Pegula J",
+        "countries": [
+          "au",
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2659.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA, Doubles"
+    },
+    {
+      "id": 15739845,
+      "fixedDate": "2026-03-25",
+      "fixedTime": "23:30",
+      "timestamp": 1774470600000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Bolelli S / Vavassori A",
+        "countries": [
+          "it",
+          "it"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Harrison C / Skupski N",
+        "countries": [
+          "us",
+          "gb"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA, Doubles"
+    },
+    {
+      "id": 15711476,
+      "fixedDate": "2026-03-26",
+      "fixedTime": "02:00",
+      "timestamp": 1774479600000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Aryna Sabalenka",
+        "countries": [
+          "by"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/by.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hailey Baptiste",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2587.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA"
+    },
+    {
+      "id": 15708836,
+      "fixedDate": "2026-03-26",
+      "fixedTime": "03:10",
+      "timestamp": 1774483800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Tommy Paul",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Arthur Fils",
+        "countries": [
+          "fr"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
