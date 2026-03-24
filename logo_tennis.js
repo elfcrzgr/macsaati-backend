@@ -5,89 +5,72 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 puppeteer.use(StealthPlugin());
 
-// --- ŞAŞMAZ KLASÖR YOLLARI ---
-const MATCHES_FILE = path.join(__dirname, 'matches_basketball.json');
-const LOGOS_BASE_DIR = path.join(__dirname, 'basketball', 'logos');
-const LOGOS_NBA_DIR = path.join(__dirname, 'basketball', 'logos', 'NBA');
+const MATCHES_FILE = path.join(__dirname, 'matches_tennis.json');
+const TOURNAMENT_LOGOS_DIR = path.join(__dirname, 'tennis', 'tournament_logos');
 
-if (!fs.existsSync(LOGOS_BASE_DIR)) fs.mkdirSync(LOGOS_BASE_DIR, { recursive: true });
-if (!fs.existsSync(LOGOS_NBA_DIR)) fs.mkdirSync(LOGOS_NBA_DIR, { recursive: true });
+// Klasörün oluşturulması
+if (!fs.existsSync(TOURNAMENT_LOGOS_DIR)) fs.mkdirSync(TOURNAMENT_LOGOS_DIR, { recursive: true });
 
 async function start() {
     if (!fs.existsSync(MATCHES_FILE)) {
-        return console.error("❌ JSON okunamadı! Önce fetch_basketball.js dosyasını çalıştırın.");
+        return console.error("❌ JSON bulunamadı! Önce fetch_tennis.js çalıştırılmalı.");
     }
 
-    const data = fs.readFileSync(MATCHES_FILE, 'utf8');
-    const json = JSON.parse(data);
-    const teamsToProcess = new Map();
+    const json = JSON.parse(fs.readFileSync(MATCHES_FILE, 'utf8'));
+    const tournamentsToProcess = new Map();
 
-    // 1. JSON'daki takımları bul (KUSURSUZ NBA KONTROLÜ)
+    // 1. JSON'ı tara ve turnuvaları belirle
     json.matches.forEach(m => {
-        // Artık URL'ye değil, direkt maçın hangi ligde oynandığına bakıyoruz!
-        const isNbaMatch = m.tournament === "NBA";
-
-        const homeId = m.homeTeam.logo.split('/').pop().replace('.png', '');
-        const awayId = m.awayTeam.logo.split('/').pop().replace('.png', '');
-        
-        teamsToProcess.set(homeId, { name: m.homeTeam.name, isNba: isNbaMatch });
-        teamsToProcess.set(awayId, { name: m.awayTeam.name, isNba: isNbaMatch });
-    });
-
-    const missingTeams = [];
-    teamsToProcess.forEach((info, id) => {
-        // Takım NBA ise direkt NBA klasörüne bak, değilse normal klasöre bak
-        const targetDir = info.isNba ? LOGOS_NBA_DIR : LOGOS_BASE_DIR;
-        const filePath = path.join(targetDir, `${id}.png`);
-        
-        // Eğer o doğru klasörde logo yoksa "Eksik" listesine ekle
-        if (!fs.existsSync(filePath)) {
-            missingTeams.push({ id, ...info });
+        const tournamentId = m.tournamentLogo.split('/').pop().replace('.png', '');
+        if (!tournamentsToProcess.has(tournamentId)) {
+            tournamentsToProcess.set(tournamentId, { name: m.tournament });
         }
     });
 
-    console.log(`\n🔍 JSON tarandı. Toplam ${teamsToProcess.size} benzersiz takım bulundu.`);
-    
-    if (missingTeams.length === 0) {
-        console.log(`🎉 Harika! Tüm takım logoları KENDİ KLASÖRLERİNDE zaten mevcut. İşlem bitti.\n`);
+    console.log(`\n🔍 JSON Tarandı:`);
+    console.log(`   - Toplam Turnuva: ${tournamentsToProcess.size}`);
+
+    // 2. Eksik turnuva logolarını kontrol et
+    const missingTournaments = [];
+    tournamentsToProcess.forEach((info, id) => {
+        const targetPath = path.join(TOURNAMENT_LOGOS_DIR, `${id}.png`);
+        if (!fs.existsSync(targetPath)) {
+            missingTournaments.push({ id, ...info });
+        }
+    });
+
+    if (missingTournaments.length === 0) {
+        console.log(`\n🎉 Harika! Tüm turnuva logoları KLASÖRDE mevcut. İşlem bitti.\n`);
         return;
     }
 
-    console.log(`⚠️ ${missingTeams.length} adet eksik logo bulundu. SofaScore güvenlik duvarı aşılıyor, tarayıcı başlatılıyor...\n`);
+    console.log(`\n⚠️  ${missingTournaments.length} adet eksik turnuva logosu bulundu. İndirme başlıyor...\n`);
 
-    // --- PUPPETEER İLE GİZLİ İNDİRME OPERASYONU ---
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox'] });
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
-
     let successCount = 0;
 
-    for (const t of missingTeams) {
-        // İndirmeden önce yine doğru klasörü hedefliyoruz
-        const targetDir = t.isNba ? LOGOS_NBA_DIR : LOGOS_BASE_DIR;
-        const filePath = path.join(targetDir, `${t.id}.png`);
-        const url = `https://api.sofascore.com/api/v1/team/${t.id}/image`;
-
+    for (const t of missingTournaments) {
+        const targetPath = path.join(TOURNAMENT_LOGOS_DIR, `${t.id}.png`);
         try {
-            const viewSource = await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-            
-            if (viewSource && viewSource.status() === 200) {
-                const buffer = await viewSource.buffer();
-                fs.writeFileSync(filePath, buffer);
-                console.log(`✅ İndirildi: ${t.name} -> ${t.isNba ? 'NBA/' : ''}${t.id}.png`);
+            const res = await page.goto(`https://api.sofascore.com/api/v1/tournament/${t.id}/image`, { waitUntil: 'networkidle2', timeout: 30000 });
+            if (res.status() === 200) {
+                fs.writeFileSync(targetPath, await res.buffer());
+                console.log(`   ✅ [Turnuva] İndirildi: ${t.name}`);
                 successCount++;
             } else {
-                console.error(`❌ İndirilemedi (${t.name}): API ${viewSource ? viewSource.status() : 'Bilinmeyen'} döndürdü.`);
+                console.log(`   ❌ [Hata] ${t.name}: API ${res.status()}`);
             }
-        } catch (err) {
-            console.error(`❌ Bağlantı Hatası (${t.name}):`, err.message);
+        } catch (e) {
+            console.log(`   ❌ [Bağlantı Hatası] ${t.name}`);
         }
-
         await new Promise(r => setTimeout(r, 1000));
     }
 
     await browser.close();
-    console.log(`\n🏁 İŞLEM BİTTİ: Toplam ${successCount} yeni logo başarıyla doğru klasörlere eklendi!\n`);
+    console.log(`\n🏁 TURNUVALAR BİTTİ:`);
+    console.log(`   - Başarıyla Eklenen: ${successCount}`);
+    console.log(`   - Toplam Eksik: ${missingTournaments.length}\n`);
 }
 
 start();
