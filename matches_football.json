@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-24T14:10:11.064Z",
+  "lastUpdated": "2026-03-24T15:53:46.635Z",
   "totalMatches": 57,
   "matches": [
     {
@@ -289,25 +289,6 @@
       "tournament": "Nesine 3. Lig, Grup 2"
     },
     {
-      "id": 14162202,
-      "fixedDate": "2026-03-24",
-      "fixedTime": "16:00",
-      "timestamp": 1774357200000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Elazığspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3068.png"
-      },
-      "awayTeam": {
-        "name": "Beykoz Anadolu Spor A.Ş.",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/117198.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
       "id": 14162185,
       "fixedDate": "2026-03-24",
       "fixedTime": "16:00",
@@ -322,28 +303,47 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/325526.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "1",
       "tournament": "Nesine 2. Lig"
     },
     {
-      "id": 14191116,
+      "id": 14162202,
       "fixedDate": "2026-03-24",
       "fixedTime": "16:00",
       "timestamp": 1774357200000,
       "broadcaster": "TFF YouTube",
       "homeTeam": {
-        "name": "Bursa Nilüfer FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/800178.png"
+        "name": "Elazığspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3068.png"
       },
       "awayTeam": {
-        "name": "Yalova FK 77 SK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/524449.png"
+        "name": "Beykoz Anadolu Spor A.Ş.",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/117198.png"
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11417.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 1"
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
+      "homeScore": "3",
+      "awayScore": "1",
+      "tournament": "Nesine 2. Lig"
+    },
+    {
+      "id": 14196017,
+      "fixedDate": "2026-03-24",
+      "fixedTime": "16:00",
+      "timestamp": 1774357200000,
+      "broadcaster": "TFF YouTube",
+      "homeTeam": {
+        "name": "Giresunspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5765.png"
+      },
+      "awayTeam": {
+        "name": "52 Orduspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/262533.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11415.png",
+      "homeScore": "0",
+      "awayScore": "1",
+      "tournament": "Nesine 3. Lig, Grup 3"
     },
     {
       "id": 14191151,
@@ -360,8 +360,27 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/422068.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11417.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
+      "tournament": "Nesine 3. Lig, Grup 1"
+    },
+    {
+      "id": 14191116,
+      "fixedDate": "2026-03-24",
+      "fixedTime": "16:00",
+      "timestamp": 1774357200000,
+      "broadcaster": "TFF YouTube",
+      "homeTeam": {
+        "name": "Bursa Nilüfer FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/800178.png"
+      },
+      "awayTeam": {
+        "name": "Yalova FK 77 SK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/524449.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11417.png",
+      "homeScore": "3",
+      "awayScore": "2",
       "tournament": "Nesine 3. Lig, Grup 1"
     },
     {
@@ -379,8 +398,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/296732.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11417.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "tournament": "Nesine 3. Lig, Grup 1"
     },
     {
@@ -398,66 +417,9 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/485446.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11417.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "0",
       "tournament": "Nesine 3. Lig, Grup 1"
-    },
-    {
-      "id": 14196017,
-      "fixedDate": "2026-03-24",
-      "fixedTime": "16:00",
-      "timestamp": 1774357200000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Giresunspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5765.png"
-      },
-      "awayTeam": {
-        "name": "52 Orduspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/262533.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11415.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 3"
-    },
-    {
-      "id": 14196251,
-      "fixedDate": "2026-03-24",
-      "fixedTime": "16:00",
-      "timestamp": 1774357200000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Afyonspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/228906.png"
-      },
-      "awayTeam": {
-        "name": "İzmir Çoruhlu FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/77619.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/15938.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 4"
-    },
-    {
-      "id": 14196254,
-      "fixedDate": "2026-03-24",
-      "fixedTime": "16:00",
-      "timestamp": 1774357200000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Eskişehirspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6364.png"
-      },
-      "awayTeam": {
-        "name": "Tire FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/800181.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/15938.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 4"
     },
     {
       "id": 14196257,
@@ -476,6 +438,44 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/15938.png",
       "homeScore": "-",
       "awayScore": "-",
+      "tournament": "Nesine 3. Lig, Grup 4"
+    },
+    {
+      "id": 14196251,
+      "fixedDate": "2026-03-24",
+      "fixedTime": "16:00",
+      "timestamp": 1774357200000,
+      "broadcaster": "TFF YouTube",
+      "homeTeam": {
+        "name": "Afyonspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/228906.png"
+      },
+      "awayTeam": {
+        "name": "İzmir Çoruhlu FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/77619.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/15938.png",
+      "homeScore": "1",
+      "awayScore": "1",
+      "tournament": "Nesine 3. Lig, Grup 4"
+    },
+    {
+      "id": 14196254,
+      "fixedDate": "2026-03-24",
+      "fixedTime": "16:00",
+      "timestamp": 1774357200000,
+      "broadcaster": "TFF YouTube",
+      "homeTeam": {
+        "name": "Eskişehirspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6364.png"
+      },
+      "awayTeam": {
+        "name": "Tire FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/800181.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/15938.png",
+      "homeScore": "2",
+      "awayScore": "0",
       "tournament": "Nesine 3. Lig, Grup 4"
     },
     {
