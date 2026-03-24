@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-24T19:52:23.793Z",
+  "lastUpdated": "2026-03-24T20:30:03.432Z",
   "totalMatches": 92,
   "matches": [
     {
@@ -2722,9 +2722,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Valentin Vacherot",
@@ -2745,8 +2745,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
       "tournament": "Miami, USA"
     },
     {
@@ -2824,45 +2824,10 @@
       "tournament": "Miami, USA"
     },
     {
-      "id": 15708827,
-      "fixedDate": "2026-03-24",
-      "fixedTime": "23:00",
-      "timestamp": 1774382400000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Alex Michelsen",
-        "countries": [
-          "us"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jannik Sinner",
-        "countries": [
-          "it"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Miami, USA"
-    },
-    {
       "id": 15708843,
       "fixedDate": "2026-03-24",
-      "fixedTime": "23:00",
-      "timestamp": 1774382400000,
+      "fixedTime": "23:30",
+      "timestamp": 1774384200000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
@@ -2894,10 +2859,45 @@
       "tournament": "Miami, USA"
     },
     {
+      "id": 15708827,
+      "fixedDate": "2026-03-24",
+      "fixedTime": "23:40",
+      "timestamp": 1774384800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Alex Michelsen",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jannik Sinner",
+        "countries": [
+          "it"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA"
+    },
+    {
       "id": 15708845,
       "fixedDate": "2026-03-25",
-      "fixedTime": "00:10",
-      "timestamp": 1774386600000,
+      "fixedTime": "00:40",
+      "timestamp": 1774388400000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
