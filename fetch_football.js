@@ -54,13 +54,12 @@ const leagueConfigs = {
     7: "TRT / Tabii",              // UEFA Şampiyonlar Ligi
     3: "TRT / Tabii",              // UEFA Avrupa Ligi
     17015: "TRT / Tabii",          // UEFA Konferans Ligi (Güncel ID)
-    // 848 (Eski Konferans Ligi ID'si) çöp veri getirdiği için tamamen kaldırıldı.
     1819: "TRT / Tabii / TV8",     // UEFA Uluslar Ligi
     7544: "TRT / Tabii",           // Dünya Kupası Elemeleri
     4656: "TRT / Tabii",           // Avrupa Şampiyonası Elemeleri
-    696: "DAZN / YouTube",         // UEFA Kadınlar Şampiyonlar Ligi
-    748: "UEFA.tv / TRT Spor"      // UEFA U19 Avrupa Şampiyonası Elemeleri
+    696: "DAZN / YouTube"          // UEFA Kadınlar Şampiyonlar Ligi
 };
+
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
