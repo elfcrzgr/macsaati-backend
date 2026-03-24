@@ -17,6 +17,11 @@ const leagueConfigs = {
     52: "beIN Sports",             // Trendyol Süper Lig
     98: "beIN Sports / TRT Spor",  // Trendyol 1. Lig
     311: "A Spor / ATV",           // Ziraat Türkiye Kupası
+    97: "TFF YouTube",             // TFF 2. Lig
+    11417: "TFF YouTube",          // TFF 3. Lig 1. Grup
+    11416: "TFF YouTube",          // TFF 3. Lig 2. Grup
+    11415: "TFF YouTube",          // TFF 3. Lig 3. Grup
+    15938: "TFF YouTube",          // TFF 3. Lig 4. Grup
 
     // --- İNGİLTERE ---
     17: "beIN Sports",             // Premier League
@@ -41,23 +46,26 @@ const leagueConfigs = {
     33: "beIN Sports",             // Ligue 2
 
     // --- DİĞER ELİT LİGLER ---
-    238: "Tivibu Spor / Spor Smart", // Portekiz Liga Portugal (Primeira Liga)
+    238: "Tivibu Spor / Spor Smart", // Portekiz Liga Portugal
     170: "S Sport / TV+",            // Suudi Arabistan Pro Lig
+    13363: "USL YouTube",            // ABD USL Championship
 
     // --- AVRUPA VE MİLLİ MAÇLAR ---
     7: "TRT / Tabii",              // UEFA Şampiyonlar Ligi
     3: "TRT / Tabii",              // UEFA Avrupa Ligi
     17015: "TRT / Tabii",          // UEFA Konferans Ligi (Güncel ID)
-    848: "TRT / Tabii",            // UEFA Konferans Ligi (Eski ID - SofaScore bazen bunu kullanıyor)
-    1819: "TRT / Tabii / TV8",     // UEFA Uluslar Ligi (Nations League)
+    // 848 (Eski Konferans Ligi ID'si) çöp veri getirdiği için tamamen kaldırıldı.
+    1819: "TRT / Tabii / TV8",     // UEFA Uluslar Ligi
     7544: "TRT / Tabii",           // Dünya Kupası Elemeleri
-    4656: "TRT / Tabii"            // Avrupa Şampiyonası Elemeleri
+    4656: "TRT / Tabii",           // Avrupa Şampiyonası Elemeleri
+    696: "DAZN / YouTube",         // UEFA Kadınlar Şampiyonlar Ligi
+    748: "UEFA.tv / TRT Spor"      // UEFA U19 Avrupa Şampiyonası Elemeleri
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (Katı ID + Anti-Çöp Filtresi Aktif)...");
+    console.log("🚀 Futbol motoru başlatılıyor (Sadece Kesin ID Kontrolü Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -80,24 +88,8 @@ async function start() {
             if (data && data.events) {
                 const filtered = data.events.filter(e => {
                     const utId = e.tournament?.uniqueTournament?.id;
-                    const tName = (e.tournament?.uniqueTournament?.name || "").toLowerCase();
-                    
-                    // 1. KURAL: Maçın ID'si bizim elit listemizde yoksa ASLA içeri alma!
-                    if (!targetLeagueIds.includes(utId)) return false;
-
-                    // 2. GÜVENLİK SİGORTASI: SofaScore API'si ID 848'i (Konferans Ligi) Hindistan'a verirse, isimden yakala ve yok et!
-                    if (tName.includes("india") || 
-                        tName.includes("i-league") || 
-                        tName.includes("mizoram") || 
-                        tName.includes("women") || 
-                        tName.includes("frauen") || 
-                        tName.includes("u19") || 
-                        tName.includes("u20") || 
-                        tName.includes("u21")) {
-                        return false;
-                    }
-
-                    return true;
+                    // SADECE ID KONTROLÜ: Maçın ID'si bizim elit listemizde yoksa içeri alma!
+                    return targetLeagueIds.includes(utId);
                 });
                 allEvents = allEvents.concat(filtered);
             }
@@ -121,7 +113,7 @@ async function start() {
             fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: dateTR.getTime(),
-            broadcaster: leagueConfigs[utId], // Yayını direkt ID listemizden çekiyoruz
+            broadcaster: leagueConfigs[utId], 
             homeTeam: { 
                 name: e.homeTeam.name, 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
@@ -147,7 +139,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı. SADECE hedeflenen elit maçlar kaydedildi.`);
+    console.log(`\n✅ İşlem Tamamlandı. Hedeflenen maçlar kaydedildi.`);
     await browser.close();
 }
 
