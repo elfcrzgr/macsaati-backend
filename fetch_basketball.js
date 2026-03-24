@@ -24,7 +24,7 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru çalışıyor (Lig Logosu Fix Aktif)...");
+    console.log("🏀 Basketbol motoru çalışıyor (Lig Logosu Fix ve Katı Skor Filtresi Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -66,6 +66,9 @@ async function start() {
         const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         if (duplicateTracker.has(matchKey)) continue;
 
+        // ÇOK KRİTİK: Maç tamamen bitti mi? 
+        const isFinished = e.status?.type === 'finished';
+
         finalMatches.push({
             id: e.id,
             fixedDate: dayStr,
@@ -80,10 +83,12 @@ async function start() {
                 name: e.awayTeam.name, 
                 logo: BASE_URL + "logos/" + (isNBA ? "NBA/" : "") + e.awayTeam.id + ".png" 
             },
-            // BURASI ÇOK KRİTİK: Eğer maç NBA ise 3547.png'yi zorla çağırıyoruz
             tournamentLogo: BASE_URL + "tournament_logos/" + (isNBA ? "3547" : utId) + ".png",
-            homeScore: (e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
-            awayScore: (e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
+            
+            // --- SADECE BİTTİYSE SKOR YAZ, YOKSA "-" KOY ---
+            homeScore: (isFinished && e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
+            awayScore: (isFinished && e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
+            
             tournament: isNBA ? "NBA" : utName
         });
         duplicateTracker.add(matchKey);
@@ -91,7 +96,7 @@ async function start() {
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches: finalMatches }, null, 2));
-    console.log(`✅ İşlem bitti. NBA logoları artık 3547.png'ye bakıyor.`);
+    console.log(`✅ İşlem bitti. Biten basketbol maçlarının skorları alındı.`);
     await browser.close();
 }
 start();
