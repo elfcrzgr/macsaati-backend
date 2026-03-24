@@ -48,7 +48,7 @@ function getCountriesSingles(team) {
 }
 
 async function start() {
-    console.log("🚀 Tenis motoru başlatılıyor (Çiftler + Tekler)...");
+    console.log("🚀 Tenis motoru başlatılıyor (Canlı Radar + Katı Skor Filtresi Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -61,26 +61,52 @@ async function start() {
     };
 
     let allEvents = [];
+    
+    // --- 1. ADIM: GENEL MAÇLARI ÇEK ---
     for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
         try {
             console.log(`⏳ ${date} listesi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
+            const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             if (data && data.events) {
                 const filtered = data.events.filter(e => targetCategoryIds.includes(e.tournament?.category?.id));
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { 
-            console.error(`${date} hatası:`, e.message); 
-        }
+        } catch (e) { console.error(`${date} hatası:`, e.message); }
     }
 
-    const finalMatches = [];
-    const duplicateTracker = new Set();
+    // --- 2. ADIM: CANLI MAÇLARI (LIVE) ÇEK ---
+    try {
+        console.log(`📡 Canlı maçlar (Live) taranıyor...`);
+        await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/events/live`, { waitUntil: 'networkidle2' });
+        const liveData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+        if (liveData && liveData.events) {
+            const filteredLive = liveData.events.filter(e => targetCategoryIds.includes(e.tournament?.category?.id));
+            allEvents = allEvents.concat(filteredLive);
+        }
+    } catch (e) { console.error(`Canlı Maç Hatası:`, e.message); }
 
+    // --- 3. ADIM: DEDUPLİKASYON (HIZLANDIRMA İÇİN) ---
+    // Detay sayfalarına gitmeden önce mükerrer maçları ayıklıyoruz ki bot boşuna zaman kaybetmesin.
+    const uniqueEventsMap = new Map();
     for (const e of allEvents) {
-        if (duplicateTracker.has(`${e.id}`)) continue;
+        const matchKey = String(e.id);
+        if (uniqueEventsMap.has(matchKey)) {
+            const existing = uniqueEventsMap.get(matchKey);
+            // Yeni gelen veri daha güncelse (örn: inprogress veya finished ise) eskisini ez
+            if (e.status?.type === 'finished' || (e.status?.type === 'inprogress' && existing.status?.type !== 'finished')) {
+                uniqueEventsMap.set(matchKey, e);
+            }
+        } else {
+            uniqueEventsMap.set(matchKey, e);
+        }
+    }
+    const eventsToProcess = Array.from(uniqueEventsMap.values());
 
+    // --- 4. ADIM: ÇİFTLER DETAYI, MAÇ STATÜSÜ VE DOSYAYA KAYDETME ---
+    const finalMatches = [];
+
+    for (const e of eventsToProcess) {
         let homeCodes = [];
         let awayCodes = [];
         const isDouble = e.homeTeam.name.includes("/");
@@ -88,14 +114,10 @@ async function start() {
         if (isDouble) {
             console.log(`🔍 Çiftler: ${e.homeTeam.name} vs ${e.awayTeam.name}`);
             try {
-                await page.goto(`https://api.sofascore.com/api/v1/event/${e.id}`, { 
-                    waitUntil: 'networkidle2', 
-                    timeout: 5000 
-                });
-                const detail = await page.evaluate(() => JSON.parse(document.body.innerText));
+                await page.goto(`https://api.sofascore.com/api/v1/event/${e.id}`, { waitUntil: 'networkidle2', timeout: 5000 });
+                const detail = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
                 
                 if (detail?.event) {
-                    // subTeams'den bayrakları al
                     homeCodes = getCountriesFromSubTeams(detail.event.homeTeam);
                     awayCodes = getCountriesFromSubTeams(detail.event.awayTeam);
                     console.log(`   ✅ Home: [${homeCodes.join(", ")}], Away: [${awayCodes.join(", ")}]`);
@@ -106,7 +128,6 @@ async function start() {
                 awayCodes = ["default"];
             }
         } else {
-            // Tekler
             console.log(`🎾 Tekler: ${e.homeTeam.name} vs ${e.awayTeam.name}`);
             homeCodes = getCountriesSingles(e.homeTeam);
             awayCodes = getCountriesSingles(e.awayTeam);
@@ -117,6 +138,9 @@ async function start() {
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         const tId = e.tournament?.uniqueTournament?.id || e.tournament?.category?.id || "default";
 
+        // ÇOK KRİTİK: Maç tamamen bitti mi?
+        const isFinished = e.status?.type === 'finished';
+
         finalMatches.push({
             id: e.id,
             fixedDate: dayStr,
@@ -124,6 +148,14 @@ async function start() {
             timestamp: dateTR.getTime(),
             broadcaster: categoryConfigs[e.tournament?.category?.id] || "beIN / Eurosport",
             isDoubles: isDouble,
+            
+            // ANDROİD İÇİN MAÇ DURUMU
+            matchStatus: {
+                type: e.status?.type || "notstarted",
+                description: e.status?.description || "-",
+                code: e.status?.code || 0
+            },
+
             homeTeam: { 
                 name: e.homeTeam.name, 
                 countries: homeCodes,
@@ -135,11 +167,13 @@ async function start() {
                 logos: awayCodes.map(c => TENNIS_LOGO_BASE + c + ".png") 
             },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + tId + ".png",
-            homeScore: (e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
-            awayScore: (e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
+            
+            // SADECE BİTTİYSE SKOR YAZ, YOKSA "-" KOY
+            homeScore: (isFinished && e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
+            awayScore: (isFinished && e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
+            
             tournament: e.tournament.name
         });
-        duplicateTracker.add(`${e.id}`);
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
@@ -150,7 +184,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ ${finalMatches.length} maç başarıyla yazıldı!`);
+    console.log(`\n✅ ${finalMatches.length} maç başarıyla yazıldı! Skor filtresi uygulandı.`);
     await browser.close();
 }
 
