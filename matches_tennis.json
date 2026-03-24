@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-24T18:44:39.881Z",
+  "lastUpdated": "2026-03-24T19:40:59.585Z",
   "totalMatches": 91,
   "matches": [
     {
@@ -2375,38 +2375,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "tournament": "Miami, USA"
-    },
-    {
-      "id": 15708843,
-      "fixedDate": "2026-03-24",
-      "fixedTime": "21:00",
-      "timestamp": 1774375200000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "homeTeam": {
-        "name": "Tomas Martin Etcheverry",
-        "countries": [
-          "ar"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Tommy Paul",
-        "countries": [
-          "us"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
       "tournament": "Miami, USA"
     },
     {
@@ -2440,7 +2410,7 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "tournament": "Miami, USA, Doubles"
     },
     {
@@ -2469,6 +2439,36 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2587.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "tournament": "Miami, USA"
+    },
+    {
+      "id": 15708843,
+      "fixedDate": "2026-03-24",
+      "fixedTime": "22:50",
+      "timestamp": 1774381800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "homeTeam": {
+        "name": "Tomas Martin Etcheverry",
+        "countries": [
+          "ar"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Tommy Paul",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Miami, USA"
@@ -2505,9 +2505,9 @@
     },
     {
       "id": 15708845,
-      "fixedDate": "2026-03-24",
-      "fixedTime": "23:00",
-      "timestamp": 1774382400000,
+      "fixedDate": "2026-03-25",
+      "fixedTime": "00:00",
+      "timestamp": 1774386000000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "homeTeam": {
