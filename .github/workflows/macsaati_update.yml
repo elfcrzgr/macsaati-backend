@@ -2,8 +2,8 @@ name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
   schedule:
-    - cron: '0 */4 * * *' # Her 4 saatte bir otomatik çalışır (istediğin gibi değiştirebilirsin)
-  workflow_dispatch: # Actions sekmesinden manuel olarak tetikleme butonu koyar
+    - cron: '0 * * * *' # Her saat başı tam 00 geçe otomatik çalışır
+  workflow_dispatch: # Actions sekmesinden manuel olarak tetikleme butonu
 
 jobs:
   update-data:
@@ -24,16 +24,36 @@ jobs:
         run: |
           npm install
 
+      # ==========================================
+      # ⚽ FUTBOL ZİNCİRİ
+      # ==========================================
       - name: Futbol Verilerini Çek
         run: node fetch_football.js
 
-      # Eğer basketbol ve tenis dosyalarının adları farklıysa buraları kendi dosyalarına göre düzenleyebilirsin
+      - name: Eksik Futbol Logolarını İndir
+        run: node logo_football.js || echo "Futbol logo indirme atlandı"
+
+      # ==========================================
+      # 🏀 BASKETBOL ZİNCİRİ
+      # ==========================================
       - name: Basketbol Verilerini Çek
-        run: node fetch_basketball.js || echo "Basketbol dosyası bulunamadı veya atlandı"
+        run: node fetch_basketball.js || echo "Basketbol veri çekme atlandı"
 
+      - name: Eksik Basketbol Logolarını İndir
+        run: node logo_basketball.js || echo "Basketbol logo indirme atlandı"
+
+      # ==========================================
+      # 🎾 TENİS ZİNCİRİ
+      # ==========================================
       - name: Tenis Verilerini Çek
-        run: node fetch_tennis.js || echo "Tenis dosyası bulunamadı veya atlandı"
+        run: node fetch_tennis.js || echo "Tenis veri çekme atlandı"
 
+      - name: Eksik Tenis Logolarını İndir
+        run: node logo_tennis.js || echo "Tenis logo indirme atlandı"
+
+      # ==========================================
+      # 🚀 GITHUB'A YÜKLEME (ÇAKIŞMA ÖNLEYİCİLİ)
+      # ==========================================
       - name: Git Kimliğini Ayarla ve Çakışmaları Ezerek Pushla
         run: |
           # 1. Botun kimliğini tanımla
