@@ -1,76 +1,54 @@
-name: Mac Saati Veri Guncelleme
+name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
   schedule:
-    # Türkiye saatiyle (TSİ) her saat başında çalışacak şekilde ayarla (00:01, 01:01, 02:01, vb.)
-    - cron: '1 * * * *'
-  workflow_dispatch: # Manuel çalıştırma butonu
+    - cron: '0 */4 * * *' # Her 4 saatte bir otomatik çalışır (istediğin gibi değiştirebilirsin)
+  workflow_dispatch: # Actions sekmesinden manuel olarak tetikleme butonu koyar
 
 jobs:
-  build:
+  update-data:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Repoyu Klonla
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Tüm git geçmişini çek (Rebase için zorunlu)
+          fetch-depth: 0 # Git geçmişini tam çekmek, çakışma çözümü (rebase) için şarttır
 
-      - name: Setup Node.js
+      - name: Node.js Kurulumu
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install System Dependencies (For Puppeteer)
+      - name: Kütüphaneleri Yükle
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libgbm-dev google-chrome-stable
+          npm install
 
-      - name: Install Node Dependencies
-        run: |
-          npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
-
-      # --- 1. FUTBOL ---
-      - name: Run Football Fetch
+      - name: Futbol Verilerini Çek
         run: node fetch_football.js
 
-      - name: Run Football Logo Downloader
-        run: node logo_football.js
+      # Eğer basketbol ve tenis dosyalarının adları farklıysa buraları kendi dosyalarına göre düzenleyebilirsin
+      - name: Basketbol Verilerini Çek
+        run: node fetch_basketball.js || echo "Basketbol dosyası bulunamadı veya atlandı"
 
-      # --- 2. BASKETBOL ---
-      - name: Run Basketball Fetch
-        run: node fetch_basketball.js
+      - name: Tenis Verilerini Çek
+        run: node fetch_tennis.js || echo "Tenis dosyası bulunamadı veya atlandı"
 
-      - name: Run Basketball Logo Downloader
-        run: node logo_basketball.js
-
-      # --- 3. TENİS ---
-      - name: Run Tennis Fetch
-        run: node fetch_tennis.js
-
-      - name: Run Tennis Logo Downloader
-        run: node logo_tennis.js # BU ADIMDA logo_tennis.js ÇALIŞTIRILIYOR
-
-      # --- 4. GITHUB SYNC (Kritik Bölüm) ---
-      - name: Commit and Push Changes
+      - name: Git Kimliğini Ayarla ve Çakışmaları Ezerek Pushla
         run: |
-          # Git kimliğini bot olarak ayarla
+          # 1. Botun kimliğini tanımla
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Tüm değişiklikleri (JSON ve yeni inen logoları) 'stage' alanına al
-          git add matches_football.json matches_basketball.json matches_tennis.json
-          git add football/logos/ basketball/logos/ tennis/tournament_logos/
-
-          # Çakışmaları önlemek için:
-          # 1. Elindeki değişiklikleri geçici olarak sakla (autostash)
-          # 2. GitHub'daki en güncel hali çek ve kendi üzerine ekle (rebase)
-          git pull origin main --rebase --autostash
-
-          # Eğer gerçekten değişen bir dosya varsa commit at ve gönder
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Veri & Logolar Otomatik Guncellendi: $(date)"
-            git push origin main
-          else
-            echo "Herhangi bir değişiklik bulunamadı, push yapılmıyor."
-          fi
+          # 2. Üretilen tüm yeni JSON dosyalarını ve inen logoları sahneye al
+          git add .
+          
+          # 3. Değişiklikleri önce yerelde kaydet (Çakışma önlemek için şart)
+          git commit -m "Yerel bot güncellemeleri" || echo "Değişiklik yok"
+          
+          # 4. Senin manuel eklediğin logoları çek, ÇAKIŞMA OLURSA BOTUN YENİ VERİSİNİ KABUL ET (-X theirs)
+          git pull origin main --rebase -X theirs
+          
+          # 5. Mesajı düzelt ve GitHub'a sorunsuzca gönder
+          git commit --amend -m "Veri & Logolar Otomatik Güncellendi: $(date)" || echo "Değişiklik yok"
+          git push origin main
