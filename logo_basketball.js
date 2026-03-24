@@ -8,9 +8,12 @@ puppeteer.use(StealthPlugin());
 const MATCHES_FILE = path.join(__dirname, 'matches_basketball.json');
 const LOGOS_BASE_DIR = path.join(__dirname, 'basketball', 'logos');
 const LOGOS_NBA_DIR = path.join(__dirname, 'basketball', 'logos', 'NBA');
+const TOURNAMENT_LOGOS_DIR = path.join(__dirname, 'basketball', 'tournament_logos');
 
+// Klasörlerin oluşturulması
 if (!fs.existsSync(LOGOS_BASE_DIR)) fs.mkdirSync(LOGOS_BASE_DIR, { recursive: true });
 if (!fs.existsSync(LOGOS_NBA_DIR)) fs.mkdirSync(LOGOS_NBA_DIR, { recursive: true });
+if (!fs.existsSync(TOURNAMENT_LOGOS_DIR)) fs.mkdirSync(TOURNAMENT_LOGOS_DIR, { recursive: true });
 
 async function start() {
     if (!fs.existsSync(MATCHES_FILE)) {
@@ -19,11 +22,13 @@ async function start() {
 
     const json = JSON.parse(fs.readFileSync(MATCHES_FILE, 'utf8'));
     const teamsToProcess = new Map();
+    const tournamentsToProcess = new Map();
     let nbaCount = 0;
     let normalCount = 0;
 
-    // 1. JSON'ı tara ve takımları klasörlerine göre grupla
+    // 1. JSON'ı tara ve takımları ve turnuvaları grupla
     json.matches.forEach(m => {
+        // Takımlar
         const isNba = m.homeTeam.logo.includes("/NBA/");
         const hId = m.homeTeam.logo.split('/').pop().replace('.png', '');
         const aId = m.awayTeam.logo.split('/').pop().replace('.png', '');
@@ -36,54 +41,101 @@ async function start() {
             teamsToProcess.set(aId, { name: m.awayTeam.name, isNba });
             isNba ? nbaCount++ : normalCount++;
         }
+
+        // Turnuvalar
+        const tournamentId = m.tournamentLogo.split('/').pop().replace('.png', '');
+        if (!tournamentsToProcess.has(tournamentId)) {
+            tournamentsToProcess.set(tournamentId, { name: m.tournament });
+        }
     });
 
     console.log(`\n🔍 JSON Tarandı:`);
     console.log(`   - Toplam Takım: ${teamsToProcess.size}`);
     console.log(`   - NBA Takımı: ${nbaCount}`);
     console.log(`   - Diğer Ligler: ${normalCount}`);
+    console.log(`   - Turnuvalar: ${tournamentsToProcess.size}`);
 
-    // 2. Eksikleri kontrol et
-    const missing = [];
+    // 2. Eksik takım logolarını kontrol et
+    const missingTeams = [];
     teamsToProcess.forEach((info, id) => {
         const targetPath = path.join(info.isNba ? LOGOS_NBA_DIR : LOGOS_BASE_DIR, `${id}.png`);
         if (!fs.existsSync(targetPath)) {
-            missing.push({ id, ...info });
+            missingTeams.push({ id, ...info });
         }
     });
 
-    if (missing.length === 0) {
-        console.log(`\n🎉 Harika! Tüm logolar (NBA dahil) KENDİ KLASÖRLERİNDE mevcut. İşlem bitti.\n`);
-        return;
-    }
-
-    console.log(`\n⚠️  ${missing.length} adet eksik logo bulundu. İndirme başlıyor...\n`);
-
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox'] });
-    const page = await browser.newPage();
-    let successCount = 0;
-
-    for (const t of missing) {
-        const targetPath = path.join(t.isNba ? LOGOS_NBA_DIR : LOGOS_BASE_DIR, `${t.id}.png`);
-        try {
-            const res = await page.goto(`https://api.sofascore.com/api/v1/team/${t.id}/image`, { waitUntil: 'networkidle2', timeout: 30000 });
-            if (res.status() === 200) {
-                fs.writeFileSync(targetPath, await res.buffer());
-                console.log(`   ✅ [${t.isNba ? 'NBA' : 'NORMAL'}] İndirildi: ${t.name}`);
-                successCount++;
-            } else {
-                console.log(`   ❌ [Hata] ${t.name}: API ${res.status()}`);
-            }
-        } catch (e) {
-            console.log(`   ❌ [Bağlantı Hatası] ${t.name}`);
+    // 3. Eksik turnuva logolarını kontrol et
+    const missingTournaments = [];
+    tournamentsToProcess.forEach((info, id) => {
+        const targetPath = path.join(TOURNAMENT_LOGOS_DIR, `${id}.png`);
+        if (!fs.existsSync(targetPath)) {
+            missingTournaments.push({ id, ...info });
         }
-        await new Promise(r => setTimeout(r, 1000));
+    });
+
+    // Eğer eksik takım logosu varsa indir
+    if (missingTeams.length > 0) {
+        console.log(`\n⚠️  ${missingTeams.length} adet eksik takım logosu bulundu. İndirme başlıyor...\n`);
+        const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox'] });
+        const page = await browser.newPage();
+        let successCount = 0;
+
+        for (const t of missingTeams) {
+            const targetPath = path.join(t.isNba ? LOGOS_NBA_DIR : LOGOS_BASE_DIR, `${t.id}.png`);
+            try {
+                const res = await page.goto(`https://api.sofascore.com/api/v1/team/${t.id}/image`, { waitUntil: 'networkidle2', timeout: 30000 });
+                if (res.status() === 200) {
+                    fs.writeFileSync(targetPath, await res.buffer());
+                    console.log(`   ✅ [${t.isNba ? 'NBA' : 'NORMAL'}] İndirildi: ${t.name}`);
+                    successCount++;
+                } else {
+                    console.log(`   ❌ [Hata] ${t.name}: API ${res.status()}`);
+                }
+            } catch (e) {
+                console.log(`   ❌ [Bağlantı Hatası] ${t.name}`);
+            }
+            await new Promise(r => setTimeout(r, 1000));
+        }
+
+        await browser.close();
+        console.log(`\n🏁 TAKIMLAR BİTTİ:`);
+        console.log(`   - Başarıyla Eklenen: ${successCount}`);
+        console.log(`   - Toplam Eksik: ${missingTeams.length}\n`);
+    } else {
+        console.log(`\n🎉 Harika! Tüm takım logoları (NBA dahil) KENDİ KLASÖRLERİNDE mevcut.`);
     }
 
-    await browser.close();
-    console.log(`\n🏁 İŞLEM BİTTİ:`);
-    console.log(`   - Başarıyla Eklenen: ${successCount}`);
-    console.log(`   - Toplam Eksik: ${missing.length}\n`);
+    // Eğer eksik turnuva logosu varsa indir
+    if (missingTournaments.length > 0) {
+        console.log(`\n⚠️  ${missingTournaments.length} adet eksik turnuva logosu bulundu. İndirme başlıyor...\n`);
+        const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox'] });
+        const page = await browser.newPage();
+        let successCount = 0;
+
+        for (const t of missingTournaments) {
+            const targetPath = path.join(TOURNAMENT_LOGOS_DIR, `${t.id}.png`);
+            try {
+                const res = await page.goto(`https://api.sofascore.com/api/v1/tournament/${t.id}/image`, { waitUntil: 'networkidle2', timeout: 30000 });
+                if (res.status() === 200) {
+                    fs.writeFileSync(targetPath, await res.buffer());
+                    console.log(`   ✅ [Turnuva] İndirildi: ${t.name}`);
+                    successCount++;
+                } else {
+                    console.log(`   ❌ [Hata] ${t.name}: API ${res.status()}`);
+                }
+            } catch (e) {
+                console.log(`   ❌ [Bağlantı Hatası] ${t.name}`);
+            }
+            await new Promise(r => setTimeout(r, 1000));
+        }
+
+        await browser.close();
+        console.log(`\n🏁 TURNUVALAR BİTTİ:`);
+        console.log(`   - Başarıyla Eklenen: ${successCount}`);
+        console.log(`   - Toplam Eksik: ${missingTournaments.length}\n`);
+    } else {
+        console.log(`\n🎉 Harika! Tüm turnuva logoları KENDİ KLASÖRLERİNDE mevcut.`);
+    }
 }
 
 start();
