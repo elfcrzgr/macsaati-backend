@@ -17,7 +17,7 @@ const leagueConfigs = {
     52: "beIN Sports",             // Trendyol Süper Lig
     98: "beIN Sports / TRT Spor",  // Trendyol 1. Lig
     311: "A Spor / ATV",           // Ziraat Türkiye Kupası
-    97: "TFF YouTube",             // TFF 2. Lig
+    97: "TFF YouTube",             // TFF 2. Lig (Ana ID)
     11417: "TFF YouTube",          // TFF 3. Lig 1. Grup
     11416: "TFF YouTube",          // TFF 3. Lig 2. Grup
     11415: "TFF YouTube",          // TFF 3. Lig 3. Grup
@@ -60,11 +60,10 @@ const leagueConfigs = {
     696: "DAZN / YouTube"          // UEFA Kadınlar Şampiyonlar Ligi
 };
 
-
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (Sadece Kesin ID Kontrolü Aktif)...");
+    console.log("🚀 Futbol motoru başlatılıyor (Kaçak Lig Radarı Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -85,11 +84,30 @@ async function start() {
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             
             if (data && data.events) {
+                
+                // --- 🕵️ KAÇAK LİG RADARI BAŞLANGICI ---
+                data.events.forEach(e => {
+                    const categoryName = e.tournament?.category?.name;
+                    
+                    // Sadece Türkiye kategorisindeki maçları kontrol et
+                    if (categoryName === "Turkey" || categoryName === "Türkiye") {
+                        const utId = e.tournament?.uniqueTournament?.id;
+                        const tName = e.tournament?.uniqueTournament?.name;
+                        
+                        // Eğer maçın ID'si bizim "elit" listemizde yoksa terminale uyarı bas
+                        if (!targetLeagueIds.includes(utId)) {
+                            console.log(`🚨 EKSİK LİG YAKALANDI! -> Lig: ${tName} | ID: ${utId} | Maç: ${e.homeTeam.name} - ${e.awayTeam.name}`);
+                        }
+                    }
+                });
+                // --- 🕵️ KAÇAK LİG RADARI BİTİŞİ ---
+
+                // Asıl filtreleme (Sadece senin listendekiler dosyaya yazılacak)
                 const filtered = data.events.filter(e => {
                     const utId = e.tournament?.uniqueTournament?.id;
-                    // SADECE ID KONTROLÜ: Maçın ID'si bizim elit listemizde yoksa içeri alma!
                     return targetLeagueIds.includes(utId);
                 });
+                
                 allEvents = allEvents.concat(filtered);
             }
         } catch (e) { console.error(`${date} hatası:`, e.message); }
@@ -138,7 +156,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı. Hedeflenen maçlar kaydedildi.`);
+    console.log(`\n✅ İşlem Tamamlandı. Hedeflenen maçlar dosyaya kaydedildi.`);
     await browser.close();
 }
 
