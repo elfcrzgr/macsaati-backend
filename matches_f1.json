@@ -1,6 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-25T18:05:16.876Z",
+  "lastUpdated": "2026-03-25T18:09:05.497Z",
+  "totalSessions": 5,
   "events": [
     {
       "id": "3_1.Antrenman",
@@ -10,6 +11,44 @@
       "broadcaster": "beIN Sports / F1 TV",
       "grandPrix": "Japanese Grand Prix",
       "sessionName": "1. Antrenman",
+      "trackName": "Suzuka Circuit",
+      "countryLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/logos/jp.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/suzuka.png",
+      "circuitStats": {
+        "length": "5.807km",
+        "firstGP": "1987",
+        "laps": "53",
+        "distance": "307.471km",
+        "record": "1:30.983 - L. Hamilton (2019)"
+      }
+    },
+    {
+      "id": "3_2.Antrenman",
+      "fixedDate": "27 Mart Cuma",
+      "fixedTime": "09:00",
+      "timestamp": 1774591200000,
+      "broadcaster": "beIN Sports / F1 TV",
+      "grandPrix": "Japanese Grand Prix",
+      "sessionName": "2. Antrenman",
+      "trackName": "Suzuka Circuit",
+      "countryLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/logos/jp.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/suzuka.png",
+      "circuitStats": {
+        "length": "5.807km",
+        "firstGP": "1987",
+        "laps": "53",
+        "distance": "307.471km",
+        "record": "1:30.983 - L. Hamilton (2019)"
+      }
+    },
+    {
+      "id": "3_3.Antrenman",
+      "fixedDate": "28 Mart Cumartesi",
+      "fixedTime": "05:30",
+      "timestamp": 1774665000000,
+      "broadcaster": "beIN Sports / F1 TV",
+      "grandPrix": "Japanese Grand Prix",
+      "sessionName": "3. Antrenman",
       "trackName": "Suzuka Circuit",
       "countryLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/logos/jp.png",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/suzuka.png",
