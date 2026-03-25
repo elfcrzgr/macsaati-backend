@@ -8,7 +8,6 @@ const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${R
 const F1_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/logos/`;
 const OUTPUT_FILE = "matches_f1.json";
 
-// f1_stats.json dosyasını oku
 const statsFilePath = path.join(__dirname, 'f1_stats.json');
 let circuitStats = {};
 try {
@@ -18,7 +17,7 @@ try {
 }
 
 async function start() {
-    console.log("🏎️ F1 Motoru (2 Haneli Bayrak Kodları Destekli) başlatılıyor...");
+    console.log("🏎️ F1 Motoru (35 Günlük Geniş Takvim) başlatılıyor...");
 
     try {
         const response = await fetch('https://api.jolpi.ca/ergast/f1/current.json');
@@ -33,7 +32,6 @@ async function start() {
             return new Date(`${dateStr}T${timeStr}`);
         };
 
-        // --- ÜLKE İSİMLERİNİ 2 HANELİ KODLARA (TENİS STANDARDI) ÇEVİREN SÖZLÜK ---
         const countryToCode = {
             "Bahrain": "bh", "Saudi Arabia": "sa", "Australia": "au", "Japan": "jp",
             "China": "cn", "USA": "us", "Italy": "it", "Monaco": "mc", "Canada": "ca",
@@ -45,24 +43,24 @@ async function start() {
         races.forEach(race => {
             const circuitId = race.Circuit.circuitId;
             const countryName = race.Circuit.Location.country;
-            
-            // Eğer sözlükte varsa kodu al, yoksa ismin ilk 2 harfini küçük yapıp dene
             const flagCode = countryToCode[countryName] || countryName.toLowerCase().substring(0, 2);
-            
             const stats = circuitStats[circuitId] || circuitStats["default"];
 
             const addSession = (sessionName, dateObj) => {
                 if (!dateObj) return;
-                const diffDays = (dateObj - now) / (1000 * 60 * 60 * 24);
                 
-                if (diffDays >= -2 && diffDays <= 15) {
-                    const dayStr = dateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                    const timeStr = dateObj.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+                // --- ARALIK 35 GÜNE ÇIKARILDI ---
+                const diffDays = (dateObj - now) / (1000 * 60 * 60 * 24);
+                if (diffDays >= -1 && diffDays <= 35) { 
+                    
+                    // Android'de "27 Mart Cuma" gibi görünmesi için format
+                    const dayName = dateObj.toLocaleDateString('tr-TR', { weekday: 'long' });
+                    const dayAndMonth = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' });
 
                     finalEvents.push({
                         id: `${race.round}_${sessionName.replace(/\s/g, '')}`,
-                        fixedDate: dayStr,
-                        fixedTime: timeStr,
+                        fixedDate: `${dayAndMonth} ${dayName}`, // Örn: 27 Mart Cuma
+                        fixedTime: dateObj.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
                         timestamp: dateObj.getTime(),
                         broadcaster: "beIN Sports / F1 TV",
                         grandPrix: race.raceName,
@@ -73,7 +71,6 @@ async function start() {
                             description: (now > dateObj) ? "Tamamlandı" : "-",
                             code: (now > dateObj) ? 100 : 0
                         },
-                        // Bayrak linkini tenisteki gibi 2 haneli kodla oluşturuyoruz
                         countryLogo: F1_LOGO_BASE + flagCode + ".png", 
                         tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png",
                         circuitStats: stats 
@@ -92,9 +89,7 @@ async function start() {
         finalEvents.sort((a, b) => a.timestamp - b.timestamp);
         fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, events: finalEvents }, null, 2));
 
-        console.log(`\n✅ F1 JSON Hazır!`);
-        console.log(`İlk yarış bayrak linki: ${finalEvents[0]?.countryLogo}`);
-
+        console.log(`\n✅ F1 JSON 35 günlük takvimle güncellendi.`);
     } catch (e) { console.error(e); }
 }
 start();
