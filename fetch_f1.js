@@ -2,14 +2,16 @@ const fs = require('fs');
 
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
+
+// F1 logoları için klasör yolları (Senin GitHub repona tam uyumlu)
 const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/tournament_logos/`;
+const F1_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/logos/`;
 const OUTPUT_FILE = "matches_f1.json";
 
 async function start() {
-    console.log("🏎️ Formula 1 motoru başlatılıyor (Açık Kaynak Jolpi API)...");
+    console.log("🏎️ Formula 1 motoru başlatılıyor (Jolpi API - Pist ve Bayrak Destekli)...");
 
     try {
-        // Puppeteer'a veda! Doğrudan API'den saniyesinde tüm sezonu çekiyoruz.
         const response = await fetch('https://api.jolpi.ca/ergast/f1/current.json');
         const data = await response.json();
         const races = data.MRData.RaceTable.Races;
@@ -17,29 +19,35 @@ async function start() {
         const finalEvents = [];
         const now = new Date();
 
-        // API'den gelen UTC saatleri Türkiye saatine (TSİ) çeviren yardımcı
+        // API'den gelen UTC saatleri Türkiye saatine çeviren yardımcı fonksiyon
         const getTRTime = (dateStr, timeStr) => {
             if (!dateStr || !timeStr) return null;
             return new Date(`${dateStr}T${timeStr}`);
         };
 
         races.forEach(race => {
-            // F1 pistinin benzersiz ID'si (Örn: "albert_park", "bahrain", "monaco")
-            // Bunu Android uygulamasında bayrak veya pist silueti göstermek için kullanacağız.
-            const circuitId = race.Circuit.circuitId; 
-            const gpName = race.raceName;
+            // Temel F1 Verileri
+            const circuitId = race.Circuit.circuitId; // Örn: "suzuka", "bahrain"
+            const gpName = race.raceName; // Örn: "Japanese Grand Prix"
+            
+            // Eklenen Yeni Veriler (Pist Adı ve Ülke)
+            const trackName = race.Circuit.circuitName; // Örn: "Suzuka Circuit"
+            const countryName = race.Circuit.Location.country; // Örn: "Japan", "UK", "Saudi Arabia"
+            
+            // Ülke adını bayrak URL'si için formata sokuyoruz (Küçük harf ve boşluklar yerine alt tire)
+            // Örn: "Saudi Arabia" -> "saudi_arabia", "UK" -> "uk"
+            const countryFormatted = countryName.toLowerCase().replace(/\s/g, '_');
 
             const addSession = (sessionName, dateObj) => {
                 if (!dateObj) return;
                 
-                // F1 takvimi bütün yılı içerdiği için sadece bize lazım olanları filtreliyoruz
-                // Kural: Bugünden 2 gün öncesi ile 15 gün sonrası arasındaki seansları göster
+                // Bugünden 2 gün öncesi ile 15 gün sonrası arasındaki seansları göster
                 const diffDays = (dateObj - now) / (1000 * 60 * 60 * 24);
                 if (diffDays >= -2 && diffDays <= 15) {
                     const dayStr = dateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                     const timeStr = dateObj.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
 
-                    // Maç/Seans durumu: Geçmiş mi, Canlı mı, Gelecek mi?
+                    // Maç Durumu (Geçti mi, Canlı mı, Bekliyor mu?)
                     let statusType = "notstarted";
                     if (now > dateObj) {
                         statusType = "finished";
@@ -57,30 +65,32 @@ async function start() {
                         
                         grandPrix: gpName,
                         sessionName: sessionName,
+                        trackName: trackName,
+                        country: countryName,
                         
                         matchStatus: {
                             type: statusType,
                             description: statusType === "finished" ? "Tamamlandı" : (statusType === "inprogress" ? "Canlı" : "-"),
                             code: statusType === "finished" ? 100 : 0
                         },
-                        // Logo ismini circuitId yapıyoruz (Örn: albert_park.png)
-                        tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png"
+                        
+                        // Dinamik Logolar
+                        countryLogo: F1_LOGO_BASE + countryFormatted + ".png", // Bayrak görseli
+                        tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png"  // Pist silüeti
                     });
                 }
             };
 
-            // Hafta sonu takvimindeki tüm etkinlikleri sırayla ekle
+            // Seansları Ekle (Antrenmanlar, Sıralama, Sprint, Yarış)
             if (race.FirstPractice) addSession("1. Antrenman", getTRTime(race.FirstPractice.date, race.FirstPractice.time));
             if (race.SecondPractice) addSession("2. Antrenman", getTRTime(race.SecondPractice.date, race.SecondPractice.time));
             if (race.ThirdPractice) addSession("3. Antrenman", getTRTime(race.ThirdPractice.date, race.ThirdPractice.time));
             if (race.Qualifying) addSession("Sıralama", getTRTime(race.Qualifying.date, race.Qualifying.time));
             if (race.Sprint) addSession("Sprint", getTRTime(race.Sprint.date, race.Sprint.time));
-            
-            // Ana Yarış
             addSession("Yarış", getTRTime(race.date, race.time));
         });
 
-        // Tarih ve saate göre sırala ki Android'de düzgün görünsün
+        // Tarih ve saate göre sırala
         finalEvents.sort((a, b) => a.timestamp - b.timestamp);
 
         fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
@@ -90,7 +100,7 @@ async function start() {
             events: finalEvents 
         }, null, 2));
 
-        console.log(`\n✅ ${finalEvents.length} adet F1 seansı başarıyla JSON'a yazıldı!`);
+        console.log(`\n✅ ${finalEvents.length} adet F1 seansı (Bayrak ve Pist bilgileriyle) JSON'a yazıldı!`);
 
     } catch (e) {
         console.error("❌ F1 verileri çekilirken hata:", e.message);
