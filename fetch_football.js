@@ -11,9 +11,9 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- GÜNCELLENMİŞ ELİT LİGLER, MİLLİ MAÇLAR VE YAYINCILAR ---
+// --- TÜM MİLLİ MAÇLARI VE ELİT LİGLERİ KAPSAYAN YAYINCI LİSTESİ ---
 const leagueConfigs = {
-    // Türkiye Ligleri
+    // Türkiye
     52: "beIN Sports",             
     98: "beIN Sports / TRT Spor",  
     311: "A Spor / ATV",           
@@ -22,25 +22,23 @@ const leagueConfigs = {
     11416: "TFF YouTube",          
     11415: "TFF YouTube",          
     15938: "TFF YouTube",          
-    // Avrupa Ligleri
-    17: "beIN Sports",      // Premier League       
-    18: "beIN Sports",      // Ligue 1       
-    8: "S Sport",           // La Liga       
-    23: "S Sport",          // Serie A       
-    35: "beIN Sports / Tivibu", // Bundesliga   
-    // Kupalar & Turnuvalar
-    7: "TRT / Tabii",       // Şampiyonlar Ligi       
-    3: "TRT / Tabii",       // Avrupa Ligi       
-    17015: "TRT / Tabii",   // Konferans Ligi       
-    696: "DAZN / YouTube",  // Kadınlar Şampiyonlar Ligi
-    // --- MİLLİ MAÇLAR VE ÖZEL TURNUVALAR ---
-    14602: "TRT 1 / Tabii",      // UEFA Nations League, League A
-    14605: "TRT 1 / Bizim Çocuklar", // UEFA Nations League, League B (Türkiye Maçları)
-    10783: "S Sport Plus",       // UEFA Nations League (Diğer Gruplar)
-    1: "TRT 1 / Tabii",          // Dünya Kupası
-    2: "TRT 1 / Tabii",          // Avrupa Şampiyonası (EURO)
-    4664: "TRT Spor / Tabii",    // Uluslararası Hazırlık Maçları
-    // Diğerleri
+    // Avrupa & Diğer
+    17: "beIN Sports",             
+    18: "beIN Sports",             
+    8: "S Sport",                  
+    23: "S Sport",                 
+    35: "beIN Sports / Tivibu",    
+    7: "TRT / Tabii",              
+    3: "TRT / Tabii",              
+    17015: "TRT / Tabii",          
+    696: "DAZN / YouTube",
+    // --- MİLLİ MAÇLAR & ELEMELER (SENSİN İSTEDİĞİN KISIM) ---
+    17011: "TRT 1 / Tabii",          // UEFA Dünya Kupası Elemeleri (Linkteki turnuva)
+    14605: "TRT 1 / Bizim Çocuklar", // UEFA Uluslar Ligi (Türkiye'nin grubu)
+    14602: "TRT 1 / Tabii",          // UEFA Uluslar Ligi A
+    10783: "S Sport Plus",           // UEFA Uluslar Ligi Diğer
+    4664: "TRT Spor / Tabii",        // Uluslararası Hazırlık Maçları
+    // Diğer Yayıncılar
     54: "S Sport Plus",            
     73: "Tivibu Spor",             
     53: "S Sport Plus",            
@@ -53,18 +51,20 @@ const leagueConfigs = {
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
-const stubbornLeagueIds = [97, 11415, 11416, 11417, 15938];
+
+// Özel olarak "Derin Dalış" yapılıp grupları tek tek taranacak ligler:
+// UEFA Elemeleri (17011) listeye eklendi.
+const stubbornLeagueIds = [97, 11415, 11416, 11417, 15938, 17011, 14605];
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (Milli Maçlar Dahil)...");
+    console.log("🚀 Futbol motoru başlatılıyor (Milli Maçlar + Dünya Kupası Elemeleri Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // Türkiye saatine göre bugün, yarın ve sonraki günü belirle
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); // UTC'den TR'ye (UTC+3)
+        d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); // UTC+3 ayarı
         d.setDate(d.getDate() + offset);
         return d.toISOString().split('T')[0];
     };
@@ -72,10 +72,10 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // --- 1. ADIM: GÜNLÜK MAÇLARI ÇEK ---
+    // --- 1. ADIM: GENEL GÜNLÜK MAÇLAR ---
     for (const date of validDates) {
         try {
-            console.log(`⏳ ${date} tarihi için veriler taranıyor...`);
+            console.log(`⏳ ${date} genel maç verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             
@@ -83,11 +83,12 @@ async function start() {
                 const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`Hata (${date}):`, e.message); }
+        } catch (e) { console.error(`Genel API Hatası (${date}):`, e.message); }
     }
 
     // --- 2. ADIM: CANLI MAÇLAR ---
     try {
+        console.log(`📡 Canlı maçlar taranıyor...`);
         await page.goto(`https://api.sofascore.com/api/v1/sport/football/events/live`, { waitUntil: 'networkidle2' });
         const liveData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
         if (liveData && liveData.events) {
@@ -96,14 +97,17 @@ async function start() {
         }
     } catch (e) { console.error(`Canlı Maç Hatası:`, e.message); }
 
-    // --- 3. ADIM: ÖZEL ALT LİGLER (DERİN DALIŞ) ---
+    // --- 3. ADIM: İNATÇI LİGLER (DÜNYA KUPASI ELEMELERİ DAHİL) ---
     for (const id of stubbornLeagueIds) {
         try {
+            console.log(`🔍 Derin Dalış: ID ${id}`);
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
             const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             
             if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
+                // En güncel sezonu al (Combobox'taki en üstteki yıl/sezon)
                 const seasonId = seasonsData.seasons[0].id;
+
                 for (const pageType of ['next/0', 'last/0']) {
                     await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${pageType}`, { waitUntil: 'networkidle2' });
                     const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
@@ -121,7 +125,7 @@ async function start() {
         } catch (e) { console.error(`Derin Dalış Hatası (${id}):`, e.message); }
     }
 
-    // --- 4. ADIM: AYIKLAMA VE KAYDETME ---
+    // --- 4. ADIM: DEDUPLİKASYON VE KAYDETME ---
     const finalMatchesMap = new Map();
 
     for (const e of allEvents) {
@@ -177,7 +181,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı. ${finalMatches.length} maç (Milli maçlar dahil) kaydedildi.`);
+    console.log(`\n✅ İşlem Tamamlandı. ${finalMatches.length} maç dosyaya kaydedildi.`);
     await browser.close();
 }
 
