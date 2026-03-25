@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-25T16:54:50.524Z",
+  "lastUpdated": "2026-03-25T17:46:56.481Z",
   "totalMatches": 31,
   "matches": [
     {
@@ -441,25 +441,6 @@
       "tournament": "Nesine 3. Lig, Grup 4"
     },
     {
-      "id": 14162206,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "18:00",
-      "timestamp": 1774450800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "MKE Ankaragücü",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3103.png"
-      },
-      "awayTeam": {
-        "name": "Sincan Belediyesi Ankaraspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3057.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
       "id": 14162187,
       "fixedDate": "2026-03-25",
       "fixedTime": "18:00",
@@ -495,6 +476,25 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
       "homeScore": "3",
       "awayScore": "0",
+      "tournament": "Nesine 2. Lig"
+    },
+    {
+      "id": 14162206,
+      "fixedDate": "2026-03-25",
+      "fixedTime": "18:00",
+      "timestamp": 1774450800000,
+      "broadcaster": "TFF YouTube",
+      "homeTeam": {
+        "name": "MKE Ankaragücü",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3103.png"
+      },
+      "awayTeam": {
+        "name": "Sincan Belediyesi Ankaraspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3057.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
+      "homeScore": "2",
+      "awayScore": "1",
       "tournament": "Nesine 2. Lig"
     },
     {
