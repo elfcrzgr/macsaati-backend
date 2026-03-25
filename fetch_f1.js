@@ -14,11 +14,11 @@ let circuitStats = {};
 try {
     circuitStats = JSON.parse(fs.readFileSync(statsFilePath, 'utf8'));
 } catch (err) {
-    console.error("⚠️ f1_stats.json okunamadı.");
+    console.error("⚠️ f1_stats.json bulunamadı!");
 }
 
 async function start() {
-    console.log("🏎️ Formula 1 motoru (Bayrak & Pist & Rekor Revize) başlatılıyor...");
+    console.log("🏎️ F1 Motoru (2 Haneli Bayrak Kodları Destekli) başlatılıyor...");
 
     try {
         const response = await fetch('https://api.jolpi.ca/ergast/f1/current.json');
@@ -28,28 +28,26 @@ async function start() {
         const finalEvents = [];
         const now = new Date();
 
-        // ISO formatına göre TR saati yardımcı fonksiyonu
         const getTRTime = (dateStr, timeStr) => {
             if (!dateStr || !timeStr) return null;
             return new Date(`${dateStr}T${timeStr}`);
         };
 
-        // Ülke isimlerini Tenis'teki gibi 2 haneli kodlara çeviren küçük bir eşleştirici
-        // API'den gelen ülke isimlerine göre burayı genişletebilirsin
+        // --- ÜLKE İSİMLERİNİ 2 HANELİ KODLARA (TENİS STANDARDI) ÇEVİREN SÖZLÜK ---
         const countryToCode = {
             "Bahrain": "bh", "Saudi Arabia": "sa", "Australia": "au", "Japan": "jp",
             "China": "cn", "USA": "us", "Italy": "it", "Monaco": "mc", "Canada": "ca",
             "Spain": "es", "Austria": "at", "UK": "gb", "Hungary": "hu", "Belgium": "be",
             "Netherlands": "nl", "Azerbaijan": "az", "Singapore": "sg", "Mexico": "mx",
-            "Brazil": "br", "Qatar": "qa", "UAE": "ae"
+            "Brazil": "br", "Qatar": "qa", "UAE": "ae", "United States": "us"
         };
 
         races.forEach(race => {
             const circuitId = race.Circuit.circuitId;
             const countryName = race.Circuit.Location.country;
             
-            // Bayrak kodu (Eğer listede yoksa ismi küçük harfe çevirip dene)
-            const flagCode = countryToCode[countryName] || countryName.toLowerCase();
+            // Eğer sözlükte varsa kodu al, yoksa ismin ilk 2 harfini küçük yapıp dene
+            const flagCode = countryToCode[countryName] || countryName.toLowerCase().substring(0, 2);
             
             const stats = circuitStats[circuitId] || circuitStats["default"];
 
@@ -61,12 +59,6 @@ async function start() {
                     const dayStr = dateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                     const timeStr = dateObj.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
 
-                    let statusType = "notstarted";
-                    if (now > dateObj) {
-                        statusType = "finished";
-                        if ((now - dateObj) < (2 * 60 * 60 * 1000)) statusType = "inprogress";
-                    }
-
                     finalEvents.push({
                         id: `${race.round}_${sessionName.replace(/\s/g, '')}`,
                         fixedDate: dayStr,
@@ -77,11 +69,11 @@ async function start() {
                         sessionName: sessionName,
                         trackName: race.Circuit.circuitName,
                         matchStatus: {
-                            type: statusType,
-                            description: statusType === "finished" ? "Tamamlandı" : (statusType === "inprogress" ? "Canlı" : "-"),
-                            code: statusType === "finished" ? 100 : 0
+                            type: (now > dateObj) ? "finished" : "notstarted",
+                            description: (now > dateObj) ? "Tamamlandı" : "-",
+                            code: (now > dateObj) ? 100 : 0
                         },
-                        // Bayrak linkini tenisteki gibi oluşturuyoruz
+                        // Bayrak linkini tenisteki gibi 2 haneli kodla oluşturuyoruz
                         countryLogo: F1_LOGO_BASE + flagCode + ".png", 
                         tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png",
                         circuitStats: stats 
@@ -98,13 +90,11 @@ async function start() {
         });
 
         finalEvents.sort((a, b) => a.timestamp - b.timestamp);
-        fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
-            success: true, 
-            lastUpdated: new Date().toISOString(), 
-            events: finalEvents 
-        }, null, 2));
+        fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, events: finalEvents }, null, 2));
 
-        console.log(`\n✅ F1 JSON hazır. Bayrak linki: ${finalEvents[0]?.countryLogo}`);
+        console.log(`\n✅ F1 JSON Hazır!`);
+        console.log(`İlk yarış bayrak linki: ${finalEvents[0]?.countryLogo}`);
+
     } catch (e) { console.error(e); }
 }
 start();
