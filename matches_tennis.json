@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-25T21:26:43.997Z",
-  "totalMatches": 33,
+  "lastUpdated": "2026-03-25T22:23:55.563Z",
+  "totalMatches": 34,
   "matches": [
     {
       "id": 15708855,
@@ -807,9 +807,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Martin Landaluce",
@@ -830,9 +830,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(6-7, 5-7)",
       "tournament": "Miami, USA"
     },
     {
@@ -843,9 +843,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": true,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Arends S / Smith J-P",
@@ -870,9 +870,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": "(6-7, 6-2, 10-4)",
       "tournament": "Miami, USA, Doubles"
     },
     {
@@ -883,9 +883,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": true,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Mertens E / Zhang S",
@@ -1178,6 +1178,46 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Miami, USA"
+    },
+    {
+      "id": 15739840,
+      "fixedDate": "2026-03-26",
+      "fixedTime": "22:20",
+      "timestamp": 1774552800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Krajicek A / Mektic N",
+        "countries": [
+          "us",
+          "hr"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Arends S / Smith J-P",
+        "countries": [
+          "nl",
+          "au"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Miami, USA, Doubles"
     },
     {
       "id": 15708839,
