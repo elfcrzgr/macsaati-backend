@@ -1,8 +1,4 @@
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const fs = require('fs');
-
-puppeteer.use(StealthPlugin());
 
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
@@ -10,104 +6,95 @@ const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${R
 const OUTPUT_FILE = "matches_f1.json";
 
 async function start() {
-    console.log("🏎️ Formula 1 motoru: Sayfa İçi Derin Veri (Next.js) Tarama Başlıyor...");
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-    const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
-
-    let allEvents = [];
+    console.log("🏎️ Formula 1 motoru başlatılıyor (Açık Kaynak Jolpi API)...");
 
     try {
-        console.log("⏳ Sofascore F1 kategori sayfasına gidiliyor...");
-        // API'ye değil, doğrudan kullanıcı sayfasına gidiyoruz
-        await page.goto('https://www.sofascore.com/motorsport/category/formula-1/40', { waitUntil: 'domcontentloaded', timeout: 30000 });
-        
-        // Sayfanın içindeki gizli __NEXT_DATA__ JSON'unu çekiyoruz. Bütün veriler burada şifresiz durur.
-        const nextData = await page.evaluate(() => {
-            const script = document.getElementById('__NEXT_DATA__');
-            if (script) {
-                return JSON.parse(script.innerText);
-            }
-            return null;
-        });
+        // Puppeteer'a veda! Doğrudan API'den saniyesinde tüm sezonu çekiyoruz.
+        const response = await fetch('https://api.jolpi.ca/ergast/f1/current.json');
+        const data = await response.json();
+        const races = data.MRData.RaceTable.Races;
 
-        if (nextData) {
-            console.log("✅ Sayfa verileri yakalandı, seanslar ayıklanıyor...");
-            
-            // Tüm JSON ağacını tarayıp sadece F1 etkinliklerini bulan Özyineli (Recursive) Fonksiyon
-            function findEvents(obj) {
-                let results = [];
-                if (typeof obj === 'object' && obj !== null) {
-                    if (Array.isArray(obj)) {
-                        for (let item of obj) {
-                            results = results.concat(findEvents(item));
-                        }
-                    } else {
-                        // Eğer bu obje bir F1 etkinliğiyse (id, startTimestamp ve kategori id 40 ise)
-                        if (obj.id && obj.startTimestamp && obj.tournament && obj.tournament.category && obj.tournament.category.id === 40) {
-                            results.push(obj);
-                        }
-                        // Alt objelere doğru inmeye devam et
-                        for (let key in obj) {
-                            results = results.concat(findEvents(obj[key]));
+        const finalEvents = [];
+        const now = new Date();
+
+        // API'den gelen UTC saatleri Türkiye saatine (TSİ) çeviren yardımcı
+        const getTRTime = (dateStr, timeStr) => {
+            if (!dateStr || !timeStr) return null;
+            return new Date(`${dateStr}T${timeStr}`);
+        };
+
+        races.forEach(race => {
+            // F1 pistinin benzersiz ID'si (Örn: "albert_park", "bahrain", "monaco")
+            // Bunu Android uygulamasında bayrak veya pist silueti göstermek için kullanacağız.
+            const circuitId = race.Circuit.circuitId; 
+            const gpName = race.raceName;
+
+            const addSession = (sessionName, dateObj) => {
+                if (!dateObj) return;
+                
+                // F1 takvimi bütün yılı içerdiği için sadece bize lazım olanları filtreliyoruz
+                // Kural: Bugünden 2 gün öncesi ile 15 gün sonrası arasındaki seansları göster
+                const diffDays = (dateObj - now) / (1000 * 60 * 60 * 24);
+                if (diffDays >= -2 && diffDays <= 15) {
+                    const dayStr = dateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                    const timeStr = dateObj.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+
+                    // Maç/Seans durumu: Geçmiş mi, Canlı mı, Gelecek mi?
+                    let statusType = "notstarted";
+                    if (now > dateObj) {
+                        statusType = "finished";
+                        if ((now - dateObj) < (2 * 60 * 60 * 1000)) { // F1 seansları ortalama 2 saat sürer
+                            statusType = "inprogress";
                         }
                     }
+
+                    finalEvents.push({
+                        id: `${race.round}_${sessionName.replace(/\s/g, '')}`,
+                        fixedDate: dayStr,
+                        fixedTime: timeStr,
+                        timestamp: dateObj.getTime(),
+                        broadcaster: "beIN Sports / F1 TV",
+                        
+                        grandPrix: gpName,
+                        sessionName: sessionName,
+                        
+                        matchStatus: {
+                            type: statusType,
+                            description: statusType === "finished" ? "Tamamlandı" : (statusType === "inprogress" ? "Canlı" : "-"),
+                            code: statusType === "finished" ? 100 : 0
+                        },
+                        // Logo ismini circuitId yapıyoruz (Örn: albert_park.png)
+                        tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png"
+                    });
                 }
-                return results;
-            }
+            };
 
-            allEvents = findEvents(nextData);
-        } else {
-            console.log("⚠️ __NEXT_DATA__ bulunamadı!");
-        }
+            // Hafta sonu takvimindeki tüm etkinlikleri sırayla ekle
+            if (race.FirstPractice) addSession("1. Antrenman", getTRTime(race.FirstPractice.date, race.FirstPractice.time));
+            if (race.SecondPractice) addSession("2. Antrenman", getTRTime(race.SecondPractice.date, race.SecondPractice.time));
+            if (race.ThirdPractice) addSession("3. Antrenman", getTRTime(race.ThirdPractice.date, race.ThirdPractice.time));
+            if (race.Qualifying) addSession("Sıralama", getTRTime(race.Qualifying.date, race.Qualifying.time));
+            if (race.Sprint) addSession("Sprint", getTRTime(race.Sprint.date, race.Sprint.time));
+            
+            // Ana Yarış
+            addSession("Yarış", getTRTime(race.date, race.time));
+        });
+
+        // Tarih ve saate göre sırala ki Android'de düzgün görünsün
+        finalEvents.sort((a, b) => a.timestamp - b.timestamp);
+
+        fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
+            success: true, 
+            lastUpdated: new Date().toISOString(), 
+            totalSessions: finalEvents.length,
+            events: finalEvents 
+        }, null, 2));
+
+        console.log(`\n✅ ${finalEvents.length} adet F1 seansı başarıyla JSON'a yazıldı!`);
+
     } catch (e) {
-        console.error("❌ Sayfa yüklenirken hata oluştu:", e.message);
+        console.error("❌ F1 verileri çekilirken hata:", e.message);
     }
-
-    const finalEvents = [];
-    const uniqueEventsMap = new Map();
-
-    for (const e of allEvents) {
-        if (!uniqueEventsMap.has(e.id)) {
-            uniqueEventsMap.set(e.id, true);
-
-            const dateTR = new Date(e.startTimestamp * 1000);
-            const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-            const tId = e.tournament?.id || "default";
-
-            finalEvents.push({
-                id: e.id,
-                fixedDate: dayStr,
-                fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
-                timestamp: dateTR.getTime(),
-                broadcaster: "beIN Sports", // Türkiye Yayıncısı
-                
-                grandPrix: e.tournament?.name || "Formula 1 Grand Prix", 
-                sessionName: e.name || "Seans", 
-                
-                matchStatus: {
-                    type: e.status?.type || "notstarted",
-                    description: e.status?.description || "-",
-                    code: e.status?.code || 0
-                },
-
-                tournamentLogo: F1_TOURNAMENT_BASE + tId + ".png"
-            });
-        }
-    }
-
-    // Tarih ve saate göre sırala
-    finalEvents.sort((a, b) => a.timestamp - b.timestamp);
-    
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
-        success: true, 
-        lastUpdated: new Date().toISOString(), 
-        totalSessions: finalEvents.length,
-        events: finalEvents 
-    }, null, 2));
-    
-    console.log(`\n🏁 Toplam ${finalEvents.length} adet F1 seansı başarıyla JSON'a yazıldı!`);
-    await browser.close();
 }
 
 start();
