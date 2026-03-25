@@ -10,59 +10,55 @@ const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${R
 const OUTPUT_FILE = "matches_f1.json";
 
 async function start() {
-    console.log("🏎️ Formula 1 motoru başlatılıyor (Kategori Odaklı - ID: 40)...");
+    console.log("🏎️ Formula 1 motoru: 30 Günlük Geniş Tarama Başlıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
+    const getTRDate = (offset = 0) => {
+        const d = new Date();
+        d.setHours(d.getHours() + 3); 
+        d.setDate(d.getDate() + offset);
+        return d.toISOString().split('T')[0];
+    };
+
     let allEvents = [];
-
-    try {
-        console.log(`📡 F1 Turnuva verileri çekiliyor...`);
-        
-        // YÖNTEM 1: Doğrudan F1 Özel Turnuva API'si (F1 Unique Tournament ID genelde 12473'tür)
-        // Bu endpoint doğrudan "Sıradaki (Next)" yarışları getirir, tarih aramaya gerek kalmaz.
-        await page.goto('https://api.sofascore.com/api/v1/unique-tournament/12473/events/next/0', { waitUntil: 'networkidle2' });
-        let data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-        
-        if (data && data.events) {
-            allEvents = data.events;
-            console.log(`✅ Veri API'den başarıyla çekildi.`);
-        }
-
-        // YÖNTEM 2: Eğer API boş dönerse, SENİN VERDİĞİN URL'ye gidip sayfadaki verileri yakalayalım
-        if (allEvents.length === 0) {
-            console.log("⚠️ API boş döndü, paylaştığın Kategori sayfasına gidilip veriler ayıklanıyor...");
+    
+    console.log("📅 Dün ve önümüzdeki 30 gün taranıyor, F1 hafta sonu aranıyor...");
+    
+    // -1 (Dün) ile 30 gün sonrasını tara
+    for (let i = -1; i <= 30; i++) {
+        const targetDate = getTRDate(i);
+        try {
+            // Hızlı geçiş için domcontentloaded kullanıyoruz
+            await page.goto(`https://api.sofascore.com/api/v1/sport/motorsport/scheduled-events/${targetDate}`, { waitUntil: 'domcontentloaded' });
             
-            // Sofascore'un arka planda attığı istekleri dinle
-            page.on('response', async (response) => {
-                const resUrl = response.url();
-                if (resUrl.includes('api.sofascore.com') && resUrl.includes('/events')) {
-                    try {
-                        const json = await response.json();
-                        if (json && json.events) {
-                            allEvents = allEvents.concat(json.events);
-                        }
-                    } catch (e) {}
-                }
+            const data = await page.evaluate(() => { 
+                try { return JSON.parse(document.body.innerText); } catch(e) { return null; } 
             });
-
-            // Senin paylaştığın kategori linki
-            await page.goto('https://www.sofascore.com/motorsport/category/formula-1/40', { waitUntil: 'networkidle2', timeout: 15000 });
-            await new Promise(r => setTimeout(r, 3000)); // Verilerin gelmesi için biraz bekle
+            
+            if (data && data.events) {
+                // Kategori ID'si 40 olanları (Formula 1) filtrele
+                const f1Events = data.events.filter(e => e.tournament?.category?.id === 40);
+                if (f1Events.length > 0) {
+                    console.log(`✅ ${targetDate} tarihinde ${f1Events.length} adet F1 seansı bulundu!`);
+                    allEvents = allEvents.concat(f1Events);
+                }
+            }
+        } catch (e) {
+            // Hata olursa sessizce diğer güne geç
         }
-
-    } catch (e) {
-        console.error(`❌ Hata oluştu:`, e.message);
     }
 
-    // 2. ADIM: DEDUPLİKASYON VE FORMATLAMA
+    if (allEvents.length === 0) {
+        console.log("⚠️ 30 günlük taramada sonuç bulunamadı. API yanıt vermiyor olabilir.");
+    }
+
     const finalEvents = [];
     const uniqueEventsMap = new Map();
 
     for (const e of allEvents) {
-        // Sadece Formula 1 (Kategori ID: 40) olanları al
-        if ((e.tournament?.category?.id === 40 || e.tournament?.uniqueTournament?.name?.includes("Formula 1")) && !uniqueEventsMap.has(e.id)) {
+        if (!uniqueEventsMap.has(e.id)) {
             uniqueEventsMap.set(e.id, true);
 
             const dateTR = new Date(e.startTimestamp * 1000);
@@ -77,7 +73,7 @@ async function start() {
                 broadcaster: "beIN Sports", // Türkiye Yayıncısı
                 
                 grandPrix: e.tournament?.name || "Formula 1 Grand Prix", 
-                sessionName: e.name || "Yarış", 
+                sessionName: e.name || "Seans", 
                 
                 matchStatus: {
                     type: e.status?.type || "notstarted",
@@ -90,7 +86,6 @@ async function start() {
         }
     }
 
-    // Tarihe göre sırala
     finalEvents.sort((a, b) => a.timestamp - b.timestamp);
     
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
@@ -100,7 +95,7 @@ async function start() {
         events: finalEvents 
     }, null, 2));
     
-    console.log(`\n✅ ${finalEvents.length} adet F1 seansı başarıyla yazıldı!`);
+    console.log(`\n🏁 Toplam ${finalEvents.length} adet F1 seansı başarıyla JSON'a yazıldı!`);
     await browser.close();
 }
 
