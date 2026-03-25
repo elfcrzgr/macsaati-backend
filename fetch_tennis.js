@@ -87,13 +87,11 @@ async function start() {
     } catch (e) { console.error(`Canlı Maç Hatası:`, e.message); }
 
     // --- 3. ADIM: DEDUPLİKASYON (HIZLANDIRMA İÇİN) ---
-    // Detay sayfalarına gitmeden önce mükerrer maçları ayıklıyoruz ki bot boşuna zaman kaybetmesin.
     const uniqueEventsMap = new Map();
     for (const e of allEvents) {
         const matchKey = String(e.id);
         if (uniqueEventsMap.has(matchKey)) {
             const existing = uniqueEventsMap.get(matchKey);
-            // Yeni gelen veri daha güncelse (örn: inprogress veya finished ise) eskisini ez
             if (e.status?.type === 'finished' || (e.status?.type === 'inprogress' && existing.status?.type !== 'finished')) {
                 uniqueEventsMap.set(matchKey, e);
             }
@@ -141,6 +139,23 @@ async function start() {
         // ÇOK KRİTİK: Maç tamamen bitti mi?
         const isFinished = e.status?.type === 'finished';
 
+        // --- YENİ EKLENEN KISIM: SET SKORLARINI HESAPLAMA ---
+        let setScoresStr = "";
+        if (isFinished && e.homeScore && e.awayScore) {
+            let sets = [];
+            for (let i = 1; i <= 5; i++) {
+                const hSet = e.homeScore[`period${i}`];
+                const aSet = e.awayScore[`period${i}`];
+                if (hSet !== undefined && aSet !== undefined) {
+                    sets.push(`${hSet}-${aSet}`);
+                }
+            }
+            if (sets.length > 0) {
+                setScoresStr = `(${sets.join(', ')})`;
+            }
+        }
+        // ---------------------------------------------------
+
         finalMatches.push({
             id: e.id,
             fixedDate: dayStr,
@@ -149,7 +164,6 @@ async function start() {
             broadcaster: categoryConfigs[e.tournament?.category?.id] || "beIN / Eurosport",
             isDoubles: isDouble,
             
-            // ANDROİD İÇİN MAÇ DURUMU
             matchStatus: {
                 type: e.status?.type || "notstarted",
                 description: e.status?.description || "-",
@@ -168,9 +182,10 @@ async function start() {
             },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + tId + ".png",
             
-            // SADECE BİTTİYSE SKOR YAZ, YOKSA "-" KOY
             homeScore: (isFinished && e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (isFinished && e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
+            
+            setScores: setScoresStr, // Yeni alanımız!
             
             tournament: e.tournament.name
         });
@@ -184,7 +199,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ ${finalMatches.length} maç başarıyla yazıldı! Skor filtresi uygulandı.`);
+    console.log(`\n✅ ${finalMatches.length} maç başarıyla yazıldı! Set skorları eklendi.`);
     await browser.close();
 }
 
