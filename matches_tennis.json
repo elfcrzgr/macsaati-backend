@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-24T23:20:28.340Z",
-  "totalMatches": 58,
+  "lastUpdated": "2026-03-25T01:01:05.651Z",
+  "totalMatches": 59,
   "matches": [
     {
       "id": 15708889,
@@ -1600,9 +1600,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Terence Atmane",
@@ -1623,21 +1623,21 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
       "tournament": "Miami, USA"
     },
     {
       "id": 15711430,
       "fixedDate": "2026-03-25",
-      "fixedTime": "02:00",
-      "timestamp": 1774393200000,
+      "fixedTime": "02:20",
+      "timestamp": 1774394400000,
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "3rd set",
+        "code": 10
       },
       "homeTeam": {
         "name": "Belinda Bencic",
@@ -1665,14 +1665,14 @@
     {
       "id": 15708848,
       "fixedDate": "2026-03-25",
-      "fixedTime": "02:20",
-      "timestamp": 1774394400000,
+      "fixedTime": "03:20",
+      "timestamp": 1774398000000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Ugo Humbert",
@@ -1725,6 +1725,41 @@
         ],
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA"
+    },
+    {
+      "id": 15708841,
+      "fixedDate": "2026-03-25",
+      "fixedTime": "20:00",
+      "timestamp": 1774458000000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Frances Tiafoe",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jannik Sinner",
+        "countries": [
+          "it"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
