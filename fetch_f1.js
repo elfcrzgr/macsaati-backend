@@ -25,7 +25,9 @@ async function start() {
         const races = data.MRData.RaceTable.Races;
 
         const finalEvents = [];
-        const now = new Date();
+        //const now = new Date();
+const now = new Date();
+now.setDate(now.getDate() + 10); // Sistemi 10 gün ileri aldık
 
         const getTRTime = (dateStr, timeStr) => {
             if (!dateStr || !timeStr) return null;
