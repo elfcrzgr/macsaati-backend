@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-25T01:01:05.651Z",
-  "totalMatches": 59,
+  "lastUpdated": "2026-03-25T03:38:24.645Z",
+  "totalMatches": 60,
   "matches": [
     {
       "id": 15708889,
@@ -1635,9 +1635,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Belinda Bencic",
@@ -1658,8 +1658,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2587.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
       "tournament": "Miami, USA"
     },
     {
@@ -1670,9 +1670,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Ugo Humbert",
@@ -1693,21 +1693,21 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "2",
       "tournament": "Miami, USA"
     },
     {
       "id": 15708847,
       "fixedDate": "2026-03-25",
-      "fixedTime": "03:30",
-      "timestamp": 1774398600000,
+      "fixedTime": "05:00",
+      "timestamp": 1774404000000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Quentin Halys",
@@ -2176,6 +2176,41 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Miami, USA"
+    },
+    {
+      "id": 15711481,
+      "fixedDate": "2026-03-26",
+      "fixedTime": "17:00",
+      "timestamp": 1774533600000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Coco Gauff",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Karolina Muchova",
+        "countries": [
+          "cz"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2587.png",
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Miami, USA"
