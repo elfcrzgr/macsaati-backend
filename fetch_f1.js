@@ -10,48 +10,58 @@ const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${R
 const OUTPUT_FILE = "matches_f1.json";
 
 async function start() {
-    console.log("🏎️ Formula 1 motoru: 30 Günlük Geniş Tarama Başlıyor...");
+    console.log("🏎️ Formula 1 motoru: Sayfa İçi Derin Veri (Next.js) Tarama Başlıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    const getTRDate = (offset = 0) => {
-        const d = new Date();
-        d.setHours(d.getHours() + 3); 
-        d.setDate(d.getDate() + offset);
-        return d.toISOString().split('T')[0];
-    };
-
     let allEvents = [];
-    
-    console.log("📅 Dün ve önümüzdeki 30 gün taranıyor, F1 hafta sonu aranıyor...");
-    
-    // -1 (Dün) ile 30 gün sonrasını tara
-    for (let i = -1; i <= 30; i++) {
-        const targetDate = getTRDate(i);
-        try {
-            // Hızlı geçiş için domcontentloaded kullanıyoruz
-            await page.goto(`https://api.sofascore.com/api/v1/sport/motorsport/scheduled-events/${targetDate}`, { waitUntil: 'domcontentloaded' });
-            
-            const data = await page.evaluate(() => { 
-                try { return JSON.parse(document.body.innerText); } catch(e) { return null; } 
-            });
-            
-            if (data && data.events) {
-                // Kategori ID'si 40 olanları (Formula 1) filtrele
-                const f1Events = data.events.filter(e => e.tournament?.category?.id === 40);
-                if (f1Events.length > 0) {
-                    console.log(`✅ ${targetDate} tarihinde ${f1Events.length} adet F1 seansı bulundu!`);
-                    allEvents = allEvents.concat(f1Events);
-                }
-            }
-        } catch (e) {
-            // Hata olursa sessizce diğer güne geç
-        }
-    }
 
-    if (allEvents.length === 0) {
-        console.log("⚠️ 30 günlük taramada sonuç bulunamadı. API yanıt vermiyor olabilir.");
+    try {
+        console.log("⏳ Sofascore F1 kategori sayfasına gidiliyor...");
+        // API'ye değil, doğrudan kullanıcı sayfasına gidiyoruz
+        await page.goto('https://www.sofascore.com/motorsport/category/formula-1/40', { waitUntil: 'domcontentloaded', timeout: 30000 });
+        
+        // Sayfanın içindeki gizli __NEXT_DATA__ JSON'unu çekiyoruz. Bütün veriler burada şifresiz durur.
+        const nextData = await page.evaluate(() => {
+            const script = document.getElementById('__NEXT_DATA__');
+            if (script) {
+                return JSON.parse(script.innerText);
+            }
+            return null;
+        });
+
+        if (nextData) {
+            console.log("✅ Sayfa verileri yakalandı, seanslar ayıklanıyor...");
+            
+            // Tüm JSON ağacını tarayıp sadece F1 etkinliklerini bulan Özyineli (Recursive) Fonksiyon
+            function findEvents(obj) {
+                let results = [];
+                if (typeof obj === 'object' && obj !== null) {
+                    if (Array.isArray(obj)) {
+                        for (let item of obj) {
+                            results = results.concat(findEvents(item));
+                        }
+                    } else {
+                        // Eğer bu obje bir F1 etkinliğiyse (id, startTimestamp ve kategori id 40 ise)
+                        if (obj.id && obj.startTimestamp && obj.tournament && obj.tournament.category && obj.tournament.category.id === 40) {
+                            results.push(obj);
+                        }
+                        // Alt objelere doğru inmeye devam et
+                        for (let key in obj) {
+                            results = results.concat(findEvents(obj[key]));
+                        }
+                    }
+                }
+                return results;
+            }
+
+            allEvents = findEvents(nextData);
+        } else {
+            console.log("⚠️ __NEXT_DATA__ bulunamadı!");
+        }
+    } catch (e) {
+        console.error("❌ Sayfa yüklenirken hata oluştu:", e.message);
     }
 
     const finalEvents = [];
@@ -86,6 +96,7 @@ async function start() {
         }
     }
 
+    // Tarih ve saate göre sırala
     finalEvents.sort((a, b) => a.timestamp - b.timestamp);
     
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
