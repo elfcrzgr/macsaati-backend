@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-25T18:40:05.866Z",
+  "lastUpdated": "2026-03-25T19:38:19.953Z",
   "totalMatches": 62,
   "matches": [
     {
@@ -1787,9 +1787,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Elena Rybakina",
@@ -1810,9 +1810,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2587.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": "(2-6, 6-3, 6-4)",
       "tournament": "Miami, USA"
     },
     {
@@ -1903,9 +1903,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": true,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Doumbia S / Reboul F",
@@ -1943,9 +1943,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": true,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Krajicek A / Mektic N",
@@ -1974,42 +1974,6 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Miami, USA, Doubles"
-    },
-    {
-      "id": 15708829,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "22:00",
-      "timestamp": 1774465200000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Martin Landaluce",
-        "countries": [
-          "es"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jiri Lehečka",
-        "countries": [
-          "cz"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Miami, USA"
     },
     {
       "id": 15739839,
@@ -2052,10 +2016,46 @@
       "tournament": "Miami, USA, Doubles"
     },
     {
+      "id": 15708829,
+      "fixedDate": "2026-03-25",
+      "fixedTime": "22:40",
+      "timestamp": 1774467600000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Martin Landaluce",
+        "countries": [
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jiri Lehečka",
+        "countries": [
+          "cz"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Miami, USA"
+    },
+    {
       "id": 15716381,
       "fixedDate": "2026-03-25",
-      "fixedTime": "22:35",
-      "timestamp": 1774467300000,
+      "fixedTime": "22:55",
+      "timestamp": 1774468500000,
       "broadcaster": "beIN Sports",
       "isDoubles": true,
       "matchStatus": {
