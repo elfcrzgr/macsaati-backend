@@ -1,6 +1,82 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-25T08:23:58.893Z",
-  "totalSessions": 0,
-  "events": []
+  "lastUpdated": "2026-03-25T10:10:20.919Z",
+  "totalSessions": 5,
+  "events": [
+    {
+      "id": "3_1.Antrenman",
+      "fixedDate": "2026-03-27",
+      "fixedTime": "05:30",
+      "timestamp": 1774578600000,
+      "broadcaster": "beIN Sports / F1 TV",
+      "grandPrix": "Japanese Grand Prix",
+      "sessionName": "1. Antrenman",
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "-",
+        "code": 0
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/suzuka.png"
+    },
+    {
+      "id": "3_2.Antrenman",
+      "fixedDate": "2026-03-27",
+      "fixedTime": "09:00",
+      "timestamp": 1774591200000,
+      "broadcaster": "beIN Sports / F1 TV",
+      "grandPrix": "Japanese Grand Prix",
+      "sessionName": "2. Antrenman",
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "-",
+        "code": 0
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/suzuka.png"
+    },
+    {
+      "id": "3_3.Antrenman",
+      "fixedDate": "2026-03-28",
+      "fixedTime": "05:30",
+      "timestamp": 1774665000000,
+      "broadcaster": "beIN Sports / F1 TV",
+      "grandPrix": "Japanese Grand Prix",
+      "sessionName": "3. Antrenman",
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "-",
+        "code": 0
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/suzuka.png"
+    },
+    {
+      "id": "3_Sıralama",
+      "fixedDate": "2026-03-28",
+      "fixedTime": "09:00",
+      "timestamp": 1774677600000,
+      "broadcaster": "beIN Sports / F1 TV",
+      "grandPrix": "Japanese Grand Prix",
+      "sessionName": "Sıralama",
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "-",
+        "code": 0
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/suzuka.png"
+    },
+    {
+      "id": "3_Yarış",
+      "fixedDate": "2026-03-29",
+      "fixedTime": "08:00",
+      "timestamp": 1774760400000,
+      "broadcaster": "beIN Sports / F1 TV",
+      "grandPrix": "Japanese Grand Prix",
+      "sessionName": "Yarış",
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "-",
+        "code": 0
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/suzuka.png"
+    }
+  ]
 }
