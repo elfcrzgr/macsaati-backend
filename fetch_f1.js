@@ -37,7 +37,7 @@ async function start() {
 
         // --- TEST MODU ---
         // Miami'yi veya gelecek yarışları görmek istersen alttaki satırı aç:
-        // now.setDate(now.getDate() + 35); 
+         now.setDate(now.getDate() + 35); 
         // -----------------
 
         // Ülke isimlerini senin f1/logos içindeki 2 haneli dosya adlarına çevirir
