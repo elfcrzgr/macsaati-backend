@@ -1,15 +1,26 @@
 const fs = require('fs');
+const path = require('path');
 
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
 
-// F1 logoları için klasör yolları (Senin GitHub repona tam uyumlu)
+// F1 logoları için klasör yolları
 const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/tournament_logos/`;
 const F1_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/logos/`;
 const OUTPUT_FILE = "matches_f1.json";
 
+// --- YENİ EKLENEN KISIM: İstatistikleri dışarıdan okuyoruz ---
+const statsFilePath = path.join(__dirname, 'f1_stats.json');
+let circuitStats = {};
+try {
+    circuitStats = JSON.parse(fs.readFileSync(statsFilePath, 'utf8'));
+} catch (err) {
+    console.error("⚠️ f1_stats.json okunamadı, boş veriler kullanılacak.", err.message);
+}
+// -------------------------------------------------------------
+
 async function start() {
-    console.log("🏎️ Formula 1 motoru başlatılıyor (Jolpi API - Pist ve Bayrak Destekli)...");
+    console.log("🏎️ Formula 1 motoru başlatılıyor (Jolpi API + Pist İstatistikleri Destekli)...");
 
     try {
         const response = await fetch('https://api.jolpi.ca/ergast/f1/current.json');
@@ -29,14 +40,14 @@ async function start() {
             // Temel F1 Verileri
             const circuitId = race.Circuit.circuitId; // Örn: "suzuka", "bahrain"
             const gpName = race.raceName; // Örn: "Japanese Grand Prix"
-            
-            // Eklenen Yeni Veriler (Pist Adı ve Ülke)
             const trackName = race.Circuit.circuitName; // Örn: "Suzuka Circuit"
-            const countryName = race.Circuit.Location.country; // Örn: "Japan", "UK", "Saudi Arabia"
+            const countryName = race.Circuit.Location.country; // Örn: "Japan"
             
-            // Ülke adını bayrak URL'si için formata sokuyoruz (Küçük harf ve boşluklar yerine alt tire)
-            // Örn: "Saudi Arabia" -> "saudi_arabia", "UK" -> "uk"
+            // Ülke adını bayrak URL'si için formata sokuyoruz
             const countryFormatted = countryName.toLowerCase().replace(/\s/g, '_');
+
+            // --- YENİ: JSON'dan ilgili pistin istatistiklerini buluyoruz ---
+            const stats = circuitStats[circuitId] || circuitStats["default"] || {};
 
             const addSession = (sessionName, dateObj) => {
                 if (!dateObj) return;
@@ -76,7 +87,10 @@ async function start() {
                         
                         // Dinamik Logolar
                         countryLogo: F1_LOGO_BASE + countryFormatted + ".png", // Bayrak görseli
-                        tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png"  // Pist silüeti
+                        tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png",  // Pist silüeti
+
+                        // --- YENİ EKLENEN KISIM: İstatistikler Android'e gönderiliyor ---
+                        circuitStats: stats 
                     });
                 }
             };
@@ -100,7 +114,7 @@ async function start() {
             events: finalEvents 
         }, null, 2));
 
-        console.log(`\n✅ ${finalEvents.length} adet F1 seansı (Bayrak ve Pist bilgileriyle) JSON'a yazıldı!`);
+        console.log(`\n✅ ${finalEvents.length} adet F1 seansı (Bayrak, Pist ve Rekor bilgileriyle) JSON'a yazıldı!`);
 
     } catch (e) {
         console.error("❌ F1 verileri çekilirken hata:", e.message);
