@@ -1,1 +1,46 @@
 
+name: SADECE F1 TEST MOTORU
+
+on:
+  workflow_dispatch: # cron yok! Sadece Actions sekmesinden manuel tetiklenir.
+
+jobs:
+  test-f1:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repoyu Klonla
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node.js Kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Kütüphaneleri Yükle
+        run: |
+          npm install
+
+      # ==========================================
+      # 🏎️ FORMULA 1 ZİNCİRİ (TEST)
+      # ==========================================
+      - name: F1 Verilerini Çek
+        run: node fetch_f1.js
+
+      - name: Eksik F1 Logolarını İndir
+        run: node logo_f1.js || echo "F1 logo indirme atlandı"
+
+      # ==========================================
+      # 🚀 GITHUB'A YÜKLEME
+      # ==========================================
+      - name: Git Kimliğini Ayarla ve Pushla
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add .
+          git commit -m "F1 Test Güncellemesi" || echo "Değişiklik yok"
+          git pull origin main --rebase -X theirs
+          git push origin main
