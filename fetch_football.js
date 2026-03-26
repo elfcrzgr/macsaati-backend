@@ -11,15 +11,14 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- YAYINCI LİSTESİ VE KRİTİK TURNUVA ID'LERİ (27 MART ÖZEL GÜNCELLEME) ---
+// --- TÜM TURNUVALAR VE 27 MART ÖZEL MAÇLARI İÇİN YAYINCI LİSTESİ ---
 const leagueConfigs = {
-    // Milli Maçlar & Dünya Kupası Elemeleri (Tüm Kıtalar)
-    11: "TRT 1 / Tabii",            // UEFA Dünya Kupası Elemeleri (Türkiye maçı vb.)
-    17011: "TRT 1 / Tabii",         // UEFA Elemeleri (Alt ID)
-    10: "S Sport Plus / FIFA+",     // CONMEBOL Elemeleri (Bolivya - Surinam vb.)
+    // Milli Maçlar & Play-offlar (27 Mart Programı Burada)
+    11: "TRT 1 / Tabii",            // Dünya Kupası Elemeleri (UEFA)
+    10: "S Sport Plus / FIFA+",     // Dünya Kupası Elemeleri (Bolivya - Surinam)
     10214: "FIFA+ / YouTube",       // Kıtalararası Play-off (Yeni Kaledonya - Jamaika)
-    4664: "S Sport Plus / Tabii",   // Uluslararası Hazırlık Maçları (İsviçre - Almanya vb.)
-    351: "TRT Spor / Tabii",        // UEFA U19 Avrupa Şampiyonası (Türkiye - Ermenistan)
+    351: "TRT Spor / Tabii",        // UEFA U19 Elemeleri (Türkiye - Ermenistan)
+    4664: "S Sport Plus / Tabii",   // Uluslararası Hazırlık Maçları (İsviçre - Almanya)
     10783: "S Sport Plus / TRT",    // UEFA Nations League
     
     // Türkiye Yerel Ligleri
@@ -31,7 +30,7 @@ const leagueConfigs = {
     11415: "TFF YouTube",          
     15938: "TFF YouTube",
 
-    // Elit Avrupa & Kupa
+    // Elit Avrupa & USL
     17: "beIN Sports",             
     8: "S Sport",                  
     23: "S Sport",                 
@@ -43,15 +42,15 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 // GRUPLARINA VE PLAY-OFF AŞAMALARINA DERİNLEMESİNE BAKILACAK LİGLER
-const stubbornLeagueIds = [11, 10, 10214, 351, 97, 11415, 11416, 11417, 15938, 10783];
+// 27 Mart maçlarını garantiye almak için 10, 10214 ve 351 listeye eklendi.
+const stubbornLeagueIds = [11, 10, 10214, 351, 97, 11415, 11416, 11417, 15938];
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (27 Mart Milli Maçlar & Play-offlar Dahil)...");
+    console.log("🚀 Futbol motoru başlatılıyor (27 Mart Takvimi Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // Türkiye saati (UTC+3) bazlı tarih belirleme
     const getTRDate = (offset = 0) => {
         const d = new Date();
         d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); 
@@ -103,7 +102,7 @@ async function start() {
         } catch (e) { console.error(`Derin Dalış Hatası (ID ${id}):`, e.message); }
     }
 
-    // --- 3. ADIM: DEDUPLİKASYON VE KAYDETME ---
+    // --- 3. ADIM: AYIKLAMA VE KAYDETME ---
     const finalMatchesMap = new Map();
 
     for (const e of allEvents) {
@@ -155,7 +154,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı. ${finalMatches.length} maç dosyaya kaydedildi.`);
+    console.log(`\n✅ İşlem Tamamlandı. 27 Mart maçları dahil ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
