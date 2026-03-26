@@ -11,71 +11,42 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- VIP YAYINCI LİSTESİ ---
-const leagueConfigs = {
-    155: "Spor Smart / Exxen",      // Arjantin Liga Profesional
-    54: "S Sport Plus / TV+",       // İspanya LaLiga 2
-    10: "Exxen / S Sport+",         // Bolivya - Surinam
-    10618: "Exxen / FIFA+",         // Yeni Kaledonya - Jamaika
-    351: "TRT Spor / Tabii",        // Türkiye - Ermenistan (U19)
-    4664: "S Sport+ / TV+",         // İsviçre - Almanya
-    11: "TRT 1 / Tabii",            
-    52: "beIN Sports",              
-    98: "beIN Sports / TRT Spor",   
-    97: "TFF YouTube",              
-    11417: "TFF YouTube",           
-    11416: "TFF YouTube",           
-    11415: "TFF YouTube",           
-    15938: "TFF YouTube",           
-    17: "beIN Sports",              
-    8: "S Sport",                   
-    23: "S Sport",                  
-    7: "TRT / Tabii",               
-    696: "DAZN / YouTube",          
-    13363: "USL YouTube",
-    10783: "S Sport Plus / TRT"     
-};
-
 // --- MİLLİ TAKIM ÇEVİRİ SÖZLÜĞÜ ---
 const teamTranslations = {
-    "Czechia": "Çekya",
-    "Romania": "Romanya",
-    "Denmark": "Danimarka",
-    "North Macedonia": "Kuzey Makedonya",
-    "Italy": "İtalya",
-    "Northern Ireland": "Kuzey İrlanda",
-    "Poland": "Polonya",
-    "Albania": "Arnavutluk",
-    "Slovakia": "Slovakya",
-    "Ukraine": "Ukrayna",
-    "Sweden": "İsveç",
-    "Wales": "Galler",
-    "Bosnia & Herzegovina": "Bosna Hersek",
-    "Bolivia": "Bolivya",
-    "Suriname": "Surinam",
-    "New Caledonia": "Yeni Kaledonya",
-    "Jamaica": "Jamaika",
-    "Switzerland": "İsviçre",
-    "Germany": "Almanya",
-    "Turkey": "Türkiye",
-    "Ireland": "İrlanda",
-    "Croatia": "Hırvatistan",
-    "France": "Fransa",
-    "Brazil": "Brezilya",
-    "Spain": "İspanya",
-    "Netherlands": "Hollanda",
-    "Latvia": "Letonya",
-    "Luxembourg": "Lüksemburg"
+    "Czechia": "Çekya", "Romania": "Romanya", "Denmark": "Danimarka",
+    "North Macedonia": "K. Makedonya", "Italy": "İtalya", "Northern Ireland": "Kuzey İrlanda",
+    "Poland": "Polonya", "Albania": "Arnavutluk", "Slovakia": "Slovakya",
+    "Ukraine": "Ukrayna", "Sweden": "İsveç", "Wales": "Galler",
+    "Bosnia & Herzegovina": "Bosna Hersek", "Bolivia": "Bolivya", "Suriname": "Surinam",
+    "New Caledonia": "Yeni Kaledonya", "Jamaica": "Jamaika", "Switzerland": "İsviçre",
+    "Germany": "Almanya", "Turkey": "Türkiye", "Ireland": "İrlanda",
+    "Croatia": "Hırvatistan", "France": "Fransa", "Brazil": "Brezilya",
+    "Spain": "İspanya", "Netherlands": "Hollanda", "Latvia": "Letonya",
+    "Luxembourg": "Lüksemburg", "Gibraltar": "Cebelitarık", "Malta": "Malta",
+    "Kosovo": "Kosova", "Romania": "Romanya"
 };
 
-// Çeviri Fonksiyonu
 const translateTeam = (name) => teamTranslations[name] || name;
+
+// --- VIP YAYINCI LİSTESİ ---
+const leagueConfigs = {
+    155: "Spor Smart / Exxen", 54: "S Sport Plus / TV+",
+    10: "Exxen / S Sport+", 10618: "Exxen / FIFA+",
+    351: "TRT Spor / Tabii", 4664: "S Sport+ / TV+",
+    11: "TRT 1 / Tabii", 52: "beIN Sports",
+    98: "beIN Sports / TRT Spor", 97: "TFF YouTube",
+    11417: "TFF YouTube", 11416: "TFF YouTube",
+    11415: "TFF YouTube", 15938: "TFF YouTube",
+    17: "beIN Sports", 8: "S Sport", 23: "S Sport",
+    7: "TRT / Tabii", 696: "DAZN / YouTube",
+    13363: "USL YouTube", 10783: "S Sport Plus / TRT"
+};
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54, 4664];
 
 async function start() {
-    console.log("🚀 Akıllı Motor Başlatıldı: Eksik maçlar zorlanıyor...");
+    console.log("🚀 Akıllı Motor: Çeviri Desteğiyle Başlatıldı...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -90,37 +61,31 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // --- 1. ADIM: GENEL TARAMA ---
     for (const date of validDates) {
         try {
-            console.log(`⏳ ${date} genel verileri çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             if (data && data.events) {
                 const filtered = data.events.filter(e => {
                     const utId = e.tournament?.uniqueTournament?.id;
-                    const priority = e.tournament?.uniqueTournament?.priority || 0;
-                    return targetLeagueIds.includes(utId) || priority > 100;
+                    return targetLeagueIds.includes(utId) || (e.tournament?.uniqueTournament?.priority > 100);
                 });
                 allEvents = allEvents.concat(filtered);
             }
         } catch (e) { console.error(`Hata (${date}):`, e.message); }
     }
 
-    // --- 2. ADIM: DERİN TARAMA (Arjantin, İspanya 2, Türkiye U19 vb.) ---
     for (const id of stubbornLeagueIds) {
         try {
-            console.log(`🔍 Derin Tarama Zorlanıyor: ID ${id}`);
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
-            const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-            
-            if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
+            const seasonsData = await page.evaluate(() => JSON.parse(document.body.innerText));
+            if (seasonsData?.seasons) {
                 const seasonIds = seasonsData.seasons.slice(0, 2).map(s => s.id); 
                 for (const sId of seasonIds) {
-                    for (const pageType of ['next/0', 'last/0']) {
-                        await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${pageType}`, { waitUntil: 'networkidle2' });
-                        const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-                        if (eventsData && eventsData.events) {
+                    for (const type of ['next/0', 'last/0']) {
+                        await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${type}`, { waitUntil: 'networkidle2' });
+                        const eventsData = await page.evaluate(() => JSON.parse(document.body.innerText));
+                        if (eventsData?.events) {
                             const targetEvents = eventsData.events.filter(e => {
                                 const dateTR = new Date(e.startTimestamp * 1000);
                                 const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
@@ -134,7 +99,6 @@ async function start() {
         } catch (e) { }
     }
 
-    // --- 3. ADIM: AYIKLAMA VE KAYDETME ---
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
         const utId = e.tournament?.uniqueTournament?.id;
@@ -151,20 +115,16 @@ async function start() {
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: leagueConfigs[utId] || "Resmi Yayıncı / Canlı Skor", 
-            homeTeam: { name: e.homeTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
-            awayTeam: { name: e.awayTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
+            // BURASI DEĞİŞTİ: İsimler artık translateTeam fonksiyonundan geçiyor
+            homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
+            awayTeam: { name: translateTeam(e.awayTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
             homeScore: isFinished ? String(e.homeScore.display) : "-",
             awayScore: isFinished ? String(e.awayScore.display) : "-",
             tournament: e.tournament.uniqueTournament.name
         };
 
-        if (finalMatchesMap.has(matchKey)) {
-            const existing = finalMatchesMap.get(matchKey);
-            if (e.status?.type === 'finished' || (e.status?.type === 'inprogress' && existing.homeScore === "-")) {
-                finalMatchesMap.set(matchKey, matchObj);
-            }
-        } else {
+        if (!finalMatchesMap.has(matchKey) || e.status?.type === 'finished') {
             finalMatchesMap.set(matchKey, matchObj);
         }
     }
@@ -178,7 +138,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Başarıyla Tamamlandı. Toplam ${finalMatches.length} maç kaydedildi.`);
+    console.log(`\n✅ İşlem Bitti. Takım isimleri Türkçeleştirildi.`);
     await browser.close();
 }
 
