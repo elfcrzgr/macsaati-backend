@@ -45,10 +45,12 @@ const leagueConfigs = {
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
-const stubbornLeagueIds = [97, 11415, 11416, 11417, 15938, 17011, 10783, 14605];
+
+// Playoff/Eliminasyon aşamalarında direkt event taraması yapacağız
+const deepScanLeagueIds = [17011, 10783, 14605]; // Sadece en önemli olanlar
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (Dünya Kupası Play-off + Grup Taraması)...");
+    console.log("🚀 Futbol motoru başlatılıyor (Playoff & Elemeler)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -61,7 +63,7 @@ async function start() {
     };
 
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
-    console.log(`📅 Aranan Tarihler: ${validDates.join(', ')}`);
+    console.log(`📅 Aranan Tarihler: ${validDates.join(', ')}\n`);
     
     let allEvents = [];
     
@@ -74,7 +76,7 @@ async function start() {
             
             if (data && data.events) {
                 const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
-                console.log(`   ✅ Genel API: ${filtered.length} maç bulundu`);
+                console.log(`   ✅ ${filtered.length} maç bulundu`);
                 allEvents = allEvents.concat(filtered);
             }
         } catch (e) { console.error(`❌ Hata (${date}):`, e.message); }
@@ -87,15 +89,18 @@ async function start() {
         const liveData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
         if (liveData && liveData.events) {
             const filteredLive = liveData.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
-            console.log(`   ✅ Canlı Maçlar: ${filteredLive.length} maç bulundu`);
+            console.log(`   ✅ ${filteredLive.length} canlı maç bulundu`);
             allEvents = allEvents.concat(filteredLive);
         }
     } catch (e) { console.error(`❌ Canlı Maç Hatası:`, e.message); }
 
-    // --- 3. ADIM: DERİN DALIŞ + GRUP TARAMASI (İNATÇI LİGLER) ---
-    for (const id of stubbornLeagueIds) {
+    // --- 3. ADIM: PLAYOFF/ELIMINASYON MAÇLARI (AGRESIF TARAMA) ---
+    console.log(`\n🔍 Playoff & Elemeler Derin Taraması:`);
+    for (const id of deepScanLeagueIds) {
         try {
-            console.log(`\n🔍 Derin Dalış: Turnuva ID ${id}`);
+            console.log(`\n   🎯 Turnuva ID: ${id}`);
+            
+            // Sezonları çek
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
             const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             
@@ -103,88 +108,51 @@ async function start() {
                 const seasonId = seasonsData.seasons[0].id;
                 console.log(`   📍 Sezon ID: ${seasonId}`);
 
-                // ADIM 3A: Grup bilgilerini çek
-                try {
-                    console.log(`   📋 Gruplar taranıyor...`);
-                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/groups`, { waitUntil: 'networkidle2' });
-                    const groupsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-                    
-                    if (groupsData && groupsData.groups && groupsData.groups.length > 0) {
-                        console.log(`   ✅ ${groupsData.groups.length} grup bulundu`);
-                        
-                        // Grup yapısını debug et
-                        console.log(`   🔎 Grup yapısı: ${JSON.stringify(groupsData.groups[0], null, 2).substring(0, 200)}`);
-                        
-                        // Her grup için maç çek - SADECE geçerli grup ID'lerine sahip olanları işle
-                        for (const group of groupsData.groups) {
-                            // Grup ID'sinin geçerliliğini kontrol et
-                            if (!group.id) {
-                                console.log(`      ⚠️  Grup ID bulunamadı, atlanıyor`);
-                                continue;
-                            }
-                            
-                            const groupName = group.name || `Grup ${group.id}`;
-                            console.log(`      📍 ${groupName} (ID: ${group.id})`);
-                            
-                            let groupMatchCount = 0;
-                            for (let pageNum = 0; pageNum <= 3; pageNum++) {
-                                try {
-                                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/group/${group.id}/events/all/${pageNum}`, { waitUntil: 'networkidle2' });
-                                    const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+                // Çoklu sayfa ve offset kombinasyonları dene
+                const endpoints = [
+                    { type: 'next', offset: 0 },
+                    { type: 'next', offset: 1 },
+                    { type: 'next', offset: 2 },
+                    { type: 'last', offset: 0 },
+                    { type: 'last', offset: 1 },
+                    { type: 'last', offset: 2 },
+                    { type: 'archived', offset: 0 }
+                ];
 
-                                    if (eventsData && eventsData.events && eventsData.events.length > 0) {
-                                        const targetEvents = eventsData.events.filter(e => {
-                                            const dateTR = new Date(e.startTimestamp * 1000);
-                                            const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                                            return validDates.includes(dayStrTR);
-                                        });
-                                        if (targetEvents.length > 0) {
-                                            groupMatchCount += targetEvents.length;
-                                            console.log(`         ✅ Sayfa ${pageNum}: ${targetEvents.length} maç`);
-                                        }
-                                        allEvents = allEvents.concat(targetEvents);
-                                    } else {
-                                        break;
-                                    }
-                                } catch (e) { 
-                                    break;
-                                }
-                            }
-                            if (groupMatchCount === 0) {
-                                console.log(`         ℹ️ Bu grup için bugün maç yok`);
-                            }
-                        }
-                    } else {
-                        console.log(`   ℹ️ Grup yapısı bulunamadı, genel tarama yapılıyor...`);
-                    }
-                } catch (groupError) {
-                    console.log(`   ℹ️ Grup taraması başarısız: ${groupError.message}`);
-                }
+                let matchesFound = 0;
 
-                // ADIM 3B: Grup olmayan genel maçlar (fallback)
-                for (const pageType of ['next/0', 'last/0']) {
+                for (const endpoint of endpoints) {
                     try {
-                        await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${pageType}`, { waitUntil: 'networkidle2' });
+                        const url = `https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${endpoint.type}/${endpoint.offset}`;
+                        await page.goto(url, { waitUntil: 'networkidle2' });
                         const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
 
-                        if (eventsData && eventsData.events) {
+                        if (eventsData && eventsData.events && eventsData.events.length > 0) {
                             const targetEvents = eventsData.events.filter(e => {
                                 const dateTR = new Date(e.startTimestamp * 1000);
                                 const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                                 return validDates.includes(dayStrTR);
                             });
+                            
                             if (targetEvents.length > 0) {
-                                console.log(`   ✅ Genel Tarama (${pageType}): ${targetEvents.length} maç`);
+                                matchesFound += targetEvents.length;
+                                console.log(`      ✅ ${endpoint.type}/${endpoint.offset}: ${targetEvents.length} maç`);
                                 allEvents = allEvents.concat(targetEvents);
                             }
                         }
-                    } catch (e) { }
+                    } catch (e) {
+                        // Sessiz devam et
+                    }
+                }
+
+                if (matchesFound === 0) {
+                    console.log(`      ℹ️ Bu turnuvada bugün playoff maçı bulunamadı`);
                 }
             }
-        } catch (e) { console.error(`❌ Derin Dalış Hatası (ID ${id}):`, e.message); }
+        } catch (e) { console.error(`   ❌ Hata (ID ${id}):`, e.message); }
     }
 
-    console.log(`\n📊 TOPLAMDA ${allEvents.length} maç çekildi (Deduplikasyon öncesi)`);
+    console.log(`\n📊 TOPLAMDA ${allEvents.length} maç çekildi (Deduplikasyon öncesi)\n`);
 
     // --- 4. ADIM: VERİ TEMİZLEME VE KAYDETME ---
     const finalMatchesMap = new Map();
@@ -193,7 +161,7 @@ async function start() {
         const utId = e.tournament?.uniqueTournament?.id;
         if (!utId) continue;
         
-        const matchKey = `${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
+        const matchKey = `${e.homeTeam.id}_${e.awayTeam.id}_${utId}_${e.startTimestamp}`;
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         const isFinished = e.status?.type === 'finished';
@@ -242,7 +210,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı!`);
+    console.log(`✅ İşlem Tamamlandı!`);
     console.log(`📁 Kayıtlı Maç Sayısı: ${finalMatches.length} (Deduplikasyondan Sonra)`);
     console.log(`💾 Dosya: ${OUTPUT_FILE}`);
     
