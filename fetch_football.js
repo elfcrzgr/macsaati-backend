@@ -23,7 +23,7 @@ const teamTranslations = {
     "Croatia": "Hırvatistan", "France": "Fransa", "Brazil": "Brezilya",
     "Spain": "İspanya", "Netherlands": "Hollanda", "Latvia": "Letonya",
     "Luxembourg": "Lüksemburg", "Gibraltar": "Cebelitarık", "Malta": "Malta",
-    "Kosovo": "Kosova", "Romania": "Romanya"
+    "Kosovo": "Kosova"
 };
 
 const translateTeam = (name) => teamTranslations[name] || name;
@@ -46,7 +46,7 @@ const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54, 4664];
 
 async function start() {
-    console.log("🚀 Akıllı Motor: Çeviri Desteğiyle Başlatıldı...");
+    console.log("🚀 Akıllı Motor: İsimler Türkçeleştiriliyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -115,7 +115,7 @@ async function start() {
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: leagueConfigs[utId] || "Resmi Yayıncı / Canlı Skor", 
-            // BURASI DEĞİŞTİ: İsimler artık translateTeam fonksiyonundan geçiyor
+            // DÜZELTİLEN SATIRLAR: translateTeam fonksiyonunu buraya yerleştirdim
             homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
             awayTeam: { name: translateTeam(e.awayTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
@@ -138,7 +138,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Bitti. Takım isimleri Türkçeleştirildi.`);
+    console.log(`\n✅ İşlem bitti. ${finalMatches.length} maç için isimler Türkçeye çevrildi.`);
     await browser.close();
 }
 
