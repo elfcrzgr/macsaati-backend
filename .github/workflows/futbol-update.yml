@@ -1,0 +1,43 @@
+name: Mac Saati Futbol Otomatik Güncelleyici
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-football:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repoyu Klonla
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node.js Kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Kütüphaneleri Yükle
+        run: npm install
+
+      # ==========================================
+      # ⚽ FUTBOL ZİNCİRİ
+      # ==========================================
+      - name: Futbol Verilerini Çek
+        run: node fetch_football.js
+
+      - name: Eksik Futbol Logolarını İndir
+        run: node logo_football.js || echo "Futbol logo indirme atlandı"
+
+      # ==========================================
+      # 🚀 GITHUB'A YÜKLEME
+      # ==========================================
+      - name: Git Kimliğini Ayarla ve Pushla
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "FUTBOL Veri & Logolar Otomatik Güncellendi: $(date)" || echo "Değişiklik yok"
+          git pull origin main --rebase -X theirs
+          git push origin main
