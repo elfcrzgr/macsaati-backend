@@ -36,6 +36,41 @@ const leagueConfigs = {
     10783: "S Sport Plus / TRT"     
 };
 
+// --- MİLLİ TAKIM ÇEVİRİ SÖZLÜĞÜ ---
+const teamTranslations = {
+    "Czechia": "Çekya",
+    "Romania": "Romanya",
+    "Denmark": "Danimarka",
+    "North Macedonia": "Kuzey Makedonya",
+    "Italy": "İtalya",
+    "Northern Ireland": "Kuzey İrlanda",
+    "Poland": "Polonya",
+    "Albania": "Arnavutluk",
+    "Slovakia": "Slovakya",
+    "Ukraine": "Ukrayna",
+    "Sweden": "İsveç",
+    "Wales": "Galler",
+    "Bosnia & Herzegovina": "Bosna Hersek",
+    "Bolivia": "Bolivya",
+    "Suriname": "Surinam",
+    "New Caledonia": "Yeni Kaledonya",
+    "Jamaica": "Jamaika",
+    "Switzerland": "İsviçre",
+    "Germany": "Almanya",
+    "Turkey": "Türkiye",
+    "Ireland": "İrlanda",
+    "Croatia": "Hırvatistan",
+    "France": "Fransa",
+    "Brazil": "Brezilya",
+    "Spain": "İspanya",
+    "Netherlands": "Hollanda",
+    "Latvia": "Letonya",
+    "Luxembourg": "Lüksemburg"
+};
+
+// Çeviri Fonksiyonu
+const translateTeam = (name) => teamTranslations[name] || name;
+
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54, 4664];
 
