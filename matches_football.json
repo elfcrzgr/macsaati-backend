@@ -1,881 +1,146 @@
-{
-  "success": true,
-  "lastUpdated": "2026-03-26T08:51:14.720Z",
-  "totalMatches": 46,
-  "matches": [
-    {
-      "id": 15471607,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "20:45",
-      "timestamp": 1774460700000,
-      "broadcaster": "DAZN / YouTube",
-      "homeTeam": {
-        "name": "Real Madrid",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/305051.png"
-      },
-      "awayTeam": {
-        "name": "Fútbol Club Barcelona",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/77889.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/696.png",
-      "homeScore": "2",
-      "awayScore": "6",
-      "tournament": "UEFA Women's Champions League"
-    },
-    {
-      "id": 15471602,
-      "fixedDate": "2026-03-25",
-      "fixedTime": "23:00",
-      "timestamp": 1774468800000,
-      "broadcaster": "DAZN / YouTube",
-      "homeTeam": {
-        "name": "Manchester United",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/301455.png"
-      },
-      "awayTeam": {
-        "name": "FC Bayern München",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5543.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/696.png",
-      "homeScore": "2",
-      "awayScore": "3",
-      "tournament": "UEFA Women's Champions League"
-    },
-    {
-      "id": 15285669,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "02:00",
-      "timestamp": 1774479600000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Lexington SC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/460707.png"
-      },
-      "awayTeam": {
-        "name": "Brooklyn FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1158835.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "3",
-      "awayScore": "0",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15285670,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "02:30",
-      "timestamp": 1774481400000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "SC Jacksonville",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1077312.png"
-      },
-      "awayTeam": {
-        "name": "Miami FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/218106.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "2",
-      "awayScore": "4",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15126916,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "20:00",
-      "timestamp": 1774544400000,
-      "broadcaster": "TRT 1 / Tabii",
-      "homeTeam": {
-        "name": "Türkiye",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4700.png"
-      },
-      "awayTeam": {
-        "name": "Romania",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4477.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Cup Qual. UEFA"
-    },
-    {
-      "id": 13157426,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "20:00",
-      "timestamp": 1774544400000,
-      "broadcaster": "S Sport Plus / TRT",
-      "homeTeam": {
-        "name": "Gibraltar",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/129264.png"
-      },
-      "awayTeam": {
-        "name": "Latvia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4706.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10783.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "UEFA Nations League"
-    },
-    {
-      "id": 13157427,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "20:00",
-      "timestamp": 1774544400000,
-      "broadcaster": "S Sport Plus / TRT",
-      "homeTeam": {
-        "name": "Malta",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4483.png"
-      },
-      "awayTeam": {
-        "name": "Luxembourg",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4478.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10783.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "UEFA Nations League"
-    },
-    {
-      "id": 15126912,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "22:45",
-      "timestamp": 1774554300000,
-      "broadcaster": "TRT 1 / Tabii",
-      "homeTeam": {
-        "name": "Czechia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4714.png"
-      },
-      "awayTeam": {
-        "name": "Ireland",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4693.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Cup Qual. UEFA"
-    },
-    {
-      "id": 15126917,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "22:45",
-      "timestamp": 1774554300000,
-      "broadcaster": "TRT 1 / Tabii",
-      "homeTeam": {
-        "name": "Denmark",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4476.png"
-      },
-      "awayTeam": {
-        "name": "North Macedonia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4777.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Cup Qual. UEFA"
-    },
-    {
-      "id": 15126914,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "22:45",
-      "timestamp": 1774554300000,
-      "broadcaster": "TRT 1 / Tabii",
-      "homeTeam": {
-        "name": "Italy",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4707.png"
-      },
-      "awayTeam": {
-        "name": "Northern Ireland",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4786.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Cup Qual. UEFA"
-    },
-    {
-      "id": 15126910,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "22:45",
-      "timestamp": 1774554300000,
-      "broadcaster": "TRT 1 / Tabii",
-      "homeTeam": {
-        "name": "Poland",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4703.png"
-      },
-      "awayTeam": {
-        "name": "Albania",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4690.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Cup Qual. UEFA"
-    },
-    {
-      "id": 15126911,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "22:45",
-      "timestamp": 1774554300000,
-      "broadcaster": "TRT 1 / Tabii",
-      "homeTeam": {
-        "name": "Slovakia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4697.png"
-      },
-      "awayTeam": {
-        "name": "Kosovo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/154426.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Cup Qual. UEFA"
-    },
-    {
-      "id": 15126915,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "22:45",
-      "timestamp": 1774554300000,
-      "broadcaster": "TRT 1 / Tabii",
-      "homeTeam": {
-        "name": "Ukraine",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4701.png"
-      },
-      "awayTeam": {
-        "name": "Sweden",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4688.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Cup Qual. UEFA"
-    },
-    {
-      "id": 15126909,
-      "fixedDate": "2026-03-26",
-      "fixedTime": "22:45",
-      "timestamp": 1774554300000,
-      "broadcaster": "TRT 1 / Tabii",
-      "homeTeam": {
-        "name": "Wales",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4702.png"
-      },
-      "awayTeam": {
-        "name": "Bosnia & Herzegovina",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4479.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Cup Qual. UEFA"
-    },
-    {
-      "id": 15126892,
-      "fixedDate": "2026-03-27",
-      "fixedTime": "01:00",
-      "timestamp": 1774562400000,
-      "broadcaster": "FIFA+ / YouTube",
-      "homeTeam": {
-        "name": "Bolivia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4746.png"
-      },
-      "awayTeam": {
-        "name": "Suriname",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/21822.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10618.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Championship Qual., Inter-Confederation"
-    },
-    {
-      "id": 15126889,
-      "fixedDate": "2026-03-27",
-      "fixedTime": "06:00",
-      "timestamp": 1774580400000,
-      "broadcaster": "FIFA+ / YouTube",
-      "homeTeam": {
-        "name": "New Caledonia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/8045.png"
-      },
-      "awayTeam": {
-        "name": "Jamaica",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4769.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10618.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "World Championship Qual., Inter-Confederation"
-    },
-    {
-      "id": 14162224,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Erbaaspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/228910.png"
-      },
-      "awayTeam": {
-        "name": "İskenderun A.Ş.",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/170408.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
-      "id": 14162213,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "1461 Trabzon",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/297098.png"
-      },
-      "awayTeam": {
-        "name": "Arnavutköy Belediye FSK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/362026.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
-      "id": 14196025,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "52 Orduspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/262533.png"
-      },
-      "awayTeam": {
-        "name": "Yozgat Belediye Bozokspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/800183.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11415.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 3"
-    },
-    {
-      "id": 14196026,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Çayeli Spor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/800177.png"
-      },
-      "awayTeam": {
-        "name": "Sebat Gençlik Spor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/485453.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11415.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 3"
-    },
-    {
-      "id": 14196023,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "1926 Bulancakspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/524530.png"
-      },
-      "awayTeam": {
-        "name": "Orduspor 1967",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/388266.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11415.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 3"
-    },
-    {
-      "id": 14196019,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Amasyaspor FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/206914.png"
-      },
-      "awayTeam": {
-        "name": "Karadeniz Ereğli Belediyespor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/524480.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11415.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 3"
-    },
-    {
-      "id": 14195786,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Karaköprü Belediyespor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/297100.png"
-      },
-      "awayTeam": {
-        "name": "Ağrı 1970 SK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/264073.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11416.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 2"
-    },
-    {
-      "id": 14195779,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Osmaniyespor FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/119854.png"
-      },
-      "awayTeam": {
-        "name": "Suvermez Kapadokyaspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/524502.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11416.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 2"
-    },
-    {
-      "id": 14195780,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Silifke Belediyespor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/825684.png"
-      },
-      "awayTeam": {
-        "name": "Malatya Yeşilyurt Belediyespor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/829847.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11416.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 2"
-    },
-    {
-      "id": 14191185,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "14:00",
-      "timestamp": 1774695600000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Bulvarspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/422068.png"
-      },
-      "awayTeam": {
-        "name": "Silivrispor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/77627.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11417.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 1"
-    },
-    {
-      "id": 14162225,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "15:30",
-      "timestamp": 1774701000000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Antalya Kepezspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/495637.png"
-      },
-      "awayTeam": {
-        "name": "Adana 01 FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/485451.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
-      "id": 14162217,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "16:00",
-      "timestamp": 1774702800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Bucaspor 1928",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/170434.png"
-      },
-      "awayTeam": {
-        "name": "Elazığspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3068.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
-      "id": 14162220,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "16:00",
-      "timestamp": 1774702800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "İnegölspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5764.png"
-      },
-      "awayTeam": {
-        "name": "24 Erzincanspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/297101.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
-      "id": 14162210,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "16:00",
-      "timestamp": 1774702800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Fethiyespor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7041.png"
-      },
-      "awayTeam": {
-        "name": "Bursaspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3055.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
-      "id": 14162207,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "16:00",
-      "timestamp": 1774702800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Somaspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/325526.png"
-      },
-      "awayTeam": {
-        "name": "Kırklarelispor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/56313.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
-      "id": 14191246,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "16:00",
-      "timestamp": 1774702800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Küçükçekmece Sinop Spor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/485446.png"
-      },
-      "awayTeam": {
-        "name": "Bursa Nilüfer FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/800178.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11417.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 1"
-    },
-    {
-      "id": 14191221,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "16:00",
-      "timestamp": 1774702800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Yalova FK 77 SK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/524449.png"
-      },
-      "awayTeam": {
-        "name": "Polatlı 1926 SK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/800176.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11417.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 1"
-    },
-    {
-      "id": 14196264,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "16:00",
-      "timestamp": 1774702800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Söke 1970 Spor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/422064.png"
-      },
-      "awayTeam": {
-        "name": "Afyonspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/228906.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/15938.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 4"
-    },
-    {
-      "id": 14196260,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "16:00",
-      "timestamp": 1774702800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "İzmir Çoruhlu FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/77619.png"
-      },
-      "awayTeam": {
-        "name": "Nazillispor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7035.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/15938.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 3. Lig, Grup 4"
-    },
-    {
-      "id": 15227357,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "22:00",
-      "timestamp": 1774724400000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "New Mexico United",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/310531.png"
-      },
-      "awayTeam": {
-        "name": "Colorado Springs Switchbacks FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/197065.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15285674,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "23:00",
-      "timestamp": 1774728000000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Detroit City FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/285642.png"
-      },
-      "awayTeam": {
-        "name": "Charleston Battery",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22004.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15227353,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "00:00",
-      "timestamp": 1774731600000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Hartford Athletic",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/310968.png"
-      },
-      "awayTeam": {
-        "name": "Indy Eleven",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/148992.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15227356,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "02:00",
-      "timestamp": 1774738800000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Miami FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/218106.png"
-      },
-      "awayTeam": {
-        "name": "Rhode Island FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/502355.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15227358,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "02:00",
-      "timestamp": 1774738800000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Pittsburgh Riverhounds",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/23635.png"
-      },
-      "awayTeam": {
-        "name": "SC Jacksonville",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1077312.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15285673,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "02:30",
-      "timestamp": 1774740600000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Brooklyn FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1158835.png"
-      },
-      "awayTeam": {
-        "name": "Louisville City FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/197070.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15285675,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "02:30",
-      "timestamp": 1774740600000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "FC Tampa Bay Rowdies",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/41617.png"
-      },
-      "awayTeam": {
-        "name": "Loudoun United FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/310969.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15285672,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "03:00",
-      "timestamp": 1774742400000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "FC Tulsa",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/197071.png"
-      },
-      "awayTeam": {
-        "name": "Phoenix Rising FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/154018.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15285681,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "03:00",
-      "timestamp": 1774742400000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Oakland Roots SC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/325107.png"
-      },
-      "awayTeam": {
-        "name": "Orange County SC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/217781.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15285676,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "05:00",
-      "timestamp": 1774749600000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Sacramento Republic FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/153498.png"
-      },
-      "awayTeam": {
-        "name": "El Paso Locomotive FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/310532.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15227355,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "05:30",
-      "timestamp": 1774751400000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Las Vegas Lights",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/276898.png"
-      },
-      "awayTeam": {
-        "name": "Monterey Bay FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/405944.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "USL Championship"
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const fs = require('fs');
+
+puppeteer.use(StealthPlugin());
+
+const GITHUB_USER = "elfcrzgr"; 
+const REPO_NAME = "macsaati-backend"; 
+
+const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
+const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
+const OUTPUT_FILE = "matches_football.json";
+
+// --- VIP YAYINCI LİSTESİ ---
+const leagueConfigs = {
+    54: "S Sport Plus / TV+",       // İspanya LaLiga 2 (Linkteki Córdoba maçı için)
+    155: "Spor Smart / Exxen",      // Arjantin Liga Profesional
+    10618: "Exxen / FIFA+",         // 27 Mart Milli Maçlar
+    351: "TRT Spor / Tabii",        // Türkiye U19
+    4664: "S Sport+ / TV+",         // İsviçre - Almanya
+    10: "Exxen / S Sport+",         // Bolivya - Surinam
+    11: "TRT 1 / Tabii",
+    52: "beIN Sports",
+    98: "beIN Sports / TRT Spor",
+    97: "TFF YouTube",
+    11417: "TFF YouTube",
+    11416: "TFF YouTube",
+    11415: "TFF YouTube",
+    15938: "TFF YouTube",
+    17: "beIN Sports",
+    8: "S Sport",
+    23: "S Sport",
+    7: "TRT / Tabii",
+    696: "DAZN / YouTube",
+    13363: "USL YouTube",
+    10783: "S Sport Plus / TRT"
+};
+
+const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
+// Derin tarama listesi (Günlük listede olmasa bile turnuva sayfasından çekilecekler)
+const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54, 4664];
+
+async function start() {
+    console.log("🚀 Akıllı Motor: LaLiga 2 ve Arjantin maçları zorlanıyor...");
+    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    const page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+
+    const getTRDate = (offset = 0) => {
+        const d = new Date();
+        d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); 
+        d.setDate(d.getDate() + offset);
+        return d.toISOString().split('T')[0];
+    };
+
+    const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
+    let allEvents = [];
+    
+    // 1. ADIM: GENEL API TARAMASI
+    for (const date of validDates) {
+        try {
+            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
+            const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            if (data && data.events) {
+                const filtered = data.events.filter(e => {
+                    const utId = e.tournament?.uniqueTournament?.id;
+                    return targetLeagueIds.includes(utId) || (e.tournament?.uniqueTournament?.priority > 100);
+                });
+                allEvents = allEvents.concat(filtered);
+            }
+        } catch (e) { console.error(`Genel Hata (${date}):`, e.message); }
     }
-  ]
+
+    // 2. ADIM: GELİŞMİŞ DERİN TARAMA (Maçı linkten bulup getiren kısım)
+    for (const id of stubbornLeagueIds) {
+        try {
+            console.log(`🔍 Turnuva ID ${id} için güncel maçlar çekiliyor...`);
+            await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
+            const seasonsData = await page.evaluate(() => JSON.parse(document.body.innerText));
+            
+            if (seasonsData?.seasons) {
+                // Aktif olabilecek ilk 2 sezonun maçlarına bakıyoruz (Geçiş dönemleri için)
+                const seasonIds = seasonsData.seasons.slice(0, 2).map(s => s.id); 
+
+                for (const sId of seasonIds) {
+                    for (const type of ['next/0', 'last/0']) {
+                        await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${type}`, { waitUntil: 'networkidle2' });
+                        const eventsData = await page.evaluate(() => JSON.parse(document.body.innerText));
+                        if (eventsData?.events) {
+                            const targetEvents = eventsData.events.filter(e => {
+                                const dateTR = new Date(e.startTimestamp * 1000);
+                                const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                                return validDates.includes(dayStrTR);
+                            });
+                            allEvents = allEvents.concat(targetEvents);
+                        }
+                    }
+                }
+            }
+        } catch (e) { }
+    }
+
+    // 3. ADIM: AYIKLAMA VE KAYDETME
+    const finalMatchesMap = new Map();
+    for (const e of allEvents) {
+        const utId = e.tournament?.uniqueTournament?.id;
+        if (!utId) continue;
+        
+        const matchKey = `${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
+        const dateTR = new Date(e.startTimestamp * 1000);
+        const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        const isFinished = e.status?.type === 'finished' || e.status?.type === 'inprogress';
+
+        const matchObj = {
+            id: e.id,
+            fixedDate: dayStr,
+            fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
+            timestamp: e.startTimestamp * 1000,
+            broadcaster: leagueConfigs[utId] || "Resmi Yayıncı / Canlı Skor", 
+            homeTeam: { name: e.homeTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
+            awayTeam: { name: e.awayTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
+            tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
+            homeScore: isFinished ? String(e.homeScore.display) : "-",
+            awayScore: isFinished ? String(e.awayScore.display) : "-",
+            tournament: e.tournament.uniqueTournament.name
+        };
+
+        if (!finalMatchesMap.has(matchKey) || e.status?.type === 'finished') {
+            finalMatchesMap.set(matchKey, matchObj);
+        }
+    }
+
+    const finalMatches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
+
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
+        success: true, 
+        lastUpdated: new Date().toISOString(), 
+        totalMatches: finalMatches.length,
+        matches: finalMatches 
+    }, null, 2));
+    
+    console.log(`\n✅ İşlem Tamamlandı. Córdoba ve Arjantin maçları dahil ${finalMatches.length} maç kaydedildi.`);
+    await browser.close();
 }
+
+start();
