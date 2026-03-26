@@ -11,12 +11,18 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- YAYINCI VE TURNUVA TANIMLARI ---
+// --- YAYINCI LİSTESİ VE KRİTİK TURNUVA ID'LERİ (27 MART ÖZEL GÜNCELLEME) ---
 const leagueConfigs = {
-    11: "TRT 1 / Tabii",           // World Cup Qual. UEFA (Senin linkindeki ana turnuva)
-    17011: "TRT 1 / Tabii",        // World Cup Qual. UEFA (Alternatif)
-    10783: "S Sport Plus / TRT",   // UEFA Nations League
-    4664: "TRT Spor / Tabii",      // Hazırlık Maçları
+    // Milli Maçlar & Dünya Kupası Elemeleri (Tüm Kıtalar)
+    11: "TRT 1 / Tabii",            // UEFA Dünya Kupası Elemeleri (Türkiye maçı vb.)
+    17011: "TRT 1 / Tabii",         // UEFA Elemeleri (Alt ID)
+    10: "S Sport Plus / FIFA+",     // CONMEBOL Elemeleri (Bolivya - Surinam vb.)
+    10214: "FIFA+ / YouTube",       // Kıtalararası Play-off (Yeni Kaledonya - Jamaika)
+    4664: "S Sport Plus / Tabii",   // Uluslararası Hazırlık Maçları (İsviçre - Almanya vb.)
+    351: "TRT Spor / Tabii",        // UEFA U19 Avrupa Şampiyonası (Türkiye - Ermenistan)
+    10783: "S Sport Plus / TRT",    // UEFA Nations League
+    
+    // Türkiye Yerel Ligleri
     52: "beIN Sports",             
     98: "beIN Sports / TRT Spor",  
     97: "TFF YouTube",             
@@ -24,21 +30,28 @@ const leagueConfigs = {
     11416: "TFF YouTube",          
     11415: "TFF YouTube",          
     15938: "TFF YouTube",
-    7: "TRT / Tabii",
-    8: "S Sport",
-    696: "DAZN / YouTube"
+
+    // Elit Avrupa & Kupa
+    17: "beIN Sports",             
+    8: "S Sport",                  
+    23: "S Sport",                 
+    7: "TRT / Tabii",              
+    696: "DAZN / YouTube",
+    13363: "USL YouTube"
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
-// İnatçı ligler: Bu turnuvaların içine girip tüm aşamaları (Yarı Final vb.) tarayacağız.
-const stubbornLeagueIds = [11, 17011, 97, 11415, 11416, 11417, 15938];
+
+// GRUPLARINA VE PLAY-OFF AŞAMALARINA DERİNLEMESİNE BAKILACAK LİGLER
+const stubbornLeagueIds = [11, 10, 10214, 351, 97, 11415, 11416, 11417, 15938, 10783];
 
 async function start() {
-    console.log("🚀 Maç Saati Motoru: Play-off ve Yarı Finaller taranıyor...");
+    console.log("🚀 Futbol motoru başlatılıyor (27 Mart Milli Maçlar & Play-offlar Dahil)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
+    // Türkiye saati (UTC+3) bazlı tarih belirleme
     const getTRDate = (offset = 0) => {
         const d = new Date();
         d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); 
@@ -49,64 +62,65 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // --- 1. ADIM: GENEL GÜNLÜK LİSTE ---
+    // --- 1. ADIM: GENEL GÜNLÜK API TARAMASI ---
     for (const date of validDates) {
         try {
-            console.log(`⏳ ${date} genel maçlar kontrol ediliyor...`);
+            console.log(`⏳ ${date} genel maç verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            
             if (data && data.events) {
                 const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} API Hatası:`, e.message); }
+        } catch (e) { console.error(`Hata (${date}):`, e.message); }
     }
 
-    // --- 2. ADIM: TURNUVA ÖZEL DERİN TARAMA (Yarı Finaller Buradan Gelir) ---
+    // --- 2. ADIM: DERİN TARAMA (PLAY-OFF VE GRUP AŞAMALARI) ---
     for (const id of stubbornLeagueIds) {
         try {
-            console.log(`🔍 Turnuva Derinliği Taranıyor: ID ${id}`);
-            // Önce bu turnuvanın güncel sezon ID'sini bulalım
+            console.log(`🔍 Derin Tarama: ID ${id}`);
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
-            const seasonsData = await page.evaluate(() => JSON.parse(document.body.innerText));
+            const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             
             if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
-                const currentSeasonId = seasonsData.seasons[0].id;
+                const seasonId = seasonsData.seasons[0].id; 
 
-                // 'next/0' yaklaşan tüm aşamaları (Yarı final, final vs) getirir.
-                // Bazı durumlarda 'last/0' da bugünkü biten/başlayan maçları içerir.
-                for (const type of ['next/0', 'last/0']) {
-                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${currentSeasonId}/events/${type}`, { waitUntil: 'networkidle2' });
-                    const eventsData = await page.evaluate(() => JSON.parse(document.body.innerText));
+                for (const pageType of ['next/0', 'last/0']) {
+                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${pageType}`, { waitUntil: 'networkidle2' });
+                    const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
 
                     if (eventsData && eventsData.events) {
-                        const filtered = eventsData.events.filter(e => {
+                        const targetEvents = eventsData.events.filter(e => {
                             const dateTR = new Date(e.startTimestamp * 1000);
                             const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                             return validDates.includes(dayStrTR);
                         });
-                        allEvents = allEvents.concat(filtered);
+                        allEvents = allEvents.concat(targetEvents);
                     }
                 }
             }
-        } catch (e) { console.error(`Derin Tarama Hatası (ID ${id}):`, e.message); }
+        } catch (e) { console.error(`Derin Dalış Hatası (ID ${id}):`, e.message); }
     }
 
-    // --- 3. ADIM: TEMİZLİK VE SIRALAMA ---
+    // --- 3. ADIM: DEDUPLİKASYON VE KAYDETME ---
     const finalMatchesMap = new Map();
 
     for (const e of allEvents) {
-        const utId = e.tournament?.uniqueTournament?.id || 11; // Fallback to 11 if missing
+        const utId = e.tournament?.uniqueTournament?.id;
+        if (!utId) continue;
+        
         const matchKey = `${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        const isFinished = e.status?.type === 'finished' || e.status?.type === 'inprogress';
 
         const matchObj = {
             id: e.id,
             fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
-            broadcaster: leagueConfigs[utId] || "TRT 1 / Tabii", 
+            broadcaster: leagueConfigs[utId] || "TRT / Tabii", 
             homeTeam: { 
                 name: e.homeTeam.name, 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
@@ -116,18 +130,23 @@ async function start() {
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
             },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
-            homeScore: (e.status?.type === 'finished' || e.status?.type === 'inprogress') ? String(e.homeScore.display) : "-",
-            awayScore: (e.status?.type === 'finished' || e.status?.type === 'inprogress') ? String(e.awayScore.display) : "-",
-            tournament: e.tournament.uniqueTournament.name || "Dünya Kupası Elemeleri"
+            homeScore: isFinished ? String(e.homeScore.display) : "-",
+            awayScore: isFinished ? String(e.awayScore.display) : "-",
+            tournament: e.tournament.uniqueTournament.name
         };
 
-        // Tekrar eden maçları engelle, skoru güncel olanı tut
-        if (!finalMatchesMap.has(matchKey) || e.status?.type === 'finished') {
+        if (finalMatchesMap.has(matchKey)) {
+            const existing = finalMatchesMap.get(matchKey);
+            if (e.status?.type === 'finished' || (e.status?.type === 'inprogress' && existing.homeScore === "-")) {
+                finalMatchesMap.set(matchKey, matchObj);
+            }
+        } else {
             finalMatchesMap.set(matchKey, matchObj);
         }
     }
 
-    const finalMatches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
+    const finalMatches = Array.from(finalMatchesMap.values());
+    finalMatches.sort((a, b) => a.timestamp - b.timestamp);
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
         success: true, 
@@ -136,7 +155,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ Tamamlandı. ${finalMatches.length} maç bulundu. Yarı finaller eklendi.`);
+    console.log(`\n✅ İşlem Tamamlandı. ${finalMatches.length} maç dosyaya kaydedildi.`);
     await browser.close();
 }
 
