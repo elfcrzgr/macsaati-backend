@@ -48,7 +48,7 @@ const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 const stubbornLeagueIds = [97, 11415, 11416, 11417, 15938, 17011, 10783, 14605];
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (Web Scraping + API Intercept)...");
+    console.log("🚀 Futbol motoru başlatılıyor (+ Dünya Kupası Playoff Taraması)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -65,7 +65,7 @@ async function start() {
     
     let allEvents = [];
     
-    // --- 1. ADIM: GENEL GÜNLÜK MAÇLAR ---
+    // --- 1. ADIM: GENEL GÜNLÜK MAÇLAR (ESKİ YAPI) ---
     for (const date of validDates) {
         try {
             console.log(`⏳ ${date} genel API taranıyor...`);
@@ -80,7 +80,7 @@ async function start() {
         } catch (e) { console.error(`❌ Hata (${date}):`, e.message); }
     }
 
-    // --- 2. ADIM: CANLI MAÇLAR ---
+    // --- 2. ADIM: CANLI MAÇLAR (ESKİ YAPI) ---
     try {
         console.log(`⏳ Canlı maçlar taranıyor...`);
         await page.goto(`https://api.sofascore.com/api/v1/sport/football/events/live`, { waitUntil: 'networkidle2' });
@@ -92,40 +92,69 @@ async function start() {
         }
     } catch (e) { console.error(`❌ Canlı Maç Hatası:`, e.message); }
 
-    // --- 3. ADIM: WEB SCRAPING İLE PLAYOFF MAÇLARI (DIRECT HTML PARSE) ---
-    console.log(`\n🔍 SofaScore Web Sitesinden Playoff Maçları Çekiliyor:`);
-    try {
-        console.log(`   🌐 https://www.sofascore.com/tr/football/tournament/europe/world-championship-qual-uefa/11`);
-        
-        // Intercepted API çağrılarını yakala
-        const interceptedRequests = [];
-        await page.on('response', response => {
-            if (response.url().includes('api.sofascore.com') && response.url().includes('events')) {
-                interceptedRequests.push(response);
+    // --- 3. ADIM: DERİN DALIŞ (ESKİ YAPI) ---
+    for (const id of stubbornLeagueIds) {
+        try {
+            console.log(`🔍 Derin Dalış: Turnuva ID ${id}`);
+            await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
+            const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            
+            if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
+                const seasonId = seasonsData.seasons[0].id;
+
+                for (const pageType of ['next/0', 'last/0']) {
+                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${pageType}`, { waitUntil: 'networkidle2' });
+                    const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+
+                    if (eventsData && eventsData.events) {
+                        const targetEvents = eventsData.events.filter(e => {
+                            const dateTR = new Date(e.startTimestamp * 1000);
+                            const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                            return validDates.includes(dayStrTR);
+                        });
+                        allEvents = allEvents.concat(targetEvents);
+                    }
+                }
             }
+        } catch (e) { console.error(`❌ Hata (ID ${id}):`, e.message); }
+    }
+
+    // --- 4. ADIM: DÜNYA KUPASI PLAYOFF MAÇLARI (YENİ - SADECE 17011 İÇİN) ---
+    console.log(`\n🏆 DÜNYA KUPASI PLAYOFF MAÇLARI TARANIYORU...`);
+    try {
+        console.log(`   🌐 SofaScore Web Sitesi: https://www.sofascore.com/tr/football/tournament/europe/world-championship-qual-uefa/11`);
+        
+        await page.goto('https://www.sofascore.com/tr/football/tournament/europe/world-championship-qual-uefa/11', { 
+            waitUntil: 'networkidle2', 
+            timeout: 30000 
         });
 
-        await page.goto('https://www.sofascore.com/tr/football/tournament/europe/world-championship-qual-uefa/11', { waitUntil: 'networkidle2', timeout: 30000 });
-        
-        // Sayfadaki tüm maç verilerini DOM'dan çek
-        const matchesFromDOM = await page.evaluate(() => {
+        // Sayfada tüm maçları DOM'dan çek
+        const playoffMatches = await page.evaluate(() => {
             const matches = [];
-            const rows = document.querySelectorAll('[data-testid="event-row"]');
             
-            rows.forEach(row => {
+            // SofaScore sayfasında maçlar genellikle şu selector'larda olur
+            const eventRows = document.querySelectorAll('a[href*="match"]');
+            
+            eventRows.forEach(row => {
                 try {
-                    const timeEl = row.querySelector('[data-testid="event-row-time"]');
-                    const homeEl = row.querySelector('[data-testid="event-row-home-team"]');
-                    const awayEl = row.querySelector('[data-testid="event-row-away-team"]');
-                    const scoreEl = row.querySelector('[data-testid="event-row-score"]');
+                    const linkHref = row.getAttribute('href');
+                    const text = row.innerText;
                     
-                    if (timeEl && homeEl && awayEl) {
-                        matches.push({
-                            time: timeEl.textContent.trim(),
-                            homeTeam: homeEl.textContent.trim(),
-                            awayTeam: awayEl.textContent.trim(),
-                            score: scoreEl ? scoreEl.textContent.trim() : '-',
-                        });
+                    // Maç ID'sini lintten çıkar
+                    const matchIdMatch = linkHref.match(/match\/(\d+)/);
+                    if (matchIdMatch) {
+                        const matchId = matchIdMatch[1];
+                        
+                        // Saatleri ve takım adlarını parse et
+                        const lines = text.split('\n').filter(l => l.trim());
+                        if (lines.length >= 3) {
+                            matches.push({
+                                matchId,
+                                rawData: lines.join(' | '),
+                                fullText: text
+                            });
+                        }
                     }
                 } catch (e) { }
             });
@@ -133,66 +162,34 @@ async function start() {
             return matches;
         });
 
-        if (matchesFromDOM.length > 0) {
-            console.log(`   ✅ DOM'dan ${matchesFromDOM.length} playoff maçı bulundu`);
-            console.log(`   📋 Maçlar:`, matchesFromDOM);
-        } else {
-            console.log(`   ℹ️ DOM'da maç bulunamadı, GraphQL/XHR intercept deneniyor...`);
-            
-            // Alternatif: Intercepted API calls'ları kontrol et
-            for (const resp of interceptedRequests) {
-                try {
-                    const data = await resp.json();
-                    if (data.events) {
-                        const playoffMatches = data.events.filter(e => {
-                            const dateTR = new Date(e.startTimestamp * 1000);
-                            const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                            const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
-                            return validDates.includes(dayStr);
-                        });
-                        
-                        if (playoffMatches.length > 0) {
-                            console.log(`   ✅ Intercepted API'den ${playoffMatches.length} playoff maçı bulundu`);
-                            allEvents = allEvents.concat(playoffMatches);
-                        }
+        console.log(`   ✅ DOM'dan ${playoffMatches.length} playoff match linki bulundu`);
+
+        // Bulunan her maç için detay çek
+        for (const match of playoffMatches) {
+            try {
+                const matchId = match.matchId;
+                const matchUrl = `https://api.sofascore.com/api/v1/event/${matchId}`;
+                
+                await page.goto(matchUrl, { waitUntil: 'networkidle2' });
+                const matchData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+                
+                if (matchData && matchData.event) {
+                    const e = matchData.event;
+                    
+                    // Tarihi kontrol et
+                    const dateTR = new Date(e.startTimestamp * 1000);
+                    const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                    
+                    if (validDates.includes(dayStrTR)) {
+                        console.log(`      ✅ Playoff Maçı Bulundu: ${e.homeTeam.name} vs ${e.awayTeam.name} (${dayStrTR})`);
+                        allEvents.push(e);
                     }
-                } catch (e) { }
+                }
+            } catch (e) { 
+                // Sessiz devam
             }
         }
-    } catch (e) { console.error(`❌ Web Scraping Hatası:`, e.message); }
-
-    // --- 4. ADIM: STANDART DERİN DALIŞ (İNATÇI LİGLER) ---
-    for (const id of stubbornLeagueIds) {
-        try {
-            console.log(`\n🔍 Derin Dalış: Turnuva ID ${id}`);
-            await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
-            const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-            
-            if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
-                const seasonId = seasonsData.seasons[0].id;
-
-                for (const pageType of ['next/0', 'next/1', 'next/2', 'last/0', 'last/1', 'last/2']) {
-                    try {
-                        await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${pageType}`, { waitUntil: 'networkidle2' });
-                        const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-
-                        if (eventsData && eventsData.events) {
-                            const targetEvents = eventsData.events.filter(e => {
-                                const dateTR = new Date(e.startTimestamp * 1000);
-                                const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                                return validDates.includes(dayStrTR);
-                            });
-                            
-                            if (targetEvents.length > 0) {
-                                console.log(`   ✅ ${pageType}: ${targetEvents.length} maç`);
-                                allEvents = allEvents.concat(targetEvents);
-                            }
-                        }
-                    } catch (e) { }
-                }
-            }
-        } catch (e) { console.error(`❌ Hata (ID ${id}):`, e.message); }
-    }
+    } catch (e) { console.error(`❌ Playoff Tarama Hatası:`, e.message); }
 
     console.log(`\n📊 TOPLAMDA ${allEvents.length} maç çekildi\n`);
 
@@ -200,10 +197,10 @@ async function start() {
     const finalMatchesMap = new Map();
 
     for (const e of allEvents) {
-        if (!e.tournament?.uniqueTournament?.id) continue;
+        const utId = e.tournament?.uniqueTournament?.id;
+        if (!utId) continue;
         
-        const utId = e.tournament.uniqueTournament.id;
-        const matchKey = `${e.homeTeam.id}_${e.awayTeam.id}_${utId}_${e.startTimestamp}`;
+        const matchKey = `${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         const isFinished = e.status?.type === 'finished';
