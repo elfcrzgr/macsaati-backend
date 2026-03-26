@@ -26,15 +26,10 @@ const teamTranslations = {
     "kosovo": "Kosova"
 };
 
-// Harf duyarsız ve parçalı eşleşme yapan çeviri fonksiyonu
 const translateTeam = (name) => {
     if (!name) return name;
     const n = name.trim().toLowerCase();
-    
-    // 1. Tam Eşleşme
     if (teamTranslations[n]) return teamTranslations[n];
-
-    // 2. Parçalı Eşleşme (Örn: Romania (W) gelirse Romania'yı yakalar)
     for (const [eng, tr] of Object.entries(teamTranslations)) {
         if (n.includes(eng)) return tr;
     }
@@ -59,7 +54,7 @@ const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54, 4664];
 
 async function start() {
-    console.log("🚀 Akıllı Motor: İsimler Türkçeleştirilerek Başlatıldı...");
+    console.log("🚀 Akıllı Motor Başlatıldı: Eksik maçlar zorlanıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -74,31 +69,37 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
+    // --- 1. ADIM: GENEL TARAMA ---
     for (const date of validDates) {
         try {
+            console.log(`⏳ ${date} genel verileri çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             if (data && data.events) {
                 const filtered = data.events.filter(e => {
                     const utId = e.tournament?.uniqueTournament?.id;
-                    return targetLeagueIds.includes(utId) || (e.tournament?.uniqueTournament?.priority > 100);
+                    const priority = e.tournament?.uniqueTournament?.priority || 0;
+                    return targetLeagueIds.includes(utId) || priority > 100;
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { }
+        } catch (e) { console.error(`Hata (${date}):`, e.message); }
     }
 
+    // --- 2. ADIM: DERİN TARAMA ---
     for (const id of stubbornLeagueIds) {
         try {
+            console.log(`🔍 Derin Tarama Zorlanıyor: ID ${id}`);
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
-            const seasonsData = await page.evaluate(() => JSON.parse(document.body.innerText));
-            if (seasonsData?.seasons) {
+            const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            
+            if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
                 const seasonIds = seasonsData.seasons.slice(0, 2).map(s => s.id); 
                 for (const sId of seasonIds) {
-                    for (const type of ['next/0', 'last/0']) {
-                        await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${type}`, { waitUntil: 'networkidle2' });
-                        const eventsData = await page.evaluate(() => JSON.parse(document.body.innerText));
-                        if (eventsData?.events) {
+                    for (const pageType of ['next/0', 'last/0']) {
+                        await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${pageType}`, { waitUntil: 'networkidle2' });
+                        const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+                        if (eventsData && eventsData.events) {
                             const targetEvents = eventsData.events.filter(e => {
                                 const dateTR = new Date(e.startTimestamp * 1000);
                                 const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
@@ -112,6 +113,7 @@ async function start() {
         } catch (e) { }
     }
 
+    // --- 3. ADIM: AYIKLAMA VE KAYDETME ---
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
         const utId = e.tournament?.uniqueTournament?.id;
@@ -142,7 +144,12 @@ async function start() {
             tournament: e.tournament.uniqueTournament.name
         };
 
-        if (!finalMatchesMap.has(matchKey) || e.status?.type === 'finished') {
+        if (finalMatchesMap.has(matchKey)) {
+            const existing = finalMatchesMap.get(matchKey);
+            if (e.status?.type === 'finished' || (e.status?.type === 'inprogress' && existing.homeScore === "-")) {
+                finalMatchesMap.set(matchKey, matchObj);
+            }
+        } else {
             finalMatchesMap.set(matchKey, matchObj);
         }
     }
@@ -156,7 +163,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı. Toplam ${finalMatches.length} maç Türkçeleştirildi.`);
+    console.log(`\n✅ İşlem Başarıyla Tamamlandı. Toplam ${finalMatches.length} maç Türkçeleştirildi ve kaydedildi.`);
     await browser.close();
 }
 
