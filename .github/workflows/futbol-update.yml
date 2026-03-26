@@ -6,6 +6,9 @@ on:
 jobs:
   update-football:
     runs-on: ubuntu-latest
+    env:
+      # GitHub'ın istediği Node.js 24 geçişini şimdiden onaylayarak uyarıyı kapatıyoruz
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Repoyu Klonla
@@ -16,7 +19,7 @@ jobs:
       - name: Node.js Kurulumu
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24' # Node.js 20 yerine 24 kullanıyoruz
 
       - name: Kütüphaneleri Yükle
         run: npm install
@@ -33,28 +36,26 @@ jobs:
         continue-on-error: true
 
       # ==========================================
-      # 🚀 GITHUB'A YÜKLEME
+      # 🚀 GITHUB'A YÜKLEME (GELİŞMİŞ KONTROL)
       # ==========================================
-      - name: Değişiklikleri Kontrol Et
-        id: check_changes
-        run: |
-          if git diff --quiet; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-
       - name: Git Kimliğini Ayarla ve Pushla
-        if: steps.check_changes.outputs.has_changes == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Tüm yeni dosyaları sahneye al
           git add .
-          git commit -m "FUTBOL Veri & Logolar Otomatik Güncellendi: $(date)"
-          git pull origin main --rebase -X theirs
-          git push origin main
+          
+          # Sadece değişiklik varsa commit ve push yap
+          if git diff --staged --quiet; then
+            echo "Değişiklik yok, pushlanmıyor."
+          else
+            git commit -m "⚽ FUTBOL: Veri & Logolar Otomatik Güncellendi ($(date +'%d-%m-%Y %H:%M'))"
+            # Çakışmaları botun verisi lehine çöz
+            git pull origin main --rebase -X theirs
+            git push origin main
+            echo "✅ Değişiklikler başarıyla gönderildi."
+          fi
 
       - name: Sonuç Raporu
-        run: |
-          echo "✅ Workflow Tamamlandı"
-          echo "📁 Değişiklikler: ${{ steps.check_changes.outputs.has_changes }}"
+        run: echo "🚀 İşlem başarıyla tamamlandı."
