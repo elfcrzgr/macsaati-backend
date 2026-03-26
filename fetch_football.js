@@ -11,19 +11,14 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- GÜNCELLENMİŞ VIP YAYINCI LİSTESİ ---
+// --- VIP YAYINCI LİSTESİ ---
 const leagueConfigs = {
-    // Yeni eklenen Arjantin ve İspanya 2 maçları
-    155: "Spor Smart / Exxen",      // Arjantin Liga Profesional (Linkindeki turnuva)
-    54: "S Sport Plus / TV+",       // İspanya LaLiga 2 (Linkindeki turnuva)
-    
-    // 27 Mart Özel Milli Maçlar
+    155: "Spor Smart / Exxen",      // Arjantin Liga Profesional
+    54: "S Sport Plus / TV+",       // İspanya LaLiga 2
     10: "Exxen / S Sport+",         // Bolivya - Surinam
     10618: "Exxen / FIFA+",         // Yeni Kaledonya - Jamaika
     351: "TRT Spor / Tabii",        // Türkiye - Ermenistan (U19)
     4664: "S Sport+ / TV+",         // İsviçre - Almanya
-    
-    // Diğer Ana Ligler
     11: "TRT 1 / Tabii",            
     52: "beIN Sports",              
     98: "beIN Sports / TRT Spor",   
@@ -36,16 +31,17 @@ const leagueConfigs = {
     8: "S Sport",                   
     23: "S Sport",                  
     7: "TRT / Tabii",               
+    696: "DAZN / YouTube",          
     13363: "USL YouTube",
     10783: "S Sport Plus / TRT"     
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
-// İnatçı ligler (Mutlaka derin taranacaklar)
-const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54];
+// KRİTİK GÜNCELLEME: 4664 (Hazırlık), 155 (Arjantin) ve 54 (İspanya 2) inatçı listesine eklendi.
+const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54, 4664];
 
 async function start() {
-    console.log("🚀 Akıllı Futbol Motoru: Arjantin ve İspanya 2 dahil ediliyor...");
+    console.log("🚀 Maç Saati Motoru: Arjantin, İspanya ve 27 Mart Takvimi Zorlanıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -60,38 +56,38 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // 1. ADIM: GENEL API TARAMASI + POPÜLER KEŞİF
+    // --- 1. ADIM: GENEL API TARAMASI ---
     for (const date of validDates) {
         try {
-            console.log(`⏳ ${date} maçları kontrol ediliyor...`);
+            console.log(`⏳ ${date} genel maç verisi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             
             if (data && data.events) {
                 const filtered = data.events.filter(e => {
                     const utId = e.tournament?.uniqueTournament?.id;
-                    const isKnown = targetLeagueIds.includes(utId);
-                    const isPopular = e.tournament?.uniqueTournament?.priority > 100;
-                    return isKnown || isPopular;
+                    const priority = e.tournament?.uniqueTournament?.priority || 0;
+                    return targetLeagueIds.includes(utId) || priority > 100;
                 });
                 allEvents = allEvents.concat(filtered);
             }
         } catch (e) { console.error(`Hata (${date}):`, e.message); }
     }
 
-    // 2. ADIM: DERİN TARAMA (Arjantin, İspanya 2, Milli Maçlar vb.)
+    // --- 2. ADIM: DERİN TARAMA (Önemli ligleri asla kaçırmaz) ---
     for (const id of stubbornLeagueIds) {
         try {
-            console.log(`🔍 Derin Tarama: ID ${id}`);
+            console.log(`🔍 Derin Tarama Zorlanıyor: ID ${id}`);
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
             const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             
-            if (seasonsData?.seasons?.length > 0) {
+            if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
                 const seasonId = seasonsData.seasons[0].id; 
-                for (const type of ['next/0', 'last/0']) {
-                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${type}`, { waitUntil: 'networkidle2' });
+                for (const pageType of ['next/0', 'last/0']) {
+                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${pageType}`, { waitUntil: 'networkidle2' });
                     const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-                    if (eventsData?.events) {
+
+                    if (eventsData && eventsData.events) {
                         const targetEvents = eventsData.events.filter(e => {
                             const dateTR = new Date(e.startTimestamp * 1000);
                             const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
@@ -101,10 +97,10 @@ async function start() {
                     }
                 }
             }
-        } catch (e) { }
+        } catch (e) { console.error(`Derin Dalış Hatası (ID ${id}):`, e.message); }
     }
 
-    // 3. ADIM: AYIKLAMA VE KAYDETME
+    // --- 3. ADIM: AYIKLAMA VE KAYDETME ---
     const finalMatchesMap = new Map();
 
     for (const e of allEvents) {
@@ -132,6 +128,7 @@ async function start() {
 
         if (finalMatchesMap.has(matchKey)) {
             const existing = finalMatchesMap.get(matchKey);
+            // Canlı veya bitmiş maç varsa onu öncelikli tut
             if (e.status?.type === 'finished' || (e.status?.type === 'inprogress' && existing.homeScore === "-")) {
                 finalMatchesMap.set(matchKey, matchObj);
             }
@@ -149,7 +146,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı. Arjantin ve İspanya 2 dahil ${finalMatches.length} maç kaydedildi.`);
+    console.log(`\n✅ İşlem Tamamlandı. Toplam ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
