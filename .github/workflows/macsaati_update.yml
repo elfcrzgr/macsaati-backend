@@ -2,23 +2,26 @@ name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
   schedule:
-    - cron: '0 * * * *' # Her saat başı tam 00 geçe otomatik çalışır
-  workflow_dispatch: # Actions sekmesinden manuel olarak tetikleme butonu
+    - cron: '0 * * * *' 
+  workflow_dispatch: 
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    env:
+      # GitHub'ın istediği Node.js 24 geçişini şimdiden aktif ediyoruz (Uyarıyı siler)
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Repoyu Klonla
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Git geçmişini tam çekmek, çakışma çözümü (rebase) için şarttır
+          fetch-depth: 0 
 
       - name: Node.js Kurulumu
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24' # Node.js 20 yerine 24 kullanarak geleceğe hazırlıyoruz
 
       - name: Kütüphaneleri Yükle
         run: |
@@ -52,23 +55,25 @@ jobs:
         run: node logo_tennis.js || echo "Tenis logo indirme atlandı"
 
       # ==========================================
-      # 🚀 GITHUB'A YÜKLEME (ÇAKIŞMA ÖNLEYİCİLİ)
+      # 🚀 GITHUB'A YÜKLEME (DAHA GÜVENLİ PUSH)
       # ==========================================
-      - name: Git Kimliğini Ayarla ve Çakışmaları Ezerek Pushla
+      - name: Git Kimliğini Ayarla ve Pushla
         run: |
-          # 1. Botun kimliğini tanımla
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 2. Üretilen tüm yeni JSON dosyalarını ve inen logoları sahneye al
+          # 1. Her şeyi ekle
           git add .
           
-          # 3. Değişiklikleri önce yerelde kaydet (Çakışma önlemek için şart)
-          git commit -m "Yerel bot güncellemeleri" || echo "Değişiklik yok"
-          
-          # 4. Senin manuel eklediğin logoları çek, ÇAKIŞMA OLURSA BOTUN YENİ VERİSİNİ KABUL ET (-X theirs)
-          git pull origin main --rebase -X theirs
-          
-          # 5. Mesajı düzelt ve GitHub'a sorunsuzca gönder
-          git commit --amend -m "Veri & Logolar Otomatik Güncellendi: $(date)" || echo "Değişiklik yok"
-          git push origin main
+          # 2. Değişiklik var mı kontrol et ve commitle
+          if git diff --staged --quiet; then
+            echo "Değişiklik yok, işlem sonlandırılıyor."
+          else
+            git commit -m "Veri & Logolar Otomatik Güncellendi: $(date +'%d-%m-%Y %H:%M')"
+            
+            # 3. Çakışma yönetimi (Rebase)
+            git pull origin main --rebase -X theirs
+            
+            # 4. Gönder
+            git push origin main
+          fi
