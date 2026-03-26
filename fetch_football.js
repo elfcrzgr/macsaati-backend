@@ -11,42 +11,40 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- TÜM TURNUVALAR VE 27 MART ÖZEL MAÇLARI İÇİN YAYINCI LİSTESİ ---
+// --- 27 MART MAÇLARINI YAKALAYAN GÜNCEL YAYINCI LİSTESİ ---
 const leagueConfigs = {
-    // Milli Maçlar & Play-offlar (27 Mart Programı Burada)
-    11: "TRT 1 / Tabii",            // Dünya Kupası Elemeleri (UEFA)
-    10: "S Sport Plus / FIFA+",     // Dünya Kupası Elemeleri (Bolivya - Surinam)
-    10214: "FIFA+ / YouTube",       // Kıtalararası Play-off (Yeni Kaledonya - Jamaika)
-    351: "TRT Spor / Tabii",        // UEFA U19 Elemeleri (Türkiye - Ermenistan)
-    4664: "S Sport Plus / Tabii",   // Uluslararası Hazırlık Maçları (İsviçre - Almanya)
-    10783: "S Sport Plus / TRT",    // UEFA Nations League
+    // 27 Mart Programındaki Turnuvalar
+    11: "TRT 1 / Tabii",            // UEFA Dünya Kupası Elemeleri
+    10: "S Sport Plus / FIFA+",     // Bolivya - Surinam (Güney Amerika Elemeleri)
+    10214: "FIFA+ / YouTube",       // Yeni Kaledonya - Jamaika (Play-off)
+    351: "TRT Spor / Tabii",        // Türkiye - Ermenistan (UEFA U19)
+    4664: "S Sport Plus / Tabii",   // İsviçre - Almanya (Hazırlık Maçı)
     
-    // Türkiye Yerel Ligleri
-    52: "beIN Sports",             
-    98: "beIN Sports / TRT Spor",  
+    // Türkiye Alt Ligleri
     97: "TFF YouTube",             
     11417: "TFF YouTube",          
     11416: "TFF YouTube",          
     11415: "TFF YouTube",          
     15938: "TFF YouTube",
-
-    // Elit Avrupa & USL
+    
+    // Diğer Ligler
+    52: "beIN Sports",             
+    98: "beIN Sports / TRT Spor",  
     17: "beIN Sports",             
     8: "S Sport",                  
     23: "S Sport",                 
-    7: "TRT / Tabii",              
     696: "DAZN / YouTube",
-    13363: "USL YouTube"
+    13363: "USL YouTube",
+    10783: "S Sport Plus / TRT"
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
-// GRUPLARINA VE PLAY-OFF AŞAMALARINA DERİNLEMESİNE BAKILACAK LİGLER
-// 27 Mart maçlarını garantiye almak için 10, 10214 ve 351 listeye eklendi.
+// Derin tarama yapılacak "inatçı" turnuvalar (27 Mart maçları burada)
 const stubbornLeagueIds = [11, 10, 10214, 351, 97, 11415, 11416, 11417, 15938];
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (27 Mart Takvimi Aktif)...");
+    console.log("🚀 Futbol motoru başlatılıyor (27 Mart Güncellemesi)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -61,7 +59,7 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // --- 1. ADIM: GENEL GÜNLÜK API TARAMASI ---
+    // --- 1. ADIM: GENEL API TARAMASI ---
     for (const date of validDates) {
         try {
             console.log(`⏳ ${date} genel maç verisi çekiliyor...`);
@@ -75,7 +73,7 @@ async function start() {
         } catch (e) { console.error(`Hata (${date}):`, e.message); }
     }
 
-    // --- 2. ADIM: DERİN TARAMA (PLAY-OFF VE GRUP AŞAMALARI) ---
+    // --- 2. ADIM: DERİN TARAMA (TURNUVA İÇİ GRUPLAR) ---
     for (const id of stubbornLeagueIds) {
         try {
             console.log(`🔍 Derin Tarama: ID ${id}`);
@@ -154,7 +152,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı. 27 Mart maçları dahil ${finalMatches.length} maç kaydedildi.`);
+    console.log(`\n✅ İşlem Tamamlandı. 27 Mart dahil ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
