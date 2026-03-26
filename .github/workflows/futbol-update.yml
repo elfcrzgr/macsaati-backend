@@ -1,61 +1,58 @@
-name: Futbol Otomatik Güncelleyici
+name: Futbol Manuel Deneme Güncelleyici
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Sadece butona bastığında çalışır
 
 jobs:
   update-football:
     runs-on: ubuntu-latest
     env:
-      # GitHub'ın istediği Node.js 24 geçişini şimdiden onaylayarak uyarıyı kapatıyoruz
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Repoyu Klonla
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 
 
       - name: Node.js Kurulumu
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # Node.js 20 yerine 24 kullanıyoruz
+          node-version: '24'
 
       - name: Kütüphaneleri Yükle
         run: npm install
 
       # ==========================================
-      # ⚽ FUTBOL ZİNCİRİ
+      # ⚽ FUTBOL VERİLERİ (İsimleri Türkçeleştiren son kodun çalışır)
       # ==========================================
       - name: Futbol Verilerini Çek
         run: node fetch_football.js
         continue-on-error: true
 
-      - name: Eksik Futbol Logolarını İndir
-        run: node logo_football.js || echo "Futbol logo indirme atlandı"
+      # ==========================================
+      # 🖼️ AKILLI LOGO KONTROLÜ (Varsa indirmez, yoksa çeker)
+      # ==========================================
+      - name: Eksik Futbol Logolarını Tamamla
+        run: node logo_football.js || echo "Logo kontrolü tamamlandı veya atlandı"
         continue-on-error: true
 
       # ==========================================
-      # 🚀 GITHUB'A YÜKLEME (GELİŞMİŞ KONTROL)
+      # 🚀 GITHUB'A KAYDET
       # ==========================================
-      - name: Git Kimliğini Ayarla ve Pushla
+      - name: Değişiklikleri Pushla
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Tüm yeni dosyaları sahneye al
           git add .
           
-          # Sadece değişiklik varsa commit ve push yap
+          # Sadece yeni bir maç veya yeni bir logo eklendiyse commit atar
           if git diff --staged --quiet; then
-            echo "Değişiklik yok, pushlanmıyor."
+            echo "Her şey güncel, yeni dosya yok."
           else
-            git commit -m "⚽ FUTBOL: Veri & Logolar Otomatik Güncellendi ($(date +'%d-%m-%Y %H:%M'))"
-            # Çakışmaları botun verisi lehine çöz
+            git commit -m "⚽ FUTBOL MANUEL: Veri & Eksik Logolar Güncellendi ($(date +'%H:%M'))"
             git pull origin main --rebase -X theirs
             git push origin main
-            echo "✅ Değişiklikler başarıyla gönderildi."
+            echo "✅ Değişiklikler repoya gönderildi."
           fi
-
-      - name: Sonuç Raporu
-        run: echo "🚀 İşlem başarıyla tamamlandı."
