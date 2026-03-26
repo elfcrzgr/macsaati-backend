@@ -2,78 +2,62 @@ name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
   schedule:
-    - cron: '0 * * * *' 
-  workflow_dispatch: 
+    - cron: '0 * * * *' # Her saat başı çalışır
+  workflow_dispatch: # Manuel tetikleme butonu
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
     env:
-      # GitHub'ın istediği Node.js 24 geçişini şimdiden aktif ediyoruz (Uyarıyı siler)
+      # GitHub'ın istediği Node.js 24 geçişini şimdiden onaylıyoruz (Uyarıyı kapatır)
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Repoyu Klonla
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 0 # Tüm geçmişi çekmek rebase çakışmalarını önler
 
       - name: Node.js Kurulumu
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # Node.js 20 yerine 24 kullanarak geleceğe hazırlıyoruz
+          node-version: '24' # Node.js 20 yerine en güncel 24 sürümünü kullanıyoruz
 
       - name: Kütüphaneleri Yükle
         run: |
           npm install
 
       # ==========================================
-      # ⚽ FUTBOL ZİNCİRİ
+      # ⚽ VERİ ÇEKME ZİNCİRİ (Futbol, Basketbol, Tenis)
       # ==========================================
-      - name: Futbol Verilerini Çek
-        run: node fetch_football.js
-
-      - name: Eksik Futbol Logolarını İndir
-        run: node logo_football.js || echo "Futbol logo indirme atlandı"
-
-      # ==========================================
-      # 🏀 BASKETBOL ZİNCİRİ
-      # ==========================================
-      - name: Basketbol Verilerini Çek
-        run: node fetch_basketball.js || echo "Basketbol veri çekme atlandı"
-
-      - name: Eksik Basketbol Logolarını İndir
-        run: node logo_basketball.js || echo "Basketbol logo indirme atlandı"
+      - name: Verileri Güncelle
+        run: |
+          node fetch_football.js || echo "Futbol hatası"
+          node logo_football.js || echo "Futbol logo hatası"
+          node fetch_basketball.js || echo "Basketbol hatası"
+          node logo_basketball.js || echo "Basketbol logo hatası"
+          node fetch_tennis.js || echo "Tenis hatası"
+          node logo_tennis.js || echo "Tenis logo hatası"
 
       # ==========================================
-      # 🎾 TENİS ZİNCİRİ
+      # 🚀 GITHUB'A PUSH (Akıllı Kontrol)
       # ==========================================
-      - name: Tenis Verilerini Çek
-        run: node fetch_tennis.js || echo "Tenis veri çekme atlandı"
-
-      - name: Eksik Tenis Logolarını İndir
-        run: node logo_tennis.js || echo "Tenis logo indirme atlandı"
-
-      # ==========================================
-      # 🚀 GITHUB'A YÜKLEME (DAHA GÜVENLİ PUSH)
-      # ==========================================
-      - name: Git Kimliğini Ayarla ve Pushla
+      - name: Değişiklikleri Pushla
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 1. Her şeyi ekle
+          # Tüm yeni dosyaları (JSON ve Logolar) ekle
           git add .
           
-          # 2. Değişiklik var mı kontrol et ve commitle
+          # Gerçekten bir değişiklik var mı kontrol et (Commit kirliliğini önler)
           if git diff --staged --quiet; then
-            echo "Değişiklik yok, işlem sonlandırılıyor."
+            echo "Güncellenecek yeni veri yok."
           else
             git commit -m "Veri & Logolar Otomatik Güncellendi: $(date +'%d-%m-%Y %H:%M')"
             
-            # 3. Çakışma yönetimi (Rebase)
+            # Rebase ile çakışmaları bot lehine çöz (-X theirs)
             git pull origin main --rebase -X theirs
             
-            # 4. Gönder
             git push origin main
           fi
