@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-26T01:06:00.616Z",
-  "totalMatches": 36,
+  "lastUpdated": "2026-03-26T04:21:52.161Z",
+  "totalMatches": 37,
   "matches": [
     {
       "id": 15708855,
@@ -999,9 +999,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Tommy Paul",
@@ -1022,9 +1022,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": "(7-6, 6-7, 6-7)",
       "tournament": "Miami, USA"
     },
     {
@@ -1370,6 +1370,42 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Miami, USA, Doubles"
+    },
+    {
+      "id": 15708832,
+      "fixedDate": "2026-03-27",
+      "fixedTime": "20:00",
+      "timestamp": 1774630800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Jiri Lehečka",
+        "countries": [
+          "cz"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Arthur Fils",
+        "countries": [
+          "fr"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Miami, USA"
     }
   ]
 }
