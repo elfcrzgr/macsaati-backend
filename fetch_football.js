@@ -11,9 +11,7 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- YAYINCI LİSTESİ VE KRİTİK TURNUVA ID'LERİ ---
 const leagueConfigs = {
-    // Türkiye Ligleri
     52: "beIN Sports",             
     98: "beIN Sports / TRT Spor",  
     311: "A Spor / ATV",           
@@ -22,7 +20,6 @@ const leagueConfigs = {
     11416: "TFF YouTube",          
     11415: "TFF YouTube",          
     15938: "TFF YouTube",          
-    // Avrupa & Kupa
     17: "beIN Sports",             
     18: "beIN Sports",             
     8: "S Sport",                  
@@ -32,12 +29,10 @@ const leagueConfigs = {
     3: "TRT / Tabii",              
     17015: "TRT / Tabii",          
     696: "DAZN / YouTube",
-    // --- MİLLİ MAÇLAR & DÜNYA KUPASI ELEMELERİ ---
-    17011: "TRT 1 / Tabii",          // UEFA Dünya Kupası Elemeleri
-    10783: "S Sport Plus / TRT",     // UEFA Nations League
-    14605: "TRT 1 / Bizim Çocuklar", // UEFA Nations League B
-    4664: "TRT Spor / Tabii",        // Uluslararası Hazırlık Maçları
-    // Diğerleri
+    17011: "TRT 1 / Tabii",
+    10783: "S Sport Plus / TRT",
+    14605: "TRT 1 / Bizim Çocuklar",
+    4664: "TRT Spor / Tabii",
     54: "S Sport Plus",            
     73: "Tivibu Spor",             
     53: "S Sport Plus",            
@@ -50,8 +45,6 @@ const leagueConfigs = {
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
-
-// GRUPLARINA DERİNLEMESİNE BAKILACAK "İNATÇI" LİGLER
 const stubbornLeagueIds = [97, 11415, 11416, 11417, 15938, 17011, 10783, 14605];
 
 async function start() {
@@ -119,12 +112,21 @@ async function start() {
                     if (groupsData && groupsData.groups && groupsData.groups.length > 0) {
                         console.log(`   ✅ ${groupsData.groups.length} grup bulundu`);
                         
-                        // Her grup için maç çek
+                        // Grup yapısını debug et
+                        console.log(`   🔎 Grup yapısı: ${JSON.stringify(groupsData.groups[0], null, 2).substring(0, 200)}`);
+                        
+                        // Her grup için maç çek - SADECE geçerli grup ID'lerine sahip olanları işle
                         for (const group of groupsData.groups) {
-                            console.log(`      📍 Grup: ${group.name} (ID: ${group.id})`);
+                            // Grup ID'sinin geçerliliğini kontrol et
+                            if (!group.id) {
+                                console.log(`      ⚠️  Grup ID bulunamadı, atlanıyor`);
+                                continue;
+                            }
+                            
+                            const groupName = group.name || `Grup ${group.id}`;
+                            console.log(`      📍 ${groupName} (ID: ${group.id})`);
                             
                             let groupMatchCount = 0;
-                            // Çok sayıda sayfa kontrol et
                             for (let pageNum = 0; pageNum <= 3; pageNum++) {
                                 try {
                                     await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/group/${group.id}/events/all/${pageNum}`, { waitUntil: 'networkidle2' });
@@ -142,10 +144,10 @@ async function start() {
                                         }
                                         allEvents = allEvents.concat(targetEvents);
                                     } else {
-                                        break; // Sayfa boşsa devam etme
+                                        break;
                                     }
                                 } catch (e) { 
-                                    break; // Sayfa yok ise devam etme
+                                    break;
                                 }
                             }
                             if (groupMatchCount === 0) {
@@ -156,7 +158,7 @@ async function start() {
                         console.log(`   ℹ️ Grup yapısı bulunamadı, genel tarama yapılıyor...`);
                     }
                 } catch (groupError) {
-                    console.log(`   ℹ️ Grup taraması başarısız, genel tarama yapılıyor...`);
+                    console.log(`   ℹ️ Grup taraması başarısız: ${groupError.message}`);
                 }
 
                 // ADIM 3B: Grup olmayan genel maçlar (fallback)
