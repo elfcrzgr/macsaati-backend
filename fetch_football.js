@@ -11,25 +11,25 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- 27 MART MAÇLARINI YAKALAYAN GÜNCEL YAYINCI LİSTESİ ---
+// --- 27 MART ÖZEL MAÇLARI DAHİL GÜNCEL YAYINCI LİSTESİ ---
 const leagueConfigs = {
-    // 27 Mart Programındaki Turnuvalar
-    11: "TRT 1 / Tabii",            // UEFA Dünya Kupası Elemeleri
-    10: "S Sport Plus / FIFA+",     // Bolivya - Surinam (Güney Amerika Elemeleri)
-    10214: "FIFA+ / YouTube",       // Yeni Kaledonya - Jamaika (Play-off)
-    351: "TRT Spor / Tabii",        // Türkiye - Ermenistan (UEFA U19)
-    4664: "S Sport Plus / Tabii",   // İsviçre - Almanya (Hazırlık Maçı)
+    // 27 Mart Programı ve Milli Maçlar
+    11: "TRT 1 / Tabii",            // Dünya Kupası Elemeleri (UEFA)
+    10618: "FIFA+ / YouTube",       // DK Kıtalararası Play-off (Linkteki turnuva)
+    351: "TRT Spor / Tabii",        // UEFA U19 Elemeleri (Türkiye U19 maçı)
+    4664: "S Sport Plus / Tabii",   // Uluslararası Hazırlık Maçları (İsviçre - Almanya)
+    10: "S Sport Plus / FIFA+",     // Dünya Kupası Elemeleri (Güney Amerika)
     
-    // Türkiye Alt Ligleri
+    // Türkiye Yerel Ligleri
     97: "TFF YouTube",             
     11417: "TFF YouTube",          
     11416: "TFF YouTube",          
     11415: "TFF YouTube",          
     15938: "TFF YouTube",
-    
-    // Diğer Ligler
     52: "beIN Sports",             
-    98: "beIN Sports / TRT Spor",  
+    98: "beIN Sports / TRT Spor",
+
+    // Diğer Popüler Turnuvalar
     17: "beIN Sports",             
     8: "S Sport",                  
     23: "S Sport",                 
@@ -40,11 +40,11 @@ const leagueConfigs = {
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
-// Derin tarama yapılacak "inatçı" turnuvalar (27 Mart maçları burada)
-const stubbornLeagueIds = [11, 10, 10214, 351, 97, 11415, 11416, 11417, 15938];
+// Derin tarama yapılacak "inatçı" turnuvalar (27 Mart için 10618 ve 351 eklendi)
+const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938];
 
 async function start() {
-    console.log("🚀 Futbol motoru başlatılıyor (27 Mart Güncellemesi)...");
+    console.log("🚀 Maç Saati Motoru: 27 Mart Takvimi taranıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -59,7 +59,7 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // --- 1. ADIM: GENEL API TARAMASI ---
+    // --- 1. ADIM: GÜNLÜK API TARAMASI ---
     for (const date of validDates) {
         try {
             console.log(`⏳ ${date} genel maç verisi çekiliyor...`);
@@ -73,7 +73,7 @@ async function start() {
         } catch (e) { console.error(`Hata (${date}):`, e.message); }
     }
 
-    // --- 2. ADIM: DERİN TARAMA (TURNUVA İÇİ GRUPLAR) ---
+    // --- 2. ADIM: DERİN TARAMA (TURNUVA İÇİ ÖZEL AŞAMALAR) ---
     for (const id of stubbornLeagueIds) {
         try {
             console.log(`🔍 Derin Tarama: ID ${id}`);
@@ -82,7 +82,6 @@ async function start() {
             
             if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
                 const seasonId = seasonsData.seasons[0].id; 
-
                 for (const pageType of ['next/0', 'last/0']) {
                     await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${seasonId}/events/${pageType}`, { waitUntil: 'networkidle2' });
                     const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
@@ -118,14 +117,8 @@ async function start() {
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: leagueConfigs[utId] || "TRT / Tabii", 
-            homeTeam: { 
-                name: e.homeTeam.name, 
-                logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
-            },
-            awayTeam: { 
-                name: e.awayTeam.name, 
-                logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
-            },
+            homeTeam: { name: e.homeTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
+            awayTeam: { name: e.awayTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
             homeScore: isFinished ? String(e.homeScore.display) : "-",
             awayScore: isFinished ? String(e.awayScore.display) : "-",
@@ -142,8 +135,7 @@ async function start() {
         }
     }
 
-    const finalMatches = Array.from(finalMatchesMap.values());
-    finalMatches.sort((a, b) => a.timestamp - b.timestamp);
+    const finalMatches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
         success: true, 
@@ -152,7 +144,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Tamamlandı. 27 Mart dahil ${finalMatches.length} maç kaydedildi.`);
+    console.log(`\n✅ Tamamlandı. 27 Mart dahil ${finalMatches.length} maç JSON'a eklendi.`);
     await browser.close();
 }
 
