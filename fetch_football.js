@@ -11,22 +11,35 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- MİLLİ TAKIM ÇEVİRİ SÖZLÜĞÜ ---
+// --- GELİŞMİŞ ÇEVİRİ SÖZLÜĞÜ ---
 const teamTranslations = {
-    "Czechia": "Çekya", "Romania": "Romanya", "Denmark": "Danimarka",
-    "North Macedonia": "K. Makedonya", "Italy": "İtalya", "Northern Ireland": "Kuzey İrlanda",
-    "Poland": "Polonya", "Albania": "Arnavutluk", "Slovakia": "Slovakya",
-    "Ukraine": "Ukrayna", "Sweden": "İsveç", "Wales": "Galler",
-    "Bosnia & Herzegovina": "Bosna Hersek", "Bolivia": "Bolivya", "Suriname": "Surinam",
-    "New Caledonia": "Yeni Kaledonya", "Jamaica": "Jamaika", "Switzerland": "İsviçre",
-    "Germany": "Almanya", "Turkey": "Türkiye", "Ireland": "İrlanda",
-    "Croatia": "Hırvatistan", "France": "Fransa", "Brazil": "Brezilya",
-    "Spain": "İspanya", "Netherlands": "Hollanda", "Latvia": "Letonya",
-    "Luxembourg": "Lüksemburg", "Gibraltar": "Cebelitarık", "Malta": "Malta",
-    "Kosovo": "Kosova"
+    "romania": "Romanya", "czechia": "Çekya", "denmark": "Danimarka",
+    "north macedonia": "K. Makedonya", "italy": "İtalya", "northern ireland": "Kuzey İrlanda",
+    "poland": "Polonya", "albania": "Arnavutluk", "slovakia": "Slovakya",
+    "ukraine": "Ukrayna", "sweden": "İsveç", "wales": "Galler",
+    "bosnia & herzegovina": "Bosna Hersek", "bolivia": "Bolivya", "suriname": "Surinam",
+    "new caledonia": "Yeni Kaledonya", "jamaica": "Jamaika", "switzerland": "İsviçre",
+    "germany": "Almanya", "turkey": "Türkiye", "ireland": "İrlanda",
+    "croatia": "Hırvatistan", "france": "Fransa", "brazil": "Brezilya",
+    "spain": "İspanya", "netherlands": "Hollanda", "latvia": "Letonya",
+    "luxembourg": "Lüksemburg", "gibraltar": "Cebelitarık", "malta": "Malta",
+    "kosovo": "Kosova"
 };
 
-const translateTeam = (name) => teamTranslations[name] || name;
+// Harf duyarsız ve parçalı eşleşme yapan çeviri fonksiyonu
+const translateTeam = (name) => {
+    if (!name) return name;
+    const n = name.trim().toLowerCase();
+    
+    // 1. Tam Eşleşme
+    if (teamTranslations[n]) return teamTranslations[n];
+
+    // 2. Parçalı Eşleşme (Örn: Romania (W) gelirse Romania'yı yakalar)
+    for (const [eng, tr] of Object.entries(teamTranslations)) {
+        if (n.includes(eng)) return tr;
+    }
+    return name;
+};
 
 // --- VIP YAYINCI LİSTESİ ---
 const leagueConfigs = {
@@ -46,7 +59,7 @@ const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54, 4664];
 
 async function start() {
-    console.log("🚀 Akıllı Motor: İsimler Türkçeleştiriliyor...");
+    console.log("🚀 Akıllı Motor: İsimler Türkçeleştirilerek Başlatıldı...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -72,7 +85,7 @@ async function start() {
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`Hata (${date}):`, e.message); }
+        } catch (e) { }
     }
 
     for (const id of stubbornLeagueIds) {
@@ -115,9 +128,14 @@ async function start() {
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: leagueConfigs[utId] || "Resmi Yayıncı / Canlı Skor", 
-            // DÜZELTİLEN SATIRLAR: translateTeam fonksiyonunu buraya yerleştirdim
-            homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
-            awayTeam: { name: translateTeam(e.awayTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
+            homeTeam: { 
+                name: translateTeam(e.homeTeam.name), 
+                logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
+            },
+            awayTeam: { 
+                name: translateTeam(e.awayTeam.name), 
+                logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
+            },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
             homeScore: isFinished ? String(e.homeScore.display) : "-",
             awayScore: isFinished ? String(e.awayScore.display) : "-",
@@ -138,7 +156,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem bitti. ${finalMatches.length} maç için isimler Türkçeye çevrildi.`);
+    console.log(`\n✅ İşlem Tamamlandı. Toplam ${finalMatches.length} maç Türkçeleştirildi.`);
     await browser.close();
 }
 
