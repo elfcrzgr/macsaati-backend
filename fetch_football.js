@@ -11,13 +11,13 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- GELİŞMİŞ ÇEVİRİ SÖZLÜĞÜ ---
+// --- GELİŞMİŞ ÇEVİRİ SÖZLÜĞÜ (Harf Temizliği Destekli) ---
 const teamTranslations = {
     "romania": "Romanya", "czechia": "Çekya", "denmark": "Danimarka",
     "north macedonia": "K. Makedonya", "italy": "İtalya", "northern ireland": "Kuzey İrlanda",
     "poland": "Polonya", "albania": "Arnavutluk", "slovakia": "Slovakya",
     "ukraine": "Ukrayna", "sweden": "İsveç", "wales": "Galler",
-    "bosnia & herzegovina": "Bosna Hersek", "bolivia": "Bolivya", "suriname": "Surinam",
+    "bosnia": "Bosna Hersek", "bolivia": "Bolivya", "suriname": "Surinam",
     "new caledonia": "Yeni Kaledonya", "jamaica": "Jamaika", "switzerland": "İsviçre",
     "germany": "Almanya", "turkey": "Türkiye", "ireland": "İrlanda",
     "croatia": "Hırvatistan", "france": "Fransa", "brazil": "Brezilya",
@@ -28,15 +28,14 @@ const teamTranslations = {
 
 const translateTeam = (name) => {
     if (!name) return name;
-    const n = name.trim().toLowerCase();
-    if (teamTranslations[n]) return teamTranslations[n];
+    const cleanName = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    if (teamTranslations[cleanName]) return teamTranslations[cleanName];
     for (const [eng, tr] of Object.entries(teamTranslations)) {
-        if (n.includes(eng)) return tr;
+        if (cleanName.includes(eng)) return tr;
     }
     return name;
 };
 
-// --- VIP YAYINCI LİSTESİ ---
 const leagueConfigs = {
     155: "Spor Smart / Exxen", 54: "S Sport Plus / TV+",
     10: "Exxen / S Sport+", 10618: "Exxen / FIFA+",
@@ -54,7 +53,7 @@ const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 const stubbornLeagueIds = [11, 10618, 351, 10, 97, 11415, 11416, 11417, 15938, 155, 54, 4664];
 
 async function start() {
-    console.log("🚀 Akıllı Motor Başlatıldı: Eksik maçlar zorlanıyor...");
+    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -69,42 +68,46 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // --- 1. ADIM: GENEL TARAMA ---
+    console.log("-----------------------------------------");
+    console.log("📅 GENEL TARAMA BAŞLADI...");
     for (const date of validDates) {
         try {
-            console.log(`⏳ ${date} genel verileri çekiliyor...`);
+            console.log(`📌 [${date}] Tarihli Maçlar Çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             if (data && data.events) {
                 const filtered = data.events.filter(e => {
                     const utId = e.tournament?.uniqueTournament?.id;
-                    const priority = e.tournament?.uniqueTournament?.priority || 0;
-                    return targetLeagueIds.includes(utId) || priority > 100;
+                    return targetLeagueIds.includes(utId) || (e.tournament?.uniqueTournament?.priority > 100);
                 });
+                console.log(`✅ ${date} için ${filtered.length} maç bulundu.`);
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`Hata (${date}):`, e.message); }
+        } catch (e) { console.error(`❌ Hata (${date}):`, e.message); }
     }
 
-    // --- 2. ADIM: DERİN TARAMA ---
+    console.log("-----------------------------------------");
+    console.log("🔍 DERİN TARAMA (İnatçı Ligler) BAŞLADI...");
     for (const id of stubbornLeagueIds) {
         try {
-            console.log(`🔍 Derin Tarama Zorlanıyor: ID ${id}`);
+            console.log(`⚡ Lig ID: ${id} için sezonlar taranıyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
             const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             
-            if (seasonsData && seasonsData.seasons && seasonsData.seasons.length > 0) {
-                const seasonIds = seasonsData.seasons.slice(0, 2).map(s => s.id); 
-                for (const sId of seasonIds) {
-                    for (const pageType of ['next/0', 'last/0']) {
-                        await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${pageType}`, { waitUntil: 'networkidle2' });
-                        const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-                        if (eventsData && eventsData.events) {
-                            const targetEvents = eventsData.events.filter(e => {
-                                const dateTR = new Date(e.startTimestamp * 1000);
-                                const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                                return validDates.includes(dayStrTR);
-                            });
+            if (seasonsData?.seasons?.length > 0) {
+                const sId = seasonsData.seasons[0].id; // Sadece en güncel sezon
+                console.log(`🔎 Sezon ID: ${sId} için etkinlikler sorgulanıyor...`);
+                for (const type of ['next/0', 'last/0']) {
+                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${type}`, { waitUntil: 'networkidle2' });
+                    const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+                    if (eventsData?.events) {
+                        const targetEvents = eventsData.events.filter(e => {
+                            const dateTR = new Date(e.startTimestamp * 1000);
+                            const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                            return validDates.includes(dayStrTR);
+                        });
+                        if (targetEvents.length > 0) {
+                            console.log(`🎯 Lig ${id} için ${targetEvents.length} maç derin taramadan yakalandı.`);
                             allEvents = allEvents.concat(targetEvents);
                         }
                     }
@@ -113,7 +116,8 @@ async function start() {
         } catch (e) { }
     }
 
-    // --- 3. ADIM: AYIKLAMA VE KAYDETME ---
+    console.log("-----------------------------------------");
+    console.log("💾 VERİLER AYIKLANIYOR VE KAYDEDİLİYOR...");
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
         const utId = e.tournament?.uniqueTournament?.id;
@@ -144,14 +148,7 @@ async function start() {
             tournament: e.tournament.uniqueTournament.name
         };
 
-        if (finalMatchesMap.has(matchKey)) {
-            const existing = finalMatchesMap.get(matchKey);
-            if (e.status?.type === 'finished' || (e.status?.type === 'inprogress' && existing.homeScore === "-")) {
-                finalMatchesMap.set(matchKey, matchObj);
-            }
-        } else {
-            finalMatchesMap.set(matchKey, matchObj);
-        }
+        finalMatchesMap.set(matchKey, matchObj);
     }
 
     const finalMatches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
@@ -163,7 +160,8 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`\n✅ İşlem Başarıyla Tamamlandı. Toplam ${finalMatches.length} maç Türkçeleştirildi ve kaydedildi.`);
+    console.log(`✅ İŞLEM TAMAMLANDI: Toplam ${finalMatches.length} maç JSON'a yazıldı.`);
+    console.log("-----------------------------------------");
     await browser.close();
 }
 
