@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-27T18:39:46.169Z",
+  "lastUpdated": "2026-03-27T19:34:53.769Z",
   "totalMatches": 25,
   "matches": [
     {
@@ -739,9 +739,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": true,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Dabrowski G / Stefani L",
@@ -766,22 +766,22 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2659.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": "(6-4, 4-6, 3-10)",
       "tournament": "Miami, USA, Doubles"
     },
     {
       "id": 15739834,
       "fixedDate": "2026-03-27",
-      "fixedTime": "21:30",
-      "timestamp": 1774636200000,
+      "fixedTime": "21:20",
+      "timestamp": 1774635600000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": true,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Bolelli S / Vavassori A",
@@ -819,9 +819,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Jiri Lehečka",
@@ -926,8 +926,8 @@
     {
       "id": 15711478,
       "fixedDate": "2026-03-28",
-      "fixedTime": "17:00",
-      "timestamp": 1774706400000,
+      "fixedTime": "22:00",
+      "timestamp": 1774724400000,
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
