@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-27T17:41:03.767Z",
+  "lastUpdated": "2026-03-27T18:39:46.169Z",
   "totalMatches": 25,
   "matches": [
     {
@@ -699,9 +699,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": true,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Granollers M / Zeballos H",
@@ -726,9 +726,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(2-6, 3-6)",
       "tournament": "Miami, USA, Doubles"
     },
     {
@@ -740,8 +740,8 @@
       "isDoubles": true,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "3rd set",
+        "code": 10
       },
       "homeTeam": {
         "name": "Dabrowski G / Stefani L",
@@ -774,8 +774,8 @@
     {
       "id": 15739834,
       "fixedDate": "2026-03-27",
-      "fixedTime": "21:10",
-      "timestamp": 1774635000000,
+      "fixedTime": "21:30",
+      "timestamp": 1774636200000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": true,
       "matchStatus": {
