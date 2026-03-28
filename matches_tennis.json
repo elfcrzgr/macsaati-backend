@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-28T22:16:13.915Z",
+  "lastUpdated": "2026-03-28T23:19:07.829Z",
   "totalMatches": 130,
   "matches": [
     {
@@ -715,9 +715,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Laura Pigossi",
@@ -738,9 +738,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": "(7-5, 1-6, 3-6)",
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
@@ -1183,9 +1183,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Kristina Mladenovic",
@@ -1206,9 +1206,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": "(6-3, 3-6, 3-6)",
       "tournament": "Charleston, USA, Qualifying"
     },
     {
@@ -1219,9 +1219,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Yue Yuan",
@@ -1242,9 +1242,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": "(4-6, 6-4, 6-3)",
       "tournament": "Charleston, USA, Qualifying"
     },
     {
@@ -1255,9 +1255,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "interrupted",
+        "description": "Interrupted",
+        "code": 80
       },
       "homeTeam": {
         "name": "Marina Bassols Ribera",
@@ -1291,9 +1291,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Stefan Dostanic",
@@ -1314,9 +1314,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(1-6, 3-6)",
       "tournament": "Houston, USA, Qualifying"
     },
     {
@@ -1327,9 +1327,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "interrupted",
+        "description": "Interrupted",
+        "code": 80
       },
       "homeTeam": {
         "name": "Carol Zhao",
