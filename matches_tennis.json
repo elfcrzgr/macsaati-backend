@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-28T01:00:01.194Z",
-  "totalMatches": 63,
+  "lastUpdated": "2026-03-28T03:35:15.056Z",
+  "totalMatches": 65,
   "matches": [
     {
       "id": 15708841,
@@ -431,9 +431,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Alexander Zverev",
@@ -454,22 +454,22 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(3-6, 6-7)",
       "tournament": "Miami, USA"
     },
     {
       "id": 15716373,
       "fixedDate": "2026-03-28",
-      "fixedTime": "04:00",
-      "timestamp": 1774659600000,
+      "fixedTime": "04:10",
+      "timestamp": 1774660200000,
       "broadcaster": "beIN Sports",
       "isDoubles": true,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "finished",
+        "description": "Retired",
+        "code": 92
       },
       "homeTeam": {
         "name": "Errani S / Paolini J",
@@ -494,9 +494,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2659.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "(2-1)",
       "tournament": "Miami, USA, Doubles"
     },
     {
@@ -2334,6 +2334,82 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Houston, USA, Doubles"
+    },
+    {
+      "id": 15716383,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "19:30",
+      "timestamp": 1774801800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Errani S / Paolini J",
+        "countries": [
+          "it",
+          "it"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Siniakova K / Townsend T",
+        "countries": [
+          "cz",
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2659.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Miami, USA, Doubles"
+    },
+    {
+      "id": 15708835,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "22:00",
+      "timestamp": 1774810800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Jiri Lehečka",
+        "countries": [
+          "cz"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jannik Sinner",
+        "countries": [
+          "it"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Miami, USA"
     }
   ]
 }
