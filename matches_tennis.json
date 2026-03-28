@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-28T19:22:31.433Z",
-  "totalMatches": 109,
+  "lastUpdated": "2026-03-28T20:16:53.654Z",
+  "totalMatches": 111,
   "matches": [
     {
       "id": 15708841,
@@ -860,42 +860,6 @@
       "tournament": "Houston, USA, Qualifying"
     },
     {
-      "id": 15897204,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "19:10",
-      "timestamp": 1774714200000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Marina Bassols Ribera",
-        "countries": [
-          "es"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alicia Herrero Linana",
-        "countries": [
-          "es"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bogota, Colombia, Qualifying"
-    },
-    {
       "id": 15896852,
       "fixedDate": "2026-03-28",
       "fixedTime": "19:15",
@@ -1116,42 +1080,6 @@
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
-      "id": 15897199,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "20:20",
-      "timestamp": 1774718400000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Jazmin Ortenzi",
-        "countries": [
-          "ar"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Sara Alejandra Lozano Avellaneda",
-        "countries": [
-          "co"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bogota, Colombia, Qualifying"
-    },
-    {
       "id": 15897213,
       "fixedDate": "2026-03-28",
       "fixedTime": "20:25",
@@ -1195,9 +1123,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Federico Agustin Gomez",
@@ -1218,9 +1146,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "(6-4, 6-4)",
       "tournament": "Houston, USA, Qualifying"
     },
     {
@@ -1232,8 +1160,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "description": "3rd set",
+        "code": 10
       },
       "homeTeam": {
         "name": "Liam Draxl",
@@ -1296,78 +1224,6 @@
       "tournament": "Charleston, USA, Qualifying"
     },
     {
-      "id": 15897214,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "21:30",
-      "timestamp": 1774722600000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Laura Valentina Villamil Arias",
-        "countries": [
-          "co"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Caroline Werner",
-        "countries": [
-          "de"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bogota, Colombia, Qualifying"
-    },
-    {
-      "id": 15897215,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "21:35",
-      "timestamp": 1774722900000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Carol Zhao",
-        "countries": [
-          "ca"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Lia Karatancheva",
-        "countries": [
-          "bg"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bogota, Colombia, Qualifying"
-    },
-    {
       "id": 15897711,
       "fixedDate": "2026-03-28",
       "fixedTime": "21:40",
@@ -1376,8 +1232,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Alex Bolt",
@@ -1411,9 +1267,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Darja Vidmanova",
@@ -1434,9 +1290,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "(6-2, 7-5)",
       "tournament": "Charleston, USA, Qualifying"
     },
     {
@@ -1519,9 +1375,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Akasha Urhobo",
@@ -1542,9 +1398,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "(6-2, 6-2)",
       "tournament": "Charleston, USA, Qualifying"
     },
     {
@@ -1556,8 +1412,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Aryna Sabalenka",
@@ -1592,8 +1448,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Haley Giavara",
@@ -1627,9 +1483,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Gabriel Debru",
@@ -1656,10 +1512,10 @@
       "tournament": "Houston, USA, Qualifying"
     },
     {
-      "id": 15897216,
+      "id": 15897215,
       "fixedDate": "2026-03-28",
-      "fixedTime": "22:45",
-      "timestamp": 1774727100000,
+      "fixedTime": "23:10",
+      "timestamp": 1774728600000,
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
@@ -1668,21 +1524,21 @@
         "code": 0
       },
       "homeTeam": {
-        "name": "Elina Avanesyan",
+        "name": "Carol Zhao",
         "countries": [
-          "am"
+          "ca"
         ],
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/am.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
         ]
       },
       "awayTeam": {
-        "name": "Sara Saito",
+        "name": "Lia Karatancheva",
         "countries": [
-          "jp"
+          "bg"
         ],
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
@@ -1692,10 +1548,82 @@
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
+      "id": 15897204,
+      "fixedDate": "2026-03-28",
+      "fixedTime": "23:10",
+      "timestamp": 1774728600000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Marina Bassols Ribera",
+        "countries": [
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Alicia Herrero Linana",
+        "countries": [
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Qualifying"
+    },
+    {
+      "id": 15896849,
+      "fixedDate": "2026-03-28",
+      "fixedTime": "23:15",
+      "timestamp": 1774728900000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Kristina Mladenovic",
+        "countries": [
+          "fr"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mary Stoiana",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Charleston, USA, Qualifying"
+    },
+    {
       "id": 15897713,
       "fixedDate": "2026-03-28",
-      "fixedTime": "22:50",
-      "timestamp": 1774727400000,
+      "fixedTime": "23:30",
+      "timestamp": 1774729800000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
@@ -1730,8 +1658,8 @@
     {
       "id": 15896853,
       "fixedDate": "2026-03-28",
-      "fixedTime": "22:50",
-      "timestamp": 1774727400000,
+      "fixedTime": "23:30",
+      "timestamp": 1774729800000,
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
@@ -1764,10 +1692,10 @@
       "tournament": "Charleston, USA, Qualifying"
     },
     {
-      "id": 15896849,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "23:05",
-      "timestamp": 1774728300000,
+      "id": 15897216,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "00:20",
+      "timestamp": 1774732800000,
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
@@ -1776,28 +1704,100 @@
         "code": 0
       },
       "homeTeam": {
-        "name": "Kristina Mladenovic",
+        "name": "Elina Avanesyan",
         "countries": [
-          "fr"
+          "am"
         ],
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/am.png"
         ]
       },
       "awayTeam": {
-        "name": "Mary Stoiana",
+        "name": "Sara Saito",
         "countries": [
-          "us"
+          "jp"
         ],
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": "",
-      "tournament": "Charleston, USA, Qualifying"
+      "tournament": "Bogota, Colombia, Qualifying"
+    },
+    {
+      "id": 15897199,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "00:20",
+      "timestamp": 1774732800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Jazmin Ortenzi",
+        "countries": [
+          "ar"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Sara Alejandra Lozano Avellaneda",
+        "countries": [
+          "co"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Qualifying"
+    },
+    {
+      "id": 15897214,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "01:30",
+      "timestamp": 1774737000000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Laura Valentina Villamil Arias",
+        "countries": [
+          "co"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Caroline Werner",
+        "countries": [
+          "de"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Qualifying"
     },
     {
       "id": 15899832,
@@ -1807,9 +1807,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "canceled",
+        "description": "Canceled",
+        "code": 70
       },
       "homeTeam": {
         "name": "Emilio Nava",
@@ -3018,6 +3018,78 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Houston, USA, Doubles"
+    },
+    {
+      "id": 15901569,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "19:00",
+      "timestamp": 1774800000000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Federico Agustin Gomez",
+        "countries": [
+          "ar"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Clement Tabur",
+        "countries": [
+          "fr"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Houston, USA, Qualifying"
+    },
+    {
+      "id": 15901289,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "19:00",
+      "timestamp": 1774800000000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Jack Pinnington Jones",
+        "countries": [
+          "gb"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Darwin Blanch",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Houston, USA, Qualifying"
     },
     {
       "id": 15716383,
