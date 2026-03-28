@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-28T14:22:04.749Z",
-  "totalMatches": 81,
+  "lastUpdated": "2026-03-28T15:19:40.287Z",
+  "totalMatches": 82,
   "matches": [
     {
       "id": 15708841,
@@ -507,9 +507,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Eva Vedder",
@@ -536,6 +536,42 @@
       "tournament": "Charleston, USA, Qualifying"
     },
     {
+      "id": 15900114,
+      "fixedDate": "2026-03-28",
+      "fixedTime": "18:00",
+      "timestamp": 1774710000000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
+      },
+      "homeTeam": {
+        "name": "Tatiana Pieri",
+        "countries": [
+          "it"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Ayana Akli",
+        "countries": [
+          "us"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Charleston, USA, Qualifying"
+    },
+    {
       "id": 15896848,
       "fixedDate": "2026-03-28",
       "fixedTime": "18:00",
@@ -543,9 +579,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Usue Maitane Arconada",
@@ -579,9 +615,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "canceled",
+        "description": "Canceled",
+        "code": 70
       },
       "homeTeam": {
         "name": "Yuliia Starodubtseva",
@@ -651,9 +687,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Emanuela Lares",
@@ -1303,9 +1339,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "canceled",
+        "description": "Canceled",
+        "code": 70
       },
       "homeTeam": {
         "name": "Cadence Brace",
