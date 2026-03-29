@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T14:55:58.007Z",
+  "lastUpdated": "2026-03-29T15:03:06.487Z",
   "totalMatches": 165,
   "matches": [
     {
@@ -1795,9 +1795,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Marco Trungelliti",
@@ -1818,9 +1818,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "(6-3, 7-5)",
       "tournament": "Marrakech, Morocco, Qualifying"
     },
     {
