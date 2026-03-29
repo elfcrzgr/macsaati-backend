@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T18:56:39.754Z",
+  "lastUpdated": "2026-03-29T19:39:45.679Z",
   "totalMatches": 167,
   "matches": [
     {
@@ -2011,9 +2011,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Katarina Zavatska",
@@ -2034,9 +2034,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(2-6, 5-7)",
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
@@ -2224,42 +2224,6 @@
       "tournament": "Miami, USA, Doubles"
     },
     {
-      "id": 15903110,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "20:00",
-      "timestamp": 1774803600000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Marina Bassols Ribera",
-        "countries": [
-          "es"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Anastasia Tikhonova",
-        "countries": [
-          "ru"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bogota, Colombia, Qualifying"
-    },
-    {
       "id": 15902603,
       "fixedDate": "2026-03-29",
       "fixedTime": "20:20",
@@ -2268,8 +2232,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Darja Vidmanova",
@@ -2303,9 +2267,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Yue Yuan",
@@ -2326,9 +2290,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(1-6, 4-6)",
       "tournament": "Charleston, USA, Qualifying"
     },
     {
@@ -2340,8 +2304,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "3rd set",
+        "code": 10
       },
       "homeTeam": {
         "name": "Liam Draxl",
@@ -2376,8 +2340,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Alex Bolt",
@@ -2448,8 +2412,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Miriana Tona",
@@ -2510,6 +2474,42 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Miami, USA"
+    },
+    {
+      "id": 15903110,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "22:20",
+      "timestamp": 1774812000000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
+      },
+      "homeTeam": {
+        "name": "Marina Bassols Ribera",
+        "countries": [
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anastasia Tikhonova",
+        "countries": [
+          "ru"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Qualifying"
     },
     {
       "id": 15903293,
