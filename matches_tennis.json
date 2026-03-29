@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T12:34:25.058Z",
+  "lastUpdated": "2026-03-29T13:44:40.765Z",
   "totalMatches": 156,
   "matches": [
     {
@@ -1687,9 +1687,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Younes Lalami Laaroussi",
@@ -1710,9 +1710,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(4-6, 6-7)",
       "tournament": "Marrakech, Morocco, Qualifying"
     },
     {
@@ -1724,8 +1724,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "description": "3rd set",
+        "code": 10
       },
       "homeTeam": {
         "name": "Ilya Ivashka",
@@ -1759,9 +1759,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Retired",
+        "code": 92
       },
       "homeTeam": {
         "name": "Andrea Pellegrino",
@@ -1782,81 +1782,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Marrakech, Morocco, Qualifying"
-    },
-    {
-      "id": 15901154,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "15:30",
-      "timestamp": 1774787400000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Amine Jamji",
-        "countries": [
-          "ma"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ma.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Rei Sakamoto",
-        "countries": [
-          "jp"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Marrakech, Morocco, Qualifying"
-    },
-    {
-      "id": 15901152,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "15:40",
-      "timestamp": 1774788000000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Henrique Rocha",
-        "countries": [
-          "pt"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "David Jorda Sanchis",
-        "countries": [
-          "es"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "1",
+      "awayScore": "0",
+      "setScores": "(6-3, 1-4)",
       "tournament": "Marrakech, Morocco, Qualifying"
     },
     {
@@ -1970,14 +1898,14 @@
     {
       "id": 15901156,
       "fixedDate": "2026-03-29",
-      "fixedTime": "16:00",
-      "timestamp": 1774789200000,
+      "fixedTime": "16:05",
+      "timestamp": 1774789500000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Marco Trungelliti",
@@ -1995,6 +1923,78 @@
         ],
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Marrakech, Morocco, Qualifying"
+    },
+    {
+      "id": 15901154,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "16:40",
+      "timestamp": 1774791600000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Amine Jamji",
+        "countries": [
+          "ma"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ma.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Rei Sakamoto",
+        "countries": [
+          "jp"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Marrakech, Morocco, Qualifying"
+    },
+    {
+      "id": 15901152,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "17:00",
+      "timestamp": 1774792800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Henrique Rocha",
+        "countries": [
+          "pt"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "David Jorda Sanchis",
+        "countries": [
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
