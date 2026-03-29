@@ -2,8 +2,8 @@ name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Artik 30 dakikada bir calisabilirsin, kota dostudur.
-  workflow_dispatch:
+    - cron: '*/30 * * * *' # Her 30 dakikada bir çalışır (Kota dostu optimize edilmiş halidir)
+  workflow_dispatch: # Manuel çalıştırma butonu
 
 jobs:
   update-data:
@@ -15,66 +15,59 @@ jobs:
       - name: Repoyu Klonla
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1 # Sadece son hali alir, klonlamayi hizlandirir.
+          fetch-depth: 1 # Sadece son commit'i alarak hızlandırır
 
       - name: Node.js Kurulumu
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'npm' # node_modules'u cache'ler, her seferinde dakikalarca yukleme yapmaz.
+          cache: 'npm' # node_modules'u önbelleğe alarak kurulum süresini düşürür
 
       - name: Puppeteer Sistem Kütüphanelerini Kur
-        # Puppeteer'in Linux sunucuda calismasi icin bu sarttir.
+        # Puppeteer'ın Ubuntu üzerinde çalışması için gereken temel bağımlılıklar
         run: |
           sudo apt-get update
           sudo apt-get install -y libgbm-dev wget gnupg
 
       - name: Kütüphaneleri Yükle
+        run: npm ci # 'npm install'dan daha hızlı ve güvenlidir
+
+      # ==========================================
+      # 🚀 VERİ ÇEKME ZİNCİRİ (JSON GÜNCELLEME)
+      # ==========================================
+      - name: Tüm Spor Verilerini Çek
         run: |
-          npm ci # 'npm install'dan daha hizli ve guvenlidir.
+          node fetch_football.js || echo "Futbol verisi atlandı"
+          node fetch_basketball.js || echo "Basketbol verisi atlandı"
+          node fetch_tennis.js || echo "Tenis verisi atlandı"
 
       # ==========================================
-      # ⚽ FUTBOL ZİNCİRİ
+      # 🖼️ LOGO GÜNCELLEME (HIZLI MOD)
       # ==========================================
-      - name: Futbol Verilerini Çek
-        run: node fetch_football.js
-
-      - name: Eksik Futbol Logolarını İndir
-        run: node logo_football.js || echo "Futbol logo atlandı"
+      - name: Eksik Tüm Logoları İndir (Master Script)
+        # Futbol, Basketbol ve Tenis logolarını TEK tarayıcı oturumunda halleder
+        run: node logo_master.js || echo "Logo indirme işlemi atlandı"
 
       # ==========================================
-      # 🏀 BASKETBOL ZİNCİRİ
-      # ==========================================
-      - name: Basketbol Verilerini Çek
-        run: node fetch_basketball.js || echo "Basketbol veri çekme atlandı"
-
-      - name: Eksik Basketbol Logolarını İndir
-        run: node logo_basketball.js || echo "Basketbol logo atlandı"
-
-      # ==========================================
-      # 🎾 TENİS ZİNCİRİ
-      # ==========================================
-      - name: Tenis Verilerini Çek
-        run: node fetch_tennis.js || echo "Tenis veri çekme atlandı"
-
-      - name: Eksik Tenis Logolarını İndir
-        run: node logo_tennis.js || echo "Tenis logo atlandı"
-
-      # ==========================================
-      # 🚀 GITHUB'A PUSH
+      # 📤 GITHUB'A PUSH (DEĞİŞİKLİK VARSA)
       # ==========================================
       - name: Değişiklikleri Kontrol Et ve Pushla
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
+          # Yeni logoları ve güncellenen JSON'ları ekle
           git add .
           
+          # Eğer commit edilecek bir şey yoksa (dosyalar değişmediyse) işlemi bitir
           if git diff --staged --quiet; then
-            echo "Her şey güncel, commit edilecek yeni bir şey yok."
+            echo "Güncellenecek yeni bir veri veya logo bulunamadı."
           else
             git commit -m "Otomatik Güncelleme: $(date +'%d-%m-%Y %H:%M')"
+            
+            # Manuel yüklemelerle çakışmaması için rebase ile pull yap
             git pull origin main --rebase -X theirs
+            
             git push origin main
-            echo "✅ Veriler ve logolar başarıyla güncellendi."
+            echo "✅ Veriler ve logolar başarıyla GitHub'a gönderildi."
           fi
