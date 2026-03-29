@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T14:14:57.993Z",
-  "totalMatches": 164,
+  "lastUpdated": "2026-03-29T14:19:37.996Z",
+  "totalMatches": 165,
   "matches": [
     {
       "id": 15739848,
@@ -1723,9 +1723,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Ilya Ivashka",
@@ -1746,9 +1746,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": "(1-6, 7-5, 6-7)",
       "tournament": "Marrakech, Morocco, Qualifying"
     },
     {
@@ -1862,8 +1862,8 @@
     {
       "id": 15901152,
       "fixedDate": "2026-03-29",
-      "fixedTime": "17:00",
-      "timestamp": 1774792800000,
+      "fixedTime": "17:30",
+      "timestamp": 1774794600000,
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
@@ -3507,6 +3507,42 @@
         ],
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/za.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Marrakech, Morocco, Qualifying"
+    },
+    {
+      "id": 15906181,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "13:00",
+      "timestamp": 1774864800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Timofey Skatov",
+        "countries": [
+          "kz"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Moez Echargui",
+        "countries": [
+          "tn"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tn.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
