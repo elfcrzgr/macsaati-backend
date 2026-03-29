@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T04:27:21.958Z",
-  "totalMatches": 152,
+  "lastUpdated": "2026-03-29T06:05:55.505Z",
+  "totalMatches": 154,
   "matches": [
     {
       "id": 15739848,
@@ -1471,9 +1471,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Irene Burillo",
@@ -1494,9 +1494,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": "(4-6, 6-1, 6-0)",
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
@@ -2690,6 +2690,78 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Charleston, USA, Qualifying"
+    },
+    {
+      "id": 15903312,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "21:30",
+      "timestamp": 1774809000000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Irene Burillo",
+        "countries": [
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Caroline Werner",
+        "countries": [
+          "de"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Qualifying"
+    },
+    {
+      "id": 15903293,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "21:30",
+      "timestamp": 1774809000000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Jazmin Ortenzi",
+        "countries": [
+          "ar"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Elina Avanesyan",
+        "countries": [
+          "am"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/am.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Qualifying"
     },
     {
       "id": 15708835,
