@@ -6,11 +6,8 @@ puppeteer.use(StealthPlugin());
 
 const OUTPUT_FILE = "matches_football.json";
 
-// Takip ettiğin önemli liglerin ID'leri (Süper Lig, PL, CL, LaLiga vb.)
-const targetCategoryIds = [7, 52, 17, 8, 35, 23, 34, 1465, 1470]; 
-
 async function start() {
-    console.log("⚽ Futbol motoru başlatılıyor (Skor Koruması: Sadece Bitmiş Maçlar)...");
+    console.log("⚽ Futbol motoru başlatılıyor (Tüm Maçlar Modu + Skor Koruması)...");
     
     const browser = await puppeteer.launch({ 
         headless: "new", 
@@ -18,22 +15,29 @@ async function start() {
     });
     
     const page = await browser.newPage();
+    // Resim ve gereksiz dosyaları engelle (Hız için önemli)
+    await page.setRequestInterception(true);
+    page.on('request', (req) => {
+        if (['image', 'stylesheet', 'font'].includes(req.resourceType())) req.abort();
+        else req.continue();
+    });
+
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // Tarih ayarları (Dün, Bugün, Yarın)
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        d.setHours(d.getHours() + 3); // TR Saati
+        d.setHours(d.getHours() + 3); 
         d.setDate(d.getDate() + offset);
         return d.toISOString().split('T')[0];
     };
 
-    let allEvents = [];
+    let rawEvents = [];
     const dates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
 
+    // 1. Verileri Çek
     for (const date of dates) {
         try {
-            console.log(`⏳ ${date} futbol takvimi çekiliyor...`);
+            console.log(`⏳ ${date} listesi çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             
             const data = await page.evaluate(() => {
@@ -41,31 +45,37 @@ async function start() {
             });
 
             if (data && data.events) {
-                // Sadece belirlediğin ligleri filtrele
-                const filtered = data.events.filter(e => targetCategoryIds.includes(e.tournament?.uniqueTournament?.id || e.tournament?.category?.id));
-                allEvents = allEvents.concat(filtered);
+                rawEvents = rawEvents.concat(data.events);
             }
         } catch (e) {
             console.error(`❌ ${date} hatası:`, e.message);
         }
     }
 
-    const finalMatches = allEvents.map(e => {
+    // 2. Tekilleştirme (Aynı maçın farklı tarihlerde tekrar gelmesini engeller)
+    const uniqueEventsMap = new Map();
+    rawEvents.forEach(e => {
+        uniqueEventsMap.set(e.id, e);
+    });
+
+    // 3. Veriyi İşle
+    const finalMatches = Array.from(uniqueEventsMap.values()).map(e => {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
-        // --- KRİTİK SKOR MANTIĞI ---
-        // Maçın statüsü "finished" değilse skorlara "-" basıyoruz.
-        // Bu sayede 17:00 maçının 18:07'deki ara skoru kullanıcıyı yanıltmaz.
+        // MAÇ BİTTİ Mİ? (Skor sadece bittiğinde görünecek)
         const isFinished = e.status?.type === 'finished';
         
+        // Turnuva ID'si (Logo için)
+        const tId = e.tournament?.uniqueTournament?.id || e.tournament?.category?.id || "default";
+
         return {
             id: e.id,
             fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: dateTR.getTime(),
             tournament: e.tournament.name,
-            tournamentLogo: `https://api.sofascore.com/api/v1/unique-tournament/${e.tournament?.uniqueTournament?.id}/image`, // Master script bunu kontrol edecek
+            tournamentLogo: `https://api.sofascore.com/api/v1/unique-tournament/${tId}/image`,
             
             matchStatus: {
                 type: e.status?.type || "notstarted",
@@ -81,9 +91,9 @@ async function start() {
                 logo: `https://api.sofascore.com/api/v1/team/${e.awayTeam.id}/image` 
             },
 
-            // Eğer maç bittiyse gerçek skoru yaz, bitmediyse (canlıysa bile) "-" yaz.
-            homeScore: isFinished ? String(e.homeScore?.display || "0") : "-",
-            awayScore: isFinished ? String(e.awayScore?.display || "0") : "-"
+            // Skor Kontrolü: Sadece resmen bitmişse skor yaz, aksi halde "-"
+            homeScore: isFinished ? String(e.homeScore?.display ?? "0") : "-",
+            awayScore: isFinished ? String(e.awayScore?.display ?? "0") : "-"
         };
     });
 
@@ -97,7 +107,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
 
-    console.log(`\n✅ ${finalMatches.length} maç kaydedildi. Skor koruması aktif.`);
+    console.log(`\n✅ İşlem Tamam: ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
