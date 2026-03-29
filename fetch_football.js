@@ -13,9 +13,8 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/${TOURNAMENT_FOLDER}/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- DEV ÜLKE ÇEVİRİ SÖZLÜĞÜ (Genişletilmiş) ---
+// --- DEV ÜLKE ÇEVİRİ SÖZLÜĞÜ ---
 const teamTranslations = {
-    // Avrupa (UEFA)
     "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
     "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "netherlands": "Hollanda",
     "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", "croatia": "Hırvatistan",
@@ -30,39 +29,17 @@ const teamTranslations = {
     "moldova": "Moldova", "luxembourg": "Lüksemburg", "faroeislands": "Faroe Adaları",
     "malta": "Malta", "andorra": "Andorra", "sanmarino": "San Marino", "gibraltar": "Cebelitarık",
     "liechtenstein": "Liechtenstein", "northmacedonia": "K. Makedonya", "cyprus": "Güney Kıbrıs",
-
-    // Güney Amerika (CONMEBOL)
     "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya",
     "chile": "Şili", "peru": "Peru", "ecuador": "Ekvador", "paraguay": "Paraguay",
-    "venezuela": "Venezuela", "bolivia": "Bolivya",
-
-    // Diğer Önemli Ülkeler
-    "usa": "ABD", "mexico": "Meksika", "canada": "Kanada", "japan": "Japonya",
-    "southkorea": "Güney Kore", "australia": "Avustralya", "morocco": "Fas", "egypt": "Mısır",
-    "senegal": "Senegal", "nigeria": "Nijerya", "cameroon": "Kamerun", "tunisia": "Tunus",
-    "algeria": "Cezayir", "ivorycoast": "Fildişi Sahili", "saudiarabia": "Suudi Arabistan"
+    "venezuela": "Venezuela", "bolivia": "Bolivya", "usa": "ABD", "mexico": "Meksika"
 };
 
 const translateTeam = (name) => {
     if (!name) return name;
-    let translatedName = name;
-    
-    // Küçük harfe çevir ve temizle (kontrol için)
     const cleanSearch = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
-
-    // Sözlükte tam veya kısmi eşleşme ara
     for (const [eng, tr] of Object.entries(teamTranslations)) {
         if (cleanSearch.includes(eng)) {
-            // "Turkey U19" -> "Türkiye U19" yapmak için sadece ülke kısmını değiştir
-            const regex = new RegExp(eng, 'gi');
-            // Eğer sözlükteki anahtar isimde geçiyorsa, onu Türkçe karşılığıyla değiştir
-            // Not: Basit bir replace yerine ülke ismini koruyarak yapıyoruz
-            translatedName = name.replace(new RegExp(eng, 'i'), tr);
-            
-            // Özel durum: "Turkey" -> "Türkiye" (Eğer sadece ülke ismiyse tam eşleşme)
-            if (cleanSearch === eng) return tr;
-            
-            return translatedName;
+            return name.replace(new RegExp(eng, 'i'), tr);
         }
     }
     return name;
@@ -70,47 +47,25 @@ const translateTeam = (name) => {
 
 // --- AKILLI YAYINCI MANTIĞI ---
 const getBroadcaster = (utId, hName, aName, tName, utName) => {
-    const hn = hName.toLowerCase();
-    const an = aName.toLowerCase();
-    const tn = tName.toLowerCase();
-    const utn = utName.toLowerCase();
+    const hn = hName.toLowerCase(), an = aName.toLowerCase(), tn = tName.toLowerCase(), utn = utName.toLowerCase();
+    const isTurkey = hn.includes("turkey") || an.includes("turkey") || hn.includes("türkiye") || an.includes("türkiye");
+    const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || utn.includes("play-off") || utn.includes("playoff");
 
-    const isTurkey = hn.includes("turkey") || an.includes("turkey") || 
-                     hn.includes("türkiye") || an.includes("türkiye");
-
-    const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || 
-                      utn.includes("play-off") || utn.includes("playoff");
-
-    // 1. U19 (748) ve U21 (750)
-    if (utId === 748 || utId === 750) {
-        return isTurkey ? "TRT Spor / Tabii" : "Exxen";
-    }
-
-    // 2. Dünya Kupası Elemeleri (704 ve benzerleri)
-    if (utId === 704 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
-        if (isTurkey) {
-            return isPlayoff ? "TV8" : "TRT 1 / Tabii";
-        }
+    if (utId === 748 || utId === 750) return isTurkey ? "TRT Spor / Tabii" : "Exxen";
+    if (utId === 704 || utn.includes("world cup qual")) {
+        if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
         return isPlayoff ? "Exxen" : "S Sport Plus";
     }
-
-    // 3. Özel Ligler
-    if (utId === 13) return "Spor Smart";           // Brezilya Serie A
-    if (utId === 393) return "CBC Sport";          // Azerbaycan Premier Lig
+    if (utId === 13) return "Spor Smart";
+    if (utId === 393) return "CBC Sport";
 
     const staticConfigs = {
-        155: "Spor Smart / Exxen", 54: "S Sport Plus / TV+",
-        10: "Exxen / S Sport+", 10618: "Exxen / FIFA+",
-        351: "TRT Spor / Tabii", 4664: "S Sport+ / TV+",
-        11: "TRT 1 / Tabii", 52: "beIN Sports",
-        98: "beIN Sports / TRT Spor", 97: "TFF YouTube",
-        11417: "TFF YouTube", 11416: "TFF YouTube",
-        11415: "TFF YouTube", 15938: "TFF YouTube",
-        17: "beIN Sports", 8: "S Sport", 23: "S Sport",
-        7: "TRT / Tabii", 696: "DAZN / YouTube",
-        13363: "USL YouTube", 10783: "S Sport Plus / TRT"
+        155: "Spor Smart / Exxen", 54: "S Sport Plus / TV+", 10: "Exxen / S Sport+", 10618: "Exxen / FIFA+",
+        351: "TRT Spor / Tabii", 4664: "S Sport+ / TV+", 11: "TRT 1 / Tabii", 52: "beIN Sports",
+        98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 11417: "TFF YouTube", 11416: "TFF YouTube",
+        11415: "TFF YouTube", 15938: "TFF YouTube", 17: "beIN Sports", 8: "S Sport", 23: "S Sport",
+        7: "TRT / Tabii", 696: "DAZN / YouTube", 13363: "USL YouTube", 10783: "S Sport Plus / TRT"
     };
-
     return staticConfigs[utId] || "Resmi Yayıncı / Canlı Skor";
 };
 
@@ -138,10 +93,7 @@ async function start() {
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             if (data && data.events) {
-                const filtered = data.events.filter(e => {
-                    const utId = e.tournament?.uniqueTournament?.id;
-                    return targetLeagueIds.includes(utId) || (e.tournament?.uniqueTournament?.priority > 100);
-                });
+                const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id) || (e.tournament?.uniqueTournament?.priority > 100));
                 allEvents = allEvents.concat(filtered);
             }
         } catch (e) { }
@@ -157,11 +109,7 @@ async function start() {
                     await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${type}`, { waitUntil: 'networkidle2' });
                     const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
                     if (eventsData?.events) {
-                        const targetEvents = eventsData.events.filter(e => {
-                            const dateTR = new Date(e.startTimestamp * 1000);
-                            const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-                            return validDates.includes(dayStrTR);
-                        });
+                        const targetEvents = eventsData.events.filter(e => validDates.includes(new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' })));
                         allEvents = allEvents.concat(targetEvents);
                     }
                 }
@@ -174,22 +122,20 @@ async function start() {
         const ut = e.tournament?.uniqueTournament;
         if (!ut) continue;
         
-        const utId = ut.id;
-        const utName = ut.name || "";
-        const tName = e.tournament.name || "";
-        const hName = e.homeTeam.name;
-        const aName = e.awayTeam.name;
-
+        const hName = e.homeTeam.name, aName = e.awayTeam.name;
         const dateTR = new Date(e.startTimestamp * 1000);
-        const matchKey = `${hName}_${aName}_${utId}`;
-        const isFinished = e.status?.type === 'finished' || e.status?.type === 'inprogress';
+        
+        // --- DURUM KONTROLÜ (REVIZE EDILDI) ---
+        const statusType = e.status?.type; 
+        const isFinished = statusType === 'finished'; // Sadece bitmişse skor çek
 
         const matchObj = {
             id: e.id,
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
-            broadcaster: getBroadcaster(utId, hName, aName, tName, utName), 
+            matchStatus: statusType, // 'finished', 'inprogress', 'notstarted', 'postponed' vb.
+            broadcaster: getBroadcaster(ut.id, hName, aName, e.tournament.name, ut.name), 
             homeTeam: { 
                 name: translateTeam(hName), 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
@@ -198,25 +144,20 @@ async function start() {
                 name: translateTeam(aName), 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
             },
-            tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
+            tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + ut.id + ".png",
+            // Maç bitmemişse (canlı olsa bile) skoru "-" bas:
             homeScore: isFinished ? String(e.homeScore.display) : "-",
             awayScore: isFinished ? String(e.awayScore.display) : "-",
-            tournament: utName
+            tournament: ut.name
         };
-        finalMatchesMap.set(matchKey, matchObj);
+        finalMatchesMap.set(`${hName}_${aName}_${ut.id}`, matchObj);
     }
 
     const finalMatches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
-        success: true, 
-        lastUpdated: new Date().toISOString(), 
-        totalMatches: finalMatches.length,
-        matches: finalMatches 
-    }, null, 2));
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: finalMatches.length, matches: finalMatches }, null, 2));
     
     console.log(`✅ İŞLEM TAMAMLANDI: Toplam ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
 start();
-
