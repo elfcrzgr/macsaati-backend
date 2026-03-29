@@ -11,7 +11,7 @@ const TOURNAMENT_LOGOS_DIR = path.join(__dirname, 'tennis', 'tournament_logos');
 if (!fs.existsSync(TOURNAMENT_LOGOS_DIR)) fs.mkdirSync(TOURNAMENT_LOGOS_DIR, { recursive: true });
 
 async function start() {
-    console.log("🚀 Tenis logo indirme işlemi (Puppeteer) başlatıldı...");
+    console.log("🚀 Tenis logo indirme (Akıllı ID Kontrolü) başlatıldı...");
 
     if (!fs.existsSync(MATCHES_FILE)) {
         console.error("❌ JSON bulunamadı!");
@@ -21,7 +21,6 @@ async function start() {
     const json = JSON.parse(fs.readFileSync(MATCHES_FILE, 'utf8'));
     const tournaments = new Map();
 
-    // 1. JSON içinden benzersiz ID'leri topla
     json.matches.forEach(m => {
         if (m.tournamentLogo) {
             const id = m.tournamentLogo.split('/').pop().replace('.png', '');
@@ -31,61 +30,58 @@ async function start() {
         }
     });
 
-    console.log(`🔍 JSON Tarandı: ${tournaments.size} turnuva bulundu.`);
-
-    // 2. Tarayıcıyı başlat
     const browser = await puppeteer.launch({
         headless: "new",
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security']
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
-    // Gerçekçi bir ekran boyutu ve User-Agent ayarla
     await page.setViewport({ width: 1280, height: 800 });
     
     let successCount = 0;
-    let failCount = 0;
 
     for (const [id, name] of tournaments) {
         const targetPath = path.join(TOURNAMENT_LOGOS_DIR, `${id}.png`);
+        if (fs.existsSync(targetPath)) continue;
 
-        if (!fs.existsSync(targetPath)) {
-            console.log(`⏳ İndiriliyor: ${name} (ID: ${id})`);
-            
-            const url = `https://api.sofascore.com/api/v1/tournament/${id}/image`;
-            
+        console.log(`⏳ İşleniyor: ${name} (ID: ${id})`);
+        
+        // Denenecek URL listesi (Unique ve Normal)
+        const urls = [
+            `https://api.sofascore.com/api/v1/unique-tournament/${id}/image`,
+            `https://api.sofascore.com/api/v1/tournament/${id}/image`
+        ];
+
+        let downloaded = false;
+
+        for (const url of urls) {
             try {
-                // Sayfaya git ve ağın boşalmasını bekle
-                const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+                const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 20000 });
                 
                 if (response && response.status() === 200) {
                     const buffer = await response.buffer();
-                    // Eğer dönen içerik çok küçükse (hata mesajı vs) kaydetme
                     if (buffer.length > 500) {
                         fs.writeFileSync(targetPath, buffer);
-                        console.log(`   ✅ Başarılı!`);
+                        console.log(`   ✅ Başarılı (${url.includes('unique') ? 'Unique' : 'Normal'} API)`);
+                        downloaded = true;
                         successCount++;
-                    } else {
-                        console.log(`   ⚠️  Hata: Dönen dosya çok küçük (Boş resim?).`);
-                        failCount++;
+                        break; // Logoyu bulduk, diğer URL'yi denemeye gerek yok
                     }
-                } else {
-                    console.log(`   ❌ Hata: HTTP ${response ? response.status() : 'Bağlantı Yok'}`);
-                    failCount++;
                 }
             } catch (e) {
-                console.log(`   ❌ Bağlantı Hatası: ${e.message}`);
-                failCount++;
+                // Sessizce devam et, diğer URL'yi dene
             }
-            // Her resim arasında rastgele bekleme (bloklanmamak için)
-            await new Promise(r => setTimeout(r, 2000));
         }
+
+        if (!downloaded) {
+            console.log(`   ❌ Hata: İki API adresinde de logo bulunamadı.`);
+        }
+
+        await new Promise(r => setTimeout(r, 2000));
     }
 
     await browser.close();
-    console.log(`\n🏁 İşlem Tamamlandı:`);
-    console.log(`   ✅ İndirilen: ${successCount}`);
-    console.log(`   ⚠️  Başarısız: ${failCount}\n`);
+    console.log(`\n🏁 İşlem Tamamlandı. Yeni indirilen: ${successCount}\n`);
 }
 
 start();
