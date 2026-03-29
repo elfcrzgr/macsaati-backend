@@ -13,51 +13,84 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/${TOURNAMENT_FOLDER}/`;
 const OUTPUT_FILE = "matches_football.json";
 
+// --- DEV ÜLKE ÇEVİRİ SÖZLÜĞÜ (Genişletilmiş) ---
 const teamTranslations = {
-    "romania": "Romanya", "czechia": "Çekya", "denmark": "Danimarka",
-    "north macedonia": "K. Makedonya", "italy": "İtalya", "northern ireland": "Kuzey İrlanda",
-    "poland": "Polonya", "albania": "Arnavutluk", "slovakia": "Slovakya",
-    "ukraine": "Ukrayna", "sweden": "İsveç", "wales": "Galler",
-    "germany": "Almanya", "turkey": "Türkiye", "france": "Fransa", "brazil": "Brezilya",
-    "spain": "İspanya", "netherlands": "Hollanda", "austria": "Avusturya", "belgium": "Belçika"
+    // Avrupa (UEFA)
+    "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
+    "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "netherlands": "Hollanda",
+    "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", "croatia": "Hırvatistan",
+    "denmark": "Danimarka", "scotland": "İskoçya", "hungary": "Macaristan", "serbia": "Sırbistan",
+    "poland": "Polonya", "czechia": "Çekya", "romania": "Romanya", "slovakia": "Slovakya",
+    "slovenia": "Slovenya", "georgia": "Gürcistan", "albania": "Arnavutluk", "norway": "Norveç",
+    "sweden": "İsveç", "ukraine": "Ukrayna", "greece": "Yunanistan", "wales": "Galler",
+    "finland": "Finlandiya", "ireland": "İrlanda", "northernireland": "Kuzey İrlanda",
+    "iceland": "İzlanda", "israel": "İsrail", "bulgaria": "Bulgaristan", "kazakhstan": "Kazakistan",
+    "azerbaijan": "Azerbaycan", "armenia": "Ermenistan", "kosovo": "Kosova", "montenegro": "Karadağ",
+    "estonia": "Estonya", "latvia": "Letonya", "lithuania": "Litvanya", "belarus": "Belarus",
+    "moldova": "Moldova", "luxembourg": "Lüksemburg", "faroeislands": "Faroe Adaları",
+    "malta": "Malta", "andorra": "Andorra", "sanmarino": "San Marino", "gibraltar": "Cebelitarık",
+    "liechtenstein": "Liechtenstein", "northmacedonia": "K. Makedonya", "cyprus": "Güney Kıbrıs",
+
+    // Güney Amerika (CONMEBOL)
+    "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya",
+    "chile": "Şili", "peru": "Peru", "ecuador": "Ekvador", "paraguay": "Paraguay",
+    "venezuela": "Venezuela", "bolivia": "Bolivya",
+
+    // Diğer Önemli Ülkeler
+    "usa": "ABD", "mexico": "Meksika", "canada": "Kanada", "japan": "Japonya",
+    "southkorea": "Güney Kore", "australia": "Avustralya", "morocco": "Fas", "egypt": "Mısır",
+    "senegal": "Senegal", "nigeria": "Nijerya", "cameroon": "Kamerun", "tunisia": "Tunus",
+    "algeria": "Cezayir", "ivorycoast": "Fildişi Sahili", "saudiarabia": "Suudi Arabistan"
 };
 
 const translateTeam = (name) => {
     if (!name) return name;
-    const cleanName = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
-    if (teamTranslations[cleanName]) return teamTranslations[cleanName];
+    let translatedName = name;
+    
+    // Küçük harfe çevir ve temizle (kontrol için)
+    const cleanSearch = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+
+    // Sözlükte tam veya kısmi eşleşme ara
     for (const [eng, tr] of Object.entries(teamTranslations)) {
-        if (cleanName.includes(eng)) return tr;
+        if (cleanSearch.includes(eng)) {
+            // "Turkey U19" -> "Türkiye U19" yapmak için sadece ülke kısmını değiştir
+            const regex = new RegExp(eng, 'gi');
+            // Eğer sözlükteki anahtar isimde geçiyorsa, onu Türkçe karşılığıyla değiştir
+            // Not: Basit bir replace yerine ülke ismini koruyarak yapıyoruz
+            translatedName = name.replace(new RegExp(eng, 'i'), tr);
+            
+            // Özel durum: "Turkey" -> "Türkiye" (Eğer sadece ülke ismiyse tam eşleşme)
+            if (cleanSearch === eng) return tr;
+            
+            return translatedName;
+        }
     }
     return name;
 };
 
-// --- GELİŞMİŞ VE HATASIZ YAYINCI MANTIĞI ---
+// --- AKILLI YAYINCI MANTIĞI ---
 const getBroadcaster = (utId, hName, aName, tName, utName) => {
     const hn = hName.toLowerCase();
     const an = aName.toLowerCase();
     const tn = tName.toLowerCase();
     const utn = utName.toLowerCase();
 
-    // Türkiye Kontrolü (Hassas tarama)
     const isTurkey = hn.includes("turkey") || an.includes("turkey") || 
                      hn.includes("türkiye") || an.includes("türkiye");
 
-    // Play-off Kontrolü
     const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || 
                       utn.includes("play-off") || utn.includes("playoff");
 
-    // 1. U19 (748) ve U21 (750) Elemeleri
+    // 1. U19 (748) ve U21 (750)
     if (utId === 748 || utId === 750) {
         return isTurkey ? "TRT Spor / Tabii" : "Exxen";
     }
 
-    // 2. Dünya Kupası Elemeleri (704: Avrupa, 705: G.Amerika, 703: Asya vb.)
+    // 2. Dünya Kupası Elemeleri (704 ve benzerleri)
     if (utId === 704 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
         if (isTurkey) {
             return isPlayoff ? "TV8" : "TRT 1 / Tabii";
         }
-        // Türkiye dışındakiler
         return isPlayoff ? "Exxen" : "S Sport Plus";
     }
 
@@ -65,7 +98,6 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
     if (utId === 13) return "Spor Smart";           // Brezilya Serie A
     if (utId === 393) return "CBC Sport";          // Azerbaycan Premier Lig
 
-    // 4. Sabit Liste (Diğerleri)
     const staticConfigs = {
         155: "Spor Smart / Exxen", 54: "S Sport Plus / TV+",
         10: "Exxen / S Sport+", 10618: "Exxen / FIFA+",
@@ -157,7 +189,6 @@ async function start() {
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
-            // YENİLENMİŞ YAYINCI FONKSİYONU ÇAĞRISI
             broadcaster: getBroadcaster(utId, hName, aName, tName, utName), 
             homeTeam: { 
                 name: translateTeam(hName), 
