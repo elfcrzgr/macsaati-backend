@@ -13,7 +13,7 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/${TOURNAMENT_FOLDER}/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- DEV ÜLKE ÇEVİRİ SÖZLÜĞÜ (Genişletilmiş) ---
+// --- DEV ÜLKE ÇEVİRİ SÖZLÜĞÜ ---
 const teamTranslations = {
     // Avrupa (UEFA)
     "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
@@ -46,22 +46,12 @@ const teamTranslations = {
 const translateTeam = (name) => {
     if (!name) return name;
     let translatedName = name;
-    
-    // Küçük harfe çevir ve temizle (kontrol için)
     const cleanSearch = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
 
-    // Sözlükte tam veya kısmi eşleşme ara
     for (const [eng, tr] of Object.entries(teamTranslations)) {
         if (cleanSearch.includes(eng)) {
-            // "Turkey U19" -> "Türkiye U19" yapmak için sadece ülke kısmını değiştir
-            const regex = new RegExp(eng, 'gi');
-            // Eğer sözlükteki anahtar isimde geçiyorsa, onu Türkçe karşılığıyla değiştir
-            // Not: Basit bir replace yerine ülke ismini koruyarak yapıyoruz
             translatedName = name.replace(new RegExp(eng, 'i'), tr);
-            
-            // Özel durum: "Turkey" -> "Türkiye" (Eğer sadece ülke ismiyse tam eşleşme)
             if (cleanSearch === eng) return tr;
-            
             return translatedName;
         }
     }
@@ -81,12 +71,12 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
     const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || 
                       utn.includes("play-off") || utn.includes("playoff");
 
-    // 1. U19 (748) ve U21 (750)
+    // 1. Alt Yaş Grupları
     if (utId === 748 || utId === 750) {
         return isTurkey ? "TRT Spor / Tabii" : "Exxen";
     }
 
-    // 2. Dünya Kupası Elemeleri (704 ve benzerleri)
+    // 2. Dünya Kupası Elemeleri
     if (utId === 704 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
         if (isTurkey) {
             return isPlayoff ? "TV8" : "TRT 1 / Tabii";
@@ -94,28 +84,44 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
         return isPlayoff ? "Exxen" : "S Sport Plus";
     }
 
-    // 3. Özel Ligler
-    if (utId === 13) return "Spor Smart";           // Brezilya Serie A
-    if (utId === 393) return "CBC Sport";          // Azerbaycan Premier Lig
-
+    // 3. Statik Lig Konfigürasyonları
     const staticConfigs = {
-        155: "Spor Smart / Exxen", 54: "S Sport Plus / TV+",
-        10: "Exxen / S Sport+", 10618: "Exxen / FIFA+",
-        351: "TRT Spor / Tabii", 4664: "S Sport+ / TV+",
-        11: "TRT 1 / Tabii", 52: "beIN Sports",
-        98: "beIN Sports / TRT Spor", 97: "TFF YouTube",
+        52: "beIN Sports",           // Süper Lig
+        238: "S Sport",              // Portekiz (Güncellendi)
+        242: "Apple TV (MLS Season Pass)", // MLS (Güncellendi)
+        938: "S Sport / S Sport Plus",     // Suudi Ligi (Güncellendi)
+        17: "beIN Sports",           // Premier League
+        8: "S Sport",                // La Liga
+        23: "S Sport",               // Serie A
+        7: "TRT / Tabii",            // Şampiyonlar Ligi
+        11: "TRT 1 / Tabii",         // Milli Takım
+        351: "TRT Spor / Tabii",
+        54: "S Sport Plus / TV+",    // Bundesliga
+        10: "Exxen / S Sport+",
+        13: "Spor Smart",            // Brezilya
+        393: "CBC Sport",            // Azerbaycan
+        155: "Spor Smart / Exxen", 
+        10618: "Exxen / FIFA+",
+        4664: "S Sport+ / TV+",
+        98: "beIN Sports / TRT Spor", 
+        97: "TFF YouTube",
         11417: "TFF YouTube", 11416: "TFF YouTube",
         11415: "TFF YouTube", 15938: "TFF YouTube",
-        17: "beIN Sports", 8: "S Sport", 23: "S Sport",
-        7: "TRT / Tabii", 696: "DAZN / YouTube",
-        13363: "USL YouTube", 10783: "S Sport Plus / TRT"
+        696: "DAZN / YouTube",
+        13363: "USL YouTube", 
+        10783: "S Sport Plus / TRT"
     };
 
     return staticConfigs[utId] || "Resmi Yayıncı / Canlı Skor";
 };
 
-const targetLeagueIds = [748, 750, 704, 13, 393, 155, 54, 10, 10618, 351, 4664, 11, 52, 98, 97, 11417, 11416, 11415, 15938, 17, 8, 23, 7, 696, 13363, 10783];
-const stubbornLeagueIds = [11, 351, 10, 97, 748, 750, 704, 13, 393];
+// --- HEDEF LİG ID'LERİ ---
+const targetLeagueIds = [
+    52, 17, 8, 23, 7, 11, 351, 54, 10, 13, 393, 238, 242, 938,
+    748, 750, 704, 155, 4664, 98, 97, 11417, 11416, 11415, 15938, 696, 13363, 10783
+];
+
+const stubbornLeagueIds = [11, 351, 10, 97, 748, 750, 704, 13, 393, 52, 238, 242, 938];
 
 async function start() {
     console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI...");
@@ -133,6 +139,7 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
+    // 1. Günlük Planlanmış Maçlar
     for (const date of validDates) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
@@ -147,6 +154,7 @@ async function start() {
         } catch (e) { }
     }
 
+    // 2. İnatçı Liglerin Özel Kontrolü
     for (const id of stubbornLeagueIds) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
@@ -219,6 +227,3 @@ async function start() {
 }
 
 start();
-
-
-
