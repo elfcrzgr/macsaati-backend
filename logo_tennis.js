@@ -1,99 +1,91 @@
 const fs = require('fs');
 const path = require('path');
-const axios = require('axios');
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
-// Dosya yolları
+puppeteer.use(StealthPlugin());
+
 const MATCHES_FILE = path.join(__dirname, 'matches_tennis.json');
 const TOURNAMENT_LOGOS_DIR = path.join(__dirname, 'tennis', 'tournament_logos');
 
-// Klasör yoksa oluştur
-if (!fs.existsSync(TOURNAMENT_LOGOS_DIR)) {
-    fs.mkdirSync(TOURNAMENT_LOGOS_DIR, { recursive: true });
-}
-
-/**
- * Belirtilen ID'ye sahip logoyu SofaScore API'den indirir.
- */
-async function downloadLogo(id, name) {
-    const targetPath = path.join(TOURNAMENT_LOGOS_DIR, `${id}.png`);
-    const url = `https://api.sofascore.com/api/v1/tournament/${id}/image`;
-
-    try {
-        const response = await axios({
-            url,
-            method: 'GET',
-            responseType: 'stream',
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-                'Referer': 'https://www.sofascore.com/'
-            },
-            timeout: 15000
-        });
-
-        const writer = fs.createWriteStream(targetPath);
-        response.data.pipe(writer);
-
-        return new Promise((resolve, reject) => {
-            writer.on('finish', () => resolve(true));
-            writer.on('error', (err) => {
-                console.error(`   ❌ Yazma Hatası (${name}):`, err.message);
-                resolve(false);
-            });
-        });
-    } catch (error) {
-        console.log(`   ❌ [Hata] ${name} (ID: ${id}): API hatası veya Logo yok.`);
-        return false;
-    }
-}
+if (!fs.existsSync(TOURNAMENT_LOGOS_DIR)) fs.mkdirSync(TOURNAMENT_LOGOS_DIR, { recursive: true });
 
 async function start() {
-    console.log("🚀 Tenis logo indirme işlemi başlatıldı...");
+    console.log("🚀 Tenis logo indirme işlemi (Puppeteer) başlatıldı...");
 
     if (!fs.existsSync(MATCHES_FILE)) {
-        console.error("❌ HATA: matches_tennis.json bulunamadı!");
-        process.exit(1);
+        console.error("❌ JSON bulunamadı!");
+        return;
     }
 
-    const data = JSON.parse(fs.readFileSync(MATCHES_FILE, 'utf8'));
+    const json = JSON.parse(fs.readFileSync(MATCHES_FILE, 'utf8'));
     const tournaments = new Map();
 
-    // 1. JSON içindeki benzersiz turnuva ID'lerini topla
-    data.matches.forEach(match => {
-        if (match.tournamentLogo) {
-            // URL'den ID'yi al (Örn: .../2431.png -> 2431)
-            const id = match.tournamentLogo.split('/').pop().replace('.png', '');
+    // 1. JSON içinden benzersiz ID'leri topla
+    json.matches.forEach(m => {
+        if (m.tournamentLogo) {
+            const id = m.tournamentLogo.split('/').pop().replace('.png', '');
             if (!tournaments.has(id)) {
-                tournaments.set(id, match.tournament);
+                tournaments.set(id, m.tournament);
             }
         }
     });
 
-    console.log(`🔍 JSON tarandı. Toplam ${tournaments.size} farklı turnuva tespit edildi.`);
+    console.log(`🔍 JSON Tarandı: ${tournaments.size} turnuva bulundu.`);
 
-    // 2. Eksik olanları belirle ve indir
+    // 2. Tarayıcıyı başlat
+    const browser = await puppeteer.launch({
+        headless: "new",
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security']
+    });
+
+    const page = await browser.newPage();
+    // Gerçekçi bir ekran boyutu ve User-Agent ayarla
+    await page.setViewport({ width: 1280, height: 800 });
+    
     let successCount = 0;
-    let missingCount = 0;
+    let failCount = 0;
 
     for (const [id, name] of tournaments) {
-        const filePath = path.join(TOURNAMENT_LOGOS_DIR, `${id}.png`);
+        const targetPath = path.join(TOURNAMENT_LOGOS_DIR, `${id}.png`);
 
-        if (!fs.existsSync(filePath)) {
+        if (!fs.existsSync(targetPath)) {
             console.log(`⏳ İndiriliyor: ${name} (ID: ${id})`);
-            const success = await downloadLogo(id, name);
-            if (success) {
-                successCount++;
-            } else {
-                missingCount++;
+            
+            const url = `https://api.sofascore.com/api/v1/tournament/${id}/image`;
+            
+            try {
+                // Sayfaya git ve ağın boşalmasını bekle
+                const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+                
+                if (response && response.status() === 200) {
+                    const buffer = await response.buffer();
+                    // Eğer dönen içerik çok küçükse (hata mesajı vs) kaydetme
+                    if (buffer.length > 500) {
+                        fs.writeFileSync(targetPath, buffer);
+                        console.log(`   ✅ Başarılı!`);
+                        successCount++;
+                    } else {
+                        console.log(`   ⚠️  Hata: Dönen dosya çok küçük (Boş resim?).`);
+                        failCount++;
+                    }
+                } else {
+                    console.log(`   ❌ Hata: HTTP ${response ? response.status() : 'Bağlantı Yok'}`);
+                    failCount++;
+                }
+            } catch (e) {
+                console.log(`   ❌ Bağlantı Hatası: ${e.message}`);
+                failCount++;
             }
-            // Sunucuyu yormamak ve bloklanmamak için kısa bekleme
-            await new Promise(r => setTimeout(r, 1000));
+            // Her resim arasında rastgele bekleme (bloklanmamak için)
+            await new Promise(r => setTimeout(r, 2000));
         }
     }
 
+    await browser.close();
     console.log(`\n🏁 İşlem Tamamlandı:`);
-    console.log(`   ✅ Başarıyla indirilen: ${successCount}`);
-    console.log(`   ⚠️  İndirilemeyen/Eksik: ${missingCount}`);
-    console.log(`   📂 Klasör: ${TOURNAMENT_LOGOS_DIR}\n`);
+    console.log(`   ✅ İndirilen: ${successCount}`);
+    console.log(`   ⚠️  Başarısız: ${failCount}\n`);
 }
 
 start();
