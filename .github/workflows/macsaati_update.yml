@@ -45,7 +45,7 @@ jobs:
       # 🖼️ LOGO GÜNCELLEME (MASTER SCRIPT)
       # ==========================================
       - name: Eksik Tüm Logoları İndir
-        run: node logo_master.js || echo "Logo indirme atlandı"
+        run: node logo_masters.js || echo "Logo indirme atlandı"
 
       # ==========================================
       # 📤 GITHUB'A PUSH
