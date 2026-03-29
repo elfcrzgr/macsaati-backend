@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T21:20:09.809Z",
+  "lastUpdated": "2026-03-29T21:25:48.299Z",
   "totalMatches": 161,
   "matches": [
     {
@@ -2251,9 +2251,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "interrupted",
+        "description": "Interrupted",
+        "code": 80
       },
       "homeTeam": {
         "name": "Jiri Lehečka",

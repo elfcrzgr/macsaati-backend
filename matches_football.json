@@ -1,53 +1,1128 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T21:00:45.800Z",
-  "totalMatches": 2,
+  "lastUpdated": "2026-03-29T21:26:14.078Z",
+  "totalMatches": 59,
   "matches": [
     {
-      "id": 14167951,
-      "fixedDate": "2026-03-30",
-      "fixedTime": "01:00",
-      "timestamp": 1774821600000,
-      "tournament": "Ligue 1",
-      "tournamentLogo": "https://api.sofascore.com/api/v1/unique-tournament/34/image",
-      "broadcaster": "beIN Sports (Ligue 1)",
-      "matchStatus": {
-        "type": "postponed",
-        "description": "Postponed"
-      },
+      "id": 14083466,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "15:00",
+      "timestamp": 1774785600000,
+      "broadcaster": "S Sport Plus / TV+",
       "homeTeam": {
-        "name": "Metz",
-        "logo": "https://api.sofascore.com/api/v1/team/1651/image"
+        "name": "Eibar",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2839.png"
       },
       "awayTeam": {
-        "name": "Nantes",
-        "logo": "https://api.sofascore.com/api/v1/team/1647/image"
+        "name": "Las Palmas",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6577.png"
       },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "3",
+      "awayScore": "1",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083488,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "17:15",
+      "timestamp": 1774793700000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Cultural Leonesa",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2868.png"
+      },
+      "awayTeam": {
+        "name": "FC Andorra",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/324871.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "0",
+      "awayScore": "4",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083486,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "19:30",
+      "timestamp": 1774801800000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Real Zaragoza",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2815.png"
+      },
+      "awayTeam": {
+        "name": "Real Racing Club",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2835.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083470,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "22:00",
+      "timestamp": 1774810800000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Almería",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2858.png"
+      },
+      "awayTeam": {
+        "name": "Real Sociedad B U21",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24360.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "5",
+      "awayScore": "1",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 15285678,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "23:00",
+      "timestamp": 1774814400000,
+      "broadcaster": "USL YouTube",
+      "homeTeam": {
+        "name": "San Antonio FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/217134.png"
+      },
+      "awayTeam": {
+        "name": "Lexington SC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/460707.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
+      "homeScore": "1",
+      "awayScore": "0",
+      "tournament": "USL Championship"
+    },
+    {
+      "id": 15598166,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "15:00",
+      "timestamp": 1774872000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Kosova",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/267571.png"
+      },
+      "awayTeam": {
+        "name": "Türkiye U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22566.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
       "homeScore": "-",
-      "awayScore": "-"
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598167,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "15:00",
+      "timestamp": 1774872000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Cebelitarık",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/86046.png"
+      },
+      "awayTeam": {
+        "name": "Armenia U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22484.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224868,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "13:00",
+      "timestamp": 1774951200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Fransa",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22509.png"
+      },
+      "awayTeam": {
+        "name": "Hırvatistan",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22499.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224869,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "13:00",
+      "timestamp": 1774951200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "İsviçre",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22562.png"
+      },
+      "awayTeam": {
+        "name": "Norway U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22545.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15220691,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "13:00",
+      "timestamp": 1774951200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "İrlanda",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22551.png"
+      },
+      "awayTeam": {
+        "name": "Kazakhstan U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22525.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598140,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "13:00",
+      "timestamp": 1774951200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Estonia U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22506.png"
+      },
+      "awayTeam": {
+        "name": "Ukrayna",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22568.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598139,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "13:00",
+      "timestamp": 1774951200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Finland U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22508.png"
+      },
+      "awayTeam": {
+        "name": "Çekya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22501.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598125,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "13:00",
+      "timestamp": 1774951200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Romanya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22552.png"
+      },
+      "awayTeam": {
+        "name": "Danimarka",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22502.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598132,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "13:00",
+      "timestamp": 1774951200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Liechtenstein U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22532.png"
+      },
+      "awayTeam": {
+        "name": "Andorra U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22483.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224870,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "15:00",
+      "timestamp": 1774958400000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Danimarka",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22502.png"
+      },
+      "awayTeam": {
+        "name": "Çekya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22501.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224871,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "15:00",
+      "timestamp": 1774958400000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Letonya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22530.png"
+      },
+      "awayTeam": {
+        "name": "Belçika",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22490.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598122,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "15:45",
+      "timestamp": 1774961100000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Bulgaria U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22493.png"
+      },
+      "awayTeam": {
+        "name": "İspanya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22560.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598118,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "15:45",
+      "timestamp": 1774961100000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Hırvatistan",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22499.png"
+      },
+      "awayTeam": {
+        "name": "England U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22505.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598141,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "16:00",
+      "timestamp": 1774962000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Avusturya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22486.png"
+      },
+      "awayTeam": {
+        "name": "Almanya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22512.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224874,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "16:00",
+      "timestamp": 1774962000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Hungary U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22515.png"
+      },
+      "awayTeam": {
+        "name": "Slovakya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22558.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224873,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "16:00",
+      "timestamp": 1774962000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Türkiye U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22566.png"
+      },
+      "awayTeam": {
+        "name": "İtalya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22522.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598143,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "16:00",
+      "timestamp": 1774962000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Bosna Hersek",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22492.png"
+      },
+      "awayTeam": {
+        "name": "Israel U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22521.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598159,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "16:00",
+      "timestamp": 1774962000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Slovenia U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22559.png"
+      },
+      "awayTeam": {
+        "name": "Belçika",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22490.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598156,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "16:00",
+      "timestamp": 1774962000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Cyprus U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22500.png"
+      },
+      "awayTeam": {
+        "name": "İsveç",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22561.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598135,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "16:00",
+      "timestamp": 1774962000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Arnavutluk",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22482.png"
+      },
+      "awayTeam": {
+        "name": "Norway U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22545.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598136,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "16:00",
+      "timestamp": 1774962000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Malta",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22538.png"
+      },
+      "awayTeam": {
+        "name": "Lüksemburg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22534.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15220781,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "17:00",
+      "timestamp": 1774965600000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "İrlanda",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22544.png"
+      },
+      "awayTeam": {
+        "name": "Kazakhstan U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22525.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224872,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "17:00",
+      "timestamp": 1774965600000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Romanya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22552.png"
+      },
+      "awayTeam": {
+        "name": "Ukrayna",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22568.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224866,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "18:00",
+      "timestamp": 1774969200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Portugal U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22549.png"
+      },
+      "awayTeam": {
+        "name": "England U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22505.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224867,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "18:00",
+      "timestamp": 1774969200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Serbia U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22556.png"
+      },
+      "awayTeam": {
+        "name": "Polonya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22548.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598170,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "18:00",
+      "timestamp": 1774969200000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Lithuania U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22533.png"
+      },
+      "awayTeam": {
+        "name": "İrlanda",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22544.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 13157429,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "S Sport Plus / TRT",
+      "homeTeam": {
+        "name": "Letonya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4706.png"
+      },
+      "awayTeam": {
+        "name": "Cebelitarık",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/129264.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10783.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UEFA Nations League"
+    },
+    {
+      "id": 13157430,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "S Sport Plus / TRT",
+      "homeTeam": {
+        "name": "Lüksemburg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4478.png"
+      },
+      "awayTeam": {
+        "name": "Malta",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4483.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10783.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UEFA Nations League"
+    },
+    {
+      "id": 15224865,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "İsveç",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22561.png"
+      },
+      "awayTeam": {
+        "name": "Greece U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22513.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224875,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Hollanda",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22543.png"
+      },
+      "awayTeam": {
+        "name": "İspanya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22560.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15224876,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Slovenia U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22559.png"
+      },
+      "awayTeam": {
+        "name": "Finland U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22508.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598158,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Faroe Islands U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22507.png"
+      },
+      "awayTeam": {
+        "name": "Hollanda",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22543.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598165,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Moldova U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22539.png"
+      },
+      "awayTeam": {
+        "name": "North Macedonia U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22510.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598150,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:30",
+      "timestamp": 1774974600000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "İsviçre",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22562.png"
+      },
+      "awayTeam": {
+        "name": "Fransa",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22509.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598151,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:30",
+      "timestamp": 1774974600000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Galler",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22572.png"
+      },
+      "awayTeam": {
+        "name": "Hungary U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22515.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
     },
     {
       "id": 15844931,
       "fixedDate": "2026-03-31",
       "fixedTime": "20:00",
       "timestamp": 1774976400000,
-      "tournament": "Liga Profesional de Fútbol, Apertura",
-      "tournamentLogo": "https://api.sofascore.com/api/v1/unique-tournament/155/image",
-      "broadcaster": "D-Smart (Arjantin)",
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started"
-      },
+      "broadcaster": "Spor Smart / Exxen",
       "homeTeam": {
         "name": "Aldosivi",
-        "logo": "https://api.sofascore.com/api/v1/team/36836/image"
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36836.png"
       },
       "awayTeam": {
         "name": "Argentinos Juniors",
-        "logo": "https://api.sofascore.com/api/v1/team/3216/image"
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3216.png"
       },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
       "homeScore": "-",
-      "awayScore": "-"
+      "awayScore": "-",
+      "tournament": "Liga Profesional de Fútbol"
+    },
+    {
+      "id": 14083505,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "20:00",
+      "timestamp": 1774976400000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Mirandés",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35092.png"
+      },
+      "awayTeam": {
+        "name": "Albacete Balompié",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2848.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083510,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:00",
+      "timestamp": 1774980000000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Deportivo La Coruña",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2832.png"
+      },
+      "awayTeam": {
+        "name": "Córdoba",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2850.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 15598163,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:00",
+      "timestamp": 1774980000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "İrlanda",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22551.png"
+      },
+      "awayTeam": {
+        "name": "İtalya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22522.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15598138,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:00",
+      "timestamp": 1774980000000,
+      "broadcaster": "UEFA.tv / YouTube",
+      "homeTeam": {
+        "name": "Scotland U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22555.png"
+      },
+      "awayTeam": {
+        "name": "Polonya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22548.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15129804,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:45",
+      "timestamp": 1774982700000,
+      "broadcaster": "TRT 1 / Tabii",
+      "homeTeam": {
+        "name": "Bosna Hersek",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4479.png"
+      },
+      "awayTeam": {
+        "name": "İtalya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4707.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Cup Qual. UEFA"
+    },
+    {
+      "id": 15129795,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:45",
+      "timestamp": 1774982700000,
+      "broadcaster": "TRT 1 / Tabii",
+      "homeTeam": {
+        "name": "Çekya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4714.png"
+      },
+      "awayTeam": {
+        "name": "Danimarka",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4476.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Cup Qual. UEFA"
+    },
+    {
+      "id": 15129802,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:45",
+      "timestamp": 1774982700000,
+      "broadcaster": "TRT 1 / Tabii",
+      "homeTeam": {
+        "name": "Kosova",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/154426.png"
+      },
+      "awayTeam": {
+        "name": "Türkiye",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4700.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Cup Qual. UEFA"
+    },
+    {
+      "id": 15129806,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:45",
+      "timestamp": 1774982700000,
+      "broadcaster": "TRT 1 / Tabii",
+      "homeTeam": {
+        "name": "İsveç",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4688.png"
+      },
+      "awayTeam": {
+        "name": "Polonya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4703.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Cup Qual. UEFA"
+    },
+    {
+      "id": 14083507,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "22:30",
+      "timestamp": 1774985400000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Real Valladolid",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2831.png"
+      },
+      "awayTeam": {
+        "name": "Cádiz",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4488.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 15122626,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "00:00",
+      "timestamp": 1774990800000,
+      "broadcaster": "Exxen / FIFA+",
+      "homeTeam": {
+        "name": "DR Congo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4823.png"
+      },
+      "awayTeam": {
+        "name": "Jamaika",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4769.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10618.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Championship Qual., Inter-Confederation"
+    },
+    {
+      "id": 15122651,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "06:00",
+      "timestamp": 1775012400000,
+      "broadcaster": "Exxen / FIFA+",
+      "homeTeam": {
+        "name": "Iraq",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4767.png"
+      },
+      "awayTeam": {
+        "name": "Bolivya",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4746.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10618.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Championship Qual., Inter-Confederation"
+    },
+    {
+      "id": 15471610,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "19:45",
+      "timestamp": 1775061900000,
+      "broadcaster": "DAZN / YouTube",
+      "homeTeam": {
+        "name": "FC Bayern München",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5543.png"
+      },
+      "awayTeam": {
+        "name": "Manchester United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/301455.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/696.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UEFA Women's Champions League"
+    },
+    {
+      "id": 14083503,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "20:00",
+      "timestamp": 1775062800000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "FC Andorra",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/324871.png"
+      },
+      "awayTeam": {
+        "name": "Málaga",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2830.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083490,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "21:00",
+      "timestamp": 1775066400000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Burgos Club de Fútbol",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2854.png"
+      },
+      "awayTeam": {
+        "name": "AD Ceuta",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2869.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083493,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "21:00",
+      "timestamp": 1775066400000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Huesca",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24265.png"
+      },
+      "awayTeam": {
+        "name": "Cultural Leonesa",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2868.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 15474550,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "22:00",
+      "timestamp": 1775070000000,
+      "broadcaster": "DAZN / YouTube",
+      "homeTeam": {
+        "name": "Chelsea FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/66768.png"
+      },
+      "awayTeam": {
+        "name": "Arsenal",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/26243.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/696.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UEFA Women's Champions League"
+    },
+    {
+      "id": 14083499,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "22:30",
+      "timestamp": 1775071800000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Real Racing Club",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2835.png"
+      },
+      "awayTeam": {
+        "name": "Sporting Gijón",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2852.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 15270053,
+      "fixedDate": "2026-04-02",
+      "fixedTime": "02:00",
+      "timestamp": 1775084400000,
+      "broadcaster": "Spor Smart / Exxen",
+      "homeTeam": {
+        "name": "CA Lanús",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3218.png"
+      },
+      "awayTeam": {
+        "name": "Platense",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36837.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Profesional de Fútbol"
     }
   ]
 }
