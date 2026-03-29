@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T20:22:42.046Z",
+  "lastUpdated": "2026-03-29T20:55:54.028Z",
   "totalMatches": 167,
   "matches": [
     {
@@ -2191,9 +2191,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": true,
       "matchStatus": {
-        "type": "interrupted",
-        "description": "Interrupted",
-        "code": 80
+        "type": "inprogress",
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Errani S / Paolini J",
@@ -2231,9 +2231,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Darja Vidmanova",
@@ -2254,9 +2254,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(2-6, 6-7)",
       "tournament": "Charleston, USA, Qualifying"
     },
     {
@@ -2339,9 +2339,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Alex Bolt",
@@ -2362,9 +2362,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": "(6-2, 4-6, 6-2)",
       "tournament": "Houston, USA, Qualifying"
     },
     {
@@ -2412,8 +2412,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "description": "3rd set",
+        "code": 10
       },
       "homeTeam": {
         "name": "Marina Bassols Ribera",
@@ -2448,8 +2448,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Jazmin Ortenzi",
@@ -2483,9 +2483,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Jiri Lehečka",
