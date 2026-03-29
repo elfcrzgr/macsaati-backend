@@ -21,10 +21,8 @@ const teamTranslations = {
     "poland": "Polonya", "albania": "Arnavutluk", "slovakia": "Slovakya",
     "ukraine": "Ukrayna", "sweden": "İsveç", "wales": "Galler",
     "bosnia": "Bosna Hersek", "germany": "Almanya", "turkey": "Türkiye",
-    "ireland": "İrlanda", "croatia": "Hırvatistan", "france": "Fransa",
-    "brazil": "Brezilya", "spain": "İspanya", "netherlands": "Hollanda",
-    "kosovo": "Kosova", "austria": "Avusturya", "belgium": "Belçika",
-    "azerbaijan": "Azerbaycan", "turkiye": "Türkiye"
+    "croatia": "Hırvatistan", "france": "Fransa", "brazil": "Brezilya",
+    "spain": "İspanya", "netherlands": "Hollanda", "austria": "Avusturya", "belgium": "Belçika"
 };
 
 const translateTeam = (name) => {
@@ -37,48 +35,51 @@ const translateTeam = (name) => {
     return name;
 };
 
-// --- YAYINCI VE LİG TANIMLARI ---
-const leagueConfigs = {
-    155: "Spor Smart / Exxen", 54: "S Sport Plus / TV+",
-    10: "Exxen / S Sport+", 10618: "Exxen / FIFA+",
-    351: "TRT Spor / Tabii", 4664: "S Sport+ / TV+",
-    11: "TRT 1 / Tabii", 52: "beIN Sports",
-    98: "beIN Sports / TRT Spor", 97: "TFF YouTube",
-    17: "beIN Sports", 8: "S Sport", 23: "S Sport",
-    7: "TRT / Tabii", 696: "DAZN / YouTube",
-    13363: "USL YouTube", 10783: "S Sport Plus / TRT",
-    748: "TRT Spor",           // U19 Avrupa Şampiyonası
-    10620: "TRT Spor",         // U21 Avrupa Şampiyonası Elemeleri
-    13: "Spor Smart",          // Brezilya Serie A
-    366: "CBC Sport",          // Azerbaycan Premier Lig
-    707: "Dinamik"             // Dünya Kupası Elemeleri (Aşağıda özel mantıkla çözülecek)
-};
+// --- AKILLI YAYINCI BELİRLEME FONKSİYONU ---
+const getBroadcaster = (utId, homeName, awayName, tournamentName) => {
+    const isTurkey = homeName.includes("Türkiye") || awayName.includes("Türkiye") || 
+                     homeName.includes("Turkey") || awayName.includes("Turkey");
+    const isPlayoff = tournamentName.toLowerCase().includes("play-off") || 
+                      tournamentName.toLowerCase().includes("playoff");
 
-// Dinamik Yayıncı Belirleme Fonksiyonu
-const getBroadcaster = (event) => {
-    const utId = event.tournament?.uniqueTournament?.id;
-    const home = event.homeTeam.name.toLowerCase();
-    const away = event.awayTeam.name.toLowerCase();
-    const isTurkeyMatch = home.includes("turkey") || home.includes("türkiye") || away.includes("turkey") || away.includes("türkiye");
-
-    // Dünya Kupası Elemeleri Özel Kuralı (ID: 707)
-    if (utId === 707) {
-        if (isTurkeyMatch) {
-            // Play-off tespiti (Eğer kupa aşamasıysa veya SofaScore round bilgisinde varsa)
-            // Genelde eleme maçları bittiğinde Play-off'lar başlar. Şimdilik ikisini de kapsayan bir string:
-            return "TV8 / TRT"; 
-        }
-        return "Exxen";
+    // U19 (748) ve U21 (750) Elemeleri
+    if (utId === 748 || utId === 750) {
+        return isTurkey ? "TRT Spor / Tabii" : "Exxen";
     }
 
-    return leagueConfigs[utId] || "Resmi Yayıncı / Canlı Skor";
+    // Dünya Kupası Elemeleri (704)
+    if (utId === 704) {
+        if (isTurkey) {
+            return isPlayoff ? "TV8" : "TRT 1 / Tabii";
+        }
+        return isPlayoff ? "Exxen" : "S Sport Plus";
+    }
+
+    // Sabit Yayıncılar
+    const staticConfigs = {
+        13: "Spor Smart",       // Brezilya Serie A
+        393: "CBC Sport",       // Azerbaycan Premier Lig
+        155: "Spor Smart / Exxen", 54: "S Sport Plus / TV+",
+        10: "Exxen / S Sport+", 10618: "Exxen / FIFA+",
+        351: "TRT Spor / Tabii", 4664: "S Sport+ / TV+",
+        11: "TRT 1 / Tabii", 52: "beIN Sports",
+        98: "beIN Sports / TRT Spor", 97: "TFF YouTube",
+        11417: "TFF YouTube", 11416: "TFF YouTube",
+        11415: "TFF YouTube", 15938: "TFF YouTube",
+        17: "beIN Sports", 8: "S Sport", 23: "S Sport",
+        7: "TRT / Tabii", 696: "DAZN / YouTube",
+        13363: "USL YouTube", 10783: "S Sport Plus / TRT"
+    };
+
+    return staticConfigs[utId] || "Resmi Yayıncı / Canlı Skor";
 };
 
-const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
-const stubbornLeagueIds = [11, 351, 10, 97, 155, 54, 4664, 748, 10620, 13, 366, 707];
+// Takip edilen Lig ID'leri
+const targetLeagueIds = [748, 750, 704, 13, 393, 155, 54, 10, 10618, 351, 4664, 11, 52, 98, 97, 11417, 11416, 11415, 15938, 17, 8, 23, 7, 696, 13363, 10783];
+const stubbornLeagueIds = [11, 10618, 351, 10, 97, 748, 750, 704, 13, 393];
 
 async function start() {
-    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI (Yeni Ligler Dahil)...");
+    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI (Dünya Kupası & Brezilya Dahil)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -97,7 +98,6 @@ async function start() {
     console.log("📅 GENEL TARAMA BAŞLADI...");
     for (const date of validDates) {
         try {
-            console.log(`📌 [${date}] Tarihli Maçlar Çekiliyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             if (data && data.events) {
@@ -105,13 +105,11 @@ async function start() {
                     const utId = e.tournament?.uniqueTournament?.id;
                     return targetLeagueIds.includes(utId) || (e.tournament?.uniqueTournament?.priority > 100);
                 });
-                console.log(`✅ ${date} için ${filtered.length} maç bulundu.`);
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`❌ Hata (${date}):`, e.message); }
+        } catch (e) { }
     }
 
-    console.log("-----------------------------------------");
     console.log("🔍 DERİN TARAMA (İnatçı Ligler) BAŞLADI...");
     for (const id of stubbornLeagueIds) {
         try {
@@ -129,37 +127,39 @@ async function start() {
                             const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                             return validDates.includes(dayStrTR);
                         });
-                        if (targetEvents.length > 0) allEvents = allEvents.concat(targetEvents);
+                        allEvents = allEvents.concat(targetEvents);
                     }
                 }
             }
         } catch (e) { }
     }
 
-    console.log("-----------------------------------------");
-    console.log("💾 VERİLER AYIKLANIYOR VE KAYDEDİLİYOR...");
+    console.log("💾 VERİLER AYIKLANIYOR...");
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
         const utId = e.tournament?.uniqueTournament?.id;
         if (!utId) continue;
         
-        const matchKey = `${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
+        const hName = e.homeTeam.name;
+        const aName = e.awayTeam.name;
+        const tName = e.tournament.name;
+        const matchKey = `${hName}_${aName}_${utId}`;
         const dateTR = new Date(e.startTimestamp * 1000);
-        const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         const isFinished = e.status?.type === 'finished' || e.status?.type === 'inprogress';
 
         const matchObj = {
             id: e.id,
-            fixedDate: dayStr,
+            fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
-            broadcaster: getBroadcaster(e), // Dinamik yayıncı fonksiyonunu kullanıyor
+            // Akıllı yayıncı kontrolü burada devreye giriyor:
+            broadcaster: getBroadcaster(utId, hName, aName, tName), 
             homeTeam: { 
-                name: translateTeam(e.homeTeam.name), 
+                name: translateTeam(hName), 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
             },
             awayTeam: { 
-                name: translateTeam(e.awayTeam.name), 
+                name: translateTeam(aName), 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
             },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
