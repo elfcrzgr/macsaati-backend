@@ -13,7 +13,7 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/${TOURNAMENT_FOLDER}/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- GENİŞLETİLMİŞ ÜLKE ÇEVİRİ SÖZLÜĞÜ ---
+// --- DEV ÜLKE ÇEVİRİ SÖZLÜĞÜ ---
 const teamTranslations = {
     "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
     "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "netherlands": "Hollanda",
@@ -45,7 +45,7 @@ const translateTeam = (name) => {
     return name;
 };
 
-// --- YAYINCI MANTIĞI ---
+// --- AKILLI YAYINCI MANTIĞI ---
 const getBroadcaster = (utId, hName, aName, tName, utName) => {
     const hn = hName.toLowerCase(), an = aName.toLowerCase(), tn = tName.toLowerCase(), utn = utName.toLowerCase();
     const isTurkey = hn.includes("turkey") || an.includes("turkey") || hn.includes("türkiye") || an.includes("türkiye");
@@ -73,7 +73,7 @@ const targetLeagueIds = [748, 750, 704, 13, 393, 155, 54, 10, 10618, 351, 4664, 
 const stubbornLeagueIds = [11, 351, 10, 97, 748, 750, 704, 13, 393];
 
 async function start() {
-    console.log("🚀 MAÇ SAATİ MOTORU BAŞLATILDI...");
+    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -88,7 +88,6 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // Tarama işlemleri (Aynı mantık devam ediyor)
     for (const date of validDates) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
@@ -126,16 +125,16 @@ async function start() {
         const hName = e.homeTeam.name, aName = e.awayTeam.name;
         const dateTR = new Date(e.startTimestamp * 1000);
         
-        // --- DURUM VE SKOR KONTROLÜ ---
-        const statusType = e.status?.type; // finished, inprogress, notstarted, canceled, postponed
-        const isFinished = statusType === 'finished'; // SADECE BİTMİŞSE TRUE
+        // --- DURUM KONTROLÜ (REVIZE EDILDI) ---
+        const statusType = e.status?.type; 
+        const isFinished = statusType === 'finished'; // Sadece bitmişse skor çek
 
         const matchObj = {
             id: e.id,
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
-            matchStatus: statusType, // 'finished', 'inprogress' vb. Android tarafında kontrol için.
+            matchStatus: statusType, // 'finished', 'inprogress', 'notstarted', 'postponed' vb.
             broadcaster: getBroadcaster(ut.id, hName, aName, e.tournament.name, ut.name), 
             homeTeam: { 
                 name: translateTeam(hName), 
@@ -146,7 +145,7 @@ async function start() {
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
             },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + ut.id + ".png",
-            // Maç bitmemişse (canlı dahil) skor yerine "-" yazar:
+            // Maç bitmemişse (canlı olsa bile) skoru "-" bas:
             homeScore: isFinished ? String(e.homeScore.display) : "-",
             awayScore: isFinished ? String(e.awayScore.display) : "-",
             tournament: ut.name
@@ -156,6 +155,8 @@ async function start() {
 
     const finalMatches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: finalMatches.length, matches: finalMatches }, null, 2));
+    
+    console.log(`✅ İŞLEM TAMAMLANDI: Toplam ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
