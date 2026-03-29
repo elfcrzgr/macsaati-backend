@@ -1,10 +1,10 @@
-name: Manuel Tenis Veri ve Logo Güncelleyici
+name: Manuel Tenis Logo Güncelleyici (Sadece Logo)
 
 on:
-  workflow_dispatch: # Sadece manuel başlatma butonu aktif
+  workflow_dispatch: # Sadece butonla çalışır
 
 jobs:
-  manual-update:
+  update-logos:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -20,16 +20,13 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Bağımlılıkları Kur
-        # Puppeteer'ın Linux'ta çalışması için gereken kütüphaneleri ve npm paketlerini kurar
+      - name: Puppeteer ve Sistem Bağımlılıklarını Kur
         run: |
           sudo apt-get update
           sudo apt-get install -y libgbm-dev wget gnupg
           npm install
 
-      - name: Tenis Verilerini Çek
-        run: node fetch_tennis.js || echo "Veri çekme başarısız"
-
+      # FETCH ADIMI KALDIRILDI - Direkt logolara geçiyoruz
       - name: Eksik Tenis Logolarını İndir
         run: node logo_tennis.js || echo "Logo indirme başarısız"
 
@@ -41,10 +38,10 @@ jobs:
           git add .
           
           if git diff --staged --quiet; then
-            echo "Herhangi bir değişiklik yok."
+            echo "Yeni indirilen logo yok."
           else
-            git commit -m "Manuel Tenis Güncellemesi: $(date +'%d-%m-%Y %H:%M')"
+            git commit -m "Tenis Logoları Güncellendi: $(date +'%d-%m-%Y %H:%M')"
             git pull origin main --rebase -X theirs
             git push origin main
-            echo "✅ Değişiklikler başarıyla gönderildi."
+            echo "✅ Yeni logolar başarıyla repona eklendi."
           fi
