@@ -34,7 +34,7 @@ jobs:
       # 🖼️ AKILLI LOGO KONTROLÜ (Varsa indirmez, yoksa çeker)
       # ==========================================
       - name: Eksik Futbol Logolarını Tamamla
-        run: node logo_football.js || echo "Logo kontrolü tamamlandı veya atlandı"
+        run: node logo_masters.js || echo "Logo kontrolü tamamlandı veya atlandı"
         continue-on-error: true
 
       # ==========================================
