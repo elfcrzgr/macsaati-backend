@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T01:08:40.756Z",
-  "totalMatches": 142,
+  "lastUpdated": "2026-03-29T04:27:21.958Z",
+  "totalMatches": 152,
   "matches": [
     {
       "id": 15739848,
@@ -1255,9 +1255,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Marina Bassols Ribera",
@@ -1278,9 +1278,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "(6-3, 6-3)",
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
@@ -1327,9 +1327,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Carol Zhao",
@@ -1350,9 +1350,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(1-6, 4-6)",
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
@@ -1363,9 +1363,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Miriana Tona",
@@ -1386,22 +1386,94 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": "(6-3, 1-6, 6-4)",
+      "tournament": "Bogota, Colombia, Qualifying"
+    },
+    {
+      "id": 15897199,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "04:50",
+      "timestamp": 1774749000000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
+      },
+      "homeTeam": {
+        "name": "Jazmin Ortenzi",
+        "countries": [
+          "ar"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Sara Alejandra Lozano Avellaneda",
+        "countries": [
+          "co"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "(6-2, 6-0)",
+      "tournament": "Bogota, Colombia, Qualifying"
+    },
+    {
+      "id": 15897216,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "05:10",
+      "timestamp": 1774750200000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
+      },
+      "homeTeam": {
+        "name": "Elina Avanesyan",
+        "countries": [
+          "am"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/am.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Sara Saito",
+        "countries": [
+          "jp"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "(7-5, 6-2)",
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
       "id": 15897201,
       "fixedDate": "2026-03-29",
-      "fixedTime": "03:00",
-      "timestamp": 1774742400000,
+      "fixedTime": "05:40",
+      "timestamp": 1774752000000,
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "3rd set",
+        "code": 10
       },
       "homeTeam": {
         "name": "Irene Burillo",
@@ -1428,88 +1500,16 @@
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
-      "id": 15897216,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "04:20",
-      "timestamp": 1774747200000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Elina Avanesyan",
-        "countries": [
-          "am"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/am.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Sara Saito",
-        "countries": [
-          "jp"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bogota, Colombia, Qualifying"
-    },
-    {
-      "id": 15897199,
-      "fixedDate": "2026-03-29",
-      "fixedTime": "04:20",
-      "timestamp": 1774747200000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Jazmin Ortenzi",
-        "countries": [
-          "ar"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Sara Alejandra Lozano Avellaneda",
-        "countries": [
-          "co"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bogota, Colombia, Qualifying"
-    },
-    {
       "id": 15897214,
       "fixedDate": "2026-03-29",
-      "fixedTime": "05:30",
-      "timestamp": 1774751400000,
+      "fixedTime": "06:00",
+      "timestamp": 1774753200000,
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Laura Valentina Villamil Arias",
@@ -1530,9 +1530,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(0-6, 1-6)",
       "tournament": "Bogota, Colombia, Qualifying"
     },
     {
@@ -2474,6 +2474,78 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Miami, USA, Doubles"
+    },
+    {
+      "id": 15903110,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "20:00",
+      "timestamp": 1774803600000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Marina Bassols Ribera",
+        "countries": [
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anastasia Tikhonova",
+        "countries": [
+          "ru"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Qualifying"
+    },
+    {
+      "id": 15903239,
+      "fixedDate": "2026-03-29",
+      "fixedTime": "20:00",
+      "timestamp": 1774803600000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Miriana Tona",
+        "countries": [
+          "it"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lia Karatancheva",
+        "countries": [
+          "bg"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Qualifying"
     },
     {
       "id": 15902543,
@@ -4626,6 +4698,326 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Charleston, USA, Doubles"
+    },
+    {
+      "id": 15903257,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00",
+      "timestamp": 1774882800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Arango E / Udvardy P",
+        "countries": [
+          "co",
+          "hu"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Appleton E / Gamarra Martins I",
+        "countries": [
+          "gb",
+          "br"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Doubles"
+    },
+    {
+      "id": 15903255,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00",
+      "timestamp": 1774882800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Burillo Escorihuela I / Herrero Linana A",
+        "countries": [
+          "es",
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Blinkova A / Carle M L",
+        "countries": [
+          "ru",
+          "ar"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Doubles"
+    },
+    {
+      "id": 15903254,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00",
+      "timestamp": 1774882800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Cavalle-Reimers Y / Pigossi L",
+        "countries": [
+          "es",
+          "br"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mediorreal Arias V / Riera J",
+        "countries": [
+          "co",
+          "ar"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Doubles"
+    },
+    {
+      "id": 15903258,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00",
+      "timestamp": 1774882800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Dolehide C / Khromacheva I",
+        "countries": [
+          "us",
+          "ru"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Cascino E / Fossa Huergo N",
+        "countries": [
+          "fr",
+          "ar"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Doubles"
+    },
+    {
+      "id": 15903251,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00",
+      "timestamp": 1774882800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Jakupovic D / Radisic N",
+        "countries": [
+          "si",
+          "si"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Liang E / Yang Z",
+        "countries": [
+          "tw",
+          "cn"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Doubles"
+    },
+    {
+      "id": 15903256,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00",
+      "timestamp": 1774882800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Kempen M / Piter K",
+        "countries": [
+          "be",
+          "pl"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Kobori M / Plipuech P",
+        "countries": [
+          "jp",
+          "th"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/th.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Doubles"
+    },
+    {
+      "id": 15903253,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00",
+      "timestamp": 1774882800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Semenistaja D / Vandewinkel H",
+        "countries": [
+          "lv",
+          "be"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lv.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Haverlag I / Lumsden M",
+        "countries": [
+          "nl",
+          "gb"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Doubles"
+    },
+    {
+      "id": 15903252,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00",
+      "timestamp": 1774882800000,
+      "broadcaster": "beIN Sports",
+      "isDoubles": true,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Strakhova V / Tikhonova A",
+        "countries": [
+          "ua",
+          "ru"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lozano Avellaneda S A / Villamil Arias L V",
+        "countries": [
+          "co",
+          "co"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bogota, Colombia, Doubles"
     },
     {
       "id": 15897168,
