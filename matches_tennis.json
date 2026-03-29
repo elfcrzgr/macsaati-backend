@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T16:48:38.203Z",
+  "lastUpdated": "2026-03-29T17:10:42.268Z",
   "totalMatches": 167,
   "matches": [
     {
@@ -1903,9 +1903,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Ayana Akli",
@@ -1926,9 +1926,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": "(6-3, 1-6, 1-6)",
       "tournament": "Charleston, USA, Qualifying"
     },
     {
@@ -2084,8 +2084,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Jack Pinnington Jones",
@@ -2156,8 +2156,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Elvina Kalieva",
