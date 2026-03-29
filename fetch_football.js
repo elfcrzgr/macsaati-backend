@@ -6,108 +6,112 @@ puppeteer.use(StealthPlugin());
 
 const OUTPUT_FILE = "matches_football.json";
 
+// --- ÜLKE İSİMLERİ TÜRKÇE ÇEVİRİ SÖZLÜĞÜ ---
+const countryTranslations = {
+    "Turkey": "Türkiye", "Germany": "Almanya", "France": "Fransa", "Italy": "İtalya",
+    "Spain": "İspanya", "England": "İngiltere", "Netherlands": "Hollanda", "Belgium": "Belçika",
+    "Portugal": "Portekiz", "Brazil": "Brezilya", "Argentina": "Arjantin", "Croatia": "Hırvatistan",
+    "Switzerland": "İsviçre", "Denmark": "Danimarka", "Norway": "Norveç", "Sweden": "İsveç",
+    "Poland": "Polonya", "Austria": "Avusturya", "Scotland": "İskoçya", "Wales": "Galler",
+    "Ireland": "İrlanda", "Greece": "Yunanistan", "Czechia": "Çekya", "Slovakia": "Slovakya",
+    "Hungary": "Macaristan", "Romania": "Romanya", "Bulgaria": "Bulgaristan", "Serbia": "Sırbistan",
+    "Slovenia": "Slovenya", "Georgia": "Gürcistan", "Ukraine": "Ukrayna", "Russia": "Rusya",
+    "Japan": "Japonya", "South Korea": "Güney Kore", "USA": "ABD", "Canada": "Kanada",
+    "Mexico": "Meksika", "Morocco": "Fas", "Senegal": "Senegal"
+};
+
+// --- YAYINCI VE LİG SÖZLÜĞÜ (2026 GÜNCEL) ---
+const leagueConfigs = {
+    // Türkiye
+    52: "beIN Sports / TOD", 1: "TRT Spor / beIN Sports", 935: "A Spor / ATV", 1480: "ATV / beIN Sports",
+    // Gençlik Ligleri
+    937: "A Spor / TRT Spor (U21)", 938: "A Spor / TRT Spor (U19)",
+    11357: "A Spor (U19 Elit A)", 11358: "A Spor (U19 Elit B)", 10642: "A Spor (U21 Hazırlık)",
+    // Avrupa Kupaları
+    1465: "TRT 1 / Tabii (Şampiyonlar Ligi)", 1470: "TRT Spor / Tabii (Avrupa Ligi)", 1030: "TRT Spor / Tabii (Konferans Ligi)",
+    // Avrupa Ligleri
+    17: "beIN Sports / TOD (EPL)", 18: "beIN Sports (Championship)", 701: "TRT / Tabii (FA Cup)",
+    8: "S Sport / TV8.5 (LaLiga)", 23: "S Sport / Tivibu (Serie A)", 35: "S Sport / Tivibu (Bundesliga)",
+    34: "beIN Sports (Ligue 1)", 37: "S Sport Plus (Eredivisie)", 33: "S Sport Plus (Portekiz)",
+    1001: "S Sport / TV8.5 (Suudi)", 13: "D-Smart (Brezilya)", 155: "D-Smart (Arjantin)",
+    // Milli Maçlar
+    10: "TRT 1 (Dünya Kupası)", 1475: "TRT 1 (Euro Elemeleri)", 466: "TRT Spor (Uluslar Ligi)"
+};
+
+const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
+
+// Akıllı Çeviri Fonksiyonu (U21, U19 gibi ekleri korur)
+function translateName(name) {
+    if (!name) return "";
+    let translated = name;
+    for (const [eng, tr] of Object.entries(countryTranslations)) {
+        if (name.includes(eng)) {
+            translated = name.replace(eng, tr);
+            break; 
+        }
+    }
+    return translated;
+}
+
 async function start() {
-    console.log("⚽ Futbol motoru başlatılıyor (Tüm Maçlar Modu + Skor Koruması)...");
-    
-    const browser = await puppeteer.launch({ 
-        headless: "new", 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-    });
-    
+    console.log("🚀 Futbol motoru (Translate + U19/21 + 2026 Yayıncıları) başlatıldı...");
+    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
-    // Resim ve gereksiz dosyaları engelle (Hız için önemli)
     await page.setRequestInterception(true);
     page.on('request', (req) => {
         if (['image', 'stylesheet', 'font'].includes(req.resourceType())) req.abort();
         else req.continue();
     });
 
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
-
     const getTRDate = (offset = 0) => {
-        const d = new Date();
-        d.setHours(d.getHours() + 3); 
+        const d = new Date(); d.setHours(d.getHours() + 3);
         d.setDate(d.getDate() + offset);
         return d.toISOString().split('T')[0];
     };
 
     let rawEvents = [];
-    const dates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
-
-    // 1. Verileri Çek
-    for (const date of dates) {
+    for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
         try {
-            console.log(`⏳ ${date} listesi çekiliyor...`);
+            console.log(`⏳ ${date} takvimi taranıyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            
-            const data = await page.evaluate(() => {
-                try { return JSON.parse(document.body.innerText); } catch(e) { return null; }
-            });
-
-            if (data && data.events) {
-                rawEvents = rawEvents.concat(data.events);
+            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
+            if (data?.events) {
+                const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id || e.tournament?.category?.id));
+                rawEvents.push(...filtered);
             }
-        } catch (e) {
-            console.error(`❌ ${date} hatası:`, e.message);
-        }
+        } catch (e) {}
     }
 
-    // 2. Tekilleştirme (Aynı maçın farklı tarihlerde tekrar gelmesini engeller)
     const uniqueEventsMap = new Map();
-    rawEvents.forEach(e => {
-        uniqueEventsMap.set(e.id, e);
-    });
+    rawEvents.forEach(e => uniqueEventsMap.set(e.id, e));
 
-    // 3. Veriyi İşle
     const finalMatches = Array.from(uniqueEventsMap.values()).map(e => {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        
-        // MAÇ BİTTİ Mİ? (Skor sadece bittiğinde görünecek)
         const isFinished = e.status?.type === 'finished';
-        
-        // Turnuva ID'si (Logo için)
-        const tId = e.tournament?.uniqueTournament?.id || e.tournament?.category?.id || "default";
+        const tId = e.tournament?.uniqueTournament?.id || e.tournament?.category?.id || 0;
 
         return {
             id: e.id,
             fixedDate: dayStr,
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: dateTR.getTime(),
-            tournament: e.tournament.name,
+            tournament: translateName(e.tournament.name),
             tournamentLogo: `https://api.sofascore.com/api/v1/unique-tournament/${tId}/image`,
-            
-            matchStatus: {
-                type: e.status?.type || "notstarted",
-                description: e.status?.description || "-"
-            },
-
-            homeTeam: { 
-                name: e.homeTeam.name, 
-                logo: `https://api.sofascore.com/api/v1/team/${e.homeTeam.id}/image` 
-            },
-            awayTeam: { 
-                name: e.awayTeam.name, 
-                logo: `https://api.sofascore.com/api/v1/team/${e.awayTeam.id}/image` 
-            },
-
-            // Skor Kontrolü: Sadece resmen bitmişse skor yaz, aksi halde "-"
+            broadcaster: leagueConfigs[tId] || "Yerel Yayıncı / Web",
+            matchStatus: { type: e.status?.type || "notstarted", description: e.status?.description || "-" },
+            // TAKIM İSİMLERİ TÜRKÇELEŞTİRİLİYOR
+            homeTeam: { name: translateName(e.homeTeam.name), logo: `https://api.sofascore.com/api/v1/team/${e.homeTeam.id}/image` },
+            awayTeam: { name: translateName(e.awayTeam.name), logo: `https://api.sofascore.com/api/v1/team/${e.awayTeam.id}/image` },
             homeScore: isFinished ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: isFinished ? String(e.awayScore?.display ?? "0") : "-"
         };
     });
 
-    // Zaman sıralaması
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: finalMatches.length, matches: finalMatches }, null, 2));
 
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
-        success: true, 
-        lastUpdated: new Date().toISOString(), 
-        totalMatches: finalMatches.length,
-        matches: finalMatches 
-    }, null, 2));
-
-    console.log(`\n✅ İşlem Tamam: ${finalMatches.length} maç kaydedildi.`);
+    console.log(`\n✅ İşlem Tamam: ${finalMatches.length} elit maç Türkçe isimlerle kaydedildi.`);
     await browser.close();
 }
 
