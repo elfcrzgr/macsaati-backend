@@ -2,30 +2,36 @@ name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
   schedule:
-    - cron: '0 * * * *' # Her saat başı çalışır
-  workflow_dispatch: # Manuel tetikleme butonu
+    - cron: '*/30 * * * *' # Artik 30 dakikada bir calisabilirsin, kota dostudur.
+  workflow_dispatch:
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
     env:
-      # Node.js 24 uyarısını susturmak için gerekli değişken
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Repoyu Klonla
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 1 # Sadece son hali alir, klonlamayi hizlandirir.
 
       - name: Node.js Kurulumu
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # En güncel sürüm
+          node-version: '24'
+          cache: 'npm' # node_modules'u cache'ler, her seferinde dakikalarca yukleme yapmaz.
+
+      - name: Puppeteer Sistem Kütüphanelerini Kur
+        # Puppeteer'in Linux sunucuda calismasi icin bu sarttir.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev wget gnupg
 
       - name: Kütüphaneleri Yükle
         run: |
-          npm install
+          npm ci # 'npm install'dan daha hizli ve guvenlidir.
 
       # ==========================================
       # ⚽ FUTBOL ZİNCİRİ
@@ -34,7 +40,7 @@ jobs:
         run: node fetch_football.js
 
       - name: Eksik Futbol Logolarını İndir
-        run: node logo_football.js || echo "Futbol logo indirme atlandı"
+        run: node logo_football.js || echo "Futbol logo atlandı"
 
       # ==========================================
       # 🏀 BASKETBOL ZİNCİRİ
@@ -43,7 +49,7 @@ jobs:
         run: node fetch_basketball.js || echo "Basketbol veri çekme atlandı"
 
       - name: Eksik Basketbol Logolarını İndir
-        run: node logo_basketball.js || echo "Basketbol logo indirme atlandı"
+        run: node logo_basketball.js || echo "Basketbol logo atlandı"
 
       # ==========================================
       # 🎾 TENİS ZİNCİRİ
@@ -52,28 +58,23 @@ jobs:
         run: node fetch_tennis.js || echo "Tenis veri çekme atlandı"
 
       - name: Eksik Tenis Logolarını İndir
-        run: node logo_tennis.js || echo "Tenis logo indirme atlandı"
+        run: node logo_tennis.js || echo "Tenis logo atlandı"
 
       # ==========================================
-      # 🚀 GITHUB'A PUSH (Akıllı Kontrol)
+      # 🚀 GITHUB'A PUSH
       # ==========================================
       - name: Değişiklikleri Kontrol Et ve Pushla
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Yeni inen tüm logoları ve güncellenen JSON'ları ekle
           git add .
           
-          # Eğer commit edilecek bir şey yoksa (dosyalar değişmediyse) işlemi bitir
           if git diff --staged --quiet; then
-            echo "Güncellenecek yeni bir veri veya logo bulunamadı."
+            echo "Her şey güncel, commit edilecek yeni bir şey yok."
           else
-            git commit -m "Veri & Logolar Otomatik Güncellendi: $(date +'%d-%m-%Y %H:%M')"
-            
-            # Çakışma olursa (manuel logo yüklediysen) botun verisini koru
+            git commit -m "Otomatik Güncelleme: $(date +'%d-%m-%Y %H:%M')"
             git pull origin main --rebase -X theirs
-            
             git push origin main
-            echo "✅ Değişiklikler başarıyla GitHub'a gönderildi."
+            echo "✅ Veriler ve logolar başarıyla güncellendi."
           fi
