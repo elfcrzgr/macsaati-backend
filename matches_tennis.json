@@ -1,240 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-29T20:55:54.028Z",
-  "totalMatches": 167,
+  "lastUpdated": "2026-03-29T21:00:54.575Z",
+  "totalMatches": 161,
   "matches": [
-    {
-      "id": 15739848,
-      "fixedDate": "2026-03-27",
-      "fixedTime": "20:00",
-      "timestamp": 1774630800000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "finished",
-        "description": "Ended",
-        "code": 100
-      },
-      "homeTeam": {
-        "name": "Granollers M / Zeballos H",
-        "countries": [
-          "es",
-          "ar"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Heliovaara H / Patten H",
-        "countries": [
-          "fi",
-          "gb"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fi.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "0",
-      "awayScore": "2",
-      "setScores": "(2-6, 3-6)",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
-      "id": 15716375,
-      "fixedDate": "2026-03-27",
-      "fixedTime": "20:00",
-      "timestamp": 1774630800000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "finished",
-        "description": "Ended",
-        "code": 100
-      },
-      "homeTeam": {
-        "name": "Dabrowski G / Stefani L",
-        "countries": [
-          "ca",
-          "br"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Siniakova K / Townsend T",
-        "countries": [
-          "cz",
-          "us"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2659.png",
-      "homeScore": "1",
-      "awayScore": "2",
-      "setScores": "(6-4, 4-6, 3-10)",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
-      "id": 15739834,
-      "fixedDate": "2026-03-27",
-      "fixedTime": "21:20",
-      "timestamp": 1774635600000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "finished",
-        "description": "Ended",
-        "code": 100
-      },
-      "homeTeam": {
-        "name": "Bolelli S / Vavassori A",
-        "countries": [
-          "it",
-          "it"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Arends S / Smith J-P",
-        "countries": [
-          "nl",
-          "au"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2462.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "setScores": "(6-3, 6-4)",
-      "tournament": "Miami, USA, Doubles"
-    },
-    {
-      "id": 15708832,
-      "fixedDate": "2026-03-27",
-      "fixedTime": "22:00",
-      "timestamp": 1774638000000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "finished",
-        "description": "Ended",
-        "code": 100
-      },
-      "homeTeam": {
-        "name": "Jiri Lehečka",
-        "countries": [
-          "cz"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Arthur Fils",
-        "countries": [
-          "fr"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "setScores": "(6-2, 6-2)",
-      "tournament": "Miami, USA"
-    },
-    {
-      "id": 15708838,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "02:05",
-      "timestamp": 1774652700000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "finished",
-        "description": "Ended",
-        "code": 100
-      },
-      "homeTeam": {
-        "name": "Alexander Zverev",
-        "countries": [
-          "de"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jannik Sinner",
-        "countries": [
-          "it"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2430.png",
-      "homeScore": "0",
-      "awayScore": "2",
-      "setScores": "(3-6, 6-7)",
-      "tournament": "Miami, USA"
-    },
-    {
-      "id": 15716373,
-      "fixedDate": "2026-03-28",
-      "fixedTime": "04:10",
-      "timestamp": 1774660200000,
-      "broadcaster": "beIN Sports",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "finished",
-        "description": "Retired",
-        "code": 92
-      },
-      "homeTeam": {
-        "name": "Errani S / Paolini J",
-        "countries": [
-          "it",
-          "it"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mertens E / Zhang S",
-        "countries": [
-          "be",
-          "cn"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2659.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "(2-1)",
-      "tournament": "Miami, USA, Doubles"
-    },
     {
       "id": 15896847,
       "fixedDate": "2026-03-28",
@@ -2191,9 +1959,9 @@
       "broadcaster": "beIN Sports",
       "isDoubles": true,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Errani S / Paolini J",
@@ -2218,9 +1986,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2659.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(6-7, 1-6)",
       "tournament": "Miami, USA, Doubles"
     },
     {
@@ -2303,9 +2071,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Liam Draxl",
@@ -2326,9 +2094,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": "(3-6, 6-1, 7-6)",
       "tournament": "Houston, USA, Qualifying"
     },
     {
