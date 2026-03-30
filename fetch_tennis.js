@@ -80,7 +80,6 @@ async function start() {
         let awayRank = e.awayTeam.ranking;
         const isDouble = e.homeTeam.name.includes("/");
 
-        // SIRALAMA VE BAYRAK İÇİN DERİN TARAMA
         if (isDouble || (!isDouble && (!homeRank || !awayRank))) {
             process.stdout.write(`🎾 Detaylar İşleniyor: ${e.id} \r`);
             try {
@@ -89,7 +88,6 @@ async function start() {
                     
                     let res = { homeRank: null, awayRank: null, hCodes: [], aCodes: [] };
                     
-                    // Maç detayından ranking dene
                     const ev = await fetchJSON(`https://api.sofascore.com/api/v1/event/${id}`);
                     if (ev?.event) {
                         res.homeRank = ev.event.homeTeam.ranking;
@@ -100,7 +98,6 @@ async function start() {
                         }
                     }
 
-                    // Hala yoksa oyuncu profilinden ranking dene (Sadece Tekler)
                     if (!isDouble) {
                         if (!res.homeRank) { const h = await fetchJSON(`https://api.sofascore.com/api/v1/team/${homeId}`); res.homeRank = h?.team?.ranking; }
                         if (!res.awayRank) { const a = await fetchJSON(`https://api.sofascore.com/api/v1/team/${awayId}`); res.awayRank = a?.team?.ranking; }
@@ -129,10 +126,10 @@ async function start() {
         
         const mStatus = e.status?.type || "notstarted";
         const isFinished = mStatus === 'finished';
-        const isLive = mStatus === 'inprogress';
 
+        // GÜNCELLEME: Sadece maç BİTTİYSE skorları al! Canlı maçlarda skor boş kalacak.
         let setScoresStr = "";
-        if ((isFinished || isLive) && e.homeScore && e.awayScore) {
+        if (isFinished && e.homeScore && e.awayScore) {
             let sets = [];
             for (let i = 1; i <= 5; i++) {
                 const h = e.homeScore[`period${i}`], a = e.awayScore[`period${i}`];
@@ -159,8 +156,10 @@ async function start() {
             homeTeam: { name: finalHomeName, countries: homeCodes, logos: homeCodes.map(c => TENNIS_LOGO_BASE + c + ".png") },
             awayTeam: { name: finalAwayName, countries: awayCodes, logos: awayCodes.map(c => TENNIS_LOGO_BASE + c + ".png") },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + tId + ".png",
-            homeScore: (isFinished || isLive) ? String(e.homeScore?.display || "-") : "-",
-            awayScore: (isFinished || isLive) ? String(e.awayScore?.display || "-") : "-",
+            
+            // GÜNCELLEME: Sadece maç BİTTİYSE ana skorları al
+            homeScore: isFinished && e.homeScore?.display !== undefined ? String(e.homeScore.display) : "-",
+            awayScore: isFinished && e.awayScore?.display !== undefined ? String(e.awayScore.display) : "-",
             setScores: setScoresStr,
             tournament: e.tournament.name
         });
