@@ -122,6 +122,16 @@ async function start() {
             if (sets.length > 0) setScoresStr = `(${sets.join(', ')})`;
         }
 
+        // --- SIRALAMA (RANKING) MANTIĞI EKLENDİ ---
+        let finalHomeName = e.homeTeam.name;
+        let finalAwayName = e.awayTeam.name;
+
+        // Sadece tekler maçlarında ve ranking verisi varsa ismin sonuna (X) ekle
+        if (!isDouble) {
+            if (e.homeTeam.ranking) finalHomeName += ` (${e.homeTeam.ranking})`;
+            if (e.awayTeam.ranking) finalAwayName += ` (${e.awayTeam.ranking})`;
+        }
+
         finalMatches.push({
             id: e.id,
             fixedDate: dayStr,
@@ -130,8 +140,8 @@ async function start() {
             broadcaster: categoryConfigs[e.tournament?.category?.id] || "beIN / Eurosport",
             isDoubles: isDouble,
             matchStatus: { type: e.status?.type || "notstarted", description: e.status?.description || "-", code: e.status?.code || 0 },
-            homeTeam: { name: e.homeTeam.name, countries: homeCodes, logos: homeCodes.map(c => TENNIS_LOGO_BASE + c + ".png") },
-            awayTeam: { name: e.awayTeam.name, countries: awayCodes, logos: awayCodes.map(c => TENNIS_LOGO_BASE + c + ".png") },
+            homeTeam: { name: finalHomeName, countries: homeCodes, logos: homeCodes.map(c => TENNIS_LOGO_BASE + c + ".png") },
+            awayTeam: { name: finalAwayName, countries: awayCodes, logos: awayCodes.map(c => TENNIS_LOGO_BASE + c + ".png") },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + tId + ".png",
             homeScore: (isFinished && e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (isFinished && e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
