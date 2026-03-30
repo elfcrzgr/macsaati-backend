@@ -69,53 +69,31 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
                      hn.includes("türkiye") || an.includes("türkiye");
 
     const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || 
-                       utn.includes("play-off") || utn.includes("playoff");
+                      utn.includes("play-off") || utn.includes("playoff");
 
-    // 1. Alt Yaş Grupları
-    if (utId === 748 || utId === 750) {
-        return isTurkey ? "TRT Spor / Tabii" : "Exxen";
-    }
-
-    // 2. Dünya Kupası Elemeleri
+    if (utId === 748 || utId === 750) return isTurkey ? "TRT Spor / Tabii" : "Exxen";
+    
     if (utId === 704 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
-        if (isTurkey) {
-            return isPlayoff ? "TV8" : "TRT 1 / Tabii";
-        }
+        if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
         return isPlayoff ? "Exxen" : "S Sport Plus";
     }
 
-    // 3. Statik Lig Konfigürasyonları
     const staticConfigs = {
-        52: "beIN Sports",           // Süper Lig
-        238: "S Sport",              // Portekiz (Güncellendi)
-        242: "Apple TV (MLS Season Pass)", // MLS (Güncellendi)
-        938: "S Sport / S Sport Plus",     // Suudi Ligi (Güncellendi)
-        17: "beIN Sports",           // Premier League
-        8: "S Sport",                // La Liga
-        23: "S Sport",               // Serie A
-        7: "TRT / Tabii",            // Şampiyonlar Ligi
-        11: "TRT 1 / Tabii",         // Milli Takım
-        351: "TRT Spor / Tabii",
-        54: "S Sport Plus / TV+",    // Bundesliga
-        10: "Exxen / S Sport+",
-        13: "Spor Smart",            // Brezilya
-        393: "CBC Sport",            // Azerbaycan
-        155: "Spor Smart / Exxen", 
-        10618: "Exxen / FIFA+",
-        4664: "S Sport+ / TV+",
-        98: "beIN Sports / TRT Spor", 
-        97: "TFF YouTube",
-        11417: "TFF YouTube", 11416: "TFF YouTube",
-        11415: "TFF YouTube", 15938: "TFF YouTube",
-        696: "DAZN / YouTube",
-        13363: "USL YouTube", 
+        52: "beIN Sports", 238: "sspor yaz geçsin", 242: "Apple TV (MLS Season Pass)", 
+        938: "S Sport / S Sport Plus", 17: "beIN Sports", 8: "S Sport", 
+        23: "S Sport", 7: "TRT / Tabii", 11: "TRT 1 / Tabii", 351: "TRT Spor / Tabii",
+        54: "S Sport Plus / TV+", 10: "Exxen / S Sport+", 13: "Spor Smart", 
+        393: "CBC Sport", 155: "Spor Smart / Exxen", 10618: "Exxen / FIFA+",
+        4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube",
+        11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 
+        15938: "TFF YouTube", 696: "DAZN / YouTube", 13363: "USL YouTube", 
         10783: "S Sport Plus / TRT"
     };
 
     return staticConfigs[utId] || "Resmi Yayıncı / Canlı Skor";
 };
 
-// --- HEDEF LİG ID'LERİ ---
+// --- HEDEF (ELİT) LİG ID'LERİ ---
 const targetLeagueIds = [
     52, 17, 8, 23, 7, 11, 351, 54, 10, 13, 393, 238, 242, 938,
     748, 750, 704, 155, 4664, 98, 97, 11417, 11416, 11415, 15938, 696, 13363, 10783
@@ -139,17 +117,32 @@ async function start() {
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
-    // 1. Günlük Planlanmış Maçlar
+    // 1. Günlük Planlanmış Maçlar (GENİŞLETİLMİŞ FİLTRE)
     for (const date of validDates) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            
             if (data && data.events) {
                 const filtered = data.events.filter(e => {
-                    const utId = e.tournament?.uniqueTournament?.id;
-                    return targetLeagueIds.includes(utId) || (e.tournament?.uniqueTournament?.priority > 100);
+                    const ut = e.tournament?.uniqueTournament;
+                    if (!ut) return false;
+                    
+                    const utId = ut.id;
+                    const isElite = targetLeagueIds.includes(utId);
+                    const hasStats = ut.hasEventPlayerStatistics;
+                    const isPopularEnough = ut.priority > 50; 
+
+                    return isElite || hasStats || isPopularEnough;
                 });
-                allEvents = allEvents.concat(filtered);
+                
+                const correctlyDated = filtered.filter(e => {
+                    const dateTR = new Date(e.startTimestamp * 1000);
+                    const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                    return validDates.includes(dayStrTR);
+                });
+                
+                allEvents = allEvents.concat(correctlyDated);
             }
         } catch (e) { }
     }
@@ -190,18 +183,18 @@ async function start() {
 
         const dateTR = new Date(e.startTimestamp * 1000);
         const matchKey = `${hName}_${aName}_${utId}`;
+        const isFinished = e.status?.type === 'finished' || e.status?.type === 'inprogress';
         
-        // MAÇ DURUMU KONTROLÜ
-        const matchStatus = e.status?.type || 'notstarted'; 
-        const hasScore = matchStatus === 'finished' || matchStatus === 'inprogress';
+        // MAÇ ELİT LİG LİSTEMİZDE Mİ?
+        const isEliteMatch = targetLeagueIds.includes(utId);
 
         const matchObj = {
             id: e.id,
+            isElite: isEliteMatch, 
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: getBroadcaster(utId, hName, aName, tName, utName), 
-            matchStatus: e.status, // Android tarafı için raw status objesini yolluyoruz
             homeTeam: { 
                 name: translateTeam(hName), 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
@@ -211,8 +204,8 @@ async function start() {
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
             },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
-            homeScore: hasScore && e.homeScore ? String(e.homeScore.display) : "-",
-            awayScore: hasScore && e.awayScore ? String(e.awayScore.display) : "-",
+            homeScore: isFinished ? String(e.homeScore.display) : "-",
+            awayScore: isFinished ? String(e.awayScore.display) : "-",
             tournament: utName
         };
         finalMatchesMap.set(matchKey, matchObj);
