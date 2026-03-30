@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-30T05:40:29.467Z",
+  "lastUpdated": "2026-03-30T08:15:51.498Z",
   "totalMatches": 57,
   "matches": [
     {
@@ -9,6 +9,11 @@
       "fixedTime": "15:00",
       "timestamp": 1774785600000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 100,
+        "description": "Ended",
+        "type": "finished"
+      },
       "homeTeam": {
         "name": "Eibar",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2839.png"
@@ -28,6 +33,11 @@
       "fixedTime": "17:15",
       "timestamp": 1774793700000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 100,
+        "description": "Ended",
+        "type": "finished"
+      },
       "homeTeam": {
         "name": "Cultural Leonesa",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2868.png"
@@ -47,6 +57,11 @@
       "fixedTime": "19:30",
       "timestamp": 1774801800000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 100,
+        "description": "Ended",
+        "type": "finished"
+      },
       "homeTeam": {
         "name": "Real Zaragoza",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2815.png"
@@ -66,6 +81,11 @@
       "fixedTime": "22:00",
       "timestamp": 1774810800000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 100,
+        "description": "Ended",
+        "type": "finished"
+      },
       "homeTeam": {
         "name": "Almería",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2858.png"
@@ -85,6 +105,11 @@
       "fixedTime": "23:00",
       "timestamp": 1774814400000,
       "broadcaster": "USL YouTube",
+      "matchStatus": {
+        "code": 100,
+        "description": "Ended",
+        "type": "finished"
+      },
       "homeTeam": {
         "name": "San Antonio FC",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/217134.png"
@@ -104,6 +129,11 @@
       "fixedTime": "15:00",
       "timestamp": 1774872000000,
       "broadcaster": "TRT Spor / Tabii",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Kosova U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/267571.png"
@@ -123,6 +153,11 @@
       "fixedTime": "15:00",
       "timestamp": 1774872000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Cebelitarık U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/86046.png"
@@ -142,6 +177,11 @@
       "fixedTime": "13:00",
       "timestamp": 1774951200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Fransa U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22509.png"
@@ -161,6 +201,11 @@
       "fixedTime": "13:00",
       "timestamp": 1774951200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "İsviçre U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22562.png"
@@ -180,6 +225,11 @@
       "fixedTime": "13:00",
       "timestamp": 1774951200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 70,
+        "description": "Canceled",
+        "type": "canceled"
+      },
       "homeTeam": {
         "name": "İrlanda U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22551.png"
@@ -199,6 +249,11 @@
       "fixedTime": "13:00",
       "timestamp": 1774951200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Estonya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22506.png"
@@ -218,6 +273,11 @@
       "fixedTime": "13:00",
       "timestamp": 1774951200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Finlandiya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22508.png"
@@ -237,6 +297,11 @@
       "fixedTime": "13:00",
       "timestamp": 1774951200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Romanya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22552.png"
@@ -256,6 +321,11 @@
       "fixedTime": "13:00",
       "timestamp": 1774951200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Liechtenstein U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22532.png"
@@ -275,6 +345,11 @@
       "fixedTime": "15:00",
       "timestamp": 1774958400000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Danimarka U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22502.png"
@@ -294,6 +369,11 @@
       "fixedTime": "15:00",
       "timestamp": 1774958400000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Letonya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22530.png"
@@ -313,6 +393,11 @@
       "fixedTime": "15:45",
       "timestamp": 1774961100000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Bulgaristan U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22493.png"
@@ -332,6 +417,11 @@
       "fixedTime": "15:45",
       "timestamp": 1774961100000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Hırvatistan U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22499.png"
@@ -346,30 +436,16 @@
       "tournament": "U19 European Championship Qualif."
     },
     {
-      "id": 15598141,
-      "fixedDate": "2026-03-31",
-      "fixedTime": "16:00",
-      "timestamp": 1774962000000,
-      "broadcaster": "Exxen",
-      "homeTeam": {
-        "name": "Avusturya U19",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22486.png"
-      },
-      "awayTeam": {
-        "name": "Almanya U19",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22512.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "U19 European Championship Qualif."
-    },
-    {
       "id": 15224874,
       "fixedDate": "2026-03-31",
       "fixedTime": "16:00",
       "timestamp": 1774962000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Macaristan U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22515.png"
@@ -389,6 +465,11 @@
       "fixedTime": "16:00",
       "timestamp": 1774962000000,
       "broadcaster": "TRT Spor / Tabii",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Türkiye U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22566.png"
@@ -408,6 +489,11 @@
       "fixedTime": "16:00",
       "timestamp": 1774962000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Bosnia & Herzegovina U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22492.png"
@@ -427,6 +513,11 @@
       "fixedTime": "16:00",
       "timestamp": 1774962000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Slovenya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22559.png"
@@ -446,6 +537,11 @@
       "fixedTime": "16:00",
       "timestamp": 1774962000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Güney Kıbrıs U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22500.png"
@@ -465,6 +561,11 @@
       "fixedTime": "16:00",
       "timestamp": 1774962000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Arnavutluk U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22482.png"
@@ -484,6 +585,11 @@
       "fixedTime": "16:00",
       "timestamp": 1774962000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Malta U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22538.png"
@@ -503,6 +609,11 @@
       "fixedTime": "17:00",
       "timestamp": 1774965600000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Northern İrlanda U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22544.png"
@@ -522,6 +633,11 @@
       "fixedTime": "17:00",
       "timestamp": 1774965600000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Romanya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22552.png"
@@ -541,6 +657,11 @@
       "fixedTime": "18:00",
       "timestamp": 1774969200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Portekiz U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22549.png"
@@ -560,6 +681,11 @@
       "fixedTime": "18:00",
       "timestamp": 1774969200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Sırbistan U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22556.png"
@@ -579,6 +705,11 @@
       "fixedTime": "18:00",
       "timestamp": 1774969200000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Litvanya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22533.png"
@@ -598,6 +729,11 @@
       "fixedTime": "19:00",
       "timestamp": 1774972800000,
       "broadcaster": "S Sport Plus / TRT",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Letonya",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4706.png"
@@ -617,6 +753,11 @@
       "fixedTime": "19:00",
       "timestamp": 1774972800000,
       "broadcaster": "S Sport Plus / TRT",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Lüksemburg",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4478.png"
@@ -631,11 +772,40 @@
       "tournament": "UEFA Nations League"
     },
     {
+      "id": 15224864,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
+      "homeTeam": {
+        "name": "Avusturya U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22486.png"
+      },
+      "awayTeam": {
+        "name": "Almanya U19",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22512.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
       "id": 15224865,
       "fixedDate": "2026-03-31",
       "fixedTime": "19:00",
       "timestamp": 1774972800000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "İsveç U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22561.png"
@@ -655,6 +825,11 @@
       "fixedTime": "19:00",
       "timestamp": 1774972800000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Hollanda U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22543.png"
@@ -674,6 +849,11 @@
       "fixedTime": "19:00",
       "timestamp": 1774972800000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Slovenya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22559.png"
@@ -693,6 +873,11 @@
       "fixedTime": "19:00",
       "timestamp": 1774972800000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Faroe Islands U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22507.png"
@@ -712,6 +897,11 @@
       "fixedTime": "19:00",
       "timestamp": 1774972800000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Moldova U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22539.png"
@@ -731,6 +921,11 @@
       "fixedTime": "19:30",
       "timestamp": 1774974600000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "İsviçre U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22562.png"
@@ -750,6 +945,11 @@
       "fixedTime": "19:30",
       "timestamp": 1774974600000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Galler U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22572.png"
@@ -769,6 +969,11 @@
       "fixedTime": "20:00",
       "timestamp": 1774976400000,
       "broadcaster": "Spor Smart / Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Aldosivi",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36836.png"
@@ -788,6 +993,11 @@
       "fixedTime": "20:00",
       "timestamp": 1774976400000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Mirandés",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35092.png"
@@ -807,6 +1017,11 @@
       "fixedTime": "21:00",
       "timestamp": 1774980000000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Deportivo La Coruña",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2832.png"
@@ -826,6 +1041,11 @@
       "fixedTime": "21:00",
       "timestamp": 1774980000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "İrlanda U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22551.png"
@@ -845,6 +1065,11 @@
       "fixedTime": "21:00",
       "timestamp": 1774980000000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "İskoçya U19",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22555.png"
@@ -864,6 +1089,11 @@
       "fixedTime": "21:45",
       "timestamp": 1774982700000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Bosnia & Herzegovina",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4479.png"
@@ -883,6 +1113,11 @@
       "fixedTime": "21:45",
       "timestamp": 1774982700000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Çekya",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4714.png"
@@ -902,6 +1137,11 @@
       "fixedTime": "21:45",
       "timestamp": 1774982700000,
       "broadcaster": "TV8",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Kosova",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/154426.png"
@@ -921,6 +1161,11 @@
       "fixedTime": "21:45",
       "timestamp": 1774982700000,
       "broadcaster": "Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "İsveç",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4688.png"
@@ -940,6 +1185,11 @@
       "fixedTime": "22:30",
       "timestamp": 1774985400000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Real Valladolid",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2831.png"
@@ -959,6 +1209,11 @@
       "fixedTime": "19:45",
       "timestamp": 1775061900000,
       "broadcaster": "DAZN / YouTube",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "FC Bayern München",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5543.png"
@@ -978,6 +1233,11 @@
       "fixedTime": "20:00",
       "timestamp": 1775062800000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "FC Andorra",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/324871.png"
@@ -997,6 +1257,11 @@
       "fixedTime": "21:00",
       "timestamp": 1775066400000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Burgos Club de Fútbol",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2854.png"
@@ -1016,6 +1281,11 @@
       "fixedTime": "21:00",
       "timestamp": 1775066400000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Huesca",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24265.png"
@@ -1035,6 +1305,11 @@
       "fixedTime": "22:00",
       "timestamp": 1775070000000,
       "broadcaster": "DAZN / YouTube",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Chelsea FC",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/66768.png"
@@ -1054,6 +1329,11 @@
       "fixedTime": "22:30",
       "timestamp": 1775071800000,
       "broadcaster": "S Sport Plus / TV+",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "Real Racing Club",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2835.png"
@@ -1073,6 +1353,11 @@
       "fixedTime": "02:00",
       "timestamp": 1775084400000,
       "broadcaster": "Spor Smart / Exxen",
+      "matchStatus": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+      },
       "homeTeam": {
         "name": "CA Lanús",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3218.png"

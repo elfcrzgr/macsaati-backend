@@ -69,7 +69,7 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
                      hn.includes("türkiye") || an.includes("türkiye");
 
     const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || 
-                      utn.includes("play-off") || utn.includes("playoff");
+                       utn.includes("play-off") || utn.includes("playoff");
 
     // 1. Alt Yaş Grupları
     if (utId === 748 || utId === 750) {
@@ -190,7 +190,10 @@ async function start() {
 
         const dateTR = new Date(e.startTimestamp * 1000);
         const matchKey = `${hName}_${aName}_${utId}`;
-        const isFinished = e.status?.type === 'finished' || e.status?.type === 'inprogress';
+        
+        // MAÇ DURUMU KONTROLÜ
+        const matchStatus = e.status?.type || 'notstarted'; 
+        const hasScore = matchStatus === 'finished' || matchStatus === 'inprogress';
 
         const matchObj = {
             id: e.id,
@@ -198,6 +201,7 @@ async function start() {
             fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: getBroadcaster(utId, hName, aName, tName, utName), 
+            matchStatus: e.status, // Android tarafı için raw status objesini yolluyoruz
             homeTeam: { 
                 name: translateTeam(hName), 
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
@@ -207,8 +211,8 @@ async function start() {
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
             },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
-            homeScore: isFinished ? String(e.homeScore.display) : "-",
-            awayScore: isFinished ? String(e.awayScore.display) : "-",
+            homeScore: hasScore && e.homeScore ? String(e.homeScore.display) : "-",
+            awayScore: hasScore && e.awayScore ? String(e.awayScore.display) : "-",
             tournament: utName
         };
         finalMatchesMap.set(matchKey, matchObj);
