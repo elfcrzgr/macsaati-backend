@@ -1,10 +1,6 @@
 {
   "success": true,
-<<<<<<< HEAD
-  "lastUpdated": "2026-03-30T10:23:34.205Z",
-=======
-  "lastUpdated": "2026-03-30T09:24:38.968Z",
->>>>>>> 7e8f0f76d6c3b9414db4b965630f20e93446d94c
+  "lastUpdated": "2026-03-30T10:27:15.662Z",
   "totalMatches": 179,
   "matches": [
     {
@@ -2363,15 +2359,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-<<<<<<< HEAD
         "type": "finished",
         "description": "Ended",
         "code": 100
-=======
-        "type": "inprogress",
-        "description": "3rd set",
-        "code": 10
->>>>>>> 7e8f0f76d6c3b9414db4b965630f20e93446d94c
       },
       "homeTeam": {
         "name": "George Loffhagen (222)",
@@ -2432,8 +2422,6 @@
       "awayScore": "0",
       "setScores": "(6-4, 7-5)",
       "tournament": "Bucharest, Romania, Qualifying"
-<<<<<<< HEAD
-=======
     },
     {
       "id": 15910470,
@@ -2474,72 +2462,6 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Bucharest, Romania, Doubles"
->>>>>>> 7e8f0f76d6c3b9414db4b965630f20e93446d94c
-    },
-    {
-      "id": 15910470,
-      "fixedDate": "2026-03-30",
-      "fixedTime": "11:00",
-      "timestamp": 1774857600000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": true,
-      "matchStatus": {
-        "type": "canceled",
-        "description": "Canceled",
-        "code": 70
-      },
-      "homeTeam": {
-<<<<<<< HEAD
-        "name": "Borges N / Cornea V V",
-        "countries": [
-          "pt",
-          "ro"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Haita S H / Palosi S",
-        "countries": [
-          "ro",
-          "ro"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2377.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bucharest, Romania, Doubles"
-=======
-        "name": "Dimitar Kuzmanov (312)",
-        "countries": [
-          "bg"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Stefano Travaglia (161)",
-        "countries": [
-          "it"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bucharest, Romania, Qualifying"
->>>>>>> 7e8f0f76d6c3b9414db4b965630f20e93446d94c
     },
     {
       "id": 15900423,
@@ -2586,13 +2508,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-<<<<<<< HEAD
         "description": "2nd set",
         "code": 9
-=======
-        "description": "1st set",
-        "code": 8
->>>>>>> 7e8f0f76d6c3b9414db4b965630f20e93446d94c
       },
       "homeTeam": {
         "name": "Gabriel Ghetu (715)",
