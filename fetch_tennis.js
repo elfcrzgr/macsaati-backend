@@ -11,6 +11,7 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REP
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 const OUTPUT_FILE = "matches_tennis.json";
 
+// Sadece senin istediğin ana kategoriler (Ranking çekimini yormamak için)
 const categoryConfigs = {
     3: "S Sport / S Sport Plus", 4: "beIN Sports", 5: "Eurosport",
     1396: "Eurosport", 1397: "Eurosport", 1398: "S Sport",
@@ -25,7 +26,7 @@ function getCountriesSingles(team) {
 }
 
 async function start() {
-    console.log("🚀 Tenis motoru (CANLI KORUMA & RANKING) başlatılıyor...");
+    console.log("🚀 Tenis motoru (RANKING & CANLI KORUMA) çalışıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
 
@@ -47,12 +48,13 @@ async function start() {
     let rawEvents = [];
     const dates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
     
-    // 1. Planlanmış maçları çek (Kategori Filtreli + Canlıysa Her Türlü Al)
+    // 1. Verileri Çek (Filtre + Canlı Koruma)
     for (const date of dates) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data?.events) {
+                // GHETU FIX: Kategori listende olmasa bile CANLI ise listeye dahil et
                 const filtered = data.events.filter(e => 
                     targetCategoryIds.includes(e.tournament?.category?.id) || 
                     e.status?.type === 'inprogress'
@@ -62,7 +64,7 @@ async function start() {
         } catch (e) {}
     }
 
-    // 2. Canlı maçları ayrıca çek (Garantilemek için)
+    // 2. Canlıları Garantile (Filtresiz)
     try {
         await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/events/live`, { waitUntil: 'networkidle2' });
         const liveData = await page.evaluate(() => JSON.parse(document.body.innerText));
@@ -72,6 +74,7 @@ async function start() {
     const uniqueEvents = Array.from(new Map(rawEvents.map(e => [e.id, e])).values());
     const finalMatches = [];
 
+    // Ranking detayları için Sofa'ya git
     await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2' });
 
     for (const e of uniqueEvents) {
@@ -102,7 +105,7 @@ async function start() {
         const isInProgress = mStatus === 'inprogress';
         const isFinished = mStatus === 'finished';
 
-        // Görsel Tasarım: Saat altına CANLI
+        // GÖRSEL TASARIM: Saat altına CANLI (\n Android'de alt satıra atar)
         let displayTime = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         if (isInProgress) displayTime = `${displayTime}\nCANLI`;
 
@@ -110,7 +113,7 @@ async function start() {
 
         finalMatches.push({
             id: e.id,
-            status: mStatus, // Sıralama için eklendi
+            status: mStatus, 
             fixedDate: dayStr,
             fixedTime: displayTime,
             timestamp: dateTR.getTime(),
@@ -124,13 +127,14 @@ async function start() {
                 logos: [TENNIS_LOGO_BASE + (e.awayTeam.country?.alpha2?.toLowerCase() || "default") + ".png"] 
             },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + tId + ".png",
+            // SKOR KURALI: Sadece bittiyse skorları yazdır
             homeScore: isFinished && e.homeScore?.display !== undefined ? String(e.homeScore.display) : "-",
             awayScore: isFinished && e.awayScore?.display !== undefined ? String(e.awayScore.display) : "-",
             tournament: e.tournament.name
         });
     }
 
-    // --- KRİTİK SIRALAMA: Önce Canlılar (Zamana göre), Sonra Diğerleri ---
+    // --- SIRALAMA: Önce Canlılar (Zamana göre), Sonra Diğerleri ---
     finalMatches.sort((a, b) => {
         if (a.status === 'inprogress' && b.status !== 'inprogress') return -1;
         if (a.status !== 'inprogress' && b.status === 'inprogress') return 1;
