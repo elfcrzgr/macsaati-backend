@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-30T14:01:50.293Z",
+  "lastUpdated": "2026-03-30T15:20:09.121Z",
   "totalMatches": 91,
   "matches": [
     {
@@ -144,26 +144,6 @@
       "tournament": "Primera A, Apertura"
     },
     {
-      "id": 15362226,
-      "isElite": false,
-      "fixedDate": "2026-03-30",
-      "fixedTime": "İPTAL",
-      "timestamp": 1774834200000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
-      "homeTeam": {
-        "name": "Llaneros FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/89374.png"
-      },
-      "awayTeam": {
-        "name": "Once Caldas",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6118.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11539.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Primera A, Apertura"
-    },
-    {
       "id": 15420880,
       "isElite": false,
       "fixedDate": "2026-03-30",
@@ -187,7 +167,7 @@
       "id": 15598167,
       "isElite": true,
       "fixedDate": "2026-03-30",
-      "fixedTime": "16:00\nCANLI",
+      "fixedTime": "16:00",
       "timestamp": 1774875600000,
       "broadcaster": "Exxen",
       "homeTeam": {
@@ -199,15 +179,15 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22484.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "9",
       "tournament": "U19 European Championship Qualif."
     },
     {
       "id": 15598166,
       "isElite": true,
       "fixedDate": "2026-03-30",
-      "fixedTime": "16:00\nCANLI",
+      "fixedTime": "16:00",
       "timestamp": 1774875600000,
       "broadcaster": "TRT Spor / Tabii",
       "homeTeam": {
@@ -219,9 +199,29 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22566.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/748.png",
+      "homeScore": "3",
+      "awayScore": "1",
+      "tournament": "U19 European Championship Qualif."
+    },
+    {
+      "id": 15362226,
+      "isElite": false,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "18:00\nCANLI",
+      "timestamp": 1774882800000,
+      "broadcaster": "TV Yayını Yok (Yerel)",
+      "homeTeam": {
+        "name": "Llaneros FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/89374.png"
+      },
+      "awayTeam": {
+        "name": "Once Caldas",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6118.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11539.png",
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": "U19 European Championship Qualif."
+      "tournament": "Primera A, Apertura"
     },
     {
       "id": 14435482,
