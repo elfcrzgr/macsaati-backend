@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-30T10:29:11.296Z",
-  "totalMatches": 179,
+  "lastUpdated": "2026-03-30T10:47:12.337Z",
+  "totalMatches": 180,
   "matches": [
     {
       "id": 15896847,
@@ -2471,9 +2471,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Billy Harris (138)",
@@ -2494,9 +2494,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "(1-6, 6-7)",
       "tournament": "Bucharest, Romania, Qualifying"
     },
     {
@@ -2527,78 +2527,6 @@
         ],
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bucharest, Romania, Qualifying"
-    },
-    {
-      "id": 15900430,
-      "fixedDate": "2026-03-30",
-      "fixedTime": "12:20",
-      "timestamp": 1774862400000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Daniel Merida (135)",
-        "countries": [
-          "es"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Saba Purtseladze (281)",
-        "countries": [
-          "ge"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bucharest, Romania, Qualifying"
-    },
-    {
-      "id": 15900421,
-      "fixedDate": "2026-03-30",
-      "fixedTime": "12:20",
-      "timestamp": 1774862400000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Stefan Horia Haita (1389)",
-        "countries": [
-          "ro"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Joel Schwaerzler (176)",
-        "countries": [
-          "at"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
@@ -2716,6 +2644,78 @@
       "tournament": "Bucharest, Romania, Qualifying"
     },
     {
+      "id": 15900430,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "13:45",
+      "timestamp": 1774867500000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Daniel Merida (135)",
+        "countries": [
+          "es"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Saba Purtseladze (281)",
+        "countries": [
+          "ge"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bucharest, Romania, Qualifying"
+    },
+    {
+      "id": 15900421,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "14:00",
+      "timestamp": 1774868400000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Stefan Horia Haita (1389)",
+        "countries": [
+          "ro"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Joel Schwaerzler (176)",
+        "countries": [
+          "at"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bucharest, Romania, Qualifying"
+    },
+    {
       "id": 15906364,
       "fixedDate": "2026-03-30",
       "fixedTime": "14:10",
@@ -2786,6 +2786,42 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Marrakech, Morocco, Qualifying"
+    },
+    {
+      "id": 15911278,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "15:15",
+      "timestamp": 1774872900000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "notstarted",
+        "description": "Not started",
+        "code": 0
+      },
+      "homeTeam": {
+        "name": "Nikoloz Basilashvili (134)",
+        "countries": [
+          "ge"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jurij Rodionov (177)",
+        "countries": [
+          "at"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bucharest, Romania, Qualifying"
     },
     {
       "id": 15900252,
