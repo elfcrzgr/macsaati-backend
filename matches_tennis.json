@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-30T08:56:14.899Z",
-  "totalMatches": 178,
+  "lastUpdated": "2026-03-30T10:23:34.205Z",
+  "totalMatches": 179,
   "matches": [
     {
       "id": 15896847,
@@ -2359,9 +2359,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "George Loffhagen (222)",
@@ -2382,9 +2382,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": "(6-4, 6-7, 2-6)",
       "tournament": "Bucharest, Romania, Qualifying"
     },
     {
@@ -2395,9 +2395,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "inprogress",
-        "description": "2nd set",
-        "code": 9
+        "type": "finished",
+        "description": "Ended",
+        "code": 100
       },
       "homeTeam": {
         "name": "Nikoloz Basilashvili (134)",
@@ -2418,82 +2418,50 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "(6-4, 7-5)",
       "tournament": "Bucharest, Romania, Qualifying"
     },
     {
-      "id": 15900429,
+      "id": 15910470,
       "fixedDate": "2026-03-30",
-      "fixedTime": "11:10",
-      "timestamp": 1774858200000,
+      "fixedTime": "11:00",
+      "timestamp": 1774857600000,
       "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
+      "isDoubles": true,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "canceled",
+        "description": "Canceled",
+        "code": 70
       },
       "homeTeam": {
-        "name": "Dimitar Kuzmanov (312)",
+        "name": "Borges N / Cornea V V",
         "countries": [
-          "bg"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Stefano Travaglia (161)",
-        "countries": [
-          "it"
-        ],
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Bucharest, Romania, Qualifying"
-    },
-    {
-      "id": 15900422,
-      "fixedDate": "2026-03-30",
-      "fixedTime": "11:10",
-      "timestamp": 1774858200000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "isDoubles": false,
-      "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
-      },
-      "homeTeam": {
-        "name": "Gabriel Ghetu (715)",
-        "countries": [
+          "pt",
           "ro"
         ],
         "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
         ]
       },
       "awayTeam": {
-        "name": "Jay Clarke (179)",
+        "name": "Haita S H / Palosi S",
         "countries": [
-          "gb"
+          "ro",
+          "ro"
         ],
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2377.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": "",
-      "tournament": "Bucharest, Romania, Qualifying"
+      "tournament": "Bucharest, Romania, Doubles"
     },
     {
       "id": 15900423,
@@ -2504,8 +2472,8 @@
       "isDoubles": false,
       "matchStatus": {
         "type": "inprogress",
-        "description": "1st set",
-        "code": 8
+        "description": "2nd set",
+        "code": 9
       },
       "homeTeam": {
         "name": "Billy Harris (138)",
@@ -2523,6 +2491,42 @@
         ],
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bucharest, Romania, Qualifying"
+    },
+    {
+      "id": 15900422,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "12:05",
+      "timestamp": 1774861500000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "inprogress",
+        "description": "2nd set",
+        "code": 9
+      },
+      "homeTeam": {
+        "name": "Gabriel Ghetu (715)",
+        "countries": [
+          "ro"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jay Clarke (179)",
+        "countries": [
+          "gb"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
@@ -2611,9 +2615,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Dušan Lajović (127)",
@@ -2647,9 +2651,9 @@
       "broadcaster": "S Sport / S Sport Plus",
       "isDoubles": false,
       "matchStatus": {
-        "type": "notstarted",
-        "description": "Not started",
-        "code": 0
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
       },
       "homeTeam": {
         "name": "Timofey Skatov (195)",
@@ -2674,6 +2678,42 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Marrakech, Morocco, Qualifying"
+    },
+    {
+      "id": 15900429,
+      "fixedDate": "2026-03-30",
+      "fixedTime": "13:05",
+      "timestamp": 1774865100000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "isDoubles": false,
+      "matchStatus": {
+        "type": "inprogress",
+        "description": "1st set",
+        "code": 8
+      },
+      "homeTeam": {
+        "name": "Dimitar Kuzmanov (312)",
+        "countries": [
+          "bg"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Stefano Travaglia (161)",
+        "countries": [
+          "it"
+        ],
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Bucharest, Romania, Qualifying"
     },
     {
       "id": 15906364,
