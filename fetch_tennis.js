@@ -19,7 +19,7 @@ const categoryConfigs = {
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
 async function start() {
-    console.log("🚀 Tenis motoru (BAŞLAMADI Kontrolü Aktif) başlatılıyor...");
+    console.log("🚀 Tenis motoru (Kesin Skor Kuralları Aktif) çalışıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -33,7 +33,7 @@ async function start() {
 
     let rawEvents = [];
     const dates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
-    const nowTimestamp = Date.now(); // Sunucunun şu anki zamanı
+    const nowTimestamp = Date.now();
     
     for (const date of dates) {
         try {
@@ -53,23 +53,31 @@ async function start() {
     const finalMatches = [];
 
     for (const e of uniqueEvents) {
+        const statusType = e.status?.type; 
         const startTimestamp = e.startTimestamp * 1000;
-        const statusType = e.status?.type; // 'inprogress', 'notstarted', 'finished'
         const dateTR = new Date(startTimestamp);
-        
+        const isFinished = statusType === 'finished';
+
         let timeString = dateTR.toLocaleTimeString('tr-TR', { 
             timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' 
         });
 
-        // --- CANLI / BAŞLAMADI MANTIĞI ---
+        // --- DURUM ETİKETİ MANTIĞI ---
         if (statusType === 'inprogress') {
             timeString += "\nCANLI";
         } else if (statusType === 'notstarted' && nowTimestamp > startTimestamp) {
-            // Maç saati geçti ama henüz başlamadı (Senin Trungelliti örneği)
             timeString += "\nBAŞLAMADI";
-        } else if (statusType === 'finished') {
+        } else if (isFinished) {
             timeString += "\nMS";
         }
+
+        const utId = e.tournament?.uniqueTournament?.id || e.tournament?.category?.id || "default";
+
+        // --- SKOR BASMA KURALLARI (TAM İSTEDİĞİN GİBİ) ---
+        // Sadece ve sadece maç bittiyse (finished) skorları gönderiyoruz.
+        // Diğer tüm durumlarda (Canlı dahil) "-" gönderiyoruz ki Android "vs" bassın.
+        const homeScoreFinal = isFinished ? String(e.homeScore?.display ?? "0") : "-";
+        const awayScoreFinal = isFinished ? String(e.awayScore?.display ?? "0") : "-";
 
         finalMatches.push({
             id: e.id,
@@ -86,14 +94,13 @@ async function start() {
                 name: e.awayTeam.name + (e.awayTeam.ranking ? ` (${e.awayTeam.ranking})` : ""), 
                 logos: [TENNIS_LOGO_BASE + (e.awayTeam.country?.alpha2?.toLowerCase() || "default") + ".png"] 
             },
-            tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
-            homeScore: statusType === 'finished' ? String(e.homeScore?.display ?? "0") : "-",
-            awayScore: statusType === 'finished' ? String(e.awayScore?.display ?? "0") : "-",
+            tournamentLogo: TENNIS_TOURNAMENT_BASE + utId + ".png",
+            homeScore: homeScoreFinal,
+            awayScore: awayScoreFinal,
             tournament: e.tournament.name
         });
     }
 
-    // SIRALAMA: Canlılar her zaman en üstte
     finalMatches.sort((a, b) => {
         if (a.status === 'inprogress' && b.status !== 'inprogress') return -1;
         if (a.status !== 'inprogress' && b.status === 'inprogress') return 1;
@@ -102,5 +109,6 @@ async function start() {
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches: finalMatches }, null, 2));
     await browser.close();
+    console.log("✅ JSON güncellendi. Skorlar sadece biten maçlara eklendi.");
 }
 start();
