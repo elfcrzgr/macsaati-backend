@@ -19,19 +19,13 @@ const categoryConfigs = {
 
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
-function getCountriesFromSubTeams(team) {
-    if (!team || !team.subTeams || team.subTeams.length === 0) return ["default"];
-    const countries = team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
-    return countries.length > 0 ? countries : ["default"];
-}
-
 function getCountriesSingles(team) {
     const code = team.country?.alpha2;
     return code ? [code.toLowerCase()] : ["default"];
 }
 
 async function start() {
-    console.log("🚀 Tenis motoru (SIRALAMA DESTEKLİ) başlatılıyor...");
+    console.log("🚀 Tenis motoru (CANLI KORUMA & GÖRSEL FİX) başlatılıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
 
@@ -45,7 +39,7 @@ async function start() {
 
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        d.setHours(d.getHours() + 3); 
+        d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); 
         d.setDate(d.getDate() + offset);
         return d.toISOString().split('T')[0];
     };
@@ -58,14 +52,24 @@ async function start() {
             console.log(`⏳ ${date} verileri alınıyor...`);
             await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
-            if (data?.events) allEvents.push(...data.events.filter(e => targetCategoryIds.includes(e.tournament?.category?.id)));
+            if (data?.events) {
+                // GHETU FIX: Kategori listesinde olmasa bile CANLI ise listeye dahil et
+                const filtered = data.events.filter(e => 
+                    targetCategoryIds.includes(e.tournament?.category?.id) || 
+                    e.status?.type === 'inprogress'
+                );
+                allEvents.push(...filtered);
+            }
         } catch (e) {}
     }
 
+    // Canlı maçları ayrıca kontrol et (Garantilemek için)
     try {
         await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/events/live`, { waitUntil: 'networkidle2' });
         const liveData = await page.evaluate(() => JSON.parse(document.body.innerText));
-        if (liveData?.events) allEvents.push(...liveData.events.filter(e => targetCategoryIds.includes(e.tournament?.category?.id)));
+        if (liveData?.events) {
+            allEvents.push(...liveData.events); // Canlı maçlarda kategori filtresini tamamen kaldırdık
+        }
     } catch (e) {}
 
     const uniqueEvents = Array.from(new Map(allEvents.map(e => [e.id, e])).values());
@@ -81,13 +85,10 @@ async function start() {
         const isDouble = e.homeTeam.name.includes("/");
 
         if (isDouble || (!isDouble && (!homeRank || !awayRank))) {
-            process.stdout.write(`🎾 Detaylar İşleniyor: ${e.id} \r`);
             try {
                 const detail = await page.evaluate(async (id, homeId, awayId, isDouble) => {
                     const fetchJSON = async (url) => { try { const r = await fetch(url); return await r.json(); } catch(e) { return null; } };
-                    
                     let res = { homeRank: null, awayRank: null, hCodes: [], aCodes: [] };
-                    
                     const ev = await fetchJSON(`https://api.sofascore.com/api/v1/event/${id}`);
                     if (ev?.event) {
                         res.homeRank = ev.event.homeTeam.ranking;
@@ -96,11 +97,6 @@ async function start() {
                             res.hCodes = ev.event.homeTeam.subTeams?.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean) || [];
                             res.aCodes = ev.event.awayTeam.subTeams?.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean) || [];
                         }
-                    }
-
-                    if (!isDouble) {
-                        if (!res.homeRank) { const h = await fetchJSON(`https://api.sofascore.com/api/v1/team/${homeId}`); res.homeRank = h?.team?.ranking; }
-                        if (!res.awayRank) { const a = await fetchJSON(`https://api.sofascore.com/api/v1/team/${awayId}`); res.awayRank = a?.team?.ranking; }
                     }
                     return res;
                 }, e.id, e.homeTeam.id, e.awayTeam.id, isDouble);
@@ -125,9 +121,15 @@ async function start() {
         const tId = e.tournament?.uniqueTournament?.id || e.tournament?.category?.id || "default";
         
         const mStatus = e.status?.type || "notstarted";
+        const isInProgress = mStatus === 'inprogress';
         const isFinished = mStatus === 'finished';
 
-        // GÜNCELLEME: Sadece maç BİTTİYSE skorları al! Canlı maçlarda skor boş kalacak.
+        // GÖRSEL FIX: Saatin altına CANLI ekleme
+        let displayTime = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+        if (isInProgress) {
+            displayTime = `${displayTime}\nCANLI`;
+        }
+
         let setScoresStr = "";
         if (isFinished && e.homeScore && e.awayScore) {
             let sets = [];
@@ -148,16 +150,14 @@ async function start() {
         finalMatches.push({
             id: e.id,
             fixedDate: dayStr,
-            fixedTime: dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }),
+            fixedTime: displayTime, // \nCANLI desteği eklendi
             timestamp: dateTR.getTime(),
-            broadcaster: categoryConfigs[e.tournament?.category?.id] || "beIN / Eurosport",
+            broadcaster: categoryConfigs[e.tournament?.category?.id] || "S Sport / Eurosport",
             isDoubles: isDouble,
             matchStatus: { type: mStatus, description: e.status?.description || "-", code: e.status?.code || 0 },
             homeTeam: { name: finalHomeName, countries: homeCodes, logos: homeCodes.map(c => TENNIS_LOGO_BASE + c + ".png") },
             awayTeam: { name: finalAwayName, countries: awayCodes, logos: awayCodes.map(c => TENNIS_LOGO_BASE + c + ".png") },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + tId + ".png",
-            
-            // GÜNCELLEME: Sadece maç BİTTİYSE ana skorları al
             homeScore: isFinished && e.homeScore?.display !== undefined ? String(e.homeScore.display) : "-",
             awayScore: isFinished && e.awayScore?.display !== undefined ? String(e.awayScore.display) : "-",
             setScores: setScoresStr,
@@ -165,15 +165,15 @@ async function start() {
         });
     }
 
+    // SIRALAMA: Gabriel Ghetu maçı (12:05) en üstte kalacak
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
+
     if (finalMatches.length > 0) {
         fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
             success: true, lastUpdated: new Date().toISOString(), 
             totalMatches: finalMatches.length, matches: finalMatches 
         }, null, 2));
         console.log(`\n✅ İşlem Tamam: ${finalMatches.length} maç kaydedildi.`);
-    } else {
-        console.log("\n⚠️ Uyarı: Hiç maç bulunamadı, dosya güncellenmedi.");
     }
     await browser.close();
 }
