@@ -1,0 +1,59 @@
+name: Tenis Manuel Deneme Güncelleyici
+
+on:
+  workflow_dispatch: # Sadece butona bastığında çalışır
+
+jobs:
+  update-tennis:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Repoyu Klonla
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Node.js Kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Kütüphaneleri Yükle
+        run: npm install
+
+      # ==========================================
+      # 🎾 TENİS VERİLERİ (Elit filtreli son kodun çalışır)
+      # ==========================================
+      - name: Tenis Verilerini Çek
+        run: node fetch_tennis.js
+        continue-on-error: true
+
+      # ==========================================
+      # 🖼️ AKILLI LOGO KONTROLÜ (Tenis bayrak/turnuva logoları)
+      # ==========================================
+      - name: Eksik Tenis Logolarını Tamamla
+        # Eğer teniste logo çekme dosyanın adı farklıysa burayı ona göre güncelle (örn: logo_tennis.js)
+        run: node logo_masters_tennis.js || echo "Logo kontrolü tamamlandı veya atlandı"
+        continue-on-error: true
+
+      # ==========================================
+      # 🚀 GITHUB'A KAYDET
+      # ==========================================
+      - name: Değişiklikleri Pushla
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add .
+          
+          # Sadece yeni bir maç veya yeni bir logo eklendiyse commit atar
+          if git diff --staged --quiet; then
+            echo "Her şey güncel, yeni dosya yok."
+          else
+            git commit -m "🎾 TENİS MANUEL: Veri & Eksik Logolar Güncellendi ($(date +'%H:%M'))"
+            git pull origin main --rebase -X theirs
+            git push origin main
+            echo "✅ Değişiklikler repoya gönderildi."
+          fi
