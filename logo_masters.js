@@ -25,14 +25,14 @@ const configs = [
     },
     {
         name: 'Tenis',
-        file: 'matches_tennis.json', // Tenis motorunun çıktısı
+        file: 'matches_tennis.json',
         dirs: {
             tournament: path.join(__dirname, 'tennis', 'tournament_logos')
         }
     }
 ];
 
-// Klasörlerin varlığını kontrol et
+// Klasör kontrolü
 configs.forEach(conf => {
     Object.values(conf.dirs).forEach(dir => {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -45,7 +45,7 @@ async function start() {
     let browser = null;
     let page = null;
     let totalDownloaded = 0;
-    let totalDefaulted = 0; 
+    let totalDefaulted = 0;
     let totalFailed = 0;
 
     for (const conf of configs) {
@@ -55,29 +55,27 @@ async function start() {
         const missing = [];
 
         json.matches.forEach(m => {
-            // Takım/Bayrak Logoları Kontrolü
-            // Tenis motorun birden fazla logo (bayrak) dizisi döndürdüğü için burayı güncelledim
+            // Takım / Bayrak Logoları (Tenis motorundaki array yapısına uygun)
             const teams = [m.homeTeam, m.awayTeam];
             teams.forEach(team => {
                 if (team && team.logos && Array.isArray(team.logos)) {
                     team.logos.forEach(logoUrl => {
                         const logoId = logoUrl.split('/').pop().replace('.png', '');
-                        if (logoId === 'default') return; // default.png zaten var sayılır
+                        if (logoId === 'default') return;
                         
-                        // Tenis bayrakları direkt 'tennis/logos' içine gider
                         const targetDir = conf.name === 'Tenis' ? path.join(__dirname, 'tennis', 'logos') : conf.dirs.team;
                         if (!fs.existsSync(path.join(targetDir, `${logoId}.png`))) {
-                            missing.push({ id: logoId, type: 'Logo', dir: targetDir, sport: conf.name });
+                            missing.push({ id: logoId, type: 'Logo/Bayrak', dir: targetDir, sport: conf.name, tournamentName: m.tournament });
                         }
                     });
                 }
             });
 
-            // Turnuva Logosu Kontrolü
+            // Turnuva Logoları
             if (m.tournamentLogo) {
                 const tId = m.tournamentLogo.split('/').pop().replace('.png', '');
                 if (!fs.existsSync(path.join(conf.dirs.tournament, `${tId}.png`))) {
-                    missing.push({ id: tId, type: 'Turnuva', dir: conf.dirs.tournament, sport: conf.name });
+                    missing.push({ id: tId, type: 'Turnuva', dir: conf.dirs.tournament, sport: conf.name, tournamentName: m.tournament });
                 }
             }
         });
@@ -101,13 +99,9 @@ async function start() {
 
             let success = false;
             try {
-                // SofaScore API'den çekme denemesi
-                let apiUrl = "";
-                if (item.type === 'Turnuva') {
-                    apiUrl = `https://api.sofascore.com/api/v1/unique-tournament/${item.id}/image`;
-                } else {
-                    apiUrl = `https://api.sofascore.com/api/v1/team/${item.id}/image`;
-                }
+                let apiUrl = item.type === 'Turnuva' 
+                    ? `https://api.sofascore.com/api/v1/unique-tournament/${item.id}/image`
+                    : `https://api.sofascore.com/api/v1/team/${item.id}/image`;
 
                 const res = await page.goto(apiUrl, { waitUntil: 'networkidle2', timeout: 10000 });
                 if (res && res.status() === 200) {
@@ -118,7 +112,7 @@ async function start() {
                     }
                 }
 
-                // Eğer Turnuva logosuysa ve hala bulunamadıysa (Alternatif API)
+                // Turnuva için ikinci deneme (Unique değilse normal ID ile)
                 if (!success && item.type === 'Turnuva') {
                     const resAlt = await page.goto(`https://api.sofascore.com/api/v1/tournament/${item.id}/image`, { waitUntil: 'networkidle2', timeout: 10000 });
                     if (resAlt && resAlt.status() === 200) {
@@ -130,22 +124,23 @@ async function start() {
                     }
                 }
 
+                const logInfo = `ID: ${item.id} | Ad: ${item.tournamentName || 'Bilinmiyor'} (${item.type})`;
+
                 if (success) {
-                    console.log(`   ✅ [İNDİRİLDİ] ${item.sport} ${item.type}: ${item.id}.png`);
+                    console.log(`   ✅ [İNDİRİLDİ] ${logInfo}`);
                     totalDownloaded++;
                 } else {
-                    // --- BURASI KRİTİK: API'DE YOKSA DEFAULT'U KOPYALA ---
                     if (fs.existsSync(localDefaultPath)) {
                         fs.copyFileSync(localDefaultPath, targetPath);
-                        console.log(`   ⚠️  [API BOŞ - DEFAULT ATANDI] ID: ${item.id} (${item.sport} ${item.type})`);
+                        console.log(`   ⚠️  [DEFAULT ATANDI] ${logInfo} -> API'de yoktu.`);
                         totalDefaulted++;
                     } else {
-                        console.log(`   ❌ [HATA] ID: ${item.id} bulunamadı ve ${item.dir} klasöründe default.png yok!`);
+                        console.log(`   ❌ [HATA - DEFAULT YOK] ${logInfo} -> Klasörde default.png eksik!`);
                         totalFailed++;
                     }
                 }
             } catch (e) {
-                console.log(`   ❌ [BAĞLANTI HATASI] ${item.id}.png: ${e.message}`);
+                console.log(`   ❌ [BAĞLANTI HATASI] ID: ${item.id} | Hata: ${e.message}`);
                 totalFailed++;
             }
             await new Promise(r => setTimeout(r, 800));
@@ -155,9 +150,9 @@ async function start() {
     if (browser) await browser.close();
 
     console.log("\n--- İŞLEM ÖZETİ ---");
-    console.log(`✅ İndirilen: ${totalDownloaded}`);
-    console.log(`⚠️  Default Yapılan: ${totalDefaulted}`);
-    console.log(`❌ Başarısız: ${totalFailed}`);
+    console.log(`✅ Gerçek Logo İndirilen: ${totalDownloaded}`);
+    console.log(`⚠️  Default Logo Atanan   : ${totalDefaulted}`);
+    console.log(`❌ İşlem Yapılamayan     : ${totalFailed}`);
     console.log("-------------------\n");
 }
 
