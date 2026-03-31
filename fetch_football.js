@@ -15,26 +15,27 @@ const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHU
 const OUTPUT_FILE = "matches_football.json";
 
 // --- SENİN KİŞİSEL ELİT LİSTEN (Sadece bunlar isElite: true olacak) ---
+// --- SENİN KİŞİSEL ELİT LİSTEN (Hatalar Giderildi) ---
 const MY_PERSONAL_ELITE_IDS = [
     52,    // Trendyol Süper Lig
     351,   // Trendyol 1. Lig
     17,    // İngiltere Premier Lig
     8,     // İspanya La Liga
     23,    // İtalya Serie A
-    7,     // Almanya Bundesliga
+    35,    // Almanya Bundesliga 
     11,    // Fransa Ligue 1
     34,    // Portekiz Ligi
     54,    // Hollanda Eredivisie
     13,    // Belçika Ligi
     98,    // Ziraat Türkiye Kupası
-    704,   // Dünya Kupası Elemeleri (A Milli)
-    844,   // Avrupa Şampiyonası (A Milli)
-    238,   // Suudi Arabistan Profesyonel Ligi
-    938,   // Yunanistan Süper Ligi
-    748,   // UEFA Şampiyonlar Ligi
+    7,     // UEFA Şampiyonlar Ligi
     750,   // UEFA Avrupa Ligi
     10248, // UEFA Avrupa Konferans Ligi
-    10515  // UEFA Uluslar Ligi
+    10515, // UEFA Uluslar Ligi (A Milli)
+    844,   // Avrupa Şampiyonası (A Milli)
+    704,   // Dünya Kupası Elemeleri (A Milli)
+    238,   // Suudi Arabistan Profesyonel Ligi
+    938    // Yunanistan Süper Ligi
 ];
 
 // --- TAKİP EDİLEN EKSTRA LİGLER (Zaten çekilecek olanlar) ---
