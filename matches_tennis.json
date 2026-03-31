@@ -1,55 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-30T23:06:29.487Z",
+  "lastUpdated": "2026-03-31T00:02:17.425Z",
   "matches": [
-    {
-      "id": 15902331,
-      "status": "inprogress",
-      "fixedDate": "2026-03-30",
-      "fixedTime": "23:50\nCANLI",
-      "timestamp": 1774903800000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Paulo Andre Saraiva Dos Santos (588)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Gonzalo Bueno (206)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pe.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4190.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Sao Leopoldo, Brazil"
-    },
-    {
-      "id": 15908435,
-      "status": "inprogress",
-      "fixedDate": "2026-03-31",
-      "fixedTime": "00:10\nCANLI",
-      "timestamp": 1774905000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Theodore Winegar",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mario Gonzalez Fernandez (583)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3820.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "San Luis Potosi, Mexico, Qualifying"
-    },
     {
       "id": 15908006,
       "status": "inprogress",
@@ -73,30 +25,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA"
-    },
-    {
-      "id": 15908080,
-      "status": "inprogress",
-      "fixedDate": "2026-03-31",
-      "fixedTime": "01:10\nCANLI",
-      "timestamp": 1774908600000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Alex Bolt (165)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yibing Wu (118)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
     },
     {
       "id": 15897179,
@@ -147,6 +75,126 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "San Luis Potosi, Mexico, Qualifying"
+    },
+    {
+      "id": 15897174,
+      "status": "inprogress",
+      "fixedDate": "2026-03-31",
+      "fixedTime": "02:00\nCANLI",
+      "timestamp": 1774911600000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Mackenzie McDonald (125)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jenson Brooksby (41)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
+    },
+    {
+      "id": 15901818,
+      "status": "inprogress",
+      "fixedDate": "2026-03-31",
+      "fixedTime": "02:00\nCANLI",
+      "timestamp": 1774911600000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Panna Udvardy (92)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Maria Camila Torres Murcia (880)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bogota, Colombia"
+    },
+    {
+      "id": 15902324,
+      "status": "inprogress",
+      "fixedDate": "2026-03-31",
+      "fixedTime": "02:00\nCANLI",
+      "timestamp": 1774911600000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Nicolas Alvarez Varona (468)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Juan Bautista Torres (327)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4190.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Sao Leopoldo, Brazil"
+    },
+    {
+      "id": 15908436,
+      "status": "inprogress",
+      "fixedDate": "2026-03-31",
+      "fixedTime": "02:00\nCANLI",
+      "timestamp": 1774911600000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Maxwell McKennon (542)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Samuel Heredia (728)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3820.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "San Luis Potosi, Mexico, Qualifying"
+    },
+    {
+      "id": 15902325,
+      "status": "inprogress",
+      "fixedDate": "2026-03-31",
+      "fixedTime": "02:20\nCANLI",
+      "timestamp": 1774912800000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Lautaro Midon (217)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Bruno Fernandez (653)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4190.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Sao Leopoldo, Brazil"
     },
     {
       "id": 15901158,
@@ -1777,22 +1825,46 @@
       "tournament": "Charleston, USA, Doubles"
     },
     {
-      "id": 15897174,
-      "status": "notstarted",
+      "id": 15908080,
+      "status": "finished",
       "fixedDate": "2026-03-31",
-      "fixedTime": "02:00\nBAŞLAMADI",
-      "timestamp": 1774911600000,
+      "fixedTime": "01:10\nMS",
+      "timestamp": 1774908600000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
-        "name": "Mackenzie McDonald (125)",
+        "name": "Alex Bolt (165)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yibing Wu (118)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "tournament": "Houston, USA"
+    },
+    {
+      "id": 15897172,
+      "status": "notstarted",
+      "fixedDate": "2026-03-31",
+      "fixedTime": "03:10",
+      "timestamp": 1774915800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Colton Smith (164)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
       "awayTeam": {
-        "name": "Jenson Brooksby (41)",
+        "name": "Thiago Agustin Tirante (83)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
@@ -1801,35 +1873,11 @@
       "tournament": "Houston, USA"
     },
     {
-      "id": 15901818,
-      "status": "notstarted",
-      "fixedDate": "2026-03-31",
-      "fixedTime": "02:00\nBAŞLAMADI",
-      "timestamp": 1774911600000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Panna Udvardy (97)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Maria Camila Torres Murcia (895)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bogota, Colombia"
-    },
-    {
       "id": 15908012,
       "status": "notstarted",
       "fixedDate": "2026-03-31",
-      "fixedTime": "02:10",
-      "timestamp": 1774912200000,
+      "fixedTime": "03:10",
+      "timestamp": 1774915800000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
         "name": "Alycia Parks (97)",
@@ -1847,30 +1895,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA"
-    },
-    {
-      "id": 15897172,
-      "status": "notstarted",
-      "fixedDate": "2026-03-31",
-      "fixedTime": "03:10",
-      "timestamp": 1774915800000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Colton Smith (162)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Thiago Agustin Tirante (81)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
     },
     {
       "id": 15899830,
@@ -2505,30 +2529,6 @@
       "tournament": "Charleston, USA"
     },
     {
-      "id": 15908021,
-      "status": "notstarted",
-      "fixedDate": "2026-03-31",
-      "fixedTime": "18:00",
-      "timestamp": 1774969200000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Kayla Day (162)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Paula Badosa (113)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Charleston, USA"
-    },
-    {
       "id": 15901775,
       "status": "canceled",
       "fixedDate": "2026-03-31",
@@ -2747,6 +2747,30 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Bogota, Colombia"
+    },
+    {
+      "id": 15908021,
+      "status": "notstarted",
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:10",
+      "timestamp": 1774973400000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Kayla Day (162)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Paula Badosa (113)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Charleston, USA"
     },
     {
       "id": 15901776,
