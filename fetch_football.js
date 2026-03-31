@@ -11,23 +11,22 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- SENİN KİŞİSEL ELİT LİG LİSTEN (AÇIKLAMALI) ---
-// Sadece bu ID'lere sahip olan maçlar isElite: true olarak işaretlenir.
+// --- KESİN ELİT LİG LİSTEN (İSİMLERİYLE BİRLİKTE) ---
 const MY_PERSONAL_ELITE_IDS = [
     52,    // Trendyol Süper Lig (Türkiye)
     351,   // Trendyol 1. Lig (Türkiye)
     98,    // Ziraat Türkiye Kupası (Türkiye)
     17,    // Premier League (İngiltere)
-    8,     // LaLiga (İspanya)
+    8,     // La Liga (İspanya)
     23,    // Serie A (İtalya)
-    35,    // Bundesliga (Almanya) -> Not: Eskiden 7 idi, doğrusu 35.
-    11,    // Ligue 1 (Fransa) & Dünya Kupası Elemeleri (ID Çakışabiliyor)
+    35,    // Bundesliga (Almanya)
+    11,    // Ligue 1 (Fransa) & Dünya Kupası Elemeleri (Çakışan ID)
     34,    // Liga Portugal (Portekiz)
     54,    // Eredivisie (Hollanda)
     13,    // Pro League (Belçika)
-    7,     // UEFA Şampiyonlar Ligi -> Not: Eskiden 748 idi (o U19), doğrusu 7.
+    7,     // UEFA Şampiyonlar Ligi
     750,   // UEFA Avrupa Ligi
-    10248, // UEFA Konferans Ligi
+    10248, // UEFA Avrupa Konferans Ligi
     10783, // UEFA Uluslar Ligi (Nations League)
     844,   // Euro (Avrupa Şampiyonası)
     704,   // Dünya Kupası Elemeleri (Genel Kategori)
@@ -35,31 +34,36 @@ const MY_PERSONAL_ELITE_IDS = [
     938    // Super League (Yunanistan)
 ];
 
-// --- AKILLI YAYINCI AYARLARI ---
+// --- YAYINCI AYARLARI ---
 const getBroadcaster = (utId) => {
     const staticConfigs = {
-        52: "beIN Sports", 
-        351: "TRT Spor / Tabii", 
-        17: "beIN Sports", 
-        8: "S Sport / S Sport Plus",
-        23: "S Sport / S Sport Plus", 
-        35: "beIN / Tivibu", 
-        11: "beIN Sports / TRT", 
-        7: "TRT 1 / Tabii", 
-        750: "TRT Spor / Tabii",
-        10248: "TRT Spor / Tabii", 
-        10783: "TRT / Tabii", 
-        98: "beIN Sports / TRT Spor",
-        238: "S Sport Plus", 
-        938: "S Sport Plus"
+        52: "beIN Sports",           // Süper Lig
+        351: "TRT Spor / Tabii",      // 1. Lig
+        17: "beIN Sports",            // Premier Lig
+        8: "S Sport / S Sport Plus",  // La Liga
+        23: "S Sport / S Sport Plus", // Serie A
+        35: "beIN / Tivibu",          // Bundesliga
+        11: "beIN Sports / TRT",      // Ligue 1 / Elemeler
+        7: "TRT 1 / Tabii",           // Şampiyonlar Ligi
+        750: "TRT Spor / Tabii",      // Avrupa Ligi
+        10248: "TRT Spor / Tabii",    // Konferans Ligi
+        10783: "TRT / Tabii",         // Uluslar Ligi
+        98: "beIN Sports / TRT Spor", // Türkiye Kupası
+        238: "S Sport Plus",          // Suudi Arabistan
+        938: "S Sport Plus"           // Yunanistan
     };
     return staticConfigs[utId] || "Resmi Yayıncı / Canlı Skor";
 };
 
 async function start() {
-    console.log("🚀 MAÇ SAATİ: ID BAZLI GÜNCEL MOTOR BAŞLATILDI...");
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    console.log("🚀 MAÇ SAATİ: >20 FİLTRELİ MOTOR BAŞLATILDI...");
+    const browser = await puppeteer.launch({ 
+        headless: "new", 
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+    });
+    
     const page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     const getTRDate = (offset = 0) => {
         const d = new Date();
@@ -73,37 +77,47 @@ async function start() {
     
     for (const date of validDates) {
         try {
-            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            console.log(`📡 ${date} için veriler toplanıyor...`);
+            const url = `https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`;
+            
+            await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+            await new Promise(r => setTimeout(r, 2000)); // Sayfanın tam dolması için bekleme
+
+            const rawContent = await page.evaluate(() => document.body.innerText);
+            let data = JSON.parse(rawContent);
+            
             if (data && data.events) {
-                // SofaScore önceliği > 20 olan tüm maçları topla (Liste dolgun kalsın)
-                const filtered = data.events.filter(e => {
+                // --- KRİTİK FİLTRE: SADECE ÖNCELİĞİ > 20 OLAN MAÇLARI AL ---
+                const filteredEvents = data.events.filter(e => {
                     const ut = e.tournament?.uniqueTournament || e.tournament;
-                    return ut && ut.priority > 20;
+                    // Eğer senin Elit listendeyse priority'ye bakmadan al, 
+                    // değilse priority > 20 şartını kontrol et.
+                    return ut && (MY_PERSONAL_ELITE_IDS.includes(ut.id) || (ut.priority && ut.priority > 20));
                 });
-                allEvents = allEvents.concat(filtered);
+
+                allEvents = allEvents.concat(filteredEvents);
+                console.log(`✅ ${date} için ${filteredEvents.length} kaliteli maç eklendi.`);
             }
-        } catch (e) { console.error(`${date} tarihinde veri çekilemedi.`); }
+        } catch (e) { 
+            console.error(`❌ ${date} Hatası:`, e.message); 
+        }
     }
 
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
-        const ut = e.tournament?.uniqueTournament || e.tournament;
-        if (!ut) continue;
-        
+        const ut = e.tournament.uniqueTournament || e.tournament;
         const utId = ut.id;
         const matchKey = `${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         const dateTR = new Date(e.startTimestamp * 1000);
         const statusType = e.status?.type; 
         const isFinished = statusType === 'finished';
 
-        // CANLI durumu kontrolü
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         if (statusType === 'inprogress') timeString += "\nCANLI";
 
         finalMatchesMap.set(matchKey, {
             id: e.id,
-            // SADECE LİSTEDEKİ LİGLER ELİT OLUR
+            // ELİT MANTIĞI: Sadece senin listendekiler elit
             isElite: MY_PERSONAL_ELITE_IDS.includes(utId), 
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: timeString,
@@ -126,7 +140,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
 
-    console.log(`✅ İşlem bitti. Toplam ${finalMatches.length} maç kaydedildi.`);
+    console.log(`🏁 İŞLEM TAMAM: Toplam ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
