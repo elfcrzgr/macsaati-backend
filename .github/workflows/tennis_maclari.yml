@@ -35,7 +35,7 @@ jobs:
       # ==========================================
       - name: Eksik Tenis Logolarını Tamamla
         # Eğer teniste logo çekme dosyanın adı farklıysa burayı ona göre güncelle (örn: logo_tennis.js)
-        run: node logo_masters_tennis.js || echo "Logo kontrolü tamamlandı veya atlandı"
+        run: node logo_masters.js || echo "Logo kontrolü tamamlandı veya atlandı"
         continue-on-error: true
 
       # ==========================================
