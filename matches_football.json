@@ -1,6 +1,447 @@
 {
   "success": true,
-  "lastUpdated": "2026-03-31T09:30:48.838Z",
-  "totalMatches": 0,
-  "matches": []
+  "lastUpdated": "2026-03-31T09:32:39.675Z",
+  "totalMatches": 22,
+  "matches": [
+    {
+      "id": 13157429,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "TRT / Tabii",
+      "homeTeam": {
+        "name": "Latvia",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4706.png"
+      },
+      "awayTeam": {
+        "name": "Gibraltar",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/129264.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10783.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UEFA Nations League"
+    },
+    {
+      "id": 13157430,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "19:00",
+      "timestamp": 1774972800000,
+      "broadcaster": "TRT / Tabii",
+      "homeTeam": {
+        "name": "Luxembourg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4478.png"
+      },
+      "awayTeam": {
+        "name": "Malta",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4483.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/10783.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UEFA Nations League"
+    },
+    {
+      "id": 14083505,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "20:00",
+      "timestamp": 1774976400000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Mirandés",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35092.png"
+      },
+      "awayTeam": {
+        "name": "Albacete Balompié",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2848.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083510,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:00",
+      "timestamp": 1774980000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Deportivo La Coruña",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2832.png"
+      },
+      "awayTeam": {
+        "name": "Córdoba",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2850.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 15129804,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:45",
+      "timestamp": 1774982700000,
+      "broadcaster": "beIN Sports / TRT",
+      "homeTeam": {
+        "name": "Bosnia & Herzegovina",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4479.png"
+      },
+      "awayTeam": {
+        "name": "Italy",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4707.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Cup Qual. UEFA"
+    },
+    {
+      "id": 15129795,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:45",
+      "timestamp": 1774982700000,
+      "broadcaster": "beIN Sports / TRT",
+      "homeTeam": {
+        "name": "Czechia",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4714.png"
+      },
+      "awayTeam": {
+        "name": "Denmark",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4476.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Cup Qual. UEFA"
+    },
+    {
+      "id": 15129802,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:45",
+      "timestamp": 1774982700000,
+      "broadcaster": "beIN Sports / TRT",
+      "homeTeam": {
+        "name": "Kosovo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/154426.png"
+      },
+      "awayTeam": {
+        "name": "Türkiye",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4700.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Cup Qual. UEFA"
+    },
+    {
+      "id": 15129806,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "21:45",
+      "timestamp": 1774982700000,
+      "broadcaster": "beIN Sports / TRT",
+      "homeTeam": {
+        "name": "Sweden",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4688.png"
+      },
+      "awayTeam": {
+        "name": "Poland",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4703.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "World Cup Qual. UEFA"
+    },
+    {
+      "id": 14083507,
+      "isElite": true,
+      "fixedDate": "2026-03-31",
+      "fixedTime": "22:30",
+      "timestamp": 1774985400000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Real Valladolid",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2831.png"
+      },
+      "awayTeam": {
+        "name": "Cádiz",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4488.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083503,
+      "isElite": true,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "20:00",
+      "timestamp": 1775062800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FC Andorra",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/324871.png"
+      },
+      "awayTeam": {
+        "name": "Málaga",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2830.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083490,
+      "isElite": true,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "21:00",
+      "timestamp": 1775066400000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Burgos Club de Fútbol",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2854.png"
+      },
+      "awayTeam": {
+        "name": "AD Ceuta",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2869.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083493,
+      "isElite": true,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "21:00",
+      "timestamp": 1775066400000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Huesca",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24265.png"
+      },
+      "awayTeam": {
+        "name": "Cultural Leonesa",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2868.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083499,
+      "isElite": true,
+      "fixedDate": "2026-04-01",
+      "fixedTime": "22:30",
+      "timestamp": 1775071800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Real Racing Club",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2835.png"
+      },
+      "awayTeam": {
+        "name": "Sporting Gijón",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2852.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083515,
+      "isElite": true,
+      "fixedDate": "2026-04-02",
+      "fixedTime": "20:00",
+      "timestamp": 1775149200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Las Palmas",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6577.png"
+      },
+      "awayTeam": {
+        "name": "Granada",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/33779.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083520,
+      "isElite": true,
+      "fixedDate": "2026-04-02",
+      "fixedTime": "21:00",
+      "timestamp": 1775152800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "CD Castellón",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5067.png"
+      },
+      "awayTeam": {
+        "name": "Almería",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2858.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083513,
+      "isElite": true,
+      "fixedDate": "2026-04-02",
+      "fixedTime": "21:00",
+      "timestamp": 1775152800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Real Sociedad B U21",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24360.png"
+      },
+      "awayTeam": {
+        "name": "Eibar",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2839.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 14083496,
+      "isElite": true,
+      "fixedDate": "2026-04-02",
+      "fixedTime": "22:30",
+      "timestamp": 1775158200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Leganés",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2845.png"
+      },
+      "awayTeam": {
+        "name": "Real Zaragoza",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2815.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga 2"
+    },
+    {
+      "id": 15815838,
+      "isElite": true,
+      "fixedDate": "2026-04-03",
+      "fixedTime": "14:00",
+      "timestamp": 1775214000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Dinamo Tbilisi",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5171.png"
+      },
+      "awayTeam": {
+        "name": "FC Dila Gori",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/33819.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/704.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Erovnuli Liga"
+    },
+    {
+      "id": 15388610,
+      "isElite": true,
+      "fixedDate": "2026-04-03",
+      "fixedTime": "14:00",
+      "timestamp": 1775214000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FC Rustavi",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7703.png"
+      },
+      "awayTeam": {
+        "name": "Dinamo Batumi",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/37297.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/704.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Erovnuli Liga"
+    },
+    {
+      "id": 15815897,
+      "isElite": true,
+      "fixedDate": "2026-04-03",
+      "fixedTime": "14:00",
+      "timestamp": 1775214000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FC Samgurali Tskhaltubo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/44217.png"
+      },
+      "awayTeam": {
+        "name": "FC Rustavi",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7703.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/704.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Erovnuli Liga"
+    },
+    {
+      "id": 15388620,
+      "isElite": true,
+      "fixedDate": "2026-04-03",
+      "fixedTime": "14:00",
+      "timestamp": 1775214000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Meshakhte Tkibuli",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/37305.png"
+      },
+      "awayTeam": {
+        "name": "FC Spaeri",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/307794.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/704.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Erovnuli Liga"
+    },
+    {
+      "id": 14138593,
+      "isElite": true,
+      "fixedDate": "2026-04-03",
+      "fixedTime": "14:30",
+      "timestamp": 1775215800000,
+      "broadcaster": "beIN Sports / TRT Spor",
+      "homeTeam": {
+        "name": "Adana Demirspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3101.png"
+      },
+      "awayTeam": {
+        "name": "Manisa FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/202391.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/98.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Trendyol 1.Lig"
+    }
+  ]
 }
