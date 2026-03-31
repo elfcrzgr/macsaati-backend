@@ -25,11 +25,16 @@ const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 // TENİS ELİT TURNUVA ANAHTAR KELİMELERİ (ID yerine çok daha güvenli)
 // =========================================================================
 const ELITE_KEYWORDS = [
-    "Wimbledon", "US Open", "Australian Open", "Roland Garros", "French Open", // Grand Slams
-    "Masters", "ATP 1000", "WTA 1000", // Masters Serileri (1000 puanlık devler)
-    "ATP Finals", "WTA Finals", "Next Gen ATP Finals", // Finaller
-    "Davis Cup", "Billie Jean King Cup", "Laver Cup", "United Cup", // Takım Turnuvaları
-    "Olympic" // Olimpiyatlar
+    // 🏆 MEGA TURNUVALAR (2000 & 1000 Puan)
+    "Wimbledon", "US Open", "Australian Open", "Roland Garros", "French Open", 
+    "Masters", "ATP 1000", "WTA 1000", 
+    "ATP Finals", "WTA Finals", "Next Gen ATP Finals", 
+    
+    // 🌍 ULUSLARARASI ŞOVLAR
+    "Davis Cup", "Billie Jean King Cup", "Laver Cup", "United Cup", "Olympic",
+    
+    // ⭐ ÜST DÜZEY PROFESYONEL TUR (Kaliteyi düşürmeden sekmeyi canlı tutar)
+    "ATP 500", "WTA 500"
 ];
 
 // Anahtar kelime kontrol fonksiyonu
