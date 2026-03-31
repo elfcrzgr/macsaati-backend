@@ -11,29 +11,19 @@ const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- SADECE BUNLAR ELİT OLACAK (İsim bazlı kesin liste) ---
-const MY_ELITE_NAMES = [
+// --- SENİN KESİN ELİT LİG ANAHTARLARIN ---
+const MY_ELITE_KEYWORDS = [
     "Süper Lig", "1. Lig", "Premier League", "LaLiga", "Serie A", "Bundesliga", "Ligue 1",
     "Champions League", "Europa League", "Conference League", "Nations League", 
-    "World Championship Qual", "Euro", "Ziraat Türkiye Kupası", "Eredivisie", "Liga Portugal",
-    "Super League", "Saudi Pro League", "Major League Soccer"
+    "World Championship", "Euro", "Türkiye Kupası", "Eredivisie", "Liga Portugal",
+    "Super League", "Saudi Pro League", "MLS"
 ];
 
-// --- AKILLI YAYINCI MANTIĞI ---
-const getBroadcaster = (utName) => {
-    const name = utName.toLowerCase();
-    if (name.includes("süper lig")) return "beIN Sports";
-    if (name.includes("1. lig")) return "TRT Spor / Tabii";
-    if (name.includes("premier league")) return "beIN Sports";
-    if (name.includes("laliga") || name.includes("serie a")) return "S Sport / S Sport Plus";
-    if (name.includes("champions league") || name.includes("europa league") || name.includes("nations league") || name.includes("world championship")) return "TRT / Tabii";
-    if (name.includes("bundesliga")) return "beIN / Tivibu";
-    if (name.includes("saudi")) return "S Sport Plus";
-    return "Resmi Yayıncı / Canlı Skor";
-};
+// --- ELİT ID'LER (Yedek Güvenlik - İsimden kaçarsa ID yakalasın) ---
+const ELITE_IDS = [52, 351, 17, 8, 23, 35, 11, 7, 750, 10248, 10783, 98];
 
 async function start() {
-    console.log("🚀 MAÇ SAATİ: SADELEŞTİRİLMİŞ AKILLI MOTOR BAŞLATILDI...");
+    console.log("🚀 MAÇ SAATİ: GARANTİ FİLTRE MOTORU BAŞLATILDI...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
 
@@ -51,15 +41,16 @@ async function start() {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            
             if (data && data.events) {
-                // SofaScore'un genel önceliğine göre tüm önemli maçları çek
+                // Filtreyi genişlettik (Priority > 20), böylece liste boş kalmaz
                 const filtered = data.events.filter(e => {
                     const ut = e.tournament?.uniqueTournament || e.tournament;
-                    return ut && ut.priority > 40; 
+                    return ut && (ut.priority > 20 || ELITE_IDS.includes(ut.id));
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`${date} tarihinde hata oluştu.`); }
+        } catch (e) { console.error(`${date} Hatası`); }
     }
 
     const finalMatchesMap = new Map();
@@ -72,9 +63,8 @@ async function start() {
         const matchKey = `${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         const dateTR = new Date(e.startTimestamp * 1000);
         
-        // --- ELİT KONTROLÜ (SADECE İSME BAKAR) ---
-        // Eğer turnuva adı senin MY_ELITE_NAMES listendeki kelimelerden birini içeriyorsa TRUE, yoksa FALSE.
-        const isElite = MY_ELITE_NAMES.some(kw => utName.includes(kw));
+        // --- ÇİFTE KONTROLLÜ ELİT MANTIĞI ---
+        const isElite = MY_ELITE_KEYWORDS.some(kw => utName.toLowerCase().includes(kw.toLowerCase())) || ELITE_IDS.includes(utId);
 
         const statusType = e.status?.type; 
         const isFinished = statusType === 'finished';
@@ -87,7 +77,7 @@ async function start() {
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
-            broadcaster: getBroadcaster(utName), 
+            broadcaster: "Canlı Skor / Yayinci", 
             homeTeam: { name: e.homeTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
             awayTeam: { name: e.awayTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
@@ -105,7 +95,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`✅ İşlem bitti. Toplam ${finalMatches.length} maç kaydedildi.`);
+    console.log(`✅ Toplam ${finalMatches.length} maç bulundu ve kaydedildi.`);
     await browser.close();
 }
 
