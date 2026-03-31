@@ -25,14 +25,14 @@ const configs = [
     },
     {
         name: 'Tenis',
-        file: 'matches_tennis.json',
+        file: 'matches_tennis.json', // Tenis motorunun çıktısı
         dirs: {
             tournament: path.join(__dirname, 'tennis', 'tournament_logos')
         }
     }
 ];
 
-// Klasör kontrolü
+// Klasörlerin varlığını kontrol et
 configs.forEach(conf => {
     Object.values(conf.dirs).forEach(dir => {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -45,6 +45,7 @@ async function start() {
     let browser = null;
     let page = null;
     let totalDownloaded = 0;
+    let totalDefaulted = 0; 
     let totalFailed = 0;
 
     for (const conf of configs) {
@@ -54,21 +55,25 @@ async function start() {
         const missing = [];
 
         json.matches.forEach(m => {
-            // Takım Logoları
-            if (m.homeTeam && m.homeTeam.logo) {
-                const hId = m.homeTeam.logo.split('/').pop().replace('.png', '');
-                const hIsNba = m.homeTeam.logo.includes("/NBA/");
-                const hDir = hIsNba ? (conf.dirs.nba || conf.dirs.team) : conf.dirs.team;
-                if (!fs.existsSync(path.join(hDir, `${hId}.png`))) missing.push({ id: hId, type: 'Takım', dir: hDir, sport: conf.name });
-            }
-            if (m.awayTeam && m.awayTeam.logo) {
-                const aId = m.awayTeam.logo.split('/').pop().replace('.png', '');
-                const aIsNba = m.awayTeam.logo.includes("/NBA/");
-                const aDir = aIsNba ? (conf.dirs.nba || conf.dirs.team) : conf.dirs.team;
-                if (!fs.existsSync(path.join(aDir, `${aId}.png`))) missing.push({ id: aId, type: 'Takım', dir: aDir, sport: conf.name });
-            }
+            // Takım/Bayrak Logoları Kontrolü
+            // Tenis motorun birden fazla logo (bayrak) dizisi döndürdüğü için burayı güncelledim
+            const teams = [m.homeTeam, m.awayTeam];
+            teams.forEach(team => {
+                if (team && team.logos && Array.isArray(team.logos)) {
+                    team.logos.forEach(logoUrl => {
+                        const logoId = logoUrl.split('/').pop().replace('.png', '');
+                        if (logoId === 'default') return; // default.png zaten var sayılır
+                        
+                        // Tenis bayrakları direkt 'tennis/logos' içine gider
+                        const targetDir = conf.name === 'Tenis' ? path.join(__dirname, 'tennis', 'logos') : conf.dirs.team;
+                        if (!fs.existsSync(path.join(targetDir, `${logoId}.png`))) {
+                            missing.push({ id: logoId, type: 'Logo', dir: targetDir, sport: conf.name });
+                        }
+                    });
+                }
+            });
 
-            // Turnuva Logoları
+            // Turnuva Logosu Kontrolü
             if (m.tournamentLogo) {
                 const tId = m.tournamentLogo.split('/').pop().replace('.png', '');
                 if (!fs.existsSync(path.join(conf.dirs.tournament, `${tId}.png`))) {
@@ -88,37 +93,40 @@ async function start() {
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
         }
 
-        console.log(`\n🔍 [${conf.name}] ${missing.length} adet yeni logo tespit edildi:`);
+        console.log(`\n🔍 [${conf.name}] ${missing.length} adet yeni görsel tespit edildi:`);
 
         for (const item of missing) {
             const targetPath = path.join(item.dir, `${item.id}.png`);
-            if (fs.existsSync(targetPath)) continue;
+            const localDefaultPath = path.join(item.dir, 'default.png'); 
 
             let success = false;
             try {
-                if (item.sport === 'Tenis' || item.type === 'Turnuva') {
-                    // Turnuva Fallback Mekanizması
-                    const urls = [
-                        `https://api.sofascore.com/api/v1/unique-tournament/${item.id}/image`,
-                        `https://api.sofascore.com/api/v1/tournament/${item.id}/image`
-                    ];
-                    for (const url of urls) {
-                        const res = await page.goto(url, { waitUntil: 'networkidle2', timeout: 15000 });
-                        if (res && res.status() === 200) {
-                            const buf = await res.buffer();
-                            if (buf.length > 500) {
-                                fs.writeFileSync(targetPath, buf);
-                                success = true;
-                                break;
-                            }
-                        }
-                    }
+                // SofaScore API'den çekme denemesi
+                let apiUrl = "";
+                if (item.type === 'Turnuva') {
+                    apiUrl = `https://api.sofascore.com/api/v1/unique-tournament/${item.id}/image`;
                 } else {
-                    // Normal Takım Logosu
-                    const res = await page.goto(`https://api.sofascore.com/api/v1/team/${item.id}/image`, { waitUntil: 'networkidle2', timeout: 15000 });
-                    if (res && res.status() === 200) {
-                        fs.writeFileSync(targetPath, await res.buffer());
+                    apiUrl = `https://api.sofascore.com/api/v1/team/${item.id}/image`;
+                }
+
+                const res = await page.goto(apiUrl, { waitUntil: 'networkidle2', timeout: 10000 });
+                if (res && res.status() === 200) {
+                    const buf = await res.buffer();
+                    if (buf.length > 500) {
+                        fs.writeFileSync(targetPath, buf);
                         success = true;
+                    }
+                }
+
+                // Eğer Turnuva logosuysa ve hala bulunamadıysa (Alternatif API)
+                if (!success && item.type === 'Turnuva') {
+                    const resAlt = await page.goto(`https://api.sofascore.com/api/v1/tournament/${item.id}/image`, { waitUntil: 'networkidle2', timeout: 10000 });
+                    if (resAlt && resAlt.status() === 200) {
+                        const bufAlt = await resAlt.buffer();
+                        if (bufAlt.length > 500) {
+                            fs.writeFileSync(targetPath, bufAlt);
+                            success = true;
+                        }
                     }
                 }
 
@@ -126,22 +134,30 @@ async function start() {
                     console.log(`   ✅ [İNDİRİLDİ] ${item.sport} ${item.type}: ${item.id}.png`);
                     totalDownloaded++;
                 } else {
-                    console.log(`   ❌ [HATA] ${item.sport} ${item.type}: ${item.id}.png (API'de bulunamadı)`);
-                    totalFailed++;
+                    // --- BURASI KRİTİK: API'DE YOKSA DEFAULT'U KOPYALA ---
+                    if (fs.existsSync(localDefaultPath)) {
+                        fs.copyFileSync(localDefaultPath, targetPath);
+                        console.log(`   ⚠️  [API BOŞ - DEFAULT ATANDI] ID: ${item.id} (${item.sport} ${item.type})`);
+                        totalDefaulted++;
+                    } else {
+                        console.log(`   ❌ [HATA] ID: ${item.id} bulunamadı ve ${item.dir} klasöründe default.png yok!`);
+                        totalFailed++;
+                    }
                 }
             } catch (e) {
                 console.log(`   ❌ [BAĞLANTI HATASI] ${item.id}.png: ${e.message}`);
                 totalFailed++;
             }
-            await new Promise(r => setTimeout(r, 1000)); // Rate limit koruması
+            await new Promise(r => setTimeout(r, 800));
         }
     }
 
     if (browser) await browser.close();
 
     console.log("\n--- İŞLEM ÖZETİ ---");
-    console.log(`✅ Başarıyla İndirilen: ${totalDownloaded}`);
-    console.log(`❌ Başarısız/Eksik: ${totalFailed}`);
+    console.log(`✅ İndirilen: ${totalDownloaded}`);
+    console.log(`⚠️  Default Yapılan: ${totalDefaulted}`);
+    console.log(`❌ Başarısız: ${totalFailed}`);
     console.log("-------------------\n");
 }
 
