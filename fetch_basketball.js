@@ -10,21 +10,42 @@ const REPO_NAME = "macsaati-backend";
 const BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/`;
 const OUTPUT_FILE = "matches_basketball.json";
 
+// --- ELİT OLARAK İŞARETLENECEK LİGLERİN LİSTESİ ---
+const ELITE_LEAGUE_IDS = [
+    3547, // NBA
+    138,  // EuroLeague
+    142,  // Eurocup
+    137,  // Basketbol Süper Ligi (BSL)
+    132,  // İspanya Basketbol Ligi (ACB)
+    167,  // FIBA Şampiyonlar Ligi
+    168   // EuroBasket (Avrupa Şampiyonası)
+];
+
 const leagueConfigs = {
-    3547: "S Sport / NBA TV",   // NBA
-    9357: "S Sport Plus",       // NCAA
-    138: "S Sport / S Sport Plus", 142: "S Sport Plus", 137: "TRT Spor / Tabii",
-    168: "TRT Spor Yıldız", 167: "S Sport Plus / FIBA TV", 132: "beIN Sports 5",
-    139: "beIN Sports / TRT Spor", 11511: "TRT Spor Yıldız / TBF TV",
-    21511: "TBF TV (YouTube)", 251: "S Sport Plus", 215: "S Sport Plus",
-    304: "S Sport Plus", 227: "beIN Sports", 164: "beIN Sports",
-    235: "S Sport Plus", 405: "beIN Sports"
+    3547: "S Sport / NBA TV",        // NBA
+    138: "S Sport / S Sport Plus",   // EuroLeague
+    142: "S Sport Plus",             // Eurocup
+    137: "TRT Spor / Tabii",         // Basketbol Süper Ligi
+    132: "beIN Sports 5",            // İspanya ACB
+    167: "S Sport Plus / FIBA TV",   // FIBA Şampiyonlar Ligi
+    168: "TRT Spor Yıldız",          // EuroBasket
+    9357: "S Sport Plus",            // NCAA
+    139: "beIN Sports / TRT Spor",   // Kadınlar Basketbol
+    11511: "TRT Spor Yıldız / TBF TV", 
+    21511: "TBF TV (YouTube)", 
+    251: "S Sport Plus", 
+    215: "S Sport Plus",
+    304: "S Sport Plus", 
+    227: "beIN Sports", 
+    164: "beIN Sports",
+    235: "S Sport Plus", 
+    405: "beIN Sports"
 };
 
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatıldı (Canlı Durumu ve Görsel Fix Aktif)...");
+    console.log("🏀 Basketbol motoru başlatıldı (Elit Lig Filtresi Aktif)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
@@ -61,14 +82,12 @@ async function start() {
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
-        // Sadece bugün ve yarının maçlarını listele
         if (dayStr !== trToday && dayStr !== trTomorrow) continue;
 
         const isNBA = (utId === 3547 || utName.toUpperCase() === "NBA");
         const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         if (duplicateTracker.has(matchKey)) continue;
 
-        // --- DURUM VE GÖRSEL TASARIM MANTIĞI ---
         const statusType = e.status?.type; 
         const isFinished = statusType === 'finished';
         const isInProgress = statusType === 'inprogress';
@@ -84,9 +103,10 @@ async function start() {
 
         finalMatches.push({
             id: e.id,
-            isElite: true, // Listemizde olan tüm basket ligleri elite sayılıyor
+            // --- AKILLI ELİT FİLTRESİ ---
+            isElite: ELITE_LEAGUE_IDS.includes(utId), 
             fixedDate: dayStr,
-            fixedTime: timeString, // Görseldeki gibi alt alta CANLI yazısı
+            fixedTime: timeString, 
             timestamp: dateTR.getTime(),
             broadcaster: leagueConfigs[utId] || "Resmi Yayıncı", 
             homeTeam: { 
@@ -98,11 +118,8 @@ async function start() {
                 logo: BASE_URL + "logos/" + (isNBA ? "NBA/" : "") + e.awayTeam.id + ".png" 
             },
             tournamentLogo: BASE_URL + "tournament_logos/" + (isNBA ? "3547" : utId) + ".png",
-            
-            // --- SADECE BİTTİYSE SKOR YAZ, YOKSA "VS" GİBİ "-" KOY ---
             homeScore: (isFinished && e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
             awayScore: (isFinished && e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
-            
             tournament: isNBA ? "NBA" : utName
         });
         duplicateTracker.add(matchKey);
