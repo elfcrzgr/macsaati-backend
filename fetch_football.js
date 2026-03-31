@@ -7,68 +7,33 @@ puppeteer.use(StealthPlugin());
 // --- GITHUB VE DOSYA AYARLARI ---
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
-const TEAM_FOLDER = "logos"; 
-const TOURNAMENT_FOLDER = "tournament_logos"; 
-
-const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/${TEAM_FOLDER}/`;
-const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/${TOURNAMENT_FOLDER}/`;
+const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
+const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const OUTPUT_FILE = "matches_football.json";
 
-// --- SENİN KİŞİSEL ELİT LİSTEN (Sadece bunlar isElite: true olacak) ---
-// --- SENİN KİŞİSEL ELİT LİSTEN (Hatalar Giderildi) ---
-const MY_PERSONAL_ELITE_IDS = [
-    52,    // Trendyol Süper Lig
-    351,   // Trendyol 1. Lig
-    17,    // İngiltere Premier Lig
-    8,     // İspanya La Liga
-    23,    // İtalya Serie A
-    35,    // Almanya Bundesliga 
-    11,    // Fransa Ligue 1
-    34,    // Portekiz Ligi
-    54,    // Hollanda Eredivisie
-    13,    // Belçika Ligi
-    98,    // Ziraat Türkiye Kupası
-    7,     // UEFA Şampiyonlar Ligi
-    750,   // UEFA Avrupa Ligi
-    10248, // UEFA Avrupa Konferans Ligi
-    10515, // UEFA Uluslar Ligi (A Milli)
-    844,   // Avrupa Şampiyonası (A Milli)
-    704,   // Dünya Kupası Elemeleri (A Milli)
-    238,   // Suudi Arabistan Profesyonel Ligi
-    938    // Yunanistan Süper Ligi
+// --- SADECE BUNLAR ELİT OLACAK (İsim bazlı kesin liste) ---
+const MY_ELITE_NAMES = [
+    "Süper Lig", "1. Lig", "Premier League", "LaLiga", "Serie A", "Bundesliga", "Ligue 1",
+    "Champions League", "Europa League", "Conference League", "Nations League", 
+    "World Championship Qual", "Euro", "Ziraat Türkiye Kupası", "Eredivisie", "Liga Portugal",
+    "Super League", "Saudi Pro League", "Major League Soccer"
 ];
 
-// --- TAKİP EDİLEN EKSTRA LİGLER (Zaten çekilecek olanlar) ---
-const EXTRA_TRACKED_IDS = [
-    10, 393, 242, 696, 10618, 10783, 97, 11415, 11416, 11417, 13363, 15938, 4664
-];
-
-// --- YAYINCI AYARLARI ---
-const getBroadcaster = (utId, hName, aName, utName) => {
-    const staticConfigs = {
-        52: "beIN Sports", 351: "TRT Spor / Tabii", 17: "beIN Sports", 8: "S Sport / S Sport Plus",
-        23: "S Sport / S Sport Plus", 7: "beIN Sports / Tivibu", 11: "beIN Sports", 34: "beIN Sports",
-        54: "S Sport Plus / TV+", 748: "TRT 1 / Tabii", 750: "TRT Spor / Tabii",
-        10248: "TRT Spor / Tabii", 10515: "TRT / Tabii", 98: "beIN Sports / TRT Spor",
-        238: "S Sport Plus", 242: "Apple TV", 938: "S Sport Plus", 704: "TRT / Tabii", 393: "CBC Sport"
-    };
-    if (staticConfigs[utId]) return staticConfigs[utId];
+// --- AKILLI YAYINCI MANTIĞI ---
+const getBroadcaster = (utName) => {
+    const name = utName.toLowerCase();
+    if (name.includes("süper lig")) return "beIN Sports";
+    if (name.includes("1. lig")) return "TRT Spor / Tabii";
+    if (name.includes("premier league")) return "beIN Sports";
+    if (name.includes("laliga") || name.includes("serie a")) return "S Sport / S Sport Plus";
+    if (name.includes("champions league") || name.includes("europa league") || name.includes("nations league") || name.includes("world championship")) return "TRT / Tabii";
+    if (name.includes("bundesliga")) return "beIN / Tivibu";
+    if (name.includes("saudi")) return "S Sport Plus";
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-// --- ÇEVİRİ MANTIĞI ---
-const teamTranslations = { "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere", "spain": "İspanya", "italy": "İtalya" };
-const translateTeam = (name) => {
-    if (!name) return name;
-    const cleanSearch = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
-    for (const [eng, tr] of Object.entries(teamTranslations)) {
-        if (cleanSearch.includes(eng)) return name.replace(new RegExp(eng, 'i'), tr);
-    }
-    return name;
-};
-
 async function start() {
-    console.log("🚀 MAÇ SAATİ: HİBRİT ELİT MOTORU ÇALIŞIYOR...");
+    console.log("🚀 MAÇ SAATİ: SADELEŞTİRİLMİŞ AKILLI MOTOR BAŞLATILDI...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
 
@@ -87,52 +52,48 @@ async function start() {
             await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             if (data && data.events) {
-                // ÇEKME AŞAMASI: Hem bizim listedekiler hem de SofaScore'un önemli dedikleri gelsin
+                // SofaScore'un genel önceliğine göre tüm önemli maçları çek
                 const filtered = data.events.filter(e => {
-                    const ut = e.tournament?.uniqueTournament;
-                    if (!ut) return false;
-                    const utId = ut.id;
-                    return MY_PERSONAL_ELITE_IDS.includes(utId) || 
-                           EXTRA_TRACKED_IDS.includes(utId) || 
-                           ut.priority > 40; // Gürcistan, U19 vb. buradan girer
+                    const ut = e.tournament?.uniqueTournament || e.tournament;
+                    return ut && ut.priority > 40; 
                 });
                 allEvents = allEvents.concat(filtered);
             }
-        } catch (e) { console.error(`Hata: ${date}`); }
+        } catch (e) { console.error(`${date} tarihinde hata oluştu.`); }
     }
 
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
-        const ut = e.tournament?.uniqueTournament;
+        const ut = e.tournament?.uniqueTournament || e.tournament;
         if (!ut) continue;
         
         const utId = ut.id;
+        const utName = ut.name || "";
         const matchKey = `${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         const dateTR = new Date(e.startTimestamp * 1000);
         
+        // --- ELİT KONTROLÜ (SADECE İSME BAKAR) ---
+        // Eğer turnuva adı senin MY_ELITE_NAMES listendeki kelimelerden birini içeriyorsa TRUE, yoksa FALSE.
+        const isElite = MY_ELITE_NAMES.some(kw => utName.includes(kw));
+
         const statusType = e.status?.type; 
         const isFinished = statusType === 'finished';
-        const isInProgress = statusType === 'inprogress';
-
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
-        if (isInProgress) timeString = `${timeString}\nCANLI`;
+        if (statusType === 'inprogress') timeString += "\nCANLI";
 
         finalMatchesMap.set(matchKey, {
             id: e.id,
-            // --- İŞARETLEME AŞAMASI: Sadece senin listen true olur ---
-            // Gürcistan maçı listeye girer ama isElite false kalır.
-            isElite: MY_PERSONAL_ELITE_IDS.includes(utId), 
-            
+            isElite: isElite, 
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
-            broadcaster: getBroadcaster(utId, e.homeTeam.name, e.awayTeam.name, ut.name), 
-            homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
-            awayTeam: { name: translateTeam(e.awayTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
+            broadcaster: getBroadcaster(utName), 
+            homeTeam: { name: e.homeTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
+            awayTeam: { name: e.awayTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
             homeScore: isFinished ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: isFinished ? String(e.awayScore?.display ?? "0") : "-",
-            tournament: ut.name
+            tournament: utName
         });
     }
 
