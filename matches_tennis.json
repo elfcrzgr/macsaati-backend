@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-01T14:01:14.754Z",
-  "totalMatches": 222,
+  "lastUpdated": "2026-04-01T14:12:52.138Z",
+  "totalMatches": 220,
   "matches": [
     {
       "id": 15918405,
@@ -329,31 +329,6 @@
       "tournament": "ITF M25 Heraklion 2 Men"
     },
     {
-      "id": 15918403,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-01",
-      "fixedTime": "14:42\nCANLI",
-      "timestamp": 1775043739000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Rositsa Dencheva (511)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jennifer Ruggeri (267)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25831.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF W35 Santa Margherita di Pula Women"
-    },
-    {
       "id": 15894077,
       "isElite": false,
       "status": "inprogress",
@@ -583,33 +558,6 @@
       "tournament": "Marrakech, Morocco, Doubles"
     },
     {
-      "id": 15899642,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-01",
-      "fixedTime": "15:40\nCANLI",
-      "timestamp": 1775047200000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Fellin P / Moroni F",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hands T / Schell N",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3477.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Barletta, Italy, Doubles"
-    },
-    {
       "id": 15917685,
       "isElite": false,
       "status": "inprogress",
@@ -714,31 +662,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Menorca, Spain"
-    },
-    {
-      "id": 15917561,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-01",
-      "fixedTime": "15:52\nCANLI",
-      "timestamp": 1775047945000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Dmitry Bessonov (1336)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/default.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Daniel Siniakov (614)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25818.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF M15 Sharm El Sheikh 10 Men"
     },
     {
       "id": 15918416,
@@ -995,6 +918,56 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "UTR PTT Carvoeiro Women +H 05, Group D"
+    },
+    {
+      "id": 15881167,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-01",
+      "fixedTime": "17:00\nCANLI",
+      "timestamp": 1775052000000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Gabriel Diallo (36)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Alex Molčan (189)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bucharest, Romania"
+    },
+    {
+      "id": 15901167,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-01",
+      "fixedTime": "17:05\nCANLI",
+      "timestamp": 1775052300000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Maximilian Borisov",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Pavel Lagutin (830)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/27333.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Carvoeiro Men +H 05, Group A"
     },
     {
       "id": 15917557,
@@ -4161,31 +4134,6 @@
       "homeScore": "2",
       "awayScore": "0",
       "tournament": "Marrakech, Morocco"
-    },
-    {
-      "id": 15881167,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-01",
-      "fixedTime": "17:00\nBAŞLAMADI",
-      "timestamp": 1775052000000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Gabriel Diallo (36)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alex Molčan (189)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bucharest, Romania"
     },
     {
       "id": 15899772,
