@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-01T01:01:16.812Z",
-  "totalMatches": 183,
+  "lastUpdated": "2026-04-01T01:31:05.108Z",
+  "totalMatches": 187,
   "matches": [
     {
       "id": 15906582,
@@ -27,58 +27,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "UTR PTT Nashville Men +H 01, Group A"
-    },
-    {
-      "id": 15903144,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-01",
-      "fixedTime": "02:00\nCANLI",
-      "timestamp": 1774998000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Stefan Kozlov (260)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alan Magadan (750)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3820.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "San Luis Potosi, Mexico"
-    },
-    {
-      "id": 15902854,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-01",
-      "fixedTime": "02:40\nCANLI",
-      "timestamp": 1775000400000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Fernandez L / Mladenovic K",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Bondar A / Frech M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Charleston, USA, Doubles"
     },
     {
       "id": 15906283,
@@ -281,6 +229,156 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA"
+    },
+    {
+      "id": 15897171,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-01",
+      "fixedTime": "03:55\nCANLI",
+      "timestamp": 1775004900000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Alexei Popyrin (45)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Patrick Kypson (96)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
+    },
+    {
+      "id": 15915602,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-01",
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775005200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Hikaru Shiraishi (482)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Elias Julian Werner (1404)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25820.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "ITF M15 Kashiwa Men"
+    },
+    {
+      "id": 15915606,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-01",
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775005200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Kosuke Shibano",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jumpei Yamasaki (902)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25820.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "ITF M15 Kashiwa Men"
+    },
+    {
+      "id": 15915604,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-01",
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775005200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Sam Ryan Ziegann (1024)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Geun Jun Kim (1039)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kr.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25820.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "ITF M15 Kashiwa Men"
+    },
+    {
+      "id": 15915603,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-01",
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775005200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Shinji Hazawa (805)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Taketo Takamisawa (1224)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25820.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "ITF M15 Kashiwa Men"
+    },
+    {
+      "id": 15916253,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-01",
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775005200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Yuta Kawahashi (648)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Toshihide Matsui",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25820.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "ITF M15 Kashiwa Men"
     },
     {
       "id": 15905719,
@@ -2931,29 +3029,31 @@
       "tournament": "Bogota, Colombia"
     },
     {
-      "id": 15897171,
+      "id": 15902854,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-01",
-      "fixedTime": "03:55\nBAŞLAMADI",
-      "timestamp": 1775004900000,
-      "broadcaster": "S Sport / S Sport Plus",
+      "fixedTime": "02:40\nMS",
+      "timestamp": 1775000400000,
+      "broadcaster": "beIN Sports",
       "homeTeam": {
-        "name": "Alexei Popyrin (45)",
+        "name": "Fernandez L / Mladenovic K",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
         ]
       },
       "awayTeam": {
-        "name": "Patrick Kypson (96)",
+        "name": "Bondar A / Frech M",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
+      "homeScore": "1",
+      "awayScore": "2",
+      "tournament": "Charleston, USA, Doubles"
     },
     {
       "id": 15906158,
