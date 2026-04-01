@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-01T11:31:33.794Z",
+  "lastUpdated": "2026-04-01T12:01:32.329Z",
   "totalMatches": 190,
   "matches": [
     {
@@ -307,7 +307,7 @@
       "id": 15345919,
       "isElite": false,
       "fixedDate": "2026-04-01",
-      "fixedTime": "13:00\nCANLI",
+      "fixedTime": "13:00",
       "timestamp": 1775037600000,
       "broadcaster": "YouTube (J.League Int.)",
       "homeTeam": {
@@ -319,15 +319,15 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3147.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/196.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "3",
       "tournament": "J1 League"
     },
     {
       "id": 15342056,
       "isElite": false,
       "fixedDate": "2026-04-01",
-      "fixedTime": "13:00\nCANLI",
+      "fixedTime": "13:00",
       "timestamp": 1775037600000,
       "broadcaster": "YouTube (J.League Int.)",
       "homeTeam": {
@@ -339,8 +339,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3133.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/196.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "0",
       "tournament": "J1 League"
     },
     {
@@ -1384,26 +1384,6 @@
       "tournament": "Liga Profesional de Fútbol"
     },
     {
-      "id": 15525996,
-      "isElite": false,
-      "fixedDate": "2026-04-02",
-      "fixedTime": "23:30",
-      "timestamp": 1775161800000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "São Bernardo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/47504.png"
-      },
-      "awayTeam": {
-        "name": "Operário-PR",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/39634.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/390.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Brasileirão Série B"
-    },
-    {
       "id": 15353010,
       "isElite": false,
       "fixedDate": "2026-04-03",
@@ -1482,6 +1462,26 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Brasileirão Betano"
+    },
+    {
+      "id": 15525996,
+      "isElite": false,
+      "fixedDate": "2026-04-03",
+      "fixedTime": "01:00",
+      "timestamp": 1775167200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "São Bernardo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/47504.png"
+      },
+      "awayTeam": {
+        "name": "Operário-PR",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/39634.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/390.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Série B"
     },
     {
       "id": 15362607,
