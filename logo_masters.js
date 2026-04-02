@@ -32,7 +32,7 @@ const configs = [
     }
 ];
 
-// Klasör kontrolü ve oluşturma
+// Klasörleri kontrol et ve yoksa oluştur
 configs.forEach(conf => {
     Object.values(conf.dirs).forEach(dir => {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -54,14 +54,24 @@ async function start() {
         const json = JSON.parse(fs.readFileSync(conf.file, 'utf8'));
         const missing = [];
 
-        // Logoları listeye ekleyen yardımcı fonksiyon
         const addLogoToMissing = (url, name, type, tournamentName) => {
             if (!url) return;
-            // ?v=123 gibi parametreleri temizle ve ID'yi al
             const id = url.split('?')[0].split('/').pop().replace('.png', '');
-            if (!id || id === 'default') return;
+            
+            // 🔥 GÜVENLİK BARİYERİ: Hatalı linkleri engelle
+            if (!id || id === 'default' || id === 'undefined' || id === 'null') return;
 
-            const targetDir = conf.name === 'Tenis' && type === 'Logo' ? path.join(__dirname, 'tennis', 'logos') : (type === 'Turnuva' ? conf.dirs.tournament : conf.dirs.team);
+            // 🔥 KLASÖR YOLUNU AKILLI SEÇME MANTIĞI (NBA DÜZELTİLDİ)
+            let targetDir;
+            if (conf.name === 'Tenis' && type === 'Logo') {
+                targetDir = path.join(__dirname, 'tennis', 'logos');
+            } else if (conf.name === 'Basketbol' && type === 'Logo' && tournamentName === 'NBA') {
+                targetDir = conf.dirs.nba; 
+            } else if (type === 'Turnuva') {
+                targetDir = conf.dirs.tournament;
+            } else {
+                targetDir = conf.dirs.team;
+            }
             
             if (!fs.existsSync(path.join(targetDir, `${id}.png`))) {
                 if (!missing.find(x => x.id === id && x.type === type)) {
@@ -70,28 +80,27 @@ async function start() {
             }
         };
 
-        // Bütün maçları tara
         json.matches.forEach(m => {
             const tName = m.tournament || "Bilinmiyor Turnuva";
 
-            // --- EV SAHİBİ KONTROLLERİ ---
+            // Ev Sahibi
             const hName = m.homeTeam?.name || m.homeName || "Bilinmiyor Takım";
             if (m.homeTeam && Array.isArray(m.homeTeam.logos)) m.homeTeam.logos.forEach(l => addLogoToMissing(l, hName, 'Logo', tName));
             if (m.homeTeam && typeof m.homeTeam.logo === 'string') addLogoToMissing(m.homeTeam.logo, hName, 'Logo', tName);
             if (typeof m.homeLogo === 'string') addLogoToMissing(m.homeLogo, hName, 'Logo', tName);
 
-            // --- DEPLASMAN KONTROLLERİ ---
+            // Deplasman
             const aName = m.awayTeam?.name || m.awayName || "Bilinmiyor Takım";
             if (m.awayTeam && Array.isArray(m.awayTeam.logos)) m.awayTeam.logos.forEach(l => addLogoToMissing(l, aName, 'Logo', tName));
             if (m.awayTeam && typeof m.awayTeam.logo === 'string') addLogoToMissing(m.awayTeam.logo, aName, 'Logo', tName);
             if (typeof m.awayLogo === 'string') addLogoToMissing(m.awayLogo, aName, 'Logo', tName);
 
-            // --- TURNUVA LOGOSU KONTROLÜ ---
+            // Turnuva Logosu
             if (m.tournamentLogo) addLogoToMissing(m.tournamentLogo, tName, 'Turnuva', tName);
         });
 
         if (missing.length === 0) {
-            console.log(`✅ [${conf.name}] Bütün logolar klasörde zaten mevcut. (Eksik yok)`);
+            console.log(`✅ [${conf.name}] Bütün logolar klasörde mevcut.`);
             continue;
         }
 
@@ -101,9 +110,11 @@ async function start() {
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
         }
 
-        console.log(`\n🔍 [${conf.name}] Klasörde olmayan ${missing.length} adet yeni görsel tespit edildi, indirme başlıyor...\n`);
+        console.log(`\n🔍 [${conf.name}] ${missing.length} adet yeni görsel indiriliyor...\n`);
 
+        let currentCount = 0;
         for (const item of missing) {
+            currentCount++;
             const targetPath = path.join(item.dir, `${item.id}.png`);
             const localDefaultPath = path.join(item.dir, 'default.png'); 
 
@@ -113,7 +124,7 @@ async function start() {
                     ? `https://api.sofascore.com/api/v1/unique-tournament/${item.id}/image`
                     : `https://api.sofascore.com/api/v1/team/${item.id}/image`;
 
-                const res = await page.goto(apiUrl, { waitUntil: 'networkidle2', timeout: 10000 });
+                const res = await page.goto(apiUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
                 if (res && res.status() === 200) {
                     const buf = await res.buffer();
                     if (buf.length > 500) {
@@ -122,9 +133,8 @@ async function start() {
                     }
                 }
 
-                // Turnuva için ikinci API denemesi (Unique API patlarsa normal Tournament API dener)
                 if (!success && item.type === 'Turnuva') {
-                    const resAlt = await page.goto(`https://api.sofascore.com/api/v1/tournament/${item.id}/image`, { waitUntil: 'networkidle2', timeout: 10000 });
+                    const resAlt = await page.goto(`https://api.sofascore.com/api/v1/tournament/${item.id}/image`, { waitUntil: 'domcontentloaded', timeout: 10000 });
                     if (resAlt && resAlt.status() === 200) {
                         const bufAlt = await resAlt.buffer();
                         if (bufAlt.length > 500) {
@@ -134,28 +144,26 @@ async function start() {
                     }
                 }
 
-                // LOG EKRANI (Açıklamalı)
-                const logInfo = `ID: ${item.id} | İsim: ${item.name} (${item.type}) | Lig: ${item.tournamentName}`;
+                const logInfo = `[${currentCount}/${missing.length}] ID: ${item.id} | ${item.name} (${item.type})`;
 
                 if (success) {
-                    console.log(`   ✅ [BAŞARILI] ${logInfo}`);
+                    console.log(`   ✅ [İNDİ] ${logInfo}`);
                     totalDownloaded++;
                 } else {
                     if (fs.existsSync(localDefaultPath)) {
                         fs.copyFileSync(localDefaultPath, targetPath);
-                        console.log(`   ⚠️  [DEFAULT ATANDI] ${logInfo} -> API'den logo gelmedi, yerine default eklendi.`);
+                        console.log(`   ⚠️  [DEFAULT] ${logInfo}`);
                         totalDefaulted++;
                     } else {
-                        console.log(`   ❌ [HATA - KOPYA YOK] ${logInfo} -> Ne API'de var, ne de klasörde default.png yedek dosyası var!`);
+                        console.log(`   ❌ [HATA] ${logInfo}`);
                         totalFailed++;
                     }
                 }
             } catch (e) {
-                console.log(`   ❌ [BAĞLANTI HATASI] ID: ${item.id} | İsim: ${item.name} | Hata: ${e.message}`);
+                console.log(`   ❌ [BAĞLANTI] [${currentCount}/${missing.length}] ID: ${item.id} | ${item.name}`);
                 totalFailed++;
             }
-            // Puppeteer banlanmasın diye her logo arası 800 milisaniye bekle
-            await new Promise(r => setTimeout(r, 800));
+            await new Promise(r => setTimeout(r, 300));
         }
     }
 
@@ -164,9 +172,9 @@ async function start() {
     console.log("\n===================================");
     console.log("📊 İŞLEM ÖZETİ");
     console.log("===================================");
-    console.log(`✅ Gerçek Logo İndirilen : ${totalDownloaded}`);
-    console.log(`⚠️  Default Logo Atanan    : ${totalDefaulted}`);
-    console.log(`❌ İşlem Yapılamayan      : ${totalFailed}`);
+    console.log(`✅ İndirilen : ${totalDownloaded}`);
+    console.log(`⚠️  Default   : ${totalDefaulted}`);
+    console.log(`❌ Başarısız : ${totalFailed}`);
     console.log("===================================\n");
 }
 
