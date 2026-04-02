@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-02T14:01:24.681Z",
-  "totalMatches": 191,
+  "lastUpdated": "2026-04-02T14:05:05.944Z",
+  "totalMatches": 192,
   "matches": [
     {
       "id": 15918425,
@@ -752,6 +752,31 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Menorca, Spain, Doubles"
+    },
+    {
+      "id": 15927518,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-02",
+      "fixedTime": "17:00\nCANLI",
+      "timestamp": 1775138400000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Justin Engel (186)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Inaki Montes-de la Torre (345)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25747.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Menorca, Spain"
     },
     {
       "id": 15900253,
@@ -3859,31 +3884,6 @@
       "tournament": "Bucharest, Romania, Doubles"
     },
     {
-      "id": 15888860,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "16:15\nBAŞLAMADI",
-      "timestamp": 1775135700000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Ignacio Buse (59)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pe.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Camilo Ugo Carabelli (67)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Marrakech, Morocco"
-    },
-    {
       "id": 15881152,
       "isElite": false,
       "status": "notstarted",
@@ -3934,23 +3934,23 @@
       "tournament": "Bucharest, Romania"
     },
     {
-      "id": 15888864,
+      "id": 15888860,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-02",
-      "fixedTime": "17:25",
-      "timestamp": 1775139900000,
+      "fixedTime": "17:20",
+      "timestamp": 1775139600000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
-        "name": "Luca Van Assche (109)",
+        "name": "Ignacio Buse (59)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pe.png"
         ]
       },
       "awayTeam": {
-        "name": "Tallon Griekspoor (30)",
+        "name": "Camilo Ugo Carabelli (67)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
@@ -3961,9 +3961,9 @@
     {
       "id": 15880826,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-02",
-      "fixedTime": "17:30",
+      "fixedTime": "17:30\nMS",
       "timestamp": 1775140200000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
@@ -3981,8 +3981,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6795.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "tournament": "Marrakech, Morocco, Doubles"
     },
     {
@@ -4034,6 +4034,31 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA"
+    },
+    {
+      "id": 15888864,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-02",
+      "fixedTime": "18:20",
+      "timestamp": 1775143200000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Luca Van Assche (109)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Tallon Griekspoor (30)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/6794.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Marrakech, Morocco"
     },
     {
       "id": 15886712,
