@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-02T12:01:31.829Z",
-  "totalMatches": 199,
+  "lastUpdated": "2026-04-02T12:09:41.062Z",
+  "totalMatches": 198,
   "matches": [
     {
       "id": 15918411,
@@ -131,31 +131,6 @@
       "tournament": "ITF M25 Maanshan Men"
     },
     {
-      "id": 15918423,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "12:28\nCANLI",
-      "timestamp": 1775122103000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Alejandro Turriziani Alvarez (812)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Aziz Ouakaa (625)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25557.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF M15 Monastir 11 Men"
-    },
-    {
       "id": 15911858,
       "isElite": false,
       "status": "inprogress",
@@ -179,56 +154,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Barletta, Italy"
-    },
-    {
-      "id": 15900284,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "12:35\nCANLI",
-      "timestamp": 1775122500000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Josh Manuel",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Felix Romeo",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/27333.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "UTR PTT Carvoeiro Men +H 05, Group C"
-    },
-    {
-      "id": 15927790,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "12:36\nCANLI",
-      "timestamp": 1775122590000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Evgeny Karlovskiy (1087)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Robert Strombachs (459)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25818.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF M15 Sharm El Sheikh 10 Men"
     },
     {
       "id": 15927521,
@@ -945,6 +870,56 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Menorca, Spain, Doubles"
+    },
+    {
+      "id": 15893972,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-02",
+      "fixedTime": "14:55\nCANLI",
+      "timestamp": 1775130900000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Oscar Brown",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Vitek Horak",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/27333.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Carvoeiro Men +H 05, Group B"
+    },
+    {
+      "id": 15894139,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-02",
+      "fixedTime": "15:00\nCANLI",
+      "timestamp": 1775131200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Nela Charvatova",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Denise Hrdinkova",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30657.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Trnava Women 03, Group D"
     },
     {
       "id": 15917684,
@@ -3979,7 +3954,7 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-02",
-      "fixedTime": "15:05",
+      "fixedTime": "15:05\nBAŞLAMADI",
       "timestamp": 1775131500000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
