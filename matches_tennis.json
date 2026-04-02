@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-02T00:01:14.972Z",
-  "totalMatches": 164,
+  "lastUpdated": "2026-04-02T00:31:01.632Z",
+  "totalMatches": 165,
   "matches": [
     {
       "id": 15921060,
@@ -52,31 +52,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "ITF W35 Jackson, MS Women"
-    },
-    {
-      "id": 15929515,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "01:05\nCANLI",
-      "timestamp": 1775081100000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Yuliia Starodubtseva (89)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Ekaterine Gorgodze (164)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Charleston, USA"
     },
     {
       "id": 15921145,
@@ -235,6 +210,85 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "San Luis Potosi, Mexico, Doubles"
+    },
+    {
+      "id": 15886658,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-02",
+      "fixedTime": "03:05\nCANLI",
+      "timestamp": 1775088300000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Hailey Baptiste (33)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Renata Zarazua (85)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Charleston, USA"
+    },
+    {
+      "id": 15900520,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-02",
+      "fixedTime": "03:05\nCANLI",
+      "timestamp": 1775088300000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Sakamoto P / Schiessl J E",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Dellien M / Villanueva G",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bo.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4192.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Sao Leopoldo, Brazil, Doubles"
+    },
+    {
+      "id": 15886688,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-02",
+      "fixedTime": "03:15\nCANLI",
+      "timestamp": 1775088900000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Brady J / Routliffe E",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Kato M / Olmos G",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Charleston, USA, Doubles"
     },
     {
       "id": 15917684,
@@ -3034,55 +3088,28 @@
       "tournament": "Charleston, USA"
     },
     {
-      "id": 15886688,
+      "id": 15929515,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-02",
-      "fixedTime": "02:30\nBAŞLAMADI",
-      "timestamp": 1775086200000,
+      "fixedTime": "01:05\nMS",
+      "timestamp": 1775081100000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
-        "name": "Brady J / Routliffe E",
+        "name": "Yuliia Starodubtseva (89)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
         ]
       },
       "awayTeam": {
-        "name": "Kato M / Olmos G",
+        "name": "Ekaterine Gorgodze (164)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Charleston, USA, Doubles"
-    },
-    {
-      "id": 15886658,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "02:55\nBAŞLAMADI",
-      "timestamp": 1775087700000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Hailey Baptiste (33)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Renata Zarazua (85)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "1",
       "tournament": "Charleston, USA"
     },
     {
@@ -3090,8 +3117,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-02",
-      "fixedTime": "03:10",
-      "timestamp": 1775088600000,
+      "fixedTime": "03:40",
+      "timestamp": 1775090400000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
         "name": "Adolfo Daniel Vallejo (101)",
@@ -3598,31 +3625,6 @@
       "tournament": "Charleston, USA"
     },
     {
-      "id": 15880849,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "20:00",
-      "timestamp": 1775149200000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Rinky Hijikata (102)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Frances Tiafoe (18)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
-    },
-    {
       "id": 15880897,
       "isElite": false,
       "status": "notstarted",
@@ -3985,6 +3987,31 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA"
+    },
+    {
+      "id": 15880849,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-03",
+      "fixedTime": "02:00",
+      "timestamp": 1775170800000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Rinky Hijikata (102)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Frances Tiafoe (18)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
     },
     {
       "id": 15886674,
