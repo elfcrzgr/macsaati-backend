@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-02T03:01:19.915Z",
-  "totalMatches": 181,
+  "lastUpdated": "2026-04-02T03:16:34.034Z",
+  "totalMatches": 180,
   "matches": [
     {
       "id": 15921061,
@@ -56,37 +56,12 @@
       "tournament": "ITF W35 Jackson, MS Women Doubles"
     },
     {
-      "id": 15925397,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "04:09\nCANLI",
-      "timestamp": 1775092176000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Taiyo Yamanaka (826)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Moerani Bouzige (463)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25820.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF M15 Kashiwa Men"
-    },
-    {
       "id": 15925395,
       "isElite": false,
       "status": "inprogress",
       "fixedDate": "2026-04-02",
-      "fixedTime": "04:11\nCANLI",
-      "timestamp": 1775092285000,
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775091600000,
       "broadcaster": "S Sport / Eurosport",
       "homeTeam": {
         "name": "Hikaru Shiraishi (482)",
@@ -181,31 +156,6 @@
       "tournament": "UTR PTT Newport Beach Men 07, Group B"
     },
     {
-      "id": 15896493,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-02",
-      "fixedTime": "04:30\nCANLI",
-      "timestamp": 1775093400000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Tej Bhagra",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alessandro-Damiano Ventre",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/26535.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "UTR PTT Newport Beach Men 07, Group D"
-    },
-    {
       "id": 15886416,
       "isElite": false,
       "status": "inprogress",
@@ -279,6 +229,31 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Miyazaki, Japan"
+    },
+    {
+      "id": 15925398,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-02",
+      "fixedTime": "05:00\nCANLI",
+      "timestamp": 1775095200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Hunter Heck (820)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Emile Hudd (660)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25820.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "ITF M15 Kashiwa Men"
     },
     {
       "id": 15925698,
