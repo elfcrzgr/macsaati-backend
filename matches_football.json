@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-03T11:01:32.445Z",
+  "lastUpdated": "2026-04-03T11:31:32.180Z",
   "totalMatches": 493,
   "matches": [
     {
@@ -307,7 +307,7 @@
       "id": 15217124,
       "isElite": false,
       "fixedDate": "2026-04-03",
-      "fixedTime": "14:00",
+      "fixedTime": "14:00\nCANLI",
       "timestamp": 1775214000000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -347,7 +347,7 @@
       "id": 14059932,
       "isElite": false,
       "fixedDate": "2026-04-03",
-      "fixedTime": "14:30",
+      "fixedTime": "14:30\nCANLI",
       "timestamp": 1775215800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -367,7 +367,7 @@
       "id": 14138593,
       "isElite": true,
       "fixedDate": "2026-04-03",
-      "fixedTime": "14:30",
+      "fixedTime": "14:30\nCANLI",
       "timestamp": 1775215800000,
       "broadcaster": "beIN Sports / TRT Spor",
       "homeTeam": {
@@ -5984,26 +5984,6 @@
       "tournament": "2. Bundesliga"
     },
     {
-      "id": 15362604,
-      "isElite": false,
-      "fixedDate": "2026-04-04",
-      "fixedTime": "21:30",
-      "timestamp": 1775327400000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Rayo Zuliano",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/386310.png"
-      },
-      "awayTeam": {
-        "name": "Trujillanos FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6235.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/231.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Liga FUTVE"
-    },
-    {
       "id": 15362728,
       "isElite": false,
       "fixedDate": "2026-04-04",
@@ -6222,6 +6202,26 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Liga Portugal Betclic"
+    },
+    {
+      "id": 15362604,
+      "isElite": false,
+      "fixedDate": "2026-04-04",
+      "fixedTime": "22:30",
+      "timestamp": 1775331000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Rayo Zuliano",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/386310.png"
+      },
+      "awayTeam": {
+        "name": "Trujillanos FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6235.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/231.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga FUTVE"
     },
     {
       "id": 15285682,
@@ -6624,26 +6624,6 @@
       "tournament": "USL League One"
     },
     {
-      "id": 15362608,
-      "isElite": false,
-      "fixedDate": "2026-04-05",
-      "fixedTime": "01:30",
-      "timestamp": 1775341800000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Academia Puerto Cabello",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/230725.png"
-      },
-      "awayTeam": {
-        "name": "Deportivo Táchira",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6231.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/231.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Liga FUTVE"
-    },
-    {
       "id": 15388454,
       "isElite": false,
       "fixedDate": "2026-04-05",
@@ -6982,6 +6962,26 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Brasileirão Série B"
+    },
+    {
+      "id": 15362608,
+      "isElite": false,
+      "fixedDate": "2026-04-05",
+      "fixedTime": "02:30",
+      "timestamp": 1775345400000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Academia Puerto Cabello",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/230725.png"
+      },
+      "awayTeam": {
+        "name": "Deportivo Táchira",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6231.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/231.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga FUTVE"
     },
     {
       "id": 15909176,
