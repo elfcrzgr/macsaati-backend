@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-03T21:31:21.480Z",
+  "lastUpdated": "2026-04-03T22:00:09.355Z",
   "totalMatches": 498,
   "matches": [
     {
@@ -27,7 +27,7 @@
       "id": 15362605,
       "isElite": false,
       "fixedDate": "2026-04-04",
-      "fixedTime": "00:30",
+      "fixedTime": "00:30\nCANLI",
       "timestamp": 1775251800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -4864,26 +4864,6 @@
       "tournament": "NWSL"
     },
     {
-      "id": 15239007,
-      "isElite": false,
-      "fixedDate": "2026-04-05",
-      "fixedTime": "04:00",
-      "timestamp": 1775350800000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Club León",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36534.png"
-      },
-      "awayTeam": {
-        "name": "Atlas FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1949.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Liga MX, Clausura"
-    },
-    {
       "id": 15714337,
       "isElite": false,
       "fixedDate": "2026-04-05",
@@ -4957,6 +4937,26 @@
       "awayTeam": {
         "name": "CF Pachuca",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1936.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga MX, Clausura"
+    },
+    {
+      "id": 15239007,
+      "isElite": false,
+      "fixedDate": "2026-04-05",
+      "fixedTime": "04:06",
+      "timestamp": 1775351160000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Club León",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36534.png"
+      },
+      "awayTeam": {
+        "name": "Atlas FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1949.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
       "homeScore": "-",
