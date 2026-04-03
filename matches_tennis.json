@@ -1,33 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-03T23:31:01.156Z",
-  "totalMatches": 122,
+  "lastUpdated": "2026-04-03T23:43:14.226Z",
+  "totalMatches": 121,
   "matches": [
-    {
-      "id": 15880836,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "00:45\nCANLI",
-      "timestamp": 1775252700000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Tomas Martin Etcheverry (31)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Tommy Paul (21)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
-    },
     {
       "id": 15886649,
       "isElite": false,
@@ -52,58 +27,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA"
-    },
-    {
-      "id": 15886725,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "01:10\nCANLI",
-      "timestamp": 1775254200000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Panna Udvardy (92)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Katarzyna Kawa (132)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bogota, Colombia"
-    },
-    {
-      "id": 15945472,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "01:15\nCANLI",
-      "timestamp": 1775254500000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Collins K / Tanguilig C",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Kononova M / Okalova M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25834.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF W35 Jackson, MS Women Doubles"
     },
     {
       "id": 15946058,
@@ -1594,6 +1517,56 @@
       "tournament": "Bogota, Colombia"
     },
     {
+      "id": 15880836,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "00:45\nMS",
+      "timestamp": 1775252700000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Tomas Martin Etcheverry (31)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Tommy Paul (21)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "0",
+      "awayScore": "2",
+      "tournament": "Houston, USA"
+    },
+    {
+      "id": 15886725,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "01:10\nMS",
+      "timestamp": 1775254200000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Panna Udvardy (92)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Katarzyna Kawa (132)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "tournament": "Bogota, Colombia"
+    },
+    {
       "id": 15880903,
       "isElite": false,
       "status": "finished",
@@ -1619,31 +1592,6 @@
       "homeScore": "2",
       "awayScore": "0",
       "tournament": "Houston, USA, Doubles"
-    },
-    {
-      "id": 15880844,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "02:30\nBAŞLAMADI",
-      "timestamp": 1775259000000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Alexei Popyrin (45)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Frances Tiafoe (18)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
     },
     {
       "id": 15886694,
@@ -1673,12 +1621,37 @@
       "tournament": "Charleston, USA, Doubles"
     },
     {
+      "id": 15880844,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "02:40\nBAŞLAMADI",
+      "timestamp": 1775259600000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Alexei Popyrin (45)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Frances Tiafoe (18)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
+    },
+    {
       "id": 15880901,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-04",
-      "fixedTime": "03:40",
-      "timestamp": 1775263200000,
+      "fixedTime": "03:50",
+      "timestamp": 1775263800000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
         "name": "Luz O / Matos R",
