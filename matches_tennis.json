@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-02T23:43:41.849Z",
-  "totalMatches": 113,
+  "lastUpdated": "2026-04-03T00:01:09.187Z",
+  "totalMatches": 114,
   "matches": [
     {
       "id": 15935994,
@@ -52,56 +52,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "UTR PTT Nashville Women +H 01, 5-8 Playoffs"
-    },
-    {
-      "id": 15886711,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-03",
-      "fixedTime": "00:20\nCANLI",
-      "timestamp": 1775164800000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Varvara Lepchenko (155)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jessica Bouzas Maneiro (48)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bogota, Colombia"
-    },
-    {
-      "id": 15880848,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-03",
-      "fixedTime": "00:30\nCANLI",
-      "timestamp": 1775165400000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Learner Tien (22)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Nishesh Basavareddy (193)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
     },
     {
       "id": 15886662,
@@ -2083,6 +2033,56 @@
       "tournament": "Charleston, USA, Doubles"
     },
     {
+      "id": 15886711,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-03",
+      "fixedTime": "00:20\nMS",
+      "timestamp": 1775164800000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Varvara Lepchenko (155)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jessica Bouzas Maneiro (48)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "2",
+      "awayScore": "1",
+      "tournament": "Bogota, Colombia"
+    },
+    {
+      "id": 15880848,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-03",
+      "fixedTime": "00:30\nMS",
+      "timestamp": 1775165400000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Learner Tien (22)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Nishesh Basavareddy (193)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "2",
+      "awayScore": "1",
+      "tournament": "Houston, USA"
+    },
+    {
       "id": 15886760,
       "isElite": false,
       "status": "finished",
@@ -2114,8 +2114,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-03",
-      "fixedTime": "03:00",
-      "timestamp": 1775174400000,
+      "fixedTime": "02:50\nBAŞLAMADI",
+      "timestamp": 1775173800000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
         "name": "Rinky Hijikata (102)",
@@ -2139,8 +2139,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-03",
-      "fixedTime": "03:00",
-      "timestamp": 1775174400000,
+      "fixedTime": "03:10",
+      "timestamp": 1775175000000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
         "name": "Paula Badosa (113)",
@@ -2164,8 +2164,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-03",
-      "fixedTime": "04:10",
-      "timestamp": 1775178600000,
+      "fixedTime": "04:00",
+      "timestamp": 1775178000000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
         "name": "Alex Michelsen (35)",
@@ -2818,6 +2818,31 @@
       },
       "awayTeam": {
         "name": "Thiago Agustin Tirante (83)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
+    },
+    {
+      "id": 15880843,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-03",
+      "fixedTime": "20:00",
+      "timestamp": 1775235600000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Learner Tien (22)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Roman Andres Burruchaga (77)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
         ]
