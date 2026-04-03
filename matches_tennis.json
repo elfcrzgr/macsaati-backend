@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-03T19:01:09.654Z",
-  "totalMatches": 171,
+  "lastUpdated": "2026-04-03T19:23:35.200Z",
+  "totalMatches": 174,
   "matches": [
     {
       "id": 15932966,
@@ -262,58 +262,6 @@
       "tournament": "UTR PTT Nashville Women +H 01, 9-12 Playoffs"
     },
     {
-      "id": 15936989,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-03",
-      "fixedTime": "19:59\nCANLI",
-      "timestamp": 1775235570000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Ayala L / Cinalli L C",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Barrera Aguirre I / Gonzalez Daniele J M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/32618.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF W35 Junin 2 Women Doubles"
-    },
-    {
-      "id": 15881169,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-03",
-      "fixedTime": "20:05\nCANLI",
-      "timestamp": 1775235900000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Daniel Altmaier (52)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Fábián Marozsán (47)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bucharest, Romania"
-    },
-    {
       "id": 15938087,
       "isElite": false,
       "status": "inprogress",
@@ -389,33 +337,6 @@
       "tournament": "Charleston, USA"
     },
     {
-      "id": 15886758,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-03",
-      "fixedTime": "21:00\nCANLI",
-      "timestamp": 1775239200000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Dolehide C / Khromacheva I",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Kempen M / Piter K",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bogota, Colombia, Doubles"
-    },
-    {
       "id": 15943874,
       "isElite": false,
       "status": "inprogress",
@@ -441,7 +362,7 @@
       "tournament": "UTR PTT Nashville Women +H 01, 13-16 Playoffs"
     },
     {
-      "id": 15937220,
+      "id": 15930502,
       "isElite": false,
       "status": "inprogress",
       "fixedDate": "2026-04-03",
@@ -449,17 +370,17 @@
       "timestamp": 1775240100000,
       "broadcaster": "S Sport / Eurosport",
       "homeTeam": {
-        "name": "Lewis M / Walker B",
+        "name": "Kononova M / Okalova M",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
         ]
       },
       "awayTeam": {
-        "name": "Evans K / Mushika M",
+        "name": "Iyengar M  / Jackson E",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25834.png",
@@ -641,6 +562,83 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "UTR PTT Newport Beach Women 07, 5-8 Playoffs"
+    },
+    {
+      "id": 15937220,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-03",
+      "fixedTime": "21:48\nCANLI",
+      "timestamp": 1775242115000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Lewis M / Walker B",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Evans K / Mushika M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25834.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "ITF W35 Jackson, MS Women Doubles"
+    },
+    {
+      "id": 15880842,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-03",
+      "fixedTime": "21:50\nCANLI",
+      "timestamp": 1775242200000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Ben Shelton (9)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Thiago Agustin Tirante (83)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
+    },
+    {
+      "id": 15886560,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-03",
+      "fixedTime": "21:55\nCANLI",
+      "timestamp": 1775242500000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Lautaro Midon (217)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hugo Dellien (160)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bo.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4190.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Sao Leopoldo, Brazil"
     },
     {
       "id": 15881154,
@@ -3136,37 +3134,64 @@
       "tournament": "Houston, USA"
     },
     {
-      "id": 15880842,
+      "id": 15881169,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-03",
-      "fixedTime": "21:50\nBAŞLAMADI",
-      "timestamp": 1775242200000,
+      "fixedTime": "20:05\nMS",
+      "timestamp": 1775235900000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
-        "name": "Ben Shelton (9)",
+        "name": "Daniel Altmaier (52)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
         ]
       },
       "awayTeam": {
-        "name": "Thiago Agustin Tirante (83)",
+        "name": "Fábián Marozsán (47)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "homeScore": "0",
+      "awayScore": "2",
+      "tournament": "Bucharest, Romania"
+    },
+    {
+      "id": 15886758,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-03",
+      "fixedTime": "21:00\nMS",
+      "timestamp": 1775239200000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Dolehide C / Khromacheva I",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Kempen M / Piter K",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "tournament": "Bogota, Colombia, Doubles"
     },
     {
       "id": 15886671,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-03",
-      "fixedTime": "22:10",
-      "timestamp": 1775243400000,
+      "fixedTime": "22:30",
+      "timestamp": 1775244600000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
         "name": "Iva Jovic (16)",
@@ -3392,33 +3417,6 @@
       "tournament": "Houston, USA, Doubles"
     },
     {
-      "id": 15881190,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "11:00",
-      "timestamp": 1775289600000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Doumbia S / Reboul F",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Bhambri Y / Venus M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/in.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2377.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bucharest, Romania, Doubles"
-    },
-    {
       "id": 15881191,
       "isElite": false,
       "status": "notstarted",
@@ -3519,6 +3517,33 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Monte Carlo, Monaco, Qualifying"
+    },
+    {
+      "id": 15881190,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "12:30",
+      "timestamp": 1775295000000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Doumbia S / Reboul F",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Bhambri Y / Venus M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/in.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2377.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bucharest, Romania, Doubles"
     },
     {
       "id": 15881162,
@@ -3771,6 +3796,31 @@
       "tournament": "Monte Carlo, Monaco, Qualifying"
     },
     {
+      "id": 15881168,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "15:00",
+      "timestamp": 1775304000000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Fábián Marozsán (47)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Daniel Merida (136)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2431.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bucharest, Romania"
+    },
+    {
       "id": 15888859,
       "isElite": false,
       "status": "notstarted",
@@ -3948,6 +3998,33 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA, Doubles"
+    },
+    {
+      "id": 15886756,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "19:00",
+      "timestamp": 1775318400000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Dolehide C / Khromacheva I",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Strakhova V / Tikhonova A",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bogota, Colombia, Doubles"
     },
     {
       "id": 15944218,
