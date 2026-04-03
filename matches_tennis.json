@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-03T22:50:02.777Z",
+  "lastUpdated": "2026-04-03T23:01:12.953Z",
   "totalMatches": 128,
   "matches": [
     {
@@ -1781,7 +1781,7 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-04",
-      "fixedTime": "02:00",
+      "fixedTime": "02:00\nBAŞLAMADI",
       "timestamp": 1775257200000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
@@ -2435,33 +2435,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA"
-    },
-    {
-      "id": 15886692,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "18:00\nMS",
-      "timestamp": 1775314800000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Krawczyk D / McNally C",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Cocciaretto E / Putintseva Y",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "tournament": "Charleston, USA, Doubles"
     },
     {
       "id": 15886724,
@@ -3288,6 +3261,33 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Monte Carlo, Monaco, Doubles"
+    },
+    {
+      "id": 15886692,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "18:00\nMS",
+      "timestamp": 1775401200000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Krawczyk D / McNally C",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Cocciaretto E / Putintseva Y",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "tournament": "Charleston, USA, Doubles"
     }
   ]
 }
