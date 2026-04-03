@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-03T07:01:33.940Z",
+  "lastUpdated": "2026-04-03T07:31:40.517Z",
   "totalMatches": 493,
   "matches": [
     {
@@ -1184,6 +1184,26 @@
       "tournament": "Liga Portugal 2"
     },
     {
+      "id": 15393611,
+      "isElite": false,
+      "fixedDate": "2026-04-03",
+      "fixedTime": "17:30",
+      "timestamp": 1775226600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Al Arabi (SA)",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/336458.png"
+      },
+      "awayTeam": {
+        "name": "Al Diriyah",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/853574.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/2120.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Saudi 1st Division"
+    },
+    {
       "id": 15603904,
       "isElite": false,
       "fixedDate": "2026-04-03",
@@ -1342,26 +1362,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Serie A Women"
-    },
-    {
-      "id": 15393611,
-      "isElite": false,
-      "fixedDate": "2026-04-03",
-      "fixedTime": "19:00",
-      "timestamp": 1775232000000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Al Arabi (SA)",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/336458.png"
-      },
-      "awayTeam": {
-        "name": "Al Diriyah",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/853574.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/2120.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Saudi 1st Division"
     },
     {
       "id": 15393601,
