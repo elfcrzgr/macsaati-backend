@@ -1,33 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-03T23:43:14.226Z",
-  "totalMatches": 121,
+  "lastUpdated": "2026-04-04T00:01:07.648Z",
+  "totalMatches": 124,
   "matches": [
-    {
-      "id": 15886649,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "01:05\nCANLI",
-      "timestamp": 1775253900000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "McCartney Kessler (53)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yuliia Starodubtseva (89)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Charleston, USA"
-    },
     {
       "id": 15946058,
       "isElite": false,
@@ -54,6 +29,56 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "ITF W35 Jackson, MS Women Doubles"
+    },
+    {
+      "id": 15886500,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "02:35\nCANLI",
+      "timestamp": 1775259300000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Matias Soto (294)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cl.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Nicolas Mejia (171)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3820.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "San Luis Potosi, Mexico"
+    },
+    {
+      "id": 15880844,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "03:05\nCANLI",
+      "timestamp": 1775261100000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Alexei Popyrin (45)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Frances Tiafoe (18)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
     },
     {
       "id": 15888869,
@@ -1542,6 +1567,31 @@
       "tournament": "Houston, USA"
     },
     {
+      "id": 15886649,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "01:05\nMS",
+      "timestamp": 1775253900000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "McCartney Kessler (53)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yuliia Starodubtseva (89)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
+      "homeScore": "0",
+      "awayScore": "2",
+      "tournament": "Charleston, USA"
+    },
+    {
       "id": 15886725,
       "isElite": false,
       "status": "finished",
@@ -1598,8 +1648,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-04",
-      "fixedTime": "02:30\nBAŞLAMADI",
-      "timestamp": 1775259000000,
+      "fixedTime": "02:50\nBAŞLAMADI",
+      "timestamp": 1775260200000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
         "name": "Kato M / Olmos G",
@@ -1619,31 +1669,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA, Doubles"
-    },
-    {
-      "id": 15880844,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "02:40\nBAŞLAMADI",
-      "timestamp": 1775259600000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Alexei Popyrin (45)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Frances Tiafoe (18)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
     },
     {
       "id": 15880901,
@@ -2254,6 +2279,31 @@
       "tournament": "Charleston, USA"
     },
     {
+      "id": 15880838,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "19:00",
+      "timestamp": 1775318400000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Thiago Agustin Tirante (83)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Roman Andres Burruchaga (77)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
+    },
+    {
       "id": 15886724,
       "isElite": false,
       "status": "notstarted",
@@ -2271,6 +2321,31 @@
         "name": "Jazmin Ortenzi (206)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Bogota, Colombia"
+    },
+    {
+      "id": 15886723,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "19:00",
+      "timestamp": 1775318400000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Panna Udvardy (92)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Emiliana Arango (106)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
@@ -2306,29 +2381,29 @@
       "tournament": "Bogota, Colombia, Doubles"
     },
     {
-      "id": 15880838,
+      "id": 15886646,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-04",
-      "fixedTime": "20:00",
-      "timestamp": 1775322000000,
-      "broadcaster": "S Sport / S Sport Plus",
+      "fixedTime": "21:10",
+      "timestamp": 1775326200000,
+      "broadcaster": "beIN Sports",
       "homeTeam": {
-        "name": "Thiago Agustin Tirante (83)",
+        "name": "Madison Keys (18)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
       "awayTeam": {
-        "name": "Roman Andres Burruchaga (77)",
+        "name": "Yuliia Starodubtseva (89)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": "Houston, USA"
+      "tournament": "Charleston, USA"
     },
     {
       "id": 15944218,
