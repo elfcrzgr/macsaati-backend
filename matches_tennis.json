@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-04T01:01:06.392Z",
-  "totalMatches": 125,
+  "lastUpdated": "2026-04-04T01:31:05.308Z",
+  "totalMatches": 126,
   "matches": [
     {
       "id": 15946058,
@@ -54,33 +54,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "San Luis Potosi, Mexico"
-    },
-    {
-      "id": 15886694,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "02:50\nCANLI",
-      "timestamp": 1775260200000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Kato M / Olmos G",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Bondar A / Frech M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Charleston, USA, Doubles"
     },
     {
       "id": 15880844,
@@ -1698,12 +1671,39 @@
       "tournament": "Houston, USA, Doubles"
     },
     {
+      "id": 15886694,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "02:50\nMS",
+      "timestamp": 1775260200000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Kato M / Olmos G",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Bondar A / Frech M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
+      "homeScore": "0",
+      "awayScore": "2",
+      "tournament": "Charleston, USA, Doubles"
+    },
+    {
       "id": 15880901,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-04",
-      "fixedTime": "04:05",
-      "timestamp": 1775264700000,
+      "fixedTime": "04:20\nBAŞLAMADI",
+      "timestamp": 1775265600000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
         "name": "Luz O / Matos R",
@@ -3206,6 +3206,33 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
       "homeScore": "0",
       "awayScore": "0",
+      "tournament": "Charleston, USA, Doubles"
+    },
+    {
+      "id": 15886690,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "19:30",
+      "timestamp": 1775406600000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Krawczyk D / McNally C",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Bondar A / Frech M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
+      "homeScore": "-",
+      "awayScore": "-",
       "tournament": "Charleston, USA, Doubles"
     }
   ]
