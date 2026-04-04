@@ -1,60 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-04T02:31:10.613Z",
+  "lastUpdated": "2026-04-04T02:51:21.883Z",
   "totalMatches": 129,
   "matches": [
-    {
-      "id": 15946058,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "02:15\nCANLI",
-      "timestamp": 1775258100000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Egorova D / Grubor A",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Evans K / Mushika M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25834.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF W35 Jackson, MS Women Doubles"
-    },
-    {
-      "id": 15880844,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "02:55\nCANLI",
-      "timestamp": 1775260500000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Alexei Popyrin (45)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Frances Tiafoe (18)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
-    },
     {
       "id": 15886505,
       "isElite": false,
@@ -1771,12 +1719,37 @@
       "tournament": "Charleston, USA, Doubles"
     },
     {
+      "id": 15880844,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "02:55\nMS",
+      "timestamp": 1775260500000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Alexei Popyrin (45)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Frances Tiafoe (18)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "1",
+      "awayScore": "2",
+      "tournament": "Houston, USA"
+    },
+    {
       "id": 15880901,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-04",
-      "fixedTime": "04:20\nBAŞLAMADI",
-      "timestamp": 1775265600000,
+      "fixedTime": "05:50\nBAŞLAMADI",
+      "timestamp": 1775271000000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
         "name": "Luz O / Matos R",
@@ -2479,6 +2452,31 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Charleston, USA"
+    },
+    {
+      "id": 15880835,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "20:10",
+      "timestamp": 1775322600000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Tommy Paul (21)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Frances Tiafoe (18)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA"
     },
     {
       "id": 15886646,
