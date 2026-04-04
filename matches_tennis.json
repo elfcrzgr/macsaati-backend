@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-04T21:40:12.621Z",
+  "lastUpdated": "2026-04-04T22:01:05.844Z",
   "totalMatches": 115,
   "matches": [
     {
@@ -156,31 +156,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "ITF W15 Monastir 8 Women Doubles"
-    },
-    {
-      "id": 15880835,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "20:35\nCANLI",
-      "timestamp": 1775324100000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Tommy Paul (21)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Frances Tiafoe (18)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA"
     },
     {
       "id": 15886723,
@@ -1582,6 +1557,31 @@
       "tournament": "Charleston, USA"
     },
     {
+      "id": 15880835,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "20:35\nMS",
+      "timestamp": 1775324100000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Tommy Paul (21)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Frances Tiafoe (18)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2409.png",
+      "homeScore": "2",
+      "awayScore": "1",
+      "tournament": "Houston, USA"
+    },
+    {
       "id": 15886646,
       "isElite": false,
       "status": "finished",
@@ -1611,8 +1611,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-05",
-      "fixedTime": "00:30\nBAŞLAMADI",
-      "timestamp": 1775338200000,
+      "fixedTime": "01:10",
+      "timestamp": 1775340600000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
         "name": "Dolehide C / Khromacheva I",
