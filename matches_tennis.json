@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-04T19:39:05.877Z",
+  "lastUpdated": "2026-04-04T20:01:14.217Z",
   "totalMatches": 151,
   "matches": [
     {
@@ -158,58 +158,6 @@
       "tournament": "ITF W15 Monastir 8 Women Doubles"
     },
     {
-      "id": 15886651,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "20:00\nCANLI",
-      "timestamp": 1775322000000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Jessica Pegula (5)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Iva Jovic (16)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Charleston, USA"
-    },
-    {
-      "id": 15945888,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-04",
-      "fixedTime": "21:08\nCANLI",
-      "timestamp": 1775326087000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Barrera Aguirre I / Gonzalez Daniele J M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Moyano L / Romero C",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ec.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/32618.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF W35 Junin 2 Women Doubles"
-    },
-    {
       "id": 15886723,
       "isElite": false,
       "status": "inprogress",
@@ -260,6 +208,33 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Sao Leopoldo, Brazil, Doubles"
+    },
+    {
+      "id": 15945888,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "22:19\nCANLI",
+      "timestamp": 1775330358000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Barrera Aguirre I / Gonzalez Daniele J M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Moyano L / Romero C",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ec.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/32618.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "ITF W35 Junin 2 Women Doubles"
     },
     {
       "id": 15888869,
@@ -2510,6 +2485,31 @@
       "tournament": "Bogota, Colombia"
     },
     {
+      "id": 15886651,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-04",
+      "fixedTime": "20:00\nMS",
+      "timestamp": 1775322000000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Jessica Pegula (5)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Iva Jovic (16)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
+      "homeScore": "2",
+      "awayScore": "1",
+      "tournament": "Charleston, USA"
+    },
+    {
       "id": 15880835,
       "isElite": false,
       "status": "interrupted",
@@ -2539,8 +2539,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-04",
-      "fixedTime": "22:30\nBAŞLAMADI",
-      "timestamp": 1775331000000,
+      "fixedTime": "22:50\nBAŞLAMADI",
+      "timestamp": 1775332200000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
         "name": "Madison Keys (18)",
@@ -2564,8 +2564,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-04",
-      "fixedTime": "22:30\nBAŞLAMADI",
-      "timestamp": 1775331000000,
+      "fixedTime": "23:10",
+      "timestamp": 1775333400000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
         "name": "Dolehide C / Khromacheva I",
