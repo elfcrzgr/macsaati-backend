@@ -22,7 +22,7 @@ const categoryConfigs = {
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
 // =========================================================================
-// TENİS ELİT TURNUVA ANAHTAR KELİMELERİ (ID yerine çok daha güvenli)
+// TENİS ELİT TURNUVA ANAHTAR KELİMELERİ (Sağlamlaştırılmış Şehir Listesi)
 // =========================================================================
 const ELITE_KEYWORDS = [
     // 🏆 MEGA TURNUVALAR (2000 & 1000 Puan)
@@ -30,10 +30,15 @@ const ELITE_KEYWORDS = [
     "Masters", "ATP 1000", "WTA 1000", 
     "ATP Finals", "WTA Finals", "Next Gen ATP Finals", 
     
+    // 📍 ŞEHİR İSİMLİ BÜYÜK TURNUVALAR (SofaScore bazen Masters yazmayı unutur)
+    "Monte Carlo", "Indian Wells", "Miami", "Madrid", "Rome", "Cincinnati", 
+    "Shanghai", "Paris", "Montreal", "Toronto", "Canadian Open", "Beijing", 
+    "Doha", "Dubai",
+    
     // 🌍 ULUSLARARASI ŞOVLAR
     "Davis Cup", "Billie Jean King Cup", "Laver Cup", "United Cup", "Olympic",
     
-    // ⭐ ÜST DÜZEY PROFESYONEL TUR (Kaliteyi düşürmeden sekmeyi canlı tutar)
+    // ⭐ ÜST DÜZEY PROFESYONEL TUR
     "ATP 500", "WTA 500"
 ];
 
@@ -45,7 +50,7 @@ const checkIsElite = (tournamentName) => {
 };
 
 async function start() {
-    console.log("🚀 MAÇ SAATİ TENİS MOTORU BAŞLATILDI (Kelime Bazlı Elit Filtresi)...");
+    console.log("🚀 MAÇ SAATİ TENİS MOTORU BAŞLATILDI (Genişletilmiş Elit Filtresi)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     
