@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-05T00:01:29.560Z",
+  "lastUpdated": "2026-04-05T00:31:32.256Z",
   "totalMatches": 341,
   "matches": [
     {
@@ -227,7 +227,7 @@
       "id": 15388454,
       "isElite": false,
       "fixedDate": "2026-04-05",
-      "fixedTime": "01:30\nCANLI",
+      "fixedTime": "01:30",
       "timestamp": 1775341800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -239,8 +239,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/151008.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/1690.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "2",
       "tournament": "NWSL"
     },
     {
@@ -667,7 +667,7 @@
       "id": 15171441,
       "isElite": true,
       "fixedDate": "2026-04-05",
-      "fixedTime": "02:45",
+      "fixedTime": "02:45\nCANLI",
       "timestamp": 1775346300000,
       "broadcaster": "Apple TV",
       "homeTeam": {
@@ -687,7 +687,7 @@
       "id": 15235514,
       "isElite": false,
       "fixedDate": "2026-04-05",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1775347200000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -707,7 +707,7 @@
       "id": 15270058,
       "isElite": false,
       "fixedDate": "2026-04-05",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1775347200000,
       "broadcaster": "Spor Smart / Exxen",
       "homeTeam": {
@@ -727,7 +727,7 @@
       "id": 15502502,
       "isElite": false,
       "fixedDate": "2026-04-05",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1775347200000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -747,7 +747,7 @@
       "id": 15421044,
       "isElite": false,
       "fixedDate": "2026-04-05",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1775347200000,
       "broadcaster": "Apple TV / OneFootball",
       "homeTeam": {
@@ -784,30 +784,10 @@
       "tournament": "MLS"
     },
     {
-      "id": 15171455,
-      "isElite": true,
-      "fixedDate": "2026-04-05",
-      "fixedTime": "03:30",
-      "timestamp": 1775349000000,
-      "broadcaster": "Apple TV",
-      "homeTeam": {
-        "name": "Houston Dynamo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2508.png"
-      },
-      "awayTeam": {
-        "name": "Seattle Sounders FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22009.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "MLS"
-    },
-    {
       "id": 15647961,
       "isElite": false,
       "fixedDate": "2026-04-05",
-      "fixedTime": "03:30",
+      "fixedTime": "03:30\nCANLI",
       "timestamp": 1775349000000,
       "broadcaster": "TV Yayını Yok (Yerel)",
       "homeTeam": {
@@ -862,6 +842,26 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Liga MX, Clausura"
+    },
+    {
+      "id": 15171455,
+      "isElite": true,
+      "fixedDate": "2026-04-05",
+      "fixedTime": "04:00",
+      "timestamp": 1775350800000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "Houston Dynamo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2508.png"
+      },
+      "awayTeam": {
+        "name": "Seattle Sounders FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22009.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
     },
     {
       "id": 15714337,

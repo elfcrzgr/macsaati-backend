@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-05T00:01:07.658Z",
+  "lastUpdated": "2026-04-05T00:31:08.714Z",
   "totalMatches": 112,
   "matches": [
     {
@@ -27,33 +27,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "San Luis Potosi, Mexico"
-    },
-    {
-      "id": 15886756,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "01:25\nCANLI",
-      "timestamp": 1775341500000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Dolehide C / Khromacheva I",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Strakhova V / Tikhonova A",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bogota, Colombia, Doubles"
     },
     {
       "id": 15881153,
@@ -1505,6 +1478,33 @@
       "tournament": "Charleston, USA"
     },
     {
+      "id": 15886756,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "01:25\nMS",
+      "timestamp": 1775341500000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Dolehide C / Khromacheva I",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Strakhova V / Tikhonova A",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2559.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "tournament": "Bogota, Colombia, Doubles"
+    },
+    {
       "id": 15881188,
       "isElite": false,
       "status": "notstarted",
@@ -2165,6 +2165,33 @@
       "tournament": "Marrakech, Morocco"
     },
     {
+      "id": 15886690,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "18:00",
+      "timestamp": 1775401200000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Krawczyk D / McNally C",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Bondar A / Frech M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Charleston, USA, Doubles"
+    },
+    {
       "id": 15886692,
       "isElite": false,
       "status": "finished",
@@ -2189,60 +2216,6 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
       "homeScore": "0",
       "awayScore": "0",
-      "tournament": "Charleston, USA, Doubles"
-    },
-    {
-      "id": 15880899,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "19:00",
-      "timestamp": 1775404800000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Luz O / Matos R",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Andrade A / Shelton B",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ec.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2379.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA, Doubles"
-    },
-    {
-      "id": 15886690,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "19:30",
-      "timestamp": 1775406600000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Krawczyk D / McNally C",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Bondar A / Frech M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2565.png",
-      "homeScore": "-",
-      "awayScore": "-",
       "tournament": "Charleston, USA, Doubles"
     },
     {
@@ -2294,6 +2267,33 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Bogota, Colombia"
+    },
+    {
+      "id": 15880899,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "20:00",
+      "timestamp": 1775408400000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Luz O / Matos R",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Andrade A / Shelton B",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ec.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2379.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Houston, USA, Doubles"
     },
     {
       "id": 15880845,
