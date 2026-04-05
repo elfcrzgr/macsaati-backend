@@ -1,33 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-05T17:41:00.749Z",
-  "totalMatches": 153,
+  "lastUpdated": "2026-04-05T18:01:21.932Z",
+  "totalMatches": 152,
   "matches": [
-    {
-      "id": 15952570,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "18:31\nCANLI",
-      "timestamp": 1775403100000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Alana Smith (408)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Franziska Sziedat (723)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/26084.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF W75 Calvi Women"
-    },
     {
       "id": 15951256,
       "isElite": false,
@@ -104,31 +79,6 @@
       "tournament": "Mexico City, Mexico, Qualifying"
     },
     {
-      "id": 15951311,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "19:00\nCANLI",
-      "timestamp": 1775404800000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Guillaume Dalmasso (707)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Bor Artnak (509)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Mexico City, Mexico, Qualifying"
-    },
-    {
       "id": 15950555,
       "isElite": false,
       "status": "inprogress",
@@ -177,33 +127,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Campinas, Brazil, Qualifying"
-    },
-    {
-      "id": 15945907,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "19:35\nCANLI",
-      "timestamp": 1775406900000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Melo M / Zverev A",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Johnson L / Zielinski J",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2396.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Monte Carlo, Monaco, Doubles"
     },
     {
       "id": 15886656,
@@ -350,6 +273,31 @@
         "name": "Joshua Sheehy (600)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Sarasota, USA, Qualifying"
+    },
+    {
+      "id": 15951258,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "20:45\nCANLI",
+      "timestamp": 1775411100000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Kilian Feldbausch (427)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Juan Jose Bianchi",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ve.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
@@ -2493,6 +2441,33 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2396.png",
       "homeScore": "1",
       "awayScore": "2",
+      "tournament": "Monte Carlo, Monaco, Doubles"
+    },
+    {
+      "id": 15945907,
+      "isElite": true,
+      "status": "finished",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "19:35\nMS",
+      "timestamp": 1775406900000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Melo M / Zverev A",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Johnson L / Zielinski J",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2396.png",
+      "homeScore": "2",
+      "awayScore": "0",
       "tournament": "Monte Carlo, Monaco, Doubles"
     },
     {
