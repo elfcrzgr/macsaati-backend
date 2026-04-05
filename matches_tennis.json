@@ -1,33 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-05T19:41:20.095Z",
-  "totalMatches": 155,
+  "lastUpdated": "2026-04-05T20:01:17.593Z",
+  "totalMatches": 153,
   "matches": [
-    {
-      "id": 15886720,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "20:00\nCANLI",
-      "timestamp": 1775408400000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Marie Bouzkova (26)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Panna Udvardy (92)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Bogota, Colombia"
-    },
     {
       "id": 15951006,
       "isElite": false,
@@ -54,31 +29,6 @@
       "tournament": "Campinas, Brazil, Qualifying"
     },
     {
-      "id": 15951258,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "20:45\nCANLI",
-      "timestamp": 1775411100000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Kilian Feldbausch (427)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Juan Jose Bianchi",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ve.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Sarasota, USA, Qualifying"
-    },
-    {
       "id": 15951308,
       "isElite": false,
       "status": "inprogress",
@@ -102,31 +52,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Mexico City, Mexico, Qualifying"
-    },
-    {
-      "id": 15949538,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "21:07\nCANLI",
-      "timestamp": 1775412461000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Sofia Johnson (898)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Maria Aran Teixido Garcia",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25833.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "ITF W35 Jackson, MS Women"
     },
     {
       "id": 15951315,
@@ -2492,6 +2417,31 @@
       "homeScore": "2",
       "awayScore": "0",
       "tournament": "Charleston, USA"
+    },
+    {
+      "id": 15886720,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "20:00\nMS",
+      "timestamp": 1775408400000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Marie Bouzkova (26)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Panna Udvardy (92)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2560.png",
+      "homeScore": "2",
+      "awayScore": "1",
+      "tournament": "Bogota, Colombia"
     },
     {
       "id": 15880899,
