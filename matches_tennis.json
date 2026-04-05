@@ -1,58 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-05T18:31:10.850Z",
-  "totalMatches": 151,
+  "lastUpdated": "2026-04-05T18:57:42.722Z",
+  "totalMatches": 153,
   "matches": [
-    {
-      "id": 15951306,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "19:00\nCANLI",
-      "timestamp": 1775404800000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Alan Fernando Rubio Fierros (569)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Tibo Colson (517)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Mexico City, Mexico, Qualifying"
-    },
-    {
-      "id": 15886656,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "20:00\nCANLI",
-      "timestamp": 1775408400000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Jessica Pegula (5)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yuliia Starodubtseva (89)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Charleston, USA"
-    },
     {
       "id": 15886720,
       "isElite": false,
@@ -77,33 +27,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Bogota, Colombia"
-    },
-    {
-      "id": 15880899,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "20:00\nCANLI",
-      "timestamp": 1775408400000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Luz O / Matos R",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Andrade A / Shelton B",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ec.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2379.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Houston, USA, Doubles"
     },
     {
       "id": 15944215,
@@ -154,31 +77,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Campinas, Brazil, Qualifying"
-    },
-    {
-      "id": 15951233,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-05",
-      "fixedTime": "20:25\nCANLI",
-      "timestamp": 1775409900000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Szymon Kielan (1249)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Joshua Sheehy (600)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Sarasota, USA, Qualifying"
     },
     {
       "id": 15951258,
@@ -273,6 +171,106 @@
         "name": "Vladyslav Orlov (529)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mexico City, Mexico, Qualifying"
+    },
+    {
+      "id": 15953712,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "21:20\nCANLI",
+      "timestamp": 1775413200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Jefferson Wendler Filho (1124)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Rafael Tosetto (1132)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4283.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Campinas, Brazil, Qualifying"
+    },
+    {
+      "id": 15950557,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "21:20\nCANLI",
+      "timestamp": 1775413200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Mariano Kestelboim (523)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Natan Rodrigues (835)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4283.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Campinas, Brazil, Qualifying"
+    },
+    {
+      "id": 15951257,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "21:25\nCANLI",
+      "timestamp": 1775413500000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Benjamin Kittay",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Strong Kirchheimer (701)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Sarasota, USA, Qualifying"
+    },
+    {
+      "id": 15951314,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "21:40\nCANLI",
+      "timestamp": 1775414400000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Patrick Zahraj (403)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Carlo Arena Fava",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
@@ -2444,6 +2442,58 @@
       "homeScore": "2",
       "awayScore": "0",
       "tournament": "Monte Carlo, Monaco, Doubles"
+    },
+    {
+      "id": 15886656,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "20:00\nMS",
+      "timestamp": 1775408400000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Jessica Pegula (5)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yuliia Starodubtseva (89)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2622.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "tournament": "Charleston, USA"
+    },
+    {
+      "id": 15880899,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-05",
+      "fixedTime": "20:00\nMS",
+      "timestamp": 1775408400000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Luz O / Matos R",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Andrade A / Shelton B",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ec.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2379.png",
+      "homeScore": "1",
+      "awayScore": "2",
+      "tournament": "Houston, USA, Doubles"
     },
     {
       "id": 15880845,
