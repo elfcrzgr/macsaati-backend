@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-06T18:32:09.287Z",
+  "lastUpdated": "2026-04-06T19:01:10.770Z",
   "totalMatches": 135,
   "matches": [
     {
@@ -27,31 +27,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": " ITF M15 Monastir 12 Men"
-    },
-    {
-      "id": 15954445,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-06",
-      "fixedTime": "19:00\nCANLI",
-      "timestamp": 1775491200000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Flavio Cobolli (16)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Francisco Comesaña (99)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2391.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Monte Carlo, Monaco"
     },
     {
       "id": 15953095,
@@ -102,81 +77,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Campinas, Brazil, Qualifying"
-    },
-    {
-      "id": 15953150,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-06",
-      "fixedTime": "19:40\nCANLI",
-      "timestamp": 1775493600000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Yue Yuan (113)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Carmen Gallardo Guevara (900)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33947.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 15953091,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-06",
-      "fixedTime": "19:50\nCANLI",
-      "timestamp": 1775494200000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Katie Boulter (62)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Elena-Gabriela Ruse (87)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Linz, Austria"
-    },
-    {
-      "id": 15955451,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-06",
-      "fixedTime": "20:00\nCANLI",
-      "timestamp": 1775494800000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Alafia Ayeni (485)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Tibo Colson (500)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Mexico City, Mexico, Qualifying"
     },
     {
       "id": 15955815,
@@ -319,6 +219,31 @@
       },
       "awayTeam": {
         "name": "Jeffrey John Wolf (1033)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Sarasota, USA"
+    },
+    {
+      "id": 15951489,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-06",
+      "fixedTime": "21:25\nCANLI",
+      "timestamp": 1775499900000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Tyler Zink (325)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Colton Smith (193)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
@@ -2306,6 +2231,81 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2391.png",
       "homeScore": "2",
       "awayScore": "1",
+      "tournament": "Monte Carlo, Monaco"
+    },
+    {
+      "id": 15954445,
+      "isElite": true,
+      "status": "finished",
+      "fixedDate": "2026-04-06",
+      "fixedTime": "19:00\nMS",
+      "timestamp": 1775491200000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Flavio Cobolli (16)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Francisco Comesaña (99)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2391.png",
+      "homeScore": "2",
+      "awayScore": "1",
+      "tournament": "Monte Carlo, Monaco"
+    },
+    {
+      "id": 15953091,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-06",
+      "fixedTime": "19:40\nMS",
+      "timestamp": 1775493600000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Katie Boulter (62)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Elena-Gabriela Ruse (87)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
+      "homeScore": "0",
+      "awayScore": "2",
+      "tournament": "Linz, Austria"
+    },
+    {
+      "id": 15921164,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "12:00",
+      "timestamp": 1775552400000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Flavio Cobolli (16)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Alexander Blockx (91)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2391.png",
+      "homeScore": "-",
+      "awayScore": "-",
       "tournament": "Monte Carlo, Monaco"
     },
     {
