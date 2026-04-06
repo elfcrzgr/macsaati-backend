@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-06T22:01:06.698Z",
-  "totalMatches": 100,
+  "lastUpdated": "2026-04-06T22:31:03.562Z",
+  "totalMatches": 101,
   "matches": [
     {
       "id": 15950566,
@@ -29,56 +29,6 @@
       "tournament": "Campinas, Brazil"
     },
     {
-      "id": 15951488,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-06",
-      "fixedTime": "23:40\nCANLI",
-      "timestamp": 1775508000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Mitchell Krueger (266)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hynek Barton (296)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Sarasota, USA"
-    },
-    {
-      "id": 15950571,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-07",
-      "fixedTime": "00:00\nCANLI",
-      "timestamp": 1775509200000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Juan Manuel La Serna (346)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Enzo Camargo Lima (1203)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4283.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Campinas, Brazil"
-    },
-    {
       "id": 15951386,
       "isElite": false,
       "status": "inprogress",
@@ -96,6 +46,81 @@
         "name": "Matias Soto (304)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mexico City, Mexico"
+    },
+    {
+      "id": 15951392,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "00:55\nCANLI",
+      "timestamp": 1775512500000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Raphael Perot (410)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Stefan Kozlov (265)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mexico City, Mexico"
+    },
+    {
+      "id": 15951486,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "01:00\nCANLI",
+      "timestamp": 1775512800000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Alex Rybakov (348)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Martin Damm Jr (127)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Sarasota, USA"
+    },
+    {
+      "id": 15951391,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "01:00\nCANLI",
+      "timestamp": 1775512800000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Corentin Denolly (496)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Marc-Andrea Huesler (283)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
