@@ -1,33 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-06T21:01:17.036Z",
-  "totalMatches": 102,
+  "lastUpdated": "2026-04-06T21:31:06.246Z",
+  "totalMatches": 100,
   "matches": [
-    {
-      "id": 15956674,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-06",
-      "fixedTime": "21:50\nCANLI",
-      "timestamp": 1775501400000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Max Wiskandt (481)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alejandro Hayen (1309)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Mexico City, Mexico, Qualifying"
-    },
     {
       "id": 15956695,
       "isElite": false,
@@ -46,56 +21,6 @@
         "name": "Karl Poling (567)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Mexico City, Mexico, Qualifying"
-    },
-    {
-      "id": 15950572,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-06",
-      "fixedTime": "22:50\nCANLI",
-      "timestamp": 1775505000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Victor Braga (1420)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Juan Pablo Varillas (286)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pe.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4283.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Campinas, Brazil"
-    },
-    {
-      "id": 15956189,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-06",
-      "fixedTime": "23:15\nCANLI",
-      "timestamp": 1775506500000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Andrew Fenty (389)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Miguel Tobon (469)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/co.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
@@ -152,6 +77,31 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Sarasota, USA"
+    },
+    {
+      "id": 15950571,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "00:00\nCANLI",
+      "timestamp": 1775509200000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Juan Manuel La Serna (346)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Enzo Camargo Lima (1203)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4283.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Campinas, Brazil"
     },
     {
       "id": 15949166,
