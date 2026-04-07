@@ -1,32 +1,32 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-07T01:01:08.429Z",
-  "totalMatches": 105,
+  "lastUpdated": "2026-04-07T01:31:11.469Z",
+  "totalMatches": 108,
   "matches": [
     {
-      "id": 15946237,
+      "id": 15944759,
       "isElite": false,
       "status": "inprogress",
       "fixedDate": "2026-04-07",
-      "fixedTime": "02:00\nCANLI",
-      "timestamp": 1775516400000,
+      "fixedTime": "01:55\nCANLI",
+      "timestamp": 1775516100000,
       "broadcaster": "S Sport / Eurosport",
       "homeTeam": {
-        "name": "Corey Gaal",
+        "name": "Britney Chiu",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
       "awayTeam": {
-        "name": "Lachlan King",
+        "name": "Avery Nguyen",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31371.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": "UTR PTT Melbourne Men 01, Group B"
+      "tournament": "UTR PTT Newport Beach Women 08, Group D"
     },
     {
       "id": 15944920,
@@ -71,31 +71,6 @@
         "name": "Stefano Napolitano (302)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Mexico City, Mexico"
-    },
-    {
-      "id": 15951384,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-07",
-      "fixedTime": "03:00\nCANLI",
-      "timestamp": 1775520000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Marc Polmans (353)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Rodrigo Alujas (712)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
@@ -227,6 +202,106 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "UTR PTT Newport Beach Men 08, Group C"
+    },
+    {
+      "id": 15946239,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "03:55\nCANLI",
+      "timestamp": 1775523300000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Noah Brownrigg",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hugo Castello",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31371.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Melbourne Men 01, Group D"
+    },
+    {
+      "id": 15944877,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "03:55\nCANLI",
+      "timestamp": 1775523300000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Isabella Foshee",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Alexis Nguyen",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Newport Beach Women 08, Group B"
+    },
+    {
+      "id": 15944836,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775523600000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Adam Duda",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Tyler Lee",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/27338.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Newport Beach Men 08, Group B"
+    },
+    {
+      "id": 15946203,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "04:05\nCANLI",
+      "timestamp": 1775523900000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Pauline MA",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Amy Findlay",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Melbourne Women 01, Group B"
     },
     {
       "id": 15949166,
