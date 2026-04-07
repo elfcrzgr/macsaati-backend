@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-07T18:31:05.419Z",
+  "lastUpdated": "2026-04-07T18:32:27.145Z",
   "totalMatches": 136,
   "matches": [
     {
@@ -104,7 +104,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/28383.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-1, 5-5",
+      "setScores": "6-1, 5-6",
       "tournament": "UTR PTT Cordoba Men +H 03, Group D"
     },
     {
@@ -598,7 +598,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30938.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-3",
+      "setScores": "3-3",
       "tournament": "ITF W35 Boca Raton, FL Women"
     },
     {
@@ -2746,32 +2746,6 @@
       "tournament": "Linz, Austria, Doubles"
     },
     {
-      "id": 15962709,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-07",
-      "fixedTime": "20:20\nBAŞLAMADI",
-      "timestamp": 1775582400000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Karolína Plíšková (258)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Aliaksandra Sasnovich (115)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/by.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Linz, Austria"
-    },
-    {
       "id": 15952364,
       "isElite": false,
       "status": "notstarted",
@@ -2798,6 +2772,32 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Linz, Austria, Doubles"
+    },
+    {
+      "id": 15962709,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "21:40",
+      "timestamp": 1775587200000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Karolína Plíšková (258)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Aliaksandra Sasnovich (115)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/by.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Linz, Austria"
     },
     {
       "id": 15953087,
