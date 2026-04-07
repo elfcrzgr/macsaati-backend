@@ -1,33 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-07T00:01:14.439Z",
-  "totalMatches": 108,
+  "lastUpdated": "2026-04-07T00:31:14.725Z",
+  "totalMatches": 109,
   "matches": [
-    {
-      "id": 15951486,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-07",
-      "fixedTime": "01:00\nCANLI",
-      "timestamp": 1775512800000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Alex Rybakov (348)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Martin Damm Jr (127)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Sarasota, USA"
-    },
     {
       "id": 15946237,
       "isElite": false,
@@ -179,31 +154,6 @@
       "tournament": "UTR PTT Melbourne Women 01, Group A"
     },
     {
-      "id": 15946202,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-07",
-      "fixedTime": "02:00\nCANLI",
-      "timestamp": 1775516400000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Destanee Aiava (451)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Christina Dodaj",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "UTR PTT Melbourne Women 01, Group A"
-    },
-    {
       "id": 15944920,
       "isElite": false,
       "status": "inprogress",
@@ -221,31 +171,6 @@
         "name": "Addy Rogin",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "UTR PTT Newport Beach Women 08, Group A"
-    },
-    {
-      "id": 15944760,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-07",
-      "fixedTime": "02:00\nCANLI",
-      "timestamp": 1775516400000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Veronica Miroshnichenko (991)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Liam Oved",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/il.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
@@ -302,6 +227,106 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "UTR PTT Newport Beach Women 08, Group C"
+    },
+    {
+      "id": 15951385,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "03:00\nCANLI",
+      "timestamp": 1775520000000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Andres Martin (263)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Stefano Napolitano (302)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mexico City, Mexico"
+    },
+    {
+      "id": 15951384,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "03:00\nCANLI",
+      "timestamp": 1775520000000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Marc Polmans (353)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Rodrigo Alujas (712)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mx.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mexico City, Mexico"
+    },
+    {
+      "id": 15946200,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "03:15\nCANLI",
+      "timestamp": 1775520900000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Arabelle Mancini",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Kaylah McPhee",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Melbourne Women 01, Group B"
+    },
+    {
+      "id": 15944758,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-07",
+      "fixedTime": "03:15\nCANLI",
+      "timestamp": 1775520900000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Shakhnoza Khatamova",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/uz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Emi Dowdell",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UTR PTT Newport Beach Women 08, Group D"
     },
     {
       "id": 15949166,
