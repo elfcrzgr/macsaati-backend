@@ -4,33 +4,25 @@ const fs = require('fs');
 
 puppeteer.use(StealthPlugin());
 
-// --- GITHUB AYARLARI ---
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
 const BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/`;
 const OUTPUT_FILE = "matches_basketball.json";
 
-// --- ELİT OLARAK İŞARETLENECEK LİGLERİN LİSTESİ ---
 const ELITE_LEAGUE_IDS = [
-    3547, // NBA
-    138,  // EuroLeague
-    142,  // Eurocup
-    137,  // Basketbol Süper Ligi (BSL)
-    132,  // İspanya Basketbol Ligi (ACB)
-    167,  // FIBA Şampiyonlar Ligi
-    168   // EuroBasket (Avrupa Şampiyonası)
+    3547, 138, 142, 137, 132, 167, 168   
 ];
 
 const leagueConfigs = {
-    3547: "S Sport / NBA TV",        // NBA
-    138: "S Sport / S Sport Plus",   // EuroLeague
-    142: "S Sport Plus",             // Eurocup
-    137: "TRT Spor / Tabii",         // Basketbol Süper Ligi
-    132: "beIN Sports 5",            // İspanya ACB
-    167: "S Sport Plus / FIBA TV",   // FIBA Şampiyonlar Ligi
-    168: "TRT Spor Yıldız",          // EuroBasket
-    9357: "S Sport Plus",            // NCAA
-    139: "beIN Sports / TRT Spor",   // Kadınlar Basketbol
+    3547: "S Sport / NBA TV",        
+    138: "S Sport / S Sport Plus",   
+    142: "S Sport Plus",             
+    137: "TRT Spor / Tabii",         
+    132: "beIN Sports 5",            
+    167: "S Sport Plus / FIBA TV",   
+    168: "TRT Spor Yıldız",          
+    9357: "S Sport Plus",            
+    139: "beIN Sports / TRT Spor",   
     11511: "TRT Spor Yıldız / TBF TV", 
     21511: "TBF TV (YouTube)", 
     251: "S Sport Plus", 
@@ -61,7 +53,6 @@ async function start() {
     const trTomorrow = getTRDate(1);
     let allEvents = [];
 
-    // NBA ve gece maçları için dünü de kontrol ediyoruz
     for (const date of [getTRDate(-1), trToday, trTomorrow]) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
@@ -103,8 +94,8 @@ async function start() {
 
         finalMatches.push({
             id: e.id,
-            // --- AKILLI ELİT FİLTRESİ ---
             isElite: ELITE_LEAGUE_IDS.includes(utId), 
+            status: statusType, // <--- iOS İÇİN EKLENEN ORTAK FORMAT
             fixedDate: dayStr,
             fixedTime: timeString, 
             timestamp: dateTR.getTime(),
