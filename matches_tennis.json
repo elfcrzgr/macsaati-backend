@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-08T17:31:08.245Z",
-  "totalMatches": 121,
+  "lastUpdated": "2026-04-08T18:02:15.152Z",
+  "totalMatches": 120,
   "matches": [
     {
       "id": 15967216,
@@ -9,7 +9,7 @@
       "status": "inprogress",
       "fixedDate": "2026-04-08",
       "fixedTime": "01:00\nCANLI",
-      "timestamp": 1775599200000,
+      "timestamp": 1775599233000,
       "broadcaster": "S Sport / Eurosport",
       "homeTeam": {
         "name": "Donald Nikolas Stoot",
@@ -26,7 +26,33 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33733.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-0, 3-4",
+      "setScores": "6-0, 6-6",
+      "tournament": "ITF M15 Boca Raton, FL Men "
+    },
+    {
+      "id": 15967222,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "01:54\nCANLI",
+      "timestamp": 1775602470000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Benjamin Willwerth",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jesse Flores (1024)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cr.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33733.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-2",
       "tournament": "ITF M15 Boca Raton, FL Men "
     },
     {
@@ -56,32 +82,6 @@
       "tournament": "ITF W15 Bonita Springs, FL Women"
     },
     {
-      "id": 15945158,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "17:50\nCANLI",
-      "timestamp": 1775659800000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Juan Bautista Otegui (1108)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alejo Lorenzo Lingua Lavallen (1113)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/28383.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "setScores": "5-7, 6-3, 1-5",
-      "tournament": "UTR PTT Cordoba Men +H 03, Group C"
-    },
-    {
       "id": 15945180,
       "isElite": false,
       "status": "inprogress",
@@ -104,34 +104,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/28383.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "5-7, 7-5, 0-1",
+      "setScores": "5-7, 7-5, 3-4",
       "tournament": "UTR PTT Cordoba Men +H 03, Group D"
-    },
-    {
-      "id": 15921288,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "18:00\nCANLI",
-      "timestamp": 1775660400000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Lautaro Midon (223)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Luciano Emanuel Ambrogi (387)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4283.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "setScores": "2-6, 6-3, 5-5",
-      "tournament": "Campinas, Brazil"
     },
     {
       "id": 15970716,
@@ -182,7 +156,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2391.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "6-7, 2-2",
+      "setScores": "6-7, 5-5",
       "tournament": "Monte Carlo, Monaco"
     },
     {
@@ -206,9 +180,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "setScores": "2-6, 5-4",
+      "setScores": "2-6, 6-4, 1-2",
       "tournament": "Sarasota, USA"
     },
     {
@@ -232,88 +206,10 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33947.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "5-5",
+      "setScores": "7-5, 1-1",
       "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 15974522,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:00\nCANLI",
-      "timestamp": 1775664000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Jenna Dean",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Carson Tanguilig",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "0-6, 1-2",
-      "tournament": "ITF W15 Bonita Springs, FL Women"
-    },
-    {
-      "id": 15968175,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:00\nCANLI",
-      "timestamp": 1775664000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Angela Fita Boluda (247)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mio Mushika (469)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30938.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "7-5, 3-2",
-      "tournament": "ITF W35 Boca Raton, FL Women"
-    },
-    {
-      "id": 15973932,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:00\nCANLI",
-      "timestamp": 1775664000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Sofia Johnson",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Anna Rogers (283)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30938.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-1, 2-5",
-      "tournament": "ITF W35 Boca Raton, FL Women"
     },
     {
       "id": 15974245,
@@ -338,59 +234,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33733.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "3-6, 2-1",
-      "tournament": "ITF M15 Boca Raton, FL Men "
-    },
-    {
-      "id": 15974518,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:09\nCANLI",
-      "timestamp": 1775664558000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Allegra Korpanec Davies",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Khrystyna Vozniak (1245)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-0, 5-4",
-      "tournament": "ITF W15 Bonita Springs, FL Women"
-    },
-    {
-      "id": 15974528,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:10\nCANLI",
-      "timestamp": 1775664629000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Segundo Goity Zapico (1308)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yannik Alvarez",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pr.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33733.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "2-6, 3-4",
+      "setScores": "3-6, 5-4",
       "tournament": "ITF M15 Boca Raton, FL Men "
     },
     {
@@ -414,9 +258,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33733.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "setScores": "4-6, 3-2",
+      "setScores": "4-6, 6-3, 1-0",
       "tournament": "ITF M15 Boca Raton, FL Men "
     },
     {
@@ -442,7 +286,33 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30938.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "5-7, 1-1",
+      "setScores": "5-7, 5-3",
+      "tournament": "ITF W35 Boca Raton, FL Women"
+    },
+    {
+      "id": 15973932,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "19:17\nCANLI",
+      "timestamp": 1775665062000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Sofia Johnson",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anna Rogers (283)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30938.png",
+      "homeScore": "1",
+      "awayScore": "1",
+      "setScores": "6-1, 2-6, 2-4",
       "tournament": "ITF W35 Boca Raton, FL Women"
     },
     {
@@ -468,7 +338,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30938.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "4-6, 0-2",
+      "setScores": "4-6, 2-4",
       "tournament": "ITF W35 Boca Raton, FL Women"
     },
     {
@@ -492,9 +362,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33733.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "setScores": "3-6, 5-2",
+      "setScores": "3-6, 6-3, 1-1",
       "tournament": "ITF M15 Boca Raton, FL Men "
     },
     {
@@ -520,62 +390,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30938.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "6-7, 0-1",
+      "setScores": "6-7, 3-2",
       "tournament": "ITF W35 Boca Raton, FL Women"
-    },
-    {
-      "id": 15921153,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:20\nCANLI",
-      "timestamp": 1775665200000,
-      "broadcaster": "S Sport / S Sport Plus",
-      "homeTeam": {
-        "name": "Fábián Marozsán (43)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hubert Hurkacz (74)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2391.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "2-6, 3-4",
-      "tournament": "Monte Carlo, Monaco"
-    },
-    {
-      "id": 15952358,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:25\nCANLI",
-      "timestamp": 1775665500000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Grabher J / Kraus S",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Cristian J / Ostapenko J",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lv.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2635.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-4, 4-1",
-      "tournament": "Linz, Austria, Doubles"
     },
     {
       "id": 15965947,
@@ -598,61 +414,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
-      "setScores": "6-2, 2-0",
-      "tournament": "ITF W15 Bonita Springs, FL Women"
-    },
-    {
-      "id": 15974521,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:29\nCANLI",
-      "timestamp": 1775665759000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Ava Markham",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Emma Jackson (1341)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-1, 3-1",
-      "tournament": "ITF W15 Bonita Springs, FL Women"
-    },
-    {
-      "id": 15974525,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-08",
-      "fixedTime": "19:36\nCANLI",
-      "timestamp": 1775666166000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Carolina Bohrer Martins",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Aurora Corvi (1434)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-2, 2-1",
+      "setScores": "6-2, 6-2",
       "tournament": "ITF W15 Bonita Springs, FL Women"
     },
     {
@@ -677,8 +441,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/28383.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "2-5",
+      "awayScore": "1",
+      "setScores": "2-6, 2-4",
       "tournament": "UTR PTT Cordoba Men +H 03, Group C"
     },
     {
@@ -705,8 +469,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4070.png",
       "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-3, 0-0",
+      "awayScore": "1",
+      "setScores": "6-3, 2-6, 0-0",
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -730,9 +494,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "5-2",
+      "setScores": "6-4, 3-1",
       "tournament": "Linz, Austria"
     },
     {
@@ -758,7 +522,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "3-2",
+      "setScores": "6-5",
       "tournament": "Mexico City, Mexico"
     },
     {
@@ -783,9 +547,173 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "1-4",
+      "awayScore": "1",
+      "setScores": "1-6, 3-1",
       "tournament": "Mexico City, Mexico"
+    },
+    {
+      "id": 15950057,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "20:20\nCANLI",
+      "timestamp": 1775668800000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "C. Harper / D. Stevenson",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Thayne W / Vance Jam",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3843.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "5-0",
+      "tournament": "Sarasota, USA, Doubles"
+    },
+    {
+      "id": 15949317,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "20:35\nCANLI",
+      "timestamp": 1775669700000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Álvarez Varona N / Mansilla Diez M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Heide G / Ribeiro E",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4374.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-1",
+      "tournament": "Campinas, Brazil, Doubles"
+    },
+    {
+      "id": 15950055,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "20:35\nCANLI",
+      "timestamp": 1775669700000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Kittay B / Olivieri G A",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Arias B / Ingildsen J",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bo.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/dk.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3843.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-3",
+      "tournament": "Sarasota, USA, Doubles"
+    },
+    {
+      "id": 15949323,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "20:45\nCANLI",
+      "timestamp": 1775670300000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Braga B / Braga V",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Cigarran T / Diaz Acosta F",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4374.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "0-1",
+      "tournament": "Campinas, Brazil, Doubles"
+    },
+    {
+      "id": 15945149,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "20:50\nCANLI",
+      "timestamp": 1775670600000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Luciano Carraro",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Sean Hess",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/28383.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-1",
+      "tournament": "UTR PTT Cordoba Men +H 03, Group B"
+    },
+    {
+      "id": 15965945,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "21:31\nCANLI",
+      "timestamp": 1775673107000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Jaedan Brown (1176)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Nadia Elle Valdez",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "3-0",
+      "tournament": "ITF W15 Bonita Springs, FL Women"
     },
     {
       "id": 15944219,
@@ -2618,6 +2546,60 @@
       "tournament": "Monte Carlo, Monaco"
     },
     {
+      "id": 15921153,
+      "isElite": true,
+      "status": "finished",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "19:20\nMS",
+      "timestamp": 1775665200000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Fábián Marozsán (43)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hubert Hurkacz (74)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2391.png",
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": "2-6, 3-6",
+      "tournament": "Monte Carlo, Monaco"
+    },
+    {
+      "id": 15952358,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-08",
+      "fixedTime": "19:25\nMS",
+      "timestamp": 1775665500000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Grabher J / Kraus S",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Cristian J / Ostapenko J",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lv.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2635.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": "6-4, 6-3",
+      "tournament": "Linz, Austria, Doubles"
+    },
+    {
       "id": 15938147,
       "isElite": false,
       "status": "notstarted",
@@ -2635,32 +2617,6 @@
         "name": "Sorana Cirstea (29)",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Linz, Austria"
-    },
-    {
-      "id": 15962737,
-      "isElite": false,
-      "status": "canceled",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "11:00",
-      "timestamp": 1775721600000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Alycia Parks (93)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Dalma Galfi (103)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
@@ -3042,6 +2998,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Linz, Austria"
+    },
+    {
+      "id": 15938160,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-09",
+      "fixedTime": "18:00",
+      "timestamp": 1775746800000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Grabher J / Kraus S",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Kolodziejova M / Maleckova J",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2635.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Linz, Austria, Doubles"
     },
     {
       "id": 15938140,
