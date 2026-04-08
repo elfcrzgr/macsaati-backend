@@ -93,53 +93,15 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-// =========================================================================
-// 1. SADECE ELİT (BABA) LİGLER (isElite: true olarak işaretlenecekler)
-// =========================================================================
 const ELITE_LEAGUE_IDS = [
-    52,    // Trendyol Süper Lig
-    351,   // Trendyol 1. Lig
-    98,    // Ziraat Türkiye Kupası
-    17,    // İngiltere Premier Lig
-    8,     // İspanya LaLiga
-    23,    // İtalya Serie A
-    35,    // Almanya Bundesliga
-    11,    // Fransa Ligue 1 VE Dünya Kupası Avrupa Elemeleri (SofaScore ikisine de 11 diyor)
-    34,    // Liga Portugal
-    37,    // Eredivisie (Hollanda)
-    13,    // Belçika Pro League
-    238,   // Saudi Pro League
-    242,   // MLS (ABD)
-    938,   // Yunanistan Super League
-    393,   // Azerbaycan Premier Ligi
-    7,     // UEFA Şampiyonlar Ligi (Futbol)
-    750,   // UEFA Avrupa Ligi (Futbol)
-    10248, // UEFA Avrupa Konferans Ligi (Futbol)
-    10783, // UEFA Uluslar Ligi
-    1      // Avrupa Şampiyonası (Euro) -> 844 düzeltildi.
+    52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1
 ];
 
-// =========================================================================
-// 2. DİĞER TAKİP EDİLEN LİGLER (Çekilecek ama isElite: false olacaklar)
-// =========================================================================
 const REGULAR_LEAGUE_IDS = [
-    10,    // Championship (İngiltere 2. Lig)
-    155,   // İskoçya Premiership
-    4664,  // Suudi Arabistan Kral Kupası
-    696,   // Kadınlar Şampiyonlar Ligi
-    97,    // TFF 2. Lig / 3. Lig (Genel)
-    11415, // TFF Alt Grup 1
-    11416, // TFF Alt Grup 2
-    11417, // TFF Alt Grup 3
-    15938, // TFF Alt Grup 4
-    13363, // USL Championship (ABD Alt Lig)
-    10618  // Dünya Kupası Kıtalararası Elemeler (Elit değil, buraya taşındı)
+    10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618
 ];
 
-// Aramalarda kullanmak üzere iki listeyi birleştiriyoruz
 const ALL_TARGET_IDS = [...ELITE_LEAGUE_IDS, ...REGULAR_LEAGUE_IDS];
-
-// --- İNATÇI LİGLER (Sezon detayından çekilenler) ---
 const stubbornLeagueIds = [11, 351, 10, 97, 750, 13, 393, 52, 238, 242, 938];
 
 async function start() {
@@ -167,7 +129,6 @@ async function start() {
                     const ut = e.tournament?.uniqueTournament;
                     if (!ut) return false;
                     const utId = ut.id;
-                    // Birleştirilmiş liste üzerinden kontrol yapıyoruz
                     return ALL_TARGET_IDS.includes(utId) || ut.hasEventPlayerStatistics || ut.priority > 20;
                 });
                 const correctlyDated = filtered.filter(e => {
@@ -216,7 +177,6 @@ async function start() {
         const dateTR = new Date(e.startTimestamp * 1000);
         const matchKey = `${hName}_${aName}_${utId}`;
         
-        // --- DURUM VE GÖRSEL TASARIM MANTIĞI ---
         const statusType = e.status?.type; 
         const isFinished = statusType === 'finished';
         const isInProgress = statusType === 'inprogress';
@@ -230,13 +190,12 @@ async function start() {
             timeString = `İPTAL`;
         }
 
-        // --- KATEGORİ BAZLI FİLTRE (U19/U21 veya Kadınlar kategorisini Elit Yapmamak İçin) ---
         const isExcludedCategory = lowerName.includes("u19") || lowerName.includes("u21") || lowerName.includes("women");
 
         const matchObj = {
             id: e.id,
-            // SADECE ELITE_LEAGUE_IDS İÇİNDEYSE TRUE OLUR
             isElite: ELITE_LEAGUE_IDS.includes(utId) && !isExcludedCategory, 
+            status: statusType, // <--- iOS İÇİN EKLENEN ORTAK FORMAT
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: timeString, 
             timestamp: e.startTimestamp * 1000,
