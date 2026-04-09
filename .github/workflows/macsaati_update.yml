@@ -1,8 +1,6 @@
 name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
-  schedule:
-    - cron: '*/15 * * * *' # 🚀 Hedeflediğin gibi 15 dakikada bire çektim
   workflow_dispatch: 
 
 jobs:
@@ -23,22 +21,18 @@ jobs:
           node-version: '24'
           cache: 'npm' 
 
-      # 🧹 apt-get update tamamen silindi! Ubuntu-latest zaten Puppeteer destekler.
-
       - name: Kütüphaneleri Yükle
         run: npm ci 
 
       # ==========================================
-      # 🚀 VERİ ÇEKME (PARALEL MOD)
+      # 🚀 VERİ ÇEKME (PARALEL MOD - ZAMAN KAZANDIRIR)
       # ==========================================
       - name: Tüm Spor Verilerini Çek
         run: |
           node fetch_football.js &
           node fetch_basketball.js &
           node fetch_tennis.js &
-          wait
-
-      # 🧹 logo_masters.js buradan silindi. Onu günde 1 kez çalışacak ayrı bir action yapacağız.
+          wait # Tüm arka plan işlemlerinin bitmesini bekle
 
       # ==========================================
       # 📤 GITHUB'A PUSH
@@ -54,7 +48,6 @@ jobs:
             echo "Güncellenecek yeni bir veri bulunamadı."
           else
             git commit -m "Otomatik Güncelleme: $(date +'%d-%m-%Y %H:%M')"
-            # Push işlemini hızlandırmak ve çakışmaları önlemek için rebase mantığı eklendi
             git pull origin main --rebase
             git push origin main
             echo "✅ Veriler başarıyla GitHub'a gönderildi."
