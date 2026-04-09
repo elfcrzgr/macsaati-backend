@@ -1,15 +1,15 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-09T03:18:18.863Z",
-  "totalMatches": 93,
+  "lastUpdated": "2026-04-09T03:30:58.096Z",
+  "totalMatches": 89,
   "matches": [
     {
       "id": 15975970,
       "isElite": false,
       "status": "inprogress",
       "fixedDate": "2026-04-09",
-      "fixedTime": "04:09\nCANLI",
-      "timestamp": 1775696977000,
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775696400000,
       "broadcaster": "S Sport / Eurosport",
       "homeTeam": {
         "name": "Elena Micic (365)",
@@ -26,7 +26,33 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "6-0, 6-7, 3-1",
+      "setScores": "6-0, 6-7, 5-1",
+      "tournament": "ITF W35 Osaka Women"
+    },
+    {
+      "id": 15975974,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-09",
+      "fixedTime": "04:00\nCANLI",
+      "timestamp": 1775696400000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Haruka Kaji (327)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hikaru Sato (665)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
+      "homeScore": "1",
+      "awayScore": "1",
+      "setScores": "6-7, 6-3, 1-0",
       "tournament": "ITF W35 Osaka Women"
     },
     {
@@ -52,34 +78,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "6-3, 1-6, 2-3",
+      "setScores": "6-3, 1-6, 3-5",
       "tournament": "UTR PTT Newport Beach Women 08, Group D"
-    },
-    {
-      "id": 15975974,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "04:10\nCANLI",
-      "timestamp": 1775697040000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Haruka Kaji (327)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hikaru Sato (665)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "6-7, 5-3",
-      "tournament": "ITF W35 Osaka Women"
     },
     {
       "id": 15974577,
@@ -108,30 +108,56 @@
       "tournament": "UTR PTT Melbourne Men 01, Group A"
     },
     {
-      "id": 15946201,
+      "id": 15977076,
       "isElite": false,
       "status": "inprogress",
       "fixedDate": "2026-04-09",
-      "fixedTime": "04:50\nCANLI",
-      "timestamp": 1775699400000,
+      "fixedTime": "05:00\nCANLI",
+      "timestamp": 1775700000000,
       "broadcaster": "S Sport / Eurosport",
       "homeTeam": {
-        "name": "Bianca Compuesto",
+        "name": "Colin Sinclair (591)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mp.png"
         ]
       },
       "awayTeam": {
-        "name": "Destanee Aiava (451)",
+        "name": "Charles Broom (246)",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "3-6, 2-5",
-      "tournament": "UTR PTT Melbourne Women 01, Group A"
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
+      "homeScore": "1",
+      "awayScore": "0",
+      "setScores": "6-3, 4-4",
+      "tournament": "ITF M25 Maanshan 2 Men"
+    },
+    {
+      "id": 15977070,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-09",
+      "fixedTime": "05:00\nCANLI",
+      "timestamp": 1775700000000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Luca Castelnuovo (403)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yaojie Zeng (919)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
+      "homeScore": "1",
+      "awayScore": "0",
+      "setScores": "6-4, 3-1",
+      "tournament": "ITF M25 Maanshan 2 Men"
     },
     {
       "id": 15976584,
@@ -156,7 +182,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33735.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "4-6, 3-2",
+      "setScores": "4-6, 5-2",
       "tournament": "ITF W35 Anning Women"
     },
     {
@@ -182,7 +208,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33735.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4, 0-2",
+      "setScores": "6-4, 2-3",
       "tournament": "ITF W35 Anning Women"
     },
     {
@@ -208,112 +234,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33735.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4, 1-2",
+      "setScores": "6-4, 3-2",
       "tournament": "ITF W35 Anning Women"
-    },
-    {
-      "id": 15977076,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "05:12\nCANLI",
-      "timestamp": 1775700734000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Colin Sinclair (591)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mp.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Charles Broom (246)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-3, 2-3",
-      "tournament": "ITF M25 Maanshan 2 Men"
-    },
-    {
-      "id": 15977079,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "05:13\nCANLI",
-      "timestamp": 1775700790000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Arthur Weber (415)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Tianhui Zhang (799)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-3, 4-1",
-      "tournament": "ITF M25 Maanshan 2 Men"
-    },
-    {
-      "id": 15977070,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "05:13\nCANLI",
-      "timestamp": 1775700815000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Luca Castelnuovo (403)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yaojie Zeng (919)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-4, 2-0",
-      "tournament": "ITF M25 Maanshan 2 Men"
-    },
-    {
-      "id": 15946223,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "05:15\nCANLI",
-      "timestamp": 1775700900000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Scott Jones (792)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Asher Brownrigg",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31371.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-1, 1-2",
-      "tournament": "UTR PTT Melbourne Men 01, Group A"
     },
     {
       "id": 15977073,
@@ -337,35 +259,9 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "2-4",
+      "awayScore": "1",
+      "setScores": "3-6",
       "tournament": "ITF M25 Maanshan 2 Men"
-    },
-    {
-      "id": 15946178,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "05:45\nCANLI",
-      "timestamp": 1775702700000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Jasmine Adams",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Grace Cadwallader",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-1, 0-0",
-      "tournament": "UTR PTT Melbourne Women 01, Group D"
     },
     {
       "id": 15927875,
@@ -390,7 +286,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33904.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "1-2",
+      "setScores": "2-3",
       "tournament": "Wuning, China"
     },
     {
@@ -416,7 +312,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33904.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "0-1",
+      "setScores": "3-2",
       "tournament": "Wuning, China"
     },
     {
@@ -424,8 +320,8 @@
       "isElite": false,
       "status": "inprogress",
       "fixedDate": "2026-04-09",
-      "fixedTime": "06:09\nCANLI",
-      "timestamp": 1775704160000,
+      "fixedTime": "06:00\nCANLI",
+      "timestamp": 1775703600000,
       "broadcaster": "S Sport / Eurosport",
       "homeTeam": {
         "name": "Aoi Ito (218)",
@@ -442,7 +338,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "0-3",
+      "setScores": "3-4",
       "tournament": "ITF W35 Osaka Women"
     },
     {
