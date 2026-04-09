@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-09T17:41:01.266Z",
-  "totalMatches": 93,
+  "lastUpdated": "2026-04-09T18:01:10.618Z",
+  "totalMatches": 94,
   "matches": [
     {
       "id": 15981102,
@@ -51,8 +51,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/28383.png",
       "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "7-6, 2-4",
+      "awayScore": "1",
+      "setScores": "7-6, 2-6, 0-1",
       "tournament": "UTR PTT Cordoba Men +H 03, Group C"
     },
     {
@@ -78,7 +78,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/28383.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-2, 4-3",
+      "setScores": "6-2, 5-5",
       "tournament": "UTR PTT Cordoba Men +H 03, Group C"
     },
     {
@@ -104,7 +104,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/26022.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "4-6, 1-2",
+      "setScores": "4-6, 4-4",
       "tournament": "Singles Matches"
     },
     {
@@ -132,7 +132,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4374.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "4-6, 7-6, 0-0",
+      "setScores": "4-6, 7-6, 12-12",
       "tournament": "Campinas, Brazil, Doubles"
     },
     {
@@ -158,7 +158,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "3-6, 6-3",
+      "setScores": "3-6, 6-3, 4-1",
       "tournament": "ITF W15 Bonita Springs, FL Women"
     },
     {
@@ -183,8 +183,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
       "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "5-7, 2-4",
+      "awayScore": "2",
+      "setScores": "5-7, 4-6",
       "tournament": "ITF W15 Bonita Springs, FL Women"
     },
     {
@@ -210,7 +210,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-2, 2-4",
+      "setScores": "6-2, 4-5",
       "tournament": "ITF W15 Bonita Springs, FL Women"
     },
     {
@@ -236,7 +236,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2391.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "6-7, 0-0",
+      "setScores": "6-7, 2-2",
       "tournament": "Monte Carlo, Monaco"
     },
     {
@@ -262,7 +262,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5631.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-3",
+      "setScores": "5-5",
       "tournament": "Mexico City, Mexico"
     },
     {
@@ -288,8 +288,88 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3559.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "1-0",
+      "setScores": "4-1",
       "tournament": "Sarasota, USA"
+    },
+    {
+      "id": 15938149,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-09",
+      "fixedTime": "20:35\nCANLI",
+      "timestamp": 1775756100000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Tamara Korpatsch (109)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anastasia Potapova (97)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-1",
+      "tournament": "Linz, Austria"
+    },
+    {
+      "id": 15980762,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-09",
+      "fixedTime": "20:48\nCANLI",
+      "timestamp": 1775756889000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Sofiia Bielinska",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Daria Egorova (663)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33738.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-3",
+      "tournament": "ITF W15 Bonita Springs, FL Women"
+    },
+    {
+      "id": 15938158,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-09",
+      "fixedTime": "20:50\nCANLI",
+      "timestamp": 1775757000000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Cirstea S / Zhang S",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Kato M / Samsonova L",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2635.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "0-2",
+      "tournament": "Linz, Austria, Doubles"
     },
     {
       "id": 15953090,
@@ -2101,60 +2181,6 @@
       "homeScore": "2",
       "awayScore": "0",
       "setScores": "6-1, 6-3",
-      "tournament": "Linz, Austria"
-    },
-    {
-      "id": 15938158,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "19:40\nBAŞLAMADI",
-      "timestamp": 1775752800000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Cirstea S / Zhang S",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Kato M / Samsonova L",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2635.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Linz, Austria, Doubles"
-    },
-    {
-      "id": 15938149,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-09",
-      "fixedTime": "20:35\nBAŞLAMADI",
-      "timestamp": 1775756100000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Tamara Korpatsch (109)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Anastasia Potapova (97)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2583.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
       "tournament": "Linz, Austria"
     },
     {
