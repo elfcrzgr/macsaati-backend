@@ -94,8 +94,10 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
 };
 
 const ELITE_LEAGUE_IDS = [
-    52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1
+    52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1,
+    679, 17015 // Avrupa Ligi ve Konferans Ligi eklendi
 ];
+
 
 const REGULAR_LEAGUE_IDS = [
     10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618
