@@ -1,14 +1,14 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-10T23:01:22.975Z",
+  "lastUpdated": "2026-04-10T23:31:11.977Z",
   "totalMatches": 498,
   "matches": [
     {
       "id": 15400155,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "00:15\nCANLI",
+      "fixedTime": "00:15",
       "timestamp": 1775855700000,
       "broadcaster": "TV Yayını Yok (Yerel)",
       "homeTeam": {
@@ -20,8 +20,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/323510.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11540.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
       "tournament": "Primera División, Apertura"
     },
     {
@@ -69,9 +69,9 @@
     {
       "id": 15420882,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "02:00",
+      "fixedTime": "02:00\nCANLI",
       "timestamp": 1775862000000,
       "broadcaster": "Apple TV / OneFootball",
       "homeTeam": {
