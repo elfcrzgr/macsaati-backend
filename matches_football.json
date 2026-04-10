@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-10T09:31:21.391Z",
+  "lastUpdated": "2026-04-10T10:01:17.414Z",
   "totalMatches": 495,
   "matches": [
     {
@@ -174,9 +174,9 @@
     {
       "id": 14671772,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-10",
-      "fixedTime": "12:35",
+      "fixedTime": "12:35\nCANLI",
       "timestamp": 1775813700000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -5569,6 +5569,27 @@
       "tournament": "Ekstraklasa"
     },
     {
+      "id": 15269937,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-11",
+      "fixedTime": "21:30",
+      "timestamp": 1775932200000,
+      "broadcaster": "Spor Smart / Exxen",
+      "homeTeam": {
+        "name": "Independiente Rivadavia",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36842.png"
+      },
+      "awayTeam": {
+        "name": "Argentinos Juniors",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3216.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Profesional de Fútbol"
+    },
+    {
       "id": 15171445,
       "isElite": true,
       "status": "notstarted",
@@ -6024,27 +6045,6 @@
       "awayTeam": {
         "name": "Club Atlético Unión de Santa Fe",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3204.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Liga Profesional de Fútbol"
-    },
-    {
-      "id": 15269937,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-11",
-      "fixedTime": "23:15",
-      "timestamp": 1775938500000,
-      "broadcaster": "Spor Smart / Exxen",
-      "homeTeam": {
-        "name": "Independiente Rivadavia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36842.png"
-      },
-      "awayTeam": {
-        "name": "Argentinos Juniors",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3216.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
       "homeScore": "-",
