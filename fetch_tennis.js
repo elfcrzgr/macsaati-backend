@@ -18,24 +18,14 @@ const categoryConfigs = {
 
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
-// =========================================================================
-// TENİS ELİT TURNUVA ANAHTAR KELİMELERİ (Sağlamlaştırılmış Şehir Listesi)
-// =========================================================================
 const ELITE_KEYWORDS = [
-    // 🏆 MEGA TURNUVALAR (2000 & 1000 Puan)
     "Wimbledon", "US Open", "Australian Open", "Roland Garros", "French Open", 
     "Masters", "ATP 1000", "WTA 1000", 
     "ATP Finals", "WTA Finals", "Next Gen ATP Finals", 
-    
-    // 📍 ŞEHİR İSİMLİ BÜYÜK TURNUVALAR
     "Monte Carlo", "Indian Wells", "Miami", "Madrid", "Rome", "Cincinnati", 
     "Shanghai", "Paris", "Montreal", "Toronto", "Canadian Open", "Beijing", 
     "Doha", "Dubai",
-    
-    // 🌍 ULUSLARARASI ŞOVLAR
     "Davis Cup", "Billie Jean King Cup", "Laver Cup", "United Cup", "Olympic",
-    
-    // ⭐ ÜST DÜZEY PROFESYONEL TUR
     "ATP 500", "WTA 500"
 ];
 
@@ -46,7 +36,7 @@ const checkIsElite = (tournamentName) => {
 };
 
 async function start() {
-    console.log("🚀 Tenis motoru (Tekler Ranking + Çiftler Bayrak + Elit/Set Skorları) başlatılıyor...");
+    console.log("🚀 Tenis motoru başlatılıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     
@@ -58,17 +48,23 @@ async function start() {
 
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
+    // =========================================================================
+    // ZAMANLAMA DÜZELTİLMİŞ FONKSİYON
+    // =========================================================================
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); 
         d.setDate(d.getDate() + offset);
-        return d.toISOString().split('T')[0];
+        // toLocaleDateString('en-CA') her zaman YYYY-MM-DD formatını verir ve 
+        // ISO'nun aksine yerel (iMac) saatini baz alır.
+        return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
     let rawEvents = [];
     const dates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
     const nowTimestamp = Date.now();
     
+    console.log("Sorgulanacak tarihler:", dates);
+
     for (const date of dates) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
@@ -79,7 +75,9 @@ async function start() {
                 );
                 rawEvents.push(...filtered);
             }
-        } catch (e) {}
+        } catch (e) {
+            console.error(`${date} çekilirken hata oluştu.`);
+        }
     }
 
     const uniqueEvents = Array.from(new Map(rawEvents.map(e => [e.id, e])).values());
@@ -143,7 +141,6 @@ async function start() {
             if (awayRank) finalAwayName += ` (${awayRank})`;
         }
 
-        // 🎾 SET SKORLARINI ÇEKME DÖNGÜSÜ
         let setScoresStr = "";
         if (e.homeScore && e.awayScore) {
             let sets = [];
@@ -157,7 +154,6 @@ async function start() {
             setScoresStr = sets.join(", "); 
         }
 
-        // 🌟 ELİT KONTROLÜ
         const tournamentName = e.tournament.name || "";
         const isITForChallenger = tournamentName.toUpperCase().includes("ITF") || tournamentName.toUpperCase().includes("CHALLENGER");
         const isElite = !isITForChallenger && checkIsElite(tournamentName);
@@ -200,7 +196,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log("✅ İşlem bitti. Teklerde sıralama, çiftlerde yan yana bayraklar, Elit filtre ve Set Skorları hazır.");
+    console.log("✅ İşlem bitti. 12 Nisan verileri dahil edildi.");
 }
 
 start();
