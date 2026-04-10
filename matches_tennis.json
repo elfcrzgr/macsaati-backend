@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-10T04:01:03.365Z",
-  "totalMatches": 71,
+  "lastUpdated": "2026-04-10T04:31:02.042Z",
+  "totalMatches": 70,
   "matches": [
     {
       "id": 15984770,
@@ -56,6 +56,32 @@
       "awayScore": "0",
       "setScores": "6-4, 4-5",
       "tournament": "ITF W15 Bonita Springs, FL Women Doubles"
+    },
+    {
+      "id": 15982829,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "02:00\nCANLI",
+      "timestamp": 1775775600000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Charlotte Vanstone McGrath",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Pauline MA",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
+      "homeScore": "1",
+      "awayScore": "1",
+      "setScores": "3-6, 7-5, 5-6",
+      "tournament": "UTR PTT Melbourne Women 01, 5-8 Playoffs"
     },
     {
       "id": 15985130,
@@ -158,112 +184,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/27338.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "7-6, 2-6, 3-3",
+      "setScores": "7-6, 2-6, 5-6",
       "tournament": "UTR PTT Newport Beach Men 08, Group C"
-    },
-    {
-      "id": 15981105,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "05:00\nCANLI",
-      "timestamp": 1775786400000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Talia Gibson (56)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mika Stojsavljevic (275)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2310.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "6-7, 4-5",
-      "tournament": "Billie Jean King Cup, Singles Matches, Qualifiers"
-    },
-    {
-      "id": 15982613,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "05:09\nCANLI",
-      "timestamp": 1775786986000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Luca Castelnuovo (403)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Matthew Dellavedova (456)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "setScores": "6-4, 0-6, 5-1",
-      "tournament": "ITF M25 Maanshan 2 Men"
-    },
-    {
-      "id": 15982614,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "05:13\nCANLI",
-      "timestamp": 1775787216000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "James McCabe (239)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Dominik Palan (526)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-4, 5-1",
-      "tournament": "ITF M25 Maanshan 2 Men"
-    },
-    {
-      "id": 15927884,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "06:00\nCANLI",
-      "timestamp": 1775790000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Fajing Sun (251)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Justin Boulais (449)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33904.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-1, 2-1",
-      "tournament": "Wuning, China"
     },
     {
       "id": 15927880,
@@ -287,8 +209,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33904.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "6-6",
+      "awayScore": "1",
+      "setScores": "6-7, 3-3",
       "tournament": "Wuning, China"
     },
     {
@@ -314,7 +236,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33735.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4",
+      "setScores": "6-4, 5-2",
       "tournament": "ITF W35 Anning Women"
     },
     {
@@ -339,8 +261,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "5-5",
+      "awayScore": "1",
+      "setScores": "6-7, 1-1",
       "tournament": "ITF W35 Osaka Women"
     },
     {
@@ -365,35 +287,9 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "5-5",
-      "tournament": "ITF W35 Osaka Women"
-    },
-    {
-      "id": 15983104,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "06:09\nCANLI",
-      "timestamp": 1775790550000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Elina Nepliy (653)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alexandra Shubladze (266)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33735.png",
-      "homeScore": "0",
       "awayScore": "1",
-      "setScores": "1-6, 0-2",
-      "tournament": "ITF W35 Anning Women"
+      "setScores": "6-7, 0-2",
+      "tournament": "ITF W35 Osaka Women"
     },
     {
       "id": 15982719,
@@ -417,8 +313,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "3-5",
+      "awayScore": "1",
+      "setScores": "4-6, 2-1",
       "tournament": "ITF W35 Osaka Women"
     },
     {
@@ -442,10 +338,90 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
+      "homeScore": "1",
+      "awayScore": "0",
+      "setScores": "7-6",
+      "tournament": "ITF W35 Osaka Women"
+    },
+    {
+      "id": 15982610,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "07:10\nCANLI",
+      "timestamp": 1775794238000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Delaney Je / Sinclair C",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mp.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Liu S / Zeng Y",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33731.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "4-4",
-      "tournament": "ITF W35 Osaka Women"
+      "setScores": "2-3",
+      "tournament": "ITF M25 Maanshan 2 Men Doubles "
+    },
+    {
+      "id": 15983101,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "07:13\nCANLI",
+      "timestamp": 1775794413000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Wushuang Zheng (460)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yidi Yang (311)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33735.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-1",
+      "tournament": "ITF W35 Anning Women"
+    },
+    {
+      "id": 15927889,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "07:20\nCANLI",
+      "timestamp": 1775794800000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Pavel Kotov (299)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Ilia Simakin (221)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33904.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "0-0",
+      "tournament": "Wuning, China"
     },
     {
       "id": 15938143,
