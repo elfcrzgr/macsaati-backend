@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-10T02:00:53.261Z",
-  "totalMatches": 70,
+  "lastUpdated": "2026-04-10T02:30:49.908Z",
+  "totalMatches": 74,
   "matches": [
     {
       "id": 15985132,
@@ -26,7 +26,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33733.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4",
+      "setScores": "6-4, 1-4",
       "tournament": "ITF M15 Boca Raton, FL Men "
     },
     {
@@ -106,34 +106,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "3-6, 7-5, 0-1",
+      "setScores": "3-6, 7-5, 4-2",
       "tournament": "UTR PTT Melbourne Women 01, 5-8 Playoffs"
-    },
-    {
-      "id": 15985133,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "02:34\nCANLI",
-      "timestamp": 1775777663000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Mwendwa Mbithi (733)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jerry Roddick",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33733.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "setScores": "1-6, 6-4, 3-2",
-      "tournament": "ITF M15 Boca Raton, FL Men "
     },
     {
       "id": 15985130,
@@ -210,7 +184,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31371.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "3-6, 0-0",
+      "setScores": "3-6, 5-3",
       "tournament": "UTR PTT Melbourne Men 01, 13-16 Playoffs"
     },
     {
@@ -234,9 +208,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31371.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "setScores": "2-6, 1-1",
+      "setScores": "2-6, 6-4, 0-0",
       "tournament": "UTR PTT Melbourne Men 01, 13-16 Playoffs"
     },
     {
@@ -260,36 +234,10 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/27338.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "4-4",
+      "setScores": "7-6, 0-0",
       "tournament": "UTR PTT Newport Beach Men 08, Group C"
-    },
-    {
-      "id": 15944752,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "04:20\nCANLI",
-      "timestamp": 1775784000000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Darja Suvirdjonkova",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/rs.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Shakhnoza Khatamova",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/uz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "2-5",
-      "tournament": "UTR PTT Newport Beach Women 08, Group D"
     },
     {
       "id": 15981205,
@@ -314,7 +262,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/27338.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-1, 0-0",
+      "setScores": "6-1, 5-2",
       "tournament": "UTR PTT Newport Beach Men 08, Group B"
     },
     {
@@ -338,9 +286,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/27338.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "2-1",
+      "setScores": "6-1, 1-0",
       "tournament": "UTR PTT Newport Beach Men 08, Group D"
     },
     {
@@ -364,9 +312,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "2-0",
+      "setScores": "6-0, 2-1",
       "tournament": "UTR PTT Newport Beach Women 08, Group C"
     },
     {
@@ -390,9 +338,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "2-0",
+      "setScores": "6-1, 0-0",
       "tournament": "UTR PTT Melbourne Women 01, 1-4 Playoffs"
     },
     {
@@ -418,8 +366,164 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25787.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "0-0",
+      "setScores": "2-5",
       "tournament": "UTR PTT Newport Beach Women 08, Group C"
+    },
+    {
+      "id": 15981105,
+      "isElite": true,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "05:00\nCANLI",
+      "timestamp": 1775786400000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Talia Gibson (56)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mika Stojsavljevic (275)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2310.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-1",
+      "tournament": "Billie Jean King Cup, Singles Matches, Qualifiers"
+    },
+    {
+      "id": 15982612,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "05:08\nCANLI",
+      "timestamp": 1775786918000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Arthur Weber (415)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Charles Broom (246)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-3",
+      "tournament": "ITF M25 Maanshan 2 Men"
+    },
+    {
+      "id": 15982613,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "05:09\nCANLI",
+      "timestamp": 1775786986000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Luca Castelnuovo (403)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Matthew Dellavedova (456)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-3",
+      "tournament": "ITF M25 Maanshan 2 Men"
+    },
+    {
+      "id": 15982609,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "05:11\nCANLI",
+      "timestamp": 1775787090000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Evgeny Philippov (1027)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Akira Santillan (335)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "3-1",
+      "tournament": "ITF M25 Maanshan 2 Men"
+    },
+    {
+      "id": 15983100,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "05:11\nCANLI",
+      "timestamp": 1775787114000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Anastasia Zolotareva (272)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Varvara Panshina (479)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33735.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-1",
+      "tournament": "ITF W35 Anning Women"
+    },
+    {
+      "id": 15982614,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "05:13\nCANLI",
+      "timestamp": 1775787216000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "James McCabe (239)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Dominik Palan (526)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33730.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-1",
+      "tournament": "ITF M25 Maanshan 2 Men"
     },
     {
       "id": 15938143,
