@@ -36,7 +36,7 @@ const checkIsElite = (tournamentName) => {
 };
 
 async function start() {
-    console.log("🚀 Tenis motoru başlatılıyor (Tarih döngüsü futbolla eşitlendi)...");
+    console.log("🚀 Tenis motoru başlatılıyor...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     
@@ -48,19 +48,18 @@ async function start() {
 
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // --- FUTBOL KODLARINDAKİ GİBİ SAĞLAM TARİH MANTIĞI ---
+    // Futbol kodlarındaki gibi sorunsuz tarih fonksiyonu
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        // offset ekleyip yerel saat dilimine (Bursa/TR) göre YYYY-MM-DD verir
         d.setDate(d.getDate() + offset);
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    // Futbol kodundaki gibi: Bugün, Yarın (12 Nis), Yarından Sonra (13 Nis)
+    // Radarı futbol gibi 12 Nisan ve sonrasına kuruyoruz:
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
     
-    console.log("Sorgulanacak tarihler:", validDates);
+    console.log("Sorgulanan Tarihler:", validDates);
 
     for (const date of validDates) {
         try {
@@ -187,7 +186,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log(`✅ İşlem bitti. Toplam ${finalMatches.length} maç JSON'a eklendi.`);
+    console.log(`✅ ${finalMatches.length} maç kaydedildi.`);
 }
 
 start();
