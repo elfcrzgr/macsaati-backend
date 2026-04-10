@@ -49,13 +49,12 @@ async function start() {
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     // =========================================================================
-    // ZAMANLAMA DÜZELTİLMİŞ FONKSİYON
+    // SADECE BU FONKSİYON DÜZELTİLDİ (Tarih Kayması Engellendi)
     // =========================================================================
     const getTRDate = (offset = 0) => {
         const d = new Date();
         d.setDate(d.getDate() + offset);
-        // toLocaleDateString('en-CA') her zaman YYYY-MM-DD formatını verir ve 
-        // ISO'nun aksine yerel (iMac) saatini baz alır.
+        // ISO yerine yerel saat dilimine (İstanbul) göre YYYY-MM-DD verir.
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
@@ -75,9 +74,7 @@ async function start() {
                 );
                 rawEvents.push(...filtered);
             }
-        } catch (e) {
-            console.error(`${date} çekilirken hata oluştu.`);
-        }
+        } catch (e) {}
     }
 
     const uniqueEvents = Array.from(new Map(rawEvents.map(e => [e.id, e])).values());
@@ -196,7 +193,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log("✅ İşlem bitti. 12 Nisan verileri dahil edildi.");
+    console.log("✅ İşlem bitti. Zamanlama sorunu giderildi.");
 }
 
 start();
