@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-10T21:18:07.029Z",
-  "totalMatches": 86,
+  "lastUpdated": "2026-04-10T21:22:04.799Z",
+  "totalMatches": 87,
   "matches": [
     {
       "id": 15537826,
@@ -134,7 +134,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33734.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "3-6, 2-5",
+      "setScores": "3-6, 3-5",
       "tournament": "ITF M15 Boca Raton, FL Men Doubles"
     },
     {
@@ -162,7 +162,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/4374.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-3, 0-0",
+      "setScores": "6-3, 1-0",
       "tournament": "Campinas, Brazil, Doubles"
     },
     {
@@ -190,8 +190,36 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30940.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-2, 1-0",
+      "setScores": "6-2, 2-0",
       "tournament": "ITF W35 Boca Raton, FL Women Doubles"
+    },
+    {
+      "id": 15989827,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-11",
+      "fixedTime": "00:13\nCANLI",
+      "timestamp": 1775855615000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Dean J / Maquet M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Collins K / Tanguilig C",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33739.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "0-2",
+      "tournament": "ITF W15 Bonita Springs, FL Women Doubles"
     },
     {
       "id": 15921173,
