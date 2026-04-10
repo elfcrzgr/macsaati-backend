@@ -36,7 +36,7 @@ const checkIsElite = (tournamentName) => {
 };
 
 async function start() {
-    console.log("🚀 Tenis motoru başlatılıyor...");
+    console.log("🚀 Tenis motoru başlatılıyor (Zamanlama güncellendi)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     
@@ -48,33 +48,31 @@ async function start() {
 
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // =========================================================================
-    // SADECE BU FONKSİYON DÜZELTİLDİ (Tarih Kayması Engellendi)
-    // =========================================================================
+    // --- GÜNCELLENEN TARİH FONKSİYONU (Futboldaki gibi sağlam) ---
     const getTRDate = (offset = 0) => {
         const d = new Date();
+        // offset ekleyip direkt yerel TR tarihini string (YYYY-MM-DD) olarak alır
         d.setDate(d.getDate() + offset);
-        // ISO yerine yerel saat dilimine (İstanbul) göre YYYY-MM-DD verir.
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
+    // Bugün, Yarın ve Yarından Sonra (Futbol kodundaki aralık)
+    const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
-    const dates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
-    const nowTimestamp = Date.now();
     
-    console.log("Sorgulanacak tarihler:", dates);
+    console.log("Sorgulanacak Tarihler:", validDates);
 
-    for (const date of dates) {
+    for (const date of validDates) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
+            const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             if (data?.events) {
                 const filtered = data.events.filter(e => 
                     targetCategoryIds.includes(e.tournament?.category?.id) || e.status?.type === 'inprogress'
                 );
                 rawEvents.push(...filtered);
             }
-        } catch (e) {}
+        } catch (e) { }
     }
 
     const uniqueEvents = Array.from(new Map(rawEvents.map(e => [e.id, e])).values());
@@ -94,14 +92,12 @@ async function start() {
                 try {
                     const r = await fetch(`https://api.sofascore.com/api/v1/event/${id}`);
                     const ev = await r.json();
-                    
                     const getCodes = (team) => {
                         if (team.subTeams && team.subTeams.length > 0) {
                             return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
                         }
                         return [team.country?.alpha2?.toLowerCase() || "default"];
                     };
-                    
                     return {
                         hR: ev?.event?.homeTeam?.ranking,
                         aR: ev?.event?.awayTeam?.ranking,
@@ -127,7 +123,7 @@ async function start() {
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         
         if (statusType === 'inprogress') timeString += "\nCANLI";
-        else if (statusType === 'notstarted' && nowTimestamp > startTimestamp) timeString += "\nBAŞLAMADI";
+        else if (statusType === 'notstarted' && Date.now() > startTimestamp) timeString += "\nBAŞLAMADI";
         else if (isFinished) timeString += "\nMS";
 
         let finalHomeName = e.homeTeam.name;
@@ -144,9 +140,7 @@ async function start() {
             for (let i = 1; i <= 5; i++) {
                 let hSet = e.homeScore[`period${i}`];
                 let aSet = e.awayScore[`period${i}`];
-                if (hSet !== undefined && aSet !== undefined) {
-                    sets.push(`${hSet}-${aSet}`);
-                }
+                if (hSet !== undefined && aSet !== undefined) sets.push(`${hSet}-${aSet}`);
             }
             setScoresStr = sets.join(", "); 
         }
@@ -193,7 +187,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log("✅ İşlem bitti. Zamanlama sorunu giderildi.");
+    console.log("✅ İşlem bitti. 12 Nisan maçları artık görünür olmalı.");
 }
 
 start();
