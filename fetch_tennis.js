@@ -36,7 +36,7 @@ const checkIsElite = (tournamentName) => {
 };
 
 async function start() {
-    console.log("🚀 Tenis motoru başlatılıyor (Zamanlama güncellendi)...");
+    console.log("🚀 Tenis motoru başlatılıyor (Tarih döngüsü futbolla eşitlendi)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     
@@ -48,19 +48,19 @@ async function start() {
 
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // --- GÜNCELLENEN TARİH FONKSİYONU (Futboldaki gibi sağlam) ---
+    // --- FUTBOL KODLARINDAKİ GİBİ SAĞLAM TARİH MANTIĞI ---
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        // offset ekleyip direkt yerel TR tarihini string (YYYY-MM-DD) olarak alır
+        // offset ekleyip yerel saat dilimine (Bursa/TR) göre YYYY-MM-DD verir
         d.setDate(d.getDate() + offset);
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    // Bugün, Yarın ve Yarından Sonra (Futbol kodundaki aralık)
+    // Futbol kodundaki gibi: Bugün, Yarın (12 Nis), Yarından Sonra (13 Nis)
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
     
-    console.log("Sorgulanacak Tarihler:", validDates);
+    console.log("Sorgulanacak tarihler:", validDates);
 
     for (const date of validDates) {
         try {
@@ -187,7 +187,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log("✅ İşlem bitti. 12 Nisan maçları artık görünür olmalı.");
+    console.log(`✅ İşlem bitti. Toplam ${finalMatches.length} maç JSON'a eklendi.`);
 }
 
 start();
