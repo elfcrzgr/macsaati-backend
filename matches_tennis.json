@@ -1,88 +1,8 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-10T05:30:54.112Z",
-  "totalMatches": 65,
+  "lastUpdated": "2026-04-10T06:00:58.563Z",
+  "totalMatches": 62,
   "matches": [
-    {
-      "id": 15982717,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "06:08\nCANLI",
-      "timestamp": 1775790496000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Aoi Ito (218)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Elena Micic (365)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/25955.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "setScores": "6-7, 6-4, 2-1",
-      "tournament": "ITF W35 Osaka Women"
-    },
-    {
-      "id": 15982610,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "07:10\nCANLI",
-      "timestamp": 1775794238000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Delaney Je / Sinclair C",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mp.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Liu S / Zeng Y",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33731.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "4-6, 4-4",
-      "tournament": "ITF M25 Maanshan 2 Men Doubles "
-    },
-    {
-      "id": 15983101,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "07:13\nCANLI",
-      "timestamp": 1775794413000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Wushuang Zheng (460)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yidi Yang (311)",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33735.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-4, 3-2",
-      "tournament": "ITF W35 Anning Women"
-    },
     {
       "id": 15927889,
       "isElite": false,
@@ -104,9 +24,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33904.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "setScores": "2-6, 3-4",
+      "setScores": "2-6, 7-6, 0-0",
       "tournament": "Wuning, China"
     },
     {
@@ -130,36 +50,10 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2310.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "4-3",
-      "tournament": "Billie Jean King Cup, Singles Matches, Qualifiers"
-    },
-    {
-      "id": 15985739,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-10",
-      "fixedTime": "07:30\nCANLI",
-      "timestamp": 1775795400000,
-      "broadcaster": "S Sport / Eurosport",
-      "homeTeam": {
-        "name": "Mathieu Perchicot",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Michael (2007) Smith",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31371.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-1, 4-2",
-      "tournament": "UTR PTT Melbourne Men 01, 5-8 Playoffs"
+      "setScores": "6-4, 2-1",
+      "tournament": "Billie Jean King Cup, Singles Matches, Qualifiers"
     },
     {
       "id": 15985736,
@@ -184,7 +78,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31371.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "4-6, 0-0",
+      "setScores": "4-6, 3-3",
       "tournament": "UTR PTT Melbourne Men 01, 5-8 Playoffs"
     },
     {
@@ -210,7 +104,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "4-3",
+      "setScores": "6-6",
       "tournament": "UTR PTT Melbourne Women 01, 1-4 Playoffs"
     },
     {
@@ -235,8 +129,8 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33904.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "2-2",
+      "awayScore": "1",
+      "setScores": "4-6, 0-0",
       "tournament": "Wuning, China"
     },
     {
@@ -262,7 +156,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31374.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-1",
+      "setScores": "4-5",
       "tournament": "UTR PTT Melbourne Women 01, 9-12 Playoffs"
     },
     {
@@ -288,10 +182,36 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/33736.png",
+      "homeScore": "1",
+      "awayScore": "0",
+      "setScores": "6-3, 3-1",
+      "tournament": "ITF W35 Anning Women Doubles"
+    },
+    {
+      "id": 15985740,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-10",
+      "fixedTime": "08:40\nCANLI",
+      "timestamp": 1775799600000,
+      "broadcaster": "S Sport / Eurosport",
+      "homeTeam": {
+        "name": "Scott Jones (792)",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jeremy Beale",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/31371.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "4-1",
-      "tournament": "ITF W35 Anning Women Doubles"
+      "setScores": "2-0",
+      "tournament": "UTR PTT Melbourne Men 01, 1-4 Playoffs"
     },
     {
       "id": 15938143,
