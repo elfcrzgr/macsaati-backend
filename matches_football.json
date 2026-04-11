@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-11T00:01:24.339Z",
+  "lastUpdated": "2026-04-11T00:31:18.836Z",
   "totalMatches": 498,
   "matches": [
     {
@@ -27,9 +27,9 @@
     {
       "id": 15362613,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "01:30\nCANLI",
+      "fixedTime": "01:30",
       "timestamp": 1775860200000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -41,16 +41,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36437.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/231.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "3",
       "tournament": "Liga FUTVE"
     },
     {
       "id": 15285693,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "01:30\nCANLI",
+      "fixedTime": "01:30",
       "timestamp": 1775860200000,
       "broadcaster": "USL YouTube",
       "homeTeam": {
@@ -62,8 +62,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/197070.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "3",
+      "awayScore": "3",
       "tournament": "USL Championship"
     },
     {
@@ -130,11 +130,32 @@
       "tournament": "Primera División, Apertura"
     },
     {
+      "id": 15941948,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-11",
+      "fixedTime": "02:55\nCANLI",
+      "timestamp": 1775865300000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Guabirá",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/47701.png"
+      },
+      "awayTeam": {
+        "name": "Club Independiente",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/372975.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/16736.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "División Profesional"
+    },
+    {
       "id": 15269947,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1775865600000,
       "broadcaster": "Spor Smart / Exxen",
       "homeTeam": {
@@ -153,9 +174,9 @@
     {
       "id": 15353017,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1775865600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -172,32 +193,11 @@
       "tournament": "Liga de Primera"
     },
     {
-      "id": 15941948,
+      "id": 15502510,
       "isElite": false,
       "status": "inprogress",
       "fixedDate": "2026-04-11",
       "fixedTime": "03:00\nCANLI",
-      "timestamp": 1775865600000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Guabirá",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/47701.png"
-      },
-      "awayTeam": {
-        "name": "Club Independiente",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/372975.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/16736.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "División Profesional"
-    },
-    {
-      "id": 15502510,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-11",
-      "fixedTime": "03:00",
       "timestamp": 1775865600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -216,9 +216,9 @@
     {
       "id": 15502504,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1775865600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -237,9 +237,9 @@
     {
       "id": 15420885,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1775865600000,
       "broadcaster": "Apple TV / OneFootball",
       "homeTeam": {
