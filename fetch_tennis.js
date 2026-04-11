@@ -9,7 +9,7 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-ba
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/`;
 
 // =========================================================================
-// 🌟 ELİT LİSTE (Bu turnuvalar priority ne olursa olsun içeri alınır)
+// 🌟 MANUEL ELİT LİSTESİ (Sadece bu anahtar kelimeleri içerenler Elit olur)
 // =========================================================================
 const ELITE_KEYWORDS = [
     "Wimbledon", "US Open", "Australian Open", "Roland Garros", "French Open", 
@@ -22,6 +22,7 @@ const ELITE_KEYWORDS = [
 const checkIsElite = (tournamentName) => {
     if (!tournamentName) return false;
     const nameUpper = tournamentName.toUpperCase();
+    // Eleme maçları (Qualifiers) elit listesinde olsa bile elit sayılmaz
     if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword.toUpperCase()));
 };
@@ -44,10 +45,12 @@ async function start() {
     const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
     
-    // Monte Carlo'yu garantiye alalım (Hergün için)
-    const stubbornTournamentIds = new Set([2391]); 
+    // Elit turnuvaları ID üzerinden takip etmek için (Derin tarama amaçlı)
+    const stubbornTournamentIds = new Set([2391]); // Monte Carlo (2391) her zaman listede kalsın
 
-    // 1. ADIM: GÜNLÜK LİSTELERİ TARA
+    // -------------------------------------------------------------------------
+    // 1. ADIM: GÜNLÜK PROGRAMLARI TARA
+    // -------------------------------------------------------------------------
     for (const date of targetDates) {
         try {
             console.log(`📡 ${date} programı taranıyor...`);
@@ -59,7 +62,7 @@ async function start() {
                     const tourName = e.tournament?.name || "";
                     const priority = e.tournament?.uniqueTournament?.priority || e.tournament?.priority || 0;
                     
-                    // KRİTİK: Ya önceliği 20'den büyük olsun, YA DA adı elit listemizde olsun.
+                    // SÜZGEÇ: Ya önceliği 20'den büyük olsun, YA DA adı elit listemizde olsun.
                     const isAccepted = priority > 20 || checkIsElite(tourName);
                     
                     if (isAccepted && e.tournament?.uniqueTournament?.id) {
@@ -73,8 +76,10 @@ async function start() {
         } catch (e) { console.error(`❌ ${date} hatası:`, e.message); }
     }
 
-    // 2. ADIM: İNATÇI MOD (Elit turnuva fikstürlerinden placeholder maçları söküp al)
-    console.log(`🔍 ${stubbornTournamentIds.size} elit turnuva derinlemesine taranıyor...`);
+    // -------------------------------------------------------------------------
+    // 2. ADIM: İNATÇI MOD (Hayalet maçları - finalistleri belli olmayanları çekme)
+    // -------------------------------------------------------------------------
+    console.log(`🔍 ${stubbornTournamentIds.size} turnuva için derin tarama yapılıyor...`);
     for (const tid of stubbornTournamentIds) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/seasons`, { waitUntil: 'networkidle2' });
@@ -82,9 +87,9 @@ async function start() {
             
             if (sData?.seasons?.[0]?.id) {
                 const sid = sData.seasons[0].id;
-                // 'next/0' ve 'next/1' ile finalistleri belli olmayan maçları da al
-                for (const range of ['0', '1']) {
-                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/season/${sid}/events/next/${range}`, { waitUntil: 'networkidle2' });
+                // 'next/0', 'next/1' ve 'last/0' ile her ihtimali tarıyoruz
+                for (const path of ['last/0', 'next/0', 'next/1']) {
+                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/season/${sid}/events/${path}`, { waitUntil: 'networkidle2' });
                     const eData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
                     if (eData?.events) {
                         rawEvents.push(...eData.events);
@@ -94,7 +99,9 @@ async function start() {
         } catch (e) {}
     }
 
-    // 3. ADIM: JSON HAZIRLAMA (Tekilleştirme)
+    // -------------------------------------------------------------------------
+    // 3. ADIM: JSON HAZIRLAMA (Tekilleştirme ve Set Skorları)
+    // -------------------------------------------------------------------------
     const finalMatchesMap = new Map();
 
     for (const e of rawEvents) {
@@ -102,7 +109,7 @@ async function start() {
         const dateTR = new Date(startTimestamp);
         const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
-        // Sadece radarımızdaki 3 güne odaklan
+        // Sadece hedef günlerimizdeki maçları alalım
         if (!targetDates.includes(fixedDate)) continue;
 
         const statusType = e.status?.type;
@@ -111,6 +118,20 @@ async function start() {
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         if (statusType === 'inprogress') timeString += "\nCANLI";
         else if (statusType === 'finished') timeString += "\nMS";
+
+        // 🎾 SET SKORLARINI TOPLAMA
+        let setScoresStr = "";
+        if (e.homeScore && e.awayScore) {
+            let sets = [];
+            for (let i = 1; i <= 5; i++) {
+                let hSet = e.homeScore[`period${i}`];
+                let aSet = e.awayScore[`period${i}`];
+                if (hSet !== undefined && aSet !== undefined) {
+                    sets.push(`${hSet}-${aSet}`);
+                }
+            }
+            setScoresStr = sets.join(", "); 
+        }
 
         finalMatchesMap.set(e.id, {
             id: e.id,
@@ -131,6 +152,7 @@ async function start() {
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
             homeScore: statusType === 'notstarted' ? "-" : String(e.homeScore?.display ?? "0"),
             awayScore: statusType === 'notstarted' ? "-" : String(e.awayScore?.display ?? "0"),
+            setScores: setScoresStr,
             tournament: tourName
         });
     }
