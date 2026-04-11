@@ -19,35 +19,33 @@ const categoryConfigs = {
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
 // =========================================================================
-// TENİS ELİT TURNUVA ANAHTAR KELİMELERİ (Sağlamlaştırılmış Şehir Listesi)
+// 🌟 SADECE GERÇEK ELİT TURNUVALAR
 // =========================================================================
 const ELITE_KEYWORDS = [
-    // 🏆 MEGA TURNUVALAR (2000 & 1000 Puan)
     "Wimbledon", "US Open", "Australian Open", "Roland Garros", "French Open", 
     "Masters", "ATP 1000", "WTA 1000", 
-    "ATP Finals", "WTA Finals", "Next Gen ATP Finals", 
-    
-    // 📍 ŞEHİR İSİMLİ BÜYÜK TURNUVALAR
+    "ATP Finals", "WTA Finals", "Olympic",
     "Monte Carlo", "Indian Wells", "Miami", "Madrid", "Rome", "Cincinnati", 
-    "Shanghai", "Paris", "Montreal", "Toronto", "Canadian Open", "Beijing", 
-    "Doha", "Dubai",
-    
-    // 🌍 ULUSLARARASI ŞOVLAR
-    "Davis Cup", "Billie Jean King Cup", "Laver Cup", "United Cup", "Olympic",
-    
-    // ⭐ ÜST DÜZEY PROFESYONEL TUR
+    "Shanghai", "Paris", "Montreal", "Toronto", "Beijing", 
     "ATP 500", "WTA 500"
 ];
 
 const checkIsElite = (tournamentName) => {
     if (!tournamentName) return false;
     const nameUpper = tournamentName.toUpperCase();
+    
+    // 🛑 KRİTİK: Eleme turları (Qualifying) asla elit sayılmasın
+    if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
+
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword.toUpperCase()));
 };
 
 async function start() {
-    console.log("🚀 Tenis motoru (Tekler Ranking + Çiftler Bayrak + Elit/Set Skorları) başlatılıyor...");
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    console.log("🚀 Tenis motoru (Gerçek Elit + Pazar Odaklı) başlatılıyor...");
+    const browser = await puppeteer.launch({ 
+        headless: "new", 
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
+    });
     const page = await browser.newPage();
     
     await page.setRequestInterception(true);
@@ -58,21 +56,25 @@ async function start() {
 
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
+    // Bursa saatiyle senkronize tarih (ISO hatası yapmaz)
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); 
         d.setDate(d.getDate() + offset);
-        return d.toISOString().split('T')[0];
+        return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
+    // 📡 RADAR: Bugün, Yarın ve Pazar (12 Nisan'ı garantilemek için)
+    const dates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
-    const dates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
-    const nowTimestamp = Date.now();
     
+    console.log("📡 Sorgulanan Günler:", dates);
+
     for (const date of dates) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
+            const data = await page.evaluate(() => {
+                try { return JSON.parse(document.body.innerText); } catch(e) { return null; }
+            });
             if (data?.events) {
                 const filtered = data.events.filter(e => 
                     targetCategoryIds.includes(e.tournament?.category?.id) || e.status?.type === 'inprogress'
@@ -99,14 +101,12 @@ async function start() {
                 try {
                     const r = await fetch(`https://api.sofascore.com/api/v1/event/${id}`);
                     const ev = await r.json();
-                    
                     const getCodes = (team) => {
                         if (team.subTeams && team.subTeams.length > 0) {
                             return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
                         }
                         return [team.country?.alpha2?.toLowerCase() || "default"];
                     };
-                    
                     return {
                         hR: ev?.event?.homeTeam?.ranking,
                         aR: ev?.event?.awayTeam?.ranking,
@@ -119,8 +119,8 @@ async function start() {
             if (detail) {
                 homeRank = detail.hR || homeRank;
                 awayRank = detail.aR || awayRank;
-                homeLogos = detail.hCodes.map(c => `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/${c}.png`);
-                awayLogos = detail.aCodes.map(c => `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/${c}.png`);
+                homeLogos = detail.hCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+                awayLogos = detail.aCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
             }
         } catch (err) {}
 
@@ -132,34 +132,30 @@ async function start() {
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         
         if (statusType === 'inprogress') timeString += "\nCANLI";
-        else if (statusType === 'notstarted' && nowTimestamp > startTimestamp) timeString += "\nBAŞLAMADI";
         else if (isFinished) timeString += "\nMS";
 
         let finalHomeName = e.homeTeam.name;
         let finalAwayName = e.awayTeam.name;
-        
         if (!isDouble) {
             if (homeRank) finalHomeName += ` (${homeRank})`;
             if (awayRank) finalAwayName += ` (${awayRank})`;
         }
 
-        // 🎾 SET SKORLARINI ÇEKME DÖNGÜSÜ
         let setScoresStr = "";
         if (e.homeScore && e.awayScore) {
             let sets = [];
             for (let i = 1; i <= 5; i++) {
                 let hSet = e.homeScore[`period${i}`];
                 let aSet = e.awayScore[`period${i}`];
-                if (hSet !== undefined && aSet !== undefined) {
-                    sets.push(`${hSet}-${aSet}`);
-                }
+                if (hSet !== undefined && aSet !== undefined) sets.push(`${hSet}-${aSet}`);
             }
             setScoresStr = sets.join(", "); 
         }
 
-        // 🌟 ELİT KONTROLÜ
         const tournamentName = e.tournament.name || "";
         const isITForChallenger = tournamentName.toUpperCase().includes("ITF") || tournamentName.toUpperCase().includes("CHALLENGER");
+        
+        // 🌟 GÜNCELLENEN ELİT MANTIĞI
         const isElite = !isITForChallenger && checkIsElite(tournamentName);
 
         finalMatches.push({
@@ -186,11 +182,7 @@ async function start() {
         });
     }
 
-    finalMatches.sort((a, b) => {
-        if (a.status === 'inprogress' && b.status !== 'inprogress') return -1;
-        if (a.status !== 'inprogress' && b.status === 'inprogress') return 1;
-        return a.timestamp - b.timestamp;
-    });
+    finalMatches.sort((a, b) => a.timestamp - b.timestamp);
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
         success: true, 
@@ -200,5 +192,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log("✅ İşlem bitti. Teklerde sıralama, çiftlerde yan yana bayraklar, Elit filtre ve Set Skorları hazır.");
+    console.log(`✅ İşlem bitti. Toplam ${finalMatches.length} maç kaydedildi.`);
 }
+
+start();
