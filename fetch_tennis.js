@@ -9,14 +9,14 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-ba
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/`;
 
 // =========================================================================
-// 🌟 SENİN ELİT LİSTEN (Sadece bunlar yıldız alır)
+// 🌟 ELİT LİSTE (Bu turnuvalar priority ne olursa olsun içeri alınır)
 // =========================================================================
 const ELITE_KEYWORDS = [
     "Wimbledon", "US Open", "Australian Open", "Roland Garros", "French Open", 
     "Masters", "ATP 1000", "WTA 1000", "ATP Finals", "WTA Finals", 
     "Monte Carlo", "Indian Wells", "Miami", "Madrid", "Rome", "Cincinnati", 
     "Shanghai", "Paris", "Montreal", "Toronto", "Beijing", "Doha", "Dubai",
-    "ATP 500", "WTA 500"
+    "ATP 500", "WTA 500", "Barcelona"
 ];
 
 const checkIsElite = (tournamentName) => {
@@ -43,9 +43,11 @@ async function start() {
 
     const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
-    const activeTourIds = new Set();
+    
+    // Monte Carlo'yu garantiye alalım (Hergün için)
+    const stubbornTournamentIds = new Set([2391]); 
 
-    // 1. ADIM: GÜNLÜK LİSTE (Eşiği 20'ye düşürdük ki ATP'ler kaçmasın)
+    // 1. ADIM: GÜNLÜK LİSTELERİ TARA
     for (const date of targetDates) {
         try {
             console.log(`📡 ${date} programı taranıyor...`);
@@ -54,38 +56,45 @@ async function start() {
             
             if (data?.events) {
                 const filtered = data.events.filter(e => {
-                    const priority = e.tournament?.uniqueTournament?.priority || e.tournament?.category?.priority || 0;
-                    // ITF'ler genelde < 15'tir. 20 barajı güvenlidir.
-                    return priority > 20;
+                    const tourName = e.tournament?.name || "";
+                    const priority = e.tournament?.uniqueTournament?.priority || e.tournament?.priority || 0;
+                    
+                    // KRİTİK: Ya önceliği 20'den büyük olsun, YA DA adı elit listemizde olsun.
+                    const isAccepted = priority > 20 || checkIsElite(tourName);
+                    
+                    if (isAccepted && e.tournament?.uniqueTournament?.id) {
+                        stubbornTournamentIds.add(e.tournament.uniqueTournament.id);
+                    }
+                    return isAccepted;
                 });
+                console.log(`✅ ${date}: ${filtered.length} maç süzgeçten geçti.`);
                 rawEvents.push(...filtered);
-                filtered.forEach(e => { if(e.tournament?.uniqueTournament?.id) activeTourIds.add(e.tournament.uniqueTournament.id); });
             }
-        } catch (e) {}
+        } catch (e) { console.error(`❌ ${date} hatası:`, e.message); }
     }
 
-    // 2. ADIM: ELİT TURNUVALARI DERİNDEN TARA (Özellikle Monte Carlo)
-    // Bu kısım 12 Nisan Finalini (15921175) bulacak olan kısımdır.
-    for (const tid of activeTourIds) {
+    // 2. ADIM: İNATÇI MOD (Elit turnuva fikstürlerinden placeholder maçları söküp al)
+    console.log(`🔍 ${stubbornTournamentIds.size} elit turnuva derinlemesine taranıyor...`);
+    for (const tid of stubbornTournamentIds) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/seasons`, { waitUntil: 'networkidle2' });
             const sData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
             
             if (sData?.seasons?.[0]?.id) {
                 const sid = sData.seasons[0].id;
-                const tourName = sData.seasons[0].tournament.name;
-
-                // Sadece senin elit listendeki turnuvaların içine girip finali ara (Performans için)
-                if (checkIsElite(tourName)) {
-                    console.log(`🔍 Elit Turnuva Fikstürü taranıyor: ${tourName}`);
-                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/season/${sid}/events/next/0`, { waitUntil: 'networkidle2' });
+                // 'next/0' ve 'next/1' ile finalistleri belli olmayan maçları da al
+                for (const range of ['0', '1']) {
+                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/season/${sid}/events/next/${range}`, { waitUntil: 'networkidle2' });
                     const eData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-                    if (eData?.events) rawEvents.push(...eData.events);
+                    if (eData?.events) {
+                        rawEvents.push(...eData.events);
+                    }
                 }
             }
         } catch (e) {}
     }
 
+    // 3. ADIM: JSON HAZIRLAMA (Tekilleştirme)
     const finalMatchesMap = new Map();
 
     for (const e of rawEvents) {
@@ -93,16 +102,15 @@ async function start() {
         const dateTR = new Date(startTimestamp);
         const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         
+        // Sadece radarımızdaki 3 güne odaklan
         if (!targetDates.includes(fixedDate)) continue;
 
         const statusType = e.status?.type;
+        const tourName = e.tournament?.name || "";
+        
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         if (statusType === 'inprogress') timeString += "\nCANLI";
         else if (statusType === 'finished') timeString += "\nMS";
-
-        const tourName = e.tournament.name || "";
-        const hName = e.homeTeam.name || "Belli Değil";
-        const aName = e.awayTeam.name || "Belli Değil";
 
         finalMatchesMap.set(e.id, {
             id: e.id,
@@ -111,13 +119,13 @@ async function start() {
             fixedDate: fixedDate,
             fixedTime: timeString,
             timestamp: startTimestamp,
-            broadcaster: "Resmi Yayıncı",
+            broadcaster: "S Sport / beIN Sports",
             homeTeam: { 
-                name: hName, 
+                name: e.homeTeam.name || "Finalist 1", 
                 logos: [TENNIS_LOGO_BASE + (e.homeTeam.country?.alpha2?.toLowerCase() || "mc") + ".png"] 
             },
             awayTeam: { 
-                name: aName, 
+                name: e.awayTeam.name || "Finalist 2", 
                 logos: [TENNIS_LOGO_BASE + (e.awayTeam.country?.alpha2?.toLowerCase() || "mc") + ".png"] 
             },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
@@ -137,7 +145,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log(`✅ İşlem tamamlandı. ${finalMatches.length} kaliteli maç kaydedildi.`);
+    console.log(`✅ İşlem Bitti. Toplam ${finalMatches.length} kaliteli maç kaydedildi.`);
 }
 
 start();
