@@ -10,28 +10,10 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REP
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 const OUTPUT_FILE = "matches_tennis.json";
 
-// Yayıncı isimleri için (ID'ler filtreleme için değil, sadece isim atamak içindir)
-const broadcasterMap = {
-    3: "S Sport / S Sport Plus", 4: "beIN Sports", 5: "Eurosport",
-    1396: "Eurosport", 1397: "Eurosport", 1398: "S Sport",
-    1399: "Eurosport", 6: "beIN Sports", 7: "S Sport"
-};
-
-const ELITE_KEYWORDS = [
-    "Wimbledon", "US Open", "Australian Open", "Roland Garros", "French Open", 
-    "Masters", "ATP 1000", "WTA 1000", "ATP Finals", "WTA Finals", "Olympic",
-    "Monte Carlo", "Indian Wells", "Miami", "Madrid", "Rome", "Cincinnati", 
-    "Shanghai", "Paris", "Montreal", "Toronto", "Canadian Open", "Beijing"
-];
-
-const checkIsElite = (tournamentName) => {
-    if (!tournamentName) return false;
-    const nameUpper = tournamentName.toUpperCase();
-    return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword.toUpperCase()));
-};
-
 async function start() {
-    console.log("🚀 Tenis Akıllı Motor Başlatıldı (Öncelik > 20)...");
+    console.log("🚀 Süzgeçsiz Tenis Motoru Başlatıldı...");
+    console.log("🌍 12 Nisan tarihindeki TÜM maçlar çekilecek (ITF/Challenger dahil).");
+
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     
@@ -43,51 +25,42 @@ async function start() {
 
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // Bursa/TR saatiyle senkronize tarih fonksiyonu (ISO hatası yapmaz)
+    // Bursa/TR saatiyle yarını (12 Nisan) bulan sağlam fonksiyon
     const getTRDate = (offset = 0) => {
         const d = new Date();
         d.setDate(d.getDate() + offset);
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    // Bugün, Yarın (12 Nis) ve Yarından Sonra (13 Nis)
-    const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
-    let rawEvents = [];
-    
-    console.log("📡 Sorgulanacak tarihler:", validDates);
+    // SADECE YARINI (12 Nisan) DENEMEK İSTEDİĞİN İÇİN:
+    const targetDate = getTRDate(1); 
+    console.log(`📡 Hedef Tarih: ${targetDate}`);
 
-    for (const date of validDates) {
-        try {
-            await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-            
-            if (data?.events) {
-                const filtered = data.events.filter(e => {
-                    const priority = e.tournament?.uniqueTournament?.priority || 0;
-                    const status = e.status?.type;
-                    
-                    // LİG FİLTRESİ YOK: Sadece önceliği 20'den büyük olanları AL
-                    // (Bu sayede Monte Carlo ve diğer büyük maçlar ID'ye bakmadan gelir)
-                    return priority > 20 || status === 'inprogress';
-                });
-                rawEvents.push(...filtered);
-            }
-        } catch (e) { console.error(`Hata: ${date}`); }
+    let rawEvents = [];
+    try {
+        await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${targetDate}`, { waitUntil: 'networkidle2' });
+        const data = await page.evaluate(() => JSON.parse(document.body.innerText));
+        
+        if (data?.events) {
+            // FİLTRE YOK: Gelen tüm maçları listeye alıyoruz.
+            rawEvents = data.events;
+            console.log(`🎾 Toplam ${rawEvents.length} maç bulundu. Detaylar işleniyor...`);
+        }
+    } catch (e) {
+        console.error("❌ Veri çekilirken hata oluştu:", e.message);
     }
 
-    const uniqueEvents = Array.from(new Map(rawEvents.map(e => [e.id, e])).values());
     const finalMatches = [];
-
-    // Detaylar için Sofascore'a bir kez dokun (detail fetch yetkisi için)
     await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2' });
 
-    for (const e of uniqueEvents) {
+    for (const e of rawEvents) {
         const isDouble = e.homeTeam.name.includes("/");
         let homeRank = e.homeTeam.ranking;
         let awayRank = e.awayTeam.ranking;
         let homeLogos = [];
         let awayLogos = [];
 
+        // Detayları (bayraklar ve sıralamalar) çekme kısmı
         try {
             const detail = await page.evaluate(async (id) => {
                 try {
@@ -111,8 +84,8 @@ async function start() {
             if (detail) {
                 homeRank = detail.hR || homeRank;
                 awayRank = detail.aR || awayRank;
-                homeLogos = detail.hCodes.map(c => `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/${c}.png`);
-                awayLogos = detail.aCodes.map(c => `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/${c}.png`);
+                homeLogos = detail.hCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+                awayLogos = detail.aCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
             }
         } catch (err) {}
 
@@ -123,7 +96,6 @@ async function start() {
 
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         if (statusType === 'inprogress') timeString += "\nCANLI";
-        else if (statusType === 'notstarted' && Date.now() > startTimestamp) timeString += "\nBAŞLAMADI";
         else if (isFinished) timeString += "\nMS";
 
         let finalHomeName = e.homeTeam.name;
@@ -144,17 +116,13 @@ async function start() {
             setScoresStr = sets.join(", "); 
         }
 
-        const tournamentName = e.tournament.name || "";
-        const isElite = checkIsElite(tournamentName);
-
         finalMatches.push({
             id: e.id,
-            isElite: isElite,
             status: statusType, 
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: timeString,
             timestamp: startTimestamp,
-            broadcaster: broadcasterMap[e.tournament?.category?.id] || "Resmi Yayıncı",
+            broadcaster: "Tüm Maçlar Modu",
             homeTeam: { 
                 name: finalHomeName, 
                 logos: homeLogos.length > 0 ? homeLogos : [TENNIS_LOGO_BASE + "default.png"] 
@@ -167,7 +135,7 @@ async function start() {
             homeScore: isFinished || statusType === 'inprogress' ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: isFinished || statusType === 'inprogress' ? String(e.awayScore?.display ?? "0") : "-",
             setScores: setScoresStr,
-            tournament: tournamentName
+            tournament: e.tournament.name || ""
         });
     }
 
@@ -181,7 +149,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log(`✅ İşlem tamamlandı. Toplam ${finalMatches.length} maç (Öncelik > 20) kaydedildi.`);
+    console.log(`✅ Bitti! 12 Nisan'daki toplam ${finalMatches.length} maç JSON'a kaydedildi.`);
 }
 
 start();
