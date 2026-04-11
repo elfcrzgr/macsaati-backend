@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-11T18:31:00.886Z",
-  "totalMatches": 30,
+  "lastUpdated": "2026-04-11T19:01:09.576Z",
+  "totalMatches": 31,
   "matches": [
     {
       "id": 15921192,
@@ -231,9 +231,9 @@
     {
       "id": 15921573,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "18:10\nCANLI",
+      "fixedTime": "18:10\nMS",
       "timestamp": 1775920200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -250,7 +250,7 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3981.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "tournament": "Madrid, Spain"
     },
     {
@@ -452,6 +452,31 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Barcelona, Spain, Qualifying"
+    },
+    {
+      "id": 15921586,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-12",
+      "fixedTime": "14:30",
+      "timestamp": 1775993400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Zsombor Piros",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jurij Rodionov",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3981.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Madrid, Spain"
     },
     {
       "id": 15921175,
