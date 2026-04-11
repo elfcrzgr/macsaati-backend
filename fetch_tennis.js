@@ -102,6 +102,14 @@ async function start() {
             if (data?.events) {
                 console.log(`✅ ${date}: ${data.events.length} maç bulundu`);
                 
+                // DEBUG: Monte Carlo maçlarını logla
+                const monteMatches = data.events.filter(e => e.tournament?.name?.toUpperCase().includes("MONTE CARLO"));
+                console.log(`\n🎾 Monte Carlo maçları (${monteMatches.length}):`);
+                monteMatches.forEach(m => {
+                    console.log(`   ${m.homeTeam?.name || "TBD"} vs ${m.awayTeam?.name || "TBD"}`);
+                    console.log(`   Status: ${m.status?.type}, Start: ${m.startTimestamp}, Category: ${m.tournament?.category?.id}`);
+                });
+                
                 const filtered = data.events.filter(e => {
                     const hasBroadcaster = targetCategoryIds.includes(e.tournament?.category?.id);
                     const isLive = e.status?.type === 'inprogress';
@@ -110,7 +118,7 @@ async function start() {
                     return hasBroadcaster || isLive || isMinimumLevel;
                 });
                 
-                console.log(`   Filtrelenmiş: ${filtered.length} maç`);
+                console.log(`   Filtrelenmiş: ${filtered.length} maç\n`);
                 rawEvents.push(...filtered);
             }
         } catch (e) {
