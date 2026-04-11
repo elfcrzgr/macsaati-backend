@@ -4,185 +4,119 @@ const fs = require('fs');
 
 puppeteer.use(StealthPlugin());
 
-const GITHUB_USER = "elfcrzgr"; 
-const REPO_NAME = "macsaati-backend"; 
-const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
-const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 const OUTPUT_FILE = "matches_tennis.json";
-
-const categoryConfigs = {
-    3: "S Sport / S Sport Plus", 4: "beIN Sports", 5: "Eurosport",
-    1396: "Eurosport", 1397: "Eurosport", 1398: "S Sport",
-    1399: "Eurosport", 6: "beIN Sports", 7: "S Sport"
-};
-
-const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
+const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/`;
+const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/`;
 
 // =========================================================================
-// 🌟 SADECE GERÇEK ELİT TURNUVALAR
+// 🎾 AKILLI SEVİYE KONTROLÜ
 // =========================================================================
-const ELITE_KEYWORDS = [
-    "Wimbledon", "US Open", "Australian Open", "Roland Garros", "French Open", 
-    "Masters", "ATP 1000", "WTA 1000", 
-    "ATP Finals", "WTA Finals", "Olympic",
-    "Monte Carlo", "Indian Wells", "Miami", "Madrid", "Rome", "Cincinnati", 
-    "Shanghai", "Paris", "Montreal", "Toronto", "Beijing", 
-    "ATP 500", "WTA 500"
-];
-
-const checkIsElite = (tournamentName) => {
-    if (!tournamentName) return false;
-    const nameUpper = tournamentName.toUpperCase();
+const checkMatchLevel = (tournamentName) => {
+    if (!tournamentName) return { isAccepted: false, isElite: false };
     
-    // 🛑 KRİTİK: Eleme turları (Qualifying) asla elit sayılmasın
-    if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
+    const name = tournamentName.toUpperCase();
+    
+    // 🛑 Kesinlikle İstemediğimiz Seviyeler (Gürültü Kirliliği)
+    if (name.includes("ITF") || name.includes("CHALLENGER") || name.includes("UTR") || name.includes("QUALIFYING") || name.includes("QUALIFIERS")) {
+        return { isAccepted: false, isElite: false };
+    }
 
-    return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword.toUpperCase()));
+    // 🏆 ELİT SEVİYE (500, 1000, Slam)
+    const eliteKeywords = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "MASTERS", "1000", "500", "FINALS", "OLYMPIC", "MONTE CARLO", "MADRID", "ROME"];
+    const isElite = eliteKeywords.some(k => name.includes(k));
+
+    // ✅ STANDART SEVİYE (En az 250'lik maçlar)
+    const isStandard = name.includes("250") || isElite;
+
+    return { isAccepted: isStandard, isElite: isElite };
 };
 
 async function start() {
-    console.log("🚀 Tenis motoru (Gerçek Elit + Pazar Odaklı) başlatılıyor...");
+    console.log("🚀 Tenis Akıllı Filtreleme (250+ Seviye) Başlatıldı...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
     });
     const page = await browser.newPage();
-    
-    await page.setRequestInterception(true);
-    page.on('request', (req) => {
-        if (['image', 'stylesheet', 'font'].includes(req.resourceType())) req.abort();
-        else req.continue();
-    });
-
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
-    // Bursa saatiyle senkronize tarih (ISO hatası yapmaz)
     const getTRDate = (offset = 0) => {
         const d = new Date();
         d.setDate(d.getDate() + offset);
         return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
-    // 📡 RADAR: Bugün, Yarın ve Pazar (12 Nisan'ı garantilemek için)
-    const dates = [getTRDate(0), getTRDate(1), getTRDate(2)];
+    const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
-    
-    console.log("📡 Sorgulanan Günler:", dates);
 
-    for (const date of dates) {
+    // Günlük programdan sadece 250+ olanları topla
+    for (const date of targetDates) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => {
-                try { return JSON.parse(document.body.innerText); } catch(e) { return null; }
-            });
+            const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data?.events) {
-                const filtered = data.events.filter(e => 
-                    targetCategoryIds.includes(e.tournament?.category?.id) || e.status?.type === 'inprogress'
-                );
+                const filtered = data.events.filter(e => {
+                    const level = checkMatchLevel(e.tournament.name);
+                    return level.isAccepted; // Sadece 250 ve üstü ise kabul et (Canlı olsa bile alt seviyeyi alma)
+                });
                 rawEvents.push(...filtered);
             }
         } catch (e) {}
     }
 
-    const uniqueEvents = Array.from(new Map(rawEvents.map(e => [e.id, e])).values());
-    const finalMatches = [];
-
-    await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2' });
-
-    for (const e of uniqueEvents) {
-        const isDouble = e.homeTeam.name.includes("/");
-        let homeRank = e.homeTeam.ranking;
-        let awayRank = e.awayTeam.ranking;
-        let homeLogos = [];
-        let awayLogos = [];
-
+    // 🔍 İNATÇI MOD: Monte Carlo (2391) gibi turnuvaları her zaman kontrol et (Finalistler belli olmasa bile)
+    // Bu kısım senin önceki "hayalet maç" sorununu çözecek.
+    const stubbornIds = [2391]; 
+    for (const tid of stubbornIds) {
         try {
-            const detail = await page.evaluate(async (id) => {
-                try {
-                    const r = await fetch(`https://api.sofascore.com/api/v1/event/${id}`);
-                    const ev = await r.json();
-                    const getCodes = (team) => {
-                        if (team.subTeams && team.subTeams.length > 0) {
-                            return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
-                        }
-                        return [team.country?.alpha2?.toLowerCase() || "default"];
-                    };
-                    return {
-                        hR: ev?.event?.homeTeam?.ranking,
-                        aR: ev?.event?.awayTeam?.ranking,
-                        hCodes: getCodes(ev.event.homeTeam),
-                        aCodes: getCodes(ev.event.awayTeam)
-                    };
-                } catch(err) { return null; }
-            }, e.id);
-
-            if (detail) {
-                homeRank = detail.hR || homeRank;
-                awayRank = detail.aR || awayRank;
-                homeLogos = detail.hCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
-                awayLogos = detail.aCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+            await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/seasons`, { waitUntil: 'networkidle2' });
+            const sData = await page.evaluate(() => JSON.parse(document.body.innerText));
+            if (sData?.seasons?.[0]?.id) {
+                const sid = sData.seasons[0].id;
+                for (const range of ['0', '1']) {
+                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/season/${sid}/events/next/${range}`, { waitUntil: 'networkidle2' });
+                    const eData = await page.evaluate(() => JSON.parse(document.body.innerText));
+                    if (eData?.events) rawEvents.push(...eData.events);
+                }
             }
-        } catch (err) {}
+        } catch (e) {}
+    }
 
-        const statusType = e.status?.type; 
+    const finalMatchesMap = new Map();
+
+    for (const e of rawEvents) {
+        const level = checkMatchLevel(e.tournament.name);
+        if (!level.isAccepted) continue;
+
         const startTimestamp = e.startTimestamp * 1000;
         const dateTR = new Date(startTimestamp);
-        const isFinished = statusType === 'finished';
+        const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        
+        if (!targetDates.includes(fixedDate)) continue;
 
+        const statusType = e.status?.type;
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
-        
         if (statusType === 'inprogress') timeString += "\nCANLI";
-        else if (isFinished) timeString += "\nMS";
+        else if (statusType === 'finished') timeString += "\nMS";
 
-        let finalHomeName = e.homeTeam.name;
-        let finalAwayName = e.awayTeam.name;
-        if (!isDouble) {
-            if (homeRank) finalHomeName += ` (${homeRank})`;
-            if (awayRank) finalAwayName += ` (${awayRank})`;
-        }
-
-        let setScoresStr = "";
-        if (e.homeScore && e.awayScore) {
-            let sets = [];
-            for (let i = 1; i <= 5; i++) {
-                let hSet = e.homeScore[`period${i}`];
-                let aSet = e.awayScore[`period${i}`];
-                if (hSet !== undefined && aSet !== undefined) sets.push(`${hSet}-${aSet}`);
-            }
-            setScoresStr = sets.join(", "); 
-        }
-
-        const tournamentName = e.tournament.name || "";
-        const isITForChallenger = tournamentName.toUpperCase().includes("ITF") || tournamentName.toUpperCase().includes("CHALLENGER");
-        
-        // 🌟 GÜNCELLENEN ELİT MANTIĞI
-        const isElite = !isITForChallenger && checkIsElite(tournamentName);
-
-        finalMatches.push({
+        finalMatchesMap.set(e.id, {
             id: e.id,
-            isElite: isElite,
-            status: statusType, 
-            fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
+            isElite: level.isElite, // Sadece 500+ olanlar true olur
+            status: statusType,
+            fixedDate: fixedDate,
             fixedTime: timeString,
             timestamp: startTimestamp,
-            broadcaster: categoryConfigs[e.tournament?.category?.id] || "S Sport / Eurosport",
-            homeTeam: { 
-                name: finalHomeName, 
-                logos: homeLogos.length > 0 ? homeLogos : [TENNIS_LOGO_BASE + "default.png"] 
-            },
-            awayTeam: { 
-                name: finalAwayName, 
-                logos: awayLogos.length > 0 ? awayLogos : [TENNIS_LOGO_BASE + "default.png"] 
-            },
+            broadcaster: "S Sport / beIN Sports",
+            homeTeam: { name: e.homeTeam.name, logos: [TENNIS_LOGO_BASE + (e.homeTeam.country?.alpha2?.toLowerCase() || "default") + ".png"] },
+            awayTeam: { name: e.awayTeam.name, logos: [TENNIS_LOGO_BASE + (e.awayTeam.country?.alpha2?.toLowerCase() || "default") + ".png"] },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
-            homeScore: isFinished || statusType === 'inprogress' ? String(e.homeScore?.display ?? "0") : "-",
-            awayScore: isFinished || statusType === 'inprogress' ? String(e.awayScore?.display ?? "0") : "-",
-            setScores: setScoresStr,
-            tournament: tournamentName
+            homeScore: String(e.homeScore?.display ?? "-"),
+            awayScore: String(e.awayScore?.display ?? "-"),
+            tournament: e.tournament.name
         });
     }
 
-    finalMatches.sort((a, b) => a.timestamp - b.timestamp);
+    const finalMatches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ 
         success: true, 
@@ -192,7 +126,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log(`✅ İşlem bitti. Toplam ${finalMatches.length} maç kaydedildi.`);
+    console.log(`✅ İşlem tamam. Toplam ${finalMatches.length} kaliteli maç (250+) kaydedildi.`);
 }
 
 start();
