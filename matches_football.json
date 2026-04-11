@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-11T17:01:21.059Z",
+  "lastUpdated": "2026-04-11T17:31:11.813Z",
   "totalMatches": 504,
   "matches": [
     {
@@ -2925,9 +2925,9 @@
     {
       "id": 15728065,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "18:00\nCANLI",
+      "fixedTime": "18:00",
       "timestamp": 1775919600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -2939,16 +2939,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/43560.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/808.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "1",
       "tournament": "Egyptian Premier League"
     },
     {
       "id": 14317561,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "18:15\nCANLI",
+      "fixedTime": "18:15",
       "timestamp": 1775920500000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -2960,16 +2960,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2796.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/53.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "1",
       "tournament": "Serie B"
     },
     {
       "id": 13981998,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "18:30\nCANLI",
+      "fixedTime": "18:30",
       "timestamp": 1775921400000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -2981,8 +2981,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7295.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/202.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "0",
       "tournament": "Ekstraklasa"
     },
     {
@@ -3009,9 +3009,9 @@
     {
       "id": 14372294,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "18:30\nCANLI",
+      "fixedTime": "18:30",
       "timestamp": 1775921400000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3023,8 +3023,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/90844.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/358.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "0",
       "tournament": "South African Premier Division"
     },
     {
@@ -3110,6 +3110,27 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Trendyol 1.Lig"
+    },
+    {
+      "id": 14091902,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-11",
+      "fixedTime": "19:00\nCANLI",
+      "timestamp": 1775923200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Ironi Dorot Tiberias",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/61702.png"
+      },
+      "awayTeam": {
+        "name": "Ashdod SC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5391.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/266.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Israeli Premier League"
     },
     {
       "id": 14036479,
@@ -3555,9 +3576,9 @@
     {
       "id": 14167964,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
@@ -3597,9 +3618,9 @@
     {
       "id": 14109876,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "beIN Sports",
       "homeTeam": {
@@ -3618,9 +3639,9 @@
     {
       "id": 15171449,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "Apple TV",
       "homeTeam": {
@@ -3639,9 +3660,9 @@
     {
       "id": 15851136,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3660,9 +3681,9 @@
     {
       "id": 15851137,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3679,32 +3700,11 @@
       "tournament": "Israeli Premier League"
     },
     {
-      "id": 15851133,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
-      "timestamp": 1775926800000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Ironi Dorot Tiberias",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/61702.png"
-      },
-      "awayTeam": {
-        "name": "Ashdod SC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5391.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/266.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Israeli Premier League"
-    },
-    {
       "id": 15851138,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3723,9 +3723,9 @@
     {
       "id": 15689850,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3744,9 +3744,9 @@
     {
       "id": 14336417,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3765,9 +3765,9 @@
     {
       "id": 14336423,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1775926800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3807,9 +3807,9 @@
     {
       "id": 15690651,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-11",
-      "fixedTime": "20:30",
+      "fixedTime": "20:30\nCANLI",
       "timestamp": 1775928600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
