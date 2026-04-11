@@ -19,7 +19,7 @@ const categoryConfigs = {
 const targetCategoryIds = Object.keys(categoryConfigs).map(Number);
 
 // =========================================================================
-// TENİS ELİT TURNUVA ANAHTAR KELİMELERİ (Sağlamlaştırılmış Şehir Listesi)
+// TENİS ELİT TURNUVA ANAHTAR KELİMELERİ
 // =========================================================================
 const ELITE_KEYWORDS = [
     // 🏆 MEGA TURNUVALAR (2000 & 1000 Puan)
@@ -39,10 +39,33 @@ const ELITE_KEYWORDS = [
     "ATP 500", "WTA 500"
 ];
 
+// ⭐ MINIMUM SEVIYE (ATP 250 ve üstü)
+const MINIMUM_TOURNAMENT_LEVELS = [
+    "ATP 250", "WTA 250",
+    "ATP 500", "WTA 500",
+    "ATP 1000", "WTA 1000",
+    "Masters", "Grand Slam",
+    "Davis Cup", "Billie Jean King Cup",
+    "Laver Cup", "United Cup", "Olympic"
+];
+
 const checkIsElite = (tournamentName) => {
     if (!tournamentName) return false;
     const nameUpper = tournamentName.toUpperCase();
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword.toUpperCase()));
+};
+
+const checkIsMinimumLevel = (tournamentName) => {
+    if (!tournamentName) return false;
+    const nameUpper = tournamentName.toUpperCase();
+    
+    // Elite maçlar zaten dahil
+    if (checkIsElite(tournamentName)) return true;
+    
+    // ATP 250+ ve WTA 250+ kontrol et
+    return MINIMUM_TOURNAMENT_LEVELS.some(level => 
+        nameUpper.includes(level.toUpperCase())
+    );
 };
 
 async function start() {
@@ -78,9 +101,15 @@ async function start() {
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
             if (data?.events) {
                 console.log(`✅ ${date}: ${data.events.length} maç bulundu`);
-                const filtered = data.events.filter(e => 
-                    targetCategoryIds.includes(e.tournament?.category?.id) || e.status?.type === 'inprogress'
-                );
+                
+                const filtered = data.events.filter(e => {
+                    const hasBroadcaster = targetCategoryIds.includes(e.tournament?.category?.id);
+                    const isLive = e.status?.type === 'inprogress';
+                    const isMinimumLevel = checkIsMinimumLevel(e.tournament?.name || "");
+                    
+                    return hasBroadcaster || isLive || isMinimumLevel;
+                });
+                
                 console.log(`   Filtrelenmiş: ${filtered.length} maç`);
                 rawEvents.push(...filtered);
             }
@@ -209,7 +238,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log("✅ İşlem bitti. Teklerde sıralama, çiftlerde yan yana bayraklar, Elit filtre ve Set Skorları hazır.");
+    console.log("✅ İşlem bitti. ATP 250+ maçlar, Elit filtre aktif, Set Skorları hazır.");
 }
 
 start().catch(console.error);
