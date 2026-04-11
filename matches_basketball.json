@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-11T04:30:50.205Z",
-  "totalMatches": 27,
+  "lastUpdated": "2026-04-11T05:00:55.499Z",
+  "totalMatches": 28,
   "matches": [
     {
       "id": 14442283,
@@ -279,9 +279,9 @@
     {
       "id": 14442064,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "05:00\nCANLI",
+      "fixedTime": "05:00",
       "timestamp": 1775872800000,
       "broadcaster": "beIN Sports 5",
       "homeTeam": {
@@ -293,16 +293,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3428.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "124",
+      "awayScore": "118",
       "tournament": "NBA"
     },
     {
       "id": 14442078,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-11",
-      "fixedTime": "05:30\nCANLI",
+      "fixedTime": "05:30",
       "timestamp": 1775874600000,
       "broadcaster": "beIN Sports 5",
       "homeTeam": {
@@ -314,9 +314,30 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3416.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "101",
+      "awayScore": "73",
+      "tournament": "NBA"
+    },
+    {
+      "id": 15990826,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-11",
+      "fixedTime": "19:00",
+      "timestamp": 1775923200000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "KK Bosna",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/6660.png"
+      },
+      "awayTeam": {
+        "name": "Igokea m:tel",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/44467.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/235.png",
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": "NBA"
+      "tournament": "ABA League"
     },
     {
       "id": 14381843,
