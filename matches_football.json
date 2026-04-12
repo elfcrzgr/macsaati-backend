@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-12T02:01:11.617Z",
+  "lastUpdated": "2026-04-12T02:31:13.060Z",
   "totalMatches": 314,
   "matches": [
     {
@@ -783,9 +783,9 @@
     {
       "id": 15502509,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-12",
-      "fixedTime": "03:00\nCANLI",
+      "fixedTime": "03:00",
       "timestamp": 1775952000000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -797,8 +797,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/394127.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/240.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "1",
       "tournament": "LigaPro Serie A"
     },
     {
@@ -825,9 +825,9 @@
     {
       "id": 15420891,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-12",
-      "fixedTime": "03:00\nCANLI",
+      "fixedTime": "03:00",
       "timestamp": 1775952000000,
       "broadcaster": "Apple TV / OneFootball",
       "homeTeam": {
@@ -839,8 +839,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411363.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "tournament": "MLS Next Pro"
     },
     {
@@ -1056,9 +1056,9 @@
     {
       "id": 15283243,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-12",
-      "fixedTime": "05:00",
+      "fixedTime": "05:00\nCANLI",
       "timestamp": 1775959200000,
       "broadcaster": "USL YouTube",
       "homeTeam": {
