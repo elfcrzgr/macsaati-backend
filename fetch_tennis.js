@@ -9,7 +9,7 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-ba
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/`;
 
 // =========================================================================
-// 🗑️ ÇÖP FİLTRESİ (Bunlar listeye ASLA giremez)
+// 🗑️ ÇÖP FİLTRESİ (ITF, Challenger ve UTR maçlarını tamamen engeller)
 // =========================================================================
 const isGarbage = (tourName, catName) => {
     const t = (tourName || "").toUpperCase();
@@ -19,37 +19,42 @@ const isGarbage = (tourName, catName) => {
 };
 
 // =========================================================================
-// 🌟 DEV TURNUVALAR LİSTESİ (500+, Masters 1000, Grand Slams)
+// 🌟 DEV TURNUVALAR LİSTESİ (Sadece bunlar Elit yıldızı alır)
 // =========================================================================
 const ELITE_KEYWORDS = [
+    // Grand Slams
     "WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC",
+    // Finals
     "ATP FINALS", "WTA FINALS",
-    "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", "MONTREAL", "TORONTO", 
-    "CANADIAN OPEN", "SHANGHAI", "PARIS", "WUHAN", "BEIJING", "DUBAI", "DOHA", "MASTERS",
+    // Masters 1000
+    "MONTE CARLO", "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", 
+    "MONTREAL", "TORONTO", "CANADIAN OPEN", "SHANGHAI", "PARIS", "MASTERS",
+    // ATP/WTA 500
     "ROTTERDAM", "RIO DE JANEIRO", "ACAPULCO", "BARCELONA", "HALLE", "LONDON", "QUEEN'S", 
     "HAMBURG", "WASHINGTON", "TOKYO", "BASEL", "VIENNA", "MUNICH", "DALLAS", "BRISBANE", 
     "ABU DHABI", "SAN DIEGO", "CHARLESTON", "STUTTGART", "BERLIN", "EASTBOURNE", 
     "MONTERREY", "SEOUL", "STRASBOURG", "ZHENGZHOU", "BAD HOMBURG",
+    // Genel Kategoriler
     "ATP 1000", "WTA 1000", "ATP 500", "WTA 500"
 ];
 
 // Turnuva genel olarak büyük mü? (Derin tarama kararı için)
 const isMajorTournament = (tournamentName) => {
     if (!tournamentName) return false;
-    return ELITE_KEYWORDS.some(keyword => tournamentName.toUpperCase().includes(keyword));
+    const nameUpper = tournamentName.toUpperCase();
+    return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
-// Bu spesifik maç elit mi? (JSON'daki isElite etiketi için)
+// Maç gerçekten elit mi? (Eleme değilse ve listedeyse elittir)
 const checkIsEliteMatch = (tournamentName) => {
     if (!tournamentName) return false;
     const nameUpper = tournamentName.toUpperCase();
-    // Eleme maçları ASLA elit sayılmaz
     if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
     return isMajorTournament(tournamentName);
 };
 
 async function start() {
-    console.log("🚀 Tenis Motoru (Tüm 250+ Gelsin, 500+ Elit Olsun) Başlatıldı...");
+    console.log("🚀 Tenis Motoru Başlatıldı (Monte Carlo & Bayrak Detayları)...");
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
@@ -65,11 +70,9 @@ async function start() {
 
     const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
-    const stubbornTournamentIds = new Set([2391]); // Monte Carlo garanti
+    const stubbornTournamentIds = new Set([2391]); // Monte Carlo banko
 
-    // -------------------------------------------------------------------------
-    // 1. ADIM: GÜNLÜK PROGRAMLARI TARA (Sadece çöpleri at)
-    // -------------------------------------------------------------------------
+    // 1. ADIM: GÜNLÜK PROGRAMLARI TARA
     for (const date of targetDates) {
         try {
             console.log(`📡 ${date} programı taranıyor...`);
@@ -80,48 +83,36 @@ async function start() {
                 const filtered = data.events.filter(e => {
                     const tourName = e.tournament?.name;
                     const catName = e.tournament?.category?.name;
-                    
-                    // KURAL 1: Çöpse listeye girme!
                     if (isGarbage(tourName, catName)) return false;
                     
-                    // KURAL 2: Çöp değilse içeri gir (Tüm 250+ maçlar burayı geçer)
-                    // Eğer bu turnuva dev bir turnuvaysa, fikstürünü derin taramak için ID'sini kaydet
                     if (isMajorTournament(tourName) && e.tournament?.uniqueTournament?.id) {
                         stubbornTournamentIds.add(e.tournament.uniqueTournament.id);
                     }
                     return true;
                 });
-                
                 rawEvents.push(...filtered);
             }
         } catch (e) {}
     }
 
-    // -------------------------------------------------------------------------
-    // 2. ADIM: İNATÇI MOD (Ana tablo ve hayalet final maçlarını getir)
-    // -------------------------------------------------------------------------
-    console.log(`🔍 ${stubbornTournamentIds.size} büyük turnuvanın fikstürüne giriliyor...`);
+    // 2. ADIM: İNATÇI MOD (Derin Tarama)
+    console.log(`🔍 ${stubbornTournamentIds.size} büyük turnuva fikstürü taranıyor...`);
     for (const tid of stubbornTournamentIds) {
         try {
             await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/seasons`, { waitUntil: 'networkidle2' });
             const sData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-            
             if (sData?.seasons?.[0]?.id) {
                 const sid = sData.seasons[0].id;
                 for (const path of ['last/0', 'next/0', 'next/1']) {
                     await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${tid}/season/${sid}/events/${path}`, { waitUntil: 'networkidle2' });
                     const eData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
-                    if (eData?.events) {
-                        rawEvents.push(...eData.events);
-                    }
+                    if (eData?.events) rawEvents.push(...eData.events);
                 }
             }
         } catch (e) {}
     }
 
-    // -------------------------------------------------------------------------
-    // 3. ADIM: BAYRAKLAR VE JSON'A YAZMA
-    // -------------------------------------------------------------------------
+    // 3. ADIM: DETAYLI İŞLEME (Bayraklar, Skorlar ve Elitlik)
     const finalMatchesMap = new Map();
     await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2' });
 
@@ -129,49 +120,45 @@ async function start() {
         const startTimestamp = e.startTimestamp * 1000;
         const dateTR = new Date(startTimestamp);
         const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        
         if (!targetDates.includes(fixedDate)) continue;
 
         const tourName = e.tournament?.name || "";
         const catName = e.tournament?.category?.name || "";
-        
-        // Derin taramadan gelen çöpleri son kez temizle
         if (isGarbage(tourName, catName)) continue;
 
         let homeLogos = [];
         let awayLogos = [];
 
+        // 🔍 Çiftler için derin bayrak sorgusu
         try {
             const detail = await page.evaluate(async (id) => {
                 try {
                     const r = await fetch(`https://api.sofascore.com/api/v1/event/${id}`);
                     const ev = await r.json();
-                    
                     const getCodes = (team) => {
                         if (team.subTeams && team.subTeams.length > 0) {
                             return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
                         }
-                        return [team.country?.alpha2?.toLowerCase() || "default"];
+                        return [team.country?.alpha2?.toLowerCase() || "mc"];
                     };
-                    
                     return { hCodes: getCodes(ev.event.homeTeam), aCodes: getCodes(ev.event.awayTeam) };
                 } catch(err) { return null; }
             }, e.id);
-
             if (detail) {
                 homeLogos = detail.hCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
                 awayLogos = detail.aCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
             }
         } catch (err) {}
 
-        if (homeLogos.length === 0) homeLogos = [TENNIS_LOGO_BASE + "default.png"];
-        if (awayLogos.length === 0) awayLogos = [TENNIS_LOGO_BASE + "default.png"];
+        if (homeLogos.length === 0) homeLogos = [TENNIS_LOGO_BASE + "mc.png"];
+        if (awayLogos.length === 0) awayLogos = [TENNIS_LOGO_BASE + "mc.png"];
 
         const statusType = e.status?.type;
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         if (statusType === 'inprogress') timeString += "\nCANLI";
         else if (statusType === 'finished') timeString += "\nMS";
 
+        // 🎾 SET SKORLARI
         let setScoresStr = "";
         if (e.homeScore && e.awayScore) {
             let sets = [];
@@ -185,7 +172,7 @@ async function start() {
 
         finalMatchesMap.set(e.id, {
             id: e.id,
-            isElite: checkIsEliteMatch(tourName), // Sadece büyükler ve eleme olmayanlar elit olur
+            isElite: checkIsEliteMatch(tourName),
             status: statusType,
             fixedDate: fixedDate,
             fixedTime: timeString,
@@ -211,7 +198,7 @@ async function start() {
     }, null, 2));
     
     await browser.close();
-    console.log(`✅ İşlem Bitti. ${finalMatches.length} maç JSON'a yazıldı.`);
+    console.log(`✅ İşlem Bitti. Monte Carlo Finali Elit olarak eklendi!`);
 }
 
 start();
