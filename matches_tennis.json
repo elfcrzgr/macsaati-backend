@@ -1,14 +1,14 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-13T09:01:31.480Z",
-  "totalMatches": 123,
+  "lastUpdated": "2026-04-13T09:31:21.490Z",
+  "totalMatches": 124,
   "matches": [
     {
       "id": 15995964,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-13",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1776070800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -28,17 +28,17 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2423.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-3",
       "tournament": "Barcelona, Spain, Doubles, Qualifying"
     },
     {
       "id": 15991726,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-13",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1776070800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -53,20 +53,20 @@
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
-      "homeRank": "27",
-      "awayRank": "35",
+      "homeRank": "26",
+      "awayRank": "36",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-1",
       "tournament": "Munich, Germany"
     },
     {
       "id": 15996522,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-13",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1776070800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -81,12 +81,12 @@
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
         ]
       },
-      "homeRank": "52",
-      "awayRank": "283",
+      "homeRank": "49",
+      "awayRank": "340",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-3",
       "tournament": "Munich, Germany"
     },
     {
@@ -120,9 +120,9 @@
     {
       "id": 15991842,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-13",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1776070800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -137,12 +137,12 @@
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
         ]
       },
-      "homeRank": "61",
+      "homeRank": "60",
       "awayRank": "31",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2407.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "0-2",
       "tournament": "Barcelona, Spain"
     },
     {
@@ -364,6 +364,34 @@
         ]
       },
       "homeRank": "78",
+      "awayRank": "19",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Munich, Germany"
+    },
+    {
+      "id": 15999791,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-13",
+      "fixedTime": "13:10",
+      "timestamp": 1776075000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Sumit Nagal",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/in.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Francisco Cerundolo",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "homeRank": "292",
       "awayRank": "19",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
       "homeScore": "-",
