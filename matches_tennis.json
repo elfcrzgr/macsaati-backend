@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-13T19:01:33.172Z",
-  "totalMatches": 132,
+  "lastUpdated": "2026-04-13T19:31:30.380Z",
+  "totalMatches": 133,
   "matches": [
     {
       "id": 15995964,
@@ -1204,9 +1204,9 @@
     {
       "id": 15997177,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-13",
-      "fixedTime": "19:35\nCANLI",
+      "fixedTime": "19:35\nMS",
       "timestamp": 1776098100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1224,9 +1224,9 @@
       "homeRank": "51",
       "awayRank": "156",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
-      "setScores": "4-6, 7-6, 2-0",
+      "setScores": "4-6, 7-6, 6-1",
       "tournament": "Stuttgart, Germany"
     },
     {
@@ -1260,9 +1260,9 @@
     {
       "id": 15997115,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-13",
-      "fixedTime": "20:40\nCANLI",
+      "fixedTime": "20:40\nMS",
       "timestamp": 1776102000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1281,8 +1281,8 @@
       "awayRank": "64",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
       "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "2-6, 1-5",
+      "awayScore": "2",
+      "setScores": "2-6, 2-6",
       "tournament": "Rouen, France"
     },
     {
@@ -1290,8 +1290,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-13",
-      "fixedTime": "22:00",
-      "timestamp": 1776106800000,
+      "fixedTime": "22:30",
+      "timestamp": 1776108600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Antonia Ružić",
@@ -3672,6 +3672,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Rouen, France"
+    },
+    {
+      "id": 15981802,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-15",
+      "fixedTime": "13:30",
+      "timestamp": 1776249000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Iga Swiatek",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Laura Siegemund",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "homeRank": "4",
+      "awayRank": "51",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Stuttgart, Germany"
     },
     {
       "id": 15997746,
