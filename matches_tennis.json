@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-13T15:01:38.818Z",
+  "lastUpdated": "2026-04-13T15:31:27.335Z",
   "totalMatches": 128,
   "matches": [
     {
@@ -746,9 +746,9 @@
     {
       "id": 16001019,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-13",
-      "fixedTime": "16:00\nCANLI",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1776085200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -769,8 +769,8 @@
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2514.png",
       "homeScore": "1",
-      "awayScore": "1",
-      "setScores": "6-7, 6-4, 2-3",
+      "awayScore": "2",
+      "setScores": "6-7, 6-4, 7-10",
       "tournament": "Munich, Germany, Doubles"
     },
     {
@@ -802,34 +802,6 @@
       "awayScore": "2",
       "setScores": "4-6, 3-6",
       "tournament": "Oeiras 3, Portugal, Doubles"
-    },
-    {
-      "id": 15991724,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-13",
-      "fixedTime": "16:10",
-      "timestamp": 1776085800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Alexander Blockx",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yannick Hanfmann",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "homeRank": "71",
-      "awayRank": "51",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Munich, Germany"
     },
     {
       "id": 15993396,
@@ -886,7 +858,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-3, 0-2",
+      "setScores": "6-3, 3-5",
       "tournament": "Rouen, France"
     },
     {
@@ -914,7 +886,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2407.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4, 0-1",
+      "setScores": "6-4, 4-4",
       "tournament": "Barcelona, Spain"
     },
     {
@@ -941,8 +913,8 @@
       "awayRank": "88",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2407.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "4-4",
+      "awayScore": "1",
+      "setScores": "5-7, 1-2",
       "tournament": "Barcelona, Spain"
     },
     {
@@ -970,7 +942,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-1, 0-0",
+      "setScores": "6-1, 3-3",
       "tournament": "Oeiras 3, Portugal"
     },
     {
@@ -1000,36 +972,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22267.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-1, 0-0",
+      "setScores": "6-1, 2-5",
       "tournament": "Rouen, France, Doubles"
-    },
-    {
-      "id": 15997627,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-13",
-      "fixedTime": "17:40",
-      "timestamp": 1776091200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Lola Radivojević",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/rs.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Rebecca Sramkova",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
-        ]
-      },
-      "homeRank": "146",
-      "awayRank": "122",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Oeiras 3, Portugal"
     },
     {
       "id": 15997629,
@@ -1056,16 +1000,44 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "0-1",
+      "setScores": "2-5",
       "tournament": "Oeiras 3, Portugal"
+    },
+    {
+      "id": 15991724,
+      "isElite": true,
+      "status": "inprogress",
+      "fixedDate": "2026-04-13",
+      "fixedTime": "18:15\nCANLI",
+      "timestamp": 1776093300000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Alexander Blockx",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yannick Hanfmann",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "homeRank": "71",
+      "awayRank": "51",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-1",
+      "tournament": "Munich, Germany"
     },
     {
       "id": 15991846,
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-13",
-      "fixedTime": "18:10",
-      "timestamp": 1776093000000,
+      "fixedTime": "18:40",
+      "timestamp": 1776094800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Jaume Munar",
@@ -1079,8 +1051,8 @@
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
         ]
       },
-      "homeRank": "37",
-      "awayRank": "57",
+      "homeRank": "38",
+      "awayRank": "55",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2407.png",
       "homeScore": "-",
       "awayScore": "-",
@@ -1092,8 +1064,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-13",
-      "fixedTime": "18:20",
-      "timestamp": 1776093600000,
+      "fixedTime": "18:40",
+      "timestamp": 1776094800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Nuno Borges",
@@ -1120,8 +1092,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-13",
-      "fixedTime": "18:30",
-      "timestamp": 1776094200000,
+      "fixedTime": "18:40",
+      "timestamp": 1776094800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Sloane Stephens",
@@ -1135,13 +1107,41 @@
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ua.png"
         ]
       },
-      "homeRank": null,
+      "homeRank": "401",
       "awayRank": "209",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": "",
       "tournament": "Rouen, France"
+    },
+    {
+      "id": 15997627,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-13",
+      "fixedTime": "18:40",
+      "timestamp": 1776094800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Lola Radivojević",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/rs.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Rebecca Sramkova",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
+        ]
+      },
+      "homeRank": "146",
+      "awayRank": "122",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Oeiras 3, Portugal"
     },
     {
       "id": 15997626,
