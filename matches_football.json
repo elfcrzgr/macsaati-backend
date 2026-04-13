@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-13T03:31:16.528Z",
+  "lastUpdated": "2026-04-13T04:01:23.253Z",
   "totalMatches": 147,
   "matches": [
     {
@@ -594,9 +594,9 @@
     {
       "id": 15420899,
       "isElite": false,
-      "status": "interrupted",
+      "status": "inprogress",
       "fixedDate": "2026-04-13",
-      "fixedTime": "03:30",
+      "fixedTime": "03:30\nCANLI",
       "timestamp": 1776040200000,
       "broadcaster": "Apple TV / OneFootball",
       "homeTeam": {
@@ -678,9 +678,9 @@
     {
       "id": 15420897,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-13",
-      "fixedTime": "05:00\nCANLI",
+      "fixedTime": "05:00",
       "timestamp": 1776045600000,
       "broadcaster": "Apple TV / OneFootball",
       "homeTeam": {
@@ -692,8 +692,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411366.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "0",
       "tournament": "MLS Next Pro"
     },
     {
