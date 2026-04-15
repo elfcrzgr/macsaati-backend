@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-15T15:01:31.317Z",
-  "totalMatches": 89,
+  "lastUpdated": "2026-04-15T15:31:17.808Z",
+  "totalMatches": 91,
   "matches": [
     {
       "id": 15981725,
@@ -894,9 +894,9 @@
     {
       "id": 15997639,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-15",
-      "fixedTime": "16:30\nCANLI",
+      "fixedTime": "16:30\nMS",
       "timestamp": 1776259800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -916,9 +916,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34131.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
-      "setScores": "6-3, 5-3",
+      "setScores": "6-3, 6-4",
       "tournament": "Oeiras 3, Portugal, Doubles"
     },
     {
@@ -952,9 +952,9 @@
     {
       "id": 15997643,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-15",
-      "fixedTime": "16:40\nCANLI",
+      "fixedTime": "16:40\nMS",
       "timestamp": 1776260400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -974,9 +974,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34131.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
-      "setScores": "6-3, 4-1",
+      "setScores": "6-3, 6-2",
       "tournament": "Oeiras 3, Portugal, Doubles"
     },
     {
@@ -1003,8 +1003,8 @@
       "awayRank": "14",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
       "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "7-5, 1-5",
+      "awayScore": "1",
+      "setScores": "7-5, 1-6, 3-4",
       "tournament": "Stuttgart, Germany"
     },
     {
@@ -1032,7 +1032,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2407.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-3, 0-1",
+      "setScores": "6-3, 4-2",
       "tournament": "Barcelona, Spain"
     },
     {
@@ -1061,8 +1061,8 @@
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2423.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "6-5",
+      "awayScore": "1",
+      "setScores": "6-7, 3-1",
       "tournament": "Barcelona, Spain, Doubles"
     },
     {
@@ -1090,7 +1090,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "3-6, 1-0",
+      "setScores": "3-6, 4-5",
       "tournament": "Rouen, France"
     },
     {
@@ -1119,8 +1119,8 @@
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22267.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "3-4",
+      "awayScore": "1",
+      "setScores": "6-7, 0-0",
       "tournament": "Rouen, France, Doubles"
     },
     {
@@ -1156,9 +1156,9 @@
     {
       "id": 15993389,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-15",
-      "fixedTime": "18:00",
+      "fixedTime": "18:00\nCANLI",
       "timestamp": 1776265200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1176,38 +1176,10 @@
       "homeRank": "22",
       "awayRank": "9",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-3",
       "tournament": "Stuttgart, Germany"
-    },
-    {
-      "id": 15981711,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-15",
-      "fixedTime": "18:10",
-      "timestamp": 1776265800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Vit Kopřiva",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Luciano Darderi",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "homeRank": "78",
-      "awayRank": "21",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Munich, Germany"
     },
     {
       "id": 15980144,
@@ -1266,6 +1238,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Stuttgart, Germany, Doubles"
+    },
+    {
+      "id": 15981711,
+      "isElite": true,
+      "status": "inprogress",
+      "fixedDate": "2026-04-15",
+      "fixedTime": "18:10\nCANLI",
+      "timestamp": 1776265836000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Vit Kopřiva",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Luciano Darderi",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": "78",
+      "awayRank": "21",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-1",
+      "tournament": "Munich, Germany"
     },
     {
       "id": 16008087,
@@ -2063,6 +2063,66 @@
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34131.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Oeiras 3, Portugal, Doubles"
+    },
+    {
+      "id": 15982287,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-16",
+      "fixedTime": "12:00",
+      "timestamp": 1776330000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Cho I-H / Cho Y T",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Brancaccio N / Gorgodze E",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34131.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Oeiras 3, Portugal, Doubles"
+    },
+    {
+      "id": 15982288,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-16",
+      "fixedTime": "12:00",
+      "timestamp": 1776330000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Erjavec V / Mladenovic K",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Bhosale R / Uchijima M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/in.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
         ]
       },
       "homeRank": null,
