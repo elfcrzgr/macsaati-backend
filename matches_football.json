@@ -1,14 +1,14 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-16T22:01:20.116Z",
-  "totalMatches": 482,
+  "lastUpdated": "2026-04-16T22:31:19.774Z",
+  "totalMatches": 483,
   "matches": [
     {
       "id": 15832763,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-17",
-      "fixedTime": "01:00",
+      "fixedTime": "01:00\nCANLI",
       "timestamp": 1776376800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -27,9 +27,9 @@
     {
       "id": 15832768,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-17",
-      "fixedTime": "01:00",
+      "fixedTime": "01:00\nCANLI",
       "timestamp": 1776376800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -48,9 +48,9 @@
     {
       "id": 15832029,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-17",
-      "fixedTime": "01:00",
+      "fixedTime": "01:00\nCANLI",
       "timestamp": 1776376800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -69,9 +69,9 @@
     {
       "id": 15832060,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-17",
-      "fixedTime": "01:00",
+      "fixedTime": "01:00\nCANLI",
       "timestamp": 1776376800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -5821,27 +5821,6 @@
       "tournament": "MLS Next Pro"
     },
     {
-      "id": 15420905,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-18",
-      "fixedTime": "23:00",
-      "timestamp": 1776542400000,
-      "broadcaster": "Apple TV / OneFootball",
-      "homeTeam": {
-        "name": "New York City FC II",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411368.png"
-      },
-      "awayTeam": {
-        "name": "Connecticut United",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1166614.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "MLS Next Pro"
-    },
-    {
       "id": 15269957,
       "isElite": false,
       "status": "notstarted",
@@ -10061,6 +10040,48 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Liga 1"
+    },
+    {
+      "id": 15420916,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-19",
+      "fixedTime": "23:00",
+      "timestamp": 1776628800000,
+      "broadcaster": "Apple TV / OneFootball",
+      "homeTeam": {
+        "name": "Los Angeles FC 2",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/467298.png"
+      },
+      "awayTeam": {
+        "name": "The Town FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411519.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS Next Pro"
+    },
+    {
+      "id": 15420905,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-19",
+      "fixedTime": "23:00",
+      "timestamp": 1776628800000,
+      "broadcaster": "Apple TV / OneFootball",
+      "homeTeam": {
+        "name": "New York City FC II",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411368.png"
+      },
+      "awayTeam": {
+        "name": "Connecticut United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1166614.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS Next Pro"
     },
     {
       "id": 15420911,
