@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-16T09:31:21.864Z",
-  "totalMatches": 52,
+  "lastUpdated": "2026-04-16T10:01:23.089Z",
+  "totalMatches": 50,
   "matches": [
     {
       "id": 15981727,
@@ -27,8 +27,8 @@
       "awayRank": "19",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "2-2",
+      "awayScore": "1",
+      "setScores": "3-6, 0-1",
       "tournament": "Munich, Germany"
     },
     {
@@ -58,7 +58,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2514.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-3",
+      "setScores": "6-6",
       "tournament": "Munich, Germany, Doubles"
     },
     {
@@ -86,17 +86,17 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2423.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "4-2",
+      "setScores": "7-6, 0-0",
       "tournament": "Barcelona, Spain, Doubles"
     },
     {
       "id": 15981849,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-16",
-      "fixedTime": "12:30",
+      "fixedTime": "12:30\nCANLI",
       "timestamp": 1776331800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -114,17 +114,17 @@
       "homeRank": "123",
       "awayRank": "63",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-2",
       "tournament": "Rouen, France"
     },
     {
       "id": 15982266,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-16",
-      "fixedTime": "12:30",
+      "fixedTime": "12:30\nCANLI",
       "timestamp": 1776331800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -142,9 +142,9 @@
       "homeRank": "124",
       "awayRank": "92",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "2-2",
       "tournament": "Oeiras 3, Portugal"
     },
     {
@@ -1442,62 +1442,6 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Rouen, France, Doubles"
-    },
-    {
-      "id": 15725659,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-18",
-      "fixedTime": "01:00",
-      "timestamp": 1776463200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Bollullos Juvenil",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mairena Juvenil",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30582.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Juegos Deportivos Provinciales, Juvenil"
-    },
-    {
-      "id": 15725658,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-18",
-      "fixedTime": "01:00",
-      "timestamp": 1776463200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Sanlucar Juvenil",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Valencina Juvenil",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/30582.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Juegos Deportivos Provinciales, Juvenil"
     }
   ]
 }
