@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-16T19:31:28.118Z",
-  "totalMatches": 71,
+  "lastUpdated": "2026-04-16T20:01:27.928Z",
+  "totalMatches": 72,
   "matches": [
     {
       "id": 15981727,
@@ -1076,9 +1076,9 @@
     {
       "id": 15981855,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-16",
-      "fixedTime": "20:50\nCANLI",
+      "fixedTime": "20:50\nMS",
       "timestamp": 1776361800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1096,9 +1096,9 @@
       "homeRank": "65",
       "awayRank": "70",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
-      "setScores": "6-0, 4-6, 3-0",
+      "setScores": "6-0, 4-6, 6-0",
       "tournament": "Rouen, France"
     },
     {
@@ -1155,8 +1155,8 @@
       "awayRank": "79",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "4-4",
+      "awayScore": "1",
+      "setScores": "6-7, 0-0",
       "tournament": "Stuttgart, Germany"
     },
     {
@@ -1272,6 +1272,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Barcelona, Spain, Doubles"
+    },
+    {
+      "id": 15981847,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-17",
+      "fixedTime": "12:30",
+      "timestamp": 1776418200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Anna Bondar",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hu.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Sorana Cirstea",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
+        ]
+      },
+      "homeRank": "65",
+      "awayRank": "26",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Rouen, France"
     },
     {
       "id": 15981845,
