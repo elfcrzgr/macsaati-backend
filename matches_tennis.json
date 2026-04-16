@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-16T17:01:34.873Z",
+  "lastUpdated": "2026-04-16T17:31:28.885Z",
   "totalMatches": 67,
   "matches": [
     {
@@ -986,7 +986,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2576.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "7-6, 1-1",
+      "setScores": "7-6, 4-5",
       "tournament": "Stuttgart, Germany, Doubles"
     },
     {
@@ -1014,15 +1014,15 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "3-1",
+      "setScores": "5-4",
       "tournament": "Stuttgart, Germany"
     },
     {
       "id": 15981844,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-16",
-      "fixedTime": "19:40\nCANLI",
+      "fixedTime": "19:40\nMS",
       "timestamp": 1776357600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1042,7 +1042,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "1-2",
+      "setScores": "3-5",
       "tournament": "Rouen, France"
     },
     {
@@ -1558,34 +1558,6 @@
       "tournament": "Barcelona, Spain, Doubles"
     },
     {
-      "id": 15981805,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-17",
-      "fixedTime": "13:30",
-      "timestamp": 1776421800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Iga Swiatek",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mirra Andreeva",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "homeRank": "4",
-      "awayRank": "9",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Stuttgart, Germany"
-    },
-    {
       "id": 15981809,
       "isElite": true,
       "status": "notstarted",
@@ -1846,6 +1818,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Oeiras 3, Portugal, Doubles"
+    },
+    {
+      "id": 15981805,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-17",
+      "fixedTime": "18:00",
+      "timestamp": 1776438000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Iga Swiatek",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pl.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mirra Andreeva",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "homeRank": "4",
+      "awayRank": "9",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Stuttgart, Germany"
     },
     {
       "id": 15980143,
