@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-16T17:31:28.885Z",
-  "totalMatches": 67,
+  "lastUpdated": "2026-04-16T18:01:29.866Z",
+  "totalMatches": 68,
   "matches": [
     {
       "id": 15981727,
@@ -962,9 +962,9 @@
     {
       "id": 15981817,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-16",
-      "fixedTime": "18:30\nCANLI",
+      "fixedTime": "18:30\nMS",
       "timestamp": 1776353400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -984,9 +984,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2576.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "7-6, 4-5",
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": "7-6, 4-6, 10-6",
       "tournament": "Stuttgart, Germany, Doubles"
     },
     {
@@ -1013,8 +1013,8 @@
       "awayRank": "3",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "5-4",
+      "awayScore": "1",
+      "setScores": "5-7, 0-4",
       "tournament": "Stuttgart, Germany"
     },
     {
@@ -1048,9 +1048,9 @@
     {
       "id": 15980141,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-16",
-      "fixedTime": "20:30",
+      "fixedTime": "20:30\nCANLI",
       "timestamp": 1776360600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1068,9 +1068,9 @@
       "homeRank": "30",
       "awayRank": "33",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2407.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "3-1",
       "tournament": "Barcelona, Spain"
     },
     {
@@ -1104,10 +1104,10 @@
     {
       "id": 15981855,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-16",
-      "fixedTime": "20:40",
-      "timestamp": 1776361200000,
+      "fixedTime": "20:50\nCANLI",
+      "timestamp": 1776361800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Anna Bondar",
@@ -1124,9 +1124,9 @@
       "homeRank": "65",
       "awayRank": "70",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-0",
       "tournament": "Rouen, France"
     },
     {
@@ -1895,6 +1895,36 @@
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2576.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Stuttgart, Germany, Doubles"
+    },
+    {
+      "id": 15981820,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-18",
+      "fixedTime": "13:00",
+      "timestamp": 1776506400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Ostapenko J / Zhang S",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lv.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Eikeri U / Gleason Q",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/no.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
       "homeRank": null,
