@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-16T19:01:31.277Z",
-  "totalMatches": 70,
+  "lastUpdated": "2026-04-16T19:31:28.118Z",
+  "totalMatches": 71,
   "matches": [
     {
       "id": 15981727,
@@ -1097,16 +1097,16 @@
       "awayRank": "70",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
       "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-0, 4-3",
+      "awayScore": "1",
+      "setScores": "6-0, 4-6, 3-0",
       "tournament": "Rouen, France"
     },
     {
       "id": 15995979,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-16",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00\nMS",
       "timestamp": 1776362400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1126,9 +1126,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2423.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
-      "setScores": "6-4, 3-2",
+      "setScores": "6-4, 6-2",
       "tournament": "Barcelona, Spain, Doubles"
     },
     {
@@ -1156,7 +1156,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "3-1",
+      "setScores": "4-4",
       "tournament": "Stuttgart, Germany"
     },
     {
@@ -1846,6 +1846,36 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Oeiras 3, Portugal, Doubles"
+    },
+    {
+      "id": 15980177,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-17",
+      "fixedTime": "16:50",
+      "timestamp": 1776433800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Rincon D / Roca Batalla O",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Herbert P / Vavassori A",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2423.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Barcelona, Spain, Doubles"
     },
     {
       "id": 15980139,
