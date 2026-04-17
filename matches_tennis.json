@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-17T11:31:17.333Z",
+  "lastUpdated": "2026-04-17T12:01:26.637Z",
   "totalMatches": 34,
   "matches": [
     {
@@ -170,7 +170,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "6-7, 1-4",
+      "setScores": "6-7, 6-5",
       "tournament": "Oeiras 3, Portugal"
     },
     {
@@ -196,9 +196,9 @@
       "homeRank": "119",
       "awayRank": "416",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "setScores": "4-6, 3-2",
+      "setScores": "4-6, 6-3, 1-1",
       "tournament": "Oeiras 3, Portugal"
     },
     {
@@ -226,7 +226,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "6-7, 0-1",
+      "setScores": "6-7, 3-5",
       "tournament": "Stuttgart, Germany"
     },
     {
@@ -253,8 +253,8 @@
       "awayRank": "19",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "4-3",
+      "awayScore": "1",
+      "setScores": "5-7, 0-0",
       "tournament": "Munich, Germany"
     },
     {
@@ -281,8 +281,8 @@
       "awayRank": "15",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2407.png",
       "homeScore": "0",
-      "awayScore": "0",
-      "setScores": "3-2",
+      "awayScore": "1",
+      "setScores": "4-6, 0-0",
       "tournament": "Barcelona, Spain"
     },
     {
@@ -310,9 +310,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2423.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "3-3",
+      "setScores": "7-6, 0-0",
       "tournament": "Barcelona, Spain, Doubles"
     },
     {
@@ -342,7 +342,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2514.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "1-6, 0-0",
+      "setScores": "1-6, 4-5",
       "tournament": "Munich, Germany, Doubles"
     },
     {
@@ -378,9 +378,9 @@
     {
       "id": 15982261,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-17",
-      "fixedTime": "14:25",
+      "fixedTime": "14:25\nCANLI",
       "timestamp": 1776425100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -398,17 +398,17 @@
       "homeRank": "129",
       "awayRank": "92",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-1",
       "tournament": "Oeiras 3, Portugal"
     },
     {
       "id": 15981845,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-17",
-      "fixedTime": "14:30",
+      "fixedTime": "14:30\nCANLI",
       "timestamp": 1776425400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -426,38 +426,10 @@
       "homeRank": "184",
       "awayRank": "63",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22265.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-4",
       "tournament": "Rouen, France"
-    },
-    {
-      "id": 15981723,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-17",
-      "fixedTime": "14:50",
-      "timestamp": 1776426600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Joao Fonseca",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Ben Shelton",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "homeRank": "35",
-      "awayRank": "6",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Munich, Germany"
     },
     {
       "id": 15981807,
@@ -486,6 +458,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Stuttgart, Germany"
+    },
+    {
+      "id": 15981723,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-17",
+      "fixedTime": "15:10",
+      "timestamp": 1776427800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Joao Fonseca",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Ben Shelton",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "homeRank": "35",
+      "awayRank": "6",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Munich, Germany"
     },
     {
       "id": 15981754,
@@ -576,34 +576,6 @@
       "tournament": "Rouen, France"
     },
     {
-      "id": 15981718,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-17",
-      "fixedTime": "16:00",
-      "timestamp": 1776430800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Denis Shapovalov",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alex Molčan",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
-        ]
-      },
-      "homeRank": "39",
-      "awayRank": "166",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Munich, Germany"
-    },
-    {
       "id": 15980177,
       "isElite": true,
       "status": "notstarted",
@@ -632,6 +604,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Barcelona, Spain, Doubles"
+    },
+    {
+      "id": 15981718,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-17",
+      "fixedTime": "16:20",
+      "timestamp": 1776432000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Denis Shapovalov",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Alex Molčan",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
+        ]
+      },
+      "homeRank": "39",
+      "awayRank": "166",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Munich, Germany"
     },
     {
       "id": 15982290,
