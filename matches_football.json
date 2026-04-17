@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-17T13:01:21.013Z",
+  "lastUpdated": "2026-04-17T13:31:11.518Z",
   "totalMatches": 483,
   "matches": [
     {
@@ -237,9 +237,9 @@
     {
       "id": 15552491,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-17",
-      "fixedTime": "14:00\nCANLI",
+      "fixedTime": "14:00",
       "timestamp": 1776423600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -251,16 +251,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/369532.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/649.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "tournament": "Chinese Super League"
     },
     {
       "id": 15508365,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-17",
-      "fixedTime": "14:30\nCANLI",
+      "fixedTime": "14:30",
       "timestamp": 1776425400000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -272,8 +272,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/331840.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/1900.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "0",
       "tournament": "Indian Super League"
     },
     {
@@ -1566,7 +1566,7 @@
       "timestamp": 1776450600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
-        "name": "Real Sociedad B U21",
+        "name": "Real Sociedad B",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24360.png"
       },
       "awayTeam": {
