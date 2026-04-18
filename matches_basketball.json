@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-18T04:30:44.471Z",
-  "totalMatches": 24,
+  "lastUpdated": "2026-04-18T05:00:50.406Z",
+  "totalMatches": 25,
   "matches": [
     {
       "id": 15939404,
@@ -27,9 +27,9 @@
     {
       "id": 15939408,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-18",
-      "fixedTime": "05:00\nCANLI",
+      "fixedTime": "05:00",
       "timestamp": 1776477600000,
       "broadcaster": "beIN Sports 5",
       "homeTeam": {
@@ -41,8 +41,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3428.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "111",
+      "awayScore": "96",
       "tournament": "NBA"
     },
     {
@@ -506,6 +506,27 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "ABA League"
+    },
+    {
+      "id": 15934991,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-19",
+      "fixedTime": "22:30",
+      "timestamp": 1776627000000,
+      "broadcaster": "beIN Sports 5",
+      "homeTeam": {
+        "name": "Oklahoma City Thunder",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3418.png"
+      },
+      "awayTeam": {
+        "name": "Phoenix Suns",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3416.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
     }
   ]
 }
