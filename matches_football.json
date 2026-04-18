@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-17T23:31:15.556Z",
+  "lastUpdated": "2026-04-18T00:01:29.502Z",
   "totalMatches": 444,
   "matches": [
     {
@@ -48,9 +48,9 @@
     {
       "id": 15502514,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-18",
-      "fixedTime": "01:00\nCANLI",
+      "fixedTime": "01:00",
       "timestamp": 1776463200000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -62,8 +62,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5249.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/240.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "1",
       "tournament": "LigaPro Serie A"
     },
     {
@@ -3945,6 +3945,27 @@
       "awayTeam": {
         "name": "Atlanta United 2",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/277127.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS Next Pro"
+    },
+    {
+      "id": 15420905,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-18",
+      "fixedTime": "23:00",
+      "timestamp": 1776542400000,
+      "broadcaster": "Apple TV / OneFootball",
+      "homeTeam": {
+        "name": "New York City FC II",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411368.png"
+      },
+      "awayTeam": {
+        "name": "Connecticut United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1166614.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
       "homeScore": "-",
@@ -8187,27 +8208,6 @@
       "awayTeam": {
         "name": "The Town FC",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411519.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "MLS Next Pro"
-    },
-    {
-      "id": 15420905,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-19",
-      "fixedTime": "23:00",
-      "timestamp": 1776628800000,
-      "broadcaster": "Apple TV / OneFootball",
-      "homeTeam": {
-        "name": "New York City FC II",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411368.png"
-      },
-      "awayTeam": {
-        "name": "Connecticut United",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1166614.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
       "homeScore": "-",
