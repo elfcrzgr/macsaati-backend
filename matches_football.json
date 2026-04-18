@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-18T06:01:22.282Z",
+  "lastUpdated": "2026-04-18T06:31:13.968Z",
   "totalMatches": 444,
   "matches": [
     {
@@ -237,9 +237,9 @@
     {
       "id": 15345924,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-18",
-      "fixedTime": "07:00\nCANLI",
+      "fixedTime": "07:00",
       "timestamp": 1776484800000,
       "broadcaster": "YouTube (J.League Int.)",
       "homeTeam": {
@@ -251,8 +251,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5127.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/196.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
       "tournament": "J1 League"
     },
     {
@@ -363,9 +363,9 @@
     {
       "id": 15345929,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-18",
-      "fixedTime": "09:00",
+      "fixedTime": "09:00\nCANLI",
       "timestamp": 1776492000000,
       "broadcaster": "YouTube (J.League Int.)",
       "homeTeam": {
