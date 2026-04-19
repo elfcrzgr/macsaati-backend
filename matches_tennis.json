@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-19T13:01:31.716Z",
+  "lastUpdated": "2026-04-19T13:31:21.774Z",
   "totalMatches": 30,
   "matches": [
     {
@@ -264,9 +264,9 @@
     {
       "id": 15981721,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "14:30\nCANLI",
+      "fixedTime": "14:30\nMS",
       "timestamp": 1776598200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -285,8 +285,8 @@
       "awayRank": "6",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2491.png",
       "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "2-6, 5-4",
+      "awayScore": "2",
+      "setScores": "2-6, 5-7",
       "tournament": "Munich, Germany"
     },
     {
@@ -318,36 +318,6 @@
       "tournament": "Oeiras 4, Portugal, Qualifying"
     },
     {
-      "id": 15981819,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-19",
-      "fixedTime": "15:35",
-      "timestamp": 1776602100000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Ostapenko J / Zhang S",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lv.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Melichar-Martinez N / Samsonova L",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2576.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Stuttgart, Germany, Doubles"
-    },
-    {
       "id": 16032044,
       "isElite": false,
       "status": "inprogress",
@@ -372,7 +342,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-1",
+      "setScores": "2-5",
       "tournament": "Oeiras 4, Portugal, Qualifying"
     },
     {
@@ -398,10 +368,40 @@
       "homeRank": "219",
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
+      "homeScore": "1",
+      "awayScore": "0",
+      "setScores": "6-0, 1-1",
+      "tournament": "Oeiras 4, Portugal, Qualifying"
+    },
+    {
+      "id": 15981819,
+      "isElite": true,
+      "status": "inprogress",
+      "fixedDate": "2026-04-19",
+      "fixedTime": "16:20\nCANLI",
+      "timestamp": 1776604800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Ostapenko J / Zhang S",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lv.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Melichar-Martinez N / Samsonova L",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2576.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "1-0",
-      "tournament": "Oeiras 4, Portugal, Qualifying"
+      "setScores": "0-1",
+      "tournament": "Stuttgart, Germany, Doubles"
     },
     {
       "id": 15981842,
@@ -432,34 +432,6 @@
       "tournament": "Rouen, France"
     },
     {
-      "id": 16032041,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-19",
-      "fixedTime": "16:50",
-      "timestamp": 1776606600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Francesca Curmi",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mt.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Claire Liu",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "homeRank": "398",
-      "awayRank": "234",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Oeiras 4, Portugal, Qualifying"
-    },
-    {
       "id": 15991780,
       "isElite": true,
       "status": "notstarted",
@@ -486,6 +458,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Barcelona, Spain"
+    },
+    {
+      "id": 16032041,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-19",
+      "fixedTime": "17:30",
+      "timestamp": 1776609000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Francesca Curmi",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mt.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Claire Liu",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "homeRank": "398",
+      "awayRank": "234",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Oeiras 4, Portugal, Qualifying"
     },
     {
       "id": 16032254,
