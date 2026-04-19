@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-19T11:01:22.269Z",
+  "lastUpdated": "2026-04-19T11:31:14.211Z",
   "totalMatches": 30,
   "matches": [
     {
@@ -56,17 +56,17 @@
       "homeRank": "184",
       "awayRank": "290",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "setScores": "6-7, 3-3",
+      "setScores": "6-7, 6-3, 2-1",
       "tournament": "Oeiras 4, Portugal, Qualifying"
     },
     {
       "id": 16032042,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "12:00\nCANLI",
+      "fixedTime": "12:00\nMS",
       "timestamp": 1776589200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -84,9 +84,9 @@
       "homeRank": "433",
       "awayRank": "258",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
-      "setScores": "6-3, 6-7, 0-0",
+      "setScores": "6-3, 6-7, 6-2",
       "tournament": "Oeiras 4, Portugal, Qualifying"
     },
     {
@@ -120,9 +120,9 @@
     {
       "id": 15982267,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "13:00\nCANLI",
+      "fixedTime": "13:00\nMS",
       "timestamp": 1776592800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -140,9 +140,9 @@
       "homeRank": "129",
       "awayRank": "120",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34130.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
-      "setScores": "6-1, 1-1",
+      "setScores": "6-1, 6-3",
       "tournament": "Oeiras 3, Portugal"
     },
     {
@@ -170,15 +170,15 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-1",
+      "setScores": "4-3",
       "tournament": "Oeiras 4, Portugal, Qualifying"
     },
     {
       "id": 15981801,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "14:00",
+      "fixedTime": "14:00\nCANLI",
       "timestamp": 1776596400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -196,17 +196,17 @@
       "homeRank": "2",
       "awayRank": "12",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2549.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "4-1",
       "tournament": "Stuttgart, Germany"
     },
     {
       "id": 15980179,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "14:00",
+      "fixedTime": "14:00\nCANLI",
       "timestamp": 1776596400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -226,17 +226,17 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2423.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "3-2",
       "tournament": "Barcelona, Spain, Doubles"
     },
     {
       "id": 15982237,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "14:00",
+      "fixedTime": "14:00\nCANLI",
       "timestamp": 1776596400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -256,9 +256,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/22267.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "1-1",
       "tournament": "Rouen, France, Doubles"
     },
     {
@@ -283,34 +283,6 @@
       },
       "homeRank": "232",
       "awayRank": "282",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Oeiras 4, Portugal, Qualifying"
-    },
-    {
-      "id": 16032251,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-19",
-      "fixedTime": "14:00",
-      "timestamp": 1776596400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Polina Kudermetova",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/uz.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Beatriz Castro",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png"
-        ]
-      },
-      "homeRank": "139",
-      "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
       "homeScore": "-",
       "awayScore": "-",
@@ -344,6 +316,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Munich, Germany"
+    },
+    {
+      "id": 16032251,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-19",
+      "fixedTime": "14:35",
+      "timestamp": 1776598500000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Polina Kudermetova",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/uz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Beatriz Castro",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png"
+        ]
+      },
+      "homeRank": "139",
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Oeiras 4, Portugal, Qualifying"
     },
     {
       "id": 15981819,
