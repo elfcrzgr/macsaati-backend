@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-19T19:31:08.710Z",
+  "lastUpdated": "2026-04-19T20:01:26.244Z",
   "totalMatches": 319,
   "matches": [
     {
@@ -2923,27 +2923,6 @@
       "tournament": "Eliteserien"
     },
     {
-      "id": 14162310,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-19",
-      "fixedTime": "18:00",
-      "timestamp": 1776610800000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Menemen FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/44355.png"
-      },
-      "awayTeam": {
-        "name": "Yeni Malatyaspor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24759.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "3",
-      "awayScore": "0",
-      "tournament": "Nesine 2. Lig"
-    },
-    {
       "id": 14162309,
       "isElite": false,
       "status": "finished",
@@ -2958,6 +2937,27 @@
       "awayTeam": {
         "name": "Yeni Mersin İdman Yurdu AŞ",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/327705.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
+      "homeScore": "3",
+      "awayScore": "0",
+      "tournament": "Nesine 2. Lig"
+    },
+    {
+      "id": 14162310,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-04-19",
+      "fixedTime": "18:00",
+      "timestamp": 1776610800000,
+      "broadcaster": "TFF YouTube",
+      "homeTeam": {
+        "name": "Menemen FK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/44355.png"
+      },
+      "awayTeam": {
+        "name": "Yeni Malatyaspor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24759.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
       "homeScore": "3",
@@ -3618,9 +3618,9 @@
     {
       "id": 15997939,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "20:30\nCANLI",
+      "fixedTime": "20:30",
       "timestamp": 1776619800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3632,16 +3632,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5396.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/266.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "0",
       "tournament": "Israeli Premier League"
     },
     {
       "id": 15866467,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00",
       "timestamp": 1776621600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3653,16 +3653,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3245.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/185.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "2",
       "tournament": "Stoiximan Super League"
     },
     {
       "id": 15986044,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00",
       "timestamp": 1776621600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3674,8 +3674,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7771.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/210.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "1",
       "tournament": "Mozzart Bet Superliga"
     },
     {
@@ -3702,9 +3702,9 @@
     {
       "id": 15728219,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00",
       "timestamp": 1776621600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3716,16 +3716,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/58319.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/808.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "3",
       "tournament": "Egyptian Premier League"
     },
     {
       "id": 15728220,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00",
       "timestamp": 1776621600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3737,16 +3737,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/373168.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/808.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "3",
       "tournament": "Egyptian Premier League"
     },
     {
       "id": 15698584,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00",
       "timestamp": 1776621600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3758,8 +3758,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/295403.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/152.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "0",
       "tournament": "SuperLiga României"
     },
     {
@@ -3807,9 +3807,9 @@
     {
       "id": 15285405,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00",
       "timestamp": 1776621600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -3821,8 +3821,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/312632.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13362.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "2",
       "tournament": "USL League One"
     },
     {
@@ -4038,9 +4038,9 @@
     {
       "id": 14288868,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "22:30",
+      "fixedTime": "22:30\nCANLI",
       "timestamp": 1776627000000,
       "broadcaster": "S Sport Plus",
       "homeTeam": {
@@ -4059,9 +4059,9 @@
     {
       "id": 14288869,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "22:30",
+      "fixedTime": "22:30\nCANLI",
       "timestamp": 1776627000000,
       "broadcaster": "S Sport Plus",
       "homeTeam": {
@@ -4080,9 +4080,9 @@
     {
       "id": 15353025,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "22:30",
+      "fixedTime": "22:30\nCANLI",
       "timestamp": 1776627000000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -4101,9 +4101,9 @@
     {
       "id": 15285412,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "22:40",
+      "fixedTime": "22:40\nCANLI",
       "timestamp": 1776627600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -4122,9 +4122,9 @@
     {
       "id": 15269951,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "23:00",
+      "fixedTime": "23:00\nCANLI",
       "timestamp": 1776628800000,
       "broadcaster": "Spor Smart / Exxen",
       "homeTeam": {
