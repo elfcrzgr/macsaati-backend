@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-19T05:01:13.116Z",
-  "totalMatches": 312,
+  "lastUpdated": "2026-04-19T05:31:05.463Z",
+  "totalMatches": 313,
   "matches": [
     {
       "id": 15526027,
@@ -1119,9 +1119,9 @@
     {
       "id": 15239029,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "06:06\nCANLI",
+      "fixedTime": "06:06",
       "timestamp": 1776567960000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -1133,16 +1133,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/201624.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "3",
+      "awayScore": "1",
       "tournament": "Liga MX, Clausura"
     },
     {
       "id": 15239028,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "06:10\nCANLI",
+      "fixedTime": "06:10",
       "timestamp": 1776568200000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -1154,8 +1154,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1931.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "1",
       "tournament": "Liga MX, Clausura"
     },
     {
@@ -1182,9 +1182,9 @@
     {
       "id": 15372960,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "08:00",
+      "fixedTime": "08:00\nCANLI",
       "timestamp": 1776574800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -1203,9 +1203,9 @@
     {
       "id": 15388064,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "08:00",
+      "fixedTime": "08:00\nCANLI",
       "timestamp": 1776574800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -4176,6 +4176,27 @@
       "awayTeam": {
         "name": "The Town FC",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411519.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS Next Pro"
+    },
+    {
+      "id": 15420905,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-19",
+      "fixedTime": "23:00",
+      "timestamp": 1776628800000,
+      "broadcaster": "Apple TV / OneFootball",
+      "homeTeam": {
+        "name": "New York City FC II",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411368.png"
+      },
+      "awayTeam": {
+        "name": "Connecticut United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1166614.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
       "homeScore": "-",
