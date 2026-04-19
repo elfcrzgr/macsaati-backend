@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-19T06:01:13.070Z",
-  "totalMatches": 313,
+  "lastUpdated": "2026-04-19T06:31:07.429Z",
+  "totalMatches": 319,
   "matches": [
     {
       "id": 15526027,
@@ -1161,9 +1161,9 @@
     {
       "id": 15345926,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-19",
-      "fixedTime": "07:00\nCANLI",
+      "fixedTime": "07:00",
       "timestamp": 1776571200000,
       "broadcaster": "YouTube (J.League Int.)",
       "homeTeam": {
@@ -1175,8 +1175,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3140.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/196.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "0",
       "tournament": "J1 League"
     },
     {
@@ -1245,9 +1245,9 @@
     {
       "id": 15342053,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-19",
-      "fixedTime": "09:00",
+      "fixedTime": "09:00\nCANLI",
       "timestamp": 1776578400000,
       "broadcaster": "YouTube (J.League Int.)",
       "homeTeam": {
@@ -4981,6 +4981,27 @@
       "tournament": "AFC Champions League Elite"
     },
     {
+      "id": 16033417,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "19:15",
+      "timestamp": 1776701700000,
+      "broadcaster": "Twitch / YouTube (Global)",
+      "homeTeam": {
+        "name": "FC Rukkas",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1138385.png"
+      },
+      "awayTeam": {
+        "name": "Wembley Rangers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080580.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Baller League UK"
+    },
+    {
       "id": 14109889,
       "isElite": true,
       "status": "notstarted",
@@ -5042,6 +5063,27 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Danish Superliga"
+    },
+    {
+      "id": 16033440,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "20:05",
+      "timestamp": 1776704700000,
+      "broadcaster": "Twitch / YouTube (Global)",
+      "homeTeam": {
+        "name": "Clutch FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1138371.png"
+      },
+      "awayTeam": {
+        "name": "Gold Devils FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1192534.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Baller League UK"
     },
     {
       "id": 15689828,
@@ -5170,6 +5212,27 @@
       "tournament": "Eerste Divisie"
     },
     {
+      "id": 16033441,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "21:00",
+      "timestamp": 1776708000000,
+      "broadcaster": "Twitch / YouTube (Global)",
+      "homeTeam": {
+        "name": "NDL FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1138384.png"
+      },
+      "awayTeam": {
+        "name": "N5 FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080583.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Baller League UK"
+    },
+    {
       "id": 14083560,
       "isElite": false,
       "status": "notstarted",
@@ -5254,6 +5317,27 @@
       "tournament": "Premier League"
     },
     {
+      "id": 16033442,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "22:05",
+      "timestamp": 1776711900000,
+      "broadcaster": "Twitch / YouTube (Global)",
+      "homeTeam": {
+        "name": "Yanited",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080581.png"
+      },
+      "awayTeam": {
+        "name": "Prime FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1192535.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Baller League UK"
+    },
+    {
       "id": 14288861,
       "isElite": true,
       "status": "notstarted",
@@ -5273,6 +5357,27 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Liga Portugal Betclic"
+    },
+    {
+      "id": 16033443,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "23:00",
+      "timestamp": 1776715200000,
+      "broadcaster": "Twitch / YouTube (Global)",
+      "homeTeam": {
+        "name": "VZN FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080586.png"
+      },
+      "awayTeam": {
+        "name": "SDS FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080585.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Baller League UK"
     },
     {
       "id": 15269979,
@@ -5315,6 +5420,27 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Liga Profesional de Fútbol"
+    },
+    {
+      "id": 16033444,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "23:50",
+      "timestamp": 1776718200000,
+      "broadcaster": "Twitch / YouTube (Global)",
+      "homeTeam": {
+        "name": "Community FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1192536.png"
+      },
+      "awayTeam": {
+        "name": "Deportrio",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080576.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Baller League UK"
     },
     {
       "id": 16010818,
