@@ -1,14 +1,14 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-20T22:31:18.609Z",
+  "lastUpdated": "2026-04-20T23:01:19.745Z",
   "totalMatches": 218,
   "matches": [
     {
       "id": 16010818,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-21",
-      "fixedTime": "00:00\nCANLI",
+      "fixedTime": "00:00",
       "timestamp": 1776718800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -20,8 +20,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6230.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/231.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "1",
       "tournament": "Liga FUTVE"
     },
     {
@@ -44,27 +44,6 @@
       "homeScore": "3",
       "awayScore": "9",
       "tournament": "Baller League UK"
-    },
-    {
-      "id": 15400166,
-      "isElite": false,
-      "status": "postponed",
-      "fixedDate": "2026-04-21",
-      "fixedTime": "İPTAL",
-      "timestamp": 1776719700000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
-      "homeTeam": {
-        "name": "Rubio Ñu",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36438.png"
-      },
-      "awayTeam": {
-        "name": "Libertad",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5996.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11540.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Primera División, Apertura"
     },
     {
       "id": 16006564,
@@ -1283,6 +1262,27 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "LaLiga"
+    },
+    {
+      "id": 15400166,
+      "isElite": false,
+      "status": "postponed",
+      "fixedDate": "2026-04-21",
+      "fixedTime": "İPTAL",
+      "timestamp": 1776801600000,
+      "broadcaster": "TV Yayını Yok (Yerel)",
+      "homeTeam": {
+        "name": "Rubio Ñu",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36438.png"
+      },
+      "awayTeam": {
+        "name": "Libertad",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5996.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11540.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Primera División, Apertura"
     },
     {
       "id": 16006762,
