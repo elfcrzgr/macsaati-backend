@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-20T00:01:23.829Z",
+  "lastUpdated": "2026-04-20T00:31:09.854Z",
   "totalMatches": 202,
   "matches": [
     {
@@ -216,9 +216,9 @@
     {
       "id": 15885656,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-20",
-      "fixedTime": "01:15\nCANLI",
+      "fixedTime": "01:15",
       "timestamp": 1776636900000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -230,16 +230,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2305.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/406.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "1",
       "tournament": "Liga 1"
     },
     {
       "id": 15235519,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-20",
-      "fixedTime": "01:30\nCANLI",
+      "fixedTime": "01:30",
       "timestamp": 1776637800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -251,8 +251,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1955.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "0",
       "tournament": "Brasileirão Betano"
     },
     {
@@ -468,7 +468,7 @@
     {
       "id": 15269955,
       "isElite": false,
-      "status": "delayed",
+      "status": "notstarted",
       "fixedDate": "2026-04-20",
       "fixedTime": "02:30",
       "timestamp": 1776641400000,
@@ -510,9 +510,9 @@
     {
       "id": 15420920,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-20",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1776643200000,
       "broadcaster": "Apple TV / OneFootball",
       "homeTeam": {
@@ -531,9 +531,9 @@
     {
       "id": 15420919,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-20",
-      "fixedTime": "03:00",
+      "fixedTime": "03:00\nCANLI",
       "timestamp": 1776643200000,
       "broadcaster": "Apple TV / OneFootball",
       "homeTeam": {
