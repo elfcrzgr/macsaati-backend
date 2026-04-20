@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-20T22:01:19.278Z",
+  "lastUpdated": "2026-04-20T22:31:18.609Z",
   "totalMatches": 218,
   "matches": [
     {
@@ -27,9 +27,9 @@
     {
       "id": 16033444,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-21",
-      "fixedTime": "00:10\nCANLI",
+      "fixedTime": "00:10",
       "timestamp": 1776719400000,
       "broadcaster": "Twitch / YouTube (Global)",
       "homeTeam": {
@@ -41,8 +41,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080576.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "3",
+      "awayScore": "9",
       "tournament": "Baller League UK"
     },
     {
@@ -90,9 +90,9 @@
     {
       "id": 15269961,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-21",
-      "fixedTime": "01:30",
+      "fixedTime": "01:30\nCANLI",
       "timestamp": 1776724200000,
       "broadcaster": "Spor Smart / Exxen",
       "homeTeam": {
