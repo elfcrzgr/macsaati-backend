@@ -1,1190 +1,14 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-20T20:31:14.308Z",
-  "totalMatches": 202,
+  "lastUpdated": "2026-04-20T21:01:13.138Z",
+  "totalMatches": 217,
   "matches": [
-    {
-      "id": 15526030,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:00",
-      "timestamp": 1776632400000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Goiás",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1960.png"
-      },
-      "awayTeam": {
-        "name": "Cuiabá",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/49202.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/390.png",
-      "homeScore": "0",
-      "awayScore": "2",
-      "tournament": "Brasileirão Série B"
-    },
-    {
-      "id": 15362623,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:00",
-      "timestamp": 1776632400000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Estudiantes de Mérida",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7745.png"
-      },
-      "awayTeam": {
-        "name": "Monagas",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6233.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/231.png",
-      "homeScore": "3",
-      "awayScore": "2",
-      "tournament": "Liga FUTVE"
-    },
-    {
-      "id": 15502800,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:00",
-      "timestamp": 1776632400000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Inter Toronto",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/309890.png"
-      },
-      "awayTeam": {
-        "name": "Vancouver FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/463097.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13470.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "tournament": "Canadian Premier League"
-    },
-    {
-      "id": 15283247,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:00",
-      "timestamp": 1776632400000,
-      "broadcaster": "USL YouTube",
-      "homeTeam": {
-        "name": "Birmingham Legion FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/310967.png"
-      },
-      "awayTeam": {
-        "name": "Indy Eleven",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/148992.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
-      "homeScore": "2",
-      "awayScore": "2",
-      "tournament": "USL Championship"
-    },
-    {
-      "id": 15420912,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:00",
-      "timestamp": 1776632400000,
-      "broadcaster": "Apple TV / OneFootball",
-      "homeTeam": {
-        "name": "New York Red Bulls II",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/220949.png"
-      },
-      "awayTeam": {
-        "name": "FC Cincinnati 2",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411367.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "3",
-      "awayScore": "1",
-      "tournament": "MLS Next Pro"
-    },
-    {
-      "id": 14326839,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:00",
-      "timestamp": 1776632400000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Dallas Trinity",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/938069.png"
-      },
-      "awayTeam": {
-        "name": "Carolina Ascent",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/507682.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/28384.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "tournament": "USL Super League"
-    },
-    {
-      "id": 15367436,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:10",
-      "timestamp": 1776633000000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
-      "homeTeam": {
-        "name": "Alianza Valledupar FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/504899.png"
-      },
-      "awayTeam": {
-        "name": "Independiente Medellín",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6115.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11539.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "tournament": "Primera A, Apertura"
-    },
-    {
-      "id": 15235550,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:30",
-      "timestamp": 1776634200000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Palmeiras",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1963.png"
-      },
-      "awayTeam": {
-        "name": "Athletico",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1967.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
-      "homeScore": "1",
-      "awayScore": "0",
-      "tournament": "Brasileirão Betano"
-    },
-    {
-      "id": 15235521,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:30",
-      "timestamp": 1776634200000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Red Bull Bragantino",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1999.png"
-      },
-      "awayTeam": {
-        "name": "Remo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2012.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
-      "homeScore": "4",
-      "awayScore": "2",
-      "tournament": "Brasileirão Betano"
-    },
-    {
-      "id": 15420915,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "00:30",
-      "timestamp": 1776634200000,
-      "broadcaster": "Apple TV / OneFootball",
-      "homeTeam": {
-        "name": "Real Monarchs SLC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/197064.png"
-      },
-      "awayTeam": {
-        "name": "Houston Dynamo 2",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/407234.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "tournament": "MLS Next Pro"
-    },
-    {
-      "id": 15885656,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "01:15",
-      "timestamp": 1776636900000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Melgar",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2308.png"
-      },
-      "awayTeam": {
-        "name": "Universitario de Deportes",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2305.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/406.png",
-      "homeScore": "2",
-      "awayScore": "1",
-      "tournament": "Liga 1"
-    },
-    {
-      "id": 15235519,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "01:30",
-      "timestamp": 1776637800000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Flamengo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5981.png"
-      },
-      "awayTeam": {
-        "name": "Bahia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1955.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/325.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "tournament": "Brasileirão Betano"
-    },
-    {
-      "id": 15353024,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "01:30",
-      "timestamp": 1776637800000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Colo-Colo",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3155.png"
-      },
-      "awayTeam": {
-        "name": "Palestino",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3157.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11653.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "tournament": "Liga de Primera"
-    },
-    {
-      "id": 15239030,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:00",
-      "timestamp": 1776639600000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Santos Laguna",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1948.png"
-      },
-      "awayTeam": {
-        "name": "Atlas FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1949.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "tournament": "Liga MX, Clausura"
-    },
-    {
-      "id": 15171483,
-      "isElite": true,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:00",
-      "timestamp": 1776639600000,
-      "broadcaster": "Apple TV",
-      "homeTeam": {
-        "name": "Los Angeles FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/274650.png"
-      },
-      "awayTeam": {
-        "name": "San Jose Earthquakes",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/21825.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
-      "homeScore": "1",
-      "awayScore": "4",
-      "tournament": "MLS"
-    },
-    {
-      "id": 15526029,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:00",
-      "timestamp": 1776639600000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Fortaleza",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2020.png"
-      },
-      "awayTeam": {
-        "name": "Criciúma",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1984.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/390.png",
-      "homeScore": "3",
-      "awayScore": "2",
-      "tournament": "Brasileirão Série B"
-    },
-    {
-      "id": 15526026,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:00",
-      "timestamp": 1776639600000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Grêmio Novorizontino",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/135514.png"
-      },
-      "awayTeam": {
-        "name": "Athletic Club",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/342775.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/390.png",
-      "homeScore": "2",
-      "awayScore": "1",
-      "tournament": "Brasileirão Série B"
-    },
-    {
-      "id": 15362620,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:00",
-      "timestamp": 1776639600000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Universidad Central",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/249952.png"
-      },
-      "awayTeam": {
-        "name": "Deportivo Táchira",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6231.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/231.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "tournament": "Liga FUTVE"
-    },
-    {
-      "id": 15420913,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:00",
-      "timestamp": 1776639600000,
-      "broadcaster": "Apple TV / OneFootball",
-      "homeTeam": {
-        "name": "Orlando City B",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/220945.png"
-      },
-      "awayTeam": {
-        "name": "Carolina Core FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/506673.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "2",
-      "awayScore": "2",
-      "tournament": "MLS Next Pro"
-    },
-    {
-      "id": 14326840,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:00",
-      "timestamp": 1776639600000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Spokane Zephyr FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/938068.png"
-      },
-      "awayTeam": {
-        "name": "Sporting Jacksonville",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1077193.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/28384.png",
-      "homeScore": "2",
-      "awayScore": "1",
-      "tournament": "USL Super League"
-    },
-    {
-      "id": 15502511,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:10",
-      "timestamp": 1776640200000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Macará",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6001.png"
-      },
-      "awayTeam": {
-        "name": "Barcelona SC Guayaquil",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5250.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/240.png",
-      "homeScore": "3",
-      "awayScore": "1",
-      "tournament": "LigaPro Serie A"
-    },
-    {
-      "id": 15367435,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:20",
-      "timestamp": 1776640800000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
-      "homeTeam": {
-        "name": "Junior Barranquilla",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6105.png"
-      },
-      "awayTeam": {
-        "name": "Llaneros FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/89374.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11539.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "tournament": "Primera A, Apertura"
-    },
-    {
-      "id": 15269955,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:30",
-      "timestamp": 1776641400000,
-      "broadcaster": "Spor Smart / Exxen",
-      "homeTeam": {
-        "name": "CA Talleres",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3210.png"
-      },
-      "awayTeam": {
-        "name": "Deportivo Riestra",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/189723.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
-      "homeScore": "2",
-      "awayScore": "0",
-      "tournament": "Liga Profesional de Fútbol"
-    },
-    {
-      "id": 15269973,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "02:30",
-      "timestamp": 1776641400000,
-      "broadcaster": "Spor Smart / Exxen",
-      "homeTeam": {
-        "name": "Rosario Central",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3217.png"
-      },
-      "awayTeam": {
-        "name": "Sarmiento",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/42338.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
-      "homeScore": "2",
-      "awayScore": "1",
-      "tournament": "Liga Profesional de Fútbol"
-    },
-    {
-      "id": 15420920,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "03:00",
-      "timestamp": 1776643200000,
-      "broadcaster": "Apple TV / OneFootball",
-      "homeTeam": {
-        "name": "Colorado Rapids 2",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411369.png"
-      },
-      "awayTeam": {
-        "name": "Minnesota United FC 2",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411366.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "1",
-      "awayScore": "2",
-      "tournament": "MLS Next Pro"
-    },
-    {
-      "id": 15420919,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "03:00",
-      "timestamp": 1776643200000,
-      "broadcaster": "Apple TV / OneFootball",
-      "homeTeam": {
-        "name": "Sporting Kansas City II",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/212570.png"
-      },
-      "awayTeam": {
-        "name": "Vancouver Whitecaps FC II",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/217785.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/18641.png",
-      "homeScore": "3",
-      "awayScore": "2",
-      "tournament": "MLS Next Pro"
-    },
-    {
-      "id": 15885918,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "03:30",
-      "timestamp": 1776645000000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Cienciano",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2301.png"
-      },
-      "awayTeam": {
-        "name": "CD Moquegua",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/492848.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/406.png",
-      "homeScore": "2",
-      "awayScore": "1",
-      "tournament": "Liga 1"
-    },
-    {
-      "id": 15353023,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "03:45",
-      "timestamp": 1776645900000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Huachipato",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3164.png"
-      },
-      "awayTeam": {
-        "name": "Audax Italiano",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3162.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11653.png",
-      "homeScore": "3",
-      "awayScore": "2",
-      "tournament": "Liga de Primera"
-    },
-    {
-      "id": 15367434,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "04:30",
-      "timestamp": 1776648600000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
-      "homeTeam": {
-        "name": "América de Cali",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6102.png"
-      },
-      "awayTeam": {
-        "name": "Millonarios",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6117.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11539.png",
-      "homeScore": "3",
-      "awayScore": "1",
-      "tournament": "Primera A, Apertura"
-    },
-    {
-      "id": 15508437,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "17:00",
-      "timestamp": 1776693600000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Punjab FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/230661.png"
-      },
-      "awayTeam": {
-        "name": "Inter Kashi FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/494686.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/1900.png",
-      "homeScore": "3",
-      "awayScore": "0",
-      "tournament": "Indian Super League"
-    },
-    {
-      "id": 15689827,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "17:30",
-      "timestamp": 1776695400000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "FC Botoșani",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/24798.png"
-      },
-      "awayTeam": {
-        "name": "FC Metaloglobus București",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/79081.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/152.png",
-      "homeScore": "3",
-      "awayScore": "2",
-      "tournament": "SuperLiga României"
-    },
-    {
-      "id": 15393624,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "18:45",
-      "timestamp": 1776699900000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Al Adalah",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/229347.png"
-      },
-      "awayTeam": {
-        "name": "Al Jandal",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/304988.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/2120.png",
-      "homeScore": "2",
-      "awayScore": "1",
-      "tournament": "Saudi 1st Division"
-    },
-    {
-      "id": 15393623,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "18:45",
-      "timestamp": 1776699900000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Al Jubail",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/530630.png"
-      },
-      "awayTeam": {
-        "name": "Al Wehda",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/32994.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/2120.png",
-      "homeScore": "0",
-      "awayScore": "2",
-      "tournament": "Saudi 1st Division"
-    },
-    {
-      "id": 15426972,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "19:15",
-      "timestamp": 1776701700000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Vissel Kobe",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3146.png"
-      },
-      "awayTeam": {
-        "name": "Al-Ahli",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/34469.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/463.png",
-      "homeScore": "1",
-      "awayScore": "2",
-      "tournament": "AFC Champions League Elite"
-    },
-    {
-      "id": 16033417,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "19:15",
-      "timestamp": 1776701700000,
-      "broadcaster": "Twitch / YouTube (Global)",
-      "homeTeam": {
-        "name": "FC Rukkas",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1138385.png"
-      },
-      "awayTeam": {
-        "name": "Wembley Rangers",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080580.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
-      "homeScore": "3",
-      "awayScore": "4",
-      "tournament": "Baller League UK"
-    },
-    {
-      "id": 14109889,
-      "isElite": true,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:00",
-      "timestamp": 1776704400000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Gaziantep FK",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5138.png"
-      },
-      "awayTeam": {
-        "name": "Kayserispor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3072.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/52.png",
-      "homeScore": "3",
-      "awayScore": "0",
-      "tournament": "Trendyol Süper Lig"
-    },
-    {
-      "id": 13981999,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:00",
-      "timestamp": 1776704400000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "KS Lechia Gdańsk",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7913.png"
-      },
-      "awayTeam": {
-        "name": "Piast Gliwice",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7918.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/202.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "tournament": "Ekstraklasa"
-    },
-    {
-      "id": 15676237,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:00",
-      "timestamp": 1776704400000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "FC Midtjylland",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1289.png"
-      },
-      "awayTeam": {
-        "name": "AGF",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1291.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/39.png",
-      "homeScore": "2",
-      "awayScore": "1",
-      "tournament": "Danish Superliga"
-    },
-    {
-      "id": 16033440,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:05",
-      "timestamp": 1776704700000,
-      "broadcaster": "Twitch / YouTube (Global)",
-      "homeTeam": {
-        "name": "Clutch FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1138371.png"
-      },
-      "awayTeam": {
-        "name": "Gold Devils FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1192534.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
-      "homeScore": "6",
-      "awayScore": "4",
-      "tournament": "Baller League UK"
-    },
-    {
-      "id": 15689828,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:30",
-      "timestamp": 1776706200000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "FC Farul Constanța",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3294.png"
-      },
-      "awayTeam": {
-        "name": "FCSB",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3301.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/152.png",
-      "homeScore": "2",
-      "awayScore": "3",
-      "tournament": "SuperLiga României"
-    },
-    {
-      "id": 14336426,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:45",
-      "timestamp": 1776707100000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "FC Porto B",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/74469.png"
-      },
-      "awayTeam": {
-        "name": "Leixões SC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3018.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/239.png",
-      "homeScore": "0",
-      "awayScore": "3",
-      "tournament": "Liga Portugal 2"
-    },
-    {
-      "id": 14336424,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:45",
-      "timestamp": 1776707100000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Sporting CP B U21",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/74467.png"
-      },
-      "awayTeam": {
-        "name": "Felgueiras",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3030.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/239.png",
-      "homeScore": "0",
-      "awayScore": "1",
-      "tournament": "Liga Portugal 2"
-    },
-    {
-      "id": 15393626,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:45",
-      "timestamp": 1776707100000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Al Ula",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/853576.png"
-      },
-      "awayTeam": {
-        "name": "Al Jabalin",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/213003.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/2120.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "tournament": "Saudi 1st Division"
-    },
-    {
-      "id": 15269969,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "21:00",
-      "timestamp": 1776708000000,
-      "broadcaster": "Spor Smart / Exxen",
-      "homeTeam": {
-        "name": "Barracas Central",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/65668.png"
-      },
-      "awayTeam": {
-        "name": "Club Atlético Belgrano",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3203.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "tournament": "Liga Profesional de Fútbol"
-    },
-    {
-      "id": 15943631,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "21:00",
-      "timestamp": 1776708000000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "FC Den Bosch",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2963.png"
-      },
-      "awayTeam": {
-        "name": "Jong FC Utrecht",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/53067.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/131.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "tournament": "Eerste Divisie"
-    },
-    {
-      "id": 16033441,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "21:00",
-      "timestamp": 1776708000000,
-      "broadcaster": "Twitch / YouTube (Global)",
-      "homeTeam": {
-        "name": "NDL FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1138384.png"
-      },
-      "awayTeam": {
-        "name": "N5 FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080583.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
-      "homeScore": "4",
-      "awayScore": "6",
-      "tournament": "Baller League UK"
-    },
-    {
-      "id": 14083560,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "21:30",
-      "timestamp": 1776709800000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "Deportivo La Coruña",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2832.png"
-      },
-      "awayTeam": {
-        "name": "Mirandés",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35092.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/54.png",
-      "homeScore": "3",
-      "awayScore": "1",
-      "tournament": "LaLiga 2"
-    },
-    {
-      "id": 13980099,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "21:45\nCANLI",
-      "timestamp": 1776710700000,
-      "broadcaster": "S Sport",
-      "homeTeam": {
-        "name": "Lecce",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2689.png"
-      },
-      "awayTeam": {
-        "name": "Fiorentina",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2693.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/23.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Serie A"
-    },
-    {
-      "id": 14064768,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "21:45\nCANLI",
-      "timestamp": 1776710700000,
-      "broadcaster": "Resmi Yayıncı / Canlı Skor",
-      "homeTeam": {
-        "name": "USL Dunkerque",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6918.png"
-      },
-      "awayTeam": {
-        "name": "Stade Lavallois",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1673.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/182.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Ligue 2"
-    },
-    {
-      "id": 14025034,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "22:00\nCANLI",
-      "timestamp": 1776711600000,
-      "broadcaster": "beIN Sports",
-      "homeTeam": {
-        "name": "Crystal Palace",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7.png"
-      },
-      "awayTeam": {
-        "name": "West Ham United",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/37.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/17.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Premier League"
-    },
-    {
-      "id": 16033442,
-      "isElite": false,
-      "status": "finished",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "22:05",
-      "timestamp": 1776711900000,
-      "broadcaster": "Twitch / YouTube (Global)",
-      "homeTeam": {
-        "name": "Yanited",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080581.png"
-      },
-      "awayTeam": {
-        "name": "Prime FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1192535.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
-      "homeScore": "1",
-      "awayScore": "8",
-      "tournament": "Baller League UK"
-    },
-    {
-      "id": 14288861,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "22:15\nCANLI",
-      "timestamp": 1776712500000,
-      "broadcaster": "S Sport Plus",
-      "homeTeam": {
-        "name": "Moreirense",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3014.png"
-      },
-      "awayTeam": {
-        "name": "Estoril Praia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/4500.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/238.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Liga Portugal Betclic"
-    },
-    {
-      "id": 16033443,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "23:00\nCANLI",
-      "timestamp": 1776715200000,
-      "broadcaster": "Twitch / YouTube (Global)",
-      "homeTeam": {
-        "name": "VZN FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080586.png"
-      },
-      "awayTeam": {
-        "name": "SDS FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080585.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Baller League UK"
-    },
-    {
-      "id": 15269979,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "23:15\nCANLI",
-      "timestamp": 1776716100000,
-      "broadcaster": "Spor Smart / Exxen",
-      "homeTeam": {
-        "name": "Banfield",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3219.png"
-      },
-      "awayTeam": {
-        "name": "Independiente Rivadavia",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36842.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Liga Profesional de Fútbol"
-    },
-    {
-      "id": 15269963,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "23:15\nCANLI",
-      "timestamp": 1776716100000,
-      "broadcaster": "Spor Smart / Exxen",
-      "homeTeam": {
-        "name": "Central Córdoba",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/65676.png"
-      },
-      "awayTeam": {
-        "name": "Platense",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36837.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/155.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Liga Profesional de Fútbol"
-    },
-    {
-      "id": 16033444,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "23:50",
-      "timestamp": 1776718200000,
-      "broadcaster": "Twitch / YouTube (Global)",
-      "homeTeam": {
-        "name": "Community FC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1192536.png"
-      },
-      "awayTeam": {
-        "name": "Deportrio",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1080576.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25492.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Baller League UK"
-    },
     {
       "id": 16010818,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-21",
-      "fixedTime": "00:00",
+      "fixedTime": "00:00\nCANLI",
       "timestamp": 1776718800000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -4244,6 +3068,1497 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "LigaPro Serie A"
+    },
+    {
+      "id": 15941960,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "01:00",
+      "timestamp": 1776895200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Real Potosí",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7060.png"
+      },
+      "awayTeam": {
+        "name": "Guabirá",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/47701.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/16736.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "División Profesional"
+    },
+    {
+      "id": 15285409,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "01:30",
+      "timestamp": 1776897000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Sarasota Paradise",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/465623.png"
+      },
+      "awayTeam": {
+        "name": "Corpus Christi FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/284113.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13362.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "USL League One"
+    },
+    {
+      "id": 15502525,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:00",
+      "timestamp": 1776898800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Barcelona SC Guayaquil",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5250.png"
+      },
+      "awayTeam": {
+        "name": "Mushuc Runa SC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/134976.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/240.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LigaPro Serie A"
+    },
+    {
+      "id": 15881787,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:00",
+      "timestamp": 1776898800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Cusco FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/63760.png"
+      },
+      "awayTeam": {
+        "name": "FC Cajamarca",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1082002.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/406.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga 1"
+    },
+    {
+      "id": 14326841,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:00",
+      "timestamp": 1776898800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "DC Power FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/938777.png"
+      },
+      "awayTeam": {
+        "name": "Fort Lauderdale United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1041471.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/28384.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "USL Super League"
+    },
+    {
+      "id": 15635803,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:20",
+      "timestamp": 1776900000000,
+      "broadcaster": "TV Yayını Yok (Yerel)",
+      "homeTeam": {
+        "name": "Independiente Medellín",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6115.png"
+      },
+      "awayTeam": {
+        "name": "Boyacá Chicó FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6107.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11539.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Primera A, Apertura"
+    },
+    {
+      "id": 15171486,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:30",
+      "timestamp": 1776900600000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "Columbus Crew",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2504.png"
+      },
+      "awayTeam": {
+        "name": "LA Galaxy",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2513.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15171488,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:30",
+      "timestamp": 1776900600000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "New York City FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/187643.png"
+      },
+      "awayTeam": {
+        "name": "FC Cincinnati",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/215167.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15171487,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:30",
+      "timestamp": 1776900600000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "New York Red Bulls",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2506.png"
+      },
+      "awayTeam": {
+        "name": "DC United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2502.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15171491,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:30",
+      "timestamp": 1776900600000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "Orlando City SC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/52237.png"
+      },
+      "awayTeam": {
+        "name": "Charlotte FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/404108.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15171490,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:30",
+      "timestamp": 1776900600000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "Toronto FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7080.png"
+      },
+      "awayTeam": {
+        "name": "Philadelphia Union",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/39833.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15283258,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:30",
+      "timestamp": 1776900600000,
+      "broadcaster": "USL YouTube",
+      "homeTeam": {
+        "name": "Rhode Island FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/502355.png"
+      },
+      "awayTeam": {
+        "name": "Charleston Battery",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/22004.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "USL Championship"
+    },
+    {
+      "id": 15171485,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "02:45",
+      "timestamp": 1776901500000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "Atlanta United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/243211.png"
+      },
+      "awayTeam": {
+        "name": "New İngiltere Revolution",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2511.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15941962,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "03:00",
+      "timestamp": 1776902400000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Blooming",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6968.png"
+      },
+      "awayTeam": {
+        "name": "Nacional Potosí",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/47700.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/16736.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "División Profesional"
+    },
+    {
+      "id": 15171489,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "03:30",
+      "timestamp": 1776904200000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "FC Dallas",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2512.png"
+      },
+      "awayTeam": {
+        "name": "Minnesota United",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/41618.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15171492,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "03:30",
+      "timestamp": 1776904200000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "Houston Dynamo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2508.png"
+      },
+      "awayTeam": {
+        "name": "San Diego FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1043961.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15526044,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "03:30",
+      "timestamp": 1776904200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Cuiabá",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/49202.png"
+      },
+      "awayTeam": {
+        "name": "Botafogo-SP",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1979.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/390.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Brasileirão Série B"
+    },
+    {
+      "id": 15239036,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "04:00",
+      "timestamp": 1776906000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Atlas FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1949.png"
+      },
+      "awayTeam": {
+        "name": "Tigres UANL",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1940.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga MX, Clausura"
+    },
+    {
+      "id": 15239035,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "04:00",
+      "timestamp": 1776906000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Atlético San Luis",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1950.png"
+      },
+      "awayTeam": {
+        "name": "Santos Laguna",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1948.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga MX, Clausura"
+    },
+    {
+      "id": 15239037,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "04:00",
+      "timestamp": 1776906000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Mazatlán FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1946.png"
+      },
+      "awayTeam": {
+        "name": "CD Toluca",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1931.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga MX, Clausura"
+    },
+    {
+      "id": 15502522,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "04:00",
+      "timestamp": 1776906000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "LDU",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5257.png"
+      },
+      "awayTeam": {
+        "name": "Aucas",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5249.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/240.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LigaPro Serie A"
+    },
+    {
+      "id": 15171508,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "04:30",
+      "timestamp": 1776907800000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "Real Salt Lake",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5133.png"
+      },
+      "awayTeam": {
+        "name": "Inter Miami CF",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/337602.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15916937,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "04:30",
+      "timestamp": 1776907800000,
+      "broadcaster": "TV Yayını Yok (Yerel)",
+      "homeTeam": {
+        "name": "Fortaleza FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/89368.png"
+      },
+      "awayTeam": {
+        "name": "América de Cali",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6102.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11539.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Primera A, Apertura"
+    },
+    {
+      "id": 15881794,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "04:30",
+      "timestamp": 1776907800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Universitario de Deportes",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2305.png"
+      },
+      "awayTeam": {
+        "name": "Deportivo Garcilaso",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/458584.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/406.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga 1"
+    },
+    {
+      "id": 15283257,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "05:00",
+      "timestamp": 1776909600000,
+      "broadcaster": "USL YouTube",
+      "homeTeam": {
+        "name": "Oakland Roots SC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/325107.png"
+      },
+      "awayTeam": {
+        "name": "Las Vegas Lights",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/276898.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/13363.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "USL Championship"
+    },
+    {
+      "id": 15171500,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "05:30",
+      "timestamp": 1776911400000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "Los Angeles FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/274650.png"
+      },
+      "awayTeam": {
+        "name": "Colorado Rapids",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2510.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15171495,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "05:30",
+      "timestamp": 1776911400000,
+      "broadcaster": "Apple TV",
+      "homeTeam": {
+        "name": "San Jose Earthquakes",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/21825.png"
+      },
+      "awayTeam": {
+        "name": "Austin FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/377973.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/242.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "MLS"
+    },
+    {
+      "id": 15239039,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "06:05",
+      "timestamp": 1776913500000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Club Necaxa",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1944.png"
+      },
+      "awayTeam": {
+        "name": "CD Guadalajara",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1938.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga MX, Clausura"
+    },
+    {
+      "id": 15239038,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "06:06",
+      "timestamp": 1776913560000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Club Tijuana",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36525.png"
+      },
+      "awayTeam": {
+        "name": "CF Pachuca",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1936.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11620.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga MX, Clausura"
+    },
+    {
+      "id": 15426816,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "16:00",
+      "timestamp": 1776949200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "ÍBV Vestmannaeyjar",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1895.png"
+      },
+      "awayTeam": {
+        "name": "KR Reykjavík",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1902.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/188.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Besta deild karla"
+    },
+    {
+      "id": 15986046,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "17:00",
+      "timestamp": 1776952800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FK Radnički Niš",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/25737.png"
+      },
+      "awayTeam": {
+        "name": "FK Javor Ivanjica",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5144.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/210.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mozzart Bet Superliga"
+    },
+    {
+      "id": 15508373,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "17:00",
+      "timestamp": 1776952800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Kerala Blasters",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/174598.png"
+      },
+      "awayTeam": {
+        "name": "Odisha FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/174592.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/1900.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Indian Super League"
+    },
+    {
+      "id": 15909228,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "17:00",
+      "timestamp": 1776952800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Al-Ittihad Kalba",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/55705.png"
+      },
+      "awayTeam": {
+        "name": "Baniyas",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/58689.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/971.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UAE Pro League"
+    },
+    {
+      "id": 15909227,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "17:00",
+      "timestamp": 1776952800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Al-Sharjah",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/34060.png"
+      },
+      "awayTeam": {
+        "name": "Al-Wahda FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/264115.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/971.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UAE Pro League"
+    },
+    {
+      "id": 14036738,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "17:30",
+      "timestamp": 1776954600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Akron Togliatti",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/285689.png"
+      },
+      "awayTeam": {
+        "name": "Dinamo Makhachkala",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/362016.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/203.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Russian Premier League"
+    },
+    {
+      "id": 15728221,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "18:00",
+      "timestamp": 1776956400000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Arab Contractors FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/42365.png"
+      },
+      "awayTeam": {
+        "name": "Al-Ittihad Alexandria",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35187.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/808.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Egyptian Premier League"
+    },
+    {
+      "id": 15986047,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:00",
+      "timestamp": 1776960000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FK Napredak Kruševac",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7674.png"
+      },
+      "awayTeam": {
+        "name": "FK IMT Beograd",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/308176.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/210.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mozzart Bet Superliga"
+    },
+    {
+      "id": 15676239,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:00",
+      "timestamp": 1776960000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FC Nordsjælland",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1292.png"
+      },
+      "awayTeam": {
+        "name": "AGF",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1291.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/39.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Danish Superliga"
+    },
+    {
+      "id": 15676269,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:00",
+      "timestamp": 1776960000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Randers FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1301.png"
+      },
+      "awayTeam": {
+        "name": "FC Fredericia",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1302.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/39.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Danish Superliga"
+    },
+    {
+      "id": 14773790,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:10",
+      "timestamp": 1776960600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Al-Najma SC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/395831.png"
+      },
+      "awayTeam": {
+        "name": "Al-Taawoun",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/56021.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/955.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Saudi Pro League"
+    },
+    {
+      "id": 14028543,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:45",
+      "timestamp": 1776962700000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "Go Ahead Eagles",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2979.png"
+      },
+      "awayTeam": {
+        "name": "AZ Alkmaar",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2950.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/37.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "VriendenLoterij Eredivisie"
+    },
+    {
+      "id": 14036721,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:45",
+      "timestamp": 1776962700000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Akhmat Grozny",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5131.png"
+      },
+      "awayTeam": {
+        "name": "Baltika Kaliningrad",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7517.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/203.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Russian Premier League"
+    },
+    {
+      "id": 14036768,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:45",
+      "timestamp": 1776962700000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FC Spartak Moscow",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2323.png"
+      },
+      "awayTeam": {
+        "name": "FC Krasnodar",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/34425.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/203.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Russian Premier League"
+    },
+    {
+      "id": 15909223,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:45",
+      "timestamp": 1776962700000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Al Bataeh",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/331952.png"
+      },
+      "awayTeam": {
+        "name": "Al-Ain",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/37082.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/971.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UAE Pro League"
+    },
+    {
+      "id": 15909222,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "19:45",
+      "timestamp": 1776962700000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Shabab Al-Ahli Dubai",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/264111.png"
+      },
+      "awayTeam": {
+        "name": "Khor Fakkan",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/234227.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/971.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "UAE Pro League"
+    },
+    {
+      "id": 14083265,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "20:00",
+      "timestamp": 1776963600000,
+      "broadcaster": "S Sport",
+      "homeTeam": {
+        "name": "Levante UD",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2849.png"
+      },
+      "awayTeam": {
+        "name": "Sevilla",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2833.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/8.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga"
+    },
+    {
+      "id": 15272394,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "20:00",
+      "timestamp": 1776963600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Degerfors IF",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1807.png"
+      },
+      "awayTeam": {
+        "name": "AIK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1764.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/40.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Allsvenskan"
+    },
+    {
+      "id": 15272382,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "20:00",
+      "timestamp": 1776963600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "GAIS",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1786.png"
+      },
+      "awayTeam": {
+        "name": "Mjällby AIF",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1783.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/40.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Allsvenskan"
+    },
+    {
+      "id": 15272389,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "20:00",
+      "timestamp": 1776963600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Kalmar FF",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1891.png"
+      },
+      "awayTeam": {
+        "name": "IFK Göteborg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1761.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/40.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Allsvenskan"
+    },
+    {
+      "id": 15272375,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "20:00",
+      "timestamp": 1776963600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Malmö FF",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1892.png"
+      },
+      "awayTeam": {
+        "name": "IK Sirius",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1793.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/40.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Allsvenskan"
+    },
+    {
+      "id": 15886340,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "20:00",
+      "timestamp": 1776963600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "AaB",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1290.png"
+      },
+      "awayTeam": {
+        "name": "Boldklubben af 1893",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1298.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/47.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Betinia Liga"
+    },
+    {
+      "id": 15426799,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "20:00",
+      "timestamp": 1776963600000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Þór Akureyri",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1903.png"
+      },
+      "awayTeam": {
+        "name": "Fram Reykjavík",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1893.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/188.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Besta deild karla"
+    },
+    {
+      "id": 14083330,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:00",
+      "timestamp": 1776967200000,
+      "broadcaster": "S Sport",
+      "homeTeam": {
+        "name": "Rayo Vallecano",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2818.png"
+      },
+      "awayTeam": {
+        "name": "Espanyol",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2814.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/8.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga"
+    },
+    {
+      "id": 14288828,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:00",
+      "timestamp": 1776967200000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Casa Pia",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36365.png"
+      },
+      "awayTeam": {
+        "name": "Sporting Braga",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2999.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/238.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga Portugal Betclic"
+    },
+    {
+      "id": 15986048,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:00",
+      "timestamp": 1776967200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FK Mladost Lučani",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7771.png"
+      },
+      "awayTeam": {
+        "name": "FK Radnički 1923",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/43981.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/210.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mozzart Bet Superliga"
+    },
+    {
+      "id": 15986049,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:00",
+      "timestamp": 1776967200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FK Spartak Subotica",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36967.png"
+      },
+      "awayTeam": {
+        "name": "FK TSC Bačka Topola",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/263360.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/210.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Mozzart Bet Superliga"
+    },
+    {
+      "id": 15676235,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:00",
+      "timestamp": 1776967200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Sønderjyske Fodbold",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1295.png"
+      },
+      "awayTeam": {
+        "name": "FC Midtjylland",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1289.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/39.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Danish Superliga"
+    },
+    {
+      "id": 15728056,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:00",
+      "timestamp": 1776967200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Zamalek SC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/42368.png"
+      },
+      "awayTeam": {
+        "name": "Pyramids FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/175002.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/808.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Egyptian Premier League"
+    },
+    {
+      "id": 15728222,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:00",
+      "timestamp": 1776967200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Ghazl El Mahalla FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/58319.png"
+      },
+      "awayTeam": {
+        "name": "Petrojet",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/43567.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/808.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Egyptian Premier League"
+    },
+    {
+      "id": 14771866,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:00",
+      "timestamp": 1776967200000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Damac FC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/204126.png"
+      },
+      "awayTeam": {
+        "name": "Al-Okhdood",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/336456.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/955.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Saudi Pro League"
+    },
+    {
+      "id": 15858572,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:30",
+      "timestamp": 1776969000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Sint-Truidense VV",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2895.png"
+      },
+      "awayTeam": {
+        "name": "RSC Anderlecht",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2900.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/38.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Pro League"
+    },
+    {
+      "id": 16033337,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:30",
+      "timestamp": 1776969000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Lommel SK",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5046.png"
+      },
+      "awayTeam": {
+        "name": "RFC Liège",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/389226.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/38.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Pro League"
+    },
+    {
+      "id": 16033336,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:30",
+      "timestamp": 1776969000000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Patro Eisden Maasmechelen",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/35076.png"
+      },
+      "awayTeam": {
+        "name": "K. Beerschot V.A.",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/169260.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/38.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Pro League"
+    },
+    {
+      "id": 15600442,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "21:45",
+      "timestamp": 1776969900000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "VfB Stuttgart",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2677.png"
+      },
+      "awayTeam": {
+        "name": "SC Freiburg",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2538.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/217.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "DFB Pokal"
+    },
+    {
+      "id": 14028551,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "22:00",
+      "timestamp": 1776970800000,
+      "broadcaster": "S Sport Plus / TV+",
+      "homeTeam": {
+        "name": "PSV Eindhoven",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2952.png"
+      },
+      "awayTeam": {
+        "name": "PEC Zwolle",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2971.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/37.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "VriendenLoterij Eredivisie"
+    },
+    {
+      "id": 14060284,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "22:00",
+      "timestamp": 1776970800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Salford City",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/37998.png"
+      },
+      "awayTeam": {
+        "name": "Bromley",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/180.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/25.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "League Two"
+    },
+    {
+      "id": 15941963,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "22:00",
+      "timestamp": 1776970800000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "CD San Antonio",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/396625.png"
+      },
+      "awayTeam": {
+        "name": "CDT Real Oruro",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/423186.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/16736.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "División Profesional"
+    },
+    {
+      "id": 15426808,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "22:15",
+      "timestamp": 1776971700000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "FH Hafnarfjörður",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1894.png"
+      },
+      "awayTeam": {
+        "name": "Valur Reykjavík",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1899.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/188.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Besta deild karla"
+    },
+    {
+      "id": 15426807,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "22:15",
+      "timestamp": 1776971700000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Víkingur Reykjavík",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1908.png"
+      },
+      "awayTeam": {
+        "name": "Stjarnan Garðabær",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1912.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/188.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Besta deild karla"
+    },
+    {
+      "id": 14083282,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "22:30",
+      "timestamp": 1776972600000,
+      "broadcaster": "S Sport",
+      "homeTeam": {
+        "name": "Real Oviedo",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2851.png"
+      },
+      "awayTeam": {
+        "name": "Villarreal",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2819.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/8.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "LaLiga"
+    },
+    {
+      "id": 15881793,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-23",
+      "fixedTime": "23:00",
+      "timestamp": 1776974400000,
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
+      "homeTeam": {
+        "name": "Los Chankas CYC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/252254.png"
+      },
+      "awayTeam": {
+        "name": "Cienciano",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/2301.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/406.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Liga 1"
     }
   ]
 }
