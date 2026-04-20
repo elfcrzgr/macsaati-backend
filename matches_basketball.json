@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-20T17:00:57.328Z",
+  "lastUpdated": "2026-04-20T17:30:44.033Z",
   "totalMatches": 12,
   "matches": [
     {
@@ -48,9 +48,9 @@
     {
       "id": 15485322,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-20",
-      "fixedTime": "18:00\nCANLI",
+      "fixedTime": "18:00",
       "timestamp": 1776697200000,
       "broadcaster": "S Sport Plus",
       "homeTeam": {
@@ -62,16 +62,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/5742.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/235.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "84",
+      "awayScore": "92",
       "tournament": "ABA League"
     },
     {
       "id": 15485316,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-20",
-      "fixedTime": "20:00",
+      "fixedTime": "20:00\nCANLI",
       "timestamp": 1776704400000,
       "broadcaster": "S Sport Plus",
       "homeTeam": {

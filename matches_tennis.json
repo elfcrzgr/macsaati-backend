@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-20T17:01:41.026Z",
+  "lastUpdated": "2026-04-20T17:31:27.432Z",
   "totalMatches": 143,
   "matches": [
     {
@@ -1408,9 +1408,9 @@
     {
       "id": 16036200,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-20",
-      "fixedTime": "17:30\nCANLI",
+      "fixedTime": "17:30\nMS",
       "timestamp": 1776695400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1428,9 +1428,9 @@
       "homeRank": "118",
       "awayRank": "119",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
-      "setScores": "7-6, 6-7, 3-2",
+      "setScores": "7-6, 6-7, 7-5",
       "tournament": "Madrid, Spain, Qualifying"
     },
     {
@@ -1542,7 +1542,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "6-0, 3-6, 3-2",
+      "setScores": "6-0, 3-6, 5-4",
       "tournament": "Madrid, Spain, Qualifying"
     },
     {
@@ -1634,9 +1634,9 @@
     {
       "id": 16036219,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-20",
-      "fixedTime": "18:45\nCANLI",
+      "fixedTime": "18:45\nMS",
       "timestamp": 1776699900000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1654,17 +1654,17 @@
       "homeRank": "92",
       "awayRank": "150",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
-      "setScores": "6-2, 4-2",
+      "setScores": "6-2, 7-5",
       "tournament": "Madrid, Spain, Qualifying"
     },
     {
       "id": 16036340,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-20",
-      "fixedTime": "18:50\nCANLI",
+      "fixedTime": "18:50\nMS",
       "timestamp": 1776700200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1684,9 +1684,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34229.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
-      "setScores": "6-0, 5-4",
+      "setScores": "6-0, 6-4",
       "tournament": "Oeiras 4, Portugal, Doubles"
     },
     {
@@ -1712,45 +1712,17 @@
       "homeRank": "87",
       "awayRank": "143",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-5",
-      "tournament": "Madrid, Spain, Qualifying"
-    },
-    {
-      "id": 16036197,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "19:10",
-      "timestamp": 1776701400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Nicolai Budkov Kjaer",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/no.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Francesco Maestrelli",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "homeRank": "140",
-      "awayRank": "112",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "setScores": "7-6, 0-0",
       "tournament": "Madrid, Spain, Qualifying"
     },
     {
       "id": 16036216,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-20",
-      "fixedTime": "19:15\nCANLI",
+      "fixedTime": "19:15\nMS",
       "timestamp": 1776701700000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1769,8 +1741,8 @@
       "awayRank": "110",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "2-6, 0-2",
+      "awayScore": "2",
+      "setScores": "2-6, 1-6",
       "tournament": "Madrid, Spain, Qualifying"
     },
     {
@@ -1796,37 +1768,9 @@
       "homeRank": "84",
       "awayRank": "324",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "3-1",
-      "tournament": "Madrid, Spain, Qualifying"
-    },
-    {
-      "id": 16036203,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "19:35",
-      "timestamp": 1776702900000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Patrick Kypson",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Moise Kouame",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "homeRank": "90",
-      "awayRank": "358",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "setScores": "6-1, 3-2",
       "tournament": "Madrid, Spain, Qualifying"
     },
     {
@@ -1854,72 +1798,16 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-1",
-      "tournament": "Madrid, Spain, Qualifying"
-    },
-    {
-      "id": 16036237,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "19:55",
-      "timestamp": 1776704100000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Martina Trevisan",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Sinja Kraus",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
-        ]
-      },
-      "homeRank": "519",
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain, Qualifying"
-    },
-    {
-      "id": 16036222,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-20",
-      "fixedTime": "20:00",
-      "timestamp": 1776704400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Ksenia Efremova",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Lulu Sun",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png"
-        ]
-      },
-      "homeRank": "670",
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "setScores": "6-5",
       "tournament": "Madrid, Spain, Qualifying"
     },
     {
       "id": 16036238,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-20",
-      "fixedTime": "20:10",
-      "timestamp": 1776705000000,
+      "fixedTime": "20:05\nCANLI",
+      "timestamp": 1776704700000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Anastasia Potapova",
@@ -1934,8 +1822,120 @@
         ]
       },
       "homeRank": "56",
-      "awayRank": null,
+      "awayRank": "164",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "3-1",
+      "tournament": "Madrid, Spain, Qualifying"
+    },
+    {
+      "id": 16036222,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "20:30",
+      "timestamp": 1776706200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Ksenia Efremova",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lulu Sun",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png"
+        ]
+      },
+      "homeRank": "670",
+      "awayRank": "106",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Qualifying"
+    },
+    {
+      "id": 16036237,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "20:30",
+      "timestamp": 1776706200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Martina Trevisan",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Sinja Kraus",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+        ]
+      },
+      "homeRank": "519",
+      "awayRank": "104",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Qualifying"
+    },
+    {
+      "id": 16036197,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "20:40",
+      "timestamp": 1776706800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Nicolai Budkov Kjaer",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/no.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Francesco Maestrelli",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": "140",
+      "awayRank": "112",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Qualifying"
+    },
+    {
+      "id": 16036203,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-20",
+      "fixedTime": "20:45",
+      "timestamp": 1776707100000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Patrick Kypson",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Moise Kouame",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "homeRank": "90",
+      "awayRank": "358",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": "",
@@ -1946,8 +1946,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-20",
-      "fixedTime": "20:20",
-      "timestamp": 1776705600000,
+      "fixedTime": "21:50",
+      "timestamp": 1776711000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Zsombor Piros",
