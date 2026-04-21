@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-21T01:01:15.519Z",
+  "lastUpdated": "2026-04-21T01:31:10.145Z",
   "totalMatches": 218,
   "matches": [
     {
@@ -111,9 +111,9 @@
     {
       "id": 15365057,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-21",
-      "fixedTime": "02:20\nCANLI",
+      "fixedTime": "02:20",
       "timestamp": 1776727200000,
       "broadcaster": "TV Yayını Yok (Yerel)",
       "homeTeam": {
@@ -125,16 +125,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1164534.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11539.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "2",
+      "awayScore": "1",
       "tournament": "Primera A, Apertura"
     },
     {
       "id": 15400164,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-21",
-      "fixedTime": "02:30\nCANLI",
+      "fixedTime": "02:30",
       "timestamp": 1776727800000,
       "broadcaster": "TV Yayını Yok (Yerel)",
       "homeTeam": {
@@ -146,8 +146,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/33001.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/11540.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "1",
       "tournament": "Primera División, Apertura"
     },
     {
@@ -1266,9 +1266,9 @@
     {
       "id": 15400166,
       "isElite": false,
-      "status": "postponed",
+      "status": "notstarted",
       "fixedDate": "2026-04-21",
-      "fixedTime": "İPTAL",
+      "fixedTime": "23:00",
       "timestamp": 1776801600000,
       "broadcaster": "TV Yayını Yok (Yerel)",
       "homeTeam": {
