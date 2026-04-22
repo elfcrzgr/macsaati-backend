@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-22T10:01:16.087Z",
-  "totalMatches": 95,
+  "lastUpdated": "2026-04-22T10:31:04.678Z",
+  "totalMatches": 96,
   "matches": [
     {
       "id": 16040161,
@@ -84,15 +84,15 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "3-6, 1-1",
+      "setScores": "3-6, 4-5",
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16040158,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-22",
-      "fixedTime": "12:00\nCANLI",
+      "fixedTime": "12:00\nMS",
       "timestamp": 1776848400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -111,8 +111,8 @@
       "awayRank": "66",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "2-6, 0-5",
+      "awayScore": "2",
+      "setScores": "2-6, 0-6",
       "tournament": "Madrid, Spain"
     },
     {
@@ -140,7 +140,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4, 0-1",
+      "setScores": "6-4, 3-5",
       "tournament": "Madrid, Spain"
     },
     {
@@ -168,7 +168,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-3, 1-0",
+      "setScores": "6-3, 4-4",
       "tournament": "Madrid, Spain"
     },
     {
@@ -195,8 +195,8 @@
       "awayRank": "82",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "1",
-      "awayScore": "0",
-      "setScores": "6-4, 0-0",
+      "awayScore": "1",
+      "setScores": "6-4, 1-6, 0-0",
       "tournament": "Madrid, Spain"
     },
     {
@@ -224,7 +224,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4, 0-0",
+      "setScores": "6-4, 4-3",
       "tournament": "Madrid, Spain"
     },
     {
@@ -250,45 +250,17 @@
       "homeRank": "67",
       "awayRank": "352",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
-      "setScores": "4-5",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16040150,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-22",
-      "fixedTime": "13:10",
-      "timestamp": 1776852600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Damir Džumhur",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ba.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mattia Bellucci",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "homeRank": "84",
-      "awayRank": "78",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "setScores": "7-5, 1-1",
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16040154,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-22",
-      "fixedTime": "13:10",
+      "fixedTime": "13:10\nCANLI",
       "timestamp": 1776852600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -306,9 +278,9 @@
       "homeRank": "58",
       "awayRank": "46",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "0-1",
       "tournament": "Madrid, Spain"
     },
     {
@@ -336,6 +308,34 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
       "awayScore": "0",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16040150,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-22",
+      "fixedTime": "13:30",
+      "timestamp": 1776853800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Damir Džumhur",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ba.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mattia Bellucci",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": "84",
+      "awayRank": "78",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
       "setScores": "",
       "tournament": "Madrid, Spain"
     },
@@ -508,34 +508,6 @@
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16048485,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-22",
-      "fixedTime": "14:20",
-      "timestamp": 1776856800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Lorenzo Sonego",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Dušan Lajović",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/rs.png"
-        ]
-      },
-      "homeRank": "62",
-      "awayRank": "138",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
       "id": 16048483,
       "isElite": true,
       "status": "notstarted",
@@ -586,6 +558,34 @@
       "homeRank": "84",
       "awayRank": "41",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16048485,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-22",
+      "fixedTime": "14:40",
+      "timestamp": 1776858000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Lorenzo Sonego",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Dušan Lajović",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/rs.png"
+        ]
+      },
+      "homeRank": "62",
+      "awayRank": "138",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": "",
@@ -760,34 +760,6 @@
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16048486,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-22",
-      "fixedTime": "15:30",
-      "timestamp": 1776861000000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Elmer Moller",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/dk.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Federico Cinà",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "homeRank": "169",
-      "awayRank": "205",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
       "id": 16048482,
       "isElite": true,
       "status": "notstarted",
@@ -866,6 +838,34 @@
       "homeRank": "110",
       "awayRank": "73",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16048486,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-22",
+      "fixedTime": "15:50",
+      "timestamp": 1776862200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Elmer Moller",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/dk.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Federico Cinà",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": "169",
+      "awayRank": "205",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": "",
@@ -2697,6 +2697,34 @@
       },
       "homeRank": "77",
       "awayRank": "102",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16012145,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-24",
+      "fixedTime": "11:00",
+      "timestamp": 1777017600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Andrey Rublev",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Vit Kopřiva",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "homeRank": "12",
+      "awayRank": "66",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
