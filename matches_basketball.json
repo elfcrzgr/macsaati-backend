@@ -1,14 +1,14 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-23T01:30:43.120Z",
+  "lastUpdated": "2026-04-23T02:00:49.443Z",
   "totalMatches": 10,
   "matches": [
     {
       "id": 15935002,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-23",
-      "fixedTime": "02:00\nCANLI",
+      "fixedTime": "02:00",
       "timestamp": 1776898800000,
       "broadcaster": "beIN Sports 5",
       "homeTeam": {
@@ -20,16 +20,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3437.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "98",
+      "awayScore": "83",
       "tournament": "NBA"
     },
     {
       "id": 15934984,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-23",
-      "fixedTime": "04:30",
+      "fixedTime": "04:30\nCANLI",
       "timestamp": 1776907800000,
       "broadcaster": "beIN Sports 5",
       "homeTeam": {
