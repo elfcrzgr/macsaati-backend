@@ -1,8 +1,8 @@
 name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
-  schedule:
-    - cron: '0 * * * *' # Her saat başında otomatik çalışır
+#  schedule:
+  #  - cron: '0 * * * *' # Her saat başında otomatik çalışır
   workflow_dispatch: # Manuel çalıştırma butonu
 
 jobs:
