@@ -200,7 +200,7 @@
       "homeRank": "6",
       "awayRank": "87",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
       "tournament": "Madrid, Spain"
     },
@@ -1298,19 +1298,19 @@
       "awayRank": "43",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16012176,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "matchStatus": {
-        "type": "notstarted"
+        "type": "inprogress"
       },
       "fixedDate": "2026-04-24",
-      "fixedTime": "16:00",
-      "timestamp": 1777035600000,
+      "fixedTime": "16:05",
+      "timestamp": 1777035910000,
       "homeTeam": {
         "name": "Arthur Fils",
         "logos": [
@@ -1326,8 +1326,8 @@
       "homeRank": "25",
       "awayRank": "58",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "tournament": "Madrid, Spain"
     },
     {
@@ -2027,35 +2027,6 @@
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16012088,
-      "isElite": true,
-      "status": "notstarted",
-      "matchStatus": {
-        "type": "notstarted"
-      },
-      "fixedDate": "2026-04-24",
-      "fixedTime": "16:10",
-      "timestamp": 1777036200000,
-      "homeTeam": {
-        "name": "Leolia Jeanjean",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Coco Gauff",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "homeRank": "126",
-      "awayRank": "3",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Madrid, Spain"
-    },
-    {
       "id": 16034619,
       "isElite": true,
       "status": "notstarted",
@@ -2085,6 +2056,35 @@
       "tournament": "Madrid, Spain"
     },
     {
+      "id": 16012088,
+      "isElite": true,
+      "status": "notstarted",
+      "matchStatus": {
+        "type": "notstarted"
+      },
+      "fixedDate": "2026-04-24",
+      "fixedTime": "16:30",
+      "timestamp": 1777037400000,
+      "homeTeam": {
+        "name": "Leolia Jeanjean",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Coco Gauff",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "homeRank": "126",
+      "awayRank": "3",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Madrid, Spain"
+    },
+    {
       "id": 16012190,
       "isElite": true,
       "status": "notstarted",
@@ -2092,8 +2092,8 @@
         "type": "notstarted"
       },
       "fixedDate": "2026-04-24",
-      "fixedTime": "16:45",
-      "timestamp": 1777038300000,
+      "fixedTime": "17:10",
+      "timestamp": 1777039800000,
       "homeTeam": {
         "name": "Clara Tauson",
         "logos": [
@@ -2489,7 +2489,7 @@
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -2500,8 +2500,8 @@
         "type": "notstarted"
       },
       "fixedDate": "2026-04-24",
-      "fixedTime": "16:05",
-      "timestamp": 1777035900000,
+      "fixedTime": "16:10",
+      "timestamp": 1777036200000,
       "homeTeam": {
         "name": "Panova A / Yang Z",
         "logos": [
@@ -3299,7 +3299,7 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/3821.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "tournament": "Rome, Italy, Doubles"
     },
@@ -3421,7 +3421,7 @@
       "homeRank": "137",
       "awayRank": "166",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "tournament": "Oeiras 4, Portugal"
     },
@@ -3433,8 +3433,8 @@
         "type": "notstarted"
       },
       "fixedDate": "2026-04-24",
-      "fixedTime": "16:10",
-      "timestamp": 1777036200000,
+      "fixedTime": "16:30",
+      "timestamp": 1777037400000,
       "homeTeam": {
         "name": "Linda Klimovicova",
         "logos": [
@@ -3462,8 +3462,8 @@
         "type": "notstarted"
       },
       "fixedDate": "2026-04-24",
-      "fixedTime": "17:20",
-      "timestamp": 1777040400000,
+      "fixedTime": "17:40",
+      "timestamp": 1777041600000,
       "homeTeam": {
         "name": "Elena Pridankina",
         "logos": [
@@ -3522,8 +3522,8 @@
         "type": "notstarted"
       },
       "fixedDate": "2026-04-24",
-      "fixedTime": "16:10",
-      "timestamp": 1777036200000,
+      "fixedTime": "16:30",
+      "timestamp": 1777037400000,
       "homeTeam": {
         "name": "Karamoko N / Semenistaja D",
         "logos": [
