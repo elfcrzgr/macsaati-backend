@@ -127,7 +127,7 @@ async function start() {
     
     // 🛡️ BÜYÜK DEĞİŞİKLİK 1: Önce ana sayfaya giriyoruz ve Cloudflare'in bizi onaylamasını bekliyoruz
     console.log("🛡️ Güvenlik duvarı aşılıyor...");
-    await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2' });
+   await page.goto('https://www.sofascore.com', { waitUntil: 'domcontentloaded', timeout: 60000 });
     
     // 🛡️ BÜYÜK DEĞİŞİKLİK 2: Güvenlik kontrolünün bitmesi için 5 saniye bekle
     await new Promise(r => setTimeout(r, 5000)); 
