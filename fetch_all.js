@@ -5,19 +5,21 @@ const fs = require('fs');
 puppeteer.use(StealthPlugin());
 
 // =========================================================================
-// ⚙️ GLOBAL AYARLAR
+// ⚙️ GLOBAL AYARLAR (Bugün & Yarın Fix)
 // =========================================================================
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 
-// 🚀 TR SAATİNE GÖRE YYYY-MM-DD (NBA Gece Maçları Fix)
+// Türkiye saatiyle YYYY-MM-DD formatı
 const getTRDate = (offset = 0) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
     return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 };
 
-const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
+const trToday = getTRDate(0);    // 24 Nisan
+const trTomorrow = getTRDate(1); // 25 Nisan
+const validDates = [trToday, trTomorrow]; // Sadece bu iki günü JSON'a alacağız
 
 const globalSummary = {};
 function addToSummary(sport, leagueName) {
@@ -27,12 +29,12 @@ function addToSummary(sport, leagueName) {
 }
 
 function printSportSummary(sport) {
-    console.log(`\n📊 ${sport.toUpperCase()} ÖZET RAPORU`);
+    console.log(`\n📊 ${sport.toUpperCase()} ÖZET RAPORU (Sadece Bugün & Yarın)`);
     console.log("-----------------------------------------");
     let total = 0;
     const sorted = Object.entries(globalSummary[sport] || {}).sort((a, b) => b[1] - a[1]);
     sorted.forEach(([l, c]) => { console.log(`📍 ${l}: ${c} maç`); total += c; });
-    console.log(`✅ Toplam ${total} veri kaydedildi.`);
+    console.log(`✅ Toplam ${total} eşsiz maç kaydedildi.`);
     console.log("-----------------------------------------\n");
 }
 
@@ -57,12 +59,12 @@ const translateFoot = (n) => {
 };
 
 // =========================================================================
-// 🏀 BASKETBOL AYARLARI
+// 🏀 BASKETBOL AYARLARI (BSL 519 & Türkçe İsimler)
 // =========================================================================
 const BASK_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/`;
-const ELITE_BASK_IDS = [3547, 138, 142, 519, 132, 167, 168]; // BSL 519 Eklendi
+const ELITE_BASK_IDS = [3547, 138, 142, 519, 132, 167, 168]; 
 const baskConfigs = {
-    519: "TRT Spor / Tabii", 3547: "S Sport / NBA TV", 138: "S Sport Plus", 142: "S Sport Plus",
+    519: "TRT Spor / Tabii", 3547: "beIN Sports 5", 138: "S Sport Plus", 142: "S Sport Plus",
     137: "TRT Spor / Tabii", 132: "beIN Sports 5", 167: "S Sport Plus", 168: "TRT Spor Yıldız",
     235: "S Sport Plus", 304: "beIN Sports", 227: "beIN Sports", 164: "beIN Sports"
 };
@@ -70,22 +72,17 @@ const targetBaskIds = Object.keys(baskConfigs).map(Number);
 const baskNameTR = { "Turkish Basketball Super League": "Basketbol Süper Ligi", "NBA": "NBA", "Euroleague": "Euroleague" };
 
 // =========================================================================
-// 🎾 TENİS AYARLARI
+// 🎾 TENİS AYARLARI (Elite & Çiftler Bayrak)
 // =========================================================================
 const TENNIS_LOGO = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/`;
 const TENNIS_TOUR = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/`;
 const ELITE_TENNIS_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "MADRID", "ROME", "ATP 1000", "WTA 1000", "ATP 500"];
 
-const isGarbageTennis = (t, c) => {
-    const n = (t + c).toUpperCase();
-    return n.includes("ITF") || n.includes("CHALLENGER") || n.includes("UTR");
-};
-
 // =========================================================================
 // 🚀 ANA MOTOR
 // =========================================================================
 async function start() {
-    console.log("🚀 MAÇ SAATİ BİRLEŞİK MOTOR BAŞLATILDI...");
+    console.log(`🚀 MAÇ SAATİ (${trToday} - ${trTomorrow}) MOTORU ÇALIŞIYOR...`);
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
@@ -101,34 +98,41 @@ async function start() {
         await runF1();
 
     } catch (e) { console.error("Hata:", e.message); }
-    finally { await browser.close(); console.log("✅ İşlem Bitti."); }
+    finally { await browser.close(); console.log("✅ İşlem başarıyla tamamlandı."); }
 }
 
 async function runFootball(page) {
     console.log("⚽ Futbol taranıyor...");
-    let events = [];
-    for (const d of validDates) {
+    const duplicateTracker = new Set();
+    let allRaw = [];
+    // Gece maçları için Dün, Bugün ve Yarın'ı API'den çek
+    for (const d of [getTRDate(-1), trToday, trTomorrow]) {
         const data = await page.evaluate(async (dt) => {
             const res = await fetch(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${dt}`);
             return res.ok ? await res.json() : null;
         }, d);
-        if (data?.events) events.push(...data.events);
+        if (data?.events) allRaw.push(...data.events);
     }
 
-    const matches = events.map(e => {
+    const matches = allRaw.map(e => {
+        if (duplicateTracker.has(e.id)) return null;
         const ut = e.tournament?.uniqueTournament;
         if (!ut) return null;
+
         const dt = new Date(e.startTimestamp * 1000);
         const dayTR = dt.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        if (!validDates.includes(dayTR) || ut.name.toLowerCase().match(/u19|u21|women/)) return null;
-
+        
+        // 🚀 KRİTİK FİLTRE: Sadece bugün ve yarın
+        if (!validDates.includes(dayTR)) return null;
+        if (ut.name.toLowerCase().match(/u19|u21|women/)) return null;
         if (!ALL_FOOT_IDS.includes(ut.id) && !(ut.hasEventPlayerStatistics && ut.priority < 100)) return null;
 
+        duplicateTracker.add(e.id);
         addToSummary("football", ut.name);
         return {
             id: e.id, isElite: ELITE_FOOT.includes(ut.id), status: e.status?.type,
-            matchStatus: { type: e.status?.type },
-            fixedDate: dayTR, fixedTime: dt.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' }),
+            matchStatus: { type: e.status?.type }, fixedDate: dayTR,
+            fixedTime: dt.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' }),
             timestamp: e.startTimestamp * 1000,
             homeTeam: { name: translateFoot(e.homeTeam.name), logo: FOOT_TEAM_LOGO + e.homeTeam.id + ".png" },
             awayTeam: { name: translateFoot(e.awayTeam.name), logo: FOOT_TEAM_LOGO + e.awayTeam.id + ".png" },
@@ -142,23 +146,28 @@ async function runFootball(page) {
 
 async function runBasketball(page) {
     console.log("🏀 Basketbol taranıyor...");
-    const trToday = getTRDate(0); const trTomorrow = getTRDate(1);
-    let events = [];
+    const duplicateTracker = new Set();
+    let allRaw = [];
     for (const d of [getTRDate(-1), trToday, trTomorrow]) {
         const data = await page.evaluate(async (dt) => {
             const res = await fetch(`https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${dt}`);
             return res.ok ? await res.json() : null;
         }, d);
-        if (data?.events) events.push(...data.events);
+        if (data?.events) allRaw.push(...data.events);
     }
 
-    const matches = events.map(e => {
+    const matches = allRaw.map(e => {
+        if (duplicateTracker.has(e.id)) return null;
         const ut = e.tournament?.uniqueTournament;
         if (!ut || !targetBaskIds.includes(ut.id)) return null;
+
         const dt = new Date(e.startTimestamp * 1000);
         const dayTR = dt.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        if (dayTR !== trToday && dayTR !== trTomorrow) return null;
+        
+        // 🚀 KRİTİK FİLTRE: Sadece bugün ve yarın
+        if (!validDates.includes(dayTR)) return null;
 
+        duplicateTracker.add(e.id);
         const isNBA = (ut.id === 3547 || ut.name.toUpperCase().includes("NBA"));
         const name = isNBA ? "NBA" : (baskNameTR[ut.name] || ut.name);
         addToSummary("basketball", name);
@@ -180,22 +189,27 @@ async function runBasketball(page) {
 
 async function runTennis(page) {
     console.log("🎾 Tenis taranıyor...");
-    let events = [];
-    for (const d of validDates) {
+    const duplicateTracker = new Set();
+    let allRaw = [];
+    for (const d of [getTRDate(-1), trToday, trTomorrow]) {
         const data = await page.evaluate(async (dt) => {
             const res = await fetch(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${dt}`);
             return res.ok ? await res.json() : null;
         }, d);
-        if (data?.events) events.push(...data.events);
+        if (data?.events) allRaw.push(...data.events);
     }
 
     const matches = [];
-    for (const e of events) {
-        if (isGarbageTennis(e.tournament.name, e.tournament.category.name)) continue;
+    for (const e of allRaw) {
+        if (duplicateTracker.has(e.id)) continue;
+        const tourName = e.tournament?.name || "";
+        const catName = e.tournament?.category?.name || "";
         const dt = new Date(e.startTimestamp * 1000);
         const dayTR = dt.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        if (!validDates.includes(dayTR)) continue;
 
+        if (!validDates.includes(dayTR) || tourName.toUpperCase().match(/ITF|CHALLENGER|UTR/)) continue;
+
+        duplicateTracker.add(e.id);
         const detail = await page.evaluate(async (id) => {
             try {
                 const r = await fetch(`https://www.sofascore.com/api/v1/event/${id}`);
@@ -208,9 +222,9 @@ async function runTennis(page) {
             } catch { return null; }
         }, e.id);
 
-        addToSummary("tennis", e.tournament.name);
+        addToSummary("tennis", tourName);
         matches.push({
-            id: e.id, isElite: ELITE_TENNIS_KEYWORDS.some(k => e.tournament.name.toUpperCase().includes(k)),
+            id: e.id, isElite: ELITE_TENNIS_KEYWORDS.some(k => tourName.toUpperCase().includes(k)),
             status: e.status?.type, matchStatus: { type: e.status?.type }, fixedDate: dayTR,
             fixedTime: dt.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' }),
             timestamp: dt.getTime(),
@@ -218,7 +232,7 @@ async function runTennis(page) {
             awayTeam: { name: e.awayTeam.name, logos: detail?.aFlags.map(f => `${TENNIS_LOGO}${f}.png`) || [TENNIS_LOGO + "mc.png"] },
             homeRank: detail?.hRank ? String(detail.hRank) : null, awayRank: detail?.aRank ? String(detail.aRank) : null,
             tournamentLogo: TENNIS_TOUR + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
-            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: e.tournament.name
+            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: tourName
         });
     }
     fs.writeFileSync("matches_tennis.json", JSON.stringify({ success: true, matches }, null, 2));
@@ -230,10 +244,15 @@ async function runF1() {
     try {
         const res = await fetch('https://api.jolpi.ca/ergast/f1/current.json');
         const data = await res.json();
-        const races = data.MRData.RaceTable.Races.map(r => ({
-            id: r.round, grandPrix: r.raceName, timestamp: new Date(`${r.date}T${r.time}`).getTime(),
-            fixedDate: r.date, fixedTime: r.time, broadcaster: "beIN Sports / F1 TV"
-        }));
+        const races = data.MRData.RaceTable.Races.map(r => {
+            const dObj = new Date(`${r.date}T${r.time}`);
+            const dayTR = dObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+            if (!validDates.includes(dayTR)) return null;
+            return {
+                id: r.round, grandPrix: r.raceName, timestamp: dObj.getTime(),
+                fixedDate: dayTR, fixedTime: dObj.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' })
+            };
+        }).filter(Boolean);
         fs.writeFileSync("matches_f1.json", JSON.stringify({ success: true, events: races }, null, 2));
         console.log("✅ F1 Tamam.");
     } catch (e) { console.log("F1 Hata"); }
