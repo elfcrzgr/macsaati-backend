@@ -300,4 +300,11 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log("İŞLEM TAMAMLANDI: " + finalMat*
+    console.log("İŞLEM TAMAMLANDI: " + finalMatches.length + " mac");
+    await browser.close();
+}
+
+start().catch(e => {
+    console.error("HATA:", e);
+    process.exit(1);
+});
