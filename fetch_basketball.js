@@ -14,13 +14,13 @@ const ELITE_LEAGUE_IDS = [
 ];
 
 const leagueConfigs = {
-    3547: "S Sport / NBA TV",        
+    3547: "S Sport / NBA TV",         
     138: "S Sport / S Sport Plus",   
     142: "S Sport Plus",             
     137: "TRT Spor / Tabii",         
     132: "beIN Sports 5",            
     167: "S Sport Plus / FIBA TV",   
-    168: "TRT Spor Yıldız",          
+    168: "TRT Spor Yıldız",           
     9357: "S Sport Plus",            
     139: "beIN Sports / TRT Spor",   
     11511: "TRT Spor Yıldız / TBF TV", 
@@ -37,26 +37,47 @@ const leagueConfigs = {
 const targetLeagueIds = Object.keys(leagueConfigs).map(Number);
 
 async function start() {
-    console.log("🏀 Basketbol motoru başlatıldı (Elit Lig Filtresi Aktif)...");
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    console.log("🏀 Basketbol motoru başlatıldı (Truva Atı & Canlı Skor Fix)...");
+    
+    const browser = await puppeteer.launch({ 
+        headless: "new", 
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
+    });
+    
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); 
         d.setDate(d.getDate() + offset);
-        return d.toISOString().split('T')[0];
+        return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
     const trToday = getTRDate(0);
     const trTomorrow = getTRDate(1);
     let allEvents = [];
 
+    // 🛡️ GÜVENLİK DUVARI AŞIMI
+    console.log("🛡️ Basketbol için güvenlik duvarı aşılıyor...");
+    try {
+        await page.goto('https://www.sofascore.com', { waitUntil: 'domcontentloaded', timeout: 60000 });
+        await new Promise(r => setTimeout(r, 5000)); // 5 saniye bekleme
+    } catch (e) {
+        console.log("⚠️ Ana sayfa yüklenirken zaman aşımı oldu ama devam ediliyor...");
+    }
+
     for (const date of [getTRDate(-1), trToday, trTomorrow]) {
         try {
-            await page.goto(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            console.log(`📡 ${date} basketbol programı çekiliyor...`);
+            const data = await page.evaluate(async (d) => {
+                try {
+                    // API adresini www üzerinden fetch ediyoruz
+                    const res = await fetch(`https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${d}`);
+                    if (!res.ok) return null;
+                    return await res.json();
+                } catch(e) { return null; }
+            }, date);
+
             if (data && data.events) {
                 const filtered = data.events.filter(e => targetLeagueIds.includes(e.tournament?.uniqueTournament?.id));
                 allEvents = allEvents.concat(filtered);
@@ -92,10 +113,13 @@ async function start() {
             timeString = `İPTAL`;
         }
 
+        // 🚀 CANLI SKOR DÜZELTMESİ: Maç bittiyse veya devam ediyorsa skoru göster
+        const hasScore = isFinished || isInProgress;
+
         finalMatches.push({
             id: e.id,
             isElite: ELITE_LEAGUE_IDS.includes(utId), 
-            status: statusType, // <--- iOS İÇİN EKLENEN ORTAK FORMAT
+            status: statusType, 
             fixedDate: dayStr,
             fixedTime: timeString, 
             timestamp: dateTR.getTime(),
@@ -109,8 +133,8 @@ async function start() {
                 logo: BASE_URL + "logos/" + (isNBA ? "NBA/" : "") + e.awayTeam.id + ".png" 
             },
             tournamentLogo: BASE_URL + "tournament_logos/" + (isNBA ? "3547" : utId) + ".png",
-            homeScore: (isFinished && e.homeScore?.display !== undefined) ? String(e.homeScore.display) : "-",
-            awayScore: (isFinished && e.awayScore?.display !== undefined) ? String(e.awayScore.display) : "-",
+            homeScore: hasScore ? String(e.homeScore?.display ?? "0") : "-",
+            awayScore: hasScore ? String(e.awayScore?.display ?? "0") : "-",
             tournament: isNBA ? "NBA" : utName
         });
         duplicateTracker.add(matchKey);
@@ -124,7 +148,7 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
 
-    console.log(`✅ İşlem bitti. Basketbol maçları (Toplam: ${finalMatches.length}) kaydedildi.`);
+    console.log(`✅ İşlem bitti. Basketbol: ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
