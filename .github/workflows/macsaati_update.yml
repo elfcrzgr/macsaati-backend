@@ -1,7 +1,9 @@
 name: Mac Saati Otomatik Fikstür Güncelleyici
 
 on:
-  workflow_dispatch: 
+  schedule:
+    - cron: '0 * * * *' # Her saat başında otomatik çalışır
+  workflow_dispatch: # Manuel çalıştırma butonu
 
 jobs:
   update-data:
@@ -13,7 +15,7 @@ jobs:
       - name: Repoyu Klonla
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1 
+          fetch_depth: 1 
 
       - name: Node.js Kurulumu
         uses: actions/setup-node@v4
@@ -25,17 +27,13 @@ jobs:
         run: npm ci 
 
       # ==========================================
-      # 🚀 VERİ ÇEKME (PARALEL MOD - ZAMAN KAZANDIRIR)
+      # 🚀 VERİ ÇEKME (TEK MOTOR - TÜM SPORLAR)
       # ==========================================
       - name: Tüm Spor Verilerini Çek
-        run: |
-          node fetch_football.js &
-          node fetch_basketball.js &
-          node fetch_tennis.js &
-          wait # Tüm arka plan işlemlerinin bitmesini bekle
+        run: node fetch_all.js
 
       # ==========================================
-      # 📤 GITHUB'A PUSH
+      # 📤 GITHUB'A PUSH (ÇAKIŞMA ÖNLEYİCİ)
       # ==========================================
       - name: Değişiklikleri Kontrol Et ve Pushla
         run: |
@@ -48,7 +46,7 @@ jobs:
             echo "Güncellenecek yeni bir veri bulunamadı."
           else
             git commit -m "Otomatik Güncelleme: $(date +'%d-%m-%Y %H:%M')"
-            git pull origin main --rebase
+            git pull origin main --rebase # 🛡️ iMac ile Actions arasındaki çakışmayı önler
             git push origin main
-            echo "✅ Veriler başarıyla GitHub'a gönderildi."
+            echo "✅ Tüm branşlar başarıyla GitHub'a gönderildi."
           fi
