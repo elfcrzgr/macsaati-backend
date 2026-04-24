@@ -1,13 +1,8 @@
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha');
 const fs = require('fs');
-const https = require('https');
 
 puppeteer.use(StealthPlugin());
-puppeteer.use(RecaptchaPlugin({
-    provider: { id: '2captcha', token: 'SKIP' }
-}));
 
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
@@ -25,7 +20,7 @@ const teamTranslations = {
     "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", "croatia": "Hırvatistan",
     "denmark": "Danimarka", "scotland": "İskoçya", "hungary": "Macaristan", "serbia": "Sırbistan",
     "poland": "Polonya", "czechia": "Çekya", "romania": "Romanya", "slovakia": "Slovakya",
-    "slovenia": "Slovenya", "georgia": "G��rcistan", "albania": "Arnavutluk", "norway": "Norveç",
+    "slovenia": "Slovenya", "georgia": "Gürcistan", "albania": "Arnavutluk", "norway": "Norveç",
     "sweden": "İsveç", "ukraine": "Ukrayna", "greece": "Yunanistan", "wales": "Galler",
     "finland": "Finlandiya", "ireland": "İrlanda", "northernireland": "Kuzey İrlanda",
     "iceland": "İzlanda", "israel": "İsrail", "bulgaria": "Bulgaristan", "kazakhstan": "Kazakistan",
@@ -110,42 +105,6 @@ const REGULAR_LEAGUE_IDS = [
 const ALL_TARGET_IDS = [...ELITE_LEAGUE_IDS, ...REGULAR_LEAGUE_IDS];
 const stubbornLeagueIds = [11, 351, 10, 97, 750, 13, 393, 52, 238, 242, 938];
 
-// Helper function for direct fetch with better error handling
-const fetchWithRetry = async (url, maxRetries = 3) => {
-    for (let i = 0; i < maxRetries; i++) {
-        try {
-            return new Promise((resolve, reject) => {
-                https.get(url, {
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-                        'Accept': 'application/json',
-                        'Referer': 'https://www.sofascore.com/'
-                    },
-                    timeout: 15000
-                }, (res) => {
-                    let data = '';
-                    res.on('data', chunk => data += chunk);
-                    res.on('end', () => {
-                        if (res.statusCode === 200) {
-                            try {
-                                resolve(JSON.parse(data));
-                            } catch (e) {
-                                reject(new Error('JSON parse error'));
-                            }
-                        } else {
-                            reject(new Error(`HTTP ${res.statusCode}`));
-                        }
-                    });
-                }).on('error', reject);
-            });
-        } catch (e) {
-            console.log(`Retry ${i + 1}/${maxRetries} basarısız: ${e.message}`);
-            await new Promise(r => setTimeout(r, 2000 + i * 1000));
-        }
-    }
-    throw new Error('Tum retrylər basarısız oldu');
-};
-
 const getTRDate = (offset = 0) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
@@ -153,7 +112,7 @@ const getTRDate = (offset = 0) => {
 };
 
 async function start() {
-    console.log("MAC SAATİ AKILLI MOTOR BASLATILDI (Dogrudan API çağrısı)...");
+    console.log("MAC SAATİ AKILLI MOTOR BASLATILDI");
     
     const browser = await puppeteer.launch({ 
         headless: "new", 
@@ -177,47 +136,40 @@ async function start() {
         });
         await new Promise(r => setTimeout(r, 3000));
     } catch (e) {
-        console.log("Ana sayfa yükleme hatası (normal olabilir): " + e.message);
+        console.log("Ana sayfa yükleme hatası: " + e.message);
     }
 
     let allEvents = [];
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     
-    console.log(`Hedef Tarihler (Istanbul): ${validDates.join(', ')}`);
+    console.log("Hedef Tarihler: " + validDates.join(', '));
 
     for (const date of validDates) {
         try {
-            console.log(`${date} programı çekiliyor...`);
+            console.log("Tarih çekiliyor: " + date);
             
             const data = await page.evaluate(async (d) => {
                 try {
                     const res = await fetch(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${d}`, {
                         headers: {
                             'Accept': 'application/json',
-                            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+                            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
                         }
                     });
                     
-                    if (!res.ok) {
-                        console.log(`API yanıt kodu: ${res.status}`);
-                        return null;
-                    }
+                    if (!res.ok) return null;
                     
                     const text = await res.text();
-                    if (text.includes('<!DOCTYPE') || text.includes('<html')) {
-                        console.log('HTML dönüyor, API engellendi');
-                        return null;
-                    }
+                    if (text.includes('<!DOCTYPE') || text.includes('<html')) return null;
                     
                     return JSON.parse(text);
                 } catch(e) { 
-                    console.log('API çağrısı hatası: ' + e.message);
                     return null; 
                 }
             }, date);
 
             if (data && data.events && data.events.length > 0) {
-                console.log(`${date}: ${data.events.length} etkinlik bulundu`);
+                console.log("Etkinlik bulundu: " + data.events.length);
                 
                 const filtered = data.events.filter(e => {
                     const ut = e.tournament?.uniqueTournament;
@@ -232,20 +184,20 @@ async function start() {
                     return validDates.includes(dayStrTR);
                 });
                 
-                console.log(`   ${filtered.length} hedef liga, ${correctlyDated.length} doğru tarihli maç`);
+                console.log("Filtrelenen maclar: " + correctlyDated.length);
                 allEvents = allEvents.concat(correctlyDated);
             } else {
-                console.log(`${date}: Veri çekilemedi veya boş`);
+                console.log("Veri yok: " + date);
             }
             
             await new Promise(r => setTimeout(r, 1500));
             
         } catch (e) { 
-            console.log(`Hata: ${date} çekilemedi - ${e.message}`); 
+            console.log("Hata: " + date + " - " + e.message); 
         }
     }
 
-    console.log("İnatçı Ligler taranıyor...");
+    console.log("Inatçi ligler taranıyor...");
     for (const id of stubbornLeagueIds) {
         try {
             const seasonsData = await page.evaluate(async (leagueId) => {
@@ -279,11 +231,11 @@ async function start() {
                 await new Promise(r => setTimeout(r, 1000));
             }
         } catch (e) { 
-            console.log(`İnatçı liga ${id} hata: ${e.message}`);
+            console.log("Liga hatası: " + id);
         }
     }
 
-    console.log(`Toplam ${allEvents.length} etkinlik toplandı`);
+    console.log("Toplam etkinlik: " + allEvents.length);
 
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
@@ -307,9 +259,9 @@ async function start() {
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
         
         if (isInProgress) {
-            timeString = `${timeString}\nCANLI`; 
+            timeString = timeString + " CANLI"; 
         } else if (isCanceled) {
-            timeString = `İPTAL`;
+            timeString = "İPTAL";
         }
 
         const isExcludedCategory = lowerName.includes("u19") || lowerName.includes("u21") || lowerName.includes("women");
@@ -348,11 +300,4 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`İŞLEM TAMAMLANDI: Toplam ${finalMatches.length} maç kaydedildi.`);
-    await browser.close();
-}
-
-start().catch(e => {
-    console.error("FATAL ERROR:", e);
-    process.exit(1);
-});
+    console.log("İŞLEM TAMAMLANDI: " + finalMat*
