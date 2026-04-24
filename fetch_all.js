@@ -5,33 +5,36 @@ const fs = require('fs');
 puppeteer.use(StealthPlugin());
 
 // =========================================================================
-// ⚙️ GLOBAL AYARLAR (Timezone Jilet Gibi Yapıldı)
+// ⚙️ GLOBAL AYARLAR (Timezone & GitHub Bilgileri)
 // =========================================================================
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 
-// 🚀 TÜRKİYE SAATİNE GÖRE YYYY-MM-DD DÖNDÜREN GÜVENLİ FONKSİYON
+// 🚀 TR SAATİNE GÖRE YYYY-MM-DD DÖNDÜREN GÜVENLİ FONKSİYON
 const getTRDate = (offset = 0) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
-    // TR saatiyle (Europe/Istanbul) YYYY-MM-DD formatı
     return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 };
 
 const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
 
+// --- Loglama İçin Özet Tablosu ---
 const globalSummary = {};
 function addToSummary(sport, leagueName) {
     if (!globalSummary[sport]) globalSummary[sport] = {};
-    globalSummary[sport][leagueName] = (globalSummary[sport][leagueName] || 0) + 1;
+    const name = leagueName || "Bilinmeyen Lig";
+    globalSummary[sport][name] = (globalSummary[sport][name] || 0) + 1;
 }
 
 function printSportSummary(sport) {
     console.log(`\n📊 ${sport.toUpperCase()} ÖZET RAPORU`);
+    console.log("-----------------------------------------");
     let total = 0;
     const sorted = Object.entries(globalSummary[sport] || {}).sort((a, b) => b[1] - a[1]);
     sorted.forEach(([l, c]) => { console.log(`📍 ${l}: ${c} maç`); total += c; });
-    console.log(`✅ Toplam ${total} maç kaydedildi.\n`);
+    console.log(`✅ Toplam ${total} veri kaydedildi.`);
+    console.log("-----------------------------------------\n");
 }
 
 // =========================================================================
@@ -40,11 +43,15 @@ function printSportSummary(sport) {
 const FOOT_TEAM_LOGO = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
 const FOOT_TOUR_LOGO = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 
-const teamTranslations = { "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere", "spain": "İspanya", "usa": "ABD", "japan": "Japonya" };
-const translateTeam = (n) => {
+const footballTranslations = { 
+    "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere", 
+    "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "usa": "ABD", "japan": "Japonya" 
+};
+
+const translateFootballTeam = (n) => {
     if (!n) return n;
     let tn = n; const cs = n.replace(/[^a-zA-Z]/g, '').toLowerCase();
-    for (const [e, t] of Object.entries(teamTranslations)) {
+    for (const [e, t] of Object.entries(footballTranslations)) {
         if (cs.includes(e)) { tn = n.replace(new RegExp(e, 'i'), t); return cs === e ? t : tn; }
     }
     return n;
@@ -55,29 +62,44 @@ const REGULAR_FOOT = [10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363,
 const ALL_FOOT_IDS = [...ELITE_FOOT, ...REGULAR_FOOT];
 
 // =========================================================================
-// 🏀 BASKETBOL AYARLARI (Full Liste & NBA Fix)
+// 🏀 BASKETBOL AYARLARI
 // =========================================================================
 const BASK_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/`;
-// 🚀 137 yerine 519 ekledik, böylece Süper Lig 'Elit' statüsünü korur
-const ELITE_BASK_IDS = [3547, 138, 142, 519, 132, 167, 168];
-const baskConfigs = {
-    519: "TRT Spor / Tabii",         // 🇹🇷 Türkiye Basketbol Süper Ligi (Yeni ID)
+
+// 🚀 BSL ID'Sİ 519 OLARAK GÜNCELLENDİ
+const ELITE_BASK_IDS = [3547, 138, 142, 519, 132, 167, 168]; 
+
+const basketballLeagueConfigs = {
+    519: "TRT Spor / Tabii",         // 🇹🇷 Basketbol Süper Ligi
     3547: "S Sport / NBA TV",        // NBA
     138: "S Sport Plus",             // Euroleague
     142: "S Sport Plus",             // Eurocup
-    168: "TRT Spor Yıldız",          // 🇹🇷 TBL (Türkiye Basketbol 1. Ligi)
-    167: "S Sport Plus / FIBA TV",   // Şampiyonlar Ligi
+    137: "TRT Spor / Tabii",         // TBL
+    168: "TRT Spor Yıldız",          // TBL 1. Lig
     132: "beIN Sports 5",            // Fransa LNB
     227: "beIN Sports",              // Almanya BBL
     164: "beIN Sports",              // İspanya ACB
     235: "S Sport Plus",             // Adriyatik ABA
     304: "S Sport Plus",             // Yunanistan GBL
-    405: "beIN Sports"               // VTB United
+    405: "beIN Sports"               // VTB
 };
-const targetBaskIds = Object.keys(baskConfigs).map(Number);
+
+const basketballNameTranslations = {
+    "Turkish Basketball Super League": "Basketbol Süper Ligi",
+    "NBA": "NBA",
+    "Euroleague": "Euroleague",
+    "Germany BBL": "Almanya BBL",
+    "Stoiximan GBL": "Yunanistan GBL",
+    "Liga ACB": "İspanya ACB",
+    "ABA League": "Adriyatik Ligi",
+    "LNB": "Fransa LNB"
+};
+
+const translateBasketballLeague = (name) => basketballNameTranslations[name] || name;
+const targetBaskIds = Object.keys(basketballLeagueConfigs).map(Number);
 
 // =========================================================================
-// 🎾 TENİS AYARLARI
+// 🎾 TENİS YARDIMCILARI
 // =========================================================================
 const TENNIS_LOGO = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/`;
 const TENNIS_TOUR = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/`;
@@ -86,7 +108,7 @@ const TENNIS_TOUR = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend
 // 🚀 ANA MOTOR
 // =========================================================================
 async function start() {
-    console.log("🚀 MAÇ SAATİ AKILLI MOTOR (TR 00:01 Fix Aktif)...");
+    console.log("🚀 MAÇ SAATİ BİRLEŞİK MOTOR (Kusursuz Versiyon Başlatıldı)...");
     const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
@@ -102,7 +124,7 @@ async function start() {
         await runF1();
 
     } catch (e) { console.error("Kritik Hata:", e.message); }
-    finally { await browser.close(); console.log("✅ İşlem Bitti."); }
+    finally { await browser.close(); console.log("✅ Tüm işlemler başarıyla tamamlandı."); }
 }
 
 async function runFootball(page) {
@@ -121,7 +143,6 @@ async function runFootball(page) {
         if (!ut) return null;
 
         const dt = new Date(e.startTimestamp * 1000);
-        // 🚀 TR SAATİNE GÖRE GÜNÜ BELİRLE
         const dayTR = dt.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         if (!validDates.includes(dayTR)) return null;
 
@@ -139,8 +160,8 @@ async function runFootball(page) {
             fixedDate: dayTR,
             fixedTime: dt.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' }),
             timestamp: e.startTimestamp * 1000,
-            homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOT_TEAM_LOGO + e.homeTeam.id + ".png" },
-            awayTeam: { name: translateTeam(e.awayTeam.name), logo: FOOT_TEAM_LOGO + e.awayTeam.id + ".png" },
+            homeTeam: { name: translateFootballTeam(e.homeTeam.name), logo: FOOT_TEAM_LOGO + e.homeTeam.id + ".png" },
+            awayTeam: { name: translateFootballTeam(e.awayTeam.name), logo: FOOT_TEAM_LOGO + e.awayTeam.id + ".png" },
             tournamentLogo: FOOT_TOUR_LOGO + ut.id + ".png",
             homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: utName
         };
@@ -156,7 +177,6 @@ async function runBasketball(page) {
     const trTomorrow = getTRDate(1);
     let events = [];
     
-    // TR saatiyle Dün, Bugün ve Yarın'ı tara
     for (const d of [getTRDate(-1), trToday, trTomorrow]) {
         const data = await page.evaluate(async (dt) => {
             const res = await fetch(`https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${dt}`);
@@ -170,25 +190,27 @@ async function runBasketball(page) {
         if (!ut || !targetBaskIds.includes(ut.id)) return null;
 
         const dt = new Date(e.startTimestamp * 1000);
-        // 🚀 TR SAATİNE GÖRE GÜNÜ BELİRLE (02:00 maçı artık 24 Nisan görünecek)
         const dayTR = dt.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        
-        // Sadece Bugün ve Yarın'ın maçlarını al
         if (dayTR !== trToday && dayTR !== trTomorrow) return null;
 
-        const isNBA = (ut.id === 3547 || ut.name.toUpperCase().includes("NBA"));
-        addToSummary("basketball", isNBA ? "NBA" : ut.name);
+        const utId = ut.id;
+        const utName = ut.name || "";
+        const isNBA = (utId === 3547 || utName.toUpperCase().includes("NBA"));
+        
+        addToSummary("basketball", isNBA ? "NBA" : translateBasketballLeague(utName));
 
         return {
-            id: e.id, isElite: ELITE_BASK_IDS.includes(ut.id), status: e.status?.type,
+            id: e.id, isElite: ELITE_BASK_IDS.includes(utId), status: e.status?.type,
             matchStatus: { type: e.status?.type },
             fixedDate: dayTR,
             fixedTime: dt.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' }),
             timestamp: dt.getTime(),
+            broadcaster: basketballLeagueConfigs[utId] || "Resmi Yayıncı",
             homeTeam: { name: e.homeTeam.name, logo: BASK_BASE + "logos/" + (isNBA ? "NBA/" : "") + e.homeTeam.id + ".png" },
             awayTeam: { name: e.awayTeam.name, logo: BASK_BASE + "logos/" + (isNBA ? "NBA/" : "") + e.awayTeam.id + ".png" },
-            tournamentLogo: BASK_BASE + "tournament_logos/" + (isNBA ? "NBA/3547" : ut.id) + ".png",
-            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: isNBA ? "NBA" : ut.name
+            tournamentLogo: BASK_BASE + "tournament_logos/" + (isNBA ? "NBA/3547" : utId) + ".png",
+            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), 
+            tournament: isNBA ? "NBA" : translateBasketballLeague(utName)
         };
     }).filter(Boolean);
 
@@ -245,7 +267,7 @@ async function runF1() {
         const races = data.MRData.RaceTable.Races;
         const events = races.map(r => ({
             id: r.round, grandPrix: r.raceName, timestamp: new Date(`${r.date}T${r.time}`).getTime(),
-            fixedDate: r.date, fixedTime: r.time
+            fixedDate: r.date, fixedTime: r.time, broadcaster: "beIN Sports / F1 TV"
         }));
         fs.writeFileSync("matches_f1.json", JSON.stringify({ success: true, events }, null, 2));
         console.log("✅ F1 kaydedildi.");
