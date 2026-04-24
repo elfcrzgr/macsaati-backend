@@ -61,7 +61,7 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
                      hn.includes("türkiye") || an.includes("türkiye");
 
     const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || 
-                      utn.includes("play-off") || utn.includes("playoff");
+                       utn.includes("play-off") || utn.includes("playoff");
 
     if (utId === 748 || utId === 750) return isTurkey ? "TRT Spor / Tabii" : "Exxen";
     
@@ -95,9 +95,8 @@ const getBroadcaster = (utId, hName, aName, tName, utName) => {
 
 const ELITE_LEAGUE_IDS = [
     52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1,
-    679, 17015 // Avrupa Ligi ve Konferans Ligi eklendi
+    679, 17015
 ];
-
 
 const REGULAR_LEAGUE_IDS = [
     10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618
@@ -107,25 +106,44 @@ const ALL_TARGET_IDS = [...ELITE_LEAGUE_IDS, ...REGULAR_LEAGUE_IDS];
 const stubbornLeagueIds = [11, 351, 10, 97, 750, 13, 393, 52, 238, 242, 938];
 
 async function start() {
-    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI...");
-    const browser = await puppeteer.launch({ headless: "new", args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI (Cloudflare Truva Atı Aktif)...");
+    
+    const browser = await puppeteer.launch({ 
+        headless: "new", 
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
+    });
+    
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
 
     const getTRDate = (offset = 0) => {
         const d = new Date();
-        d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + 180); 
         d.setDate(d.getDate() + offset);
-        return d.toISOString().split('T')[0];
+        return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     };
 
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
     
+    // 🛡️ BÜYÜK DEĞİŞİKLİK 1: Önce ana sayfaya giriyoruz ve Cloudflare'in bizi onaylamasını bekliyoruz
+    console.log("🛡️ Güvenlik duvarı aşılıyor...");
+    await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2' });
+    
+    // 🛡️ BÜYÜK DEĞİŞİKLİK 2: Güvenlik kontrolünün bitmesi için 5 saniye bekle
+    await new Promise(r => setTimeout(r, 5000)); 
+
     for (const date of validDates) {
         try {
-            await page.goto(`https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
-            const data = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            console.log(`📡 ${date} programı çekiliyor...`);
+            const data = await page.evaluate(async (d) => {
+                try {
+                    // 🛡️ BÜYÜK DEĞİŞİKLİK 3: api.sofascore.com YERİNE www.sofascore.com/api KULLANIYORUZ
+                    const res = await fetch(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${d}`);
+                    if (!res.ok) return null; // Eğer HTML dönerse patlamaması için kontrol
+                    return await res.json();
+                } catch(e) { return null; }
+            }, date);
+
             if (data && data.events) {
                 const filtered = data.events.filter(e => {
                     const ut = e.tournament?.uniqueTournament;
@@ -133,6 +151,7 @@ async function start() {
                     const utId = ut.id;
                     return ALL_TARGET_IDS.includes(utId) || ut.hasEventPlayerStatistics || ut.priority > 20;
                 });
+                
                 const correctlyDated = filtered.filter(e => {
                     const dateTR = new Date(e.startTimestamp * 1000);
                     const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
@@ -140,18 +159,29 @@ async function start() {
                 });
                 allEvents = allEvents.concat(correctlyDated);
             }
-        } catch (e) { }
+        } catch (e) { console.log(`Hata: ${date} çekilemedi.`); }
     }
 
+    // İnatçı Ligler (Stubborn Leagues) İçin Aynı Bypass
     for (const id of stubbornLeagueIds) {
         try {
-            await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/seasons`, { waitUntil: 'networkidle2' });
-            const seasonsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+            const seasonsData = await page.evaluate(async (leagueId) => {
+                try {
+                    const res = await fetch(`https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/seasons`);
+                    return await res.json();
+                } catch(e) { return null; }
+            }, id);
+
             if (seasonsData?.seasons?.length > 0) {
                 const sId = seasonsData.seasons[0].id;
                 for (const type of ['next/0', 'last/0']) {
-                    await page.goto(`https://api.sofascore.com/api/v1/unique-tournament/${id}/season/${sId}/events/${type}`, { waitUntil: 'networkidle2' });
-                    const eventsData = await page.evaluate(() => { try { return JSON.parse(document.body.innerText); } catch(e) { return null; } });
+                    const eventsData = await page.evaluate(async (leagueId, seasonId, t) => {
+                        try {
+                            const res = await fetch(`https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/season/${seasonId}/events/${t}`);
+                            return await res.json();
+                        } catch(e) { return null; }
+                    }, id, sId, type);
+
                     if (eventsData?.events) {
                         const targetEvents = eventsData.events.filter(e => {
                             const dateTR = new Date(e.startTimestamp * 1000);
@@ -193,11 +223,13 @@ async function start() {
         }
 
         const isExcludedCategory = lowerName.includes("u19") || lowerName.includes("u21") || lowerName.includes("women");
+        
+        const hasScore = isFinished || isInProgress; 
 
         const matchObj = {
             id: e.id,
             isElite: ELITE_LEAGUE_IDS.includes(utId) && !isExcludedCategory, 
-            status: statusType, // <--- iOS İÇİN EKLENEN ORTAK FORMAT
+            status: statusType, 
             fixedDate: dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: timeString, 
             timestamp: e.startTimestamp * 1000,
@@ -211,8 +243,8 @@ async function start() {
                 logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
             },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + utId + ".png",
-            homeScore: isFinished ? String(e.homeScore?.display ?? "0") : "-",
-            awayScore: isFinished ? String(e.awayScore?.display ?? "0") : "-",
+            homeScore: hasScore ? String(e.homeScore?.display ?? "0") : "-",
+            awayScore: hasScore ? String(e.awayScore?.display ?? "0") : "-",
             tournament: utName
         };
         finalMatchesMap.set(matchKey, matchObj);
