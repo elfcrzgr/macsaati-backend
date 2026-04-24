@@ -5,13 +5,14 @@ const fs = require('fs');
 puppeteer.use(StealthPlugin());
 
 // =========================================================================
-// ⚙️ GLOBAL AYARLAR (Timezone & GitHub)
+// ⚙️ GLOBAL AYARLAR (TR Timezone Fix)
 // =========================================================================
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 
 const getTRDate = (offset = 0) => {
     const d = new Date();
+    // UTC+3 Sabitleme
     const trTime = new Date(d.getTime() + (3 * 60 * 60 * 1000)); 
     trTime.setDate(trTime.getDate() + offset);
     return trTime.toISOString().split('T')[0];
@@ -28,6 +29,33 @@ function addToSummary(sport, leagueName) {
 }
 
 // =========================================================================
+// 🛡️ HAYALET VERİ ÇEKİCİ (Cloudflare Bypass)
+// =========================================================================
+async function ghostFetch(page, url) {
+    try {
+        // Doğrudan API'ye gitmek yerine önce "insansı" bir bekleme yapıyoruz
+        await new Promise(r => setTimeout(r, Math.floor(Math.random() * 2000) + 1000));
+        
+        // Sayfayı API URL'sine yönlendir
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 40000 });
+        
+        const content = await page.evaluate(() => document.body.innerText);
+        
+        if (content.trim().startsWith('{')) {
+            return JSON.parse(content);
+        } else {
+            // Eğer JSON gelmediyse muhtemelen engellendik, içeriği logla (Debug için)
+            if (content.includes("verify") || content.includes("Cloudflare")) {
+                console.log("⚠️ Cloudflare engeli tespit edildi, tekrar deneniyor...");
+            }
+            return null;
+        }
+    } catch (e) {
+        return null;
+    }
+}
+
+// =========================================================================
 // 🚀 ANA MOTOR
 // =========================================================================
 async function start() {
@@ -39,46 +67,33 @@ async function start() {
             '--no-sandbox', 
             '--disable-setuid-sandbox', 
             '--disable-dev-shm-usage',
+            '--disable-blink-features=AutomationControlled',
             '--window-size=1920,1080'
         ] 
     });
+    
     const page = await browser.newPage();
     
-    // 🛡️ GERÇEK KİMLİK (iMac'teki gibi hissettirir)
+    // 🛡️ iMac'ini birebir kopyalayan kimlik bilgileri
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
-    await page.setExtraHTTPHeaders({
-        'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-    });
-
+    await page.setViewport({ width: 1920, height: 1080 });
+    
     try {
-        console.log("🛡️ SofaScore ana sayfasında oturum açılıyor...");
+        // Önce ana sayfaya git ve çerezleri al (Isınma)
+        console.log("🛡️ SofaScore ana sayfasında oturum ısındırılıyor...");
         await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2', timeout: 60000 });
-        await new Promise(r => setTimeout(r, 7000)); // 7 saniye "insansı" bekleme
+        await new Promise(r => setTimeout(r, 10000)); // Actions için uzun bekleme
 
         await runFootball(page);
         await runBasketball(page);
         await runTennis(page);
         await runF1();
 
-    } catch (e) { console.error("❌ Hata:", e.message); }
-    finally { await browser.close(); console.log("✅ İşlem tamamlandı."); }
-}
-
-// =========================================================================
-// 🛡️ AKILLI VERİ ÇEKİCİ (iMac'teki gibi çalışır)
-// =========================================================================
-async function safeFetch(page, url) {
-    try {
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-        const content = await page.evaluate(() => document.body.innerText);
-        if (content.trim().startsWith('{')) {
-            return JSON.parse(content);
-        }
-        return null;
-    } catch (e) {
-        return null;
+    } catch (e) { 
+        console.error("❌ Kritik Hata:", e.message); 
+    } finally { 
+        await browser.close(); 
+        console.log("✅ İşlem tamamlandı."); 
     }
 }
 
@@ -88,11 +103,13 @@ async function runFootball(page) {
     const duplicateTracker = new Set();
     let allRaw = [];
 
+    // Önce futbol kategorisine git (İz bırakma)
+    await page.goto('https://www.sofascore.com/football', { waitUntil: 'domcontentloaded' });
+
     for (const d of [getTRDate(-1), trToday, trTomorrow]) {
         console.log(`   📡 ${d} verisi alınıyor...`);
-        const data = await safeFetch(page, `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${d}`);
+        const data = await ghostFetch(page, `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${d}`);
         if (data?.events) allRaw.push(...data.events);
-        await new Promise(r => setTimeout(r, 2000));
     }
 
     const matches = allRaw.map(e => {
@@ -101,7 +118,10 @@ async function runFootball(page) {
 
         const dt = new Date(e.startTimestamp * 1000);
         const matchDay = new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().split('T')[0];
+        
         if (!validDates.includes(matchDay)) return null;
+        if (ut.name.toLowerCase().match(/u19|u21|women/)) return null;
+        if (!ELITE_IDS.includes(ut.id) && !(ut.hasEventPlayerStatistics && ut.priority < 100)) return null;
 
         duplicateTracker.add(e.id);
         addToSummary("football", ut.name);
@@ -127,11 +147,12 @@ async function runBasketball(page) {
     const duplicateTracker = new Set();
     let allRaw = [];
 
+    await page.goto('https://www.sofascore.com/basketball', { waitUntil: 'domcontentloaded' });
+
     for (const d of [getTRDate(-1), trToday, trTomorrow]) {
         console.log(`   📡 ${d} verisi alınıyor...`);
-        const data = await safeFetch(page, `https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${d}`);
+        const data = await ghostFetch(page, `https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${d}`);
         if (data?.events) allRaw.push(...data.events);
-        await new Promise(r => setTimeout(r, 2000));
     }
 
     const matches = allRaw.map(e => {
@@ -144,17 +165,17 @@ async function runBasketball(page) {
 
         duplicateTracker.add(e.id);
         const isNBA = ut.id === 3547;
-        addToSummary("basketball", isNBA ? "NBA" : ut.name);
+        const tourName = isNBA ? "NBA" : (ut.name === "Turkish Basketball Super League" ? "Basketbol Süper Ligi" : ut.name);
+        addToSummary("basketball", tourName);
 
         return {
             id: e.id, isElite: ELITE_IDS.includes(ut.id), status: e.status?.type,
             matchStatus: { type: e.status?.type }, fixedDate: matchDay,
             fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().substring(11, 16),
-            timestamp: dt.getTime(),
             homeTeam: { name: e.homeTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.homeTeam.id}.png` },
             awayTeam: { name: e.awayTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.awayTeam.id}.png` },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${isNBA ? "NBA/3547" : ut.id}.png`,
-            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: isNBA ? "NBA" : ut.name
+            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: tourName
         };
     }).filter(Boolean);
 
@@ -164,32 +185,38 @@ async function runBasketball(page) {
 
 async function runTennis(page) {
     console.log("🎾 Tenis taranıyor...");
+    const ELITE_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "MADRID", "ROME", "ATP 1000", "WTA 1000", "ATP 500"];
     const duplicateTracker = new Set();
     let allRaw = [];
 
+    await page.goto('https://www.sofascore.com/tennis', { waitUntil: 'domcontentloaded' });
+
     for (const d of [getTRDate(-1), trToday, trTomorrow]) {
-        const data = await safeFetch(page, `https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${d}`);
+        console.log(`   📡 ${d} verisi alınıyor...`);
+        const data = await ghostFetch(page, `https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${d}`);
         if (data?.events) allRaw.push(...data.events);
-        await new Promise(r => setTimeout(r, 2000));
     }
 
-    const matches = allRaw.map(e => {
-        if (duplicateTracker.has(e.id) || (e.tournament?.name || "").toUpperCase().match(/ITF|CHALLENGER|UTR/)) return null;
+    const matches = [];
+    for (const e of allRaw) {
+        if (duplicateTracker.has(e.id) || (e.tournament?.name || "").toUpperCase().match(/ITF|CHALLENGER|UTR/)) continue;
 
         const dt = new Date(e.startTimestamp * 1000);
         const matchDay = new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().split('T')[0];
-        if (!validDates.includes(matchDay)) return null;
+        if (!validDates.includes(matchDay)) continue;
 
         duplicateTracker.add(e.id);
-        addToSummary("tennis", e.tournament.name);
-        return {
-            id: e.id, status: e.status?.type, matchStatus: { type: e.status?.type },
-            fixedDate: matchDay, fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().substring(11, 16),
+        
+        // Tenis bayrak detayları (Sadece Actions'ta çok yavaşlatmaması için hızlı detail)
+        matches.push({
+            id: e.id, isElite: ELITE_KEYWORDS.some(k => e.tournament.name.toUpperCase().includes(k)),
+            status: e.status?.type, matchStatus: { type: e.status?.type }, fixedDate: matchDay,
+            fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().substring(11, 16),
             homeTeam: { name: e.homeTeam.name }, awayTeam: { name: e.awayTeam.name },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/${e.tournament?.uniqueTournament?.id || 0}.png`,
             homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: e.tournament.name
-        };
-    }).filter(Boolean);
+        });
+    }
 
     fs.writeFileSync("matches_tennis.json", JSON.stringify({ success: true, matches }, null, 2));
     console.log(`✅ Tenis: ${matches.length} maç.`);
