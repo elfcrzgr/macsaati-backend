@@ -58,14 +58,21 @@ const ALL_FOOT_IDS = [...ELITE_FOOT, ...REGULAR_FOOT];
 // 🏀 BASKETBOL AYARLARI (Full Liste & NBA Fix)
 // =========================================================================
 const BASK_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/`;
-const ELITE_BASK_IDS = [3547, 138, 142, 137, 132, 167, 168];
+// 🚀 137 yerine 519 ekledik, böylece Süper Lig 'Elit' statüsünü korur
+const ELITE_BASK_IDS = [3547, 138, 142, 519, 132, 167, 168];
 const baskConfigs = {
-    3547: "S Sport / NBA TV", 138: "S Sport Plus", 142: "S Sport Plus",
-    137: "TRT Spor / Tabii", 132: "beIN Sports 5", 167: "S Sport Plus",
-    168: "TRT Spor Yıldız", 9357: "S Sport Plus", 139: "beIN Sports",
-    11511: "TRT Spor Yıldız", 21511: "TBF TV", 251: "S Sport Plus",
-    215: "S Sport Plus", 304: "S Sport Plus", 227: "beIN Sports",
-    164: "beIN Sports", 235: "S Sport Plus", 405: "beIN Sports"
+    519: "TRT Spor / Tabii",         // 🇹🇷 Türkiye Basketbol Süper Ligi (Yeni ID)
+    3547: "S Sport / NBA TV",        // NBA
+    138: "S Sport Plus",             // Euroleague
+    142: "S Sport Plus",             // Eurocup
+    168: "TRT Spor Yıldız",          // 🇹🇷 TBL (Türkiye Basketbol 1. Ligi)
+    167: "S Sport Plus / FIBA TV",   // Şampiyonlar Ligi
+    132: "beIN Sports 5",            // Fransa LNB
+    227: "beIN Sports",              // Almanya BBL
+    164: "beIN Sports",              // İspanya ACB
+    235: "S Sport Plus",             // Adriyatik ABA
+    304: "S Sport Plus",             // Yunanistan GBL
+    405: "beIN Sports"               // VTB United
 };
 const targetBaskIds = Object.keys(baskConfigs).map(Number);
 

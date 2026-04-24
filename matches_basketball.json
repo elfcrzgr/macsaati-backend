@@ -232,6 +232,52 @@
       "tournament": "Euroleague"
     },
     {
+      "id": 14500929,
+      "isElite": true,
+      "status": "notstarted",
+      "matchStatus": {
+        "type": "notstarted"
+      },
+      "fixedDate": "2026-04-24",
+      "fixedTime": "19:00",
+      "timestamp": 1777046400000,
+      "homeTeam": {
+        "name": "Manisa Basket",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/268256.png"
+      },
+      "awayTeam": {
+        "name": "Fenerbahçe Beko",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3514.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/519.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Turkish Basketball Super League"
+    },
+    {
+      "id": 14500931,
+      "isElite": true,
+      "status": "notstarted",
+      "matchStatus": {
+        "type": "notstarted"
+      },
+      "fixedDate": "2026-04-25",
+      "fixedTime": "13:00",
+      "timestamp": 1777111200000,
+      "homeTeam": {
+        "name": "Anadolu Efes",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3515.png"
+      },
+      "awayTeam": {
+        "name": "Türk Telekom B.K.",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/24085.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/519.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Turkish Basketball Super League"
+    },
+    {
       "id": 14381845,
       "isElite": false,
       "status": "notstarted",
@@ -253,29 +299,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Germany BBL"
-    },
-    {
-      "id": 16030704,
-      "isElite": false,
-      "status": "notstarted",
-      "matchStatus": {
-        "type": "notstarted"
-      },
-      "fixedDate": "2026-04-24",
-      "fixedTime": "19:30",
-      "timestamp": 1777048200000,
-      "homeTeam": {
-        "name": "Rutronik Stars Keltern",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/207092.png"
-      },
-      "awayTeam": {
-        "name": "BC Pharmaserv Marburg",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/5528.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/251.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "1. DBBL"
     },
     {
       "id": 15485319,
@@ -577,6 +600,121 @@
       "tournament": "Stoiximan GBL"
     },
     {
+      "id": 14500929,
+      "isElite": true,
+      "status": "notstarted",
+      "matchStatus": {
+        "type": "notstarted"
+      },
+      "fixedDate": "2026-04-24",
+      "fixedTime": "19:00",
+      "timestamp": 1777046400000,
+      "homeTeam": {
+        "name": "Manisa Basket",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/268256.png"
+      },
+      "awayTeam": {
+        "name": "Fenerbahçe Beko",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3514.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/519.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Turkish Basketball Super League"
+    },
+    {
+      "id": 14500931,
+      "isElite": true,
+      "status": "notstarted",
+      "matchStatus": {
+        "type": "notstarted"
+      },
+      "fixedDate": "2026-04-25",
+      "fixedTime": "13:00",
+      "timestamp": 1777111200000,
+      "homeTeam": {
+        "name": "Anadolu Efes",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3515.png"
+      },
+      "awayTeam": {
+        "name": "Türk Telekom B.K.",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/24085.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/519.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Turkish Basketball Super League"
+    },
+    {
+      "id": 14500927,
+      "isElite": true,
+      "status": "notstarted",
+      "matchStatus": {
+        "type": "notstarted"
+      },
+      "fixedDate": "2026-04-25",
+      "fixedTime": "18:00",
+      "timestamp": 1777129200000,
+      "homeTeam": {
+        "name": "Bahçeşehir Koleji",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/265894.png"
+      },
+      "awayTeam": {
+        "name": "Tofaş Bursa",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/37760.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/519.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Turkish Basketball Super League"
+    },
+    {
+      "id": 14500926,
+      "isElite": true,
+      "status": "notstarted",
+      "matchStatus": {
+        "type": "notstarted"
+      },
+      "fixedDate": "2026-04-25",
+      "fixedTime": "18:00",
+      "timestamp": 1777129200000,
+      "homeTeam": {
+        "name": "Beşiktaş Gain",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/6678.png"
+      },
+      "awayTeam": {
+        "name": "Petkim Spor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/234214.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/519.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Turkish Basketball Super League"
+    },
+    {
+      "id": 14500932,
+      "isElite": true,
+      "status": "notstarted",
+      "matchStatus": {
+        "type": "notstarted"
+      },
+      "fixedDate": "2026-04-25",
+      "fixedTime": "18:00",
+      "timestamp": 1777129200000,
+      "homeTeam": {
+        "name": "Yukatel Merkezefendi Belediyesi Basket",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/304491.png"
+      },
+      "awayTeam": {
+        "name": "Mersin SC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/25428.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/519.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Turkish Basketball Super League"
+    },
+    {
       "id": 14381845,
       "isElite": false,
       "status": "notstarted",
@@ -690,29 +828,6 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Germany BBL"
-    },
-    {
-      "id": 16030704,
-      "isElite": false,
-      "status": "notstarted",
-      "matchStatus": {
-        "type": "notstarted"
-      },
-      "fixedDate": "2026-04-24",
-      "fixedTime": "19:30",
-      "timestamp": 1777048200000,
-      "homeTeam": {
-        "name": "Rutronik Stars Keltern",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/207092.png"
-      },
-      "awayTeam": {
-        "name": "BC Pharmaserv Marburg",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/5528.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/251.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "1. DBBL"
     },
     {
       "id": 15485319,
