@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-24T10:50:16.853Z",
-  "totalMatches": 502,
+  "lastUpdated": "2026-04-24T12:03:51.220Z",
+  "totalMatches": 501,
   "matches": [
     {
       "id": 15269995,
@@ -31,7 +31,7 @@
       "fixedDate": "2026-04-24",
       "fixedTime": "02:00",
       "timestamp": 1776985200000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Deportivo Pasto",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6113.png"
@@ -115,7 +115,7 @@
       "fixedDate": "2026-04-24",
       "fixedTime": "04:00",
       "timestamp": 1776992400000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Millonarios",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6117.png"
@@ -132,9 +132,9 @@
     {
       "id": 14671788,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-24",
-      "fixedTime": "12:35\nCANLI",
+      "fixedTime": "12:35",
       "timestamp": 1777023300000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -146,18 +146,18 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/7568.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/136.png",
-      "homeScore": "3",
+      "homeScore": "4",
       "awayScore": "0",
       "tournament": "A-League Men"
     },
     {
       "id": 15345932,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-24",
-      "fixedTime": "13:00\nCANLI",
+      "fixedTime": "13:00",
       "timestamp": 1777024800000,
-      "broadcaster": "YouTube (J.League Int.)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "FC Tokyo",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3147.png"
@@ -167,18 +167,18 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/21901.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/196.png",
-      "homeScore": "2",
-      "awayScore": "1",
+      "homeScore": "5",
+      "awayScore": "2",
       "tournament": "J1 League"
     },
     {
       "id": 15345931,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-24",
-      "fixedTime": "13:00\nCANLI",
+      "fixedTime": "13:00",
       "timestamp": 1777024800000,
-      "broadcaster": "YouTube (J.League Int.)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Kashiwa Reysol",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3140.png"
@@ -209,7 +209,7 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/256259.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/21996.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "tournament": "Queensland Premier League 1"
     },
@@ -230,16 +230,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/91142.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/21996.png",
-      "homeScore": "0",
-      "awayScore": "0",
+      "homeScore": "2",
+      "awayScore": "2",
       "tournament": "Queensland Premier League 1"
     },
     {
       "id": 15508361,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-24",
-      "fixedTime": "14:30",
+      "fixedTime": "14:30\nCANLI",
       "timestamp": 1777030200000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -251,16 +251,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/174594.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/1900.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "1",
       "tournament": "Indian Super League"
     },
     {
       "id": 15217127,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-24",
-      "fixedTime": "15:00",
+      "fixedTime": "15:00\nCANLI",
       "timestamp": 1777032000000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -272,30 +272,9 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/85743.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/1032.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "tournament": "Thai League 1"
-    },
-    {
-      "id": 14162341,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-24",
-      "fixedTime": "15:00",
-      "timestamp": 1777032000000,
-      "broadcaster": "TFF YouTube",
-      "homeTeam": {
-        "name": "Karacabey Belediye Spor",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/55611.png"
-      },
-      "awayTeam": {
-        "name": "Bucaspor 1928",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/170434.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/tournament_logos/97.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Nesine 2. Lig"
     },
     {
       "id": 15728224,
@@ -344,7 +323,7 @@
       "isElite": false,
       "status": "postponed",
       "fixedDate": "2026-04-24",
-      "fixedTime": "İPTAL",
+      "fixedTime": "17:00",
       "timestamp": 1777039200000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -535,7 +514,7 @@
       "fixedDate": "2026-04-24",
       "fixedTime": "19:30",
       "timestamp": 1777048200000,
-      "broadcaster": "S Sport Plus / DAZN",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "1. FC Nürnberg",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/164534.png"
@@ -1415,7 +1394,7 @@
       "isElite": false,
       "status": "postponed",
       "fixedDate": "2026-04-24",
-      "fixedTime": "İPTAL",
+      "fixedTime": "22:00",
       "timestamp": 1777057200000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -1501,7 +1480,7 @@
       "fixedDate": "2026-04-24",
       "fixedTime": "23:45",
       "timestamp": 1777063500000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Nacional Asunción",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/33001.png"
@@ -1522,7 +1501,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "00:00",
       "timestamp": 1777064400000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Cúcuta Deportivo",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6108.png"
@@ -1669,7 +1648,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "02:00",
       "timestamp": 1777071600000,
-      "broadcaster": "Apple TV / OneFootball",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Toronto FC II",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/217784.png"
@@ -1690,7 +1669,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "02:00",
       "timestamp": 1777071600000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Cerro Porteño",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5991.png"
@@ -1879,7 +1858,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "08:00",
       "timestamp": 1777093200000,
-      "broadcaster": "YouTube (J.League Int.)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Urawa Red Diamonds",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3145.png"
@@ -1900,7 +1879,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "08:00",
       "timestamp": 1777093200000,
-      "broadcaster": "YouTube (J.League Int.)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Fagiano Okayama",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/34034.png"
@@ -1921,7 +1900,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "08:00",
       "timestamp": 1777093200000,
-      "broadcaster": "YouTube (J.League Int.)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Shimizu S-Pulse",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3133.png"
@@ -1942,7 +1921,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "09:00",
       "timestamp": 1777096800000,
-      "broadcaster": "YouTube (J.League Int.)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Kawasaki Frontale",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5127.png"
@@ -2026,7 +2005,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "10:00",
       "timestamp": 1777100400000,
-      "broadcaster": "YouTube (J.League Int.)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Sanfrecce Hiroshima",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/3135.png"
@@ -2131,7 +2110,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "12:30",
       "timestamp": 1777109400000,
-      "broadcaster": "YouTube (J.League Int.)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "V-Varen Nagasaki",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/38154.png"
@@ -2173,7 +2152,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "13:00",
       "timestamp": 1777111200000,
-      "broadcaster": "S Sport Plus / DAZN",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "SGS Essen",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5551.png"
@@ -2992,7 +2971,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "15:00",
       "timestamp": 1777118400000,
-      "broadcaster": "S Sport Plus / DAZN",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "RB Leipzig",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/322623.png"
@@ -5092,7 +5071,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "19:15",
       "timestamp": 1777133700000,
-      "broadcaster": "DAZN / YouTube",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "FC Bayern München",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5543.png"
@@ -5974,7 +5953,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "22:00",
       "timestamp": 1777143600000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Atlético Bucaramanga",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6103.png"
@@ -6247,7 +6226,7 @@
       "fixedDate": "2026-04-25",
       "fixedTime": "23:45",
       "timestamp": 1777149900000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Sportivo Luqueño",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5998.png"
@@ -6373,7 +6352,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "00:00",
       "timestamp": 1777150800000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Deportivo Pereira",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6109.png"
@@ -6497,7 +6476,7 @@
       "isElite": false,
       "status": "postponed",
       "fixedDate": "2026-04-26",
-      "fixedTime": "İPTAL",
+      "fixedTime": "00:30",
       "timestamp": 1777152600000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -6583,7 +6562,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "01:00",
       "timestamp": 1777154400000,
-      "broadcaster": "Apple TV / OneFootball",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Carolina Core FC",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/506673.png"
@@ -6688,7 +6667,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "02:00",
       "timestamp": 1777158000000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Libertad",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5996.png"
@@ -6730,7 +6709,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "02:10",
       "timestamp": 1777158600000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Deportivo Cali",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6112.png"
@@ -7171,7 +7150,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "04:30",
       "timestamp": 1777167000000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Independiente Medellín",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/6115.png"
@@ -8095,7 +8074,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "15:00",
       "timestamp": 1777204800000,
-      "broadcaster": "S Sport Plus / DAZN",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Eintracht Frankfurt",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/108685.png"
@@ -8639,7 +8618,7 @@
       "isElite": false,
       "status": "postponed",
       "fixedDate": "2026-04-26",
-      "fixedTime": "İPTAL",
+      "fixedTime": "16:15",
       "timestamp": 1777209300000,
       "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
@@ -8809,7 +8788,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "17:00",
       "timestamp": 1777212000000,
-      "broadcaster": "S Sport Plus / DAZN",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Bayer Leverkusen",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/36623.png"
@@ -8914,7 +8893,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "17:30",
       "timestamp": 1777213800000,
-      "broadcaster": "DAZN / YouTube",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Arsenal",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/26243.png"
@@ -10363,7 +10342,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "22:00",
       "timestamp": 1777230000000,
-      "broadcaster": "Apple TV / OneFootball",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Connecticut United",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/1166614.png"
@@ -10405,7 +10384,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "23:00",
       "timestamp": 1777233600000,
-      "broadcaster": "Apple TV / OneFootball",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Chicago Fire FC II",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411363.png"
@@ -10426,7 +10405,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "23:00",
       "timestamp": 1777233600000,
-      "broadcaster": "Apple TV / OneFootball",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "Minnesota United FC 2",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/411366.png"
@@ -10531,7 +10510,7 @@
       "fixedDate": "2026-04-26",
       "fixedTime": "23:45",
       "timestamp": 1777236300000,
-      "broadcaster": "TV Yayını Yok (Yerel)",
+      "broadcaster": "Resmi Yayıncı / Canlı Skor",
       "homeTeam": {
         "name": "CS 2 de Mayo",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/football/logos/5992.png"
