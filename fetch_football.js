@@ -1,8 +1,13 @@
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha');
 const fs = require('fs');
+const https = require('https');
 
 puppeteer.use(StealthPlugin());
+puppeteer.use(RecaptchaPlugin({
+    provider: { id: '2captcha', token: 'SKIP' }
+}));
 
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
@@ -105,46 +110,122 @@ const REGULAR_LEAGUE_IDS = [
 const ALL_TARGET_IDS = [...ELITE_LEAGUE_IDS, ...REGULAR_LEAGUE_IDS];
 const stubbornLeagueIds = [11, 351, 10, 97, 750, 13, 393, 52, 238, 242, 938];
 
+// Helper function for direct fetch with better error handling
+const fetchWithRetry = async (url, maxRetries = 3) => {
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            return new Promise((resolve, reject) => {
+                https.get(url, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                        'Accept': 'application/json',
+                        'Referer': 'https://www.sofascore.com/'
+                    },
+                    timeout: 15000
+                }, (res) => {
+                    let data = '';
+                    res.on('data', chunk => data += chunk);
+                    res.on('end', () => {
+                        if (res.statusCode === 200) {
+                            try {
+                                resolve(JSON.parse(data));
+                            } catch (e) {
+                                reject(new Error('JSON parse error'));
+                            }
+                        } else {
+                            reject(new Error(`HTTP ${res.statusCode}`));
+                        }
+                    });
+                }).on('error', reject);
+            });
+        } catch (e) {
+            console.log(`⚠️ Retry ${i + 1}/${maxRetries} başarısız: ${e.message}`);
+            await new Promise(r => setTimeout(r, 2000 + i * 1000));
+        }
+    }
+    throw new Error('Tüm retry'lar başarısız oldu');
+};
+
+const getTRDate = (offset = 0) => {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    // Istanbul saat diliminde tarihi al
+    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+};
+
 async function start() {
-    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI (Cloudflare Truva Atı Aktif)...");
+    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI (Doğrudan API çağrısı)...");
     
+    // TARAYICI BAŞLAT AMA DIŞ İÇERİK İÇİN (Cloudflare geçişi için)
     const browser = await puppeteer.launch({ 
         headless: "new", 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox', 
+            '--disable-dev-shm-usage',
+            '--disable-blink-features=AutomationControlled',
+            '--start-maximized'
+        ] 
     });
     
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+    
+    // Mac üzerinde olduğu gibi user-agent set et
+    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+    
+    // Cloudflare kontrol noktasını aş
+    console.log("🛡️ Cloudflare güvenlik kontrolü aşılıyor...");
+    try {
+        await page.goto('https://www.sofascore.com', { 
+            waitUntil: 'domcontentloaded', 
+            timeout: 60000 
+        });
+        await new Promise(r => setTimeout(r, 3000));
+    } catch (e) {
+        console.log("⚠️ Ana sayfa yükleme hatası (normal olabilir): " + e.message);
+    }
 
-    const getTRDate = (offset = 0) => {
-        const d = new Date();
-        d.setDate(d.getDate() + offset);
-        return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-    };
-
-    const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let allEvents = [];
+    const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     
-    // 🛡️ BÜYÜK DEĞİŞİKLİK 1: Önce ana sayfaya giriyoruz ve Cloudflare'in bizi onaylamasını bekliyoruz
-    console.log("🛡️ Güvenlik duvarı aşılıyor...");
-   await page.goto('https://www.sofascore.com', { waitUntil: 'domcontentloaded', timeout: 60000 });
-    
-    // 🛡️ BÜYÜK DEĞİŞİKLİK 2: Güvenlik kontrolünün bitmesi için 5 saniye bekle
-    await new Promise(r => setTimeout(r, 5000)); 
+    console.log(`📅 Hedef Tarihler (Istanbul): ${validDates.join(', ')}`);
 
+    // TARAYICI CONTEXT'İ KULLANARAK API ÇAĞRISı YAP (Cookies/Session ile)
     for (const date of validDates) {
         try {
             console.log(`📡 ${date} programı çekiliyor...`);
+            
             const data = await page.evaluate(async (d) => {
                 try {
-                    // 🛡️ BÜYÜK DEĞİŞİKLİK 3: api.sofascore.com YERİNE www.sofascore.com/api KULLANIYORUZ
-                    const res = await fetch(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${d}`);
-                    if (!res.ok) return null; // Eğer HTML dönerse patlamaması için kontrol
-                    return await res.json();
-                } catch(e) { return null; }
+                    const res = await fetch(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${d}`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+                        }
+                    });
+                    
+                    if (!res.ok) {
+                        console.log(`API yanıt kodu: ${res.status}`);
+                        return null;
+                    }
+                    
+                    const text = await res.text();
+                    // HTML döndüğünü kontrol et
+                    if (text.includes('<!DOCTYPE') || text.includes('<html')) {
+                        console.log('HTML dönüyor, API engellendi');
+                        return null;
+                    }
+                    
+                    return JSON.parse(text);
+                } catch(e) { 
+                    console.log('API çağrısı hatası: ' + e.message);
+                    return null; 
+                }
             }, date);
 
-            if (data && data.events) {
+            if (data && data.events && data.events.length > 0) {
+                console.log(`✅ ${date}: ${data.events.length} etkinlik bulundu`);
+                
                 const filtered = data.events.filter(e => {
                     const ut = e.tournament?.uniqueTournament;
                     if (!ut) return false;
@@ -153,16 +234,27 @@ async function start() {
                 });
                 
                 const correctlyDated = filtered.filter(e => {
-                    const dateTR = new Date(e.startTimestamp * 1000);
-                    const dayStrTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                    const eventTime = new Date(e.startTimestamp * 1000);
+                    const dayStrTR = eventTime.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                     return validDates.includes(dayStrTR);
                 });
+                
+                console.log(`   → ${filtered.length} hedef liga, ${correctlyDated.length} doğru tarihli maç`);
                 allEvents = allEvents.concat(correctlyDated);
+            } else {
+                console.log(`⚠️ ${date}: Veri çekilemedi veya boş`);
             }
-        } catch (e) { console.log(`Hata: ${date} çekilemedi.`); }
+            
+            // API'yi fazla yükleme
+            await new Promise(r => setTimeout(r, 1500));
+            
+        } catch (e) { 
+            console.log(`❌ Hata: ${date} çekilemedi - ${e.message}`); 
+        }
     }
 
-    // İnatçı Ligler (Stubborn Leagues) İçin Aynı Bypass
+    // İnatçı Ligler (Stubborn Leagues) İçin Bypass
+    console.log("\n🔄 İnatçı Ligler taranıyor...");
     for (const id of stubbornLeagueIds) {
         try {
             const seasonsData = await page.evaluate(async (leagueId) => {
@@ -174,6 +266,7 @@ async function start() {
 
             if (seasonsData?.seasons?.length > 0) {
                 const sId = seasonsData.seasons[0].id;
+                
                 for (const type of ['next/0', 'last/0']) {
                     const eventsData = await page.evaluate(async (leagueId, seasonId, t) => {
                         try {
@@ -191,9 +284,15 @@ async function start() {
                         allEvents = allEvents.concat(targetEvents);
                     }
                 }
+                
+                await new Promise(r => setTimeout(r, 1000));
             }
-        } catch (e) { }
+        } catch (e) { 
+            console.log(`İnatçı liga ${id} hata: ${e.message}`);
+        }
     }
+
+    console.log(`\n📊 Toplam ${allEvents.length} etkinlik toplandı`);
 
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
@@ -262,4 +361,7 @@ async function start() {
     await browser.close();
 }
 
-start();
+start().catch(e => {
+    console.error('❌ FATAL ERROR:', e);
+    process.exit(1);
+});
