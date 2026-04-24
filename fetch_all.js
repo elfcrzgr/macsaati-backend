@@ -10,13 +10,12 @@ puppeteer.use(StealthPlugin());
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 
-// 🚀 UTC NE OLURSA OLSUN TÜRKİYE SAATİNİ HESAPLAR
+// Türkiye Saati Hesaplama (Actions/UTC Fix)
 const getTRDate = (offset = 0) => {
     const d = new Date();
-    // UTC zamanına 3 saat ekleyerek Türkiye saatine sabitliyoruz
     const trTime = new Date(d.getTime() + (3 * 60 * 60 * 1000)); 
     trTime.setDate(trTime.getDate() + offset);
-    return trTime.toISOString().split('T')[0]; // Kesinlikle "2026-04-24" formatı
+    return trTime.toISOString().split('T')[0];
 };
 
 const trToday = getTRDate(0);
@@ -31,64 +30,71 @@ function addToSummary(sport, leagueName) {
 
 function printSportSummary(sport, rawCount) {
     console.log(`\n📊 ${sport.toUpperCase()} ÖZET RAPORU`);
-    console.log(`📡 Kaynaktan gelen ham veri: ${rawCount} maç`);
+    console.log(`📡 Kaynaktan çekilen ham veri: ${rawCount} maç`);
     let total = 0;
     const sorted = Object.entries(globalSummary[sport] || {}).sort((a, b) => b[1] - a[1]);
     sorted.forEach(([l, c]) => { console.log(`   📍 ${l}: ${c} maç`); total += c; });
-    console.log(`✅ Filtre sonrası kaydedilen: ${total} maç.`);
-    console.log("-----------------------------------------\n");
+    console.log(`✅ Kaydedilen: ${total} eşsiz maç.`);
 }
 
 // =========================================================================
-// ⚽ FUTBOL AYARLARI
+// ⚽ LİG AYARLARI
 // =========================================================================
 const ELITE_FOOT = [52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015];
 const REGULAR_FOOT = [10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618];
 const ALL_FOOT_IDS = [...ELITE_FOOT, ...REGULAR_FOOT];
-
-// =========================================================================
-// 🏀 BASKETBOL AYARLARI
-// =========================================================================
 const ELITE_BASK_IDS = [3547, 138, 142, 519, 132, 167, 168]; 
-const baskConfigs = {
-    519: "TRT Spor / Tabii", 3547: "beIN Sports 5", 138: "S Sport Plus", 142: "S Sport Plus",
-    137: "TRT Spor / Tabii", 132: "beIN Sports 5", 167: "S Sport Plus", 168: "TRT Spor Yıldız",
-    235: "S Sport Plus", 304: "beIN Sports", 227: "beIN Sports", 164: "beIN Sports"
-};
-const targetBaskIds = Object.keys(baskConfigs).map(Number);
 
 // =========================================================================
 // 🚀 ANA MOTOR
 // =========================================================================
 async function start() {
-    console.log(`🚀 MAÇ SAATİ OTOMASYON (${trToday} / ${trTomorrow})`);
+    console.log(`🚀 MAÇ SAATİ GÜNCELLEME (TR: ${trToday} / ${trTomorrow})`);
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
     });
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+    
+    // Actions için en stabil User-Agent
+    const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36';
+    await page.setUserAgent(UA);
 
     try {
-        console.log("🛡️ Güvenlik duvarı aşılıyor (10 saniye bekleme)...");
-        await page.goto('https://www.sofascore.com', { waitUntil: 'domcontentloaded', timeout: 60000 });
-        await new Promise(r => setTimeout(r, 10000)); // Actions için bekleme artırıldı
+        console.log("🛡️ Güvenlik aşaması başlatılıyor...");
+        await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2', timeout: 60000 });
+        await new Promise(r => setTimeout(r, 5000));
 
+        // Futbol Verisi
+        console.log("⚽ Futbol sayfasına geçiliyor...");
+        await page.goto('https://www.sofascore.com/football', { waitUntil: 'domcontentloaded' });
+        await new Promise(r => setTimeout(r, 5000));
         await runFootball(page);
+
+        // Basketbol Verisi
+        console.log("🏀 Basketbol sayfasına geçiliyor...");
+        await page.goto('https://www.sofascore.com/basketball', { waitUntil: 'domcontentloaded' });
+        await new Promise(r => setTimeout(r, 5000));
         await runBasketball(page);
+
+        // Tenis Verisi
+        console.log("🎾 Tenis sayfasına geçiliyor...");
+        await page.goto('https://www.sofascore.com/tennis', { waitUntil: 'domcontentloaded' });
+        await new Promise(r => setTimeout(r, 5000));
         await runTennis(page);
+
         await runF1();
 
-    } catch (e) { console.error("❌ KRİTİK HATA:", e.message); }
-    finally { await browser.close(); console.log("✅ İşlem Bitti."); }
+    } catch (e) { console.error("❌ Hata:", e.message); }
+    finally { await browser.close(); console.log("✅ İşlem tamamlandı."); }
 }
 
 async function runFootball(page) {
-    console.log("⚽ Futbol taranıyor...");
     const duplicateTracker = new Set();
     let rawEvents = [];
     
     for (const d of [getTRDate(-1), trToday, trTomorrow]) {
+        console.log(`   📡 ${d} verisi isteniyor...`);
         const data = await page.evaluate(async (dt) => {
             try {
                 const res = await fetch(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${dt}`);
@@ -104,7 +110,6 @@ async function runFootball(page) {
         if (!ut) return null;
 
         const dt = new Date(e.startTimestamp * 1000);
-        // TR Saatiyle kıyaslama
         const matchDay = new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().split('T')[0];
         
         if (!validDates.includes(matchDay)) return null;
@@ -116,7 +121,7 @@ async function runFootball(page) {
         return {
             id: e.id, isElite: ELITE_FOOT.includes(ut.id), status: e.status?.type,
             matchStatus: { type: e.status?.type }, fixedDate: matchDay,
-            fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).getUTCHours().toString().padStart(2, '0') + ":" + new Date(dt.getTime()).getUTCMinutes().toString().padStart(2, '0'),
+            fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().substring(11, 16),
             timestamp: e.startTimestamp * 1000,
             homeTeam: { name: e.homeTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: e.awayTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
@@ -130,7 +135,6 @@ async function runFootball(page) {
 }
 
 async function runBasketball(page) {
-    console.log("🏀 Basketbol taranıyor...");
     const duplicateTracker = new Set();
     let rawEvents = [];
     
@@ -145,13 +149,11 @@ async function runBasketball(page) {
     }
 
     const matches = rawEvents.map(e => {
-        if (duplicateTracker.has(e.id)) return null;
         const ut = e.tournament?.uniqueTournament;
-        if (!ut || !targetBaskIds.includes(ut.id)) return null;
+        if (!ut || duplicateTracker.has(e.id)) return null;
 
         const dt = new Date(e.startTimestamp * 1000);
         const matchDay = new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().split('T')[0];
-        
         if (!validDates.includes(matchDay)) return null;
 
         duplicateTracker.add(e.id);
@@ -161,7 +163,7 @@ async function runBasketball(page) {
         return {
             id: e.id, isElite: ELITE_BASK_IDS.includes(ut.id), status: e.status?.type,
             matchStatus: { type: e.status?.type }, fixedDate: matchDay,
-            fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).getUTCHours().toString().padStart(2, '0') + ":" + new Date(dt.getTime()).getUTCMinutes().toString().padStart(2, '0'),
+            fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().substring(11, 16),
             timestamp: dt.getTime(),
             homeTeam: { name: e.homeTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.homeTeam.id}.png` },
             awayTeam: { name: e.awayTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.awayTeam.id}.png` },
@@ -175,7 +177,6 @@ async function runBasketball(page) {
 }
 
 async function runTennis(page) {
-    console.log("🎾 Tenis taranıyor...");
     const duplicateTracker = new Set();
     let rawEvents = [];
     for (const d of [getTRDate(-1), trToday, trTomorrow]) {
@@ -189,8 +190,7 @@ async function runTennis(page) {
     }
 
     const matches = rawEvents.map(e => {
-        if (duplicateTracker.has(e.id)) return null;
-        if ((e.tournament?.name || "").toUpperCase().match(/ITF|CHALLENGER|UTR/)) return null;
+        if (duplicateTracker.has(e.id) || (e.tournament?.name || "").toUpperCase().match(/ITF|CHALLENGER|UTR/)) return null;
 
         const dt = new Date(e.startTimestamp * 1000);
         const matchDay = new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().split('T')[0];
@@ -200,7 +200,7 @@ async function runTennis(page) {
         addToSummary("tennis", e.tournament.name);
         return {
             id: e.id, status: e.status?.type, matchStatus: { type: e.status?.type },
-            fixedDate: matchDay, fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).getUTCHours().toString().padStart(2, '0') + ":" + new Date(dt.getTime()).getUTCMinutes().toString().padStart(2, '0'),
+            fixedDate: matchDay, fixedTime: new Date(dt.getTime() + (3 * 60 * 60 * 1000)).toISOString().substring(11, 16),
             timestamp: dt.getTime(), homeTeam: { name: e.homeTeam.name }, awayTeam: { name: e.awayTeam.name },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/${e.tournament?.uniqueTournament?.id || 0}.png`,
             homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: e.tournament.name
@@ -212,7 +212,6 @@ async function runTennis(page) {
 }
 
 async function runF1() {
-    console.log("🏎️ F1 taranıyor...");
     try {
         const res = await fetch('https://api.jolpi.ca/ergast/f1/current.json');
         const data = await res.json();
@@ -222,7 +221,7 @@ async function runF1() {
         }));
         fs.writeFileSync("matches_f1.json", JSON.stringify({ success: true, events: races }, null, 2));
         console.log("✅ F1 Tamam.");
-    } catch (e) { console.log("F1 Hata"); }
+    } catch { console.log("❌ F1 Hata."); }
 }
 
 start();
