@@ -5,12 +5,18 @@ const fs = require('fs');
 puppeteer.use(StealthPlugin());
 
 // =========================================================================
-// ⚙️ GLOBAL AYARLAR
+// ⚙️ GLOBAL AYARLAR & PROXY (PacketStream Bilgilerini Buraya Yaz)
 // =========================================================================
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 
-// Türkiye Saati ve Tarih Fonksiyonları
+const PROXY_CONFIG = {
+    host: 'proxy.packetstream.io:31112',
+    user: 'YOUR_PACKETSTREAM_USERNAME', // Dashboard'dan al
+    pass: 'YOUR_PACKETSTREAM_PASSWORD'  // Dashboard'dan al
+};
+
+// Zaman Hesaplama (TR: UTC+3)
 const getTRTime = () => new Date().getTime() + (3 * 60 * 60 * 1000);
 const getTRDate = (offset = 0) => {
     const trTime = new Date(getTRTime());
@@ -24,7 +30,7 @@ const trTomorrow = getTRDate(1);
 const validDates = [trToday, trTomorrow];
 
 // =========================================================================
-// ⚽ FUTBOL FİLTRE VE LİSTELER
+// ⚽ FUTBOL FİLTRELERİ
 // =========================================================================
 const ELITE_FOOT = [52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015];
 const REGULAR_FOOT = [10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618];
@@ -37,34 +43,39 @@ const BASK_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}
 const ELITE_BASK_IDS = [3547, 138, 142, 519, 132, 167, 168]; 
 const baskConfigs = {
     519: "TRT Spor / Tabii", 3547: "beIN Sports 5", 138: "S Sport Plus", 142: "S Sport Plus",
-    137: "TRT Spor / Tabii", 132: "beIN Sports 5", 167: "S Sport Plus", 168: "TRT Spor Yıldız",
-    235: "S Sport Plus", 304: "beIN Sports", 227: "beIN Sports", 164: "beIN Sports"
+    137: "TRT Spor / Tabii", 132: "beIN Sports 5", 167: "S Sport Plus", 168: "TRT Spor Yıldız"
 };
 const targetBaskIds = Object.keys(baskConfigs).map(Number);
 
 // =========================================================================
-// 🎾 TENİS AYARLARI
-// =========================================================================
-const TENNIS_LOGO = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/`;
-const TENNIS_TOUR = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/`;
-const ELITE_TENNIS_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "MADRID", "ROME", "ATP 1000", "WTA 1000", "ATP 500"];
-
-// =========================================================================
-// 🚀 ANA MOTOR
+// 🚀 ANA MOTOR (Proxy + Auth Dahil)
 // =========================================================================
 async function start() {
-    console.log(`🚀 MAÇ SAATİ OTOMASYON (TR: ${trToday} / ${trTomorrow})`);
+    console.log(`🚀 MAÇ SAATI PRO BAŞLATILDI (TR: ${trToday})`);
+    
     const browser = await puppeteer.launch({ 
         headless: "new", 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox',
+            `--proxy-server=http://${PROXY_CONFIG.host}` // 🚀 Proxy Aktif
+        ] 
     });
+
     const page = await browser.newPage();
+
+    // 🚀 Proxy Kimlik Doğrulama
+    await page.authenticate({
+        username: PROXY_CONFIG.user,
+        password: PROXY_CONFIG.pass
+    });
+
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36');
 
     try {
-        console.log("🛡️ SofaScore oturumu ısındırılıyor...");
+        console.log("🛡️ SofaScore oturumu proxy üzerinden açılıyor...");
         await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2', timeout: 60000 });
-        await new Promise(r => setTimeout(r, 8000));
+        await new Promise(r => setTimeout(r, 5000));
 
         await runFootball(page);
         await runBasketball(page);
@@ -75,11 +86,11 @@ async function start() {
         console.error("❌ Hata:", e.message); 
     } finally { 
         await browser.close(); 
-        console.log("✅ Tüm işlemler başarıyla tamamlandı."); 
+        console.log("✅ İşlem tamamlandı."); 
     }
 }
 
-// ⚽ FUTBOL FONKSİYONU
+// ⚽ FUTBOL (Fikstür + Canlı Skor)
 async function runFootball(page) {
     console.log("⚽ Futbol taranıyor...");
     const duplicateTracker = new Set();
@@ -100,30 +111,40 @@ async function runFootball(page) {
         const ts = e.startTimestamp * 1000;
         const dt = new Date(ts + (3 * 60 * 60 * 1000));
         const dayTR = dt.toISOString().split('T')[0];
-        
         if (!validDates.includes(dayTR)) return null;
 
         duplicateTracker.add(e.id);
-        const fixedTime = dt.toISOString().substring(11, 16);
-        let displayTime = fixedTime;
-        if (e.status?.type === 'notstarted' && ts < trNow) displayTime = "BAŞLAMADI";
+        
+        // 🚀 CANLI SKOR & DURUM MANTIĞI
+        let displayTime = dt.toISOString().substring(11, 16);
+        const status = e.status?.type;
+
+        if (status === 'inprogress') {
+            displayTime = "CANLI"; // Veya e.status.description (Örn: 75')
+        } else if (status === 'notstarted' && ts < trNow) {
+            displayTime = "BAŞLAMADI";
+        } else if (status === 'finished') {
+            displayTime = "BİTTİ";
+        }
 
         return {
-            id: e.id, isElite: ELITE_FOOT.includes(ut.id), status: e.status?.type,
-            matchStatus: { type: e.status?.type }, fixedDate: dayTR,
-            fixedTime: displayTime, timestamp: ts,
+            id: e.id, isElite: ELITE_FOOT.includes(ut.id), status: status,
+            matchStatus: { type: status, description: e.status?.description }, 
+            fixedDate: dayTR, fixedTime: displayTime, timestamp: ts,
             homeTeam: { name: e.homeTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: e.awayTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${ut.id}.png`,
-            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: ut.name
+            homeScore: String(e.homeScore?.display ?? "-"), 
+            awayScore: String(e.awayScore?.display ?? "-"), 
+            tournament: ut.name
         };
     }).filter(Boolean).sort((a, b) => a.timestamp - b.timestamp);
 
     fs.writeFileSync("matches_football.json", JSON.stringify({ success: true, matches }, null, 2));
-    console.log(`   ✅ Futbol: ${matches.length} elit maç kaydedildi.`);
+    console.log(`   ✅ Futbol: ${matches.length} elit/canlı maç.`);
 }
 
-// 🏀 BASKETBOL FONKSİYONU
+// 🏀 BASKETBOL
 async function runBasketball(page) {
     console.log("🏀 Basketbol taranıyor...");
     const duplicateTracker = new Set();
@@ -146,31 +167,32 @@ async function runBasketball(page) {
         if (!validDates.includes(dayTR)) return null;
 
         duplicateTracker.add(e.id);
-        const fixedTime = dt.toISOString().substring(11, 16);
-        let displayTime = fixedTime;
-        if (e.status?.type === 'notstarted' && ts < trNow) displayTime = "BAŞLAMADI";
+        let displayTime = dt.toISOString().substring(11, 16);
+        const status = e.status?.type;
+
+        if (status === 'inprogress') displayTime = "CANLI";
+        else if (status === 'notstarted' && ts < trNow) displayTime = "BAŞLAMADI";
 
         const isNBA = ut.id === 3547;
-        const tourName = isNBA ? "NBA" : (ut.name.includes("Super League") ? "Basketbol Süper Ligi" : ut.name);
-
         return {
-            id: e.id, isElite: ELITE_BASK_IDS.includes(ut.id), status: e.status?.type,
-            matchStatus: { type: e.status?.type }, fixedDate: dayTR, fixedTime: displayTime,
-            timestamp: ts, broadcaster: baskConfigs[ut.id] || "Resmi Yayıncı",
+            id: e.id, isElite: ELITE_BASK_IDS.includes(ut.id), status: status,
+            fixedDate: dayTR, fixedTime: displayTime, timestamp: ts,
+            broadcaster: baskConfigs[ut.id] || "Resmi Yayıncı",
             homeTeam: { name: e.homeTeam.name, logo: `${BASK_BASE}logos/${isNBA ? "NBA/" : ""}${e.homeTeam.id}.png` },
             awayTeam: { name: e.awayTeam.name, logo: `${BASK_BASE}logos/${isNBA ? "NBA/" : ""}${e.awayTeam.id}.png` },
             tournamentLogo: `${BASK_BASE}tournament_logos/${isNBA ? "3547" : ut.id}.png`,
-            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: tourName
+            homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: isNBA ? "NBA" : ut.name
         };
     }).filter(Boolean).sort((a, b) => a.timestamp - b.timestamp);
 
     fs.writeFileSync("matches_basketball.json", JSON.stringify({ success: true, matches }, null, 2));
-    console.log(`   ✅ Basketbol: ${matches.length} elit maç kaydedildi.`);
 }
 
-// 🎾 TENİS FONKSİYONU
+// 🎾 TENİS (Ranking & Bayrak Dahil)
 async function runTennis(page) {
     console.log("🎾 Tenis taranıyor...");
+    const ELITE_TENNIS_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "MADRID", "ROME", "ATP 1000", "WTA 1000", "ATP 500"];
+    const TENNIS_LOGO = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/`;
     const duplicateTracker = new Set();
     let allRaw = [];
 
@@ -186,7 +208,6 @@ async function runTennis(page) {
     for (const e of allRaw) {
         const tourName = e.tournament?.name || "";
         const isElite = ELITE_TENNIS_KEYWORDS.some(k => tourName.toUpperCase().includes(k));
-
         if (duplicateTracker.has(e.id) || !isElite) continue;
 
         const ts = e.startTimestamp * 1000;
@@ -197,6 +218,7 @@ async function runTennis(page) {
         duplicateTracker.add(e.id);
         const fixedTime = dt.toISOString().substring(11, 16);
 
+        // Tenis detayı (Sadece bir kez çekilir)
         const detail = await page.evaluate(async (id) => {
             try {
                 const r = await fetch(`https://www.sofascore.com/api/v1/event/${id}`);
@@ -205,35 +227,27 @@ async function runTennis(page) {
                     if (team.subTeams && team.subTeams.length > 0) return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
                     return [team.country?.alpha2?.toLowerCase() || "mc"];
                 };
-                return { 
-                    hFlags: getFlags(ev.event.homeTeam), 
-                    aFlags: getFlags(ev.event.awayTeam), 
-                    hRank: ev.event.homeTeam.ranking, 
-                    aRank: ev.event.awayTeam.ranking 
-                };
+                return { hFlags: getFlags(ev.event.homeTeam), aFlags: getFlags(ev.event.awayTeam), hRank: ev.event.homeTeam.ranking, aRank: ev.event.awayTeam.ranking };
             } catch { return null; }
         }, e.id);
 
         matches.push({
-            id: e.id, isElite: true, status: e.status?.type, matchStatus: { type: e.status?.type },
-            fixedDate: dayTR, 
+            id: e.id, status: e.status?.type, fixedDate: dayTR,
             fixedTime: ts < trNow && e.status?.type === 'notstarted' ? "BAŞLAMADI" : fixedTime,
             timestamp: ts,
             homeTeam: { name: e.homeTeam.name, logos: detail?.hFlags.map(f => `${TENNIS_LOGO}${f}.png`) || [TENNIS_LOGO + "mc.png"] },
             awayTeam: { name: e.awayTeam.name, logos: detail?.aFlags.map(f => `${TENNIS_LOGO}${f}.png`) || [TENNIS_LOGO + "mc.png"] },
             homeRank: detail?.hRank ? String(detail.hRank) : null,
             awayRank: detail?.aRank ? String(detail.aRank) : null,
-            tournamentLogo: `${TENNIS_TOUR}${e.tournament?.uniqueTournament?.id || 0}.png`,
+            tournamentLogo: `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/${e.tournament?.uniqueTournament?.id || 0}.png`,
             homeScore: String(e.homeScore?.display ?? "-"), awayScore: String(e.awayScore?.display ?? "-"), tournament: tourName
         });
     }
-
-    const finalMatches = matches.sort((a, b) => a.timestamp - b.timestamp);
-    fs.writeFileSync("matches_tennis.json", JSON.stringify({ success: true, matches: finalMatches }, null, 2));
-    console.log(`   ✅ Tenis: ${finalMatches.length} elit maç kaydedildi.`);
+    fs.writeFileSync("matches_tennis.json", JSON.stringify({ success: true, matches: matches.sort((a, b) => a.timestamp - b.timestamp) }, null, 2));
+    console.log(`   ✅ Tenis: ${matches.length} elit maç.`);
 }
 
-// 🏎️ F1 FONKSİYONU
+// 🏎️ F1
 async function runF1() {
     console.log("🏎️ F1 taranıyor...");
     try {
