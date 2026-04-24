@@ -25,7 +25,7 @@ const teamTranslations = {
     "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", "croatia": "Hırvatistan",
     "denmark": "Danimarka", "scotland": "İskoçya", "hungary": "Macaristan", "serbia": "Sırbistan",
     "poland": "Polonya", "czechia": "Çekya", "romania": "Romanya", "slovakia": "Slovakya",
-    "slovenia": "Slovenya", "georgia": "Gürcistan", "albania": "Arnavutluk", "norway": "Norveç",
+    "slovenia": "Slovenya", "georgia": "G��rcistan", "albania": "Arnavutluk", "norway": "Norveç",
     "sweden": "İsveç", "ukraine": "Ukrayna", "greece": "Yunanistan", "wales": "Galler",
     "finland": "Finlandiya", "ireland": "İrlanda", "northernireland": "Kuzey İrlanda",
     "iceland": "İzlanda", "israel": "İsrail", "bulgaria": "Bulgaristan", "kazakhstan": "Kazakistan",
@@ -139,24 +139,22 @@ const fetchWithRetry = async (url, maxRetries = 3) => {
                 }).on('error', reject);
             });
         } catch (e) {
-            console.log(`⚠️ Retry ${i + 1}/${maxRetries} başarısız: ${e.message}`);
+            console.log(`Retry ${i + 1}/${maxRetries} basarısız: ${e.message}`);
             await new Promise(r => setTimeout(r, 2000 + i * 1000));
         }
     }
-    throw new Error('Tüm retry'lar başarısız oldu');
+    throw new Error('Tum retrylər basarısız oldu');
 };
 
 const getTRDate = (offset = 0) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
-    // Istanbul saat diliminde tarihi al
     return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 };
 
 async function start() {
-    console.log("🚀 MAÇ SAATİ AKILLI MOTOR BAŞLATILDI (Doğrudan API çağrısı)...");
+    console.log("MAC SAATİ AKILLI MOTOR BASLATILDI (Dogrudan API çağrısı)...");
     
-    // TARAYICI BAŞLAT AMA DIŞ İÇERİK İÇİN (Cloudflare geçişi için)
     const browser = await puppeteer.launch({ 
         headless: "new", 
         args: [
@@ -169,12 +167,9 @@ async function start() {
     });
     
     const page = await browser.newPage();
-    
-    // Mac üzerinde olduğu gibi user-agent set et
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
     
-    // Cloudflare kontrol noktasını aş
-    console.log("🛡️ Cloudflare güvenlik kontrolü aşılıyor...");
+    console.log("Cloudflare güvenlik kontrolü aşılıyor...");
     try {
         await page.goto('https://www.sofascore.com', { 
             waitUntil: 'domcontentloaded', 
@@ -182,18 +177,17 @@ async function start() {
         });
         await new Promise(r => setTimeout(r, 3000));
     } catch (e) {
-        console.log("⚠️ Ana sayfa yükleme hatası (normal olabilir): " + e.message);
+        console.log("Ana sayfa yükleme hatası (normal olabilir): " + e.message);
     }
 
     let allEvents = [];
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     
-    console.log(`📅 Hedef Tarihler (Istanbul): ${validDates.join(', ')}`);
+    console.log(`Hedef Tarihler (Istanbul): ${validDates.join(', ')}`);
 
-    // TARAYICI CONTEXT'İ KULLANARAK API ÇAĞRISı YAP (Cookies/Session ile)
     for (const date of validDates) {
         try {
-            console.log(`📡 ${date} programı çekiliyor...`);
+            console.log(`${date} programı çekiliyor...`);
             
             const data = await page.evaluate(async (d) => {
                 try {
@@ -210,7 +204,6 @@ async function start() {
                     }
                     
                     const text = await res.text();
-                    // HTML döndüğünü kontrol et
                     if (text.includes('<!DOCTYPE') || text.includes('<html')) {
                         console.log('HTML dönüyor, API engellendi');
                         return null;
@@ -224,7 +217,7 @@ async function start() {
             }, date);
 
             if (data && data.events && data.events.length > 0) {
-                console.log(`✅ ${date}: ${data.events.length} etkinlik bulundu`);
+                console.log(`${date}: ${data.events.length} etkinlik bulundu`);
                 
                 const filtered = data.events.filter(e => {
                     const ut = e.tournament?.uniqueTournament;
@@ -239,22 +232,20 @@ async function start() {
                     return validDates.includes(dayStrTR);
                 });
                 
-                console.log(`   → ${filtered.length} hedef liga, ${correctlyDated.length} doğru tarihli maç`);
+                console.log(`   ${filtered.length} hedef liga, ${correctlyDated.length} doğru tarihli maç`);
                 allEvents = allEvents.concat(correctlyDated);
             } else {
-                console.log(`⚠️ ${date}: Veri çekilemedi veya boş`);
+                console.log(`${date}: Veri çekilemedi veya boş`);
             }
             
-            // API'yi fazla yükleme
             await new Promise(r => setTimeout(r, 1500));
             
         } catch (e) { 
-            console.log(`❌ Hata: ${date} çekilemedi - ${e.message}`); 
+            console.log(`Hata: ${date} çekilemedi - ${e.message}`); 
         }
     }
 
-    // İnatçı Ligler (Stubborn Leagues) İçin Bypass
-    console.log("\n🔄 İnatçı Ligler taranıyor...");
+    console.log("İnatçı Ligler taranıyor...");
     for (const id of stubbornLeagueIds) {
         try {
             const seasonsData = await page.evaluate(async (leagueId) => {
@@ -292,7 +283,7 @@ async function start() {
         }
     }
 
-    console.log(`\n📊 Toplam ${allEvents.length} etkinlik toplandı`);
+    console.log(`Toplam ${allEvents.length} etkinlik toplandı`);
 
     const finalMatchesMap = new Map();
     for (const e of allEvents) {
@@ -357,11 +348,11 @@ async function start() {
         matches: finalMatches 
     }, null, 2));
     
-    console.log(`✅ İŞLEM TAMAMLANDI: Toplam ${finalMatches.length} maç kaydedildi.`);
+    console.log(`İŞLEM TAMAMLANDI: Toplam ${finalMatches.length} maç kaydedildi.`);
     await browser.close();
 }
 
 start().catch(e => {
-    console.error('❌ FATAL ERROR:', e);
+    console.error("FATAL ERROR:", e);
     process.exit(1);
 });
