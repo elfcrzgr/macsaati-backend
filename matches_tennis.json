@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-25T14:06:17.567Z",
+  "lastUpdated": "2026-04-25T14:07:31.362Z",
   "totalMatches": 84,
   "matches": [
     {
@@ -660,7 +660,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "3-6, 1-0",
+      "setScores": "3-6, 1-1",
       "tournament": "Madrid, Spain"
     },
     {
@@ -1722,36 +1722,6 @@
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16018909,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-26",
-      "fixedTime": "12:00",
-      "timestamp": 1777194000000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Kozyreva M / Skoch M",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Perez E / Schuurs D",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain, Doubles"
-    },
-    {
       "id": 16012056,
       "isElite": false,
       "status": "notstarted",
@@ -2414,6 +2384,36 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16018909,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-27",
+      "fixedTime": "12:00",
+      "timestamp": 1777280400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Kozyreva M / Skoch M",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Perez E / Schuurs D",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Doubles"
     }
   ]
 }
