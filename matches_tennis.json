@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-25T12:51:23.468Z",
+  "lastUpdated": "2026-04-25T12:52:35.676Z",
   "totalMatches": 82,
   "matches": [
     {
@@ -236,7 +236,7 @@
     {
       "id": 16048601,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-25",
       "fixedTime": "13:40",
       "timestamp": 1777113600000,
@@ -258,9 +258,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
-      "setScores": "6-7, 7-5, 0-0",
+      "setScores": "6-7, 7-5, 10-6",
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -522,64 +522,6 @@
       "tournament": "Oeiras 4, Portugal, Doubles"
     },
     {
-      "id": 16013094,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-25",
-      "fixedTime": "15:20",
-      "timestamp": 1777119600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Vilius Gaubas",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Felix Auger-Aliassime",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "homeRank": "124",
-      "awayRank": "5",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16048596,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-25",
-      "fixedTime": "15:20",
-      "timestamp": 1777119600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Jiang X / Xu Y",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Boulter K / Williams V",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain, Doubles"
-    },
-    {
       "id": 16013100,
       "isElite": true,
       "status": "inprogress",
@@ -604,7 +546,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "1-1",
+      "setScores": "2-1",
       "tournament": "Madrid, Spain"
     },
     {
@@ -664,12 +606,70 @@
       "tournament": "Madrid, Spain"
     },
     {
+      "id": 16013094,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-25",
+      "fixedTime": "16:00",
+      "timestamp": 1777122000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Vilius Gaubas",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Felix Auger-Aliassime",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "homeRank": "124",
+      "awayRank": "5",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16048596,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-25",
+      "fixedTime": "16:00",
+      "timestamp": 1777122000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Jiang X / Xu Y",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Boulter K / Williams V",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Doubles"
+    },
+    {
       "id": 16048604,
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-25",
-      "fixedTime": "15:55",
-      "timestamp": 1777121700000,
+      "fixedTime": "16:20",
+      "timestamp": 1777123200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Siegemund L / Zvonareva V",
@@ -683,64 +683,6 @@
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain, Doubles"
-    },
-    {
-      "id": 16012103,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-25",
-      "fixedTime": "16:30",
-      "timestamp": 1777123800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Hailey Baptiste",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jasmine Paolini",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "homeRank": "32",
-      "awayRank": "9",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16018908,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-25",
-      "fixedTime": "16:30",
-      "timestamp": 1777123800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Mertens E / Zhang S",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Andreeva M / Shnaider D",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
         ]
       },
       "homeRank": null,
@@ -836,32 +778,62 @@
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16012154,
+      "id": 16012103,
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-25",
-      "fixedTime": "17:40",
-      "timestamp": 1777128000000,
+      "fixedTime": "17:10",
+      "timestamp": 1777126200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Daniel Merida",
+        "name": "Hailey Baptiste",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
       "awayTeam": {
-        "name": "Corentin Moutet",
+        "name": "Jasmine Paolini",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
         ]
       },
-      "homeRank": "102",
-      "awayRank": "30",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeRank": "32",
+      "awayRank": "9",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": "",
       "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16018908,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-25",
+      "fixedTime": "17:20",
+      "timestamp": 1777126800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Mertens E / Zhang S",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Andreeva M / Shnaider D",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16013097,
@@ -885,6 +857,34 @@
       },
       "homeRank": "140",
       "awayRank": "35",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16012154,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-25",
+      "fixedTime": "18:20",
+      "timestamp": 1777130400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Daniel Merida",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Corentin Moutet",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "homeRank": "102",
+      "awayRank": "30",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
