@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-25T13:03:26.532Z",
+  "lastUpdated": "2026-04-25T13:04:38.211Z",
   "totalMatches": 83,
   "matches": [
     {
@@ -266,7 +266,7 @@
     {
       "id": 16012119,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-25",
       "fixedTime": "13:45",
       "timestamp": 1777113900000,
@@ -286,9 +286,9 @@
       "homeRank": "25",
       "awayRank": "16",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
-      "setScores": "3-6, 6-3, 5-2",
+      "setScores": "3-6, 6-3, 6-2",
       "tournament": "Madrid, Spain"
     },
     {
@@ -518,7 +518,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34229.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "4-6, 1-2",
+      "setScores": "4-6, 1-3",
       "tournament": "Oeiras 4, Portugal, Doubles"
     },
     {
@@ -602,7 +602,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "0-0",
+      "setScores": "0-1",
       "tournament": "Madrid, Spain"
     },
     {
@@ -664,36 +664,6 @@
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16048604,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-25",
-      "fixedTime": "16:30",
-      "timestamp": 1777123800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Siegemund L / Zvonareva V",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jovic I / Mboko V",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain, Doubles"
-    },
-    {
       "id": 16012172,
       "isElite": true,
       "status": "notstarted",
@@ -720,6 +690,36 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16048604,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-25",
+      "fixedTime": "16:40",
+      "timestamp": 1777124400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Siegemund L / Zvonareva V",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jovic I / Mboko V",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16012173,
