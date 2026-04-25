@@ -35,7 +35,7 @@ function printFullSummary() {
     globalSummary = {};
 }
 
-// ⚽ AYARLAR
+// ⚽ AYARLAR & LOGOLAR
 const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 const ELITE_FOOT_IDS = [52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015];
@@ -47,13 +47,13 @@ const getFootBroadcaster = (utId) => {
     return staticConfigs[utId] || "Resmi Yayıncı";
 };
 
-// 🏀 AYARLAR
+// 🏀 AYARLAR & LOGOLAR
 const BASK_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/`;
 const ELITE_BASK_IDS = [3547, 138, 142, 137, 132, 167, 168];
 const baskLeagueConfigs = { 3547: "S Sport / NBA TV", 138: "S Sport Plus", 142: "S Sport Plus", 137: "TRT Spor", 132: "beIN Sports 5" };
 const targetBaskIds = Object.keys(baskLeagueConfigs).map(Number);
 
-// 🎾 AYARLAR
+// 🎾 AYARLAR & LOGOLAR
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/`;
 
@@ -86,7 +86,8 @@ async function runFootball(page) {
             tournament: ut.name
         };
     });
-    fs.writeFileSync("matches_football.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: matches.length, matches }, null, 2));
+    // 📁 KLASÖR YOLU DÜZELTİLDİ
+    fs.writeFileSync("football/matches_football.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: matches.length, matches }, null, 2));
 }
 
 async function runBasketball(page) {
@@ -117,7 +118,8 @@ async function runBasketball(page) {
             tournament: ut.name
         };
     });
-    fs.writeFileSync("matches_basketball.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: matches.length, matches }, null, 2));
+    // 📁 KLASÖR YOLU DÜZELTİLDİ
+    fs.writeFileSync("basketball/matches_basketball.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: matches.length, matches }, null, 2));
 }
 
 async function runTennis(page) {
@@ -144,7 +146,8 @@ async function runTennis(page) {
                     tournament: e.tournament.name
                 };
             });
-            fs.writeFileSync("matches_tennis.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: matches.length, matches }, null, 2));
+            // 📁 TENİS GENELDE ANA DİZİNDEDİR
+            fs.writeFileSync("tennis/matches_tennis.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: matches.length, matches }, null, 2));
         }
     } catch (e) {}
 }
