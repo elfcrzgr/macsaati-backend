@@ -50,6 +50,16 @@ const getFootBroadcaster = (utId) => {
     return staticConfigs[utId] || "beIN Sports";
 };
 
+const teamTranslations = { "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere", "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "usa": "ABD" };
+const translateTeam = (name) => {
+    if (!name) return name;
+    const cleanSearch = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    for (const [eng, tr] of Object.entries(teamTranslations)) {
+        if (cleanSearch.includes(eng)) return name.replace(new RegExp(eng, 'i'), tr);
+    }
+    return name;
+};
+
 // =========================================================================
 // 🏀 BASKETBOL AYARLARI
 // =========================================================================
@@ -59,7 +69,7 @@ const baskLeagueConfigs = { 3547: "S Sport / NBA TV", 138: "S Sport Plus", 142: 
 const targetBaskIds = Object.keys(baskLeagueConfigs).map(Number);
 
 // =========================================================================
-// 🎾 TENİS AYARLARI (SENİN ORİJİNAL KODUN)
+// 🎾 TENİS AYARLARI
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
@@ -89,9 +99,8 @@ const checkIsEliteMatch = (tournamentName) => {
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
-
 // =========================================================================
-// 🚀 MOTORLAR
+// 🚀 MOTORLAR (TÜMÜNDE KLON KORUMASI AKTİF)
 // =========================================================================
 
 async function runFootball(page) {
@@ -104,28 +113,34 @@ async function runFootball(page) {
             if (data?.events) allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
         } catch (e) {}
     }
-    const matches = allEvents.map(e => {
+
+    const finalMatchesMap = new Map();
+    allEvents.forEach(e => {
+        if (finalMatchesMap.has(e.id)) return; // 🚀 Çift kayıt engelleyici
+        
         const ut = e.tournament.uniqueTournament;
         const status = e.status.type;
+        const showScore = status === 'inprogress' || status === 'finished';
         addToSummary("football", ut.name);
         
-        // 🚨 SAAT BİLGİSİ ASLA SİLİNMEYECEK
         const timeString = new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
         
-        return {
+        finalMatchesMap.set(e.id, {
             id: e.id, isElite: ELITE_FOOT_IDS.includes(ut.id), status,
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
-            fixedTime: timeString, // Saf saat! "CANLI" vs. eklemeleri Android yapacak.
+            fixedTime: timeString, // Saf saat
             timestamp: e.startTimestamp * 1000,
             broadcaster: getFootBroadcaster(ut.id),
-            homeTeam: { name: e.homeTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
-            awayTeam: { name: e.awayTeam.name, logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
+            homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
+            awayTeam: { name: translateTeam(e.awayTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + ut.id + ".png",
-            homeScore: (status === 'inprogress' || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
-            awayScore: (status === 'inprogress' || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
+            homeScore: showScore ? String(e.homeScore?.display ?? "0") : "-",
+            awayScore: showScore ? String(e.awayScore?.display ?? "0") : "-",
             tournament: ut.name
-        };
+        });
     });
+
+    const matches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync("matches_football.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: matches.length, matches }, null, 2));
 }
 
@@ -141,33 +156,39 @@ async function runBasketball(page) {
             if (data?.events) allEvents.push(...data.events.filter(e => targetBaskIds.includes(e.tournament?.uniqueTournament?.id)));
         } catch (e) {}
     }
-    const matches = allEvents.map(e => {
+
+    const finalMatchesMap = new Map();
+    allEvents.forEach(e => {
+        if (finalMatchesMap.has(e.id)) return; // 🚀 Çift kayıt engelleyici
+        
         const ut = e.tournament.uniqueTournament;
         const status = e.status.type;
+        const showScore = status === 'inprogress' || status === 'finished';
         addToSummary("basketball", ut.name);
         
-        // 🚨 SAAT BİLGİSİ ASLA SİLİNMEYECEK
         const timeString = new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
-        return {
+        finalMatchesMap.set(e.id, {
             id: e.id, isElite: ELITE_BASK_IDS.includes(ut.id), status,
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
-            fixedTime: timeString, // Saf saat!
+            fixedTime: timeString, // Saf saat
             timestamp: e.startTimestamp * 1000,
             broadcaster: baskLeagueConfigs[ut.id] || "Resmi Yayıncı",
             homeTeam: { name: e.homeTeam.name, logo: BASK_BASE_URL + "logos/" + e.homeTeam.id + ".png" },
             awayTeam: { name: e.awayTeam.name, logo: BASK_BASE_URL + "logos/" + e.awayTeam.id + ".png" },
             tournamentLogo: BASK_BASE_URL + "tournament_logos/" + ut.id + ".png",
-            homeScore: (status === 'inprogress' || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
-            awayScore: (status === 'inprogress' || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
+            homeScore: showScore ? String(e.homeScore?.display ?? "0") : "-",
+            awayScore: showScore ? String(e.awayScore?.display ?? "0") : "-",
             tournament: ut.name
-        };
+        });
     });
+
+    const matches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync("matches_basketball.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalMatches: matches.length, matches }, null, 2));
 }
 
 async function runTennis(page) {
-    console.log("🎾 Tenis taranıyor (Derin Tarama Aktif)...");
+    console.log("🎾 Tenis taranıyor (Klon Korumalı Derin Tarama)...");
     let rawEvents = [];
     const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     const stubbornTournamentIds = new Set([2391]); 
@@ -212,6 +233,8 @@ async function runTennis(page) {
 
     const finalMatchesMap = new Map();
     for (const e of rawEvents) {
+        if (finalMatchesMap.has(e.id)) continue; // 🚀 Çift kayıt engelleyici - Detay çekmeden atlar!
+
         const startTimestamp = e.startTimestamp * 1000;
         const dateTR = new Date(startTimestamp);
         const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
@@ -251,7 +274,7 @@ async function runTennis(page) {
 
         const statusType = e.status?.type;
         const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }); // Saf Saat
-        const hasScore = statusType === 'inprogress' || statusType === 'finished';
+        const showScore = statusType === 'inprogress' || statusType === 'finished';
 
         let setScoresStr = "";
         if (e.homeScore && e.awayScore) {
@@ -271,8 +294,8 @@ async function runTennis(page) {
             awayTeam: { name: e.awayTeam.name || "Belli Değil", logos: awayLogos },
             homeRank: homeRank, awayRank: awayRank,
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
-            homeScore: hasScore ? String(e.homeScore?.display ?? "0") : "-",
-            awayScore: hasScore ? String(e.awayScore?.display ?? "0") : "-",
+            homeScore: showScore ? String(e.homeScore?.display ?? "0") : "-",
+            awayScore: showScore ? String(e.awayScore?.display ?? "0") : "-",
             setScores: setScoresStr, tournament: tourName
         });
     }
