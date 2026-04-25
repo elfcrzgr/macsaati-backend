@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-25T12:23:34.026Z",
-  "totalMatches": 78,
+  "lastUpdated": "2026-04-25T12:24:47.312Z",
+  "totalMatches": 79,
   "matches": [
     {
       "id": 16012152,
@@ -400,7 +400,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "0-6, 1-4",
+      "setScores": "0-6, 1-5",
       "tournament": "Madrid, Spain"
     },
     {
@@ -518,36 +518,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34229.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-2",
+      "setScores": "2-3",
       "tournament": "Oeiras 4, Portugal, Doubles"
-    },
-    {
-      "id": 16013100,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-25",
-      "fixedTime": "15:20",
-      "timestamp": 1777119600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Brandon Nakashima",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alexander Blockx",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
-        ]
-      },
-      "homeRank": "32",
-      "awayRank": "69",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
     },
     {
       "id": 16012169,
@@ -662,6 +634,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Madrid, Spain, Doubles"
+    },
+    {
+      "id": 16013100,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-25",
+      "fixedTime": "15:25",
+      "timestamp": 1777119900000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Brandon Nakashima",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Alexander Blockx",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
+        ]
+      },
+      "homeRank": "32",
+      "awayRank": "69",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
     },
     {
       "id": 16048604,
@@ -1389,6 +1389,34 @@
       },
       "homeRank": "31",
       "awayRank": "42",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16013079,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-26",
+      "fixedTime": "11:00",
+      "timestamp": 1777190400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Karen Khachanov",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jakub Menšik",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "homeRank": "16",
+      "awayRank": "27",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
