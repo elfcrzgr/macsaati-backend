@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-25T12:32:04.029Z",
+  "lastUpdated": "2026-04-25T12:33:16.656Z",
   "totalMatches": 80,
   "matches": [
     {
@@ -288,7 +288,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "3-6, 6-3, 1-1",
+      "setScores": "3-6, 6-3, 2-1",
       "tournament": "Madrid, Spain"
     },
     {
@@ -522,34 +522,6 @@
       "tournament": "Oeiras 4, Portugal, Doubles"
     },
     {
-      "id": 16012169,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-25",
-      "fixedTime": "15:20",
-      "timestamp": 1777119600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Ugo Humbert",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Terence Atmane",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "homeRank": "34",
-      "awayRank": "47",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
       "id": 16013094,
       "isElite": true,
       "status": "notstarted",
@@ -657,6 +629,34 @@
       },
       "homeRank": "32",
       "awayRank": "69",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16012169,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-25",
+      "fixedTime": "15:35",
+      "timestamp": 1777120500000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Ugo Humbert",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Terence Atmane",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "homeRank": "34",
+      "awayRank": "47",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
