@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-25T14:41:59.502Z",
-  "totalMatches": 84,
+  "lastUpdated": "2026-04-25T14:43:11.659Z",
+  "totalMatches": 85,
   "matches": [
     {
       "id": 16012152,
@@ -716,7 +716,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "1-6, 1-0",
+      "setScores": "1-6, 2-0",
       "tournament": "Madrid, Spain"
     },
     {
@@ -750,7 +750,7 @@
     {
       "id": 16018908,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-25",
       "fixedTime": "17:30",
       "timestamp": 1777127400000,
@@ -772,9 +772,9 @@
       "homeRank": null,
       "awayRank": null,
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "0-0",
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -2384,6 +2384,36 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16018906,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-27",
+      "fixedTime": "12:00",
+      "timestamp": 1777280400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Hsieh S-W / Kenin S",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Boulter K / Williams V",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16018909,
