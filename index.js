@@ -132,19 +132,29 @@ async function runFootball(page) {
 
     const finalMatchesMap = new Map();
     allEvents.forEach(e => {
-        if (finalMatchesMap.has(e.id)) return; 
+        if (finalMatchesMap.has(e.id)) return;
         
         const ut = e.tournament.uniqueTournament;
         const status = e.status.type;
         const showScore = status === 'inprogress' || status === 'finished';
-        addToSummary("football", ut.name);
         
+        // ⏱️ DAKİKA BİLGİSİ ÇEKİMİ
+        let liveMinute = "";
+        if (status === 'inprogress') {
+            liveMinute = e.status.description || "";
+            // SofaScore "1st half" veya "Halftime" derse biz "İY" yapıyoruz
+            if (liveMinute.toLowerCase().includes("half")) liveMinute = "İY";
+        }
+
         const timeString = new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
         
         finalMatchesMap.set(e.id, {
-            id: e.id, isElite: ELITE_FOOT_IDS.includes(ut.id), status,
+            id: e.id, 
+            isElite: ELITE_FOOT_IDS.includes(ut.id), 
+            status: status,
+            liveMinute: liveMinute, // 🆕 Yeni alan
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
-            fixedTime: timeString, 
+            fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
             broadcaster: getFootBroadcaster(ut.id),
             homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
