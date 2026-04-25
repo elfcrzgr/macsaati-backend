@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-25T16:42:57.733Z",
+  "lastUpdated": "2026-04-25T16:44:10.943Z",
   "totalMatches": 98,
   "matches": [
     {
@@ -838,7 +838,7 @@
     {
       "id": 16012173,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-25",
       "fixedTime": "18:10",
       "timestamp": 1777129800000,
@@ -859,8 +859,8 @@
       "awayRank": "96",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "4-6, 3-5",
+      "awayScore": "2",
+      "setScores": "4-6, 3-6",
       "tournament": "Madrid, Spain"
     },
     {
@@ -868,8 +868,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-25",
-      "fixedTime": "19:40",
-      "timestamp": 1777135200000,
+      "fixedTime": "20:00",
+      "timestamp": 1777136400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Daniel Merida",
@@ -885,34 +885,6 @@
       },
       "homeRank": "102",
       "awayRank": "30",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16013097,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-25",
-      "fixedTime": "19:40",
-      "timestamp": 1777135200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Nicolai Budkov Kjaer",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/no.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Denis Shapovalov",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "homeRank": "140",
-      "awayRank": "35",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
@@ -941,6 +913,34 @@
       },
       "homeRank": "10",
       "awayRank": "50",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16013097,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-25",
+      "fixedTime": "20:00",
+      "timestamp": 1777136400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Nicolai Budkov Kjaer",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/no.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Denis Shapovalov",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "homeRank": "140",
+      "awayRank": "35",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
