@@ -113,15 +113,33 @@ const getTennisBroadcaster = (tournamentName, isElite) => {
 // =========================================================================
 
 async function runFootball(page) {
-    console.log("⚽ Futbol taranıyor...");
+    console.log("⚽ Futbol taranıyor (Gerçek Dakika Desteğiyle)...");
     let allEvents = [];
+    
+    // 1. ADIM: Günlük Maç Listesini Çek (Bugün, Yarın, Sonraki Gün)
     for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         try {
             await page.goto(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => JSON.parse(document.body.innerText));
-            if (data?.events) allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
+            if (data?.events) {
+                allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
+            }
         } catch (e) {}
     }
+
+    // 2. ADIM: Canlı Maçların Detaylı Dakikalarını Çek (Live API)
+    let liveDetails = new Map();
+    try {
+        await page.goto(`https://www.sofascore.com/api/v1/sport/football/events/live`, { waitUntil: 'networkidle2' });
+        const liveData = await page.evaluate(() => JSON.parse(document.body.innerText));
+        if (liveData?.events) {
+            liveData.events.forEach(le => {
+                // Sadece dakikayı (örn: 78') veya devre bilgisini temizleyip alıyoruz
+                const desc = le.status?.description || "";
+                liveDetails.set(le.id, desc.replace(/[']/g, "")); 
+            });
+        }
+    } catch (e) { console.log("⚠️ Canlı detaylar şu an alınamadı."); }
 
     const finalMatchesMap = new Map();
     allEvents.forEach(e => {
@@ -131,33 +149,34 @@ async function runFootball(page) {
         const status = e.status.type;
         const showScore = status === 'inprogress' || status === 'finished';
 
-        // ✅ Nations League gruplarını isme ekle
+        // Uluslar Ligi gruplarını isme ekle
         let tourName = ut.name;
         if (ut.id === 10783 && e.roundInfo) tourName = `Uluslar Ligi - ${e.roundInfo.name}`;
         
         addToSummary("football", tourName);
 
-        // ✅ AKILLI DAKİKA AYIKLAYICI
+        // ⏱️ DAKİKA MANTIĞI (Önce Live API'den gelen gerçek dakikaya bakıyoruz)
         let liveMinute = "";
         if (status === 'inprogress') {
-            const desc = e.status.description || "";
-            if (/\d/.test(desc)) {
-                // Rakam varsa dakikadır (örn: 78'), ' işaretini Java eklediği için burada temizliyoruz
-                liveMinute = desc.replace(/[']/g, "").trim(); 
-            } else if (desc.toLowerCase().includes("half")) {
-                liveMinute = "İY";
-            } else if (desc.toLowerCase().includes("halftime")) {
-                liveMinute = "DA";
+            // Eğer canlı listede bu maçı bulduysak oradaki gerçek dakikayı al (78 gibi)
+            if (liveDetails.has(e.id)) {
+                liveMinute = liveDetails.get(e.id);
             } else {
-                liveMinute = desc;
+                // Bulamadıysak eski usul periyot bilgisini temizle
+                liveMinute = (e.status.description || "").replace(/half/i, "İY");
             }
+            
+            // Eğer sonuç hala "1st İY" veya "2nd İY" ise sadece "İY" yapalım (Temizlik)
+            if (liveMinute.toLowerCase().includes("half")) liveMinute = "İY";
+            if (liveMinute.includes("1st")) liveMinute = "1.Y";
+            if (liveMinute.includes("2nd")) liveMinute = "2.Y";
         }
 
         finalMatchesMap.set(e.id, {
             id: e.id, 
             isElite: ELITE_FOOT_IDS.includes(ut.id), 
             status: status,
-            liveMinute: liveMinute,
+            liveMinute: liveMinute, // 🆕 Gerçek dakika buraya gidiyor
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
