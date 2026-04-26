@@ -120,12 +120,11 @@ const getTennisBroadcaster = (tournamentName, isElite) => {
 
 
 
-
 async function runFootball(page) {
-    console.log("⚽ Futbol taranıyor...");
+    console.log("⚽ Futbol taranıyor (Derin Dakika Analizi & Matematiksel Hesaplama Aktif)...");
     let allEvents = [];
     
-    // 1. ADIM: Günlük Listeyi Çek
+    // 1. ADIM: Günlük Listeyi Çek (3 Günlük)
     for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         try {
             const data = await page.evaluate(async (date) => {
@@ -134,104 +133,86 @@ async function runFootball(page) {
             }, date);
             
             if (data?.events) {
+                // Sadece hedef ligleri filtrele
                 allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
             }
         } catch (e) {
-            console.log(`⚠️ ${date} tarihi çekilemedi`);
+            console.log(`⚠️ ${date} tarihi çekilemedi: ${e.message}`);
         }
     }
 
-    // 2. ADIM: Canlı Maçlar İçin Detaylı Dakika Bilgisi
+    // 2. ADIM: Canlı Maçlar İçin Detaylı Dakika Hesaplama
     const liveMinutesPool = new Map();
     const liveMatches = allEvents.filter(e => e.status.type === 'inprogress');
     
     if (liveMatches.length > 0) {
         try {
+            // Canlı maçların detaylarını (Timestamp verisi için) çekiyoruz
             const liveData = await page.evaluate(async (matchIds) => {
                 const results = {};
-                
+                // API'yi yormamak için 3'erli gruplar halinde çekelim
                 for (let i = 0; i < matchIds.length; i += 3) {
                     const chunk = matchIds.slice(i, i + 3);
-                    
                     const promises = chunk.map(id => 
                         fetch(`https://api.sofascore.com/api/v1/event/${id}`)
                             .then(res => res.json())
-                            .then(data => ({
-                                id,
-                                event: data.event
-                            }))
-                            .catch(() => ({ id, event: null }))
+                            .catch(() => ({ event: null }))
                     );
-                    
                     const responses = await Promise.all(promises);
-                    responses.forEach(({ id, event }) => {
-                        results[id] = event;
+                    responses.forEach((res, index) => {
+                        if (res && res.event) results[chunk[index]] = res.event;
                     });
                 }
-                
                 return results;
             }, liveMatches.map(m => m.id));
             
-            // Dakika bilgisi çıkart
+            // ⏱️ MATEMATİKSEL DAKİKA HESABI
             for (const match of liveMatches) {
-                const eventDetail = liveData[match.id];
-                
-                if (!eventDetail) {
+                const detail = liveData[match.id];
+                if (!detail || !detail.time?.currentPeriodStartTimestamp) {
                     liveMinutesPool.set(match.id, "Canlı");
                     continue;
                 }
 
-                const status = eventDetail.status;
-                const time = eventDetail.time;
-                let minute = "";
+                const status = detail.status;
+                const time = detail.time;
+                const now = Math.floor(Date.now() / 1000);
+                const elapsed = now - time.currentPeriodStartTimestamp;
+                const calcMinute = Math.floor(elapsed / 60);
                 
-                // ✅ ÇALIŞAN STRATEJİ: currentPeriodStartTimestamp kullan
-                if (time?.currentPeriodStartTimestamp) {
-                    const now = Math.floor(Date.now() / 1000);
-                    const elapsed = now - time.currentPeriodStartTimestamp;
-                    const calcMinute = Math.floor(elapsed / 60);
-                    
-                    if (status?.code === 7) {
-                        // 2nd half: 45 + dakika
-                        minute = String(Math.min(45 + calcMinute, 90));
-                    } else if (status?.code === 6) {
-                        // 1st half: 0 + dakika
-                        minute = String(Math.min(calcMinute, 45));
-                    } else if (status?.code === 31) {
-                        // Halftime
-                        minute = "DA";
-                    } else {
-                        // Diğer durumlar
-                        minute = String(calcMinute);
-                    }
-                } else if (status?.description?.toLowerCase().includes("halftime")) {
-                    minute = "DA";
+                let minuteResult = "";
+
+                if (status?.code === 31) { // Halftime
+                    minuteResult = "DA";
+                } else if (status?.code === 7) { // 2. Yarı
+                    // 2. yarıda SofaScore süreyi sıfırlar, 45 ekliyoruz
+                    minuteResult = String(45 + calcMinute);
+                } else if (status?.code === 6) { // 1. Yarı
+                    minuteResult = String(calcMinute);
                 } else {
-                    minute = "Canlı";
+                    minuteResult = String(calcMinute);
                 }
-                
-                liveMinutesPool.set(match.id, minute);
-                console.log(`📍 ${match.homeTeam.name} vs ${match.awayTeam.name}: ${minute}'`);
+
+                liveMinutesPool.set(match.id, minuteResult);
+                console.log(`📍 [CANLI] ${match.homeTeam.name}: ${minuteResult}'`);
             }
-            
-            console.log(`✅ ${liveMinutesPool.size}/${liveMatches.length} canlı maçın dakikası alındı`);
         } catch (e) {
-            console.log(`❌ Dakika havuzu hatası: ${e.message}`);
+            console.log(`❌ Dakika hesaplama motoru hatası: ${e.message}`);
         }
     }
 
-    // 3. ADIM: Final Maç Listesini Oluştur
+    // 3. ADIM: Final JSON Listesini Oluştur
     const finalMatchesMap = new Map();
     allEvents.forEach(e => {
         if (finalMatchesMap.has(e.id)) return;
         
         const ut = e.tournament.uniqueTournament;
-        const status = e.status.type;
-        const showScore = status === 'inprogress' || status === 'finished';
+        const statusType = e.status.type;
+        const showScore = statusType === 'inprogress' || statusType === 'finished';
         
         let liveMinute = "";
-        if (status === 'inprogress') {
-            liveMinute = liveMinutesPool.get(e.id) || "Canlı";
+        if (statusType === 'inprogress') {
+            liveMinute = liveMinutesPool.get(e.id) || "İY";
         }
 
         addToSummary("football", ut.name);
@@ -239,14 +220,20 @@ async function runFootball(page) {
         finalMatchesMap.set(e.id, {
             id: e.id, 
             isElite: ELITE_FOOT_IDS.includes(ut.id), 
-            status: status,
+            status: statusType,
             liveMinute: liveMinute,
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: getFootBroadcaster(ut.id),
-            homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
-            awayTeam: { name: translateTeam(e.awayTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
+            homeTeam: { 
+                name: translateTeam(e.homeTeam.name), 
+                logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
+            },
+            awayTeam: { 
+                name: translateTeam(e.awayTeam.name), 
+                logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
+            },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + ut.id + ".png",
             homeScore: showScore ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: showScore ? String(e.awayScore?.display ?? "0") : "-",
@@ -257,7 +244,6 @@ async function runFootball(page) {
     const matches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync("matches_football.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches }, null, 2));
 }
-
 
 
 
