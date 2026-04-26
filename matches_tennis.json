@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T15:02:45.097Z",
+  "lastUpdated": "2026-04-26T15:03:58.252Z",
   "totalMatches": 120,
   "matches": [
     {
@@ -946,7 +946,7 @@
     {
       "id": 16012126,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-26",
       "fixedTime": "16:45",
       "timestamp": 1777211100000,
@@ -967,8 +967,8 @@
       "awayRank": "23",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "1-6, 4-5",
+      "awayScore": "2",
+      "setScores": "1-6, 4-6",
       "tournament": "Madrid, Spain"
     },
     {
@@ -996,7 +996,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-2, 2-1",
+      "setScores": "6-2, 2-2",
       "tournament": "Madrid, Spain"
     },
     {
@@ -1180,8 +1180,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-26",
-      "fixedTime": "18:10",
-      "timestamp": 1777216200000,
+      "fixedTime": "18:20",
+      "timestamp": 1777216800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Schnaitter J / Wallner M",
