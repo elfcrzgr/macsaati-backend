@@ -119,7 +119,7 @@ const getTennisBroadcaster = (tournamentName, isElite) => {
 
 
 async function runFootball(page) {
-    console.log("⚽ Futbol taranıyor (Dakika Mantığı Onarıldı)...");
+    console.log("⚽ Futbol taranıyor (Kesin Çözüm Modu)...");
     let allEvents = [];
     
     // 1. ADIM: Günlük Listeyi Çek
@@ -133,18 +133,21 @@ async function runFootball(page) {
         } catch (e) {}
     }
 
-    // 2. ADIM: Live API Havuzunu Doldur
+    // 2. ADIM: Canlı Dakika Havuzunu Çek (Daha Yavaş ve Sağlam Bekleme ile)
     let liveMinutesPool = new Map();
     try {
-        await page.goto(`https://www.sofascore.com/api/v1/sport/football/events/live`, { waitUntil: 'networkidle2' });
+        await page.goto(`https://www.sofascore.com/api/v1/sport/football/events/live`, { waitUntil: 'networkidle0' }); // idle0 daha sağlam bekler
         const liveData = await page.evaluate(() => JSON.parse(document.body.innerText));
         if (liveData?.events) {
             liveData.events.forEach(le => {
+                // SofaScore'un gerçek dakika alanı genellikle description içindedir
                 liveMinutesPool.set(le.id, le.status?.description || "");
             });
-            console.log(`✅ Canlı havuzda ${liveMinutesPool.size} maçın dakikası güncellendi.`);
+            console.log(`✅ Canlı Havuz Hazır: ${liveMinutesPool.size} maç bulundu.`);
         }
-    } catch (e) { console.log("⚠️ Live API'ye şu an ulaşılamıyor."); }
+    } catch (e) { 
+        console.log("❌ KRİTİK HATA: Canlı API çekilemedi!"); 
+    }
 
     const finalMatchesMap = new Map();
     allEvents.forEach(e => {
@@ -153,33 +156,32 @@ async function runFootball(page) {
         const ut = e.tournament.uniqueTournament;
         const status = e.status.type;
         const showScore = status === 'inprogress' || status === 'finished';
-
-        let tourName = ut.name;
-        if (ut.id === 10783 && e.roundInfo) tourName = `Uluslar Ligi - ${e.roundInfo.name}`;
         
-        addToSummary("football", tourName);
-
-        // ⏱️ DAKİKA BELİRLEME (DA Hatası Giderilmiş Yeni Mantık)
         let liveMinute = "";
         if (status === 'inprogress') {
-            const rawDesc = liveMinutesPool.get(e.id) || e.status.description || "";
-            
-            // Log ekleyelim ki terminalde görelim (İsteğe bağlı)
-            if (e.homeTeam.name.includes("Galatasaray")) console.log(`🔍 GS Maçı Ham Veri: "${rawDesc}"`);
-
-            if (rawDesc.includes("'")) {
-                // Eğer içinde tırnak varsa bu gerçek dakikadır: "82'" -> "82"
-                liveMinute = rawDesc.replace(/[^0-9+]/g, "").trim(); 
-            } else if (rawDesc.toLowerCase() === "halftime" || rawDesc.toLowerCase() === "break") {
-                // Sadece tam devre arasındaysa DA yaz
-                liveMinute = "DA";
-            } else if (rawDesc.toLowerCase().includes("1st half")) {
-                liveMinute = "1.Y";
-            } else if (rawDesc.toLowerCase().includes("2nd half")) {
-                liveMinute = "2.Y";
+            // HAVUZ KONTROLÜ
+            if (liveMinutesPool.has(e.id)) {
+                const clock = liveMinutesPool.get(e.id); // Örn: "78'"
+                
+                if (clock.includes("'")) {
+                    liveMinute = clock.replace(/[^0-9+]/g, "").trim(); 
+                } else if (clock.toLowerCase().includes("half") && clock.toLowerCase().includes("time")) {
+                    liveMinute = "DA";
+                } else if (clock.toLowerCase().includes("1st")) {
+                    liveMinute = "1.Y";
+                } else if (clock.toLowerCase().includes("2nd")) {
+                    liveMinute = "2.Y";
+                } else {
+                    liveMinute = clock;
+                }
             } else {
-                // Hiçbirine uymuyorsa ham veriyi temizle (Örn: "Injury time" -> "İY")
-                liveMinute = rawDesc.length > 5 ? "İY" : rawDesc;
+                // Havuzda maç yoksa nedenini anlamak için log basalım
+                if (e.homeTeam.name.includes("Galatasaray")) {
+                    console.log(`⚠️ UYARI: GS maçı canlı havuzda bulunamadı! ID: ${e.id}`);
+                }
+                // Fallback (Senin aldığın "2.Y" burdan geliyor)
+                const fallbackDesc = e.status.description || "";
+                liveMinute = fallbackDesc.includes("1st") ? "1.Y" : (fallbackDesc.includes("2nd") ? "2.Y" : "İY");
             }
         }
 
@@ -197,16 +199,13 @@ async function runFootball(page) {
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + ut.id + ".png",
             homeScore: showScore ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: showScore ? String(e.awayScore?.display ?? "0") : "-",
-            tournament: tourName
+            tournament: ut.name
         });
     });
 
     const matches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync("matches_football.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches }, null, 2));
 }
-
-
-
 
 
 
