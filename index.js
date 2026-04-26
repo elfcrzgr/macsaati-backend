@@ -113,10 +113,10 @@ const getTennisBroadcaster = (tournamentName, isElite) => {
 // =========================================================================
 
 async function runFootball(page) {
-    console.log("⚽ Futbol taranıyor (Gelişmiş Dakika Ayıklama)...");
+    console.log("⚽ Futbol taranıyor (Gerçek Dakika & Debug Modu Aktif)...");
     let allEvents = [];
     
-    // 1. Günlük Maç Listesini Çek
+    // 1. ADIM: Günlük Listeyi Çek
     for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         try {
             await page.goto(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
@@ -127,17 +127,18 @@ async function runFootball(page) {
         } catch (e) {}
     }
 
-    // 2. Canlı Detayları Çek (Live API)
-    let liveDetails = new Map();
+    // 2. ADIM: Live API'den Gerçek Dakikaları Avla
+    let liveClocks = new Map();
     try {
         await page.goto(`https://www.sofascore.com/api/v1/sport/football/events/live`, { waitUntil: 'networkidle2' });
         const liveData = await page.evaluate(() => JSON.parse(document.body.innerText));
         if (liveData?.events) {
             liveData.events.forEach(le => {
-                liveDetails.set(le.id, le.status?.description || "");
+                // SofaScore burada "78'", "45+2'" gibi net veriyi status.description içinde verir.
+                liveClocks.set(le.id, le.status?.description || "");
             });
         }
-    } catch (e) { console.log("⚠️ Canlı detaylar şu an alınamadı."); }
+    } catch (e) { console.log("⚠️ Canlı dakikalar (Live API) şu an çekilemedi."); }
 
     const finalMatchesMap = new Map();
     allEvents.forEach(e => {
@@ -150,30 +151,30 @@ async function runFootball(page) {
         // Uluslar Ligi gruplarını isme ekle
         let tourName = ut.name;
         if (ut.id === 10783 && e.roundInfo) tourName = `Uluslar Ligi - ${e.roundInfo.name}`;
-        
         addToSummary("football", tourName);
 
-        // ⏱️ GELİŞMİŞ DAKİKA AYIKLAMA MANTIĞI
-        // runFootball içinde liveMinute'ı oluşturduğun yeri SİL ve bunu yapıştır:
+        // ⏱️ DAKİKA AYIKLAMA (Burası Çok Kritik)
+        let liveMinute = "";
+        if (status === 'inprogress') {
+            // Önce Live API'deki veriye bak, yoksa genel listedeki veriye bak
+            const rawDesc = liveClocks.get(e.id) || e.status.description || "";
+            
+            // 📝 Terminale ham veriyi basıyoruz (iMac'ten kontrol etmen için)
+            console.log(`🔍 [HAM VERİ] ${e.homeTeam.name}: "${rawDesc}"`);
 
-let liveMinute = "";
-if (status === 'inprogress') {
-    const desc = e.status.description || ""; 
+            if (rawDesc.includes("'")) {
+                // İçinde tırnak varsa gerçektir: "78'" -> "78", "45+2'" -> "45+2"
+                liveMinute = rawDesc.replace(/[^0-9+]/g, "").trim(); 
+            } else if (rawDesc.toLowerCase().includes("half")) {
+                // "1st half" -> "1.Y", "2nd half" -> "2.Y"
+                liveMinute = rawDesc.toLowerCase().includes("1st") ? "1.Y" : "2.Y";
+            } else if (rawDesc.toLowerCase().includes("break") || rawDesc.toLowerCase().includes("time")) {
+                liveMinute = "DA"; // Devre Arası
+            } else {
+                liveMinute = rawDesc; // Diğer (Uzatma, Penaltı vb.)
+            }
+        }
 
-    // ✅ REGEKS KULLANARAK SADECE RAKAMI AYIKLA
-    // Bu satır metnin içindeki "78" veya "45+2" gibi rakamları bulur.
-    const minuteMatch = desc.match(/[0-9+]+/); 
-
-    if (minuteMatch) {
-        liveMinute = minuteMatch[0]; // Eğer rakam bulduysa (Örn: 78) onu al.
-    } else {
-        // Rakam bulamadıysa (devre arası vb.) metni kısaltalım
-        if (desc.toLowerCase().includes("1st")) liveMinute = "1.Y";
-        else if (desc.toLowerCase().includes("2nd")) liveMinute = "2.Y";
-        else if (desc.toLowerCase().includes("half")) liveMinute = "DA";
-        else liveMinute = desc;
-    }
-}
         finalMatchesMap.set(e.id, {
             id: e.id, 
             isElite: ELITE_FOOT_IDS.includes(ut.id), 
