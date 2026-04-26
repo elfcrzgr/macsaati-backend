@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T08:40:54.713Z",
-  "totalMatches": 77,
+  "lastUpdated": "2026-04-26T08:42:06.944Z",
+  "totalMatches": 78,
   "matches": [
     {
       "id": 16069224,
@@ -202,7 +202,7 @@
     {
       "id": 16069192,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-26",
       "fixedTime": "09:20",
       "timestamp": 1777184400000,
@@ -223,8 +223,8 @@
       "awayRank": "643",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
       "homeScore": "0",
-      "awayScore": "1",
-      "setScores": "6-7, 4-5",
+      "awayScore": "2",
+      "setScores": "6-7, 4-6",
       "tournament": "Huzhou, China Qualifying"
     },
     {
@@ -280,7 +280,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "3-4",
+      "setScores": "3-5",
       "tournament": "Saint-Malo, France, Qualifying"
     },
     {
@@ -1367,6 +1367,34 @@
       },
       "homeRank": "439",
       "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Huzhou, China Qualifying"
+    },
+    {
+      "id": 16073659,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-27",
+      "fixedTime": "05:00",
+      "timestamp": 1777255200000,
+      "broadcaster": "Tennis TV / Resmi Yayıncı",
+      "homeTeam": {
+        "name": "Zhibek Kulambayeva",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Meiqi Guo",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "homeRank": "395",
+      "awayRank": "484",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
       "homeScore": "-",
       "awayScore": "-",
