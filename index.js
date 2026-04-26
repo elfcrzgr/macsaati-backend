@@ -118,10 +118,13 @@ const getTennisBroadcaster = (tournamentName, isElite) => {
 
 
 
+
+
 async function runFootball(page) {
-    console.log("⚽ Futbol taranıyor...");
+    console.log("⚽ Futbol taranıyor (Derin Dakika Analizi & Matematiksel Hesaplama Aktif)...");
     let allEvents = [];
     
+    // 1. ADIM: Günlük Listeyi Çek (3 Günlük)
     for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         try {
             const data = await page.evaluate(async (date) => {
@@ -130,108 +133,86 @@ async function runFootball(page) {
             }, date);
             
             if (data?.events) {
+                // Sadece hedef ligleri filtrele
                 allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
             }
-        } catch (e) {}
+        } catch (e) {
+            console.log(`⚠️ ${date} tarihi çekilemedi: ${e.message}`);
+        }
     }
 
+    // 2. ADIM: Canlı Maçlar İçin Detaylı Dakika Hesaplama
     const liveMinutesPool = new Map();
     const liveMatches = allEvents.filter(e => e.status.type === 'inprogress');
     
-    // ===== DAKIKA BİLGİSİ =====
     if (liveMatches.length > 0) {
-        const liveData = await page.evaluate(async (matchIds) => {
-            const results = {};
-            for (let i = 0; i < matchIds.length; i += 3) {
-                const chunk = matchIds.slice(i, i + 3);
-                const promises = chunk.map(id => 
-                    fetch(`https://api.sofascore.com/api/v1/event/${id}`)
-                        .then(res => res.json())
-                        .then(data => ({ id, event: data.event }))
-                        .catch(() => ({ id, event: null }))
-                );
-                const responses = await Promise.all(promises);
-                responses.forEach(({ id, event }) => { results[id] = event; });
-            }
-            return results;
-        }, liveMatches.map(m => m.id));
-        
-        for (const match of liveMatches) {
-            const eventDetail = liveData[match.id];
-            let minute = "Canlı";
+        try {
+            // Canlı maçların detaylarını (Timestamp verisi için) çekiyoruz
+            const liveData = await page.evaluate(async (matchIds) => {
+                const results = {};
+                // API'yi yormamak için 3'erli gruplar halinde çekelim
+                for (let i = 0; i < matchIds.length; i += 3) {
+                    const chunk = matchIds.slice(i, i + 3);
+                    const promises = chunk.map(id => 
+                        fetch(`https://api.sofascore.com/api/v1/event/${id}`)
+                            .then(res => res.json())
+                            .catch(() => ({ event: null }))
+                    );
+                    const responses = await Promise.all(promises);
+                    responses.forEach((res, index) => {
+                        if (res && res.event) results[chunk[index]] = res.event;
+                    });
+                }
+                return results;
+            }, liveMatches.map(m => m.id));
             
-            if (eventDetail?.time?.currentPeriodStartTimestamp) {
+            // ⏱️ MATEMATİKSEL DAKİKA HESABI
+            for (const match of liveMatches) {
+                const detail = liveData[match.id];
+                if (!detail || !detail.time?.currentPeriodStartTimestamp) {
+                    liveMinutesPool.set(match.id, "Canlı");
+                    continue;
+                }
+
+                const status = detail.status;
+                const time = detail.time;
                 const now = Math.floor(Date.now() / 1000);
-                const elapsed = now - eventDetail.time.currentPeriodStartTimestamp;
+                const elapsed = now - time.currentPeriodStartTimestamp;
                 const calcMinute = Math.floor(elapsed / 60);
                 
-                if (eventDetail.status?.code === 7) {
-                    minute = String(Math.min(45 + calcMinute, 90));
-                } else if (eventDetail.status?.code === 6) {
-                    minute = String(Math.min(calcMinute, 45));
+                let minuteResult = "";
+
+                if (status?.code === 31) { // Halftime
+                    minuteResult = "DA";
+                } else if (status?.code === 7) { // 2. Yarı
+                    // 2. yarıda SofaScore süreyi sıfırlar, 45 ekliyoruz
+                    minuteResult = String(45 + calcMinute);
+                } else if (status?.code === 6) { // 1. Yarı
+                    minuteResult = String(calcMinute);
+                } else {
+                    minuteResult = String(calcMinute);
                 }
+
+                liveMinutesPool.set(match.id, minuteResult);
+                console.log(`📍 [CANLI] ${match.homeTeam.name}: ${minuteResult}'`);
             }
-            
-            liveMinutesPool.set(match.id, minute);
+        } catch (e) {
+            console.log(`❌ Dakika hesaplama motoru hatası: ${e.message}`);
         }
     }
-    
-    // ===== GOL + KART BİLGİSİ =====
-    const matchDetails = await page.evaluate(async (matchIds) => {
-        const results = {};
-        
-        for (let i = 0; i < matchIds.length; i += 2) {
-            const chunk = matchIds.slice(i, i + 2);
-            
-            const promises = chunk.map(id => 
-                fetch(`https://api.sofascore.com/api/v1/event/${id}/incidents`)
-                    .then(res => res.json())
-                    .then(data => ({ id, incidents: data.incidents || [] }))
-                    .catch(() => ({ id, incidents: [] }))
-            );
-            
-            const responses = await Promise.all(promises);
-            responses.forEach(({ id, incidents }) => {
-                results[id] = {
-                    goals: incidents.filter(i => i.type === 'goal'),
-                    cards: incidents.filter(i => i.type === 'card')
-                };
-            });
-        }
-        
-        return results;
-    }, liveMatches.map(m => m.id));
 
-    // 3. ADIM: Final Maç Listesini Oluştur
+    // 3. ADIM: Final JSON Listesini Oluştur
     const finalMatchesMap = new Map();
     allEvents.forEach(e => {
         if (finalMatchesMap.has(e.id)) return;
         
         const ut = e.tournament.uniqueTournament;
-        const status = e.status.type;
-        const showScore = status === 'inprogress' || status === 'finished';
+        const statusType = e.status.type;
+        const showScore = statusType === 'inprogress' || statusType === 'finished';
         
         let liveMinute = "";
-        let goals = [];
-        let cards = [];
-        
-        if (status === 'inprogress') {
-            liveMinute = liveMinutesPool.get(e.id) || "Canlı";
-            const details = matchDetails[e.id];
-            if (details) {
-                goals = details.goals.map(g => ({
-                    minute: g.timeSeconds ? Math.floor(g.timeSeconds / 60) : "?",
-                    player: g.player.name,
-                    team: g.isHome ? e.homeTeam.name : e.awayTeam.name,
-                    assist: g.assist?.name || null
-                }));
-                cards = details.cards.map(c => ({
-                    minute: c.timeSeconds ? Math.floor(c.timeSeconds / 60) : "?",
-                    player: c.player.name,
-                    team: c.isHome ? e.homeTeam.name : e.awayTeam.name,
-                    type: c.cardType // 'yellow' veya 'red'
-                }));
-            }
+        if (statusType === 'inprogress') {
+            liveMinute = liveMinutesPool.get(e.id) || "İY";
         }
 
         addToSummary("football", ut.name);
@@ -239,26 +220,31 @@ async function runFootball(page) {
         finalMatchesMap.set(e.id, {
             id: e.id, 
             isElite: ELITE_FOOT_IDS.includes(ut.id), 
-            status: status,
+            status: statusType,
             liveMinute: liveMinute,
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: getFootBroadcaster(ut.id),
-            homeTeam: { name: translateTeam(e.homeTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" },
-            awayTeam: { name: translateTeam(e.awayTeam.name), logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" },
+            homeTeam: { 
+                name: translateTeam(e.homeTeam.name), 
+                logo: FOOTBALL_TEAM_LOGO_BASE + e.homeTeam.id + ".png" 
+            },
+            awayTeam: { 
+                name: translateTeam(e.awayTeam.name), 
+                logo: FOOTBALL_TEAM_LOGO_BASE + e.awayTeam.id + ".png" 
+            },
             tournamentLogo: FOOTBALL_TOURNAMENT_LOGO_BASE + ut.id + ".png",
             homeScore: showScore ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: showScore ? String(e.awayScore?.display ?? "0") : "-",
-            tournament: ut.name,
-            goals: goals,
-            cards: cards
+            tournament: ut.name
         });
     });
 
     const matches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync("matches_football.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches }, null, 2));
 }
+
 
 
 
