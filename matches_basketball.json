@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T08:27:40.107Z",
-  "totalMatches": 20,
+  "lastUpdated": "2026-04-26T08:28:51.122Z",
+  "totalMatches": 21,
   "matches": [
     {
       "id": 15923103,
@@ -333,6 +333,27 @@
       "awayTeam": {
         "name": "Kauno Žalgiris",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/6662.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/138.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Euroleague"
+    },
+    {
+      "id": 15916323,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "21:00",
+      "timestamp": 1777399200000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Olympiacos BC",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3501.png"
+      },
+      "awayTeam": {
+        "name": "Monaco Basket",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/176220.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/138.png",
       "homeScore": "-",
