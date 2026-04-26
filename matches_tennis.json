@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T10:28:06.533Z",
+  "lastUpdated": "2026-04-26T10:29:17.359Z",
   "totalMatches": 83,
   "matches": [
     {
@@ -366,7 +366,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4, 5-6",
+      "setScores": "6-4, 6-6",
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -452,7 +452,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "0-6, 6-2, 2-0",
+      "setScores": "0-6, 6-2, 3-0",
       "tournament": "Madrid, Spain"
     },
     {
@@ -480,7 +480,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-4, 4-3",
+      "setScores": "6-4, 4-4",
       "tournament": "Madrid, Spain"
     },
     {
@@ -508,7 +508,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "1",
       "awayScore": "0",
-      "setScores": "6-3, 0-1",
+      "setScores": "6-3, 1-1",
       "tournament": "Saint-Malo, France, Qualifying"
     },
     {
@@ -536,7 +536,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "4-4",
+      "setScores": "5-4",
       "tournament": "Saint-Malo, France, Qualifying"
     },
     {
@@ -564,7 +564,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "0-3",
+      "setScores": "0-4",
       "tournament": "Oeiras 4, Portugal"
     },
     {
@@ -1692,36 +1692,6 @@
       "tournament": "Huzhou, China, Doubles"
     },
     {
-      "id": 16073542,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-27",
-      "fixedTime": "06:00",
-      "timestamp": 1777258800000,
-      "broadcaster": "Tennis TV / Resmi Yayıncı",
-      "homeTeam": {
-        "name": "Mikulskyte J / Papamichail D",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Kim N R / Wang J",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kr.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Huzhou, China, Doubles"
-    },
-    {
       "id": 16073548,
       "isElite": false,
       "status": "notstarted",
@@ -1771,6 +1741,36 @@
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Huzhou, China, Doubles"
+    },
+    {
+      "id": 16073542,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-27",
+      "fixedTime": "09:30",
+      "timestamp": 1777271400000,
+      "broadcaster": "Tennis TV / Resmi Yayıncı",
+      "homeTeam": {
+        "name": "Mikulskyte J / Papamichail D",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Kim N R / Wang J",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kr.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "homeRank": null,
