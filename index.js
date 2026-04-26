@@ -39,12 +39,13 @@ function pushToGithub() {
     return new Promise((resolve) => {
         const simdi = new Date().toLocaleTimeString('tr-TR');
         
-        // (git commit ... || echo "No changes") kısmı, skor değişmese bile hatayı görmezden gelir
+        // Parantez içindeki (git commit ... || echo "No changes") kısmı, 
+        // dosya değişmese bile hatayı görmezden gelir ve push aşamasına geçer.
         const command = `git add . && (git commit -m "Canlı Skor Güncellemesi: ${simdi}" || echo "No changes") && git push origin main --force`;
 
         exec(command, (error) => {
             if (error) {
-                // Sadece push sırasında gerçek bir bağlantı hatası olursa burası çalışır
+                // Sadece internet kesilmesi veya GitHub erişim sorunu olursa burası çalışır
                 console.error(`❌ GitHub Gerçek Hata: ${error.message}`);
             } else {
                 console.log(`[${simdi}] ✅ GitHub BAŞARILI!`);
