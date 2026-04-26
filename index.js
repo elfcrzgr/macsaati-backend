@@ -158,7 +158,7 @@ async function runFootball(page) {
 
 let liveMinute = "";
 if (status === 'inprogress') {
-    const desc = e.status.description || ""; // SofaScore'dan gelen ham metin (Örn: "2nd half 78'")
+    const desc = e.status.description || ""; 
 
     // ✅ REGEKS KULLANARAK SADECE RAKAMI AYIKLA
     // Bu satır metnin içindeki "78" veya "45+2" gibi rakamları bulur.
