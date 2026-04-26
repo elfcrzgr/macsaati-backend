@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T11:07:47.429Z",
+  "lastUpdated": "2026-04-26T11:08:59.227Z",
   "totalMatches": 92,
   "matches": [
     {
@@ -480,7 +480,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "6-4, 5-7, 0-1",
+      "setScores": "6-4, 5-7, 1-1",
       "tournament": "Madrid, Spain"
     },
     {
@@ -564,7 +564,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
       "homeScore": "0",
       "awayScore": "1",
-      "setScores": "3-6, 3-0",
+      "setScores": "3-6, 4-0",
       "tournament": "Oeiras 4, Portugal"
     },
     {
@@ -652,13 +652,13 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-1",
+      "setScores": "2-2",
       "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16070425,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-26",
       "fixedTime": "13:55",
       "timestamp": 1777200900000,
@@ -678,9 +678,9 @@
       "homeRank": "269",
       "awayRank": "617",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": "0-0",
       "tournament": "Saint-Malo, France, Qualifying"
     },
     {
@@ -716,8 +716,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-26",
-      "fixedTime": "14:00",
-      "timestamp": 1777201200000,
+      "fixedTime": "14:15",
+      "timestamp": 1777202111000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Elise Mertens",
@@ -744,8 +744,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-26",
-      "fixedTime": "14:00",
-      "timestamp": 1777201200000,
+      "fixedTime": "14:15",
+      "timestamp": 1777202115000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Errani S / Paolini J",
@@ -770,40 +770,12 @@
       "tournament": "Madrid, Spain, Doubles"
     },
     {
-      "id": 16013090,
+      "id": 16012163,
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-26",
       "fixedTime": "14:20",
       "timestamp": 1777202400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Tallon Griekspoor",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Lorenzo Musetti",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "homeRank": "33",
-      "awayRank": "9",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16012163,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-26",
-      "fixedTime": "14:25",
-      "timestamp": 1777202700000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Dino Prižmić",
@@ -912,6 +884,34 @@
       "tournament": "Saint-Malo, France, Qualifying"
     },
     {
+      "id": 16013090,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-26",
+      "fixedTime": "14:40",
+      "timestamp": 1777203600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Tallon Griekspoor",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lorenzo Musetti",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": "33",
+      "awayRank": "9",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
       "id": 16012126,
       "isElite": true,
       "status": "notstarted",
@@ -1000,34 +1000,6 @@
       "tournament": "Madrid, Spain, Doubles"
     },
     {
-      "id": 16012157,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-26",
-      "fixedTime": "15:35",
-      "timestamp": 1777206900000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Arthur Fils",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Emilio Nava",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "homeRank": "25",
-      "awayRank": "116",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
       "id": 16018904,
       "isElite": true,
       "status": "notstarted",
@@ -1056,6 +1028,34 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Madrid, Spain, Doubles"
+    },
+    {
+      "id": 16012157,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-26",
+      "fixedTime": "15:40",
+      "timestamp": 1777207200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Arthur Fils",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Emilio Nava",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "homeRank": "25",
+      "awayRank": "116",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
     },
     {
       "id": 16066008,
