@@ -137,6 +137,10 @@ async function runFootball(page) {
         const ut = e.tournament.uniqueTournament;
         const status = e.status.type;
         const showScore = status === 'inprogress' || status === 'finished';
+
+
+// 🚀 ÖZETE EKLEME SATIRI EKSİKTİ, BURAYA EKLEDİK:
+    addToSummary("football", ut.name);
         
         // ⏱️ DAKİKA BİLGİSİ ÇEKİMİ
         let liveMinute = "";
