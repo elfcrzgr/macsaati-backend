@@ -113,10 +113,10 @@ const getTennisBroadcaster = (tournamentName, isElite) => {
 // =========================================================================
 
 async function runFootball(page) {
-    console.log("⚽ Futbol taranıyor (Gerçek Dakika Desteğiyle)...");
+    console.log("⚽ Futbol taranıyor (Gelişmiş Dakika Ayıklama)...");
     let allEvents = [];
     
-    // 1. ADIM: Günlük Maç Listesini Çek (Bugün, Yarın, Sonraki Gün)
+    // 1. Günlük Maç Listesini Çek
     for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         try {
             await page.goto(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
@@ -127,16 +127,14 @@ async function runFootball(page) {
         } catch (e) {}
     }
 
-    // 2. ADIM: Canlı Maçların Detaylı Dakikalarını Çek (Live API)
+    // 2. Canlı Detayları Çek (Live API)
     let liveDetails = new Map();
     try {
         await page.goto(`https://www.sofascore.com/api/v1/sport/football/events/live`, { waitUntil: 'networkidle2' });
         const liveData = await page.evaluate(() => JSON.parse(document.body.innerText));
         if (liveData?.events) {
             liveData.events.forEach(le => {
-                // Sadece dakikayı (örn: 78') veya devre bilgisini temizleyip alıyoruz
-                const desc = le.status?.description || "";
-                liveDetails.set(le.id, desc.replace(/[']/g, "")); 
+                liveDetails.set(le.id, le.status?.description || "");
             });
         }
     } catch (e) { console.log("⚠️ Canlı detaylar şu an alınamadı."); }
@@ -155,28 +153,29 @@ async function runFootball(page) {
         
         addToSummary("football", tourName);
 
-        // ⏱️ DAKİKA MANTIĞI (Önce Live API'den gelen gerçek dakikaya bakıyoruz)
+        // ⏱️ GELİŞMİŞ DAKİKA AYIKLAMA MANTIĞI
         let liveMinute = "";
         if (status === 'inprogress') {
-            // Eğer canlı listede bu maçı bulduysak oradaki gerçek dakikayı al (78 gibi)
-            if (liveDetails.has(e.id)) {
-                liveMinute = liveDetails.get(e.id);
-            } else {
-                // Bulamadıysak eski usul periyot bilgisini temizle
-                liveMinute = (e.status.description || "").replace(/half/i, "İY");
-            }
+            const desc = liveDetails.get(e.id) || e.status.description || "";
             
-            // Eğer sonuç hala "1st İY" veya "2nd İY" ise sadece "İY" yapalım (Temizlik)
-            if (liveMinute.toLowerCase().includes("half")) liveMinute = "İY";
-            if (liveMinute.includes("1st")) liveMinute = "1.Y";
-            if (liveMinute.includes("2nd")) liveMinute = "2.Y";
+            if (desc.includes("'")) {
+                // Dakika varsa sadece rakam ve + işaretini al (78' -> 78, 45+2' -> 45+2)
+                liveMinute = desc.replace(/[^0-9+]/g, "").trim(); 
+            } else if (desc.toLowerCase().includes("half") && desc.toLowerCase().includes("time")) {
+                liveMinute = "DA"; // Devre Arası
+            } else if (desc.toLowerCase().includes("half")) {
+                // "1st half" -> "1.Y", "2nd half" -> "2.Y"
+                liveMinute = desc.toLowerCase().includes("1st") ? "1.Y" : "2.Y";
+            } else {
+                liveMinute = desc;
+            }
         }
 
         finalMatchesMap.set(e.id, {
             id: e.id, 
             isElite: ELITE_FOOT_IDS.includes(ut.id), 
             status: status,
-            liveMinute: liveMinute, // 🆕 Gerçek dakika buraya gidiyor
+            liveMinute: liveMinute,
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
