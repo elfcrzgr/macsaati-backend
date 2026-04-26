@@ -112,11 +112,13 @@ const getTennisBroadcaster = (tournamentName, isElite) => {
 // 🚀 MOTORLAR
 // =========================================================================
 
+
+
 async function runFootball(page) {
-    console.log("⚽ Futbol taranıyor (Gerçek Dakika & Debug Modu Aktif)...");
+    console.log("⚽ Futbol taranıyor (Derin Tarama & Dakika Avcısı Aktif)...");
     let allEvents = [];
     
-    // 1. ADIM: Günlük Listeyi Çek
+    // 1. ADIM: Günlük Maç Listesini Çek
     for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         try {
             await page.goto(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`, { waitUntil: 'networkidle2' });
@@ -127,18 +129,18 @@ async function runFootball(page) {
         } catch (e) {}
     }
 
-    // 2. ADIM: Live API'den Gerçek Dakikaları Avla
+    // 2. ADIM: Live API'den Gerçek Maç Saatlerini Çek (ESAS DAKİKA BURADA)
     let liveClocks = new Map();
     try {
         await page.goto(`https://www.sofascore.com/api/v1/sport/football/events/live`, { waitUntil: 'networkidle2' });
         const liveData = await page.evaluate(() => JSON.parse(document.body.innerText));
         if (liveData?.events) {
             liveData.events.forEach(le => {
-                // SofaScore burada "78'", "45+2'" gibi net veriyi status.description içinde verir.
+                // SofaScore Live API genellikle "78'" şeklinde net dakika döner
                 liveClocks.set(le.id, le.status?.description || "");
             });
         }
-    } catch (e) { console.log("⚠️ Canlı dakikalar (Live API) şu an çekilemedi."); }
+    } catch (e) { console.log("⚠️ Live API'den dakika çekilemedi, genel listeye dönülüyor."); }
 
     const finalMatchesMap = new Map();
     allEvents.forEach(e => {
@@ -148,30 +150,37 @@ async function runFootball(page) {
         const status = e.status.type;
         const showScore = status === 'inprogress' || status === 'finished';
 
-        // Uluslar Ligi gruplarını isme ekle
         let tourName = ut.name;
         if (ut.id === 10783 && e.roundInfo) tourName = `Uluslar Ligi - ${e.roundInfo.name}`;
         addToSummary("football", tourName);
 
-        // ⏱️ DAKİKA AYIKLAMA (Burası Çok Kritik)
+        // ⏱️ DAKİKA BELİRLEME VE DEBUG LOGLARI
         let liveMinute = "";
         if (status === 'inprogress') {
-            // Önce Live API'deki veriye bak, yoksa genel listedeki veriye bak
+            // Live API'den veya genel listeden gelen ham metni al
             const rawDesc = liveClocks.get(e.id) || e.status.description || "";
             
-            // 📝 Terminale ham veriyi basıyoruz (iMac'ten kontrol etmen için)
-            console.log(`🔍 [HAM VERİ] ${e.homeTeam.name}: "${rawDesc}"`);
+            // 📝 [BİLİŞİM ÖĞRETMENİ İÇİN DEBUG] 
+            // Eğer Galatasaray maçıysa tüm status paketini terminale basıyoruz
+            if (e.homeTeam.name.includes("Galatasaray") || e.awayTeam.name.includes("Galatasaray")) {
+                console.log("-----------------------------------------");
+                console.log(`🏟️ MAÇ DETAYI: ${e.homeTeam.name} - ${e.awayTeam.name}`);
+                console.log(`🔸 Gelen Ham Desc: "${rawDesc}"`);
+                console.log(`🔸 Status Paketi Tamamı: ${JSON.stringify(e.status)}`);
+                console.log("-----------------------------------------");
+            }
 
+            // Temizleme Mantığı
             if (rawDesc.includes("'")) {
-                // İçinde tırnak varsa gerçektir: "78'" -> "78", "45+2'" -> "45+2"
+                // Tırnak varsa dakikadır (Örn: 78' -> 78)
                 liveMinute = rawDesc.replace(/[^0-9+]/g, "").trim(); 
             } else if (rawDesc.toLowerCase().includes("half")) {
                 // "1st half" -> "1.Y", "2nd half" -> "2.Y"
                 liveMinute = rawDesc.toLowerCase().includes("1st") ? "1.Y" : "2.Y";
             } else if (rawDesc.toLowerCase().includes("break") || rawDesc.toLowerCase().includes("time")) {
-                liveMinute = "DA"; // Devre Arası
+                liveMinute = "DA"; 
             } else {
-                liveMinute = rawDesc; // Diğer (Uzatma, Penaltı vb.)
+                liveMinute = rawDesc;
             }
         }
 
@@ -196,6 +205,18 @@ async function runFootball(page) {
     const matches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync("matches_football.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches }, null, 2));
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function runBasketball(page) {
     console.log("🏀 Basketbol taranıyor...");
