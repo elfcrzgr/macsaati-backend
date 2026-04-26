@@ -1,29 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T12:22:31.966Z",
-  "totalMatches": 21,
+  "lastUpdated": "2026-04-26T12:23:18.217Z",
   "matches": [
-    {
-      "id": 15923103,
-      "isElite": true,
-      "status": "finished",
-      "fixedDate": "2026-04-24",
-      "fixedTime": "20:30",
-      "timestamp": 1777051800000,
-      "broadcaster": "S Sport Plus",
-      "homeTeam": {
-        "name": "Monaco Basket",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/176220.png"
-      },
-      "awayTeam": {
-        "name": "Barça Basket",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3543.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/138.png",
-      "homeScore": "79",
-      "awayScore": "70",
-      "tournament": "Euroleague"
-    },
     {
       "id": 15935030,
       "isElite": true,
@@ -172,6 +150,27 @@
       "tournament": "NBA"
     },
     {
+      "id": 15923103,
+      "isElite": true,
+      "status": "finished",
+      "fixedDate": "2026-04-24",
+      "fixedTime": "20:30",
+      "timestamp": 1777051800000,
+      "broadcaster": "S Sport Plus",
+      "homeTeam": {
+        "name": "Monaco Basket",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/176220.png"
+      },
+      "awayTeam": {
+        "name": "Barça Basket",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3543.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/138.png",
+      "homeScore": "79",
+      "awayScore": "70",
+      "tournament": "Euroleague"
+    },
+    {
       "id": 15935035,
       "isElite": true,
       "status": "notstarted",
@@ -312,132 +311,6 @@
       "awayTeam": {
         "name": "Minnesota Timberwolves",
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3426.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/132.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "NBA"
-    },
-    {
-      "id": 16030025,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "20:45",
-      "timestamp": 1777398300000,
-      "broadcaster": "S Sport Plus",
-      "homeTeam": {
-        "name": "Fenerbahçe Beko",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3514.png"
-      },
-      "awayTeam": {
-        "name": "Kauno Žalgiris",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/6662.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/138.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Euroleague"
-    },
-    {
-      "id": 15916323,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "21:00",
-      "timestamp": 1777399200000,
-      "broadcaster": "S Sport Plus",
-      "homeTeam": {
-        "name": "Olympiacos BC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3501.png"
-      },
-      "awayTeam": {
-        "name": "Monaco Basket",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/176220.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/138.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Euroleague"
-    },
-    {
-      "id": 15916342,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "21:45",
-      "timestamp": 1777401900000,
-      "broadcaster": "S Sport Plus",
-      "homeTeam": {
-        "name": "Valencia Basket",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3545.png"
-      },
-      "awayTeam": {
-        "name": "Panathinaikos BC",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3508.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/138.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Euroleague"
-    },
-    {
-      "id": 15935025,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-29",
-      "fixedTime": "02:00",
-      "timestamp": 1777417200000,
-      "broadcaster": "beIN Sports 5",
-      "homeTeam": {
-        "name": "Boston Celtics",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3422.png"
-      },
-      "awayTeam": {
-        "name": "Philadelphia 76ers",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3420.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/132.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "NBA"
-    },
-    {
-      "id": 15935016,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-29",
-      "fixedTime": "03:00",
-      "timestamp": 1777420800000,
-      "broadcaster": "beIN Sports 5",
-      "homeTeam": {
-        "name": "New York Knicks",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3421.png"
-      },
-      "awayTeam": {
-        "name": "Atlanta Hawks",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3423.png"
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/132.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "NBA"
-    },
-    {
-      "id": 15934997,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-29",
-      "fixedTime": "04:30",
-      "timestamp": 1777426200000,
-      "broadcaster": "beIN Sports 5",
-      "homeTeam": {
-        "name": "San Antonio Spurs",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3429.png"
-      },
-      "awayTeam": {
-        "name": "Portland Trail Blazers",
-        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/3414.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/132.png",
       "homeScore": "-",
