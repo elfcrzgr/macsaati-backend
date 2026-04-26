@@ -316,11 +316,8 @@ async function runTennis(page) {
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: getTennisBroadcaster(e.tournament.name, isElite),
-            
-            // 🚀 DÜZELTME BURADA: "mc.png" yerine dinamik Sofascore görsel URL'si
-            homeTeam: { name: e.homeTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.homeTeam.id}/image` },
-            awayTeam: { name: e.awayTeam.name, logo: `https://api.sofascore.app/api/v1/team/${e.awayTeam.id}/image` },
-            
+            homeTeam: { name: e.homeTeam.name, logo: TENNIS_LOGO_BASE + "mc.png" },
+            awayTeam: { name: e.awayTeam.name, logo: TENNIS_LOGO_BASE + "mc.png" },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || 1) + ".png",
             homeScore: String(e.homeScore?.display ?? "-"),
             awayScore: String(e.awayScore?.display ?? "-"),
