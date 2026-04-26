@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T09:32:08.286Z",
+  "lastUpdated": "2026-04-26T09:33:19.621Z",
   "totalMatches": 80,
   "matches": [
     {
@@ -368,7 +368,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "3-2",
+      "setScores": "4-2",
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -480,36 +480,8 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "3-2",
+      "setScores": "4-2",
       "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16070421,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-26",
-      "fixedTime": "12:10",
-      "timestamp": 1777194600000,
-      "broadcaster": "Tennis TV / Resmi Yayıncı",
-      "homeTeam": {
-        "name": "Manon Leonard",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Lucie Nguyen Tan",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "homeRank": "320",
-      "awayRank": "645",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Saint-Malo, France, Qualifying"
     },
     {
       "id": 16070424,
@@ -533,6 +505,34 @@
       },
       "homeRank": "532",
       "awayRank": "388",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Saint-Malo, France, Qualifying"
+    },
+    {
+      "id": 16070421,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-26",
+      "fixedTime": "12:40",
+      "timestamp": 1777196400000,
+      "broadcaster": "Tennis TV / Resmi Yayıncı",
+      "homeTeam": {
+        "name": "Manon Leonard",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lucie Nguyen Tan",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "homeRank": "320",
+      "awayRank": "645",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "-",
       "awayScore": "-",
