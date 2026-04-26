@@ -38,12 +38,17 @@ async function fetchData(url) {
 function pushToGithub() {
     return new Promise((resolve) => {
         const simdi = new Date().toLocaleTimeString('tr-TR');
-        // iMac'te kesin çözüm: origin main --force
-        const command = `git add . && git commit -m "Canlı Skor Güncellemesi: ${simdi}" && git push origin main --force`;
+        
+        // (git commit ... || echo "No changes") kısmı, skor değişmese bile hatayı görmezden gelir
+        const command = `git add . && (git commit -m "Canlı Skor Güncellemesi: ${simdi}" || echo "No changes") && git push origin main --force`;
 
         exec(command, (error) => {
-            if (error) console.error(`❌ GitHub Hatası: ${error.message}`);
-            else console.log(`[${simdi}] ✅ GitHub BAŞARILI!`);
+            if (error) {
+                // Sadece push sırasında gerçek bir bağlantı hatası olursa burası çalışır
+                console.error(`❌ GitHub Gerçek Hata: ${error.message}`);
+            } else {
+                console.log(`[${simdi}] ✅ GitHub BAŞARILI!`);
+            }
             resolve();
         });
     });
