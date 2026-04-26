@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T11:35:43.932Z",
-  "totalMatches": 92,
+  "lastUpdated": "2026-04-26T11:36:57.451Z",
+  "totalMatches": 93,
   "matches": [
     {
       "id": 16069224,
@@ -564,7 +564,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34228.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "3-6, 6-0, 0-1",
+      "setScores": "3-6, 6-0, 0-2",
       "tournament": "Oeiras 4, Portugal"
     },
     {
@@ -594,36 +594,6 @@
       "awayScore": "0",
       "setScores": "",
       "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16018910,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-26",
-      "fixedTime": "13:15",
-      "timestamp": 1777198500000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Eikeri U / Gleason Q",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/no.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Gauff C / Montgomery R",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "homeRank": null,
-      "awayRank": null,
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16065998,
@@ -736,7 +706,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "3-3",
+      "setScores": "4-3",
       "tournament": "Madrid, Spain"
     },
     {
@@ -766,7 +736,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
       "homeScore": "0",
       "awayScore": "0",
-      "setScores": "2-1",
+      "setScores": "3-1",
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -910,6 +880,36 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16018910,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-26",
+      "fixedTime": "14:40",
+      "timestamp": 1777203600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Eikeri U / Gleason Q",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/no.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Gauff C / Montgomery R",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16012126,
@@ -2545,6 +2545,34 @@
       },
       "homeRank": "12",
       "awayRank": "32",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16012134,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-27",
+      "fixedTime": "12:00",
+      "timestamp": 1777280400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Linda Noskova",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Coco Gauff",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "homeRank": "13",
+      "awayRank": "3",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "-",
       "awayScore": "-",
