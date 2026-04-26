@@ -352,7 +352,7 @@ async function loop() {
                 else console.log(`[${simdi}] ✅ GitHub BAŞARILI!`);
             });
         } catch (e) {}
-        await new Promise(r => setTimeout(r, 60000));
+        await new Promise(r => setTimeout(r, 30000));
     }
 }
 loop();
