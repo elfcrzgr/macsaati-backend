@@ -118,6 +118,11 @@ const getTennisBroadcaster = (tournamentName, isElite) => {
 
 
 
+
+
+
+
+
 async function runFootball(page) {
     console.log("⚽ Futbol taranıyor...");
     let allEvents = [];
@@ -138,92 +143,114 @@ async function runFootball(page) {
         }
     }
 
-    console.log(`📊 ${allEvents.length} maç bulundu`);
-
-    // 2. ADIM: Canlı Maçlar İçin Detaylı Dakika Bilgisi (Paralel İsteşler)
+    // 2. ADIM: Canlı Maçlar İçin Detaylı Dakika Bilgisi
     const liveMinutesPool = new Map();
     const liveMatches = allEvents.filter(e => e.status.type === 'inprogress');
     
     if (liveMatches.length > 0) {
+        console.log(`\n📍 ${liveMatches.length} canlı maç bulundu. Dakika bilgisi alınıyor...\n`);
+        
         try {
             const liveData = await page.evaluate(async (matchIds) => {
                 const results = {};
                 
-                // Paralel olarak 5 maça kadar istekleri aynı anda yap
-                const chunks = [];
-                for (let i = 0; i < matchIds.length; i += 5) {
-                    chunks.push(matchIds.slice(i, i + 5));
-                }
-                
-                for (const chunk of chunks) {
+                // Paralel istekleri 3'er gruplarda yap (daha hızlı)
+                for (let i = 0; i < matchIds.length; i += 3) {
+                    const chunk = matchIds.slice(i, i + 3);
+                    
                     const promises = chunk.map(id => 
                         fetch(`https://api.sofascore.com/api/v1/event/${id}`)
                             .then(res => res.json())
                             .then(data => ({
                                 id,
-                                event: data.event
+                                event: data.event,
+                                error: null
                             }))
-                            .catch(() => ({ id, event: null }))
+                            .catch(err => ({ id, event: null, error: err.message }))
                     );
                     
                     const responses = await Promise.all(promises);
                     responses.forEach(({ id, event }) => {
-                        if (event?.status) {
-                            results[id] = event;
-                        }
+                        results[id] = event;
                     });
                 }
                 
                 return results;
             }, liveMatches.map(m => m.id));
             
-            // Dakika bilgisi çıkart
+            // Dakika bilgisi çıkart ve log bas
             for (const match of liveMatches) {
-                if (liveData[match.id]?.status) {
-                    const status = liveData[match.id].status;
-                    let minute = "";
-                    
-                    // Strategiler (öncelik sırasıyla):
-                    
-                    // 1. Status description'dan dakika çıkart ("78'", "90+2'")
-                    if (status.description) {
-                        const minuteMatch = status.description.match(/(\d+(?:\+\d+)?)['\′]/);
-                        if (minuteMatch) {
-                            minute = minuteMatch[1];
-                        } else if (status.description.toLowerCase().includes("half")) {
-                            minute = "DA";
-                        }
-                    }
-                    
-                    // 2. Eğer bulamadık ve timestamp varsa hesapla
-                    if (!minute && liveData[match.id].time?.currentPeriodStartTimestamp) {
-                        const elapsed = Math.floor(Date.now() / 1000 - liveData[match.id].time.currentPeriodStartTimestamp);
-                        const calcMinute = Math.floor(elapsed / 60);
-                        
-                        // Status code: 6 = 1st half, 7 = 2nd half
-                        if (status.code === 7) {
-                            minute = String(Math.min(45 + calcMinute, 90));
-                        } else if (status.code === 6) {
-                            minute = String(Math.min(calcMinute, 45));
-                        } else {
-                            minute = String(calcMinute);
-                        }
-                    }
-                    
-                    if (minute) {
-                        liveMinutesPool.set(match.id, minute);
-                        console.log(`📍 ${match.homeTeam.name} vs ${match.awayTeam.name}: ${minute}'`);
-                    } else {
-                        console.log(`⚠️ ${match.homeTeam.name} vs ${match.awayTeam.name}: Dakika bulunamadı`);
-                    }
-                } else {
-                    console.log(`⚠️ ${match.homeTeam.name} vs ${match.awayTeam.name}: Event verisi yok`);
+                const matchName = `${match.homeTeam.name} vs ${match.awayTeam.name}`;
+                const eventDetail = liveData[match.id];
+                
+                if (!eventDetail) {
+                    console.log(`❌ ${matchName}: API verisi yok`);
+                    liveMinutesPool.set(match.id, "Canlı");
+                    continue;
                 }
+
+                const status = eventDetail.status;
+                const time = eventDetail.time;
+                let minute = "";
+                let debugInfo = [];
+                
+                // STRATEJI 1: Status description'dan dakika çıkart
+                if (status?.description) {
+                    debugInfo.push(`desc="${status.description}"`);
+                    
+                    // "78'" veya "90+2'" formatı
+                    const minuteMatch = status.description.match(/(\d+(?:\+\d+)?)['\′]/);
+                    if (minuteMatch) {
+                        minute = minuteMatch[1];
+                        debugInfo.push(`✅ RegEx buldu: ${minute}'`);
+                    } else if (status.description.toLowerCase().includes("half")) {
+                        minute = "DA";
+                        debugInfo.push(`✅ Yarı zamanda`);
+                    }
+                }
+                
+                // STRATEJI 2: currentPeriodStartTimestamp'tan hesapla
+                if (!minute && time?.currentPeriodStartTimestamp) {
+                    debugInfo.push(`ts=${time.currentPeriodStartTimestamp}`);
+                    
+                    const now = Math.floor(Date.now() / 1000);
+                    const elapsed = now - time.currentPeriodStartTimestamp;
+                    const calcMinute = Math.floor(elapsed / 60);
+                    
+                    debugInfo.push(`elapsed=${elapsed}s, calc=${calcMinute}min, code=${status?.code}`);
+                    
+                    if (status?.code === 7) {
+                        // 2nd half
+                        minute = String(Math.min(45 + calcMinute, 90));
+                        debugInfo.push(`✅ 2nd half: ${minute}'`);
+                    } else if (status?.code === 6) {
+                        // 1st half
+                        minute = String(Math.min(calcMinute, 45));
+                        debugInfo.push(`✅ 1st half: ${minute}'`);
+                    } else if (status?.code === 31) {
+                        // Halftime
+                        minute = "DA";
+                        debugInfo.push(`✅ Halftime detected`);
+                    } else {
+                        minute = String(calcMinute);
+                        debugInfo.push(`⚠️ Unknown code ${status?.code}: ${minute}'`);
+                    }
+                }
+                
+                // STRATEJI 3: Hiç bulamadık
+                if (!minute) {
+                    minute = "Canlı";
+                    debugInfo.push(`⚠️ Bulunamadı, fallback: Canlı`);
+                }
+                
+                liveMinutesPool.set(match.id, minute);
+                console.log(`✅ ${matchName}`);
+                console.log(`   → ${minute}'  [${debugInfo.join(" | ")}]`);
             }
             
-            console.log(`✅ ${liveMinutesPool.size}/${liveMatches.length} maçın dakikası alındı`);
+            console.log(`\n✅ ${liveMinutesPool.size}/${liveMatches.length} maçın dakikası alındı\n`);
         } catch (e) {
-            console.log(`❌ Dakika havuzu hatası: ${e.message}`);
+            console.log(`❌ Dakika havuzu hatası: ${e.message}\n`);
         }
     }
 
@@ -264,6 +291,10 @@ async function runFootball(page) {
     const matches = Array.from(finalMatchesMap.values()).sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync("matches_football.json", JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), matches }, null, 2));
 }
+
+
+
+
 
 
 
