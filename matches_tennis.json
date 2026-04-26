@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-26T11:06:35.835Z",
+  "lastUpdated": "2026-04-26T11:07:47.429Z",
   "totalMatches": 92,
   "matches": [
     {
@@ -424,7 +424,7 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "1",
       "awayScore": "1",
-      "setScores": "3-6, 6-2, 3-1",
+      "setScores": "3-6, 6-2, 3-2",
       "tournament": "Madrid, Spain"
     },
     {
@@ -770,6 +770,34 @@
       "tournament": "Madrid, Spain, Doubles"
     },
     {
+      "id": 16013090,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-26",
+      "fixedTime": "14:20",
+      "timestamp": 1777202400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Tallon Griekspoor",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lorenzo Musetti",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": "33",
+      "awayRank": "9",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Madrid, Spain"
+    },
+    {
       "id": 16012163,
       "isElite": true,
       "status": "notstarted",
@@ -791,34 +819,6 @@
       },
       "homeRank": "87",
       "awayRank": "29",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": "",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16013090,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-26",
-      "fixedTime": "14:25",
-      "timestamp": 1777202700000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Tallon Griekspoor",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Lorenzo Musetti",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "homeRank": "33",
-      "awayRank": "9",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
