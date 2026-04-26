@@ -41,12 +41,20 @@ function printFullSummary() {
 // =========================================================================
 const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
-const ELITE_FOOT_IDS = [52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015];
+
+// ✅ FA Cup (19) ve Championship (18) eklendi
+const ELITE_FOOT_IDS = [19, 18, 52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015];
 const REGULAR_FOOT_IDS = [10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 const getFootBroadcaster = (utId) => {
-    const staticConfigs = { 34: "beIN Sports", 52: "beIN Sports", 238: "S Spor", 242: "Apple TV", 938: "S Sport", 17: "beIN Sports", 8: "S Sport", 23: "S Sport", 7: "TRT", 11: "TRT 1", 351: "TRT Spor", 37: "S Sport Plus", 1: "TRT 1 / Tabii" };
+    const staticConfigs = { 
+        19: "Tivibu Spor", // ✅ FA Cup için eklendi
+        18: "Exxen",       // ✅ Championship için eklendi
+        34: "beIN Sports", 52: "beIN Sports", 238: "S Spor", 242: "Apple TV", 
+        938: "S Sport", 17: "beIN Sports", 8: "S Sport", 23: "S Sport", 
+        7: "TRT", 11: "TRT 1", 351: "TRT Spor", 37: "S Sport Plus", 1: "TRT 1 / Tabii" 
+    };
     return staticConfigs[utId] || "beIN Sports";
 };
 
@@ -69,7 +77,7 @@ const baskLeagueConfigs = { 3547: "S Sport / NBA TV", 138: "S Sport Plus", 142: 
 const targetBaskIds = Object.keys(baskLeagueConfigs).map(Number);
 
 // =========================================================================
-// 🎾 TENİS AYARLARI & YENİ YAYINCI MANTIĞI
+// 🎾 TENİS AYARLARI
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
@@ -99,19 +107,12 @@ const checkIsEliteMatch = (tournamentName) => {
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
-// 🚀 YENİ EKLENEN YAYINCI BULUCU
 const getTennisBroadcaster = (tournamentName, isElite) => {
     if (!tournamentName) return "Resmi Yayıncı";
     const t = tournamentName.toUpperCase();
-
-    // Özel Grand Slam yayıncıları
     if (t.includes("WIMBLEDON")) return "TRT Spor / S Sport";
     if (t.includes("ROLAND GARROS") || t.includes("FRENCH OPEN") || t.includes("US OPEN") || t.includes("AUSTRALIAN OPEN")) return "Eurosport";
-    
-    // Elit Ligler (Masters 1000, 500 vb.)
     if (isElite) return "S Sport / beIN Sports";
-    
-    // Çin elemeleri, 250'lik turnuvalar ve diğer her şey
     return "Tennis TV / Resmi Yayıncı"; 
 };
 
@@ -138,15 +139,12 @@ async function runFootball(page) {
         const status = e.status.type;
         const showScore = status === 'inprogress' || status === 'finished';
 
-
-// 🚀 ÖZETE EKLEME SATIRI EKSİKTİ, BURAYA EKLEDİK:
-    addToSummary("football", ut.name);
+        // 🚀 Özete ekleme satırı (Futbol için)
+        addToSummary("football", ut.name);
         
-        // ⏱️ DAKİKA BİLGİSİ ÇEKİMİ
         let liveMinute = "";
         if (status === 'inprogress') {
             liveMinute = e.status.description || "";
-            // SofaScore "1st half" veya "Halftime" derse biz "İY" yapıyoruz
             if (liveMinute.toLowerCase().includes("half")) liveMinute = "İY";
         }
 
@@ -156,7 +154,7 @@ async function runFootball(page) {
             id: e.id, 
             isElite: ELITE_FOOT_IDS.includes(ut.id), 
             status: status,
-            liveMinute: liveMinute, // 🆕 Yeni alan
+            liveMinute: liveMinute,
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
@@ -320,10 +318,7 @@ async function runTennis(page) {
         finalMatchesMap.set(e.id, {
             id: e.id, isElite: isEliteMatch, status: statusType,
             fixedDate: fixedDate, fixedTime: timeString, timestamp: startTimestamp,
-            
-            // 🚀 UYGULANAN YENİ YAYINCI MANTIĞI
             broadcaster: getTennisBroadcaster(tourName, isEliteMatch),
-            
             homeTeam: { name: e.homeTeam.name || "Belli Değil", logos: homeLogos },
             awayTeam: { name: e.awayTeam.name || "Belli Değil", logos: awayLogos },
             homeRank: homeRank, awayRank: awayRank,
