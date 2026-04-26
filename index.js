@@ -154,23 +154,26 @@ async function runFootball(page) {
         addToSummary("football", tourName);
 
         // ⏱️ GELİŞMİŞ DAKİKA AYIKLAMA MANTIĞI
-        let liveMinute = "";
-        if (status === 'inprogress') {
-            const desc = liveDetails.get(e.id) || e.status.description || "";
-            
-            if (desc.includes("'")) {
-                // Dakika varsa sadece rakam ve + işaretini al (78' -> 78, 45+2' -> 45+2)
-                liveMinute = desc.replace(/[^0-9+]/g, "").trim(); 
-            } else if (desc.toLowerCase().includes("half") && desc.toLowerCase().includes("time")) {
-                liveMinute = "DA"; // Devre Arası
-            } else if (desc.toLowerCase().includes("half")) {
-                // "1st half" -> "1.Y", "2nd half" -> "2.Y"
-                liveMinute = desc.toLowerCase().includes("1st") ? "1.Y" : "2.Y";
-            } else {
-                liveMinute = desc;
-            }
-        }
+        // runFootball içinde liveMinute'ı oluşturduğun yeri SİL ve bunu yapıştır:
 
+let liveMinute = "";
+if (status === 'inprogress') {
+    const desc = e.status.description || ""; // SofaScore'dan gelen ham metin (Örn: "2nd half 78'")
+
+    // ✅ REGEKS KULLANARAK SADECE RAKAMI AYIKLA
+    // Bu satır metnin içindeki "78" veya "45+2" gibi rakamları bulur.
+    const minuteMatch = desc.match(/[0-9+]+/); 
+
+    if (minuteMatch) {
+        liveMinute = minuteMatch[0]; // Eğer rakam bulduysa (Örn: 78) onu al.
+    } else {
+        // Rakam bulamadıysa (devre arası vb.) metni kısaltalım
+        if (desc.toLowerCase().includes("1st")) liveMinute = "1.Y";
+        else if (desc.toLowerCase().includes("2nd")) liveMinute = "2.Y";
+        else if (desc.toLowerCase().includes("half")) liveMinute = "DA";
+        else liveMinute = desc;
+    }
+}
         finalMatchesMap.set(e.id, {
             id: e.id, 
             isElite: ELITE_FOOT_IDS.includes(ut.id), 
