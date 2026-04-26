@@ -42,15 +42,17 @@ function printFullSummary() {
 const FOOTBALL_TEAM_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/`;
 const FOOTBALL_TOURNAMENT_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/`;
 
-// FA Cup (19), Championship (18) ve Nations League (10783) eklendi
+// ✅ FA Cup (19), Championship (18) ve Nations League (10783) listede
 const ELITE_FOOT_IDS = [10783, 19, 18, 52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 1, 679, 17015];
 const REGULAR_FOOT_IDS = [10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 const getFootBroadcaster = (utId) => {
     const staticConfigs = { 
-        10783: "TRT Spor / S Sport", 19: "Tivibu Spor", 18: "Exxen", 
-        34: "beIN Sports", 52: "beIN Sports", 238: "S Sport", 242: "Apple TV", 
+        10783: "TRT Spor / S Sport", // Nations League
+        19: "Tivibu Spor",           // FA Cup
+        18: "Exxen",                 // Championship
+        34: "beIN Sports", 52: "beIN Sports", 238: "S Spor", 242: "Apple TV", 
         938: "S Sport", 17: "beIN Sports", 8: "S Sport Plus", 23: "S Sport", 
         7: "TRT", 11: "TRT 1", 351: "TRT Spor", 37: "S Sport Plus", 1: "TRT 1 / Tabii" 
     };
@@ -129,15 +131,26 @@ async function runFootball(page) {
         const status = e.status.type;
         const showScore = status === 'inprogress' || status === 'finished';
 
-        // Nations League gruplarını isme ekle
+        // ✅ Nations League gruplarını isme ekle
         let tourName = ut.name;
         if (ut.id === 10783 && e.roundInfo) tourName = `Uluslar Ligi - ${e.roundInfo.name}`;
         
         addToSummary("football", tourName);
 
+        // ✅ AKILLI DAKİKA AYIKLAYICI
         let liveMinute = "";
         if (status === 'inprogress') {
-            liveMinute = (e.status.description || "").replace(/half/i, "İY");
+            const desc = e.status.description || "";
+            if (/\d/.test(desc)) {
+                // Rakam varsa dakikadır (örn: 78'), ' işaretini Java eklediği için burada temizliyoruz
+                liveMinute = desc.replace(/[']/g, "").trim(); 
+            } else if (desc.toLowerCase().includes("half")) {
+                liveMinute = "İY";
+            } else if (desc.toLowerCase().includes("halftime")) {
+                liveMinute = "DA";
+            } else {
+                liveMinute = desc;
+            }
         }
 
         finalMatchesMap.set(e.id, {
@@ -221,7 +234,6 @@ async function runTennis(page) {
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             broadcaster: getTennisBroadcaster(e.tournament.name, isElite),
-            // ✅ DÜZELTME: Logo artık Array değil, direkt String (Android Uygulama Uyumu)
             homeTeam: { name: e.homeTeam.name, logo: TENNIS_LOGO_BASE + "mc.png" },
             awayTeam: { name: e.awayTeam.name, logo: TENNIS_LOGO_BASE + "mc.png" },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || 1) + ".png",
@@ -251,7 +263,6 @@ async function loop() {
             await start(page);
             const simdi = new Date().toLocaleTimeString('tr-TR');
             
-            // ✅ KESİN ÇÖZÜM: Hem force push hem de commit hatasını gizleme
             const gitCmd = 'git add . && (git commit -m "Canlı Skor Güncellemesi: ' + simdi + '" || echo "Değişiklik yok") && git push origin main --force';
             
             exec(gitCmd, (error) => {
