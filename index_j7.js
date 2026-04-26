@@ -1,4 +1,4 @@
-Const fs = require('fs');
+const fs = require('fs');
 const { exec } = require('child_process');
 
 // =========================================================================
@@ -37,14 +37,23 @@ async function fetchData(url) {
 function pushToGithub() {
     return new Promise((resolve) => {
         const simdi = new Date().toLocaleTimeString('tr-TR');
-        // Commit mesajını ve dosya takibini J7'ye göre netleştirdik
-        exec(`git add ${TARGET_FILE} && git commit -m "J7 Canlı Skor: ${simdi}" && git push`, (error) => {
-            if (error) console.error(`❌ GitHub Hatası: ${error.message}`);
-            else console.log(`[${simdi}] ✅ J7 -> GitHub BAŞARILI!`);
+        
+        // Önce pull (rebase ile) yapıyoruz, sonra ekleyip pushluyoruz
+        const command = `git pull origin main --rebase && git add ${TARGET_FILE} && git commit -m "J7 Canlı Skor: ${simdi}" && git push origin main`;
+
+        exec(command, (error) => {
+            if (error) {
+                console.error(`❌ GitHub Hatası: ${error.message}`);
+                // Eğer rebase sırasında çakışma olursa temizlemek için:
+                exec('git rebase --abort'); 
+            } else {
+                console.log(`[${simdi}] ✅ J7 -> GitHub BAŞARILI!`);
+            }
             resolve();
         });
     });
 }
+
 
 // =========================================================================
 // ⚽ FUTBOL MOTORU (HAFİF)
