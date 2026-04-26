@@ -42,9 +42,23 @@ function pushToGithub() {
     return new Promise((resolve) => {
         const simdi = new Date().toLocaleTimeString('tr-TR');
         const filesToPush = Object.values(FILES).join(" ");
-        exec(`git add ${filesToPush} && git commit -m "J7 Tüm Sporlar Güncellemesi: ${simdi}" && git push`, (error) => {
-            if (error) console.error(`❌ GitHub Hatası: ${error.message}`);
-            else console.log(`[${simdi}] ✅ J7 -> GitHub BAŞARILI!`);
+        
+        // Değişiklik varsa commit+push yapacak, yoksa sessizce geçecek komut
+        const gitCommand = `git add ${filesToPush} && git diff-index --quiet HEAD || (git commit -m "J7 Tüm Sporlar Güncellemesi: ${simdi}" && git push)`;
+
+        exec(gitCommand, (error, stdout, stderr) => {
+            if (error) {
+                // Sadece gerçekten bir hata olursa (örneğin internet koparsa veya token biterse) buraya düşer
+                console.error(`❌ GitHub Hatası: ${error.message}`);
+            } else {
+                // Git push logları genelde stderr üzerinden döner. İçinde ok işareti '->' varsa push atılmıştır.
+                if (stderr.includes('->') || stdout.includes('main') || stdout.includes('master')) {
+                    console.log(`[${simdi}] ✅ J7 -> GitHub BAŞARILI (Skorlar Güncellendi)!`);
+                } else {
+                    // Terminali çok doldurmasın dersen bu satırı silebilir veya yoruma alabilirsin
+                    console.log(`[${simdi}] ➖ Değişiklik yok, commit atlandı.`);
+                }
+            }
             resolve();
         });
     });
@@ -274,12 +288,15 @@ loop();            fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateStri
 // 🔄 ANA DÖNGÜ
 // =========================================================================
 async function loop() {
-    console.log("🟢 J7 CANLI SUNUCU BAŞLADI");
+    console.log("🟢 J7 TÜM SPORLAR SUNUCUSU BAŞLADI");
     while (true) {
         try {
             await updateFootball();
+            await updateBasketball();
+            await updateTennis();
+            await updateF1();
             await pushToGithub();
-        } catch (e) { console.error("🚨 Hata:", e.message); }
+        } catch (e) { console.error("🚨 Kritik Döngü Hatası:", e.message); }
         
         console.log(`⏳ ${INTERVAL/1000} saniye bekleniyor...`);
         await new Promise(r => setTimeout(r, INTERVAL));
