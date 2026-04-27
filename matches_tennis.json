@@ -1754,9 +1754,9 @@
     {
       "id": 16012116,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-27",
-      "fixedTime": "16:00\nCANLI",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777294800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1772,7 +1772,7 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "tournament": "Madrid, Spain"
     },
@@ -2331,8 +2331,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-27",
-      "fixedTime": "19:20",
-      "timestamp": 1777306800000,
+      "fixedTime": "19:10",
+      "timestamp": 1777306200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Alexander Blockx",
@@ -2356,8 +2356,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-27",
-      "fixedTime": "19:20",
-      "timestamp": 1777306800000,
+      "fixedTime": "19:10",
+      "timestamp": 1777306200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Alexander Blockx",
@@ -2531,8 +2531,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-27",
-      "fixedTime": "20:30",
-      "timestamp": 1777311000000,
+      "fixedTime": "20:20",
+      "timestamp": 1777310400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Adolfo Daniel Vallejo",
@@ -2556,8 +2556,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-27",
-      "fixedTime": "20:30",
-      "timestamp": 1777311000000,
+      "fixedTime": "20:20",
+      "timestamp": 1777310400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Adolfo Daniel Vallejo",
@@ -5027,54 +5027,29 @@
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
-      "id": 16074235,
-      "isElite": false,
-      "status": "canceled",
+      "id": 16012141,
+      "isElite": true,
+      "status": "notstarted",
       "fixedDate": "2026-04-28",
       "fixedTime": "14:00",
       "timestamp": 1777374000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Diane Parry",
+        "name": "Leylah Fernandez",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
         ]
       },
       "awayTeam": {
-        "name": "Lisa Pigato",
+        "name": "Mirra Andreeva",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": "Saint-Malo, France"
-    },
-    {
-      "id": 16074236,
-      "isElite": false,
-      "status": "canceled",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "14:00",
-      "timestamp": 1777374000000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Polina Kudermetova",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/uz.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Celine Naef",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Saint-Malo, France"
+      "tournament": "Madrid, Spain"
     },
     {
       "id": 16074235,
@@ -5125,6 +5100,106 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16012141,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "14:00",
+      "timestamp": 1777374000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Leylah Fernandez",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mirra Andreeva",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16074235,
+      "isElite": false,
+      "status": "canceled",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "14:00",
+      "timestamp": 1777374000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Diane Parry",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lisa Pigato",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16074236,
+      "isElite": false,
+      "status": "canceled",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "14:00",
+      "timestamp": 1777374000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Polina Kudermetova",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/uz.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Celine Naef",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16012141,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "14:00",
+      "timestamp": 1777374000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Leylah Fernandez",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mirra Andreeva",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Madrid, Spain"
     },
     {
       "id": 16074235,
