@@ -7,12 +7,8 @@ const path = require('path');
 // =========================================================================
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
+const INTERVAL = 60000; // Her 1 dakikada bir
 const LOG_PREFIX = "[J7 SUNUCUSU]";
-
-// Zamanlar (ms)
-const INTERVAL_LIVE_FOOTBALL = 60000;      // Futbolda canlı maç varsa: 1 dakika
-const INTERVAL_NO_LIVE = 1200000;          // Canlı maç yoksa: 20 dakika
-let currentInterval = INTERVAL_NO_LIVE;
 
 const getTRDate = (offset = 0) => {
     const d = new Date();
@@ -171,15 +167,6 @@ async function runFootball() {
     // Canlı maçlar için dakika hesaplama (SADECE FUTBOL)
     const liveMinutesPool = new Map();
     const liveMatches = allEvents.filter(e => e.status.type === 'inprogress');
-    
-    // ✅ CANLΙ MAC KONTROL
-    if (liveMatches.length > 0) {
-        console.log(`${LOG_PREFIX} 🔴 ${liveMatches.length} CANLI FUTBOL MACI VAR! → 1 dakikalık interval`);
-        currentInterval = INTERVAL_LIVE_FOOTBALL; // 1 dakika
-    } else {
-        console.log(`${LOG_PREFIX} ⚪ Canlı futbol maçı yok → 20 dakikalık interval`);
-        currentInterval = INTERVAL_NO_LIVE; // 20 dakika
-    }
     
     for (const match of liveMatches) {
         const detailData = await fetchData(`https://api.sofascore.com/api/v1/event/${match.id}`);
@@ -446,27 +433,20 @@ async function loop() {
     while (true) {
         try {
             const startTime = Date.now();
-            
-            // Futbol her zaman çek (canlı maç kontrolü için)
             await runFootball();
-            
-            // Diğer sporları da çek
             await runBasketball();
             await runTennis();
             await runF1();
-            
-            // Push yap
             await pushToGithub();
             
             const elapsed = Date.now() - startTime;
-            console.log(`${LOG_PREFIX} ⏱️ İşlem süresi: ${elapsed}ms`);
-            console.log(`${LOG_PREFIX} ⏳ Sonraki kontrol: ${currentInterval/1000} saniye sonra\n`);
+            console.log(`${LOG_PREFIX} ⏱️ İşlem süresi: ${elapsed}ms\n`);
         } catch (e) { 
             console.error(`${LOG_PREFIX} 🚨 Hata: ${e.message}`); 
         }
         
-        // Dinamik interval
-        await new Promise(r => setTimeout(r, currentInterval));
+        console.log(`${LOG_PREFIX} ⏳ ${INTERVAL/1000} saniye bekleniyor...\n`);
+        await new Promise(r => setTimeout(r, INTERVAL));
     }
 }
 
