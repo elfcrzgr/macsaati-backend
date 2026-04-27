@@ -1929,9 +1929,9 @@
     {
       "id": 16078234,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-27",
-      "fixedTime": "15:30",
+      "fixedTime": "15:30\nMS",
       "timestamp": 1777293000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1947,8 +1947,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -2004,9 +2004,9 @@
     {
       "id": 16078234,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-27",
-      "fixedTime": "15:30",
+      "fixedTime": "15:30\nMS",
       "timestamp": 1777293000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2022,8 +2022,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "1",
+      "awayScore": "2",
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -2954,9 +2954,9 @@
     {
       "id": 16013085,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-27",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00\nMS",
       "timestamp": 1777312800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2973,7 +2973,7 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "tournament": "Madrid, Spain"
     },
     {
@@ -3004,9 +3004,9 @@
     {
       "id": 16013085,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-27",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00\nMS",
       "timestamp": 1777312800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -3019,6 +3019,31 @@
         "name": "Alexander Zverev",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "0",
+      "awayScore": "2",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16013079,
+      "isElite": true,
+      "status": "inprogress",
+      "fixedDate": "2026-04-27",
+      "fixedTime": "21:55\nCANLI",
+      "timestamp": 1777316100000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Karen Khachanov",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jakub Menšik",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
@@ -3048,30 +3073,30 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16013079,
+      "id": 16012137,
       "isElite": true,
       "status": "inprogress",
       "fixedDate": "2026-04-27",
-      "fixedTime": "21:55\nCANLI",
-      "timestamp": 1777316100000,
+      "fixedTime": "23:00\nCANLI",
+      "timestamp": 1777320000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Karen Khachanov",
+        "name": "Anastasia Potapova",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
         ]
       },
       "awayTeam": {
-        "name": "Jakub Menšik",
+        "name": "Elena Rybakina",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kz.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "0",
       "awayScore": "0",
       "tournament": "Madrid, Spain"
@@ -3079,10 +3104,10 @@
     {
       "id": 16012137,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-27",
-      "fixedTime": "22:20",
-      "timestamp": 1777317600000,
+      "fixedTime": "23:00\nCANLI",
+      "timestamp": 1777320000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Anastasia Potapova",
@@ -3097,33 +3122,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16012137,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-27",
-      "fixedTime": "22:20",
-      "timestamp": 1777317600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Anastasia Potapova",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Elena Rybakina",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/kz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "tournament": "Madrid, Spain"
     },
     {
@@ -6497,6 +6497,56 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16013083,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "21:10",
+      "timestamp": 1777399800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Daniil Medvedev",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Flavio Cobolli",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16013083,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "21:10",
+      "timestamp": 1777399800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Daniil Medvedev",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Flavio Cobolli",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Madrid, Spain"
