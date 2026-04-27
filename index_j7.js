@@ -138,7 +138,7 @@ const translateTeam = (name) => {
     return name;
 };
 
-// ✅ DAKIKA HESAPLAMA (Sadece Futbol)
+// ✅ DAKIKA HESAPLAMA (Sadece Futbol) - İYİLEŞTİRİLMİŞ
 function calculateLiveMinute(eventData) {
     if (!eventData || !eventData.time) return "Canlı";
     
@@ -151,10 +151,19 @@ function calculateLiveMinute(eventData) {
     const elapsed = now - time.currentPeriodStartTimestamp;
     const calcMinute = Math.floor(elapsed / 60);
     
-    if (status?.code === 31) return "DA"; // Halftime
-    if (status?.code === 7) return String(45 + calcMinute); // 2. Yarı
-    if (status?.code === 6) return String(calcMinute); // 1. Yarı
-    return String(calcMinute);
+    // Status kodlarına göre kontrol
+    if (status?.code === 31) {
+        return "DA"; // Halftime (Devre Arası)
+    } else if (status?.code === 7) {
+        // 2. Yarı (SofaScore sıfırlar, +45 ekle)
+        return String(45 + calcMinute) + "'";
+    } else if (status?.code === 6) {
+        // 1. Yarı
+        return String(calcMinute) + "'";
+    } else {
+        // Diğer durumlar
+        return String(calcMinute) + "'";
+    }
 }
 
 async function runFootball() {
