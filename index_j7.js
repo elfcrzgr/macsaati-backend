@@ -71,13 +71,12 @@ const getTRDate = (offset = 0) => {
 // =========================================================================
 // 📥 PUSH İŞLEMİ (GELIŞTIRILMIŞ - TÜM DOSYALARI PUSH ET)
 // =========================================================================
-// =========================================================================
-// 📥 PUSH İŞLEMİ (KURŞUN GEÇİRMEZ VERSİYON)
-// =========================================================================
 async function pushToGithub() {
     const simdi = new Date().toLocaleTimeString('tr-TR');
     
-    const existingFiles = Object.values(TARGET_FILES).filter(file => fs.existsSync(file));
+    // Varlığını kontrol et
+    const existingFiles = Object.values(TARGET_FILES)
+        .filter(file => fs.existsSync(file));
     
     if (existingFiles.length === 0) {
         console.warn(`⚠️ Hiç dosya bulunamadı!`);
@@ -87,41 +86,44 @@ async function pushToGithub() {
     try {
         console.log(`📤 GitHub senkronizasyonu başlıyor [${simdi}]...`);
         
-        // Önce dosyaları sahneye al
-        for (const file of existingFiles) {
-            await executeCommand(`git add "${file}"`);
-        }
+        // Adım 1: Fetch
+        await executeCommand('git fetch origin main');
         
-        // Değişiklik var mı kontrol et
-        const status = await executeCommand('git status --porcelain');
-        if (!status.trim()) {
+        // Adım 2: Status kontrolü
+        const statusBefore = await executeCommand('git status --porcelain');
+        
+        if (!statusBefore.trim()) {
             console.log(`  ℹ️ Yeni değişiklik yok`);
             return;
         }
         
-        // Commit işlemini yap
-        await executeCommand(`git commit -m "J7 Canlı Güncelleme: ${simdi}"`);
-        
-        // Çakışma (Conflict) dinlemeden, GitHub'daki yenilikleri al ama yerel dosyaları (ours) KORU
+        // Adım 3: Rebase
         try {
-            await executeCommand('git pull origin main --no-rebase -s recursive -X ours');
-        } catch (pullErr) {
-            console.log("  ⚠️ Pull uyarı verdi (Çakışma olabilir), push zorlanıyor...");
+            await executeCommand('git rebase origin/main');
+        } catch (rebaseError) {
+            console.warn("  ⚠️ Rebase çakışması, merge deneniyor...");
+            await executeCommand('git rebase --abort');
+            await executeCommand('git merge origin/main -m "Otomatik merge"');
         }
         
-        // Yenilenmiş ve çakışması çözülmüş veriyi gönder
+        // Adım 4: TÜM DOSYALARI EKLE
+        for (const file of existingFiles) {
+            console.log(`  📝 ${file} ekleniyor...`);
+            await executeCommand(`git add "${file}"`);
+        }
+        
+        // Adım 5: Commit
+        await executeCommand(`git commit -m "J7 Canlı Güncelleme: ${simdi}"`);
+        
+        // Adım 6: Push
         await executeCommand('git push origin main');
         
         console.log(`✅ [${simdi}] GitHub senkronizasyonu BAŞARILI! (${existingFiles.length} dosya)`);
         
     } catch (error) {
         console.error(`❌ Git İşlem Hatası: ${error.message}`);
-        // Eğer askıda kalan bir işlem varsa temizle ki sonraki döngü patlamasın
-        try { await executeCommand('git rebase --abort'); } catch(e){}
-        try { await executeCommand('git merge --abort'); } catch(e){}
     }
 }
-
 
 // =========================================================================
 // ⚽ FUTBOL
