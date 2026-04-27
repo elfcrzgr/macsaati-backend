@@ -13,9 +13,9 @@ const INTERVAL = 60000;
 // TARGET_FILE'ları TÜM SPOR DALLARI İÇİN
 const TARGET_FILES = {
     football: "matches_football.json",
-    basketball: "matches_basketball_j7.json",
-    tennis: "matches_tennis_j7.json",
-    f1: "matches_f1_j7.json"
+    basketball: "matches_basketball.json",
+    tennis: "matches_tennis.json",
+    f1: "matches_f1.json"
 };
 
 // Git Yapılandırması
