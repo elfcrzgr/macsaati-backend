@@ -43,6 +43,29 @@ function resetSummary() {
     globalSummary = {};
 }
 
+// 🛡️ BOT KORUMASINI AŞAN GÜVENLİ FETCH YARDIMCISI
+async function fetchJsonSafely(page, url) {
+    try {
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        const data = await page.evaluate(() => {
+            try {
+                // Sayfa içindeki ham JSON'u almayı dener
+                const preNode = document.querySelector("pre");
+                if (preNode) return JSON.parse(preNode.innerText);
+                return JSON.parse(document.body.innerText);
+            } catch(e) { 
+                return null; 
+            }
+        });
+        // Her istekten sonra insani bir bekleme (2-3 saniye arası)
+        await new Promise(r => setTimeout(r, 2000 + Math.random() * 1000));
+        return data;
+    } catch (e) {
+        console.log(`⚠️ URL yüklenemedi: ${url} | Hata: ${e.message}`);
+        return null;
+    }
+}
+
 // =========================================================================
 // ⚽ FUTBOL AYARLARI
 // =========================================================================
@@ -103,7 +126,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
 
     if (staticConfigs[utId]) return staticConfigs[utId];
     if (utn.includes("j1 league")) return "YouTube (J.League Int.)";
-    return "Resmi Yayıncı / Canlı Skor";
+    return "Resmi Yayıncı / Can Skor";
 };
 
 const ELITE_FOOT_IDS = [52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015, 19, 18];
@@ -172,76 +195,51 @@ const F1_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NA
 // =========================================================================
 
 async function runFootball(page) {
-    console.log("\n⚽ Futbol motoru taranıyor (Derin Dakika Analizi Aktif)...");
+    console.log("\n⚽ Futbol motoru taranıyor...");
     let allEvents = [];
     const validDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
 
-    // 1. ADIM: Günlük Listeyi Çek
+    // 1. ADIM: Günlük Listeyi Çek (api.sofascore yerine www.sofascore kullanıyoruz)
     for (const date of validDates) {
-        try {
-            const apiUrl = `https://api.sofascore.com/api/v1/sport/football/scheduled-events/${date}`;
-            const data = await page.evaluate(async (url) => {
-                try { 
-                    const res = await fetch(url);
-                    return await res.json();
-                } catch(e) { return null; }
-            }, apiUrl);
+        const apiUrl = `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`;
+        const data = await fetchJsonSafely(page, apiUrl);
 
-            if (data?.events) {
-                const filtered = data.events.filter(e => {
-                    const ut = e.tournament?.uniqueTournament;
-                    if (!ut) return false;
-                    return ALL_FOOT_TARGETS.includes(ut.id) || ut.hasEventPlayerStatistics || ut.priority > 20;
-                });
-                allEvents = allEvents.concat(filtered);
-            }
-        } catch (e) { console.log(`⚽ Hata: ${date} - ${e.message}`); }
+        if (data && data.events) {
+            const filtered = data.events.filter(e => {
+                const ut = e.tournament?.uniqueTournament;
+                if (!ut) return false;
+                return ALL_FOOT_TARGETS.includes(ut.id) || ut.hasEventPlayerStatistics || ut.priority > 20;
+            });
+            allEvents = allEvents.concat(filtered);
+        }
     }
 
     // 2. ADIM: Canlı Maçlar İçin Detaylı Dakika Hesaplama
     const liveMinutesPool = new Map();
     const liveMatches = allEvents.filter(e => e.status?.type === 'inprogress');
     
-    if (liveMatches.length > 0) {
-        try {
-            const liveData = await page.evaluate(async (matchIds) => {
-                const results = {};
-                for (let i = 0; i < matchIds.length; i += 3) {
-                    const chunk = matchIds.slice(i, i + 3);
-                    const promises = chunk.map(id => 
-                        fetch(`https://api.sofascore.com/api/v1/event/${id}`)
-                            .then(res => res.json())
-                            .catch(() => ({ event: null }))
-                    );
-                    const responses = await Promise.all(promises);
-                    responses.forEach((res, index) => {
-                        if (res && res.event) results[chunk[index]] = res.event;
-                    });
-                }
-                return results;
-            }, liveMatches.map(m => m.id));
+    // Toplu istek atıp rate-limit yemek yerine sıralı ve güvenli geziyoruz.
+    for (const match of liveMatches) {
+        const detailUrl = `https://www.sofascore.com/api/v1/event/${match.id}`;
+        const detailData = await fetchJsonSafely(page, detailUrl);
+        
+        if (detailData && detailData.event && detailData.event.time?.currentPeriodStartTimestamp) {
+            const detail = detailData.event;
+            const status = detail.status;
+            const time = detail.time;
+            const now = Math.floor(Date.now() / 1000);
+            const elapsed = now - time.currentPeriodStartTimestamp;
+            const calcMinute = Math.floor(elapsed / 60);
             
-            for (const match of liveMatches) {
-                const detail = liveData[match.id];
-                if (!detail || !detail.time?.currentPeriodStartTimestamp) {
-                    liveMinutesPool.set(match.id, "Canlı");
-                    continue;
-                }
+            let minuteResult = "";
+            if (status?.code === 31) minuteResult = "DA";
+            else if (status?.code === 7) minuteResult = String(45 + calcMinute);
+            else minuteResult = String(calcMinute);
 
-                const status = detail.status;
-                const time = detail.time;
-                const now = Math.floor(Date.now() / 1000);
-                const elapsed = now - time.currentPeriodStartTimestamp;
-                const calcMinute = Math.floor(elapsed / 60);
-                
-                let minuteResult = "";
-                if (status?.code === 31) minuteResult = "DA";
-                else if (status?.code === 7) minuteResult = String(45 + calcMinute);
-                else minuteResult = String(calcMinute);
-
-                liveMinutesPool.set(match.id, minuteResult);
-            }
-        } catch (e) { console.log(`❌ Dakika hesaplama hatası: ${e.message}`); }
+            liveMinutesPool.set(match.id, minuteResult);
+        } else {
+            liveMinutesPool.set(match.id, "Canlı");
+        }
     }
 
     // 3. ADIM: Final Listesi
@@ -305,19 +303,14 @@ async function runFootball(page) {
 async function runBasketball(page) {
     console.log("\n🏀 Basketbol motoru taranıyor...");
     let allEvents = [];
+    
     for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
-        try {
-            const data = await page.evaluate(async (d) => {
-                try {
-                    const res = await fetch(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${d}`);
-                    return await res.json();
-                } catch(e) { return null; }
-            }, date);
+        const apiUrl = `https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`;
+        const data = await fetchJsonSafely(page, apiUrl);
 
-            if (data?.events) {
-                allEvents = allEvents.concat(data.events.filter(e => targetBaskIds.includes(e.tournament?.uniqueTournament?.id)));
-            }
-        } catch (e) { console.error(`🏀 Hata: ${date}`); }
+        if (data && data.events) {
+            allEvents = allEvents.concat(data.events.filter(e => targetBaskIds.includes(e.tournament?.uniqueTournament?.id)));
+        }
     }
 
     const finalMatchesMap = new Map();
@@ -364,33 +357,27 @@ async function runBasketball(page) {
 }
 
 async function runTennis(page) {
-    console.log("\n🎾 Tenis motoru taranıyor (Dinamik Bayraklar Aktif)...");
+    console.log("\n🎾 Tenis motoru taranıyor...");
     const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     let rawEvents = [];
     const stubbornTournamentIds = new Set([2391]); 
 
     for (const date of targetDates) {
-        try {
-            const data = await page.evaluate(async (d) => {
-                try {
-                    const res = await fetch(`https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/${d}`);
-                    return await res.json();
-                } catch(e) { return null; }
-            }, date);
-            
-            if (data?.events) {
-                const filtered = data.events.filter(e => {
-                    const tourName = e.tournament?.name;
-                    const catName = e.tournament?.category?.name;
-                    if (isGarbage(tourName, catName)) return false;
-                    if (checkIsEliteMatch(tourName) && e.tournament?.uniqueTournament?.id) {
-                        stubbornTournamentIds.add(e.tournament.uniqueTournament.id);
-                    }
-                    return true;
-                });
-                rawEvents.push(...filtered);
-            }
-        } catch (e) { console.error(`🎾 Hata: ${date}`); }
+        const apiUrl = `https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`;
+        const data = await fetchJsonSafely(page, apiUrl);
+        
+        if (data && data.events) {
+            const filtered = data.events.filter(e => {
+                const tourName = e.tournament?.name;
+                const catName = e.tournament?.category?.name;
+                if (isGarbage(tourName, catName)) return false;
+                if (checkIsEliteMatch(tourName) && e.tournament?.uniqueTournament?.id) {
+                    stubbornTournamentIds.add(e.tournament.uniqueTournament.id);
+                }
+                return true;
+            });
+            rawEvents.push(...filtered);
+        }
     }
 
     const finalMatchesMap = new Map();
@@ -409,34 +396,23 @@ async function runTennis(page) {
         let homeLogos = []; let awayLogos = [];
         let homeRank = null; let awayRank = null;
 
-        try {
-            const detail = await page.evaluate(async (id) => {
-                try {
-                    const r = await fetch(`https://api.sofascore.com/api/v1/event/${id}`);
-                    const ev = await r.json();
-                    const eventData = ev.event;
-                    const getCodes = (team) => {
-                        if (team.subTeams && team.subTeams.length > 0) {
-                            return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
-                        }
-                        return [team.country?.alpha2?.toLowerCase() || "mc"];
-                    };
-                    return { 
-                        hCodes: getCodes(eventData.homeTeam), 
-                        aCodes: getCodes(eventData.awayTeam),
-                        hRank: eventData.homeTeam.ranking ? String(eventData.homeTeam.ranking) : null,
-                        aRank: eventData.awayTeam.ranking ? String(eventData.awayTeam.ranking) : null
-                    };
-                } catch(err) { return null; }
-            }, e.id);
+        const detailUrl = `https://www.sofascore.com/api/v1/event/${e.id}`;
+        const evData = await fetchJsonSafely(page, detailUrl);
 
-            if (detail) {
-                homeLogos = detail.hCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
-                awayLogos = detail.aCodes.map(c => `${TENNIS_LOGO_BASE}${c}.png`);
-                homeRank = detail.hRank;
-                awayRank = detail.aRank;
-            }
-        } catch (err) {}
+        if (evData && evData.event) {
+            const eventData = evData.event;
+            const getCodes = (team) => {
+                if (team.subTeams && team.subTeams.length > 0) {
+                    return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
+                }
+                return [team.country?.alpha2?.toLowerCase() || "mc"];
+            };
+            
+            homeLogos = getCodes(eventData.homeTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+            awayLogos = getCodes(eventData.awayTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+            homeRank = eventData.homeTeam.ranking ? String(eventData.homeTeam.ranking) : null;
+            awayRank = eventData.awayTeam.ranking ? String(eventData.awayTeam.ranking) : null;
+        }
 
         if (homeLogos.length === 0) homeLogos = [TENNIS_LOGO_BASE + "mc.png"];
         if (awayLogos.length === 0) awayLogos = [TENNIS_LOGO_BASE + "mc.png"];
@@ -500,6 +476,7 @@ async function runF1() {
     }
 
     try {
+        // Not: Jolpi API (Ergast) botlara karşı sert koruma yapmadığı için fetch kullanmaya devam edebiliriz.
         const response = await fetch('https://api.jolpi.ca/ergast/f1/current.json');
         if (!response.ok) throw new Error("API hatası: " + response.status);
         
@@ -582,15 +559,26 @@ async function scrapeAll(page) {
 
 async function loop() {
     console.log("🟢 Maç Saati MASTER SUNUCUSU BAŞLATILDI");
+    
+    // GÜVENLİ BROWSER ARGÜMANLARI EKLENDİ
     const browser = await puppeteer.launch({ 
         headless: "new", 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-blink-features=AutomationControlled']
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox', 
+            '--disable-dev-shm-usage', 
+            '--disable-blink-features=AutomationControlled',
+            '--lang=tr-TR,tr',
+            '--window-size=1920,1080'
+        ]
     });
+    
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
-
-    // İsteklerin daha hızlı olması için API endpoint'ini önden yüklüyoruz.
-    await page.goto('https://api.sofascore.com', { waitUntil: 'domcontentloaded', timeout: 60000 }).catch(()=>console.log("API Sayfası yüklendi."));
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+    
+    // İlk gidişte cookie'lerin (çerezlerin) oluşması için ana sayfaya bir ping atalım
+    await page.goto('https://www.sofascore.com', { waitUntil: 'domcontentloaded', timeout: 60000 }).catch(()=>console.log("Ana sayfa pinglemesi tamamlandı."));
+    await new Promise(r => setTimeout(r, 3000));
 
     while (true) {
         try {
@@ -608,7 +596,7 @@ async function loop() {
             console.error("Döngü içerisinde hata:", e);
         }
         
-        // Sunucuyu (ve API limitlerini) yormamak için her taramadan sonra 30 saniye bekle
+        // Sunucuyu yormamak için her döngü sonrası 30 saniye bekle
         await new Promise(r => setTimeout(r, 30000));
     }
 }
