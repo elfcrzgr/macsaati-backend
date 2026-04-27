@@ -2329,9 +2329,9 @@
     {
       "id": 16013087,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-27",
-      "fixedTime": "19:10\nCANLI",
+      "fixedTime": "19:10\nMS",
       "timestamp": 1777306200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2347,16 +2347,16 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16013087,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-27",
-      "fixedTime": "19:10\nCANLI",
+      "fixedTime": "19:10\nMS",
       "timestamp": 1777306200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2372,7 +2372,7 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "tournament": "Madrid, Spain"
     },
@@ -2531,33 +2531,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-27",
-      "fixedTime": "20:50",
-      "timestamp": 1777312200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Adolfo Daniel Vallejo",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/py.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Flavio Cobolli",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16013098,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-27",
-      "fixedTime": "20:50",
-      "timestamp": 1777312200000,
+      "fixedTime": "21:00",
+      "timestamp": 1777312800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Adolfo Daniel Vallejo",
@@ -2594,6 +2569,31 @@
         "name": "Alexander Zverev",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16013098,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-27",
+      "fixedTime": "21:00",
+      "timestamp": 1777312800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Adolfo Daniel Vallejo",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/py.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Flavio Cobolli",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
