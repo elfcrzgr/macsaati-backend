@@ -62,10 +62,10 @@ function pushToGithub() {
 
                 // Adım 3: Add (teker teker)
                 const files = [
-                    'matches_football_j7.json',
-                    'matches_basketball_j7.json',
-                    'matches_tennis_j7.json',
-                    'matches_f1_j7.json'
+                    'matches_football.json',
+                    'matches_basketball.json',
+                    'matches_tennis.json',
+                    'matches_f1.json'
                 ];
 
                 let addCommand = 'git add';
