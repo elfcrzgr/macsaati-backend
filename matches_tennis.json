@@ -1,7 +1,7 @@
 {
   "success": true,
-  "lastUpdated": "2026-04-27T09:33:21.645Z",
-  "totalMatches": 120,
+  "lastUpdated": "2026-04-27T09:34:01.345Z",
+  "totalMatches": 124,
   "matches": [
     {
       "id": 16073834,
@@ -1514,6 +1514,34 @@
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
+      "id": 16078234,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-27",
+      "fixedTime": "15:30",
+      "timestamp": 1777293000000,
+      "broadcaster": "beIN Sports / S Sport",
+      "homeTeam": {
+        "name": "Eyad Reda Ezzat Mohamed Sherif",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/eg.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "D. Ciaschetti",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Boys' Singles Draw"
+    },
+    {
       "id": 16013101,
       "isElite": true,
       "status": "notstarted",
@@ -2526,6 +2554,90 @@
       "awayScore": "-",
       "setScores": "",
       "tournament": "Girls' Singles Draw"
+    },
+    {
+      "id": 16078236,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "11:00",
+      "timestamp": 1777363200000,
+      "broadcaster": "beIN Sports / S Sport",
+      "homeTeam": {
+        "name": "Kaan Isik Kosaner",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "L. Fiocchi",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Boys' Singles Draw"
+    },
+    {
+      "id": 16078235,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "11:00",
+      "timestamp": 1777363200000,
+      "broadcaster": "beIN Sports / S Sport",
+      "homeTeam": {
+        "name": "Ken Ink",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ee.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "L. Cosimi",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Boys' Singles Draw"
+    },
+    {
+      "id": 16078233,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "11:00",
+      "timestamp": 1777363200000,
+      "broadcaster": "beIN Sports / S Sport",
+      "homeTeam": {
+        "name": "T. Pedretti",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "William Moxon",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "homeRank": null,
+      "awayRank": null,
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": "",
+      "tournament": "Boys' Singles Draw"
     },
     {
       "id": 16073546,
