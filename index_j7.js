@@ -158,7 +158,8 @@ async function updateFootball() {
     let allEvents = [];
     
     for (const date of [getTRDate(0), getTRDate(1)]) {
-        const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`);
+        // EKLENDİ: URL sonuna ?_=${Date.now()} eklendi (Cache kırmak için)
+        const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
         }
@@ -193,19 +194,26 @@ async function updateFootball() {
         };
     }).sort((a, b) => a.timestamp - b.timestamp);
 
-    fs.writeFileSync(TARGET_FILES.football, JSON.stringify({ success: true, matches }, null, 2));
+    // EKLENDİ: lastUpdate eklendi (Her dakika Github'a push atabilmesi için dosya içeriğini değiştirir)
+    fs.writeFileSync(TARGET_FILES.football, JSON.stringify({ success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches }, null, 2));
     
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
 
-    // Detaylı log
+    // EKLENDİ: Akıllı zamanlayıcı için gelecek ilk maçın saatini buluyoruz
+    const upcomingMatches = matches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
+    const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
+
+    // Detaylı log (Senin yapın aynen duruyor)
     console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
     Object.keys(leagueCount).forEach(leagueId => {
         const leagueName = footballLeagues[leagueId] || `Liga ${leagueId}`;
         console.log(`      • ${leagueName}: ${leagueCount[leagueId]} maç`);
     });
 
-    return hasLiveMatch; // Canlı maç bilgisini döndürüyoruz
+    // DEĞİŞTİ: Ana döngüye her iki veriyi de gönderiyoruz
+    return { hasLiveMatch, nextMatchTimestamp };
 }
+
 
 // =========================================================================
 // 🏀 BASKETBOL
@@ -501,7 +509,8 @@ async function main() {
     await initGitConfig();
     
     let iteration = 1;
-    let hasLiveFootball = false;
+    // DEĞİŞTİ: Artık updateFootball'dan obje döneceği için bunu objeye çevirdik
+    let footballStatus = { hasLiveMatch: false, nextMatchTimestamp: null };
     
     // İlk açılışta tüm spor dallarını anında güncellemesi için sayacı dolu başlatıyoruz
     let timeSinceLastFullUpdate = FULL_UPDATE_INTERVAL_MS; 
@@ -511,27 +520,42 @@ async function main() {
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
             let updatedSomething = false;
             
+            // EKLENDİ: Şu anki saat, sıradaki maçın saatine geldi mi? (1 dakika tolerans payı)
+            const now = Date.now();
+            const isMatchTime = footballStatus.nextMatchTimestamp && (now >= (footballStatus.nextMatchTimestamp - 60000));
+            
             if (timeSinceLastFullUpdate >= FULL_UPDATE_INTERVAL_MS) {
                 // 20 DAKİKA DOLDU -> TÜM SPOR DALLARINI GÜNCELLE
                 console.log("🔄 20 Dakikalık Tam Güncelleme Döngüsü Çalışıyor...");
                 
-                hasLiveFootball = await updateFootball();
+                footballStatus = await updateFootball(); // DEĞİŞTİ: Obje olarak güncelledik
                 await updateBasketball();
                 await updateTennis();
                 await updateF1();
                 
                 timeSinceLastFullUpdate = 0; // Sayacı sıfırla
                 updatedSomething = true;
-            } else if (hasLiveFootball) {
-                // 20 DAKİKA DOLMADI AMA CANLI FUTBOL MAÇI VAR -> SADECE FUTBOLU GÜNCELLE
-                console.log("⚽ Canlı maç var! Sadece futbol 1 dakikalık döngüde güncelleniyor...");
+            } else if (footballStatus.hasLiveMatch || isMatchTime) { // DEĞİŞTİ: Maç saati geldiyse de buraya gir
+                // 20 DAKİKA DOLMADI AMA CANLI MAÇ VAR VEYA MAÇ SAATİ GELDİ
+                if (isMatchTime && !footballStatus.hasLiveMatch) {
+                    console.log("⏰ Yeni maç saati geldi! Sadece futbol 1 dakikalık döngüde güncelleniyor...");
+                } else {
+                    console.log("⚽ Canlı maç var! Sadece futbol 1 dakikalık döngüde güncelleniyor...");
+                }
                 
-                hasLiveFootball = await updateFootball();
+                footballStatus = await updateFootball(); // DEĞİŞTİ: Obje olarak güncelledik
                 updatedSomething = true;
             } else {
                 // CANLI MAÇ YOK VE 20 DAKİKA DOLMADI -> BEKLE
                 const minutesLeft = Math.round((FULL_UPDATE_INTERVAL_MS - timeSinceLastFullUpdate) / 60000);
-                console.log(`💤 Canlı maç yok. Tam güncellemeye yaklaşık ${minutesLeft} dakika kaldı.`);
+                
+                // EKLENDİ: Ekranda ilk maça ne kadar kaldığını da görebilmen için küçük bir detay
+                if (footballStatus.nextMatchTimestamp && (footballStatus.nextMatchTimestamp - now) < (FULL_UPDATE_INTERVAL_MS - timeSinceLastFullUpdate)) {
+                    const matchMins = Math.round((footballStatus.nextMatchTimestamp - now) / 60000);
+                    console.log(`💤 Canlı maç yok. Tam güncellemeye ${minutesLeft} dk, ilk maça ${matchMins} dk kaldı.`);
+                } else {
+                    console.log(`💤 Canlı maç yok. Tam güncellemeye yaklaşık ${minutesLeft} dakika kaldı.`);
+                }
             }
 
             // Eğer herhangi bir JSON değiştiyse/güncellendiyse GitHub'a yolla
@@ -551,5 +575,6 @@ async function main() {
         iteration++;
     }
 }
+
 
 main(); 
