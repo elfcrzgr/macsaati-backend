@@ -422,6 +422,69 @@ const checkIsEliteMatch = (tournamentName) => {
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
+// ✨ YENİ: SofaScore API'den ranking çekme (çiftler için de çalışır)
+const getPlayerRankings = async (eventId, homeTeamId, awayTeamId) => {
+    try {
+        let hRank = null;
+        let aRank = null;
+
+        // 1. Event detay API'sinden çek
+        const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${eventId}`);
+        
+        if (detailData?.event) {
+            const ev = detailData.event;
+            
+            // Tekli maç için
+            if (ev.homeTeam?.ranking !== undefined && ev.homeTeam.ranking !== null) {
+                hRank = ev.homeTeam.ranking;
+            }
+            if (ev.awayTeam?.ranking !== undefined && ev.awayTeam.ranking !== null) {
+                aRank = ev.awayTeam.ranking;
+            }
+
+            // Çiftler maç için: subTeams içinde player ranking'leri ara
+            if (!hRank && ev.homeTeam?.subTeams?.length > 0) {
+                const ranks = ev.homeTeam.subTeams
+                    .map(p => p.ranking)
+                    .filter(r => r !== undefined && r !== null);
+                if (ranks.length > 0) {
+                    // En iyi ranking'i al (en düşük sayı)
+                    hRank = Math.min(...ranks);
+                }
+            }
+
+            if (!aRank && ev.awayTeam?.subTeams?.length > 0) {
+                const ranks = ev.awayTeam.subTeams
+                    .map(p => p.ranking)
+                    .filter(r => r !== undefined && r !== null);
+                if (ranks.length > 0) {
+                    aRank = Math.min(...ranks);
+                }
+            }
+        }
+
+        // 2. Eğer hala null ise, doğrudan player endpoint'ini dene
+        if (!hRank && homeTeamId) {
+            const homePlayerData = await fetchData(`https://www.sofascore.com/api/v1/player/${homeTeamId}`);
+            if (homePlayerData?.player?.ranking) {
+                hRank = homePlayerData.player.ranking;
+            }
+        }
+
+        if (!aRank && awayTeamId) {
+            const awayPlayerData = await fetchData(`https://www.sofascore.com/api/v1/player/${awayTeamId}`);
+            if (awayPlayerData?.player?.ranking) {
+                aRank = awayPlayerData.player.ranking;
+            }
+        }
+
+        return { hRank, aRank };
+    } catch (error) {
+        console.error(`⚠️ Ranking çekilemedi (Event ID: ${eventId}):`, error.message);
+        return { hRank: null, aRank: null };
+    }
+};
+
 async function updateTennis() {
     console.log(`🎾 Tenis güncelleniyor (Detaylı Tarama Modu)...`);
     let rawEvents = [];
@@ -431,111 +494,142 @@ async function updateTennis() {
 
     // 1. AŞAMA: Günlük listeden maçları topla
     for (const date of targetDates) {
-        const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
-        if (data?.events) {
-            const filtered = data.events.filter(e => {
-                const tourName = e.tournament?.name;
-                const catName = e.tournament?.category?.name;
-                return !isGarbage(tourName, catName);
-            });
-            rawEvents.push(...filtered);
+        try {
+            const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
+            if (data?.events) {
+                const filtered = data.events.filter(e => {
+                    const tourName = e.tournament?.name;
+                    const catName = e.tournament?.category?.name;
+                    return !isGarbage(tourName, catName);
+                });
+                rawEvents.push(...filtered);
+            }
+        } catch (error) {
+            console.error(`⚠️ Tarih ${date} için veriler çekilemedi:`, error.message);
+            continue;
         }
     }
 
+    console.log(`  📋 ${rawEvents.length} maç bulundu`);
     const finalMatches = [];
 
     // 2. AŞAMA: Her maçın içine girip eksik verileri (Sıralama ve Çiftler) çek
-    for (const e of rawEvents) {
-        const startTimestamp = e.startTimestamp * 1000;
-        const dateTR = new Date(startTimestamp);
-        const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        if (!targetDates.includes(fixedDate)) continue;
-
-        const tourName = e.tournament?.name || "";
-        if (isGarbage(tourName, e.tournament?.category?.name)) continue;
-
-        let homeLogos = [];
-        let awayLogos = [];
-        let hRank = null;
-        let aRank = null;
-
-        // 🚨 BAN KORUMASI: Sofascore'u boğmamak için her detay isteği öncesi kısa bir süre bekle
-        await new Promise(r => setTimeout(r, 200));
-
-        // DETAY API'SİNE GİT (Senin Puppeteer'da yaptığın işlemin hızlı versiyonu)
-        const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`);
+    for (let idx = 0; idx < rawEvents.length; idx++) {
+        const e = rawEvents[idx];
         
-        if (detailData && detailData.event) {
-            const ev = detailData.event;
-            hRank = ev.homeTeam?.ranking || null;
-            aRank = ev.awayTeam?.ranking || null;
+        try {
+            const startTimestamp = e.startTimestamp * 1000;
+            const dateTR = new Date(startTimestamp);
+            const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+            if (!targetDates.includes(fixedDate)) continue;
 
-            const getCodes = (team) => {
-                if (team.subTeams && team.subTeams.length > 0) {
-                    return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
-                }
-                return [team.country?.alpha2?.toLowerCase() || "mc"];
-            };
+            const tourName = e.tournament?.name || "";
+            if (isGarbage(tourName, e.tournament?.category?.name)) continue;
 
-            homeLogos = getCodes(ev.homeTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
-            awayLogos = getCodes(ev.awayTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
-        } else {
-            // Eğer detay çekilemezse (hata olursa) yedek olarak ana listedeki verileri kullan
-            homeLogos = [e.homeTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.homeTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
-            awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
-        }
+            let homeLogos = [];
+            let awayLogos = [];
+            let hRank = null;
+            let aRank = null;
 
-        const statusType = e.status?.type;
-        let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
-        
-        const hasScore = statusType === 'inprogress' || statusType === 'finished';
-        if (statusType === 'inprogress') timeString += "\nCANLI";
-        else if (statusType === 'finished') timeString += "\nMS";
+            // 🚨 BAN KORUMASI: SofaScore'u boğmamak için request'ler arasında bekle
+            await new Promise(r => setTimeout(r, 250));
 
-        // Set skorlarını çekme
-        let sets = [];
-        if (hasScore && e.homeScore && e.awayScore) {
-            for (let i = 1; i <= 5; i++) {
-                const hScore = e.homeScore[`period${i}`];
-                const aScore = e.awayScore[`period${i}`];
-                if (hScore !== undefined && aScore !== undefined) {
-                    sets.push(`${hScore}-${aScore}`);
+            // DETAY API'SİNE GİT
+            const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`);
+            
+            if (detailData && detailData.event) {
+                const ev = detailData.event;
+
+                // ✨ Ranking'i daha detaylı çek
+                const { hRank: hR, aRank: aR } = await getPlayerRankings(
+                    e.id, 
+                    ev.homeTeam?.id, 
+                    ev.awayTeam?.id
+                );
+                hRank = hR;
+                aRank = aR;
+
+                // Logo'ları çek
+                const getCodes = (team) => {
+                    if (team.subTeams && team.subTeams.length > 0) {
+                        return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
+                    }
+                    return [team.country?.alpha2?.toLowerCase() || "mc"];
+                };
+
+                homeLogos = getCodes(ev.homeTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+                awayLogos = getCodes(ev.awayTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+            } else {
+                // Eğer detay çekilemezse yedek olarak ana listedeki verileri kullan
+                homeLogos = [e.homeTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.homeTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
+                awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
+            }
+
+            const statusType = e.status?.type;
+            let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+            
+            const hasScore = statusType === 'inprogress' || statusType === 'finished';
+            if (statusType === 'inprogress') timeString += "\nCANLI";
+            else if (statusType === 'finished') timeString += "\nMS";
+
+            // Set skorlarını çekme
+            let sets = [];
+            if (hasScore && e.homeScore && e.awayScore) {
+                for (let i = 1; i <= 5; i++) {
+                    const hScore = e.homeScore[`period${i}`];
+                    const aScore = e.awayScore[`period${i}`];
+                    if (hScore !== undefined && aScore !== undefined) {
+                        sets.push(`${hScore}-${aScore}`);
+                    }
                 }
             }
-        }
 
-        finalMatches.push({
-            id: e.id,
-            isElite: checkIsEliteMatch(tourName),
-            status: statusType,
-            fixedDate: fixedDate,
-            fixedTime: timeString,
-            timestamp: startTimestamp,
-            broadcaster: "S Sport / beIN Sports",
-            homeTeam: { 
-                name: e.homeTeam.name || "Belli Değil", 
-                ranking: hRank, // Yeni çekilen kesin sıralama
-                logos: homeLogos // Çiftler destekli logolar
-            },
-            awayTeam: { 
-                name: e.awayTeam.name || "Belli Değil", 
-                ranking: aRank, 
-                logos: awayLogos 
-            },
-            tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
-            homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"),
-            awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"),
-            setScores: sets,
-            tournament: tourName
-        });
-        
-        tournamentCount[tourName] = (tournamentCount[tourName] || 0) + 1;
+            finalMatches.push({
+                id: e.id,
+                isElite: checkIsEliteMatch(tourName),
+                status: statusType,
+                fixedDate: fixedDate,
+                fixedTime: timeString,
+                timestamp: startTimestamp,
+                broadcaster: "S Sport / beIN Sports",
+                homeTeam: { 
+                    name: e.homeTeam.name || "Belli Değil", 
+                    ranking: hRank,
+                    logos: homeLogos
+                },
+                awayTeam: { 
+                    name: e.awayTeam.name || "Belli Değil", 
+                    ranking: aRank, 
+                    logos: awayLogos 
+                },
+                tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
+                homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"),
+                awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"),
+                setScores: sets,
+                tournament: tourName
+            });
+            
+            tournamentCount[tourName] = (tournamentCount[tourName] || 0) + 1;
+            
+            // İlerleme göster
+            const progress = Math.round((idx / rawEvents.length) * 100);
+            process.stdout.write(`\r  ⏳ İşleniyor... %${progress} (${idx}/${rawEvents.length})`);
+            
+        } catch (error) {
+            console.error(`\n⚠️ Maç ${e.id} işlenirken hata:`, error.message);
+            continue;
+        }
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync(TARGET_FILES.tennis, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
     
-    console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı (Detaylar dahil edildi)`);
+    console.log(`\n  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi`);
+    console.log(`  📊 Turnuvalar: ${Object.keys(tournamentCount).length}`);
+    
+    // Debug: Sıralama istatistikleri
+    const withRanking = finalMatches.filter(m => m.homeTeam.ranking || m.awayTeam.ranking).length;
+    console.log(`  🏆 Sıralama verisi olan maçlar: ${withRanking}/${finalMatches.length}`);
 }
 // =========================================================================
 // 🏎️ FORMULA 1
