@@ -104,9 +104,9 @@
     {
       "id": 16078143,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "08:55\nCANLI",
+      "fixedTime": "08:55\nMS",
       "timestamp": 1777355700000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -123,7 +123,7 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "tournament": "Huzhou, China"
     },
     {
@@ -147,33 +147,8 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
-      "tournament": "Huzhou, China"
-    },
-    {
-      "id": 16074022,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "09:30",
-      "timestamp": 1777357800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Diletta Cherubini",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Ekaterina Reyngold",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
       "tournament": "Huzhou, China"
     },
     {
@@ -277,31 +252,6 @@
       "tournament": "Girls' Singles Draw"
     },
     {
-      "id": 16074026,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "10:30",
-      "timestamp": 1777361400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Yufei Ren",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yidi Yang",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Huzhou, China"
-    },
-    {
       "id": 16078235,
       "isElite": false,
       "status": "notstarted",
@@ -327,31 +277,6 @@
       "tournament": "Boys' Singles Draw"
     },
     {
-      "id": 16073543,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "10:45",
-      "timestamp": 1777362300000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Saito S / Yamazaki I",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Kuwata H / Li Y-Y",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Huzhou, China, Doubles"
-    },
-    {
       "id": 16074025,
       "isElite": false,
       "status": "notstarted",
@@ -367,6 +292,31 @@
       },
       "awayTeam": {
         "name": "Xinyu Gao",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Huzhou, China"
+    },
+    {
+      "id": 16074026,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "11:00",
+      "timestamp": 1777363200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Yufei Ren",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yidi Yang",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
@@ -402,21 +352,21 @@
       "tournament": "Girls' Singles Draw"
     },
     {
-      "id": 16073546,
+      "id": 16073543,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "11:10",
-      "timestamp": 1777363800000,
+      "fixedTime": "11:15",
+      "timestamp": 1777364100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Ibragimova A / Jakupovic D",
+        "name": "Saito S / Yamazaki I",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
         ]
       },
       "awayTeam": {
-        "name": "Shi H / Ye Q Y",
+        "name": "Kuwata H / Li Y-Y",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
         ]
@@ -502,29 +452,29 @@
       "tournament": "Girls' Singles Draw"
     },
     {
-      "id": 16073548,
+      "id": 16074022,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "11:55",
-      "timestamp": 1777366500000,
+      "fixedTime": "11:40",
+      "timestamp": 1777365600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Plipuech P / Zheng W",
+        "name": "Diletta Cherubini",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
         ]
       },
       "awayTeam": {
-        "name": "Lansere S / Zolotareva A",
+        "name": "Ekaterina Reyngold",
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
       "homeScore": "-",
       "awayScore": "-",
-      "tournament": "Huzhou, China, Doubles"
+      "tournament": "Huzhou, China"
     },
     {
       "id": 16013077,
@@ -675,6 +625,56 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16073546,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "12:05",
+      "timestamp": 1777367100000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Ibragimova A / Jakupovic D",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Shi H / Ye Q Y",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Huzhou, China, Doubles"
+    },
+    {
+      "id": 16073548,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "12:25",
+      "timestamp": 1777368300000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Plipuech P / Zheng W",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lansere S / Zolotareva A",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Huzhou, China, Doubles"
     },
     {
       "id": 16075297,
@@ -1716,7 +1716,7 @@
         ]
       },
       "awayTeam": {
-        "name": "Goncalo Da Rosa Castro",
+        "name": "Gonçalo da Rosa Castro",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/pt.png"
         ]
@@ -2819,6 +2819,31 @@
         "name": "Sofya Lansere",
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Huzhou, China"
+    },
+    {
+      "id": 16050701,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-29",
+      "fixedTime": "06:00",
+      "timestamp": 1777431600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Xiyu Wang",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Chengyiyi Yuan",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
