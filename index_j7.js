@@ -122,8 +122,11 @@ async function pushToGithub() {
 }
 
 
+
+
+
 // =========================================================================
-// ⚽ FUTBOL (Çeviriler ve Dinamik Yayıncılar)
+// ⚽ FUTBOL (Çeviriler, Dinamik Yayıncılar ve Temiz İsimler)
 // =========================================================================
 const teamTranslations = {
     "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
@@ -160,6 +163,7 @@ const translateTeam = (name) => {
     return name;
 };
 
+// Senin harika yayıncı bulucun (id karışıklıkları giderildi)
 const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     const hn = (hName || "").toLowerCase();
     const an = (aName || "").toLowerCase();
@@ -178,12 +182,12 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     }
 
     const staticConfigs = {
-        34: "beIN Sports", 52: "beIN Sports", 238: "S Spor", 242: "Apple TV", 938: "S Sport / S Sport Plus", 
-        17: "beIN Sports", 8: "S Sport", 23: "S Sport", 7: "TRT / Tabii", 11: "TRT 1 / Tabii", 351: "TRT Spor / Tabii", 
-        37: "S Sport Plus / TV+", 10: "Exxen / S Sport+", 13: "Spor Smart", 393: "CBC Sport", 155: "Spor Smart / Exxen", 
-        10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 11417: "TFF YouTube", 
+        34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii", 
+        17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 7: "S Sport Plus", 351: "S Sport Plus", 
+        37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
+        10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / Tivibu Spor", 97: "TFF YouTube", 11417: "TFF YouTube", 
         11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 696: "DAZN / YouTube", 13363: "USL YouTube", 
-        10783: "S Sport Plus / TRT", 232: "S Sport Plus / DAZN", 1: "TRT 1 / Tabii", 19: "FA Cup"
+        10783: "A Spor", 232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen"
     };
 
     if (staticConfigs[utId]) return staticConfigs[utId];
@@ -198,7 +202,7 @@ const ELITE_FOOT_IDS = [19, 52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242
 const REGULAR_FOOT_IDS = [10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
-// Temiz Turnuva İsimleri
+// Lig isimleri DÜZELTİLDİ. (Önceki mesajdaki kaymalar giderildi)
 const footballLeagues = {
     52: "İngiltere Premier Lig", 351: "İspanya La Liga", 98: "Almanya Bundesliga",
     17: "İtalya Serie A", 8: "Fransa Ligue 1", 23: "İskoçya Premiership",
@@ -207,7 +211,8 @@ const footballLeagues = {
     242: "UEFA Konferans Ligi", 938: "FIFA Dünya Kupası", 393: "UEFA EURO",
     7: "Uluslararası Hazırlık Maçları", 750: "Konfederasyonlar Kupası", 10248: "TFF Alt Ligler",
     10783: "Türkiye Kupası", 1: "Uluslararası Hazırlık Maçları", 679: "Copa America",
-    17015: "Afrika Uluslar Kupası (AFCON)", 19: "FA Cup"
+    17015: "Afrika Uluslar Kupası", 10: "Brezilya Serie A", 155: "Arjantin Liga Profesional",
+    13363: "USL Championship", 19: "FA Cup"
 };
 
 async function updateFootball() {
@@ -221,7 +226,7 @@ async function updateFootball() {
         }
     }
 
-    // Çift maçları engellemek için Map kullanıyoruz
+    // Çift maçları engellemek için Map
     const duplicateTracker = new Map();
     const leagueCount = {};
 
@@ -239,6 +244,9 @@ async function updateFootball() {
         const tName = e.tournament?.name || "";
         const utName = e.tournament?.uniqueTournament?.name || "";
         
+        // Önce bizim sözlüğümüze bak, yoksa API'den gelen ana turnuva ismini kullan (Knockout stage gibi kalabalıkları atar)
+        const cleanTournamentName = footballLeagues[leagueId] || e.tournament?.name || utName;
+
         duplicateTracker.set(e.id, {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
@@ -248,17 +256,17 @@ async function updateFootball() {
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
             
-            // SENİN YAYINCI FONKSİYONUN EKLENDİ
             broadcaster: getFootBroadcaster(leagueId, hName, aName, tName, utName),
             
-            // SENİN TAKIM ÇEVİRİ FONKSİYONUN EKLENDİ
             homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
             
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
-            tournament: footballLeagues[leagueId] || tName
+            
+            // Temizlenmiş turnuva adı basılıyor
+            tournament: cleanTournamentName
         });
     });
 
