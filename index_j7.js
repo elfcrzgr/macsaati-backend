@@ -469,6 +469,18 @@ async function updateTennis() {
         if (statusType === 'inprogress') timeString += "\nCANLI";
         else if (statusType === 'finished') timeString += "\nMS";
 
+        // YENİ: Set skorlarını güvenli bir şekilde diziye ekliyoruz
+        let sets = [];
+        if (hasScore && e.homeScore && e.awayScore) {
+            for (let i = 1; i <= 5; i++) { // Teniste en fazla 5 set oynanır
+                const hScore = e.homeScore[`period${i}`];
+                const aScore = e.awayScore[`period${i}`];
+                if (hScore !== undefined && aScore !== undefined) {
+                    sets.push(`${hScore}-${aScore}`);
+                }
+            }
+        }
+
         finalMatches.push({
             id: e.id,
             isElite: checkIsEliteMatch(tourName),
@@ -477,11 +489,20 @@ async function updateTennis() {
             fixedTime: timeString,
             timestamp: startTimestamp,
             broadcaster: "S Sport / beIN Sports",
-            homeTeam: { name: e.homeTeam.name || "Belli Değil", logos: homeLogos },
-            awayTeam: { name: e.awayTeam.name || "Belli Değil", logos: awayLogos },
+            homeTeam: { 
+                name: e.homeTeam.name || "Belli Değil", 
+                ranking: e.homeTeam.ranking || null, // YENİ: Sıralama eklendi (Yoksa null döner)
+                logos: homeLogos 
+            },
+            awayTeam: { 
+                name: e.awayTeam.name || "Belli Değil", 
+                ranking: e.awayTeam.ranking || null, // YENİ: Sıralama eklendi
+                logos: awayLogos 
+            },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
             homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"),
             awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"),
+            setScores: sets, // YENİ: Set skorları dizisi eklendi (Örn: ["6-4", "3-6"])
             tournament: tourName
         });
         
