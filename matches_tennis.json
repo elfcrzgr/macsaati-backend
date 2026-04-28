@@ -302,31 +302,6 @@
       "tournament": "Huzhou, China"
     },
     {
-      "id": 16074026,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "11:00",
-      "timestamp": 1777363200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Yufei Ren",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yidi Yang",
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "tournament": "Huzhou, China"
-    },
-    {
       "id": 16082561,
       "isElite": false,
       "status": "notstarted",
@@ -375,6 +350,31 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "Huzhou, China, Doubles"
+    },
+    {
+      "id": 16074026,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "11:20\nCANLI",
+      "timestamp": 1777364400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Yufei Ren",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yidi Yang",
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "tournament": "Huzhou, China"
     },
     {
       "id": 16080180,
