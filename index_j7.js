@@ -267,7 +267,8 @@ async function updateFootball() {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
             status: status,
-            liveMinute: isLive ? (e.status.description || "") : "",
+            
+            liveMinute: isLive ? (e.time?.currentMinute ? String(e.time.currentMinute) : (e.status?.description === "Halftime" ? "İY" : e.status?.description || "")) : "",
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
