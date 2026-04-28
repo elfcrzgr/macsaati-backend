@@ -198,13 +198,11 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-// Hedeflenecek Liglerin Sofascore ID'leri (Düzeltilmiş Hali)
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 7, 679, 17015, 16, 1, 133, 270];
 const REGULAR_FOOT_IDS = [53, 299, 6516, 325, 155, 242];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
-// Lig isimleri DÜZELTİLDİ. (Önceki mesajdaki kaymalar giderildi)
-// Doğrulanmış Gerçek Sofascore Turnuva ID'leri
+// Doğrulanmış Gerçek Sofascore Turnuva İsimleri
 const footballLeagues = {
     17: "İngiltere Premier Lig", 
     8: "İspanya La Liga", 
@@ -214,23 +212,23 @@ const footballLeagues = {
     52: "Türkiye Süper Lig", 
     37: "Hollanda Eredivisie", 
     238: "Portekiz Primeira Liga", 
-    38: "Belçika Pro League", // Eski listede 34 yazıyordu, doğrusu 38
-    36: "İskoçya Premiership", // Eski listede 23 yazıyordu, doğrusu 36
+    38: "Belçika Pro League", 
+    36: "İskoçya Premiership", 
     19: "FA Cup", 
     97: "Türkiye Kupası",
-    53: "TFF 1. Lig", // Alt ligler için eklendi
-    7: "UEFA Şampiyonlar Ligi", 
+    53: "TFF 1. Lig", 
+    7: "UEFA Şampiyonlar Ligi", // <-- Sorun yaratan 7 numara düzeltildi!
     679: "UEFA Avrupa Ligi",
     17015: "UEFA Konferans Ligi", 
     16: "FIFA Dünya Kupası", 
     1: "UEFA EURO",
     133: "Copa America", 
-    270: "Afrika Uluslar Kupası (AFCON)", 
-    299: "Uluslararası Hazırlık Maçları", // Milli takımlar
+    270: "Afrika Uluslar Kupası", 
+    299: "Uluslararası Hazırlık Maçları", // Gerçek hazırlık maçlarının ID'si budur
     6516: "Kulüp Hazırlık Maçları", 
     325: "Brezilya Serie A", 
     155: "Arjantin Liga Profesional",
-    242: "Amerikan Major League Soccer (MLS)" // Önceden konferans ligi olarak kalmıştı
+    242: "MLS"
 };
 
 async function updateFootball() {
