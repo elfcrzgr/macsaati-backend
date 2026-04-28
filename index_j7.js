@@ -400,8 +400,10 @@ async function updateBasketball() {
     });
 }
 
+
+
 // =========================================================================
-// 🎾 TENİS (DETAYLI SIRALAMA VE ÇİFTLER LOGOSU İLE)
+// 🎾 TENİS (DETAYLI SIRALAMA VE ÇİFTLER LOGOSU İLE - PARALEL OPTİMİZE)
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
@@ -422,71 +424,8 @@ const checkIsEliteMatch = (tournamentName) => {
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
-// ✨ YENİ: SofaScore API'den ranking çekme (çiftler için de çalışır)
-const getPlayerRankings = async (eventId, homeTeamId, awayTeamId) => {
-    try {
-        let hRank = null;
-        let aRank = null;
-
-        // 1. Event detay API'sinden çek
-        const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${eventId}`);
-        
-        if (detailData?.event) {
-            const ev = detailData.event;
-            
-            // Tekli maç için
-            if (ev.homeTeam?.ranking !== undefined && ev.homeTeam.ranking !== null) {
-                hRank = ev.homeTeam.ranking;
-            }
-            if (ev.awayTeam?.ranking !== undefined && ev.awayTeam.ranking !== null) {
-                aRank = ev.awayTeam.ranking;
-            }
-
-            // Çiftler maç için: subTeams içinde player ranking'leri ara
-            if (!hRank && ev.homeTeam?.subTeams?.length > 0) {
-                const ranks = ev.homeTeam.subTeams
-                    .map(p => p.ranking)
-                    .filter(r => r !== undefined && r !== null);
-                if (ranks.length > 0) {
-                    // En iyi ranking'i al (en düşük sayı)
-                    hRank = Math.min(...ranks);
-                }
-            }
-
-            if (!aRank && ev.awayTeam?.subTeams?.length > 0) {
-                const ranks = ev.awayTeam.subTeams
-                    .map(p => p.ranking)
-                    .filter(r => r !== undefined && r !== null);
-                if (ranks.length > 0) {
-                    aRank = Math.min(...ranks);
-                }
-            }
-        }
-
-        // 2. Eğer hala null ise, doğrudan player endpoint'ini dene
-        if (!hRank && homeTeamId) {
-            const homePlayerData = await fetchData(`https://www.sofascore.com/api/v1/player/${homeTeamId}`);
-            if (homePlayerData?.player?.ranking) {
-                hRank = homePlayerData.player.ranking;
-            }
-        }
-
-        if (!aRank && awayTeamId) {
-            const awayPlayerData = await fetchData(`https://www.sofascore.com/api/v1/player/${awayTeamId}`);
-            if (awayPlayerData?.player?.ranking) {
-                aRank = awayPlayerData.player.ranking;
-            }
-        }
-
-        return { hRank, aRank };
-    } catch (error) {
-        console.error(`⚠️ Ranking çekilemedi (Event ID: ${eventId}):`, error.message);
-        return { hRank: null, aRank: null };
-    }
-};
-
 async function updateTennis() {
-    console.log(`🎾 Tenis güncelleniyor (Detaylı Tarama Modu)...`);
+    console.log(`🎾 Tenis güncelleniyor (Paralel Optimizasyon)...`);
     let rawEvents = [];
     const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     
@@ -513,7 +452,25 @@ async function updateTennis() {
     console.log(`  📋 ${rawEvents.length} maç bulundu`);
     const finalMatches = [];
 
-    // 2. AŞAMA: Her maçın içine girip eksik verileri (Sıralama ve Çiftler) çek
+    // ⚡ 2. AŞAMA: TÜM DETAY İSTEKLERİNİ PARALEL OLARtk YAP
+    const detailPromises = rawEvents.map(e => 
+        fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`)
+            .then(data => ({ eventId: e.id, data }))
+            .catch(err => {
+                console.warn(`⚠️ Event ${e.id} detayı çekilemedi`);
+                return { eventId: e.id, data: null };
+            })
+    );
+
+    const detailsResults = await Promise.all(detailPromises);
+    const detailsMap = {};
+    detailsResults.forEach(result => {
+        detailsMap[result.eventId] = result.data;
+    });
+
+    console.log(`  ✅ Tüm detaylar çekildi`);
+
+    // 3. AŞAMA: Maçları işle ve JSON'a hazırla
     for (let idx = 0; idx < rawEvents.length; idx++) {
         const e = rawEvents[idx];
         
@@ -531,23 +488,38 @@ async function updateTennis() {
             let hRank = null;
             let aRank = null;
 
-            // 🚨 BAN KORUMASI: SofaScore'u boğmamak için request'ler arasında bekle
-            await new Promise(r => setTimeout(r, 250));
-
-            // DETAY API'SİNE GİT
-            const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`);
+            // Map'ten detay bul
+            const detailData = detailsMap[e.id];
             
-            if (detailData && detailData.event) {
+            if (detailData?.event) {
                 const ev = detailData.event;
 
-                // ✨ Ranking'i daha detaylı çek
-                const { hRank: hR, aRank: aR } = await getPlayerRankings(
-                    e.id, 
-                    ev.homeTeam?.id, 
-                    ev.awayTeam?.id
-                );
-                hRank = hR;
-                aRank = aR;
+                // Ranking çek - Tekli maç
+                if (ev.homeTeam?.ranking !== undefined && ev.homeTeam.ranking !== null) {
+                    hRank = ev.homeTeam.ranking;
+                }
+                if (ev.awayTeam?.ranking !== undefined && ev.awayTeam.ranking !== null) {
+                    aRank = ev.awayTeam.ranking;
+                }
+
+                // Ranking çek - Çiftler maç (subTeams)
+                if (!hRank && ev.homeTeam?.subTeams?.length > 0) {
+                    const ranks = ev.homeTeam.subTeams
+                        .map(p => p.ranking)
+                        .filter(r => r !== undefined && r !== null);
+                    if (ranks.length > 0) {
+                        hRank = Math.min(...ranks);
+                    }
+                }
+
+                if (!aRank && ev.awayTeam?.subTeams?.length > 0) {
+                    const ranks = ev.awayTeam.subTeams
+                        .map(p => p.ranking)
+                        .filter(r => r !== undefined && r !== null);
+                    if (ranks.length > 0) {
+                        aRank = Math.min(...ranks);
+                    }
+                }
 
                 // Logo'ları çek
                 const getCodes = (team) => {
@@ -560,7 +532,7 @@ async function updateTennis() {
                 homeLogos = getCodes(ev.homeTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
                 awayLogos = getCodes(ev.awayTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
             } else {
-                // Eğer detay çekilemezse yedek olarak ana listedeki verileri kullan
+                // Detay çekilemediğinde fallback
                 homeLogos = [e.homeTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.homeTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
                 awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
             }
@@ -572,7 +544,7 @@ async function updateTennis() {
             if (statusType === 'inprogress') timeString += "\nCANLI";
             else if (statusType === 'finished') timeString += "\nMS";
 
-            // Set skorlarını çekme
+            // Set skorlarını çek
             let sets = [];
             if (hasScore && e.homeScore && e.awayScore) {
                 for (let i = 1; i <= 5; i++) {
@@ -612,8 +584,8 @@ async function updateTennis() {
             tournamentCount[tourName] = (tournamentCount[tourName] || 0) + 1;
             
             // İlerleme göster
-            const progress = Math.round((idx / rawEvents.length) * 100);
-            process.stdout.write(`\r  ⏳ İşleniyor... %${progress} (${idx}/${rawEvents.length})`);
+            const progress = Math.round(((idx + 1) / rawEvents.length) * 100);
+            process.stdout.write(`\r  ⏳ İşleniyor... %${progress} (${idx + 1}/${rawEvents.length})`);
             
         } catch (error) {
             console.error(`\n⚠️ Maç ${e.id} işlenirken hata:`, error.message);
@@ -631,6 +603,11 @@ async function updateTennis() {
     const withRanking = finalMatches.filter(m => m.homeTeam.ranking || m.awayTeam.ranking).length;
     console.log(`  🏆 Sıralama verisi olan maçlar: ${withRanking}/${finalMatches.length}`);
 }
+
+
+
+
+
 // =========================================================================
 // 🏎️ FORMULA 1
 // =========================================================================
