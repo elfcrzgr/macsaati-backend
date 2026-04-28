@@ -198,21 +198,39 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [19, 52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015];
-const REGULAR_FOOT_IDS = [10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618];
+// Hedeflenecek Liglerin Sofascore ID'leri (Düzeltilmiş Hali)
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 7, 679, 17015, 16, 1, 133, 270];
+const REGULAR_FOOT_IDS = [53, 299, 6516, 325, 155, 242];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 // Lig isimleri DÜZELTİLDİ. (Önceki mesajdaki kaymalar giderildi)
+// Doğrulanmış Gerçek Sofascore Turnuva ID'leri
 const footballLeagues = {
-    52: "İngiltere Premier Lig", 351: "İspanya La Liga", 98: "Almanya Bundesliga",
-    17: "İtalya Serie A", 8: "Fransa Ligue 1", 23: "İskoçya Premiership",
-    35: "Hollanda Eredivisie", 11: "Portekiz Primeira Liga", 34: "Belçika Pro League",
-    37: "Türkiye Süper Lig", 13: "UEFA Şampiyonlar Ligi", 238: "UEFA Avrupa Ligi",
-    242: "UEFA Konferans Ligi", 938: "FIFA Dünya Kupası", 393: "UEFA EURO",
-    7: "Uluslararası Hazırlık Maçları", 750: "Konfederasyonlar Kupası", 10248: "TFF Alt Ligler",
-    10783: "Türkiye Kupası", 1: "Uluslararası Hazırlık Maçları", 679: "Copa America",
-    17015: "Afrika Uluslar Kupası", 10: "Brezilya Serie A", 155: "Arjantin Liga Profesional",
-    13363: "USL Championship", 19: "FA Cup"
+    17: "İngiltere Premier Lig", 
+    8: "İspanya La Liga", 
+    35: "Almanya Bundesliga",
+    23: "İtalya Serie A", 
+    34: "Fransa Ligue 1", 
+    52: "Türkiye Süper Lig", 
+    37: "Hollanda Eredivisie", 
+    238: "Portekiz Primeira Liga", 
+    38: "Belçika Pro League", // Eski listede 34 yazıyordu, doğrusu 38
+    36: "İskoçya Premiership", // Eski listede 23 yazıyordu, doğrusu 36
+    19: "FA Cup", 
+    97: "Türkiye Kupası",
+    53: "TFF 1. Lig", // Alt ligler için eklendi
+    7: "UEFA Şampiyonlar Ligi", 
+    679: "UEFA Avrupa Ligi",
+    17015: "UEFA Konferans Ligi", 
+    16: "FIFA Dünya Kupası", 
+    1: "UEFA EURO",
+    133: "Copa America", 
+    270: "Afrika Uluslar Kupası (AFCON)", 
+    299: "Uluslararası Hazırlık Maçları", // Milli takımlar
+    6516: "Kulüp Hazırlık Maçları", 
+    325: "Brezilya Serie A", 
+    155: "Arjantin Liga Profesional",
+    242: "Amerikan Major League Soccer (MLS)" // Önceden konferans ligi olarak kalmıştı
 };
 
 async function updateFootball() {
