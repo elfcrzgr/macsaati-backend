@@ -232,15 +232,14 @@ const footballLeagues = {
     242: "MLS"
 };
 
-// ✅ DAKİKA HESAPLAMA (Sadece Futbol) - İYİLEŞTİRİLMİŞ
 function calculateLiveMinute(eventData) {
     if (!eventData) return "";
     
     const status = eventData.status;
     const time = eventData.time;
 
-    // 1. Önce SofaScore doğrudan dakika veriyorsa onu kullanalım
-    if (time?.currentMinute) {
+    // 1. SofaScore doğrudan dakika veriyorsa onu kullanalım
+    if (time?.currentMinute !== undefined && time.currentMinute !== null) {
         return String(time.currentMinute) + "'";
     }
 
@@ -249,29 +248,28 @@ function calculateLiveMinute(eventData) {
         return "İY";
     }
 
-    // Zaman verisi yoksa statüyü veya varsayılan metni dön
-    if (!time || !time.currentPeriodStartTimestamp) {
-        return status?.description || "Canlı";
-    }
-
     // 3. Timestamp üzerinden dakika hesaplama
-    const now = Math.floor(Date.now() / 1000);
-    const elapsed = now - time.currentPeriodStartTimestamp;
-    let calcMinute = Math.floor(elapsed / 60);
+    if (time?.currentPeriodStartTimestamp) {
+        const now = Math.floor(Date.now() / 1000);
+        const elapsed = now - time.currentPeriodStartTimestamp;
+        let calcMinute = Math.floor(elapsed / 60);
 
-    // Başlama vuruşu gecikmesine karşı önlem
-    if (calcMinute < 0) calcMinute = 0;
+        if (calcMinute < 0) calcMinute = 0;
 
-    if (status?.code === 7) { 
-        // 2. Yarı
-        calcMinute += 45;
-        return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
-    } else if (status?.code === 6) { 
-        // 1. Yarı
-        return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
+        if (status?.code === 7) { 
+            // 2. Yarı
+            calcMinute += 45;
+            return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
+        } else if (status?.code === 6) { 
+            // 1. Yarı
+            return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
+        }
+
+        return String(calcMinute) + "'";
     }
 
-    return String(calcMinute) + "'";
+    // Hiçbirşey yoksa canlı yaz
+    return "Canlı";
 }
 
 async function updateFootball() {
