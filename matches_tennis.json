@@ -194,9 +194,9 @@
     {
       "id": 16075596,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "09:30",
+      "fixedTime": "09:30\nMS",
       "timestamp": 1777357800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -214,9 +214,13 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": [
+        "1-6",
+        "6-4",
+        "6-3"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -253,9 +257,9 @@
     {
       "id": 16078233,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "10:00",
+      "fixedTime": "10:00\nMS",
       "timestamp": 1777359600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -273,17 +277,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-0",
+        "7-5"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
       "id": 16081351,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "10:00",
+      "fixedTime": "10:00\nMS",
       "timestamp": 1777359600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -301,9 +308,13 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": [
+        "4-6",
+        "6-0",
+        "6-0"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -365,9 +376,9 @@
     {
       "id": 16074026,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "11:20\nCANLI",
+      "fixedTime": "11:20\nMS",
       "timestamp": 1777364400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -385,11 +396,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-2",
-        "2-1"
+        "6-1"
       ],
       "tournament": "Huzhou, China"
     },
@@ -419,7 +430,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-2"
+        "5-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -449,7 +460,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-2"
+        "5-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -482,34 +493,6 @@
       "tournament": "Girls' Singles Draw"
     },
     {
-      "id": 16074022,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "11:40",
-      "timestamp": 1777365600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Diletta Cherubini",
-        "ranking": 390,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Ekaterina Reyngold",
-        "ranking": 328,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Huzhou, China"
-    },
-    {
       "id": 16074025,
       "isElite": false,
       "status": "inprogress",
@@ -535,16 +518,16 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "2-0"
+        "3-3"
       ],
       "tournament": "Huzhou, China"
     },
     {
       "id": 16013077,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -562,17 +545,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-1"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16013093,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -590,17 +575,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16034630,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -620,17 +607,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16079885,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -648,17 +637,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-5"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16074240,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -676,17 +667,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-3"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16079883,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -704,9 +697,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-3"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
@@ -737,7 +732,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-1"
+        "2-4"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
@@ -800,6 +795,34 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Huzhou, China, Doubles"
+    },
+    {
+      "id": 16074022,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "12:40",
+      "timestamp": 1777369200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Diletta Cherubini",
+        "ranking": 390,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Ekaterina Reyngold",
+        "ranking": 328,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Huzhou, China"
     },
     {
       "id": 16075297,
