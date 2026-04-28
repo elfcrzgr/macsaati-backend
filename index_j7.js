@@ -539,10 +539,6 @@ async function updateTennis() {
     
     console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı (Detaylar dahil edildi)`);
 }
-
-
-
-
 // =========================================================================
 // 🏎️ FORMULA 1
 // =========================================================================
