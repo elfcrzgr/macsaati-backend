@@ -389,7 +389,7 @@
       "awayScore": "0",
       "setScores": [
         "6-2",
-        "0-0"
+        "2-0"
       ],
       "tournament": "Huzhou, China"
     },
@@ -419,7 +419,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-2"
+        "3-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -449,7 +449,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "2-2"
+        "3-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -535,7 +535,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-0"
+        "2-0"
       ],
       "tournament": "Huzhou, China"
     },
@@ -712,9 +712,9 @@
     {
       "id": 16073543,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -734,9 +734,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "Huzhou, China, Doubles"
     },
     {
