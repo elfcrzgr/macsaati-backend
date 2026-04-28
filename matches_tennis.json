@@ -431,7 +431,7 @@
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "4-1"
+        "4-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -462,7 +462,7 @@
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "3-0"
+        "5-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -521,7 +521,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "0-2"
+        "3-3"
       ],
       "tournament": "Huzhou, China"
     },
@@ -552,7 +552,7 @@
       "awayScore": "0",
       "setScores": [
         "6-2",
-        "0-1"
+        "3-2"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -583,7 +583,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "0-1"
+        "2-3"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -613,18 +613,19 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "5-5"
+        "5-7",
+        "1-0"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16079885,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00\nCANLI",
+      "fixedTime": "12:00\nMS",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -643,10 +644,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "2-6",
-        "2-3"
+        "3-6"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -677,7 +678,7 @@
       "awayScore": "1",
       "setScores": [
         "2-6",
-        "0-0"
+        "5-0"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -704,19 +705,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "6-5"
+        "7-5",
+        "2-1"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16073543,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:00\nCANLI",
+      "fixedTime": "12:00\nMS",
       "timestamp": 1777366800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -737,10 +739,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "4-6",
-        "0-4"
+        "3-6"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
@@ -767,42 +769,13 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "3-4"
+        "6-4",
+        "1-0"
       ],
       "tournament": "Huzhou, China"
-    },
-    {
-      "id": 16073548,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "12:25",
-      "timestamp": 1777368300000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Plipuech P / Zheng W",
-        "ranking": 426,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/th.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Lansere S / Zolotareva A",
-        "ranking": 244,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Huzhou, China, Doubles"
     },
     {
       "id": 16075297,
@@ -1117,34 +1090,6 @@
       "tournament": "Madrid, Spain, Doubles"
     },
     {
-      "id": 16074233,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "13:10",
-      "timestamp": 1777371000000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Chloe Paquet",
-        "ranking": 259,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Whitney Osuigwe",
-        "ranking": 180,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
-    },
-    {
       "id": 16079881,
       "isElite": false,
       "status": "notstarted",
@@ -1259,34 +1204,6 @@
       "tournament": "Madrid, Spain, Doubles"
     },
     {
-      "id": 16074233,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "13:10",
-      "timestamp": 1777371000000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Chloe Paquet",
-        "ranking": 259,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Whitney Osuigwe",
-        "ranking": 180,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
-    },
-    {
       "id": 16079881,
       "isElite": false,
       "status": "notstarted",
@@ -1341,6 +1258,122 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16074233,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "13:20",
+      "timestamp": 1777371600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Chloe Paquet",
+        "ranking": 259,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Whitney Osuigwe",
+        "ranking": 180,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16074233,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "13:20",
+      "timestamp": 1777371600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Chloe Paquet",
+        "ranking": 259,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Whitney Osuigwe",
+        "ranking": 180,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16073548,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "13:30",
+      "timestamp": 1777372200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Plipuech P / Zheng W",
+        "ranking": 426,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/th.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lansere S / Zolotareva A",
+        "ranking": 244,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Huzhou, China, Doubles"
+    },
+    {
+      "id": 16073548,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "13:30",
+      "timestamp": 1777372200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Plipuech P / Zheng W",
+        "ranking": 426,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/th.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Lansere S / Zolotareva A",
+        "ranking": 244,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Huzhou, China, Doubles"
     },
     {
       "id": 16012141,
