@@ -2201,9 +2201,9 @@
     {
       "id": 16075726,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "16:00",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777381200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2221,9 +2221,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-2",
+        "6-3"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -2291,9 +2294,9 @@
     {
       "id": 16075726,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "16:00",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777381200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2311,9 +2314,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-2",
+        "6-3"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -2603,9 +2609,9 @@
     {
       "id": 16082562,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "17:30",
+      "fixedTime": "17:30\nMS",
       "timestamp": 1777386600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2623,9 +2629,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-4",
+        "6-2"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -2659,9 +2668,9 @@
     {
       "id": 16082562,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "17:30",
+      "fixedTime": "17:30\nMS",
       "timestamp": 1777386600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2679,9 +2688,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-4",
+        "6-2"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -2903,7 +2915,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "0-0"
+        "3-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -2931,9 +2943,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "4-5"
+        "4-6",
+        "3-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -2962,10 +2975,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-5"
+        "7-6",
+        "0-1"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -2996,7 +3010,7 @@
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "0-0"
+        "2-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -3026,7 +3040,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-4"
+        "5-6"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -3055,10 +3069,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-5"
+        "7-6",
+        "0-1"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -3089,7 +3104,7 @@
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "0-0"
+        "2-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -3119,7 +3134,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-4"
+        "5-6"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -3146,10 +3161,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-4"
+        "6-4",
+        "3-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -3176,10 +3192,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-3"
+        "6-4",
+        "3-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -3209,7 +3226,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-2"
+        "6-5"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -3239,7 +3256,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-2"
+        "5-5"
       ],
       "tournament": "Madrid, Spain"
     },
