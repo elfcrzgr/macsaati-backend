@@ -427,7 +427,7 @@ const checkIsEliteMatch = (tournamentName) => {
 async function updateTennis() {
     console.log(`🎾 Tenis güncelleniyor (Detaylı Tarama Modu)...`);
     let rawEvents = [];
-    const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
+    const targetDates = [getTRDate(0), getTRDate(1)];
     
     const tournamentCount = {};
 
