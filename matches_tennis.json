@@ -187,7 +187,7 @@
       "setScores": [
         "4-6",
         "6-1",
-        "3-0"
+        "5-2"
       ],
       "tournament": "Huzhou, China"
     },
@@ -222,9 +222,9 @@
     {
       "id": 16074023,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "09:35\nCANLI",
+      "fixedTime": "09:35\nMS",
       "timestamp": 1777358100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -242,11 +242,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-3",
-        "6-6"
+        "7-6"
       ],
       "tournament": "Huzhou, China"
     },
@@ -335,34 +335,6 @@
       "tournament": "Boys' Singles Draw"
     },
     {
-      "id": 16074025,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "10:55",
-      "timestamp": 1777362900000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Polona Hercog",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Xinyu Gao",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Huzhou, China"
-    },
-    {
       "id": 16082561,
       "isElite": false,
       "status": "notstarted",
@@ -444,16 +416,16 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-0"
+        "4-1"
       ],
       "tournament": "Huzhou, China"
     },
     {
       "id": 16080180,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "11:30",
+      "fixedTime": "11:30\nCANLI",
       "timestamp": 1777365000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -471,17 +443,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16075296,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "11:30",
+      "fixedTime": "11:30\nCANLI",
       "timestamp": 1777365000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -499,9 +473,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
@@ -552,6 +528,34 @@
         "ranking": null,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Huzhou, China"
+    },
+    {
+      "id": 16074025,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "11:40",
+      "timestamp": 1777365600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Polona Hercog",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Xinyu Gao",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
