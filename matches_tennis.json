@@ -2916,7 +2916,7 @@
       "setScores": [
         "4-6",
         "6-2",
-        "0-2"
+        "3-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -2948,16 +2948,16 @@
       "setScores": [
         "4-6",
         "6-2",
-        "0-2"
+        "3-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16038898,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "19:40\nCANLI",
+      "fixedTime": "19:40\nMS",
       "timestamp": 1777394400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2977,12 +2977,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "setScores": [
         "7-6",
         "3-6",
-        "3-1"
+        "10-2"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -3010,10 +3010,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-4",
-        "5-6"
+        "5-7",
+        "2-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -3044,16 +3045,16 @@
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "1-2"
+        "6-6"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16038898,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "19:40\nCANLI",
+      "fixedTime": "19:40\nMS",
       "timestamp": 1777394400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -3073,12 +3074,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "setScores": [
         "7-6",
         "3-6",
-        "2-1"
+        "10-2"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -3106,10 +3107,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-4",
-        "5-6"
+        "5-7",
+        "2-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -3140,7 +3142,7 @@
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "1-2"
+        "6-6"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -3209,9 +3211,9 @@
     {
       "id": 16013095,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "20:00\nCANLI",
+      "fixedTime": "20:00\nMS",
       "timestamp": 1777395600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -3230,19 +3232,19 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "6-7",
-        "0-2"
+        "2-6"
       ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16013095,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "20:00\nCANLI",
+      "fixedTime": "20:00\nMS",
       "timestamp": 1777395600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -3261,9 +3263,40 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "6-7",
+        "2-6"
+      ],
+      "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16012136,
+      "isElite": true,
+      "status": "inprogress",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "21:00\nCANLI",
+      "timestamp": 1777399200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Aryna Sabalenka",
+        "ranking": 1,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/by.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hailey Baptiste",
+        "ranking": 32,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
+      "homeScore": "1",
+      "awayScore": "0",
+      "setScores": [
+        "6-2",
         "0-2"
       ],
       "tournament": "Madrid, Spain"
@@ -3291,49 +3324,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "3-1"
-      ],
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16012136,
-      "isElite": true,
-      "status": "inprogress",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "21:00\nCANLI",
-      "timestamp": 1777399200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Aryna Sabalenka",
-        "ranking": 1,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/by.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hailey Baptiste",
-        "ranking": 32,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "0",
-      "awayScore": "0",
-      "setScores": [
-        "3-0"
+        "6-2",
+        "0-2"
       ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16080181,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "21:20",
+      "fixedTime": "21:20\nCANLI",
       "timestamp": 1777400400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -3351,17 +3355,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "5-1"
+      ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16080181,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "21:20",
+      "fixedTime": "21:20\nCANLI",
       "timestamp": 1777400400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -3379,9 +3385,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "5-1"
+      ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
@@ -3389,8 +3397,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "21:30",
-      "timestamp": 1777401000000,
+      "fixedTime": "22:00",
+      "timestamp": 1777402800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Daniil Medvedev",
@@ -3417,8 +3425,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "21:30",
-      "timestamp": 1777401000000,
+      "fixedTime": "22:00",
+      "timestamp": 1777402800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Daniil Medvedev",
