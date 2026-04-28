@@ -427,10 +427,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-4"
+        "6-4",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -457,10 +458,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-4"
+        "6-4",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -518,7 +520,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-3"
+        "3-4"
       ],
       "tournament": "Huzhou, China"
     },
@@ -578,7 +580,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-2"
+        "2-3"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -610,7 +612,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-2"
+        "2-2"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -640,7 +642,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-5"
+        "2-5"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -670,7 +672,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-3"
+        "1-3"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -700,7 +702,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-3"
+        "2-3"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -732,7 +734,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "2-4"
+        "3-5"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
@@ -799,9 +801,9 @@
     {
       "id": 16074022,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-28",
-      "fixedTime": "12:40",
+      "fixedTime": "12:40\nCANLI",
       "timestamp": 1777369200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -819,9 +821,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "Huzhou, China"
     },
     {
