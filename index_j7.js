@@ -123,34 +123,91 @@ async function pushToGithub() {
 
 
 // =========================================================================
-// ⚽ FUTBOL
+// ⚽ FUTBOL (Çeviriler ve Dinamik Yayıncılar)
 // =========================================================================
-const ELITE_FOOT_IDS = [52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015];
+const teamTranslations = {
+    "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
+    "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "netherlands": "Hollanda",
+    "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", "croatia": "Hırvatistan",
+    "denmark": "Danimarka", "scotland": "İskoçya", "hungary": "Macaristan", "serbia": "Sırbistan",
+    "poland": "Polonya", "czechia": "Çekya", "romania": "Romanya", "slovakia": "Slovakya",
+    "slovenia": "Slovenya", "georgia": "Gürcistan", "albania": "Arnavutluk", "norway": "Norveç",
+    "sweden": "İsveç", "ukraine": "Ukrayna", "greece": "Yunanistan", "wales": "Galler",
+    "finland": "Finlandiya", "ireland": "İrlanda", "northernireland": "Kuzey İrlanda",
+    "iceland": "İzlanda", "israel": "İsrail", "bulgaria": "Bulgaristan", "kazakhstan": "Kazakistan",
+    "azerbaijan": "Azerbaycan", "armenia": "Ermenistan", "kosovo": "Kosova", "montenegro": "Karadağ",
+    "estonia": "Estonya", "latvia": "Letonya", "lithuania": "Litvanya", "belarus": "Belarus",
+    "moldova": "Moldova", "luxembourg": "Lüksemburg", "faroeislands": "Faroe Adaları",
+    "malta": "Malta", "andorra": "Andorra", "sanmarino": "San Marino", "gibraltar": "Cebelitarık",
+    "liechtenstein": "Liechtenstein", "northmacedonia": "K. Makedonya", "cyprus": "Güney Kıbrıs",
+    "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya",
+    "chile": "Şili", "peru": "Peru", "ecuador": "Ekvador", "paraguay": "Paraguay",
+    "venezuela": "Venezuela", "bolivia": "Bolivya", "usa": "ABD", "mexico": "Meksika", 
+    "canada": "Kanada", "japan": "Japonya", "southkorea": "Güney Kore", "australia": "Avustralya"
+};
+
+const translateTeam = (name) => {
+    if (!name) return name;
+    let translatedName = name;
+    const cleanSearch = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    for (const [eng, tr] of Object.entries(teamTranslations)) {
+        if (cleanSearch.includes(eng)) {
+            translatedName = name.replace(new RegExp(eng, 'i'), tr);
+            if (cleanSearch === eng) return tr;
+            return translatedName;
+        }
+    }
+    return name;
+};
+
+const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
+    const hn = (hName || "").toLowerCase();
+    const an = (aName || "").toLowerCase();
+    const tn = (tName || "").toLowerCase();
+    const utn = (utName || "").toLowerCase();
+
+    const isTurkey = hn.includes("turkey") || an.includes("turkey") || 
+                     hn.includes("türkiye") || an.includes("türkiye");
+    const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || 
+                       utn.includes("play-off") || utn.includes("playoff");
+
+    if (utId === 748 || utId === 750) return isTurkey ? "TRT Spor / Tabii" : "Exxen";
+    if (utId === 11 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
+        if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
+        return isPlayoff ? "Exxen" : "S Sport Plus";
+    }
+
+    const staticConfigs = {
+        34: "beIN Sports", 52: "beIN Sports", 238: "S Spor", 242: "Apple TV", 938: "S Sport / S Sport Plus", 
+        17: "beIN Sports", 8: "S Sport", 23: "S Sport", 7: "TRT / Tabii", 11: "TRT 1 / Tabii", 351: "TRT Spor / Tabii", 
+        37: "S Sport Plus / TV+", 10: "Exxen / S Sport+", 13: "Spor Smart", 393: "CBC Sport", 155: "Spor Smart / Exxen", 
+        10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 11417: "TFF YouTube", 
+        11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 696: "DAZN / YouTube", 13363: "USL YouTube", 
+        10783: "S Sport Plus / TRT", 232: "S Sport Plus / DAZN", 1: "TRT 1 / Tabii", 19: "FA Cup"
+    };
+
+    if (staticConfigs[utId]) return staticConfigs[utId];
+    if (utn.includes("j1 league")) return "YouTube (J.League Int.)";
+    if (utn.includes("baller league")) return "Twitch / YouTube (Global)";
+    if (utn.includes("primera a") || utn.includes("primera división")) return "TV Yayını Yok (Yerel)";
+    if (utn.includes("mls next pro")) return "Apple TV / OneFootball";
+    return "Resmi Yayıncı / Canlı Skor";
+};
+
+const ELITE_FOOT_IDS = [19, 52, 351, 98, 17, 8, 23, 35, 11, 34, 37, 13, 238, 242, 938, 393, 7, 750, 10248, 10783, 1, 679, 17015];
 const REGULAR_FOOT_IDS = [10, 155, 4664, 696, 97, 11415, 11416, 11417, 15938, 13363, 10618];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
-// Futbol ligleri mapping (ID -> Liga adı)
+// Temiz Turnuva İsimleri
 const footballLeagues = {
-    52: "İngiltere Premier League", 351: "İspanya La Liga", 98: "Almanya Bundesliga",
-    17: "İtalya Serie A", 8: "Fransa Ligue 1", 23: "İskoçya Premier League",
-    35: "Hollanda Eredivisie", 11: "Portekiz Primeira Liga", 34: "Belçika Jupiler Pro League",
-    37: "Türkiye Süper Lig", 13: "Avrupa Champions League", 238: "Avrupa Europa League",
-    242: "Avrupa Conference League", 938: "Uluslararası Dünya Kupası", 393: "Uluslararası EURO",
-    7: "Uluslararası Hazırlık Maçları", 750: "Uluslararası Konfedasyon Kupası", 10248: "Türkiye Bölgesel Liga",
-    10783: "Türkiye Cup", 1: "Uluslararası Friendlies", 679: "Amerika Copa America",
-    17015: "Afrika AFCON"
-};
-
-// Futbol yayıncıları mapping (ID -> Yayıncı)
-const footballBroadcasters = {
-    52: "Sky Sports / S Sport", 351: "La Liga TV / S Sport", 98: "Sky Sports / Tivibu Plus",
-    17: "Sky Sports / Tivibu Plus", 8: "Amazon Prime / beIN Sports", 23: "Sky Sports",
-    35: "Ziggo Sport / S Sport Plus", 11: "Eleven Sports / S Sport Plus", 34: "Eleven Sports",
-    37: "beIN Sports / Sky Sports", 13: "Champions League / S Sport Plus", 238: "Europa League / S Sport Plus",
-    242: "Conference League / S Sport Plus", 938: "TRT Spor / beIN Sports", 393: "TRT Spor / beIN Sports",
-    7: "TRT Spor / Resmi Yayıncı", 750: "Resmi Yayıncı", 10248: "Yerel Kanal",
-    10783: "beIN Sports / S Sport", 1: "Resmi Yayıncı", 679: "TRT Spor / beIN Sports",
-    17015: "TRT Spor / beIN Sports"
+    52: "İngiltere Premier Lig", 351: "İspanya La Liga", 98: "Almanya Bundesliga",
+    17: "İtalya Serie A", 8: "Fransa Ligue 1", 23: "İskoçya Premiership",
+    35: "Hollanda Eredivisie", 11: "Portekiz Primeira Liga", 34: "Belçika Pro League",
+    37: "Türkiye Süper Lig", 13: "UEFA Şampiyonlar Ligi", 238: "UEFA Avrupa Ligi",
+    242: "UEFA Konferans Ligi", 938: "FIFA Dünya Kupası", 393: "UEFA EURO",
+    7: "Uluslararası Hazırlık Maçları", 750: "Konfederasyonlar Kupası", 10248: "TFF Alt Ligler",
+    10783: "Türkiye Kupası", 1: "Uluslararası Hazırlık Maçları", 679: "Copa America",
+    17015: "Afrika Uluslar Kupası (AFCON)", 19: "FA Cup"
 };
 
 async function updateFootball() {
@@ -158,26 +215,31 @@ async function updateFootball() {
     let allEvents = [];
     
     for (const date of [getTRDate(0), getTRDate(1)]) {
-        // EKLENDİ: URL sonuna ?_=${Date.now()} eklendi (Cache kırmak için)
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
         }
     }
 
-    // Liglerden kaç maç geldi hesapla
+    // Çift maçları engellemek için Map kullanıyoruz
+    const duplicateTracker = new Map();
     const leagueCount = {};
-    allEvents.forEach(e => {
-        const leagueId = e.tournament?.uniqueTournament?.id;
-        leagueCount[leagueId] = (leagueCount[leagueId] || 0) + 1;
-    });
 
-    const matches = allEvents.map(e => {
+    allEvents.forEach(e => {
+        if (duplicateTracker.has(e.id)) return;
+
         const status = e.status.type;
         const isLive = status === 'inprogress';
         const leagueId = e.tournament?.uniqueTournament?.id;
         
-        return {
+        leagueCount[leagueId] = (leagueCount[leagueId] || 0) + 1;
+        
+        const hName = e.homeTeam.name || "";
+        const aName = e.awayTeam.name || "";
+        const tName = e.tournament?.name || "";
+        const utName = e.tournament?.uniqueTournament?.name || "";
+        
+        duplicateTracker.set(e.id, {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
             status: status,
@@ -185,32 +247,36 @@ async function updateFootball() {
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
-            broadcaster: footballBroadcasters[leagueId] || "Resmi Yayıncı",
-            homeTeam: { name: e.homeTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
-            awayTeam: { name: e.awayTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
+            
+            // SENİN YAYINCI FONKSİYONUN EKLENDİ
+            broadcaster: getFootBroadcaster(leagueId, hName, aName, tName, utName),
+            
+            // SENİN TAKIM ÇEVİRİ FONKSİYONUN EKLENDİ
+            homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
+            awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
+            
+            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
-            tournament: e.tournament.name
-        };
-    }).sort((a, b) => a.timestamp - b.timestamp);
+            tournament: footballLeagues[leagueId] || tName
+        });
+    });
 
-    // EKLENDİ: lastUpdate eklendi (Her dakika Github'a push atabilmesi için dosya içeriğini değiştirir)
+    const matches = Array.from(duplicateTracker.values()).sort((a, b) => a.timestamp - b.timestamp);
+
     fs.writeFileSync(TARGET_FILES.football, JSON.stringify({ success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches }, null, 2));
     
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
 
-    // EKLENDİ: Akıllı zamanlayıcı için gelecek ilk maçın saatini buluyoruz
     const upcomingMatches = matches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
     const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
 
-    // Detaylı log (Senin yapın aynen duruyor)
     console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
     Object.keys(leagueCount).forEach(leagueId => {
         const leagueName = footballLeagues[leagueId] || `Liga ${leagueId}`;
         console.log(`      • ${leagueName}: ${leagueCount[leagueId]} maç`);
     });
 
-    // DEĞİŞTİ: Ana döngüye her iki veriyi de gönderiyoruz
     return { hasLiveMatch, nextMatchTimestamp };
 }
 
