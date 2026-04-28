@@ -128,6 +128,9 @@ async function pushToGithub() {
 // =========================================================================
 // ⚽ FUTBOL (Çeviriler, Dinamik Yayıncılar ve Temiz İsimler)
 // =========================================================================
+// =========================================================================
+// ⚽ FUTBOL (Çeviriler, Dinamik Yayıncılar, Dakika Hesaplama ve Temiz İsimler)
+// =========================================================================
 const teamTranslations = {
     "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
     "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "netherlands": "Hollanda",
@@ -163,7 +166,6 @@ const translateTeam = (name) => {
     return name;
 };
 
-// Senin harika yayıncı bulucun (id karışıklıkları giderildi)
 const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     const hn = (hName || "").toLowerCase();
     const an = (aName || "").toLowerCase();
@@ -202,7 +204,6 @@ const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 7, 679, 
 const REGULAR_FOOT_IDS = [53, 299, 6516, 325, 155, 242];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
-// Doğrulanmış Gerçek Sofascore Turnuva İsimleri
 const footballLeagues = {
     17: "İngiltere Premier Lig", 
     8: "İspanya La Liga", 
@@ -217,19 +218,61 @@ const footballLeagues = {
     19: "FA Cup", 
     97: "Türkiye Kupası",
     53: "TFF 1. Lig", 
-    7: "UEFA Şampiyonlar Ligi", // <-- Sorun yaratan 7 numara düzeltildi!
+    7: "UEFA Şampiyonlar Ligi", 
     679: "UEFA Avrupa Ligi",
     17015: "UEFA Konferans Ligi", 
     16: "FIFA Dünya Kupası", 
     1: "UEFA EURO",
     133: "Copa America", 
     270: "Afrika Uluslar Kupası", 
-    299: "Uluslararası Hazırlık Maçları", // Gerçek hazırlık maçlarının ID'si budur
+    299: "Uluslararası Hazırlık Maçları", 
     6516: "Kulüp Hazırlık Maçları", 
     325: "Brezilya Serie A", 
     155: "Arjantin Liga Profesional",
     242: "MLS"
 };
+
+// ✅ DAKİKA HESAPLAMA (Sadece Futbol) - İYİLEŞTİRİLMİŞ
+function calculateLiveMinute(eventData) {
+    if (!eventData) return "";
+    
+    const status = eventData.status;
+    const time = eventData.time;
+
+    // 1. Önce SofaScore doğrudan dakika veriyorsa onu kullanalım
+    if (time?.currentMinute) {
+        return String(time.currentMinute) + "'";
+    }
+
+    // 2. Devre arası kontrolü
+    if (status?.code === 31 || status?.description === "Halftime") {
+        return "İY";
+    }
+
+    // Zaman verisi yoksa statüyü veya varsayılan metni dön
+    if (!time || !time.currentPeriodStartTimestamp) {
+        return status?.description || "Canlı";
+    }
+
+    // 3. Timestamp üzerinden dakika hesaplama
+    const now = Math.floor(Date.now() / 1000);
+    const elapsed = now - time.currentPeriodStartTimestamp;
+    let calcMinute = Math.floor(elapsed / 60);
+
+    // Başlama vuruşu gecikmesine karşı önlem
+    if (calcMinute < 0) calcMinute = 0;
+
+    if (status?.code === 7) { 
+        // 2. Yarı
+        calcMinute += 45;
+        return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
+    } else if (status?.code === 6) { 
+        // 1. Yarı
+        return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
+    }
+
+    return String(calcMinute) + "'";
+}
 
 async function updateFootball() {
     console.log(`⚽ Futbol güncelleniyor...`);
@@ -242,7 +285,6 @@ async function updateFootball() {
         }
     }
 
-    // Çift maçları engellemek için Map
     const duplicateTracker = new Map();
     const leagueCount = {};
 
@@ -260,7 +302,6 @@ async function updateFootball() {
         const tName = e.tournament?.name || "";
         const utName = e.tournament?.uniqueTournament?.name || "";
         
-        // Önce bizim sözlüğümüze bak, yoksa API'den gelen ana turnuva ismini kullan (Knockout stage gibi kalabalıkları atar)
         const cleanTournamentName = footballLeagues[leagueId] || e.tournament?.name || utName;
 
         duplicateTracker.set(e.id, {
@@ -268,7 +309,8 @@ async function updateFootball() {
             isElite: ELITE_FOOT_IDS.includes(leagueId),
             status: status,
             
-            liveMinute: isLive ? (e.time?.currentMinute ? String(e.time.currentMinute) : (e.status?.description === "Halftime" ? "İY" : e.status?.description || "")) : "",
+            // ✅ DAKİKA FONKSİYONU BURAYA ENTEGRE EDİLDİ
+            liveMinute: isLive ? calculateLiveMinute(e) : "",
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
@@ -282,7 +324,6 @@ async function updateFootball() {
             homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
             
-            // Temizlenmiş turnuva adı basılıyor
             tournament: cleanTournamentName
         });
     });
@@ -304,6 +345,7 @@ async function updateFootball() {
 
     return { hasLiveMatch, nextMatchTimestamp };
 }
+
 
 
 // =========================================================================
