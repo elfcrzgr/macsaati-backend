@@ -1915,9 +1915,9 @@
     {
       "id": 16082564,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "15:30",
+      "fixedTime": "15:30\nMS",
       "timestamp": 1777379400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1935,9 +1935,13 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": [
+        "6-3",
+        "3-6",
+        "4-6"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -2006,9 +2010,9 @@
     {
       "id": 16082564,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "15:30",
+      "fixedTime": "15:30\nMS",
       "timestamp": 1777379400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2026,9 +2030,13 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "1",
+      "awayScore": "2",
+      "setScores": [
+        "6-3",
+        "3-6",
+        "4-6"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -2162,9 +2170,9 @@
     {
       "id": 16078236,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "16:00",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777381200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2182,9 +2190,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-2",
+        "6-2"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -2249,9 +2260,9 @@
     {
       "id": 16078236,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-28",
-      "fixedTime": "16:00",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777381200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -2269,9 +2280,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-2",
+        "6-2"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -2330,7 +2344,7 @@
       "setScores": [
         "6-7",
         "6-2",
-        "2-4"
+        "5-4"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -2362,40 +2376,40 @@
       "setScores": [
         "6-7",
         "6-2",
+        "5-4"
+      ],
+      "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16080182,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-28",
+      "fixedTime": "16:50\nCANLI",
+      "timestamp": 1777384200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Varvara Lepchenko",
+        "ranking": 157,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Laura Pigossi",
+        "ranking": 217,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
+      "homeScore": "1",
+      "awayScore": "1",
+      "setScores": [
+        "6-3",
+        "5-7",
         "2-4"
       ],
-      "tournament": "Saint-Malo, France"
-    },
-    {
-      "id": 16080182,
-      "isElite": false,
-      "status": "inprogress",
-      "fixedDate": "2026-04-28",
-      "fixedTime": "16:50\nCANLI",
-      "timestamp": 1777384200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Varvara Lepchenko",
-        "ranking": 157,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Laura Pigossi",
-        "ranking": 217,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "setScores": [
-        "6-3",
-        "5-7",
-        "1-2"
-      ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
@@ -2426,7 +2440,7 @@
       "setScores": [
         "6-3",
         "5-7",
-        "1-2"
+        "2-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -2758,10 +2772,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-2",
-        "5-5"
+        "6-7",
+        "1-1"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -2791,10 +2806,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-2",
-        "5-5"
+        "6-7",
+        "0-0"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -2825,7 +2841,7 @@
       "awayScore": "0",
       "setScores": [
         "6-3",
-        "1-0"
+        "5-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -2856,7 +2872,7 @@
       "awayScore": "0",
       "setScores": [
         "6-3",
-        "1-0"
+        "5-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -2865,8 +2881,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "19:10",
-      "timestamp": 1777392600000,
+      "fixedTime": "19:20",
+      "timestamp": 1777393200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Arneodo R / Vacherot V",
@@ -2895,8 +2911,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "19:10",
-      "timestamp": 1777392600000,
+      "fixedTime": "19:20",
+      "timestamp": 1777393200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Alina Charaeva",
@@ -2923,8 +2939,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "19:10",
-      "timestamp": 1777392600000,
+      "fixedTime": "19:20",
+      "timestamp": 1777393200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Elsa Jacquemot",
@@ -2951,8 +2967,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "19:10",
-      "timestamp": 1777392600000,
+      "fixedTime": "19:20",
+      "timestamp": 1777393200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Arneodo R / Vacherot V",
@@ -2981,8 +2997,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "19:10",
-      "timestamp": 1777392600000,
+      "fixedTime": "19:20",
+      "timestamp": 1777393200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Alina Charaeva",
@@ -3009,8 +3025,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "19:10",
-      "timestamp": 1777392600000,
+      "fixedTime": "19:20",
+      "timestamp": 1777393200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Elsa Jacquemot",
@@ -3205,8 +3221,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "20:20",
-      "timestamp": 1777396800000,
+      "fixedTime": "20:30",
+      "timestamp": 1777397400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Antonia Ružić",
@@ -3233,8 +3249,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-28",
-      "fixedTime": "20:20",
-      "timestamp": 1777396800000,
+      "fixedTime": "20:30",
+      "timestamp": 1777397400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Antonia Ružić",
