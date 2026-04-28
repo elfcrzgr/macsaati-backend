@@ -90,15 +90,15 @@ async function start() {
 
             teams.forEach(t => {
                 if (!t.team) return;
-                // logos dizisi veya tek logo kontrolü
                 const logosToProcess = Array.isArray(t.team.logos) ? t.team.logos : [t.team.logo];
                 
                 logosToProcess.forEach(logoUrl => {
                     if (!logoUrl || typeof logoUrl !== 'string') return;
+                    
+                    // ID'yi URL'den (GitHub linki olsa bile) .png uzantısından temizleyerek alır
                     const id = logoUrl.split('/').pop().split('.')[0];
                     if (!id || id === 'default' || id === 'null') return;
 
-                    // 🔥 NBA LOGIC: Takım logosu ve NBA turnuvası ise NBA klasörüne, değilse standart logos/
                     let targetDir = conf.dirs.team;
                     if (conf.name === 'Basketbol' && isNBA) {
                         targetDir = conf.dirs.nba;
@@ -126,10 +126,17 @@ async function start() {
             let success = false;
 
             try {
-                // SofaScore'un resim API'sini kullanıyoruz
-                const apiUrl = item.type === 'Turnuva' 
-                    ? `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`
-                    : `https://api.sofascore.app/api/v1/team/${item.id}/image`;
+                // DINAMIK API URL MANTIĞI
+                let apiUrl = '';
+                if (item.type === 'Turnuva') {
+                    apiUrl = `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`;
+                } else if (item.sport === 'Tenis' && item.type === 'Logo') {
+                    // Tenis takımları (oyuncu bayrakları) için statik URL
+                    apiUrl = `https://www.sofascore.com/static/images/flags/${item.id.toLowerCase()}.png`;
+                } else {
+                    // Futbol ve Basketbol takımları için standart URL
+                    apiUrl = `https://api.sofascore.app/api/v1/team/${item.id}/image`;
+                }
 
                 const response = await page.goto(apiUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
                 
