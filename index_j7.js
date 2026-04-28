@@ -401,7 +401,7 @@ async function updateBasketball() {
 }
 
 // =========================================================================
-// 🎾 TENİS
+// 🎾 TENİS (DETAYLI SIRALAMA VE ÇİFTLER LOGOSU İLE)
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
@@ -423,13 +423,13 @@ const checkIsEliteMatch = (tournamentName) => {
 };
 
 async function updateTennis() {
-    console.log(`🎾 Tenis güncelleniyor...`);
+    console.log(`🎾 Tenis güncelleniyor (Detaylı Tarama Modu)...`);
     let rawEvents = [];
     const targetDates = [getTRDate(0), getTRDate(1), getTRDate(2)];
     
-    // Turnuvalardan kaç maç geldi hesapla
     const tournamentCount = {};
 
+    // 1. AŞAMA: Günlük listeden maçları topla
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
         if (data?.events) {
@@ -444,6 +444,7 @@ async function updateTennis() {
 
     const finalMatches = [];
 
+    // 2. AŞAMA: Her maçın içine girip eksik verileri (Sıralama ve Çiftler) çek
     for (const e of rawEvents) {
         const startTimestamp = e.startTimestamp * 1000;
         const dateTR = new Date(startTimestamp);
@@ -455,12 +456,34 @@ async function updateTennis() {
 
         let homeLogos = [];
         let awayLogos = [];
+        let hRank = null;
+        let aRank = null;
 
-        if (e.homeTeam?.country?.alpha2) homeLogos.push(`${TENNIS_LOGO_BASE}${e.homeTeam.country.alpha2.toLowerCase()}.png`);
-        else homeLogos.push(`${TENNIS_LOGO_BASE}mc.png`);
+        // 🚨 BAN KORUMASI: Sofascore'u boğmamak için her detay isteği öncesi kısa bir süre bekle
+        await new Promise(r => setTimeout(r, 200));
 
-        if (e.awayTeam?.country?.alpha2) awayLogos.push(`${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png`);
-        else awayLogos.push(`${TENNIS_LOGO_BASE}mc.png`);
+        // DETAY API'SİNE GİT (Senin Puppeteer'da yaptığın işlemin hızlı versiyonu)
+        const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`);
+        
+        if (detailData && detailData.event) {
+            const ev = detailData.event;
+            hRank = ev.homeTeam?.ranking || null;
+            aRank = ev.awayTeam?.ranking || null;
+
+            const getCodes = (team) => {
+                if (team.subTeams && team.subTeams.length > 0) {
+                    return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
+                }
+                return [team.country?.alpha2?.toLowerCase() || "mc"];
+            };
+
+            homeLogos = getCodes(ev.homeTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+            awayLogos = getCodes(ev.awayTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
+        } else {
+            // Eğer detay çekilemezse (hata olursa) yedek olarak ana listedeki verileri kullan
+            homeLogos = [e.homeTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.homeTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
+            awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
+        }
 
         const statusType = e.status?.type;
         let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
@@ -469,10 +492,10 @@ async function updateTennis() {
         if (statusType === 'inprogress') timeString += "\nCANLI";
         else if (statusType === 'finished') timeString += "\nMS";
 
-        // YENİ: Set skorlarını güvenli bir şekilde diziye ekliyoruz
+        // Set skorlarını çekme
         let sets = [];
         if (hasScore && e.homeScore && e.awayScore) {
-            for (let i = 1; i <= 5; i++) { // Teniste en fazla 5 set oynanır
+            for (let i = 1; i <= 5; i++) {
                 const hScore = e.homeScore[`period${i}`];
                 const aScore = e.awayScore[`period${i}`];
                 if (hScore !== undefined && aScore !== undefined) {
@@ -491,35 +514,29 @@ async function updateTennis() {
             broadcaster: "S Sport / beIN Sports",
             homeTeam: { 
                 name: e.homeTeam.name || "Belli Değil", 
-                ranking: e.homeTeam.ranking || null, // YENİ: Sıralama eklendi (Yoksa null döner)
-                logos: homeLogos 
+                ranking: hRank, // Yeni çekilen kesin sıralama
+                logos: homeLogos // Çiftler destekli logolar
             },
             awayTeam: { 
                 name: e.awayTeam.name || "Belli Değil", 
-                ranking: e.awayTeam.ranking || null, // YENİ: Sıralama eklendi
+                ranking: aRank, 
                 logos: awayLogos 
             },
             tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
             homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"),
             awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"),
-            setScores: sets, // YENİ: Set skorları dizisi eklendi (Örn: ["6-4", "3-6"])
+            setScores: sets,
             tournament: tourName
         });
         
-        // Turnuvayı say
         tournamentCount[tourName] = (tournamentCount[tourName] || 0) + 1;
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
     fs.writeFileSync(TARGET_FILES.tennis, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
     
-    // Detaylı log
-    console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı`);
-    Object.keys(tournamentCount).forEach(tourName => {
-        console.log(`      • ${tourName}: ${tournamentCount[tourName]} maç`);
-    });
+    console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı (Detaylar dahil edildi)`);
 }
-
 // =========================================================================
 // 🏎️ FORMULA 1
 // =========================================================================
