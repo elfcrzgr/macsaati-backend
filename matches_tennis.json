@@ -248,16 +248,16 @@
       "awayScore": "0",
       "setScores": [
         "6-1",
-        "3-4"
+        "4-5"
       ],
       "tournament": "Boys' Singles Draw"
     },
     {
       "id": 16086578,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-29",
-      "fixedTime": "10:30",
+      "fixedTime": "10:30\nMS",
       "timestamp": 1777447800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -275,9 +275,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-2",
+        "6-3"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -309,16 +312,16 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "0-0"
+        "2-3"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
     {
       "id": 16050552,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777453200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -336,17 +339,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-0"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16074492,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777453200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -366,9 +371,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-0"
+      ],
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
