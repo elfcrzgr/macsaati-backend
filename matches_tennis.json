@@ -2,39 +2,11 @@
   "success": true,
   "matches": [
     {
-      "id": 16050707,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-29",
-      "fixedTime": "06:30",
-      "timestamp": 1777433400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Sijia Wei",
-        "ranking": 382,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Wushuang Zheng",
-        "ranking": 426,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Huzhou, China"
-    },
-    {
       "id": 16050705,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "06:30",
+      "fixedTime": "06:30\nCANLI",
       "timestamp": 1777433400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -52,9 +24,41 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-3"
+      ],
+      "tournament": "Huzhou, China"
+    },
+    {
+      "id": 16050707,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-29",
+      "fixedTime": "06:35\nCANLI",
+      "timestamp": 1777433700000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Sijia Wei",
+        "ranking": 382,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Wushuang Zheng",
+        "ranking": 426,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Huzhou, China"
     },
     {
