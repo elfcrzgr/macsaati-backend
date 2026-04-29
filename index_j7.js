@@ -352,7 +352,7 @@ async function updateFootball() {
 const ELITE_LEAGUE_IDS = [3547, 138, 142, 137, 132, 167, 168];
 const leagueConfigs = { 
     3547: "S Sport / NBA TV", 138: "S Sport / S Sport Plus", 142: "S Sport Plus", 
-    137: "TRT Spor / Tabii", 132: "beIN Sports 5", 167: "S Sport Plus / FIBA TV", 
+    137: "TRT Spor / Tabii", 132: "S Sport / S Sport Plus", 167: "S Sport Plus / FIBA TV", 
     168: "TRT Spor Yıldız", 9357: "S Sport Plus", 139: "beIN Sports / TRT Spor",
     11511: "TRT Spor Yıldız / TBF TV", 21511: "TBF TV (YouTube)", 251: "S Sport Plus", 
     215: "S Sport Plus", 304: "S Sport Plus", 227: "beIN Sports", 164: "beIN Sports",
