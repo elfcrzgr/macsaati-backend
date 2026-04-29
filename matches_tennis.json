@@ -224,9 +224,9 @@
     {
       "id": 16086554,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "10:30",
+      "fixedTime": "10:30\nCANLI",
       "timestamp": 1777447800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -244,9 +244,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "1",
+      "awayScore": "0",
+      "setScores": [
+        "6-1",
+        "1-2"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -305,7 +308,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-0"
+        "2-3"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
@@ -2012,6 +2015,36 @@
       "tournament": "Huzhou, China"
     },
     {
+      "id": 16052252,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-30",
+      "fixedTime": "06:00",
+      "timestamp": 1777518000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Mikulskyte J / Papamichail D",
+        "ranking": 162,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Chong E / Wong H Y C",
+        "ranking": 683,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Huzhou, China, Doubles"
+    },
+    {
       "id": 16050694,
       "isElite": false,
       "status": "notstarted",
@@ -2038,6 +2071,36 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Huzhou, China"
+    },
+    {
+      "id": 16052252,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-30",
+      "fixedTime": "06:00",
+      "timestamp": 1777518000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Mikulskyte J / Papamichail D",
+        "ranking": 162,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Chong E / Wong H Y C",
+        "ranking": 683,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Huzhou, China, Doubles"
     },
     {
       "id": 16050699,
