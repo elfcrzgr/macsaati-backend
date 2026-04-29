@@ -67,9 +67,9 @@
     {
       "id": 16033407,
       "isElite": false,
-      "status": "inprogress",
+      "status": "notstarted",
       "fixedDate": "2026-04-29",
-      "fixedTime": "21:00\nCANLI",
+      "fixedTime": "21:00",
       "timestamp": 1777485600000,
       "broadcaster": "S Sport Plus",
       "homeTeam": {
@@ -81,16 +81,16 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/207092.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/251.png",
-      "homeScore": "20",
-      "awayScore": "34",
+      "homeScore": "-",
+      "awayScore": "-",
       "tournament": "1. DBBL"
     },
     {
       "id": 16030027,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "21:45",
+      "fixedTime": "21:45\nCANLI",
       "timestamp": 1777488300000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
@@ -102,8 +102,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/82179.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/138.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "20",
+      "awayScore": "11",
       "tournament": "Euroleague"
     },
     {
