@@ -960,9 +960,9 @@
     {
       "id": 16074489,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-29",
-      "fixedTime": "15:15\nCANLI",
+      "fixedTime": "15:15\nMS",
       "timestamp": 1777464900000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -983,19 +983,19 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "2-6",
-        "5-6"
+        "5-7"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
       "id": 16074489,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-29",
-      "fixedTime": "15:15\nCANLI",
+      "fixedTime": "15:15\nMS",
       "timestamp": 1777464900000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1016,10 +1016,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "2-6",
-        "5-6"
+        "5-7"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -1052,7 +1052,7 @@
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "0-0"
+        "5-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1085,7 +1085,7 @@
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "0-0"
+        "5-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1204,9 +1204,9 @@
     {
       "id": 16038894,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-29",
-      "fixedTime": "15:35\nCANLI",
+      "fixedTime": "15:35\nMS",
       "timestamp": 1777466100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1226,20 +1226,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-0",
-        "4-2"
+        "6-4"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16038894,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-29",
-      "fixedTime": "15:35\nCANLI",
+      "fixedTime": "15:35\nMS",
       "timestamp": 1777466100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1259,11 +1259,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-0",
-        "4-2"
+        "6-4"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1277,16 +1277,18 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Alves C / Osuigwe W",
-        "ranking": null,
+        "ranking": 180,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
       "awayTeam": {
         "name": "Hozumi E / Wu F",
-        "ranking": null,
+        "ranking": 989,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
@@ -1335,16 +1337,18 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Alves C / Osuigwe W",
-        "ranking": null,
+        "ranking": 180,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
       "awayTeam": {
         "name": "Hozumi E / Wu F",
-        "ranking": null,
+        "ranking": 989,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
@@ -1409,9 +1413,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "4-5"
+        "4-6",
+        "2-3"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1441,9 +1446,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "4-5"
+        "4-6",
+        "2-3"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1529,7 +1535,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-2"
+        "5-5"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1559,69 +1565,9 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-2"
+        "5-5"
       ],
       "tournament": "Saint-Malo, France"
-    },
-    {
-      "id": 16038889,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-29",
-      "fixedTime": "16:30",
-      "timestamp": 1777469400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Harrison C / Skupski N",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Goransson A / King E",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/se.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Madrid, Spain, Doubles"
-    },
-    {
-      "id": 16038889,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-29",
-      "fixedTime": "16:30",
-      "timestamp": 1777469400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Harrison C / Skupski N",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Goransson A / King E",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/se.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16013080,
@@ -1652,7 +1598,7 @@
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16034629,
+      "id": 16038889,
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-29",
@@ -1660,22 +1606,22 @@
       "timestamp": 1777471200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Andreeva M / Shnaider D",
-        "ranking": 8,
+        "name": "Harrison C / Skupski N",
+        "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
         ]
       },
       "awayTeam": {
-        "name": "Perez E / Schuurs D",
+        "name": "Goransson A / King E",
         "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/se.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": [],
@@ -1766,7 +1712,7 @@
       "tournament": "Madrid, Spain"
     },
     {
-      "id": 16034629,
+      "id": 16038889,
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-29",
@@ -1774,22 +1720,22 @@
       "timestamp": 1777471200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Andreeva M / Shnaider D",
-        "ranking": 8,
+        "name": "Harrison C / Skupski N",
+        "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
         ]
       },
       "awayTeam": {
-        "name": "Perez E / Schuurs D",
+        "name": "Goransson A / King E",
         "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/se.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": [],
@@ -1850,6 +1796,66 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16034629,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-29",
+      "fixedTime": "17:10",
+      "timestamp": 1777471800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Andreeva M / Shnaider D",
+        "ranking": 8,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Perez E / Schuurs D",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Madrid, Spain, Doubles"
+    },
+    {
+      "id": 16034629,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-29",
+      "fixedTime": "17:10",
+      "timestamp": 1777471800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Andreeva M / Shnaider D",
+        "ranking": 8,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Perez E / Schuurs D",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16086336,
@@ -2177,15 +2183,17 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Mikulskyte J / Papamichail D",
-        "ranking": null,
+        "ranking": 162,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
         ]
       },
       "awayTeam": {
         "name": "Chong E / Wong H Y C",
-        "ranking": null,
+        "ranking": 683,
         "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
         ]
       },
@@ -2233,15 +2241,17 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Mikulskyte J / Papamichail D",
-        "ranking": null,
+        "ranking": 162,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
         ]
       },
       "awayTeam": {
         "name": "Chong E / Wong H Y C",
-        "ranking": null,
+        "ranking": 683,
         "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
         ]
       },
@@ -2401,16 +2411,18 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Lansere S / Zolotareva A",
-        "ranking": null,
+        "ranking": 244,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
         ]
       },
       "awayTeam": {
         "name": "Dang Y / You X",
-        "ranking": null,
+        "ranking": 194,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
@@ -2457,16 +2469,18 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Lansere S / Zolotareva A",
-        "ranking": null,
+        "ranking": 244,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
         ]
       },
       "awayTeam": {
         "name": "Dang Y / You X",
-        "ranking": null,
+        "ranking": 194,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
@@ -3201,14 +3215,14 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Laura Pigossi",
-        "ranking": null,
+        "ranking": 217,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
         ]
       },
       "awayTeam": {
         "name": "Daria Kasatkina",
-        "ranking": null,
+        "ranking": 75,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
         ]
@@ -3369,14 +3383,14 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Yasmine Kabbaj",
-        "ranking": null,
+        "ranking": 353,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ma.png"
         ]
       },
       "awayTeam": {
         "name": "Jessika Ponchet",
-        "ranking": null,
+        "ranking": 196,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
         ]
@@ -3515,14 +3529,14 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Laura Pigossi",
-        "ranking": null,
+        "ranking": 217,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
         ]
       },
       "awayTeam": {
         "name": "Daria Kasatkina",
-        "ranking": null,
+        "ranking": 75,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
         ]
@@ -3683,14 +3697,14 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Yasmine Kabbaj",
-        "ranking": null,
+        "ranking": 353,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ma.png"
         ]
       },
       "awayTeam": {
         "name": "Jessika Ponchet",
-        "ranking": null,
+        "ranking": 196,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
         ]
@@ -3831,14 +3845,16 @@
         "name": "Arevalo M / Pavic M",
         "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sv.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hr.png"
         ]
       },
       "awayTeam": {
         "name": "Heliovaara H / Patten H",
         "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fi.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
@@ -3917,14 +3933,16 @@
         "name": "Arevalo M / Pavic M",
         "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sv.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hr.png"
         ]
       },
       "awayTeam": {
         "name": "Heliovaara H / Patten H",
         "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fi.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
