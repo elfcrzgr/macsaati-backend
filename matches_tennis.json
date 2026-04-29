@@ -705,9 +705,9 @@
     {
       "id": 16086579,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-29",
-      "fixedTime": "14:00",
+      "fixedTime": "14:00\nMS",
       "timestamp": 1777460400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -725,9 +725,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "6-7",
+        "4-6"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -796,9 +799,9 @@
     {
       "id": 16086579,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-29",
-      "fixedTime": "14:00",
+      "fixedTime": "14:00\nMS",
       "timestamp": 1777460400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -816,9 +819,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "6-7",
+        "4-6"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -1048,11 +1054,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "5-0"
+        "6-2",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1081,11 +1088,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "5-0"
+        "6-2",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1270,9 +1278,9 @@
     {
       "id": 16092614,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "15:45",
+      "fixedTime": "15:45\nCANLI",
       "timestamp": 1777466700000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1292,9 +1300,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
@@ -1330,9 +1340,9 @@
     {
       "id": 16092614,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "15:45",
+      "fixedTime": "15:45\nCANLI",
       "timestamp": 1777466700000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1352,9 +1362,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-1"
+      ],
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
@@ -1416,7 +1428,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "2-3"
+        "4-5"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1449,7 +1461,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "2-3"
+        "4-5"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1532,10 +1544,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-5"
+        "7-5",
+        "0-1"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1562,19 +1575,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-5"
+        "7-5",
+        "0-1"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16013080,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "17:00",
+      "fixedTime": "17:00\nCANLI",
       "timestamp": 1777471200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1592,17 +1606,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-1"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16038889,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "17:00",
+      "fixedTime": "17:00\nCANLI",
       "timestamp": 1777471200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1622,9 +1638,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-1"
+      ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -1654,41 +1672,13 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "La Bisbal D Emporda, Spain"
-    },
-    {
-      "id": 16050541,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-29",
-      "fixedTime": "17:00",
-      "timestamp": 1777471200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Sofia Costoulas",
-        "ranking": 151,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Leolia Jeanjean",
-        "ranking": 126,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
     },
     {
       "id": 16013080,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "17:00",
+      "fixedTime": "17:00\nCANLI",
       "timestamp": 1777471200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1706,17 +1696,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-1"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16038889,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-29",
-      "fixedTime": "17:00",
+      "fixedTime": "17:00\nCANLI",
       "timestamp": 1777471200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1736,9 +1728,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-1"
+      ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -1770,12 +1764,72 @@
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
+      "id": 16034629,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-29",
+      "fixedTime": "17:10",
+      "timestamp": 1777471800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Andreeva M / Shnaider D",
+        "ranking": 8,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Perez E / Schuurs D",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Madrid, Spain, Doubles"
+    },
+    {
+      "id": 16034629,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-04-29",
+      "fixedTime": "17:10",
+      "timestamp": 1777471800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Andreeva M / Shnaider D",
+        "ranking": 8,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Perez E / Schuurs D",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Madrid, Spain, Doubles"
+    },
+    {
       "id": 16050541,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-29",
-      "fixedTime": "17:00",
-      "timestamp": 1777471200000,
+      "fixedTime": "17:30",
+      "timestamp": 1777473000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Sofia Costoulas",
@@ -1798,64 +1852,32 @@
       "tournament": "Saint-Malo, France"
     },
     {
-      "id": 16034629,
-      "isElite": true,
+      "id": 16050541,
+      "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-29",
-      "fixedTime": "17:10",
-      "timestamp": 1777471800000,
+      "fixedTime": "17:30",
+      "timestamp": 1777473000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Andreeva M / Shnaider D",
-        "ranking": 8,
+        "name": "Sofia Costoulas",
+        "ranking": 151,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
         ]
       },
       "awayTeam": {
-        "name": "Perez E / Schuurs D",
-        "ranking": null,
+        "name": "Leolia Jeanjean",
+        "ranking": 126,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": [],
-      "tournament": "Madrid, Spain, Doubles"
-    },
-    {
-      "id": 16034629,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-29",
-      "fixedTime": "17:10",
-      "timestamp": 1777471800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Andreeva M / Shnaider D",
-        "ranking": 8,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Perez E / Schuurs D",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2609.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Madrid, Spain, Doubles"
+      "tournament": "Saint-Malo, France"
     },
     {
       "id": 16086336,
@@ -1922,8 +1944,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-29",
-      "fixedTime": "18:10",
-      "timestamp": 1777475400000,
+      "fixedTime": "18:40",
+      "timestamp": 1777477200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Hsieh S-W / Kenin S",
@@ -1952,8 +1974,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-29",
-      "fixedTime": "18:10",
-      "timestamp": 1777475400000,
+      "fixedTime": "18:40",
+      "timestamp": 1777477200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Hsieh S-W / Kenin S",
