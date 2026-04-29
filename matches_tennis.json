@@ -157,9 +157,9 @@
     {
       "id": 16073545,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-29",
-      "fixedTime": "09:20\nCANLI",
+      "fixedTime": "09:20\nMS",
       "timestamp": 1777443600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -180,10 +180,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "3-6",
-        "2-3"
+        "4-6"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
@@ -213,10 +213,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-2",
-        "2-3"
+        "4-6",
+        "0-0"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
