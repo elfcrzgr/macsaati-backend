@@ -189,12 +189,12 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         7: "TRT 1 / Tabii", 351: "S Sport Plus", 37: "beIN Sports", 10: "Exxen / S Sport+", 
         13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
         10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 
-        98: "beIN Sports / TRT Spor", // Trendyol 1. Lig
-        97: "TFF YouTube",           // TFF 2. Lig (Kırmızı & Beyaz)
+        98: "beIN Sports / TRT Spor", 
+        97: "TFF YouTube",
+        13363: "USL YouTube", // USL Championship Yayını
         11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 
-        696: "DAZN / YouTube", 13363: "USL YouTube", 10783: "A Spor", 
-        232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 
-        53: "S Sport Plus" // İtalya Serie B
+        696: "DAZN / YouTube", 10783: "A Spor", 
+        232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus"
     };
 
     if (staticConfigs[utId]) return staticConfigs[utId];
@@ -205,7 +205,8 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53];
+// 13363 (USL) Buraya eklendi
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363];
 const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
@@ -224,7 +225,7 @@ const footballLeagues = {
     38: "Belçika Pro League", 
     36: "İskoçya Premiership", 
     19: "FA Cup", 
-    97: "Türkiye Kupası",
+    938: "Türkiye Kupası", // ID Düzeltildi (Ziraat Kupası genelde 938'dir)
     7: "UEFA Şampiyonlar Ligi", 
     679: "UEFA Avrupa Ligi",
     17015: "UEFA Konferans Ligi", 
@@ -236,7 +237,8 @@ const footballLeagues = {
     6516: "Kulüp Hazırlık Maçları", 
     325: "Brezilya Serie A", 
     155: "Arjantin Liga Profesional",
-    242: "MLS"
+    242: "MLS",
+    13363: "USL Championship" // USL eklendi
 };
 
 function calculateLiveMinute(eventData) {
@@ -269,6 +271,7 @@ async function updateFootball() {
     console.log(`⚽ Futbol güncelleniyor...`);
     let allEvents = [];
     
+    // getTRDate(0) Bugün, getTRDate(1) Yarın
     for (const date of [getTRDate(0), getTRDate(1)]) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
@@ -277,7 +280,6 @@ async function updateFootball() {
     }
 
     const duplicateTracker = new Map();
-    const leagueCount = {};
 
     allEvents.forEach(e => {
         if (duplicateTracker.has(e.id)) return;
@@ -285,8 +287,6 @@ async function updateFootball() {
         const status = e.status.type;
         const isLive = status === 'inprogress';
         const leagueId = e.tournament?.uniqueTournament?.id;
-        
-        leagueCount[leagueId] = (leagueCount[leagueId] || 0) + 1;
         
         const hName = e.homeTeam.name || "";
         const aName = e.awayTeam.name || "";
@@ -314,16 +314,10 @@ async function updateFootball() {
     });
 
     const matches = Array.from(duplicateTracker.values()).sort((a, b) => a.timestamp - b.timestamp);
-
     fs.writeFileSync(TARGET_FILES.football, JSON.stringify({ success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches }, null, 2));
     
-    const hasLiveMatch = matches.some(m => m.status === 'inprogress');
-    const upcomingMatches = matches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
-    const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
-
-    console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
-    
-    return { hasLiveMatch, nextMatchTimestamp };
+    console.log(`  ✅ Toplam ${matches.length} futbol maçı listelendi.`);
+    return { success: true };
 }
 
 
