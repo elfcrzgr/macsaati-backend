@@ -217,7 +217,6 @@ const footballLeagues = {
     36: "İskoçya Premiership", 
     19: "FA Cup", 
     97: "Türkiye Kupası",
-    53: "TFF 1. Lig", 
     7: "UEFA Şampiyonlar Ligi", 
     679: "UEFA Avrupa Ligi",
     17015: "UEFA Konferans Ligi", 
