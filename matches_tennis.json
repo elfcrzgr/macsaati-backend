@@ -1477,9 +1477,9 @@
     {
       "id": 16038895,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:45\nCANLI",
+      "fixedTime": "17:45\nMS",
       "timestamp": 1777560300000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1500,20 +1500,20 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "4-6",
         "6-3",
-        "0-0"
+        "6-10"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16038895,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:45\nCANLI",
+      "fixedTime": "17:45\nMS",
       "timestamp": 1777560300000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1534,11 +1534,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "4-6",
         "6-3",
-        "0-1"
+        "6-10"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1637,7 +1637,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "3-2"
+        "6-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1670,7 +1670,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "3-2"
+        "5-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1701,7 +1701,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "0-0"
+        "4-1"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1732,7 +1732,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "0-0"
+        "4-1"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1741,38 +1741,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-30",
-      "fixedTime": "19:30",
-      "timestamp": 1777566600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Goransson A / King E",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/se.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Gonzalez M / Molteni A",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Madrid, Spain, Doubles"
-    },
-    {
-      "id": 16038897,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-04-30",
-      "fixedTime": "19:30",
-      "timestamp": 1777566600000,
+      "fixedTime": "19:40",
+      "timestamp": 1777567200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Goransson A / King E",
@@ -1799,9 +1769,9 @@
     {
       "id": 16050662,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "19:40",
+      "fixedTime": "19:40\nCANLI",
       "timestamp": 1777567200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1819,17 +1789,49 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
-      "id": 16050662,
-      "isElite": false,
+      "id": 16038897,
+      "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-30",
       "fixedTime": "19:40",
+      "timestamp": 1777567200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Goransson A / King E",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/se.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Gonzalez M / Molteni A",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ar.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Madrid, Spain, Doubles"
+    },
+    {
+      "id": 16050662,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-04-30",
+      "fixedTime": "19:40\nCANLI",
       "timestamp": 1777567200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1847,9 +1849,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
