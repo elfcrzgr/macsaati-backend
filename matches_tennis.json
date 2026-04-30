@@ -860,7 +860,7 @@
       "setScores": [
         "5-7",
         "6-3",
-        "4-3"
+        "5-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -892,16 +892,16 @@
       "setScores": [
         "5-7",
         "6-3",
-        "4-3"
+        "5-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16086574,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "15:20",
+      "fixedTime": "15:20\nMS",
       "timestamp": 1777551600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -919,17 +919,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "3-6",
+        "1-6"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
       "id": 16086574,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "15:20",
+      "fixedTime": "15:20\nMS",
       "timestamp": 1777551600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -947,17 +950,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "3-6",
+        "1-6"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
       "id": 16050628,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "15:45\nCANLI",
+      "fixedTime": "15:45\nMS",
       "timestamp": 1777553100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -978,20 +984,20 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "2-6",
         "6-2",
-        "0-0"
+        "4-10"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
       "id": 16050628,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "15:45\nCANLI",
+      "fixedTime": "15:45\nMS",
       "timestamp": 1777553100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1012,11 +1018,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "2-6",
         "6-2",
-        "0-0"
+        "4-10"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -1049,7 +1055,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "3-0"
+        "5-3"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1082,7 +1088,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "3-0"
+        "5-3"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1113,7 +1119,7 @@
       "awayScore": "0",
       "setScores": [
         "6-2",
-        "1-2"
+        "2-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1172,7 +1178,7 @@
       "awayScore": "0",
       "setScores": [
         "6-2",
-        "1-2"
+        "2-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1228,9 +1234,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-5"
+        "3-6",
+        "2-1"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1258,9 +1265,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-5"
+        "3-6",
+        "2-1"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1377,66 +1385,6 @@
       "tournament": "Saint-Malo, France"
     },
     {
-      "id": 16050632,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-30",
-      "fixedTime": "16:55",
-      "timestamp": 1777557300000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Sun L / Zhang S",
-        "ranking": 65,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hozumi E / Wu F",
-        "ranking": 989,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France, Doubles"
-    },
-    {
-      "id": 16050632,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-30",
-      "fixedTime": "16:55",
-      "timestamp": 1777557300000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Sun L / Zhang S",
-        "ranking": 65,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hozumi E / Wu F",
-        "ranking": 989,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France, Doubles"
-    },
-    {
       "id": 16038895,
       "isElite": true,
       "status": "notstarted",
@@ -1469,9 +1417,9 @@
     {
       "id": 16012138,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:00",
+      "fixedTime": "17:00\nCANLI",
       "timestamp": 1777557600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1489,9 +1437,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-1"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
@@ -1557,9 +1507,9 @@
     {
       "id": 16012138,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:00",
+      "fixedTime": "17:00\nCANLI",
       "timestamp": 1777557600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1577,9 +1527,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-1"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
@@ -1611,6 +1563,66 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
+    },
+    {
+      "id": 16050632,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-30",
+      "fixedTime": "17:15",
+      "timestamp": 1777558500000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Sun L / Zhang S",
+        "ranking": 65,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hozumi E / Wu F",
+        "ranking": 989,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France, Doubles"
+    },
+    {
+      "id": 16050632,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-30",
+      "fixedTime": "17:15",
+      "timestamp": 1777558500000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Sun L / Zhang S",
+        "ranking": 65,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nz.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hozumi E / Wu F",
+        "ranking": 989,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France, Doubles"
     },
     {
       "id": 16086339,
