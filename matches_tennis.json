@@ -1499,11 +1499,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "3-2"
+        "6-3",
+        "0-0"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1532,20 +1533,21 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "3-2"
+        "6-3",
+        "0-1"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16086338,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:50\nCANLI",
+      "fixedTime": "17:50\nMS",
       "timestamp": 1777560600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1566,19 +1568,19 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "3-6",
-        "3-4"
+        "5-7"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
       "id": 16086338,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:50\nCANLI",
+      "fixedTime": "17:50\nMS",
       "timestamp": 1777560600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1599,10 +1601,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "3-6",
-        "3-4"
+        "5-7"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1635,7 +1637,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "0-0"
+        "3-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1668,7 +1670,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "0-0"
+        "3-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1696,9 +1698,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-3"
+        "4-6",
+        "0-0"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1726,9 +1729,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-2"
+        "4-6",
+        "0-0"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1737,8 +1741,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-30",
-      "fixedTime": "19:10",
-      "timestamp": 1777565400000,
+      "fixedTime": "19:30",
+      "timestamp": 1777566600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Goransson A / King E",
@@ -1767,8 +1771,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-04-30",
-      "fixedTime": "19:10",
-      "timestamp": 1777565400000,
+      "fixedTime": "19:30",
+      "timestamp": 1777566600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Goransson A / King E",
@@ -1797,8 +1801,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-30",
-      "fixedTime": "19:30",
-      "timestamp": 1777566600000,
+      "fixedTime": "19:40",
+      "timestamp": 1777567200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Antonia Ružić",
@@ -1825,8 +1829,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-30",
-      "fixedTime": "19:30",
-      "timestamp": 1777566600000,
+      "fixedTime": "19:40",
+      "timestamp": 1777567200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Antonia Ružić",
