@@ -259,9 +259,9 @@
     {
       "id": 16050544,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "12:00\nCANLI",
+      "fixedTime": "12:00\nMS",
       "timestamp": 1777539600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -280,10 +280,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "2-6",
-        "3-3"
+        "4-6"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -316,7 +316,7 @@
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "3-4"
+        "5-6"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -404,7 +404,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "3-5"
+        "6-6"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
@@ -436,7 +436,8 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "2-0"
+        "5-2",
+        "0-0"
       ],
       "tournament": "Huzhou, China, Doubles"
     },
@@ -466,7 +467,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-1"
+        "0-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -496,7 +497,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-1"
+        "0-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -559,34 +560,6 @@
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
-      "id": 16050546,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-30",
-      "fixedTime": "13:20",
-      "timestamp": 1777544400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Whitney Osuigwe",
-        "ranking": 180,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Viktorija Golubic",
-        "ranking": 81,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
-    },
-    {
       "id": 16050629,
       "isElite": false,
       "status": "notstarted",
@@ -671,6 +644,34 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Girls' Singles Draw"
+    },
+    {
+      "id": 16050546,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-30",
+      "fixedTime": "13:50",
+      "timestamp": 1777546200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Whitney Osuigwe",
+        "ranking": 180,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Viktorija Golubic",
+        "ranking": 81,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France"
     },
     {
       "id": 16013081,
