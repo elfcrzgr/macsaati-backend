@@ -1097,9 +1097,9 @@
     {
       "id": 16050657,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "16:00\nCANLI",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777554000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1118,11 +1118,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "6-2",
         "2-6",
-        "0-4"
+        "1-6"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1157,9 +1157,9 @@
     {
       "id": 16050657,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "16:00\nCANLI",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777554000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1178,11 +1178,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "6-2",
         "2-6",
-        "0-4"
+        "1-6"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1242,7 +1242,7 @@
       "setScores": [
         "3-6",
         "6-3",
-        "0-0"
+        "0-4"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1274,16 +1274,16 @@
       "setScores": [
         "3-6",
         "6-3",
-        "0-0"
+        "0-4"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16086961,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "16:30",
+      "fixedTime": "16:30\nMS",
       "timestamp": 1777555800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1301,17 +1301,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-3",
+        "6-2"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
       "id": 16086961,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "16:30",
+      "fixedTime": "16:30\nMS",
       "timestamp": 1777555800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1329,9 +1332,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-3",
+        "6-2"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -1417,7 +1423,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "1-1"
+        "3-4"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1448,7 +1454,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "1-1"
+        "3-4"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1481,7 +1487,7 @@
       "awayScore": "0",
       "setScores": [
         "6-0",
-        "2-0"
+        "4-3"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -1514,16 +1520,16 @@
       "awayScore": "0",
       "setScores": [
         "6-0",
-        "2-0"
+        "4-3"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
       "id": 16038895,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:45",
+      "fixedTime": "17:45\nCANLI",
       "timestamp": 1777560300000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1543,17 +1549,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
       "id": 16038895,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:45",
+      "fixedTime": "17:45\nCANLI",
       "timestamp": 1777560300000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1573,9 +1581,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -1606,7 +1616,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-0"
+        "2-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1638,7 +1648,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-0"
+        "2-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1647,8 +1657,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-30",
-      "fixedTime": "18:00",
-      "timestamp": 1777561200000,
+      "fixedTime": "18:20",
+      "timestamp": 1777562400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Fossa Huergo N / Ninomiya M",
@@ -1677,8 +1687,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-04-30",
-      "fixedTime": "18:00",
-      "timestamp": 1777561200000,
+      "fixedTime": "18:20",
+      "timestamp": 1777562400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Fossa Huergo N / Ninomiya M",
