@@ -1122,7 +1122,7 @@
       "setScores": [
         "6-2",
         "2-6",
-        "0-1"
+        "0-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1182,7 +1182,7 @@
       "setScores": [
         "6-2",
         "2-6",
-        "0-1"
+        "0-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1237,11 +1237,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "5-2"
+        "6-3",
+        "0-0"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1268,11 +1269,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "5-2"
+        "6-3",
+        "0-0"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1412,9 +1414,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-4"
+        "4-6",
+        "1-1"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1442,9 +1445,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-4"
+        "4-6",
+        "1-1"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1473,10 +1477,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "4-0"
+        "6-0",
+        "2-0"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -1505,10 +1510,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "4-0"
+        "6-0",
+        "2-0"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -1575,9 +1581,9 @@
     {
       "id": 16086338,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:50",
+      "fixedTime": "17:50\nCANLI",
       "timestamp": 1777560600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1597,17 +1603,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
       "id": 16086338,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "17:50",
+      "fixedTime": "17:50\nCANLI",
       "timestamp": 1777560600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1627,9 +1635,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
