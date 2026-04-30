@@ -201,7 +201,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
 };
 
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 7, 679, 17015, 16, 1, 133, 270];
-const REGULAR_FOOT_IDS = [53, 299, 6516, 325, 155, 242];
+const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 const footballLeagues = {
