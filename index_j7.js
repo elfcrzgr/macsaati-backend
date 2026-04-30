@@ -184,12 +184,17 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     }
 
     const staticConfigs = {
-        34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii", 
-        17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 7: "TRT 1 / Tabii", 351: "S Sport Plus", 
-        37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
-        10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / Tivibu Spor", 97: "TFF YouTube", 11417: "TFF YouTube", 
-        11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 696: "DAZN / YouTube", 13363: "USL YouTube", 
-        10783: "A Spor", 232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen"
+        34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 
+        938: "TRT 1 / Tabii", 17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 
+        7: "TRT 1 / Tabii", 351: "S Sport Plus", 37: "beIN Sports", 10: "Exxen / S Sport+", 
+        13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
+        10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 
+        98: "beIN Sports / TRT Spor", // Trendyol 1. Lig
+        97: "TFF YouTube",           // TFF 2. Lig (Kırmızı & Beyaz)
+        11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 
+        696: "DAZN / YouTube", 13363: "USL YouTube", 10783: "A Spor", 
+        232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 
+        53: "S Sport Plus" // İtalya Serie B
     };
 
     if (staticConfigs[utId]) return staticConfigs[utId];
@@ -200,7 +205,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 7, 679, 17015, 16, 1, 133, 270];
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53];
 const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
@@ -211,6 +216,9 @@ const footballLeagues = {
     23: "İtalya Serie A", 
     34: "Fransa Ligue 1", 
     52: "Türkiye Süper Lig", 
+    98: "Trendyol 1. Lig",
+    97: "TFF 2. Lig",
+    53: "İtalya Serie B",
     37: "Hollanda Eredivisie", 
     238: "Portekiz Primeira Liga", 
     38: "Belçika Pro League", 
@@ -233,41 +241,27 @@ const footballLeagues = {
 
 function calculateLiveMinute(eventData) {
     if (!eventData) return "";
-    
     const status = eventData.status;
     const time = eventData.time;
-
-    // 1. SofaScore doğrudan dakika veriyorsa onu kullanalım
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
         return String(time.currentMinute) + "'";
     }
-
-    // 2. Devre arası kontrolü
     if (status?.code === 31 || status?.description === "Halftime") {
         return "İY";
     }
-
-    // 3. Timestamp üzerinden dakika hesaplama
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
         let calcMinute = Math.floor(elapsed / 60);
-
         if (calcMinute < 0) calcMinute = 0;
-
         if (status?.code === 7) { 
-            // 2. Yarı
             calcMinute += 45;
             return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
         } else if (status?.code === 6) { 
-            // 1. Yarı
             return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
         }
-
         return String(calcMinute) + "'";
     }
-
-    // Hiçbirşey yoksa canlı yaz
     return "Canlı";
 }
 
@@ -305,22 +299,16 @@ async function updateFootball() {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
             status: status,
-            
-            // ✅ DAKİKA FONKSİYONU BURAYA ENTEGRE EDİLDİ
             liveMinute: isLive ? calculateLiveMinute(e) : "",
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
-            
             broadcaster: getFootBroadcaster(leagueId, hName, aName, tName, utName),
-            
             homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
-            
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
-            
             tournament: cleanTournamentName
         });
     });
@@ -330,18 +318,14 @@ async function updateFootball() {
     fs.writeFileSync(TARGET_FILES.football, JSON.stringify({ success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches }, null, 2));
     
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
-
     const upcomingMatches = matches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
     const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
 
     console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
-    Object.keys(leagueCount).forEach(leagueId => {
-        const leagueName = footballLeagues[leagueId] || `Liga ${leagueId}`;
-        console.log(`      • ${leagueName}: ${leagueCount[leagueId]} maç`);
-    });
-
+    
     return { hasLiveMatch, nextMatchTimestamp };
 }
+
 
 
 
