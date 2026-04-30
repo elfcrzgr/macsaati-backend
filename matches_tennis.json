@@ -1935,10 +1935,10 @@
     {
       "id": 16012140,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "22:30",
-      "timestamp": 1777577400000,
+      "fixedTime": "23:05\nCANLI",
+      "timestamp": 1777579500000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Marta Kostyuk",
@@ -1955,18 +1955,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-0"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16012140,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "22:30",
-      "timestamp": 1777577400000,
+      "fixedTime": "23:05\nCANLI",
+      "timestamp": 1777579500000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Marta Kostyuk",
@@ -1983,9 +1985,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2607.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-0"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
@@ -3385,6 +3389,34 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "La Bisbal D Emporda, Spain"
+    },
+    {
+      "id": 16012216,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-05-01",
+      "fixedTime": "21:00",
+      "timestamp": 1777658400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Alexander Blockx",
+        "ranking": 69,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Alexander Zverev",
+        "ranking": 3,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Madrid, Spain"
     },
     {
       "id": 16048202,
