@@ -1129,9 +1129,9 @@
     {
       "id": 16086963,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "16:00",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777554000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1149,9 +1149,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "1-6",
+        "3-6"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -1189,9 +1192,9 @@
     {
       "id": 16086963,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "16:00",
+      "fixedTime": "16:00\nMS",
       "timestamp": 1777554000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1209,17 +1212,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "1-6",
+        "3-6"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
       "id": 16050547,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "16:05\nCANLI",
+      "fixedTime": "16:05\nMS",
       "timestamp": 1777554300000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1238,20 +1244,20 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "3-6",
         "6-3",
-        "0-4"
+        "0-6"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16050547,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-04-30",
-      "fixedTime": "16:05\nCANLI",
+      "fixedTime": "16:05\nMS",
       "timestamp": 1777554300000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1270,11 +1276,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "3-6",
         "6-3",
-        "0-4"
+        "0-6"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1341,62 +1347,6 @@
       "tournament": "Girls' Singles Draw"
     },
     {
-      "id": 16050543,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-30",
-      "fixedTime": "16:40",
-      "timestamp": 1777556400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Celine Naef",
-        "ranking": 209,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Anna Blinkova",
-        "ranking": 89,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
-    },
-    {
-      "id": 16050543,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-04-30",
-      "fixedTime": "16:40",
-      "timestamp": 1777556400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Celine Naef",
-        "ranking": 209,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Anna Blinkova",
-        "ranking": 89,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
-    },
-    {
       "id": 16012138,
       "isElite": true,
       "status": "inprogress",
@@ -1423,7 +1373,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "3-4"
+        "6-6"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1454,7 +1404,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "3-4"
+        "6-6"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1487,7 +1437,7 @@
       "awayScore": "0",
       "setScores": [
         "6-0",
-        "4-3"
+        "6-6"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -1520,7 +1470,7 @@
       "awayScore": "0",
       "setScores": [
         "6-0",
-        "4-3"
+        "6-6"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -1552,7 +1502,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-2"
+        "3-5"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1584,7 +1534,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-2"
+        "3-5"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1614,9 +1564,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "2-4"
+        "3-6",
+        "0-1"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1646,18 +1597,19 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "2-4"
+        "3-6",
+        "0-1"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
       "id": 16086339,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "18:20",
+      "fixedTime": "18:20\nCANLI",
       "timestamp": 1777562400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1677,17 +1629,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
       "id": 16086339,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "18:20",
+      "fixedTime": "18:20\nCANLI",
       "timestamp": 1777562400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1707,10 +1661,68 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-0"
+      ],
+      "tournament": "La Bisbal D Emporda, Spain, Doubles"
+    },
+    {
+      "id": 16050543,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-30",
+      "fixedTime": "18:30",
+      "timestamp": 1777563000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Celine Naef",
+        "ranking": 209,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anna Blinkova",
+        "ranking": 89,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": [],
-      "tournament": "La Bisbal D Emporda, Spain, Doubles"
+      "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16050543,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-04-30",
+      "fixedTime": "18:30",
+      "timestamp": 1777563000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Celine Naef",
+        "ranking": 209,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anna Blinkova",
+        "ranking": 89,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France"
     },
     {
       "id": 16038897,
