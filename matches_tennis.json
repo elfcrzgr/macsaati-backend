@@ -1769,7 +1769,7 @@
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "1-1"
+        "2-5"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1797,10 +1797,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-1",
-        "1-4"
+        "3-6",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1833,7 +1834,7 @@
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "1-1"
+        "2-5"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1861,19 +1862,20 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-1",
-        "1-4"
+        "3-6",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16013078,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "21:00",
+      "fixedTime": "21:00\nCANLI",
       "timestamp": 1777572000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1891,17 +1893,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-2"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16013078,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-04-30",
-      "fixedTime": "21:00",
+      "fixedTime": "21:00\nCANLI",
       "timestamp": 1777572000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1919,9 +1923,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-2"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
