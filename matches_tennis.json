@@ -1267,10 +1267,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "4-2"
+        "6-2",
+        "1-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1299,10 +1300,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "4-2"
+        "6-2",
+        "1-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1365,9 +1367,9 @@
     {
       "id": 16050665,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "19:20\nCANLI",
+      "fixedTime": "19:20\nMS",
       "timestamp": 1777652400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1386,19 +1388,19 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "1-6",
-        "0-4"
+        "1-6"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16050665,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "19:20\nCANLI",
+      "fixedTime": "19:20\nMS",
       "timestamp": 1777652400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1417,10 +1419,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "1-6",
-        "0-4"
+        "1-6"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1448,9 +1450,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-3"
+        "3-6",
+        "1-0"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1478,9 +1481,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-3"
+        "3-6",
+        "1-0"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -2150,6 +2154,34 @@
       "awayTeam": {
         "name": "Sara Sorribes Tormo",
         "ranking": 359,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "La Bisbal D Emporda, Spain"
+    },
+    {
+      "id": 16050656,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "13:30",
+      "timestamp": 1777717800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Tamara Korpatsch",
+        "ranking": 99,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Marina Bassols Ribera",
+        "ranking": 183,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
         ]
@@ -2217,6 +2249,34 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Saint-Malo, France, Doubles"
+    },
+    {
+      "id": 16050656,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "13:30",
+      "timestamp": 1777717800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Tamara Korpatsch",
+        "ranking": 99,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Marina Bassols Ribera",
+        "ranking": 183,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16050539,
