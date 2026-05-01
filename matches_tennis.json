@@ -100,9 +100,9 @@
     {
       "id": 16050702,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "07:35\nCANLI",
+      "fixedTime": "07:35\nMS",
       "timestamp": 1777610100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -120,12 +120,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "setScores": [
         "6-3",
         "6-7",
-        "4-4"
+        "6-4"
       ],
       "tournament": "Huzhou, China"
     },
@@ -134,8 +134,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "09:30",
-      "timestamp": 1777617000000,
+      "fixedTime": "11:00",
+      "timestamp": 1777622400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Hanyu Guo",
@@ -1536,6 +1536,62 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Huzhou, China, Doubles"
+    },
+    {
+      "id": 16050698,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "08:00",
+      "timestamp": 1777698000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Veronika Erjavec",
+        "ranking": 96,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Xiyu Wang",
+        "ranking": 170,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Huzhou, China"
+    },
+    {
+      "id": 16050698,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "08:00",
+      "timestamp": 1777698000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Veronika Erjavec",
+        "ranking": 96,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Xiyu Wang",
+        "ranking": 170,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Huzhou, China"
     },
     {
       "id": 16012135,
