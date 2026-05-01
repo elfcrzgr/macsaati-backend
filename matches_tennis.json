@@ -1437,9 +1437,9 @@
     {
       "id": 16050548,
       "isElite": false,
-      "status": "inprogress",
+      "status": "interrupted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "19:45\nCANLI",
+      "fixedTime": "19:45",
       "timestamp": 1777653900000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1457,21 +1457,17 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "setScores": [
-        "3-6",
-        "6-4",
-        "2-2"
-      ],
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16050548,
       "isElite": false,
-      "status": "inprogress",
+      "status": "interrupted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "19:45\nCANLI",
+      "fixedTime": "19:45",
       "timestamp": 1777653900000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1489,13 +1485,9 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "1",
-      "awayScore": "1",
-      "setScores": [
-        "3-6",
-        "6-4",
-        "2-2"
-      ],
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
       "tournament": "Saint-Malo, France"
     },
     {
@@ -1525,7 +1517,7 @@
       "awayScore": "1",
       "setScores": [
         "2-6",
-        "2-1"
+        "4-4"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1556,7 +1548,7 @@
       "awayScore": "1",
       "setScores": [
         "2-6",
-        "2-1"
+        "4-4"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1565,8 +1557,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "22:10",
-      "timestamp": 1777662600000,
+      "fixedTime": "22:30",
+      "timestamp": 1777663800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Krunic A / Mladenovic K",
@@ -1595,8 +1587,8 @@
       "isElite": true,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "22:10",
-      "timestamp": 1777662600000,
+      "fixedTime": "22:30",
+      "timestamp": 1777663800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Krunic A / Mladenovic K",
