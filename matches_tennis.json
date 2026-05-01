@@ -347,9 +347,9 @@
     {
       "id": 16050626,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "13:00\nCANLI",
+      "fixedTime": "13:00\nMS",
       "timestamp": 1777629600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -370,19 +370,19 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "4-6",
-        "6-6"
+        "6-7"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
     {
       "id": 16050626,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "13:00\nCANLI",
+      "fixedTime": "13:00\nMS",
       "timestamp": 1777629600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -403,10 +403,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "4-6",
-        "6-6"
+        "6-7"
       ],
       "tournament": "Saint-Malo, France, Doubles"
     },
@@ -437,7 +437,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "2-0"
+        "3-3"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -468,7 +468,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "2-0"
+        "3-3"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -612,9 +612,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "1-4"
+        "3-6",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -642,9 +643,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "1-4"
+        "3-6",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -676,7 +678,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-0"
+        "5-3"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -708,7 +710,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-2"
+        "2-4"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -740,7 +742,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-0"
+        "5-3"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -772,7 +774,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-2"
+        "3-4"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -833,7 +835,7 @@
       "tournament": "Boys' Singles Draw"
     },
     {
-      "id": 16050545,
+      "id": 16104047,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
@@ -841,24 +843,24 @@
       "timestamp": 1777636800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Tereza Valentová",
-        "ranking": 51,
+        "name": "Veronika Sekerkova",
+        "ranking": null,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
         ]
       },
       "awayTeam": {
-        "name": "Lilli Tagger",
-        "ranking": 91,
+        "name": "Anna Bazderova",
+        "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": [],
-      "tournament": "Saint-Malo, France"
+      "tournament": "Girls' Singles Draw"
     },
     {
       "id": 16104047,
@@ -893,8 +895,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "15:00",
-      "timestamp": 1777636800000,
+      "fixedTime": "15:10",
+      "timestamp": 1777637400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Tereza Valentová",
@@ -917,32 +919,32 @@
       "tournament": "Saint-Malo, France"
     },
     {
-      "id": 16104047,
+      "id": 16050545,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "15:00",
-      "timestamp": 1777636800000,
+      "fixedTime": "15:10",
+      "timestamp": 1777637400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Veronika Sekerkova",
-        "ranking": null,
+        "name": "Tereza Valentová",
+        "ranking": 51,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
         ]
       },
       "awayTeam": {
-        "name": "Anna Bazderova",
-        "ranking": null,
+        "name": "Lilli Tagger",
+        "ranking": 91,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/at.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": [],
-      "tournament": "Girls' Singles Draw"
+      "tournament": "Saint-Malo, France"
     },
     {
       "id": 16050676,
@@ -1915,6 +1917,66 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Huzhou, China"
+    },
+    {
+      "id": 16050631,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "13:30",
+      "timestamp": 1777717800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Chan H-C / Corley I",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Haverlag I / Lumsden M",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France, Doubles"
+    },
+    {
+      "id": 16050631,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "13:30",
+      "timestamp": 1777717800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Chan H-C / Corley I",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Haverlag I / Lumsden M",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/nl.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16791.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France, Doubles"
     },
     {
       "id": 16012135,
