@@ -1083,7 +1083,7 @@
       "awayScore": "0",
       "setScores": [
         "7-5",
-        "4-3"
+        "5-5"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1114,7 +1114,7 @@
       "awayScore": "0",
       "setScores": [
         "7-5",
-        "4-3"
+        "5-5"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1183,9 +1183,9 @@
     {
       "id": 16050661,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:00\nCANLI",
+      "fixedTime": "18:00\nMS",
       "timestamp": 1777647600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1204,19 +1204,19 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "2-6",
-        "0-3"
+        "1-6"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16050661,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:00\nCANLI",
+      "fixedTime": "18:00\nMS",
       "timestamp": 1777647600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1235,10 +1235,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "2-6",
-        "0-3"
+        "1-6"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1359,62 +1359,6 @@
       "tournament": "Boys' Singles Draw"
     },
     {
-      "id": 16050665,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-01",
-      "fixedTime": "18:50",
-      "timestamp": 1777650600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Caroline Werner",
-        "ranking": 273,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Tamara Korpatsch",
-        "ranking": 99,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "La Bisbal D Emporda, Spain"
-    },
-    {
-      "id": 16050665,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-01",
-      "fixedTime": "18:50",
-      "timestamp": 1777650600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Caroline Werner",
-        "ranking": 273,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Tamara Korpatsch",
-        "ranking": 99,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "La Bisbal D Emporda, Spain"
-    },
-    {
       "id": 16050548,
       "isElite": false,
       "status": "notstarted",
@@ -1469,6 +1413,62 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16050665,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-01",
+      "fixedTime": "19:30",
+      "timestamp": 1777653000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Caroline Werner",
+        "ranking": 273,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Tamara Korpatsch",
+        "ranking": 99,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "La Bisbal D Emporda, Spain"
+    },
+    {
+      "id": 16050665,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-01",
+      "fixedTime": "19:30",
+      "timestamp": 1777653000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Caroline Werner",
+        "ranking": 273,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Tamara Korpatsch",
+        "ranking": 99,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16012216,
@@ -1927,8 +1927,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-02",
-      "fixedTime": "10:00",
-      "timestamp": 1777705200000,
+      "fixedTime": "11:00",
+      "timestamp": 1777708800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Defne Cirpanli",
@@ -1955,64 +1955,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-02",
-      "fixedTime": "10:00",
-      "timestamp": 1777705200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Minel Naz Kaynak",
-        "ranking": null,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Isabella Shinikova",
-        "ranking": 381,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Istanbul, Turkiye, Qualifying"
-    },
-    {
-      "id": 16108560,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-02",
-      "fixedTime": "10:00",
-      "timestamp": 1777705200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Defne Cirpanli",
-        "ranking": 922,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Maria Sara Popa",
-        "ranking": 521,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Istanbul, Turkiye, Qualifying"
-    },
-    {
-      "id": 16108562,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-02",
-      "fixedTime": "10:00",
-      "timestamp": 1777705200000,
+      "fixedTime": "11:00",
+      "timestamp": 1777708800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Minel Naz Kaynak",
@@ -2054,6 +1998,62 @@
         "ranking": 480,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Istanbul, Turkiye, Qualifying"
+    },
+    {
+      "id": 16108560,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "11:00",
+      "timestamp": 1777708800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Defne Cirpanli",
+        "ranking": 922,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Maria Sara Popa",
+        "ranking": 521,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ro.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Istanbul, Turkiye, Qualifying"
+    },
+    {
+      "id": 16108562,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "11:00",
+      "timestamp": 1777708800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Minel Naz Kaynak",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Isabella Shinikova",
+        "ranking": 381,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/bg.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
