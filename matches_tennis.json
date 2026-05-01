@@ -1268,10 +1268,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-2",
-        "1-3"
+        "3-6",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1301,19 +1302,20 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "6-2",
-        "1-3"
+        "3-6",
+        "0-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
       "id": 16104055,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:25",
+      "fixedTime": "18:25\nMS",
       "timestamp": 1777649100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1331,17 +1333,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "4-6",
+        "5-7"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
       "id": 16104055,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:25",
+      "fixedTime": "18:25\nMS",
       "timestamp": 1777649100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1359,9 +1364,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "4-6",
+        "5-7"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
@@ -1453,7 +1461,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "1-0"
+        "3-2"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1484,7 +1492,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "1-0"
+        "4-2"
       ],
       "tournament": "Saint-Malo, France"
     },
