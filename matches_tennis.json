@@ -107,14 +107,14 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Xiyu Wang",
-        "ranking": 170,
+        "ranking": null,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "awayTeam": {
         "name": "Polona Hercog",
-        "ranking": 249,
+        "ranking": null,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
         ]
@@ -417,9 +417,9 @@
     {
       "id": 16050549,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "13:35\nCANLI",
+      "fixedTime": "13:35\nMS",
       "timestamp": 1777631700000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -437,21 +437,21 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "setScores": [
         "4-6",
         "6-4",
-        "3-1"
+        "6-2"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16050549,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "13:35\nCANLI",
+      "fixedTime": "13:35\nMS",
       "timestamp": 1777631700000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -469,12 +469,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "setScores": [
         "4-6",
         "6-4",
-        "3-1"
+        "6-2"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -617,11 +617,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "6-5"
+        "7-5",
+        "1-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -653,7 +654,7 @@
       "setScores": [
         "3-6",
         "7-5",
-        "0-0"
+        "1-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -930,7 +931,7 @@
       "awayScore": "1",
       "setScores": [
         "1-6",
-        "0-1"
+        "4-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -963,7 +964,7 @@
       "awayScore": "1",
       "setScores": [
         "1-6",
-        "0-1"
+        "4-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -995,7 +996,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-0"
+        "3-2"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1027,7 +1028,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-0"
+        "3-2"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
