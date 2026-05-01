@@ -1245,9 +1245,9 @@
     {
       "id": 16050675,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:20\nCANLI",
+      "fixedTime": "18:20\nMS",
       "timestamp": 1777648800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1267,21 +1267,21 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "setScores": [
         "6-2",
         "3-6",
-        "0-0"
+        "10-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
       "id": 16050675,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:20\nCANLI",
+      "fixedTime": "18:20\nMS",
       "timestamp": 1777648800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1301,12 +1301,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "setScores": [
         "6-2",
         "3-6",
-        "0-0"
+        "10-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1461,7 +1461,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "3-2"
+        "4-4"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1492,16 +1492,16 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "4-2"
+        "4-4"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16012216,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "21:00",
+      "fixedTime": "21:00\nCANLI",
       "timestamp": 1777658400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1519,17 +1519,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16012216,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "21:00",
+      "fixedTime": "21:00\nCANLI",
       "timestamp": 1777658400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1547,9 +1549,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Madrid, Spain"
     },
     {
@@ -2401,6 +2405,36 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Madrid, Spain"
+    },
+    {
+      "id": 16050677,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "18:00",
+      "timestamp": 1777734000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Pridankina E / Tang Q",
+        "ranking": 229,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mihalikova T / Nicholls O",
+        "ranking": null,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "La Bisbal D Emporda, Spain, Doubles"
     }
   ]
 }
