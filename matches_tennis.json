@@ -68,9 +68,9 @@
     {
       "id": 16050695,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "07:35",
+      "fixedTime": "07:35\nCANLI",
       "timestamp": 1777610100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -88,17 +88,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-2"
+      ],
       "tournament": "Huzhou, China"
     },
     {
       "id": 16050702,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "07:35",
+      "fixedTime": "07:35\nCANLI",
       "timestamp": 1777610100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -116,9 +118,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-0"
+      ],
       "tournament": "Huzhou, China"
     },
     {
