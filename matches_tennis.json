@@ -1083,7 +1083,7 @@
       "awayScore": "0",
       "setScores": [
         "7-5",
-        "1-1"
+        "4-3"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1114,16 +1114,16 @@
       "awayScore": "0",
       "setScores": [
         "7-5",
-        "1-1"
+        "4-3"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16012217,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "17:00\nCANLI",
+      "fixedTime": "17:00\nMS",
       "timestamp": 1777644000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1141,20 +1141,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-2",
-        "4-4"
+        "6-4"
       ],
       "tournament": "Madrid, Spain"
     },
     {
       "id": 16012217,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "17:00\nCANLI",
+      "fixedTime": "17:00\nMS",
       "timestamp": 1777644000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1172,11 +1172,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-2",
-        "4-4"
+        "6-4"
       ],
       "tournament": "Madrid, Spain"
     },
@@ -1204,9 +1204,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "2-4"
+        "2-6",
+        "0-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1234,9 +1235,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "2-4"
+        "2-6",
+        "0-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1357,62 +1359,6 @@
       "tournament": "Boys' Singles Draw"
     },
     {
-      "id": 16050548,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-01",
-      "fixedTime": "18:30",
-      "timestamp": 1777649400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Yue Yuan",
-        "ranking": 111,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Anna Blinkova",
-        "ranking": 89,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
-    },
-    {
-      "id": 16050548,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-01",
-      "fixedTime": "18:30",
-      "timestamp": 1777649400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Yue Yuan",
-        "ranking": 111,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Anna Blinkova",
-        "ranking": 89,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
-    },
-    {
       "id": 16050665,
       "isElite": false,
       "status": "notstarted",
@@ -1467,6 +1413,62 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "La Bisbal D Emporda, Spain"
+    },
+    {
+      "id": 16050548,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-01",
+      "fixedTime": "19:15",
+      "timestamp": 1777652100000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Yue Yuan",
+        "ranking": 111,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anna Blinkova",
+        "ranking": 89,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16050548,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-01",
+      "fixedTime": "19:15",
+      "timestamp": 1777652100000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Yue Yuan",
+        "ranking": 111,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anna Blinkova",
+        "ranking": 89,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France"
     },
     {
       "id": 16012216,
@@ -1583,36 +1585,6 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Madrid, Spain, Doubles"
-    },
-    {
-      "id": 16052253,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-02",
-      "fixedTime": "06:00",
-      "timestamp": 1777690800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Kuwata H / Li Y-Y",
-        "ranking": 668,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mikulskyte J / Papamichail D",
-        "ranking": 162,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Huzhou, China, Doubles"
     },
     {
       "id": 16107810,
@@ -1641,36 +1613,6 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Jiujiang, China Qualifying"
-    },
-    {
-      "id": 16052253,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-02",
-      "fixedTime": "06:00",
-      "timestamp": 1777690800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Kuwata H / Li Y-Y",
-        "ranking": 668,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Mikulskyte J / Papamichail D",
-        "ranking": 162,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Huzhou, China, Doubles"
     },
     {
       "id": 16107810,
