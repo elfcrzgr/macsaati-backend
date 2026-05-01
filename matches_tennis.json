@@ -132,9 +132,9 @@
     {
       "id": 16050706,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "11:00",
+      "fixedTime": "11:00\nCANLI",
       "timestamp": 1777622400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -152,9 +152,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "3-1"
+      ],
       "tournament": "Huzhou, China"
     },
     {
