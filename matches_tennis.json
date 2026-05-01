@@ -622,7 +622,7 @@
       "setScores": [
         "3-6",
         "7-5",
-        "2-3"
+        "4-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -654,7 +654,7 @@
       "setScores": [
         "3-6",
         "7-5",
-        "2-3"
+        "4-4"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -911,9 +911,9 @@
     {
       "id": 16050676,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "15:30\nCANLI",
+      "fixedTime": "15:30\nMS",
       "timestamp": 1777638600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -934,20 +934,20 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "1-6",
         "6-3",
-        "0-0"
+        "7-10"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
       "id": 16050676,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "15:30\nCANLI",
+      "fixedTime": "15:30\nMS",
       "timestamp": 1777638600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -968,11 +968,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "1-6",
         "6-3",
-        "0-0"
+        "7-10"
       ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
@@ -1005,7 +1005,7 @@
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "0-0"
+        "3-2"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1038,7 +1038,7 @@
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "0-0"
+        "3-2"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -1124,7 +1124,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-1"
+        "3-3"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -1154,16 +1154,16 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-1"
+        "3-3"
       ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16012217,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "17:00",
+      "fixedTime": "17:00\nCANLI",
       "timestamp": 1777644000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1181,45 +1181,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-1"
+      ],
       "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16050661,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-01",
-      "fixedTime": "17:00",
-      "timestamp": 1777644000000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Beatriz Haddad Maia",
-        "ranking": 69,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Marina Bassols Ribera",
-        "ranking": 183,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16012217,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "17:00",
+      "fixedTime": "17:00\nCANLI",
       "timestamp": 1777644000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1237,38 +1211,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-1"
+      ],
       "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16050661,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-01",
-      "fixedTime": "17:00",
-      "timestamp": 1777644000000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Beatriz Haddad Maia",
-        "ranking": 69,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Marina Bassols Ribera",
-        "ranking": 183,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16050548,
@@ -1299,12 +1247,96 @@
       "tournament": "Saint-Malo, France"
     },
     {
-      "id": 16050675,
+      "id": 16050548,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
       "fixedTime": "17:20",
       "timestamp": 1777645200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Yue Yuan",
+        "ranking": 111,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Anna Blinkova",
+        "ranking": 89,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Saint-Malo, France"
+    },
+    {
+      "id": 16050661,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-01",
+      "fixedTime": "17:40",
+      "timestamp": 1777646400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Beatriz Haddad Maia",
+        "ranking": 69,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Marina Bassols Ribera",
+        "ranking": 183,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "La Bisbal D Emporda, Spain"
+    },
+    {
+      "id": 16050661,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-01",
+      "fixedTime": "17:40",
+      "timestamp": 1777646400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Beatriz Haddad Maia",
+        "ranking": 69,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/br.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Marina Bassols Ribera",
+        "ranking": 183,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/es.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "La Bisbal D Emporda, Spain"
+    },
+    {
+      "id": 16050675,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-01",
+      "fixedTime": "18:00",
+      "timestamp": 1777647600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Pridankina E / Tang Q",
@@ -1329,40 +1361,12 @@
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
-      "id": 16050548,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-01",
-      "fixedTime": "17:20",
-      "timestamp": 1777645200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Yue Yuan",
-        "ranking": 111,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Anna Blinkova",
-        "ranking": 89,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Saint-Malo, France"
-    },
-    {
       "id": 16050675,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "17:20",
-      "timestamp": 1777645200000,
+      "fixedTime": "18:00",
+      "timestamp": 1777647600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Pridankina E / Tang Q",
@@ -1391,8 +1395,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:10",
-      "timestamp": 1777648200000,
+      "fixedTime": "18:50",
+      "timestamp": 1777650600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Caroline Werner",
@@ -1419,8 +1423,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:10",
-      "timestamp": 1777648200000,
+      "fixedTime": "18:50",
+      "timestamp": 1777650600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Caroline Werner",
