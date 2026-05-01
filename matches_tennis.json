@@ -1245,9 +1245,9 @@
     {
       "id": 16050675,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:20",
+      "fixedTime": "18:20\nCANLI",
       "timestamp": 1777648800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1267,17 +1267,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
       "id": 16050675,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "18:20",
+      "fixedTime": "18:20\nCANLI",
       "timestamp": 1777648800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1297,9 +1299,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20502.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
@@ -1384,7 +1388,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-1"
+        "1-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -1414,17 +1418,17 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "0-1"
+        "1-5"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16050548,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "19:40",
-      "timestamp": 1777653600000,
+      "fixedTime": "19:45\nCANLI",
+      "timestamp": 1777653900000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Yue Yuan",
@@ -1441,18 +1445,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-0"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16050548,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-01",
-      "fixedTime": "19:40",
-      "timestamp": 1777653600000,
+      "fixedTime": "19:45\nCANLI",
+      "timestamp": 1777653900000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Yue Yuan",
@@ -1469,9 +1475,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-0"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
