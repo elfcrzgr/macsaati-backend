@@ -163,9 +163,9 @@
     {
       "id": 16095159,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "11:00",
+      "fixedTime": "11:00\nMS",
       "timestamp": 1777622400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -183,17 +183,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "4-6",
+        "3-6"
+      ],
       "tournament": "Boys' Singles Draw"
     },
     {
       "id": 16095162,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-01",
-      "fixedTime": "11:00",
+      "fixedTime": "11:00\nMS",
       "timestamp": 1777622400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -211,9 +214,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "2-6",
+        "3-6"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -239,10 +245,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "4-3"
+        "6-4",
+        "0-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -269,10 +276,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-3"
+        "6-4",
+        "1-0"
       ],
       "tournament": "Saint-Malo, France"
     },
