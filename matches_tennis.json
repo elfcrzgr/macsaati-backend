@@ -462,7 +462,7 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "0-0"
+        "3-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -493,16 +493,16 @@
       "awayScore": "1",
       "setScores": [
         "3-6",
-        "0-0"
+        "3-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16048205,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-02",
-      "fixedTime": "15:00",
+      "fixedTime": "15:00\nCANLI",
       "timestamp": 1777723200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -522,9 +522,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -586,9 +588,9 @@
     {
       "id": 16048205,
       "isElite": true,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-02",
-      "fixedTime": "15:00",
+      "fixedTime": "15:00\nCANLI",
       "timestamp": 1777723200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -608,9 +610,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "Madrid, Spain, Doubles"
     },
     {
@@ -902,12 +906,42 @@
       "tournament": "La Bisbal D Emporda, Spain, Doubles"
     },
     {
+      "id": 16052253,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "06:00\nMS",
+      "timestamp": 1777777200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Kuwata H / Li Y-Y",
+        "ranking": 668,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Mikulskyte J / Papamichail D",
+        "ranking": 162,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [],
+      "tournament": "Huzhou, China, Doubles"
+    },
+    {
       "id": 16112939,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-03",
-      "fixedTime": "05:00",
-      "timestamp": 1777773600000,
+      "fixedTime": "06:00",
+      "timestamp": 1777777200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Carol Zhao",
@@ -930,180 +964,12 @@
       "tournament": "Jiujiang, China Qualifying"
     },
     {
-      "id": 16112940,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-03",
-      "fixedTime": "05:00",
-      "timestamp": 1777773600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Priska Madelyn Nugroho",
-        "ranking": 399,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/id.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Zongyu Li",
-        "ranking": 498,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Jiujiang, China Qualifying"
-    },
-    {
-      "id": 16112938,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-03",
-      "fixedTime": "05:00",
-      "timestamp": 1777773600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Varvara Panshina",
-        "ranking": 468,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hong Yi Cody Wong",
-        "ranking": 736,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Jiujiang, China Qualifying"
-    },
-    {
       "id": 16112937,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-03",
-      "fixedTime": "05:00",
-      "timestamp": 1777773600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Wushuang Zheng",
-        "ranking": 426,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Chenting Zhu",
-        "ranking": 621,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Jiujiang, China Qualifying"
-    },
-    {
-      "id": 16112939,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-03",
-      "fixedTime": "05:00",
-      "timestamp": 1777773600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Carol Zhao",
-        "ranking": 408,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Peangtarn Plipuech",
-        "ranking": 733,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/th.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Jiujiang, China Qualifying"
-    },
-    {
-      "id": 16112940,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-03",
-      "fixedTime": "05:00",
-      "timestamp": 1777773600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Priska Madelyn Nugroho",
-        "ranking": 399,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/id.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Zongyu Li",
-        "ranking": 498,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Jiujiang, China Qualifying"
-    },
-    {
-      "id": 16112938,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-03",
-      "fixedTime": "05:00",
-      "timestamp": 1777773600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Varvara Panshina",
-        "ranking": 468,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Hong Yi Cody Wong",
-        "ranking": 736,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Jiujiang, China Qualifying"
-    },
-    {
-      "id": 16112937,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-03",
-      "fixedTime": "05:00",
-      "timestamp": 1777773600000,
+      "fixedTime": "06:00",
+      "timestamp": 1777777200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Wushuang Zheng",
@@ -1156,34 +1022,172 @@
       "tournament": "Huzhou, China, Doubles"
     },
     {
-      "id": 16052253,
+      "id": 16112939,
       "isElite": false,
-      "status": "finished",
+      "status": "notstarted",
       "fixedDate": "2026-05-03",
-      "fixedTime": "06:00\nMS",
+      "fixedTime": "06:00",
       "timestamp": 1777777200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Kuwata H / Li Y-Y",
-        "ranking": 668,
+        "name": "Carol Zhao",
+        "ranking": 408,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
         ]
       },
       "awayTeam": {
-        "name": "Mikulskyte J / Papamichail D",
-        "ranking": 162,
+        "name": "Peangtarn Plipuech",
+        "ranking": 733,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lt.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gr.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/th.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "0",
-      "awayScore": "0",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
+      "homeScore": "-",
+      "awayScore": "-",
       "setScores": [],
-      "tournament": "Huzhou, China, Doubles"
+      "tournament": "Jiujiang, China Qualifying"
+    },
+    {
+      "id": 16112937,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "06:00",
+      "timestamp": 1777777200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Wushuang Zheng",
+        "ranking": 426,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Chenting Zhu",
+        "ranking": 621,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Jiujiang, China Qualifying"
+    },
+    {
+      "id": 16112940,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "07:10",
+      "timestamp": 1777781400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Priska Madelyn Nugroho",
+        "ranking": 399,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/id.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Zongyu Li",
+        "ranking": 498,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Jiujiang, China Qualifying"
+    },
+    {
+      "id": 16112938,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "07:10",
+      "timestamp": 1777781400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Varvara Panshina",
+        "ranking": 468,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hong Yi Cody Wong",
+        "ranking": 736,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Jiujiang, China Qualifying"
+    },
+    {
+      "id": 16112940,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "07:10",
+      "timestamp": 1777781400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Priska Madelyn Nugroho",
+        "ranking": 399,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/id.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Zongyu Li",
+        "ranking": 498,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Jiujiang, China Qualifying"
+    },
+    {
+      "id": 16112938,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "07:10",
+      "timestamp": 1777781400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Varvara Panshina",
+        "ranking": 468,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Hong Yi Cody Wong",
+        "ranking": 736,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Jiujiang, China Qualifying"
     },
     {
       "id": 16052258,
