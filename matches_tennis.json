@@ -283,9 +283,9 @@
     {
       "id": 16110657,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-02",
-      "fixedTime": "11:00",
+      "fixedTime": "11:00\nMS",
       "timestamp": 1777708800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -303,9 +303,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34360.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "3-6",
+        "0-6"
+      ],
       "tournament": "Girls' Singles Draw"
     },
     {
@@ -366,7 +369,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "2-2"
+        "5-4"
       ],
       "tournament": "Saint-Malo, France"
     },
@@ -452,7 +455,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-0"
+        "3-2"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -482,7 +485,7 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "1-0"
+        "3-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
