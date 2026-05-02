@@ -4,9 +4,9 @@
     {
       "id": 16107810,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-02",
-      "fixedTime": "06:25\nCANLI",
+      "fixedTime": "06:25\nMS",
       "timestamp": 1777692300000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -24,21 +24,51 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "6-5"
+        "7-5"
       ],
       "tournament": "Jiujiang, China Qualifying"
+    },
+    {
+      "id": 16050698,
+      "isElite": false,
+      "status": "inprogress",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "08:00\nCANLI",
+      "timestamp": 1777698000000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Veronika Erjavec",
+        "ranking": 96,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Xiyu Wang",
+        "ranking": 170,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "2-2"
+      ],
+      "tournament": "Huzhou, China"
     },
     {
       "id": 16107809,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-02",
-      "fixedTime": "07:25",
-      "timestamp": 1777695900000,
+      "fixedTime": "08:25",
+      "timestamp": 1777699500000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Hong Yi Cody Wong",
@@ -65,8 +95,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-02",
-      "fixedTime": "07:30",
-      "timestamp": 1777696200000,
+      "fixedTime": "08:25",
+      "timestamp": 1777699500000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Yiming Dang",
@@ -78,62 +108,6 @@
       "awayTeam": {
         "name": "Zongyu Li",
         "ranking": 498,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Jiujiang, China Qualifying"
-    },
-    {
-      "id": 16050698,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-02",
-      "fixedTime": "08:00",
-      "timestamp": 1777698000000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Veronika Erjavec",
-        "ranking": 96,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Xiyu Wang",
-        "ranking": 170,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Huzhou, China"
-    },
-    {
-      "id": 16107812,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-02",
-      "fixedTime": "08:40",
-      "timestamp": 1777700400000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Ye Qiuyu",
-        "ranking": 1104,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Chenting Zhu",
-        "ranking": 621,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
@@ -171,6 +145,34 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Huzhou, China"
+    },
+    {
+      "id": 16107812,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-02",
+      "fixedTime": "09:35",
+      "timestamp": 1777703700000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Ye Qiuyu",
+        "ranking": 1104,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Chenting Zhu",
+        "ranking": 621,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Jiujiang, China Qualifying"
     },
     {
       "id": 16108560,
