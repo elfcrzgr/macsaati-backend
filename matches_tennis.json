@@ -148,19 +148,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "3-3"
+        "6-4",
+        "0-0"
       ],
       "tournament": "Huzhou, China"
     },
     {
       "id": 16107812,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-02",
-      "fixedTime": "09:40\nCANLI",
+      "fixedTime": "09:40\nMS",
       "timestamp": 1777704000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -179,10 +180,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "0-6",
-        "1-2"
+        "2-6"
       ],
       "tournament": "Jiujiang, China Qualifying"
     },
@@ -217,9 +218,9 @@
     {
       "id": 16108562,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-02",
-      "fixedTime": "11:00",
+      "fixedTime": "11:00\nCANLI",
       "timestamp": 1777708800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -237,9 +238,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "Istanbul, Turkiye, Qualifying"
     },
     {
@@ -929,6 +932,62 @@
       "awayScore": "0",
       "setScores": [],
       "tournament": "Huzhou, China, Doubles"
+    },
+    {
+      "id": 16112858,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "10:00",
+      "timestamp": 1777791600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Katherine Sebov",
+        "ranking": 224,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Dalila Jakupovic",
+        "ranking": 369,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Istanbul, Turkiye, Qualifying"
+    },
+    {
+      "id": 16112858,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "10:00",
+      "timestamp": 1777791600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Katherine Sebov",
+        "ranking": 224,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Dalila Jakupovic",
+        "ranking": 369,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Istanbul, Turkiye, Qualifying"
     },
     {
       "id": 16048206,
