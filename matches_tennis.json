@@ -35,9 +35,9 @@
     {
       "id": 16050698,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-02",
-      "fixedTime": "08:00\nCANLI",
+      "fixedTime": "08:00\nMS",
       "timestamp": 1777698000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -55,11 +55,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29214.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "6-5"
+        "7-6"
       ],
       "tournament": "Huzhou, China"
     },
@@ -97,9 +97,9 @@
     {
       "id": 16107811,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-02",
-      "fixedTime": "08:25\nCANLI",
+      "fixedTime": "08:25\nMS",
       "timestamp": 1777699500000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -118,10 +118,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
       "homeScore": "0",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "4-6",
-        "2-3"
+        "2-6"
       ],
       "tournament": "Jiujiang, China Qualifying"
     },
@@ -130,8 +130,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-02",
-      "fixedTime": "09:30",
-      "timestamp": 1777703400000,
+      "fixedTime": "09:40",
+      "timestamp": 1777704000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Katarzyna Kawa",
@@ -156,10 +156,10 @@
     {
       "id": 16107812,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-02",
-      "fixedTime": "09:35",
-      "timestamp": 1777703700000,
+      "fixedTime": "09:40\nCANLI",
+      "timestamp": 1777704000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Ye Qiuyu",
@@ -176,9 +176,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-3"
+      ],
       "tournament": "Jiujiang, China Qualifying"
     },
     {
