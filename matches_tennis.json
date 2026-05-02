@@ -463,7 +463,7 @@
       "setScores": [
         "3-6",
         "6-0",
-        "0-1"
+        "1-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -495,7 +495,7 @@
       "setScores": [
         "3-6",
         "6-0",
-        "0-1"
+        "2-3"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
@@ -525,9 +525,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "2-3"
+        "3-6",
+        "1-1"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -585,9 +586,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2511.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "2-3"
+        "3-6",
+        "1-1"
       ],
       "tournament": "Madrid, Spain, Doubles"
     },
@@ -622,9 +624,9 @@
     {
       "id": 16050553,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-02",
-      "fixedTime": "15:30",
+      "fixedTime": "15:30\nCANLI",
       "timestamp": 1777725000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -642,17 +644,19 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "3-2"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
       "id": 16050553,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-02",
-      "fixedTime": "15:30",
+      "fixedTime": "15:30\nCANLI",
       "timestamp": 1777725000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -670,9 +674,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "3-2"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
