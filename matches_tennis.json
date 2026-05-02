@@ -214,7 +214,7 @@
       "awayScore": "1",
       "setScores": [
         "1-6",
-        "1-1"
+        "2-4"
       ],
       "tournament": "Istanbul, Turkiye, Qualifying"
     },
@@ -245,7 +245,7 @@
       "awayScore": "1",
       "setScores": [
         "1-6",
-        "1-1"
+        "3-4"
       ],
       "tournament": "Istanbul, Turkiye, Qualifying"
     },
@@ -276,7 +276,7 @@
       "awayScore": "1",
       "setScores": [
         "0-6",
-        "0-1"
+        "0-4"
       ],
       "tournament": "Istanbul, Turkiye, Qualifying"
     },
@@ -339,9 +339,9 @@
     {
       "id": 16050539,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-02",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777712400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -359,9 +359,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "0-0"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
@@ -1169,8 +1171,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-03",
-      "fixedTime": "08:00",
-      "timestamp": 1777784400000,
+      "fixedTime": "09:10",
+      "timestamp": 1777788600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Veronika Erjavec",
@@ -1197,8 +1199,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-03",
-      "fixedTime": "08:00",
-      "timestamp": 1777784400000,
+      "fixedTime": "09:10",
+      "timestamp": 1777788600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Veronika Erjavec",
