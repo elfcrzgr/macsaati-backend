@@ -25,9 +25,9 @@
     {
       "id": 15935033,
       "isElite": true,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-02",
-      "fixedTime": "02:30\nCANLI",
+      "fixedTime": "02:30",
       "timestamp": 1777678200000,
       "broadcaster": "S Sport / S Sport Plus",
       "homeTeam": {
@@ -39,7 +39,7 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3432.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
-      "homeScore": "108",
+      "homeScore": "112",
       "awayScore": "110",
       "tournament": "NBA"
     },
@@ -60,8 +60,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3427.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
-      "homeScore": "18",
-      "awayScore": "32",
+      "homeScore": "25",
+      "awayScore": "40",
       "tournament": "NBA"
     },
     {
@@ -273,6 +273,27 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "ABA League"
+    },
+    {
+      "id": 15935036,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "22:30",
+      "timestamp": 1777836600000,
+      "broadcaster": "S Sport / S Sport Plus",
+      "homeTeam": {
+        "name": "Cleveland Cavaliers",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3432.png"
+      },
+      "awayTeam": {
+        "name": "Toronto Raptors",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/NBA/3433.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/3547.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "NBA"
     },
     {
       "id": 15935008,
