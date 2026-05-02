@@ -311,9 +311,9 @@
     {
       "id": 16050666,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-02",
-      "fixedTime": "12:00\nCANLI",
+      "fixedTime": "12:00\nMS",
       "timestamp": 1777712400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -331,20 +331,20 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/20505.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-2",
-        "2-0"
+        "6-0"
       ],
       "tournament": "La Bisbal D Emporda, Spain"
     },
     {
       "id": 16050539,
       "isElite": false,
-      "status": "interrupted",
+      "status": "inprogress",
       "fixedDate": "2026-05-02",
-      "fixedTime": "12:00",
+      "fixedTime": "12:00\nCANLI",
       "timestamp": 1777712400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -362,9 +362,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/16790.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "4-5"
+      ],
       "tournament": "Saint-Malo, France"
     },
     {
@@ -428,8 +430,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-02",
-      "fixedTime": "13:30",
-      "timestamp": 1777717800000,
+      "fixedTime": "13:50",
+      "timestamp": 1777719000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Tamara Korpatsch",
@@ -456,8 +458,8 @@
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-02",
-      "fixedTime": "13:30",
-      "timestamp": 1777717800000,
+      "fixedTime": "13:50",
+      "timestamp": 1777719000000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Tamara Korpatsch",
