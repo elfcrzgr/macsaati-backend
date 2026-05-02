@@ -59,16 +59,16 @@
       "awayScore": "0",
       "setScores": [
         "6-4",
-        "2-4"
+        "6-5"
       ],
       "tournament": "Huzhou, China"
     },
     {
       "id": 16107809,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-02",
-      "fixedTime": "08:25\nCANLI",
+      "fixedTime": "08:25\nMS",
       "timestamp": 1777699500000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -86,11 +86,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "0",
       "setScores": [
         "6-0",
-        "5-2"
+        "6-2"
       ],
       "tournament": "Jiujiang, China Qualifying"
     },
@@ -121,7 +121,7 @@
       "awayScore": "1",
       "setScores": [
         "4-6",
-        "0-1"
+        "2-3"
       ],
       "tournament": "Jiujiang, China Qualifying"
     },
@@ -868,9 +868,9 @@
     {
       "id": 16052253,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-03",
-      "fixedTime": "06:00",
+      "fixedTime": "06:00\nMS",
       "timestamp": 1777777200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -890,17 +890,17 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "setScores": [],
       "tournament": "Huzhou, China, Doubles"
     },
     {
       "id": 16052253,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-03",
-      "fixedTime": "06:00",
+      "fixedTime": "06:00\nMS",
       "timestamp": 1777777200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -920,66 +920,10 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/29215.png",
-      "homeScore": "-",
-      "awayScore": "-",
+      "homeScore": "0",
+      "awayScore": "0",
       "setScores": [],
       "tournament": "Huzhou, China, Doubles"
-    },
-    {
-      "id": 16012218,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-05-03",
-      "fixedTime": "11:00",
-      "timestamp": 1777795200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Jannik Sinner",
-        "ranking": 1,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alexander Zverev",
-        "ranking": 3,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Madrid, Spain"
-    },
-    {
-      "id": 16012218,
-      "isElite": true,
-      "status": "notstarted",
-      "fixedDate": "2026-05-03",
-      "fixedTime": "11:00",
-      "timestamp": 1777795200000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Jannik Sinner",
-        "ranking": 1,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Alexander Zverev",
-        "ranking": 3,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Madrid, Spain"
     },
     {
       "id": 16048206,
@@ -1010,6 +954,34 @@
       "awayScore": "-",
       "setScores": [],
       "tournament": "Madrid, Spain, Doubles"
+    },
+    {
+      "id": 16012218,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-05-03",
+      "fixedTime": "18:00",
+      "timestamp": 1777820400000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Jannik Sinner",
+        "ranking": 1,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Alexander Zverev",
+        "ranking": 3,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/de.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2374.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Madrid, Spain"
     }
   ]
 }
