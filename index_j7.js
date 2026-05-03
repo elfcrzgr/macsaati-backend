@@ -188,10 +188,10 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 7: "TRT 1 / Tabii", 351: "S Sport Plus", 
         37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
         10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 
-        98: "beIN Sports / TRT Spor", // Trendyol 1. Lig
-        97: "TFF YouTube",           // TFF 2. Lig
-        11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 
-        696: "DAZN / YouTube", 13363: "USL YouTube", 
+        98: "beIN Sports / TRT Spor", 
+        97: "TFF YouTube",
+        13363: "USL YouTube",
+        11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 696: "DAZN / YouTube", 
         10783: "A Spor", 232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus"
     };
 
@@ -203,7 +203,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-// 98, 97 ve 13363 ELITE_FOOT_IDS listesine eklendi ki maçlar filtrelenmesin
+// Kritik ligler (98, 97, 13363, 53) eklendi
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363];
 const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
@@ -223,7 +223,7 @@ const footballLeagues = {
     38: "Belçika Pro League", 
     36: "İskoçya Premiership", 
     19: "FA Cup", 
-    938: "Türkiye Kupası",
+    938: "Türkiye Kupası", // 97 ile çakışmaması için düzeltildi
     7: "UEFA Şampiyonlar Ligi", 
     679: "UEFA Avrupa Ligi",
     17015: "UEFA Konferans Ligi", 
@@ -241,27 +241,35 @@ const footballLeagues = {
 
 function calculateLiveMinute(eventData) {
     if (!eventData) return "";
+    
     const status = eventData.status;
     const time = eventData.time;
+
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
         return String(time.currentMinute) + "'";
     }
+
     if (status?.code === 31 || status?.description === "Halftime") {
         return "İY";
     }
+
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
         let calcMinute = Math.floor(elapsed / 60);
+
         if (calcMinute < 0) calcMinute = 0;
+
         if (status?.code === 7) { 
             calcMinute += 45;
             return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
         } else if (status?.code === 6) { 
             return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
         }
+
         return String(calcMinute) + "'";
     }
+
     return "Canlı";
 }
 
@@ -303,12 +311,16 @@ async function updateFootball() {
             fixedDate: new Date(e.startTimestamp * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
             fixedTime: new Date(e.startTimestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
             timestamp: e.startTimestamp * 1000,
+            
             broadcaster: getFootBroadcaster(leagueId, hName, aName, tName, utName),
+            
             homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
+            
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
+            
             tournament: cleanTournamentName
         });
     });
