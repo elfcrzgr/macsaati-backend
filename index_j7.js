@@ -514,10 +514,22 @@ async function updateTennis() {
         }
     }
 
-    console.log(`  📋 ${rawEvents.length} maç bulundu`);
+    // =========================================================================
+    // 🚀 DÜZELTME BURADA: Mükerrer (Çift) Maçları Temizle
+    // Aynı ID'ye sahip maçları süzerek hem API kotasını korur hem listeyi temizler
+    // =========================================================================
+    const uniqueEventsMap = new Map();
+    rawEvents.forEach(e => {
+        if (!uniqueEventsMap.has(e.id)) {
+            uniqueEventsMap.set(e.id, e);
+        }
+    });
+    rawEvents = Array.from(uniqueEventsMap.values());
+
+    console.log(`  📋 ${rawEvents.length} tekil (unique) maç bulundu`);
     const finalMatches = [];
 
-    // ⚡ 2. AŞAMA: TÜM DETAY İSTEKLERİNİ PARALEL OLARtk YAP
+    // ⚡ 2. AŞAMA: TÜM DETAY İSTEKLERİNİ PARALEL OLARAK YAP
     const detailPromises = rawEvents.map(e => 
         fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`)
             .then(data => ({ eventId: e.id, data }))
@@ -668,9 +680,6 @@ async function updateTennis() {
     const withRanking = finalMatches.filter(m => m.homeTeam.ranking || m.awayTeam.ranking).length;
     console.log(`  🏆 Sıralama verisi olan maçlar: ${withRanking}/${finalMatches.length}`);
 }
-
-
-
 
 
 
