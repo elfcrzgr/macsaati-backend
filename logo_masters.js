@@ -34,7 +34,6 @@ const configs = [
     }
 ];
 
-// Klasörleri oluştur
 configs.forEach(conf => {
     Object.values(conf.dirs).forEach(dir => {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -42,7 +41,7 @@ configs.forEach(conf => {
 });
 
 async function start() {
-    console.log("🚀 Maç Saati Logo Avcısı (V2 - Stabil) Başlatıldı...\n");
+    console.log("🚀 Maç Saati Logo Avcısı (V3) Başlatıldı...\n");
     
     const browser = await puppeteer.launch({ 
         headless: "new", 
@@ -50,13 +49,13 @@ async function start() {
     });
 
     const page = await browser.newPage();
-    const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+    // Windows tabanlı daha yaygın bir UA
+    const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
     await page.setUserAgent(userAgent);
 
-    // 1. ADIM: Ana sayfaya git ve çerezleri/session'ı kap
-    console.log("🔑 Oturum anahtarları alınıyor...");
     try {
-        await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2', timeout: 30000 });
+        console.log("🔑 Session oluşturuluyor...");
+        await page.goto('https://www.sofascore.com', { waitUntil: 'networkidle2' });
         const cookies = await page.cookies();
         const cookieString = cookies.map(c => `${c.name}=${c.value}`).join('; ');
 
@@ -71,7 +70,6 @@ async function start() {
             const matches = data.matches || data.events || [];
             const missing = [];
 
-            // Eksik tespiti
             matches.forEach(m => {
                 const tourName = m.tournament || "";
                 const isNBA = tourName.toUpperCase().includes("NBA");
@@ -79,9 +77,9 @@ async function start() {
                 if (m.tournamentLogo) {
                     const id = m.tournamentLogo.split('/').pop().split('.')[0];
                     if (id && id !== 'default' && id !== 'null') {
-                        const targetDir = conf.dirs.tournament;
-                        if (!fs.existsSync(path.join(targetDir, `${id}.png`))) {
-                            missing.push({ id, name: tourName, type: 'Turnuva', dir: targetDir, sport: conf.name });
+                        const targetPath = path.join(conf.dirs.tournament, `${id}.png`);
+                        if (!fs.existsSync(targetPath)) {
+                            missing.push({ id, name: tourName, type: 'Turnuva', dir: conf.dirs.tournament, sport: conf.name });
                         }
                     }
                 }
@@ -89,15 +87,13 @@ async function start() {
                 const teams = [{ team: m.homeTeam }, { team: m.awayTeam }];
                 teams.forEach(t => {
                     if (!t.team) return;
-                    const logosToProcess = Array.isArray(t.team.logos) ? t.team.logos : [t.team.logo];
-                    
-                    logosToProcess.forEach(logoUrl => {
+                    const logos = Array.isArray(t.team.logos) ? t.team.logos : [t.team.logo];
+                    logos.forEach(logoUrl => {
                         if (!logoUrl || typeof logoUrl !== 'string') return;
                         const id = logoUrl.split('/').pop().split('.')[0];
-                        if (!id || id === 'default' || id === 'null') return;
+                        if (!id || id === 'default' || id === 'null' || isNaN(id)) return;
 
                         let targetDir = (conf.name === 'Basketbol' && isNBA) ? conf.dirs.nba : conf.dirs.team;
-
                         if (!fs.existsSync(path.join(targetDir, `${id}.png`))) {
                             if (!missing.find(x => x.id === id)) {
                                 missing.push({ id, name: t.team.name, type: 'Logo', dir: targetDir, sport: conf.name });
@@ -108,62 +104,65 @@ async function start() {
             });
 
             if (missing.length === 0) {
-                console.log(`✅ [${conf.name}] Bütün logolar güncel.`);
+                console.log(`✅ [${conf.name}] Güncel.`);
                 continue;
             }
 
-            console.log(`🔍 [${conf.name}] ${missing.length} eksik bulunuyor...`);
+            console.log(`🔍 [${conf.name}] ${missing.length} eksik indiriliyor...`);
 
             for (const item of missing) {
                 const targetPath = path.join(item.dir, `${item.id}.png`);
                 const defaultPath = path.join(item.dir, 'default.png');
                 
+                // api.sofascore.app kullanımı genelde botlar için daha az kısıtlayıcıdır
                 let apiUrl = '';
                 if (item.type === 'Turnuva') {
-                    apiUrl = `https://www.sofascore.com/api/v1/unique-tournament/${item.id}/image`;
+                    apiUrl = `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`;
                 } else if (item.sport === 'Tenis' && item.type === 'Logo') {
                     apiUrl = `https://www.sofascore.com/static/images/flags/${item.id.toLowerCase()}.png`;
                 } else {
-                    apiUrl = `https://www.sofascore.com/api/v1/team/${item.id}/image`;
+                    apiUrl = `https://api.sofascore.app/api/v1/team/${item.id}/image`;
                 }
 
                 try {
-                    // Puppeteer yerine Axios ile indir (daha az kaynak, daha çok hız)
                     const response = await axios.get(apiUrl, {
                         responseType: 'arraybuffer',
-                        timeout: 10000,
+                        timeout: 15000,
                         headers: {
                             'User-Agent': userAgent,
                             'Cookie': cookieString,
-                            'Referer': 'https://www.sofascore.com/'
+                            'Referer': 'https://www.sofascore.com/',
+                            'Cache-Control': 'no-cache'
                         }
                     });
 
-                    if (response.data.byteLength > 1000) {
+                    if (response.data.byteLength > 800) {
                         fs.writeFileSync(targetPath, response.data);
-                        console.log(`   ✅ [İNDİ] ${item.name}`);
+                        console.log(`   ✅ [OK] ${item.name}`);
                         totalDownloaded++;
                     } else {
-                        throw new Error("Small Buffer");
+                        throw new Error(`Invalid Size: ${response.data.byteLength}`);
                     }
                 } catch (e) {
+                    // Hata detayını gör
+                    const status = e.response ? e.response.status : 'CONN_ERR';
+                    
                     if (fs.existsSync(defaultPath)) {
                         fs.copyFileSync(defaultPath, targetPath);
-                        console.log(`   ⚠️  [DEFAULT] ${item.name}`);
+                        console.log(`   ⚠️  [DEF-${status}] ${item.name}`);
                         totalDefaulted++;
                     } else {
-                        console.log(`   ❌ [HATA] ${item.name}`);
+                        console.log(`   ❌ [ERR-${status}] ${item.name}`);
                         totalFailed++;
                     }
                 }
-                await new Promise(r => setTimeout(r, 700)); // Hız limiti engeli için
+                // GitHub Actions IP bloklanmasını önlemek için bekleme süresini artırdık
+                await new Promise(r => setTimeout(r, 1200));
             }
         }
-
-        console.log(`\n📊 ÖZET: ${totalDownloaded} İndirildi, ${totalDefaulted} Default, ${totalFailed} Hata.\n`);
-
+        console.log(`\n📊 ÖZET: ${totalDownloaded} Başarılı, ${totalDefaulted} Varsayılan, ${totalFailed} Hata.\n`);
     } catch (err) {
-        console.error("❌ Kritik Hata:", err.message);
+        console.error("❌ Kritik:", err.message);
     } finally {
         await browser.close();
     }
