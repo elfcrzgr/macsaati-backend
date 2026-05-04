@@ -495,6 +495,9 @@ async function updateTennis() {
     const targetDates = [getTRDate(0), getTRDate(1)];
     
     const tournamentCount = {};
+    
+    // 🚀 ÇÖZÜM: MAÇLARI TOPLARKEN KONTROL EDECEK SÜZGEÇ (Set)
+    const seenEventIds = new Set();
 
     // 1. AŞAMA: Günlük listeden maçları topla
     for (const date of targetDates) {
@@ -504,7 +507,14 @@ async function updateTennis() {
                 const filtered = data.events.filter(e => {
                     const tourName = e.tournament?.name;
                     const catName = e.tournament?.category?.name;
-                    return !isGarbage(tourName, catName);
+                    
+                    // Eğer çöp bir ligse VEYA bu ID'yi daha önce eklediysek false döndür (çıkar)
+                    if (isGarbage(tourName, catName)) return false;
+                    if (seenEventIds.has(e.id)) return false; 
+                    
+                    // Yukarıdaki filtrelerden geçtiyse listeye ekle ve Set'e kaydet
+                    seenEventIds.add(e.id);
+                    return true;
                 });
                 rawEvents.push(...filtered);
             }
@@ -514,19 +524,7 @@ async function updateTennis() {
         }
     }
 
-    // =========================================================================
-    // 🚀 DÜZELTME BURADA: Mükerrer (Çift) Maçları Temizle
-    // Aynı ID'ye sahip maçları süzerek hem API kotasını korur hem listeyi temizler
-    // =========================================================================
-    const uniqueEventsMap = new Map();
-    rawEvents.forEach(e => {
-        if (!uniqueEventsMap.has(e.id)) {
-            uniqueEventsMap.set(e.id, e);
-        }
-    });
-    rawEvents = Array.from(uniqueEventsMap.values());
-
-    console.log(`  📋 ${rawEvents.length} tekil (unique) maç bulundu`);
+    console.log(`  📋 ${rawEvents.length} tekil maç bulundu (Tekrarlar temizlendi)`);
     const finalMatches = [];
 
     // ⚡ 2. AŞAMA: TÜM DETAY İSTEKLERİNİ PARALEL OLARAK YAP
@@ -558,7 +556,7 @@ async function updateTennis() {
             if (!targetDates.includes(fixedDate)) continue;
 
             const tourName = e.tournament?.name || "";
-            if (isGarbage(tourName, e.tournament?.category?.name)) continue;
+            // isGarbage filtresini yukarıda uyguladığımız için burada bir daha yapmamıza gerek yok ama çift dikiş olsun.
 
             let homeLogos = [];
             let awayLogos = [];
@@ -680,8 +678,6 @@ async function updateTennis() {
     const withRanking = finalMatches.filter(m => m.homeTeam.ranking || m.awayTeam.ranking).length;
     console.log(`  🏆 Sıralama verisi olan maçlar: ${withRanking}/${finalMatches.length}`);
 }
-
-
 
 
 // =========================================================================
