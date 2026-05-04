@@ -11,7 +11,7 @@ const FULL_UPDATE_INTERVAL_MS = 20 * 60000; // 20 Dakika
 const FIREBASE_BASE_URL = "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 // =========================================================================
-// 🛠️ YARDIMCI FONKSİYONLAR
+// 🛠️ YARDIMCI FONKSİYONLAR VE BUKELEMUN HEADER (ANTİ-BAN)
 // =========================================================================
 
 // YENİ: Firebase'e anında veri gönderen fonksiyon
@@ -35,11 +35,28 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
+// Gerçek tarayıcı kimlikleri (Her istekte rastgele biri seçilecek)
+const USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Linux; Android 13; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+];
+
 async function fetchData(url) {
     try {
+        // Her istekte rastgele bir tarayıcı seç
+        const randomAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+        
         const response = await fetch(url, {
             headers: { 
-                "User-Agent": "Mozilla/5.0 (Linux; Android 10; Samsung J7) AppleWebKit/537.36" 
+                "User-Agent": randomAgent,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Referer": "https://www.sofascore.com/",
+                "Connection": "keep-alive",
+                "Cache-Control": "no-cache"
             }
         });
         return response.ok ? await response.json() : null;
