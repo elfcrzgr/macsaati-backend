@@ -4,42 +4,46 @@
     {
       "id": 16116745,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-04",
-      "fixedTime": "06:00",
+      "fixedTime": "06:00\nMS",
       "timestamp": 1777863600000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Zhuoxuan Bai",
-        "ranking": 350,
+        "ranking": 298,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "awayTeam": {
         "name": "Jia-Jing Lu",
-        "ranking": 425,
+        "ranking": 387,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "1",
+      "setScores": [
+        "6-2",
+        "3-6",
+        "6-1"
+      ],
       "tournament": "Jiujiang, China"
     },
     {
       "id": 16117433,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-04",
-      "fixedTime": "06:00",
-      "timestamp": 1777863600000,
+      "fixedTime": "06:05\nMS",
+      "timestamp": 1777863900000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Micic E / Shimizu E",
-        "ranking": 356,
+        "ranking": 345,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
@@ -47,100 +51,111 @@
       },
       "awayTeam": {
         "name": "Pieri J / Spiteri D",
-        "ranking": 251,
+        "ranking": 253,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png",
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/5556.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-2",
+        "6-3"
+      ],
       "tournament": "Jiujiang, China, Doubles"
-    },
-    {
-      "id": 16116741,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-04",
-      "fixedTime": "07:10",
-      "timestamp": 1777867800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "En-Shuo Liang",
-        "ranking": 373,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Yufei Ren",
-        "ranking": 368,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Jiujiang, China"
     },
     {
       "id": 16117939,
       "isElite": false,
-      "status": "notstarted",
+      "status": "finished",
       "fixedDate": "2026-05-04",
-      "fixedTime": "08:00",
+      "fixedTime": "08:00\nMS",
       "timestamp": 1777870800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Hong Yi Cody Wong",
-        "ranking": 736,
+        "ranking": 683,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hk.png"
         ]
       },
       "awayTeam": {
         "name": "Xinxin Yao",
-        "ranking": 423,
+        "ranking": 398,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "2",
+      "setScores": [
+        "2-6",
+        "1-6"
+      ],
+      "tournament": "Jiujiang, China"
+    },
+    {
+      "id": 16116741,
+      "isElite": false,
+      "status": "finished",
+      "fixedDate": "2026-05-04",
+      "fixedTime": "08:40\nMS",
+      "timestamp": 1777873200000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "En-Shuo Liang",
+        "ranking": 413,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/tw.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Yufei Ren",
+        "ranking": 333,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
+      "homeScore": "2",
+      "awayScore": "0",
+      "setScores": [
+        "6-3",
+        "6-0"
+      ],
       "tournament": "Jiujiang, China"
     },
     {
       "id": 16117940,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-04",
-      "fixedTime": "08:20",
-      "timestamp": 1777872000000,
+      "fixedTime": "09:50\nCANLI",
+      "timestamp": 1777877400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Zongyu Li",
-        "ranking": 498,
+        "ranking": 495,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "awayTeam": {
         "name": "Wushuang Zheng",
-        "ranking": 426,
+        "ranking": 433,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cn.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34498.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-0"
+      ],
       "tournament": "Jiujiang, China"
     },
     {
