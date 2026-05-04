@@ -39,8 +39,8 @@
         "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/32426.png"
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/1438.png",
-      "homeScore": "2",
-      "awayScore": "5",
+      "homeScore": "16",
+      "awayScore": "28",
       "tournament": "VTB United League"
     },
     {
@@ -105,6 +105,27 @@
       "homeScore": "-",
       "awayScore": "-",
       "tournament": "NBA"
+    },
+    {
+      "id": 16126061,
+      "isElite": true,
+      "status": "notstarted",
+      "fixedDate": "2026-05-05",
+      "fixedTime": "18:00",
+      "timestamp": 1777993200000,
+      "broadcaster": "beIN Sports",
+      "homeTeam": {
+        "name": "Beşiktaş Gain",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/6678.png"
+      },
+      "awayTeam": {
+        "name": "Petkim Spor",
+        "logo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/logos/234214.png"
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/basketball/tournament_logos/519.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "tournament": "Turkish Basketball Super League"
     },
     {
       "id": 16030047,
