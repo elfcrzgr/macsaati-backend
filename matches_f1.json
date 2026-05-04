@@ -1,6 +1,6 @@
 {
   "success": true,
-  "lastUpdated": "2026-05-03T22:44:51.411Z",
+  "lastUpdated": "2026-05-04T02:50:59.787Z",
   "totalSessions": 104,
   "events": [
     {
@@ -208,6 +208,18 @@
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/miami.png"
     },
     {
+      "id": "6_Yarış",
+      "fixedDate": "3 Mayıs Pazar",
+      "fixedTime": "20:00",
+      "timestamp": 1777827600000,
+      "broadcaster": "beIN Sports / F1 TV",
+      "grandPrix": "Monaco Grand Prix",
+      "sessionName": "Yarış",
+      "trackName": "Circuit de Monaco",
+      "countryLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/logos/mc.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/monaco.png"
+    },
+    {
       "id": "4_Yarış",
       "fixedDate": "3 Mayıs Pazar",
       "fixedTime": "23:00",
@@ -311,18 +323,6 @@
       "broadcaster": "beIN Sports / F1 TV",
       "grandPrix": "Monaco Grand Prix",
       "sessionName": "Sıralama",
-      "trackName": "Circuit de Monaco",
-      "countryLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/logos/mc.png",
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/monaco.png"
-    },
-    {
-      "id": "6_Yarış",
-      "fixedDate": "7 Haziran Pazar",
-      "fixedTime": "16:00",
-      "timestamp": 1780837200000,
-      "broadcaster": "beIN Sports / F1 TV",
-      "grandPrix": "Monaco Grand Prix",
-      "sessionName": "Yarış",
       "trackName": "Circuit de Monaco",
       "countryLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/logos/mc.png",
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/f1/tournament_logos/monaco.png"
