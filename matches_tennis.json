@@ -169,14 +169,14 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Katherine Sebov",
-        "ranking": 225,
+        "ranking": null,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png"
         ]
       },
       "awayTeam": {
         "name": "Dalila Jakupovic",
-        "ranking": 373,
+        "ranking": null,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
         ]
@@ -880,9 +880,9 @@
     {
       "id": 16118696,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-04",
-      "fixedTime": "13:05\nCANLI",
+      "fixedTime": "13:05\nMS",
       "timestamp": 1777889100000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -901,11 +901,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
       "homeScore": "1",
-      "awayScore": "1",
+      "awayScore": "2",
       "setScores": [
         "0-6",
         "7-5",
-        "5-3"
+        "6-7"
       ],
       "tournament": "Istanbul, Turkiye"
     },
@@ -933,19 +933,20 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "7-6",
-        "3-5"
+        "3-6",
+        "4-0"
       ],
       "tournament": "Rome, Italy, Qualifying"
     },
     {
       "id": 16113308,
       "isElite": false,
-      "status": "inprogress",
+      "status": "finished",
       "fixedDate": "2026-05-04",
-      "fixedTime": "13:40\nCANLI",
+      "fixedTime": "13:40\nMS",
       "timestamp": 1777891200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -963,12 +964,12 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
-      "homeScore": "1",
+      "homeScore": "2",
       "awayScore": "1",
       "setScores": [
         "6-3",
         "3-6",
-        "4-1"
+        "6-4"
       ],
       "tournament": "Istanbul, Turkiye, Qualifying"
     },
@@ -999,7 +1000,7 @@
       "awayScore": "1",
       "setScores": [
         "6-7",
-        "0-0"
+        "3-3"
       ],
       "tournament": "Rome, Italy, Qualifying"
     },
@@ -1030,7 +1031,7 @@
       "awayScore": "0",
       "setScores": [
         "7-5",
-        "1-0"
+        "3-2"
       ],
       "tournament": "Rome, Italy, Qualifying"
     },
@@ -1058,10 +1059,11 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
       "homeScore": "1",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
         "7-5",
-        "0-1"
+        "1-6",
+        "0-0"
       ],
       "tournament": "Rome, Italy, Qualifying"
     },
@@ -1089,9 +1091,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "4-5"
+        "4-6",
+        "0-2"
       ],
       "tournament": "Rome, Italy, Qualifying"
     },
@@ -1119,9 +1122,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-3"
+        "3-6",
+        "0-1"
       ],
       "tournament": "Rome, Italy, Qualifying"
     },
@@ -1149,9 +1153,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-4"
+        "3-6",
+        "0-3"
       ],
       "tournament": "Istanbul, Turkiye"
     },
@@ -1178,10 +1183,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
-      "homeScore": "0",
+      "homeScore": "1",
       "awayScore": "0",
       "setScores": [
-        "5-1"
+        "6-1",
+        "2-3"
       ],
       "tournament": "Rome, Italy, Qualifying"
     },
@@ -1209,9 +1215,10 @@
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
       "homeScore": "0",
-      "awayScore": "0",
+      "awayScore": "1",
       "setScores": [
-        "3-1"
+        "3-6",
+        "0-0"
       ],
       "tournament": "Rome, Italy, Qualifying"
     },
@@ -1241,65 +1248,9 @@
       "homeScore": "0",
       "awayScore": "0",
       "setScores": [
-        "2-2"
+        "5-5"
       ],
       "tournament": "Rome, Italy, Qualifying"
-    },
-    {
-      "id": 16119801,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-04",
-      "fixedTime": "15:10",
-      "timestamp": 1777896600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Benjamin Bonzi",
-        "ranking": 101,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Dalibor Svrčina",
-        "ranking": 116,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Rome, Italy, Qualifying"
-    },
-    {
-      "id": 16118698,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-04",
-      "fixedTime": "15:10",
-      "timestamp": 1777896600000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Polina Iatcenko",
-        "ranking": 165,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Storm Hunter",
-        "ranking": 199,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Istanbul, Turkiye"
     },
     {
       "id": 16119818,
@@ -1332,9 +1283,9 @@
     {
       "id": 16119826,
       "isElite": false,
-      "status": "notstarted",
+      "status": "inprogress",
       "fixedDate": "2026-05-04",
-      "fixedTime": "15:20",
+      "fixedTime": "15:20\nCANLI",
       "timestamp": 1777897200000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
@@ -1352,9 +1303,11 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
+      "homeScore": "0",
+      "awayScore": "0",
+      "setScores": [
+        "1-1"
+      ],
       "tournament": "Rome, Italy, Qualifying"
     },
     {
@@ -1377,34 +1330,6 @@
         "ranking": 452,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/it.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Rome, Italy, Qualifying"
-    },
-    {
-      "id": 16119812,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-04",
-      "fixedTime": "15:55",
-      "timestamp": 1777899300000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Dino Prižmić",
-        "ranking": 79,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hr.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Chris Rodesch",
-        "ranking": 166,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lu.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
@@ -1470,6 +1395,62 @@
       "tournament": "Istanbul, Turkiye"
     },
     {
+      "id": 16118698,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-04",
+      "fixedTime": "15:55",
+      "timestamp": 1777899300000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Polina Iatcenko",
+        "ranking": 165,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Storm Hunter",
+        "ranking": 199,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/au.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34493.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Istanbul, Turkiye"
+    },
+    {
+      "id": 16119801,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-04",
+      "fixedTime": "16:00",
+      "timestamp": 1777899600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Benjamin Bonzi",
+        "ranking": 101,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/fr.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Dalibor Svrčina",
+        "ranking": 116,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cz.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Rome, Italy, Qualifying"
+    },
+    {
       "id": 16119811,
       "isElite": false,
       "status": "notstarted",
@@ -1489,34 +1470,6 @@
         "ranking": 108,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/us.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Rome, Italy, Qualifying"
-    },
-    {
-      "id": 16119806,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-04",
-      "fixedTime": "16:05",
-      "timestamp": 1777899900000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Shintaro Mochizuki",
-        "ranking": 130,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Jacob Fearnley",
-        "ranking": 123,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
@@ -1582,7 +1535,7 @@
       "tournament": "Rome, Italy, Qualifying"
     },
     {
-      "id": 16119814,
+      "id": 16119806,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-04",
@@ -1590,20 +1543,20 @@
       "timestamp": 1777900800000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Hanne Vandewinkel",
-        "ranking": 98,
+        "name": "Shintaro Mochizuki",
+        "ranking": 130,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
         ]
       },
       "awayTeam": {
-        "name": "Jil Teichmann",
-        "ranking": 196,
+        "name": "Jacob Fearnley",
+        "ranking": 123,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/gb.png"
         ]
       },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": [],
@@ -1638,25 +1591,25 @@
       "tournament": "Istanbul, Turkiye"
     },
     {
-      "id": 16119508,
+      "id": 16119812,
       "isElite": false,
       "status": "notstarted",
       "fixedDate": "2026-05-04",
-      "fixedTime": "17:05",
-      "timestamp": 1777903500000,
+      "fixedTime": "16:30",
+      "timestamp": 1777901400000,
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
-        "name": "Elmer Moller",
-        "ranking": 153,
+        "name": "Dino Prižmić",
+        "ranking": 79,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/dk.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/hr.png"
         ]
       },
       "awayTeam": {
-        "name": "Nikoloz Basilashvili",
-        "ranking": 117,
+        "name": "Chris Rodesch",
+        "ranking": 166,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lu.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
@@ -1722,6 +1675,34 @@
       "tournament": "Rome, Italy, Qualifying"
     },
     {
+      "id": 16119814,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-04",
+      "fixedTime": "17:10",
+      "timestamp": 1777903800000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Hanne Vandewinkel",
+        "ranking": 98,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Jil Teichmann",
+        "ranking": 196,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Rome, Italy, Qualifying"
+    },
+    {
       "id": 16119803,
       "isElite": false,
       "status": "notstarted",
@@ -1772,6 +1753,34 @@
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Rome, Italy, Qualifying"
+    },
+    {
+      "id": 16119508,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-04",
+      "fixedTime": "17:40",
+      "timestamp": 1777905600000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Elmer Moller",
+        "ranking": 153,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/dk.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Nikoloz Basilashvili",
+        "ranking": 117,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2488.png",
       "homeScore": "-",
       "awayScore": "-",
       "setScores": [],
@@ -1862,34 +1871,6 @@
       "tournament": "Rome, Italy, Qualifying"
     },
     {
-      "id": 16119813,
-      "isElite": false,
-      "status": "notstarted",
-      "fixedDate": "2026-05-04",
-      "fixedTime": "18:00",
-      "timestamp": 1777906800000,
-      "broadcaster": "S Sport / beIN Sports",
-      "homeTeam": {
-        "name": "Rebeka Masarova",
-        "ranking": 160,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
-        ]
-      },
-      "awayTeam": {
-        "name": "Moyuka Uchijima",
-        "ranking": 109,
-        "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
-        ]
-      },
-      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
-      "homeScore": "-",
-      "awayScore": "-",
-      "setScores": [],
-      "tournament": "Rome, Italy, Qualifying"
-    },
-    {
       "id": 16119819,
       "isElite": false,
       "status": "notstarted",
@@ -1909,6 +1890,34 @@
         "ranking": 118,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/sk.png"
+        ]
+      },
+      "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
+      "homeScore": "-",
+      "awayScore": "-",
+      "setScores": [],
+      "tournament": "Rome, Italy, Qualifying"
+    },
+    {
+      "id": 16119813,
+      "isElite": false,
+      "status": "notstarted",
+      "fixedDate": "2026-05-04",
+      "fixedTime": "18:35",
+      "timestamp": 1777908900000,
+      "broadcaster": "S Sport / beIN Sports",
+      "homeTeam": {
+        "name": "Rebeka Masarova",
+        "ranking": 160,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ch.png"
+        ]
+      },
+      "awayTeam": {
+        "name": "Moyuka Uchijima",
+        "ranking": 109,
+        "logos": [
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/jp.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/2569.png",
@@ -3172,7 +3181,7 @@
       },
       "awayTeam": {
         "name": "Adelina Lachinova",
-        "ranking": 610,
+        "ranking": null,
         "logos": [
           "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/lv.png"
         ]
@@ -3425,18 +3434,16 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Jakupovic D / Radisic N",
-        "ranking": 373,
+        "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/si.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
         ]
       },
       "awayTeam": {
         "name": "Costoulas S / Gorgodze E",
-        "ranking": 146,
+        "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/be.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ge.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34496.png",
@@ -3515,18 +3522,16 @@
       "broadcaster": "S Sport / beIN Sports",
       "homeTeam": {
         "name": "Sebov K / Serban R G",
-        "ranking": 225,
+        "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ca.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/cy.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
         ]
       },
       "awayTeam": {
         "name": "Falei A / Iatcenko P",
-        "ranking": 165,
+        "ranking": null,
         "logos": [
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/by.png",
-          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/ru.png"
+          "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/logos/mc.png"
         ]
       },
       "tournamentLogo": "https://raw.githubusercontent.com/elfcrzgr/macsaati-backend/main/tennis/tournament_logos/34496.png",
