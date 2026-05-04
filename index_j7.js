@@ -1,10 +1,5 @@
-const fs = require('fs');
-const { exec } = require('child_process');
-const util = require('util');
-const execPromise = util.promisify(exec);
-
 // =========================================================================
-// ⚙️ AYARLAR
+// ⚙️ AYARLAR VE FIREBASE BAĞLANTISI
 // =========================================================================
 const GITHUB_USER = "elfcrzgr"; 
 const REPO_NAME = "macsaati-backend"; 
@@ -12,42 +7,31 @@ const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000; // 1 Dakika
 const FULL_UPDATE_INTERVAL_MS = 20 * 60000; // 20 Dakika
 
-// TARGET_FILE'ları TÜM SPOR DALLARI İÇİN
-const TARGET_FILES = {
-    football: "matches_football.json",
-    basketball: "matches_basketball.json",
-    tennis: "matches_tennis.json",
-    f1: "matches_f1.json"
-};
-
-// Git Yapılandırması
-const GIT_USER_NAME = process.env.GIT_USER_NAME || "J7 Live Server";
-const GIT_USER_EMAIL = process.env.GIT_USER_EMAIL || "live@j7server.local";
+// YENİ FIREBASE ADRESİMİZ (Sıfır Gecikme)
+const FIREBASE_BASE_URL = "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR
 // =========================================================================
 
-async function executeCommand(command) {
+// YENİ: Firebase'e anında veri gönderen fonksiyon
+async function uploadToFirebase(sportName, data) {
     try {
-        const { stdout, stderr } = await execPromise(command, { 
-            maxBuffer: 10 * 1024 * 1024,
-            timeout: 30000
+        const url = `${FIREBASE_BASE_URL}matches_${sportName}.json`;
+        
+        const response = await fetch(url, {
+            method: 'PUT', // PUT metodu eski veriyi ezer, yenisini yazar
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         });
-        return stdout;
+        
+        if (response.ok) {
+            console.log(`✅ [FIREBASE] ${sportName.toUpperCase()} başarıyla güncellendi!`);
+        } else {
+            console.error(`⚠️ [FIREBASE] Hata: ${response.statusText}`);
+        }
     } catch (error) {
-        throw new Error(`${error.message}\n${error.stderr || ''}`);
-    }
-}
-
-async function initGitConfig() {
-    try {
-        console.log("📋 Git yapılandırması kontrol ediliyor...");
-        await executeCommand(`git config user.name "${GIT_USER_NAME}"`);
-        await executeCommand(`git config user.email "${GIT_USER_EMAIL}"`);
-        console.log(`✅ Git User: ${GIT_USER_NAME}`);
-    } catch (error) {
-        console.error(`⚠️ Git Config Hatası: ${error.message}`);
+        console.error(`⚠️ [FIREBASE] Bağlantı Hatası:`, error.message);
     }
 }
 
@@ -70,64 +54,6 @@ const getTRDate = (offset = 0) => {
     return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 };
 
-// =========================================================================
-// 📥 PUSH İŞLEMİ (KURŞUN GEÇİRMEZ VERSİYON)
-// =========================================================================
-async function pushToGithub() {
-    const simdi = new Date().toLocaleTimeString('tr-TR');
-    
-    const existingFiles = Object.values(TARGET_FILES).filter(file => fs.existsSync(file));
-    
-    if (existingFiles.length === 0) {
-        console.warn(`⚠️ Hiç dosya bulunamadı!`);
-        return;
-    }
-
-    try {
-        console.log(`📤 GitHub senkronizasyonu başlıyor [${simdi}]...`);
-        
-        // Önce dosyaları sahneye al
-        for (const file of existingFiles) {
-            await executeCommand(`git add "${file}"`);
-        }
-        
-        // Değişiklik var mı kontrol et
-        const status = await executeCommand('git status --porcelain');
-        if (!status.trim()) {
-            console.log(`  ℹ️ Yeni değişiklik yok`);
-            return;
-        }
-        
-        // Commit işlemini yap
-        await executeCommand(`git commit -m "J7 Canlı Güncelleme: ${simdi}"`);
-        
-        // Çakışma (Conflict) dinlemeden, GitHub'daki yenilikleri al ama yerel dosyaları (ours) KORU
-        try {
-            await executeCommand('git pull origin main --no-rebase -s recursive -X ours');
-        } catch (pullErr) {
-            console.log("  ⚠️ Pull uyarı verdi (Çakışma olabilir), push zorlanıyor...");
-        }
-        
-        // Yenilenmiş ve çakışması çözülmüş veriyi gönder
-        await executeCommand('git push origin main');
-        
-        console.log(`✅ [${simdi}] GitHub senkronizasyonu BAŞARILI! (${existingFiles.length} dosya)`);
-        
-    } catch (error) {
-        console.error(`❌ Git İşlem Hatası: ${error.message}`);
-        // Eğer askıda kalan bir işlem varsa temizle ki sonraki döngü patlamasın
-        try { await executeCommand('git rebase --abort'); } catch(e){}
-        try { await executeCommand('git merge --abort'); } catch(e){}
-    }
-}
-
-
-
-
-
-// =========================================================================
-// ⚽ FUTBOL (Çeviriler, Dinamik Yayıncılar ve Temiz İsimler)
-// =========================================================================
 // =========================================================================
 // ⚽ FUTBOL (Çeviriler, Dinamik Yayıncılar, Dakika Hesaplama ve Temiz İsimler)
 // =========================================================================
@@ -203,7 +129,6 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-// Kritik ligler (98, 97, 13363, 53) eklendi
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363];
 const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
@@ -223,7 +148,7 @@ const footballLeagues = {
     38: "Belçika Pro League", 
     36: "İskoçya Premiership", 
     19: "FA Cup", 
-    938: "Türkiye Kupası", // 97 ile çakışmaması için düzeltildi
+    938: "Türkiye Kupası", 
     7: "UEFA Şampiyonlar Ligi", 
     679: "UEFA Avrupa Ligi",
     17015: "UEFA Konferans Ligi", 
@@ -327,7 +252,8 @@ async function updateFootball() {
 
     const matches = Array.from(duplicateTracker.values()).sort((a, b) => a.timestamp - b.timestamp);
 
-    fs.writeFileSync(TARGET_FILES.football, JSON.stringify({ success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches }, null, 2));
+    // FIREBASE YÜKLEMESİ
+    await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
     
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
     const upcomingMatches = matches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
@@ -342,15 +268,9 @@ async function updateFootball() {
     return { hasLiveMatch, nextMatchTimestamp };
 }
 
-
-
-
-
-
 // =========================================================================
-// 🏀 BASKETBOL (SOFASCORE'DAN %100 TEYİT EDİLMİŞ GÜNCEL ID'LER)
+// 🏀 BASKETBOL
 // =========================================================================
-
 const ELITE_LEAGUE_IDS = [
     132,  // NBA
     138,  // EuroLeague
@@ -402,7 +322,6 @@ async function updateBasketball() {
     const trToday = getTRDate(0);
     const trTomorrow = getTRDate(1);
     
-    // Liglerden kaç maç geldi hesapla
     const leagueCount = {};
 
     for (const e of allEvents) {
@@ -452,14 +371,14 @@ async function updateBasketball() {
         });
         duplicateTracker.add(matchKey);
         
-        // Ligi say
         leagueCount[utId] = (leagueCount[utId] || 0) + 1;
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    fs.writeFileSync(TARGET_FILES.basketball, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
     
-    // Detaylı log
+    // FIREBASE YÜKLEMESİ
+    await uploadToFirebase("basketball", { success: true, matches: finalMatches });
+    
     console.log(`  ✅ Toplam ${finalMatches.length} basketbol maçı`);
     Object.keys(leagueCount).forEach(leagueId => {
         const leagueName = leagueConfigs[leagueId] || `Liga ${leagueId}`;
@@ -468,7 +387,7 @@ async function updateBasketball() {
 }
 
 // =========================================================================
-// 🎾 TENİS (DETAYLI SIRALAMA VE ÇİFTLER LOGOSU İLE - PARALEL OPTİMİZE)
+// 🎾 TENİS
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
@@ -495,11 +414,8 @@ async function updateTennis() {
     const targetDates = [getTRDate(0), getTRDate(1)];
     
     const tournamentCount = {};
-    
-    // 🚀 ÇÖZÜM: MAÇLARI TOPLARKEN KONTROL EDECEK SÜZGEÇ (Set)
     const seenEventIds = new Set();
 
-    // 1. AŞAMA: Günlük listeden maçları topla
     for (const date of targetDates) {
         try {
             const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
@@ -508,11 +424,9 @@ async function updateTennis() {
                     const tourName = e.tournament?.name;
                     const catName = e.tournament?.category?.name;
                     
-                    // Eğer çöp bir ligse VEYA bu ID'yi daha önce eklediysek false döndür (çıkar)
                     if (isGarbage(tourName, catName)) return false;
                     if (seenEventIds.has(e.id)) return false; 
                     
-                    // Yukarıdaki filtrelerden geçtiyse listeye ekle ve Set'e kaydet
                     seenEventIds.add(e.id);
                     return true;
                 });
@@ -527,7 +441,6 @@ async function updateTennis() {
     console.log(`  📋 ${rawEvents.length} tekil maç bulundu (Tekrarlar temizlendi)`);
     const finalMatches = [];
 
-    // ⚡ 2. AŞAMA: TÜM DETAY İSTEKLERİNİ PARALEL OLARAK YAP
     const detailPromises = rawEvents.map(e => 
         fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`)
             .then(data => ({ eventId: e.id, data }))
@@ -545,7 +458,6 @@ async function updateTennis() {
 
     console.log(`  ✅ Tüm detaylar çekildi`);
 
-    // 3. AŞAMA: Maçları işle ve JSON'a hazırla
     for (let idx = 0; idx < rawEvents.length; idx++) {
         const e = rawEvents[idx];
         
@@ -556,20 +468,17 @@ async function updateTennis() {
             if (!targetDates.includes(fixedDate)) continue;
 
             const tourName = e.tournament?.name || "";
-            // isGarbage filtresini yukarıda uyguladığımız için burada bir daha yapmamıza gerek yok ama çift dikiş olsun.
 
             let homeLogos = [];
             let awayLogos = [];
             let hRank = null;
             let aRank = null;
 
-            // Map'ten detay bul
             const detailData = detailsMap[e.id];
             
             if (detailData?.event) {
                 const ev = detailData.event;
 
-                // Ranking çek - Tekli maç
                 if (ev.homeTeam?.ranking !== undefined && ev.homeTeam.ranking !== null) {
                     hRank = ev.homeTeam.ranking;
                 }
@@ -577,7 +486,6 @@ async function updateTennis() {
                     aRank = ev.awayTeam.ranking;
                 }
 
-                // Ranking çek - Çiftler maç (subTeams)
                 if (!hRank && ev.homeTeam?.subTeams?.length > 0) {
                     const ranks = ev.homeTeam.subTeams
                         .map(p => p.ranking)
@@ -596,7 +504,6 @@ async function updateTennis() {
                     }
                 }
 
-                // Logo'ları çek
                 const getCodes = (team) => {
                     if (team.subTeams && team.subTeams.length > 0) {
                         return team.subTeams.map(p => p.country?.alpha2?.toLowerCase()).filter(Boolean);
@@ -607,7 +514,6 @@ async function updateTennis() {
                 homeLogos = getCodes(ev.homeTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
                 awayLogos = getCodes(ev.awayTeam).map(c => `${TENNIS_LOGO_BASE}${c}.png`);
             } else {
-                // Detay çekilemediğinde fallback
                 homeLogos = [e.homeTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.homeTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
                 awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
             }
@@ -619,7 +525,6 @@ async function updateTennis() {
             if (statusType === 'inprogress') timeString += "\nCANLI";
             else if (statusType === 'finished') timeString += "\nMS";
 
-            // Set skorlarını çek
             let sets = [];
             if (hasScore && e.homeScore && e.awayScore) {
                 for (let i = 1; i <= 5; i++) {
@@ -658,7 +563,6 @@ async function updateTennis() {
             
             tournamentCount[tourName] = (tournamentCount[tourName] || 0) + 1;
             
-            // İlerleme göster
             const progress = Math.round(((idx + 1) / rawEvents.length) * 100);
             process.stdout.write(`\r  ⏳ İşleniyor... %${progress} (${idx + 1}/${rawEvents.length})`);
             
@@ -669,16 +573,16 @@ async function updateTennis() {
     }
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    fs.writeFileSync(TARGET_FILES.tennis, JSON.stringify({ success: true, matches: finalMatches }, null, 2));
+    
+    // FIREBASE YÜKLEMESİ
+    await uploadToFirebase("tennis", { success: true, matches: finalMatches });
     
     console.log(`\n  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi`);
     console.log(`  📊 Turnuvalar: ${Object.keys(tournamentCount).length}`);
     
-    // Debug: Sıralama istatistikleri
     const withRanking = finalMatches.filter(m => m.homeTeam.ranking || m.awayTeam.ranking).length;
     console.log(`  🏆 Sıralama verisi olan maçlar: ${withRanking}/${finalMatches.length}`);
 }
-
 
 // =========================================================================
 // 🏎️ FORMULA 1
@@ -699,7 +603,6 @@ async function updateF1() {
         const races = response.MRData?.RaceTable?.Races || [];
         const finalEvents = [];
         
-        // Ülke isimlerini 2 haneli dosya adlarına çeviren mapping
         const countryToCode = {
             "Bahrain": "bh", "Saudi Arabia": "sa", "Australia": "au", "Japan": "jp",
             "China": "cn", "USA": "us", "United States": "us", "Italy": "it", 
@@ -747,13 +650,12 @@ async function updateF1() {
 
         finalEvents.sort((a, b) => a.timestamp - b.timestamp);
 
-        fs.writeFileSync(TARGET_FILES.f1, JSON.stringify({ success: true, lastUpdated: new Date().toISOString(), totalSessions: finalEvents.length, events: finalEvents }, null, 2));
+        // FIREBASE YÜKLEMESİ
+        await uploadToFirebase("f1", { success: true, lastUpdated: new Date().toISOString(), totalSessions: finalEvents.length, events: finalEvents });
         
-        // Detaylı log
         const raceCount = new Set(finalEvents.map(e => e.grandPrix)).size;
         console.log(`  ✅ Toplam ${finalEvents.length} F1 seanı (${raceCount} Grand Prix)`);
         
-        // Her yarış için kaç seans olduğunu göster
         const sessionsByRace = {};
         finalEvents.forEach(e => {
             if (!sessionsByRace[e.grandPrix]) sessionsByRace[e.grandPrix] = 0;
@@ -774,24 +676,17 @@ async function updateF1() {
 // =========================================================================
 async function main() {
     console.log("============================================================");
-    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (AKILLI ZAMANLAYICI)");
+    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (FIREBASE + AKILLI ZAMANLAYICI)");
     console.log("============================================================");
     
-    await initGitConfig();
-    
     let iteration = 1;
-    // DEĞİŞTİ: Artık updateFootball'dan obje döneceği için bunu objeye çevirdik
     let footballStatus = { hasLiveMatch: false, nextMatchTimestamp: null };
-    
-    // İlk açılışta tüm spor dallarını anında güncellemesi için sayacı dolu başlatıyoruz
     let timeSinceLastFullUpdate = FULL_UPDATE_INTERVAL_MS; 
 
     while (true) {
         try {
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
-            let updatedSomething = false;
             
-            // EKLENDİ: Şu anki saat, sıradaki maçın saatine geldi mi? (1 dakika tolerans payı)
             const now = Date.now();
             const isMatchTime = footballStatus.nextMatchTimestamp && (now >= (footballStatus.nextMatchTimestamp - 60000));
             
@@ -799,14 +694,13 @@ async function main() {
                 // 20 DAKİKA DOLDU -> TÜM SPOR DALLARINI GÜNCELLE
                 console.log("🔄 20 Dakikalık Tam Güncelleme Döngüsü Çalışıyor...");
                 
-                footballStatus = await updateFootball(); // DEĞİŞTİ: Obje olarak güncelledik
+                footballStatus = await updateFootball(); 
                 await updateBasketball();
                 await updateTennis();
                 await updateF1();
                 
                 timeSinceLastFullUpdate = 0; // Sayacı sıfırla
-                updatedSomething = true;
-            } else if (footballStatus.hasLiveMatch || isMatchTime) { // DEĞİŞTİ: Maç saati geldiyse de buraya gir
+            } else if (footballStatus.hasLiveMatch || isMatchTime) { 
                 // 20 DAKİKA DOLMADI AMA CANLI MAÇ VAR VEYA MAÇ SAATİ GELDİ
                 if (isMatchTime && !footballStatus.hasLiveMatch) {
                     console.log("⏰ Yeni maç saati geldi! Sadece futbol 1 dakikalık döngüde güncelleniyor...");
@@ -814,13 +708,11 @@ async function main() {
                     console.log("⚽ Canlı maç var! Sadece futbol 1 dakikalık döngüde güncelleniyor...");
                 }
                 
-                footballStatus = await updateFootball(); // DEĞİŞTİ: Obje olarak güncelledik
-                updatedSomething = true;
+                footballStatus = await updateFootball(); 
             } else {
                 // CANLI MAÇ YOK VE 20 DAKİKA DOLMADI -> BEKLE
                 const minutesLeft = Math.round((FULL_UPDATE_INTERVAL_MS - timeSinceLastFullUpdate) / 60000);
                 
-                // EKLENDİ: Ekranda ilk maça ne kadar kaldığını da görebilmen için küçük bir detay
                 if (footballStatus.nextMatchTimestamp && (footballStatus.nextMatchTimestamp - now) < (FULL_UPDATE_INTERVAL_MS - timeSinceLastFullUpdate)) {
                     const matchMins = Math.round((footballStatus.nextMatchTimestamp - now) / 60000);
                     console.log(`💤 Canlı maç yok. Tam güncellemeye ${minutesLeft} dk, ilk maça ${matchMins} dk kaldı.`);
@@ -829,23 +721,16 @@ async function main() {
                 }
             }
 
-            // Eğer herhangi bir JSON değiştiyse/güncellendiyse GitHub'a yolla
-            if (updatedSomething) {
-                await pushToGithub();
-            }
-            
         } catch (e) { 
             console.error("🚨 Hata:", e.message); 
         }
         
         console.log(`⏳ ${MINUTE_MS / 1000} saniye bekleniyor...\n`);
         
-        // Her halükarda 1 dakika uyu, uyandıktan sonra süreyi sayaca ekle
         await new Promise(r => setTimeout(r, MINUTE_MS));
         timeSinceLastFullUpdate += MINUTE_MS;
         iteration++;
     }
 }
 
-
-main(); 
+main();
