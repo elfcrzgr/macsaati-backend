@@ -346,18 +346,44 @@ async function updateFootball() {
 
 
 
+
 // =========================================================================
-// 🏀 BASKETBOL
+// 🏀 BASKETBOL (SOFASCORE'DAN %100 TEYİT EDİLMİŞ GÜNCEL ID'LER)
 // =========================================================================
-const ELITE_LEAGUE_IDS = [3547, 138, 142, 137, 132, 167, 168];
+
+const ELITE_LEAGUE_IDS = [
+    132,  // NBA
+    138,  // EuroLeague
+    141,  // EuroCup
+    9357, // Basketbol Şampiyonlar Ligi (BCL)
+    519,  // Türkiye Basketbol Süper Ligi (BSL)
+    264,  // İspanya Liga ACB
+    285   // FIBA EuroBasket
+];
+
 const leagueConfigs = { 
-    3547: "S Sport / NBA TV", 138: "S Sport / S Sport Plus", 142: "S Sport Plus", 
-    137: "TRT Spor / Tabii", 132: "S Sport / S Sport Plus", 167: "S Sport Plus / FIBA TV", 
-    168: "TRT Spor Yıldız", 9357: "S Sport Plus", 139: "beIN Sports / TRT Spor",
-    11511: "TRT Spor Yıldız / TBF TV", 21511: "TBF TV (YouTube)", 251: "S Sport Plus", 
-    215: "S Sport Plus", 304: "S Sport Plus", 227: "beIN Sports", 164: "beIN Sports",
-    235: "S Sport Plus", 405: "beIN Sports"
+    // --- KÜRESEL & AVRUPA ---
+    132: "S Sport / NBA TV",          // NBA
+    138: "S Sport / S Sport Plus",    // EuroLeague
+    141: "TRT Spor / S Sport",        // EuroCup
+    9357: "Tivibu Spor",              // Basketbol Şampiyonlar Ligi (BCL)
+    285: "S Sport / TRT Spor",        // FIBA EuroBasket
+
+    // --- TÜRKİYE ---
+    519: "beIN Sports",               // Türkiye Sigorta Basketbol Süper Ligi
+    1179: "TRT Spor / beIN Sports",   // Türkiye Erkekler Basketbol Kupası
+    19844: "TBF TV (YouTube)",        // Türkiye Basketbol 2. Ligi (TB2L)
+    
+    // --- DİĞER ÜLKELER ---
+    264: "S Sport Plus",              // İspanya Liga ACB
+    304: "S Sport Plus",              // Yunanistan Stoiximan Basket League
+    227: "S Sport Plus",              // Almanya BBL
+    156: "beIN Sports",               // Fransa LNB Pro A
+    1524: "S Sport Plus",             // Avustralya NBL
+    235: "S Sport Plus",              // Adriyatik Ligi (ABA)
+    1438: "TRT Spor / beIN Sports"    // VTB Birleşik Ligi
 };
+
 const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 
 async function updateBasketball() {
