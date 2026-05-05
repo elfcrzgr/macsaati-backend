@@ -1,59 +1,56 @@
-const puppeteer = require('puppeteer');
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 async function getBroadcasterData() {
-    console.log("🌐 Spor Ekranı verileri çekiliyor...");
+    console.log("🌐 Spor Ekranı verileri çekiliyor (Hafif Mod)...");
     
-    const browser = await puppeteer.launch({ 
-        headless: "new",
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-
     try {
-        const page = await browser.newPage();
-        // Bot engeline takılmamak için User-Agent ayarla
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-        
-        await page.goto('https://www.sporekrani.com/', { waitUntil: 'networkidle2' });
-
-        const data = await page.evaluate(() => {
-            const results = [];
-            // Sitedeki her bir maç satırı genellikle 'list-group-item' içinde bulunur
-            const rows = document.querySelectorAll('.list-group-item');
-
-            rows.forEach(row => {
-                const time = row.querySelector('.saat')?.innerText.trim() || "";
-                const title = row.querySelector('.mac-adi')?.innerText.trim() || "";
-                const sport = row.querySelector('.spor-dali')?.innerText.trim() || "";
-                
-                // Yayıncı kanallar genellikle 'kanallar' divi içindeki img alt textleri veya text olarak bulunur
-                const channels = [];
-                row.querySelectorAll('.kanallar a, .kanallar img').forEach(channel => {
-                    const name = channel.getAttribute('title') || channel.getAttribute('alt') || channel.innerText.trim();
-                    if (name && !channels.includes(name)) {
-                        channels.push(name);
-                    }
-                });
-
-                if (title && time) {
-                    results.push({
-                        time,
-                        sport,
-                        match: title,
-                        broadcasters: channels.join(' / ')
-                    });
-                }
-            });
-            return results;
+        const url = 'https://www.sporekrani.com/';
+        // Gerçek kullanıcı kimliği göndererek engellenmeyi önle
+        const { data } = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
         });
 
-        console.log(`✅ Toplam ${data.length} yayıncı bilgisi bulundu.`);
-        console.table(data.slice(0, 15)); // İlk 15 veriyi tablo olarak göster
-        return data;
+        const $ = cheerio.load(data);
+        const results = [];
+
+        // Sitedeki her bir maç satırını tara
+        $('.list-group-item').each((i, element) => {
+            const time = $(element).find('.saat').text().trim();
+            const title = $(element).find('.mac-adi').text().trim();
+            const sport = $(element).find('.spor-dali').text().trim();
+            
+            // Yayıncı kanalları bul
+            const channels = [];
+            $(element).find('.kanallar a, .kanallar img').each((j, ch) => {
+                const name = $(ch).attr('title') || $(ch).attr('alt') || $(ch).text().trim();
+                if (name && !channels.includes(name)) {
+                    channels.push(name);
+                }
+            });
+
+            if (title && time) {
+                results.push({
+                    saat: time,
+                    spor: sport,
+                    mac: title,
+                    yayin: channels.join(' / ')
+                });
+            }
+        });
+
+        if (results.length === 0) {
+            console.log("⚠️ Maç bulunamadı. Site yapısı değişmiş olabilir.");
+        } else {
+            console.log(`✅ Toplam ${results.length} yayıncı bilgisi başarıyla çekildi.\n`);
+            // Sonuçları terminalde güzel bir tablo olarak göster
+            console.table(results.slice(0, 20)); // İlk 20 maçı gösterir
+        }
 
     } catch (error) {
-        console.error("🚨 Hata oluştu:", error.message);
-    } finally {
-        await browser.close();
+        console.error("🚨 Hata:", error.message);
     }
 }
 
