@@ -2,11 +2,10 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 async function getBroadcasterData() {
-    console.log("🌐 Spor Ekranı verileri çekiliyor (Hafif Mod)...");
+    console.log("🌐 Spor Ekranı verileri çekiliyor (Termux Dostu Mod)...");
     
     try {
         const url = 'https://www.sporekrani.com/';
-        // Gerçek kullanıcı kimliği göndererek engellenmeyi önle
         const { data } = await axios.get(url, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -16,13 +15,11 @@ async function getBroadcasterData() {
         const $ = cheerio.load(data);
         const results = [];
 
-        // Sitedeki her bir maç satırını tara
         $('.list-group-item').each((i, element) => {
             const time = $(element).find('.saat').text().trim();
             const title = $(element).find('.mac-adi').text().trim();
             const sport = $(element).find('.spor-dali').text().trim();
             
-            // Yayıncı kanalları bul
             const channels = [];
             $(element).find('.kanallar a, .kanallar img').each((j, ch) => {
                 const name = $(ch).attr('title') || $(ch).attr('alt') || $(ch).text().trim();
@@ -42,11 +39,10 @@ async function getBroadcasterData() {
         });
 
         if (results.length === 0) {
-            console.log("⚠️ Maç bulunamadı. Site yapısı değişmiş olabilir.");
+            console.log("⚠️ Maç bulunamadı.");
         } else {
-            console.log(`✅ Toplam ${results.length} yayıncı bilgisi başarıyla çekildi.\n`);
-            // Sonuçları terminalde güzel bir tablo olarak göster
-            console.table(results.slice(0, 20)); // İlk 20 maçı gösterir
+            console.log(`✅ ${results.length} maç bulundu.\n`);
+            console.table(results.slice(0, 20)); 
         }
 
     } catch (error) {
