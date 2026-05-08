@@ -268,10 +268,22 @@ async function updateFootball() {
     console.log(`⚽ Futbol güncelleniyor...`);
     let allEvents = [];
     
-    for (const date of [getTRDate(0), getTRDate(1)]) {
+    // 🚀 DÜZELTME 1: Pazar maçlarını yakalamak için 3 gün taranıyor
+    for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
-            allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
+            allEvents.push(...data.events.filter(e => {
+                const utId = e.tournament?.uniqueTournament?.id;
+                const utName = (e.tournament?.uniqueTournament?.name || "").toLowerCase();
+                const tourName = (e.tournament?.name || "").toLowerCase();
+                
+                // 🚀 DÜZELTME 2: ID listede olmasa bile, turnuva adında "3. lig" VEYA "playoff" geçiyorsa ve takım Türk ise zorla çek!
+                const isTurkishLowerLeague = utName.includes("3. lig") || tourName.includes("3. lig") || 
+                                             ((utName.includes("playoff") || utName.includes("play-off")) && 
+                                              (e.homeTeam.name.toLowerCase().includes("spor") || e.awayTeam.name.toLowerCase().includes("spor")));
+
+                return ALL_FOOT_TARGETS.includes(utId) || isTurkishLowerLeague;
+            }));
         }
     }
 
@@ -298,13 +310,15 @@ async function updateFootball() {
         const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
-        // 🌉 FALLBACK MEKANİZMASI ÇALIŞIYOR
         const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
         const finalBroadcaster = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
 
+        // 🚀 DÜZELTME 3: Bu sinsi Play-Off maçları filtreye takılmasın diye onları "Elite" yapıyoruz.
+        const isEliteMatch = ELITE_FOOT_IDS.includes(leagueId) || utName.toLowerCase().includes("3. lig") || utName.toLowerCase().includes("play");
+
         duplicateTracker.set(e.id, {
             id: e.id,
-            isElite: ELITE_FOOT_IDS.includes(leagueId),
+            isElite: isEliteMatch,
             status: status,
             liveMinute: isLive ? calculateLiveMinute(e) : "",
             fixedDate: dayTR,
