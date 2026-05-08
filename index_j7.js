@@ -181,6 +181,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     const isTurkey = hn.includes("turkey") || an.includes("turkey") || hn.includes("türkiye") || an.includes("türkiye");
     const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || utn.includes("play-off") || utn.includes("playoff");
 
+    // 🚀 DÜZELTME: Türkiye Kupası için hem eski (10783) hem yeni (96) id'yi ekliyoruz
     if (utId === 748 || utId === 750) return isTurkey ? "TRT Spor / Tabii" : "Exxen";
     if (utId === 11 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
         if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
@@ -192,8 +193,16 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 7: "TRT 1 / Tabii", 351: "S Sport Plus", 
         37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
         10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 
-        13363: "USL YouTube", 11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 
-        696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 53: "beIN Sports"
+        13363: "USL YouTube", 
+        // 🚀 YENİ LİGLER İÇİN FALLBACK YAYINCI EKLENDİ
+        11417: "TFF YouTube", // TFF 3. Lig Grup 1
+        11416: "TFF YouTube", // TFF 3. Lig Grup 2
+        11415: "TFF YouTube", // TFF 3. Lig Grup 3
+        15938: "TFF YouTube", // TFF 3. Lig Grup 4
+        696: "DAZN / YouTube", 
+        10783: "A Spor", // Türkiye Kupası (Eski ID)
+        96: "A Spor",    // Türkiye Kupası (Yeni ID)
+        232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 53: "beIN Sports"
     };
 
     if (staticConfigs[utId]) return staticConfigs[utId];
@@ -204,16 +213,23 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363];
-const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242];
+// 🚀 DÜZELTME: Hedef ligler listesine 96, 11416, 11417, 11415, 15938 eklendi. (10783 zaten vardı)
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363, 10783, 96];
+const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242, 11415, 11416, 11417, 15938];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
+// 🚀 DÜZELTME: İsimler güncellendi, yeni gruplar eklendi.
 const footballLeagues = {
     17: "İngiltere Premier Lig", 8: "İspanya La Liga", 35: "Almanya Bundesliga",
     23: "İtalya Serie A", 34: "Fransa Ligue 1", 52: "Türkiye Süper Lig", 
     98: "Trendyol 1. Lig", 97: "TFF 2. Lig", 53: "İtalya Serie B",
     37: "Hollanda Eredivisie", 238: "Portekiz Primeira Liga", 38: "Belçika Pro League", 
-    36: "İskoçya Premiership", 19: "FA Cup", 938: "Türkiye Kupası", 
+    36: "İskoçya Premiership", 19: "FA Cup", 
+    938: "Türkiye Kupası", 10783: "Türkiye Kupası", 96: "Türkiye Kupası", // Hepsi Türkiye Kupası
+    11417: "TFF 3. Lig 1. Grup",
+    11416: "TFF 3. Lig 2. Grup",
+    11415: "TFF 3. Lig 3. Grup",
+    15938: "TFF 3. Lig 4. Grup",
     7: "UEFA Şampiyonlar Ligi", 679: "UEFA Avrupa Ligi", 17015: "UEFA Konferans Ligi", 
     16: "FIFA Dünya Kupası", 1: "UEFA EURO", 133: "Copa America", 
     270: "Afrika Uluslar Kupası", 299: "Uluslararası Hazırlık Maçları", 
