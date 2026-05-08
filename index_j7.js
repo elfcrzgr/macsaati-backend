@@ -241,12 +241,13 @@ async function updateFootball() {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
             // 🔎 TFF 2. LİG ALT GRUP ID DEBUG - ID'LERİ BULDUKTAN SONRA BU BLOĞU SİL
+            // 🔎 TÜM LİGLER DEBUG
             data.events.forEach(e => {
                 const utId = e.tournament?.uniqueTournament?.id;
-                const cat = (e.tournament?.category?.name || "").toLowerCase();
-                if (cat.includes("turkey")) {
-                    console.log(`🇹🇷 ID=${utId} | ${e.tournament?.uniqueTournament?.name}`);
-                }
+                const utName = e.tournament?.uniqueTournament?.name || "";
+                const cat = e.tournament?.category?.name || "";
+                console.log(`🔎 ID=${utId} | ${utName} | Kategori=${cat}`);
+
             });
             // 🔎 DEBUG SONU
 
