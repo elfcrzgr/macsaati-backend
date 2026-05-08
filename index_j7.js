@@ -43,7 +43,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     if (!dayData || !dayData.matches) return fallback;
 
     // Saat bilgisinden CANLI gibi yazıları temizleyip sadece "22:00" kısmını alırız
-    const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").trim();
+    const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").trim();
     const hName = (homeName || "").toLowerCase();
     const aName = (awayName || "").toLowerCase();
 
@@ -68,6 +68,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     }
     return fallback; // Harici dosyada bulunamadı, senin eski koda dön!
 }
+
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR VE BUKELEMUN HEADER (ANTİ-BAN)
 // =========================================================================
@@ -131,7 +132,7 @@ const getTRDate = (offset = 0) => {
 // =========================================================================
 // ⚽ FUTBOL
 // =========================================================================
-const teamTranslations = { /* Çeviriler aynen korundu */
+const teamTranslations = {
     "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
     "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "netherlands": "Hollanda",
     "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", "croatia": "Hırvatistan",
@@ -289,7 +290,7 @@ async function updateFootball() {
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
             
-            broadcaster: finalBroadcaster, // 👈 Artık dinamik veya fallback yayıncı atandı
+            broadcaster: finalBroadcaster,
             
             homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
@@ -304,7 +305,6 @@ async function updateFootball() {
 
     const matches = Array.from(duplicateTracker.values()).sort((a, b) => a.timestamp - b.timestamp);
 
-    // FIREBASE YÜKLEMESİ
     await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
     
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
@@ -385,7 +385,7 @@ async function updateBasketball() {
             fixedTime: timeString, 
             timestamp: dateTR.getTime(),
             
-            broadcaster: finalBroadcaster, // 👈 Artık dinamik veya fallback yayıncı atandı
+            broadcaster: finalBroadcaster,
             
             homeTeam: { name: e.homeTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.homeTeam.id}.png` },
             awayTeam: { name: e.awayTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.awayTeam.id}.png` },
@@ -501,7 +501,7 @@ async function updateTennis() {
                 }
             }
 
-            // 🌉 FALLBACK MEKANİZMASI ÇALIŞIYOR (Tenis için default senin belirlediğin: S Sport / beIN Sports)
+            // 🌉 FALLBACK MEKANİZMASI ÇALIŞIYOR
             const fallbackBroadcaster = "S Sport / beIN Sports";
             const finalBroadcaster = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
 
@@ -513,7 +513,7 @@ async function updateTennis() {
                 fixedTime: timeString,
                 timestamp: startTimestamp,
                 
-                broadcaster: finalBroadcaster, // 👈 Artık dinamik veya fallback yayıncı atandı
+                broadcaster: finalBroadcaster,
                 
                 homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos },
                 awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
@@ -528,7 +528,7 @@ async function updateTennis() {
 
     finalMatches.sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase("tennis", { success: true, matches: finalMatches });
-    console.log(`\n  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi`);
+    console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi`);
 }
 
 // =========================================================================
