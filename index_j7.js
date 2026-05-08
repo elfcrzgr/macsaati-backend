@@ -13,15 +13,13 @@ const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000; // 1 Dakika
 const FULL_UPDATE_INTERVAL_MS = 20 * 60000; // 20 Dakika
 
-// YENİ FIREBASE ADRESİMİZ (Sıfır Gecikme)
 const FIREBASE_BASE_URL = "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 // =========================================================================
-// 🌉 YENİ: HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
+// 🌉 HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
 // =========================================================================
 let externalBroadcasters = {};
 
-// Her döngüde yayinci_bilgisi.json dosyasını okuyan güvenli fonksiyon
 function loadExternalBroadcasters() {
     try {
         if (fs.existsSync('yayinci_bilgisi.json')) {
@@ -36,13 +34,11 @@ function loadExternalBroadcasters() {
     }
 }
 
-// Sporekrani dosyasında maç varsa oradan alır, yoksa senin 'fallback' değerini kullanır
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
     if (!externalBroadcasters[dateStr]) return fallback;
     const dayData = externalBroadcasters[dateStr];
     if (!dayData || !dayData.matches) return fallback;
 
-    // Saat bilgisinden CANLI gibi yazıları temizleyip sadece "22:00" kısmını alırız
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").trim();
     const hName = (homeName || "").toLowerCase();
     const aName = (awayName || "").toLowerCase();
@@ -52,38 +48,31 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
             const mTime = (m.saat || "").trim();
             const mTitle = (m.mac || "").toLowerCase();
 
-            // Takım isimlerinden kelimeleri al (Hata yapmamak için 3 harften uzunları seç)
             const hWords = hName.split(' ').filter(w => w.length > 3);
             const aWords = aName.split(' ').filter(w => w.length > 3);
             const hCheck = hWords.length > 0 ? hWords[0] : hName.split(' ')[0];
             const aCheck = aWords.length > 0 ? aWords[0] : aName.split(' ')[0];
 
-            // Saat tutuyorsa ve takım ismi başlıkta geçiyorsa YAYINCIYI AL!
             if (mTime === cleanTime && (mTitle.includes(hCheck) || mTitle.includes(aCheck))) {
-                // 🚀 EKLENEN MUHBİR LOG: Terminale bilgi basar!
                 console.log(`   📺 [SPOREKRANI] -> ${homeName} vs ${awayName} | Kanal: ${m.yayin}`);
                 return m.yayin; 
             }
         }
     }
-    return fallback; // Harici dosyada bulunamadı, senin eski koda dön!
+    return fallback;
 }
 
 // =========================================================================
-// 🛠️ YARDIMCI FONKSİYONLAR VE BUKELEMUN HEADER (ANTİ-BAN)
+// 🛠️ YARDIMCI FONKSİYONLAR
 // =========================================================================
-
-// Firebase'e anında veri gönderen fonksiyon
 async function uploadToFirebase(sportName, data) {
     try {
         const url = `${FIREBASE_BASE_URL}matches_${sportName}.json`;
-        
         const response = await fetch(url, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-        
         if (response.ok) {
             console.log(`✅ [FIREBASE] ${sportName.toUpperCase()} başarıyla güncellendi!`);
         } else {
@@ -94,7 +83,6 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
-// Gerçek tarayıcı kimlikleri
 const USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
@@ -106,7 +94,6 @@ const USER_AGENTS = [
 async function fetchData(url) {
     try {
         const randomAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
-        
         const response = await fetch(url, {
             headers: { 
                 "User-Agent": randomAgent,
@@ -253,18 +240,19 @@ async function updateFootball() {
     for (const date of [getTRDate(0), getTRDate(1)]) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
+            // 🔎 TFF 2. LİG ALT GRUP ID DEBUG - ID'LERİ BULDUKTAN SONRA BU BLOĞU SİL
+            data.events.forEach(e => {
+                const utId = e.tournament?.uniqueTournament?.id;
+                const cat = (e.tournament?.category?.name || "").toLowerCase();
+                if (cat.includes("turkey")) {
+                    console.log(`🇹🇷 ID=${utId} | ${e.tournament?.uniqueTournament?.name}`);
+                }
+            });
+            // 🔎 DEBUG SONU
+
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
         }
     }
-
-    // 🔎 TFF 2. Lig alt grup ID'lerini bulmak için debug log
-    allEvents.forEach(e => {
-        const utId = e.tournament?.uniqueTournament?.id;
-        const utName = (e.tournament?.uniqueTournament?.name || "").toLowerCase();
-        if (utName.includes("tff") || utName.includes("2. lig") || utName.includes("kırmızı") || utName.includes("beyaz") || utName.includes("red") || utName.includes("white")) {
-            console.log(`🔎 [TFF DEBUG] ID=${utId} | İsim=${e.tournament?.uniqueTournament?.name}`);
-        }
-    });
 
     const duplicateTracker = new Map();
     const leagueCount = {};
@@ -289,7 +277,6 @@ async function updateFootball() {
         const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
-        // 🌉 FALLBACK MEKANİZMASI ÇALIŞIYOR
         const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
         const finalBroadcaster = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
 
@@ -301,16 +288,12 @@ async function updateFootball() {
             fixedDate: dayTR,
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
-            
             broadcaster: finalBroadcaster,
-            
             homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
-            
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
-            
             tournament: cleanTournamentName
         });
     });
@@ -385,7 +368,6 @@ async function updateBasketball() {
 
         const cleanTournamentName = basketballLeagues[utId] || (isNBA ? "NBA" : utName);
 
-        // 🌉 FALLBACK MEKANİZMASI ÇALIŞIYOR
         const fallbackBroadcaster = leagueConfigs[utId] || "Resmi Yayıncı";
         const finalBroadcaster = getBroadcasterWithFallback("basketbol", dayStr, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
 
@@ -396,9 +378,7 @@ async function updateBasketball() {
             fixedDate: dayStr,
             fixedTime: timeString, 
             timestamp: dateTR.getTime(),
-            
             broadcaster: finalBroadcaster,
-            
             homeTeam: { name: e.homeTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.homeTeam.id}.png` },
             awayTeam: { name: e.awayTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.awayTeam.id}.png` },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${isNBA ? "3547" : utId}.png`,
@@ -513,7 +493,6 @@ async function updateTennis() {
                 }
             }
 
-            // 🌉 FALLBACK MEKANİZMASI ÇALIŞIYOR
             const fallbackBroadcaster = "S Sport / beIN Sports";
             const finalBroadcaster = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
 
@@ -524,9 +503,7 @@ async function updateTennis() {
                 fixedDate: fixedDate,
                 fixedTime: timeString,
                 timestamp: startTimestamp,
-                
                 broadcaster: finalBroadcaster,
-                
                 homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos },
                 awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
                 tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
@@ -602,7 +579,7 @@ async function updateF1() {
 }
 
 // =========================================================================
-// 🔄 ANA DÖNGÜ (OPTİMİZE EDİLMİŞ)
+// 🔄 ANA DÖNGÜ
 // =========================================================================
 async function main() {
     console.log("============================================================");
@@ -617,7 +594,6 @@ async function main() {
         try {
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
             
-            // 🌉 HARİCİ DOSYAYI HER DÖNGÜDE TAZE OKU
             loadExternalBroadcasters();
 
             const now = Date.now();
