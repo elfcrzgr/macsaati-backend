@@ -17,21 +17,24 @@ const FULL_UPDATE_INTERVAL_MS = 20 * 60000; // 20 Dakika
 const FIREBASE_BASE_URL = "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 // =========================================================================
-// 🌉 YENİ: HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
+// 🌉 YENİ: HARİCİ YAYINCI DOSYASI (SPOREKRANI - BULUTTAN OKUMA)
 // =========================================================================
 let externalBroadcasters = {};
 
-// Her döngüde yayinci_bilgisi.json dosyasını okuyan güvenli fonksiyon
-function loadExternalBroadcasters() {
+// 🚀 DÜZELTME: Artık J7 yerel dosyaya bakmıyor, doğrudan GitHub'ın Raw linkinden taze veriyi çekiyor!
+async function loadExternalBroadcasters() {
     try {
-        if (fs.existsSync('yayinci_bilgisi.json')) {
-            const data = fs.readFileSync('yayinci_bilgisi.json', 'utf8');
-            externalBroadcasters = JSON.parse(data);
+        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?_=${Date.now()}`;
+        const response = await fetch(url);
+        
+        if (response.ok) {
+            externalBroadcasters = await response.json();
         } else {
+            console.log(`   ⚠️ [BULUT] Yayıncı dosyasına ulaşılamadı. (Durum: ${response.status})`);
             externalBroadcasters = {};
         }
     } catch (e) {
-        console.log("⚠️ yayinci_bilgisi.json okunamadı, kendi yayıncı ayarlarımız kullanılacak.");
+        console.log("   ⚠️ [BULUT] Ağ hatası: Yayıncı ayarlarımız kullanılacak.");
         externalBroadcasters = {};
     }
 }
@@ -48,7 +51,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const hWords = getWords(hName);
     const aWords = getWords(aName);
 
-    // 🚀 DÜZELTME 1: Tarihe takılma! Sporekranı dosyasındaki TÜM günleri ara (UTC kaymasını yok eder)
+    // Tarihe takılma! Sporekranı dosyasındaki TÜM günleri ara (UTC kaymasını yok eder)
     for (const dateKey in externalBroadcasters) {
         const dayData = externalBroadcasters[dateKey];
         if (!dayData || !dayData.matches) continue;
@@ -57,8 +60,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
             if (m.spor && m.spor.toLowerCase() === sportCategory.toLowerCase()) {
                 const mTitle = (m.mac || "").toLowerCase();
 
-                // 🚀 DÜZELTME 2: Takımın belirgin kelimelerinden HERHANGİ BİRİ geçiyorsa kabul et
-                // Örn: "Borussia Dortmund" için hWords = ["borussia", "dortmund"]. Sporekranı "B.Dortmund" yazsa bile "dortmund" eşleşir!
+                // Takımın belirgin kelimelerinden HERHANGİ BİRİ geçiyorsa kabul et
                 let hMatch = hWords.length > 0 ? hWords.some(w => mTitle.includes(w)) : mTitle.includes(hName);
                 let aMatch = aWords.length > 0 ? aWords.some(w => mTitle.includes(w)) : mTitle.includes(aName);
 
@@ -181,7 +183,6 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     const isTurkey = hn.includes("turkey") || an.includes("turkey") || hn.includes("türkiye") || an.includes("türkiye");
     const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || utn.includes("play-off") || utn.includes("playoff");
 
-    // 🚀 DÜZELTME: Türkiye Kupası için hem eski (10783) hem yeni (96) id'yi ekliyoruz
     if (utId === 748 || utId === 750) return isTurkey ? "TRT Spor / Tabii" : "Exxen";
     if (utId === 11 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
         if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
@@ -194,14 +195,9 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
         10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 
         13363: "USL YouTube", 
-        // 🚀 YENİ LİGLER İÇİN FALLBACK YAYINCI EKLENDİ
-        11417: "TFF YouTube", // TFF 3. Lig Grup 1
-        11416: "TFF YouTube", // TFF 3. Lig Grup 2
-        11415: "TFF YouTube", // TFF 3. Lig Grup 3
-        15938: "TFF YouTube", // TFF 3. Lig Grup 4
+        11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 
         696: "DAZN / YouTube", 
-        10783: "A Spor", // Türkiye Kupası (Eski ID)
-        96: "A Spor",    // Türkiye Kupası (Yeni ID)
+        10783: "A Spor", 96: "A Spor", 
         232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 53: "beIN Sports"
     };
 
@@ -213,23 +209,19 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-// 🚀 DÜZELTME: Hedef ligler listesine 96, 11416, 11417, 11415, 15938 eklendi. (10783 zaten vardı)
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 238, 38, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363, 10783, 96];
 const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242, 11415, 11416, 11417, 15938];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
-// 🚀 DÜZELTME: İsimler güncellendi, yeni gruplar eklendi.
 const footballLeagues = {
     17: "İngiltere Premier Lig", 8: "İspanya La Liga", 35: "Almanya Bundesliga",
     23: "İtalya Serie A", 34: "Fransa Ligue 1", 52: "Türkiye Süper Lig", 
     98: "Trendyol 1. Lig", 97: "TFF 2. Lig", 53: "İtalya Serie B",
     37: "Hollanda Eredivisie", 238: "Portekiz Primeira Liga", 38: "Belçika Pro League", 
     36: "İskoçya Premiership", 19: "FA Cup", 
-    938: "Türkiye Kupası", 10783: "Türkiye Kupası", 96: "Türkiye Kupası", // Hepsi Türkiye Kupası
-    11417: "TFF 3. Lig 1. Grup",
-    11416: "TFF 3. Lig 2. Grup",
-    11415: "TFF 3. Lig 3. Grup",
-    15938: "TFF 3. Lig 4. Grup",
+    938: "Türkiye Kupası", 10783: "Türkiye Kupası", 96: "Türkiye Kupası", 
+    11417: "TFF 3. Lig 1. Grup", 11416: "TFF 3. Lig 2. Grup",
+    11415: "TFF 3. Lig 3. Grup", 15938: "TFF 3. Lig 4. Grup",
     7: "UEFA Şampiyonlar Ligi", 679: "UEFA Avrupa Ligi", 17015: "UEFA Konferans Ligi", 
     16: "FIFA Dünya Kupası", 1: "UEFA EURO", 133: "Copa America", 
     270: "Afrika Uluslar Kupası", 299: "Uluslararası Hazırlık Maçları", 
@@ -268,7 +260,6 @@ async function updateFootball() {
     console.log(`⚽ Futbol güncelleniyor (Play-off ve Tarih Fix)...`);
     let allEvents = [];
     
-    // 🚀 DÜZELTME 1: Pazar maçlarını yakalamak için tarama alanını 3 güne çıkardık
     for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
@@ -277,7 +268,6 @@ async function updateFootball() {
                 const utName = (e.tournament?.uniqueTournament?.name || "").toLowerCase();
                 const tourName = (e.tournament?.name || "").toLowerCase();
                 
-                // 🚀 DÜZELTME 2: ID listede olmasa bile "3. lig" veya "playoff" geçiyorsa ZORLA ÇEK
                 const isTargetLeague = ALL_FOOT_TARGETS.includes(utId) || 
                                      utName.includes("3. lig") || 
                                      tourName.includes("3. lig") ||
@@ -304,7 +294,6 @@ async function updateFootball() {
         const aName = e.awayTeam.name || "";
         const utName = e.tournament?.uniqueTournament?.name || "";
         
-        // İsmi listede yoksa bile SofaScore'un kendi adını kullan
         const cleanTournamentName = footballLeagues[leagueId] || e.tournament?.name || utName;
 
         const dateTR = new Date(e.startTimestamp * 1000);
@@ -314,7 +303,6 @@ async function updateFootball() {
         const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, "", utName);
         const finalBroadcaster = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
 
-        // 🚀 DÜZELTME 3: Play-off maçları filtreye takılmasın diye "Elite" yapıyoruz
         const isEliteMatch = ELITE_FOOT_IDS.includes(leagueId) || utName.includes("3. lig") || utName.includes("play");
 
         duplicateTracker.set(e.id, {
@@ -337,7 +325,6 @@ async function updateFootball() {
 
     const matches = Array.from(duplicateTracker.values()).sort((a, b) => a.timestamp - b.timestamp);
 
-    // Firebase'e gönder
     await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
     
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
@@ -406,7 +393,6 @@ async function updateBasketball() {
 
         const cleanTournamentName = basketballLeagues[utId] || (isNBA ? "NBA" : utName);
 
-        // 🌉 FALLBACK MEKANİZMASI ÇALIŞIYOR
         const fallbackBroadcaster = leagueConfigs[utId] || "Resmi Yayıncı";
         const finalBroadcaster = getBroadcasterWithFallback("basketbol", dayStr, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
 
@@ -534,7 +520,6 @@ async function updateTennis() {
                 }
             }
 
-            // 🌉 FALLBACK MEKANİZMASI ÇALIŞIYOR
             const fallbackBroadcaster = "S Sport / beIN Sports";
             const finalBroadcaster = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
 
@@ -623,7 +608,7 @@ async function updateF1() {
 }
 
 // =========================================================================
-// 🔄 ANA DÖNGÜ (OPTİMİZE EDİLMİŞ + OTOMATİK GİT PULL)
+// 🔄 ANA DÖNGÜ (OPTİMİZE EDİLMİŞ + BULUTTAN OKUMA)
 // =========================================================================
 async function main() {
     console.log("============================================================");
@@ -638,20 +623,8 @@ async function main() {
         try {
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
             
-            // 🚀 YENİ: 20 DAKİKADA BİR GITHUB'DAN OTOMATİK PULL YAP
-            if (timeSinceLastFullUpdate >= FULL_UPDATE_INTERVAL_MS) {
-                try {
-                    console.log("📥 GitHub'dan güncel yayıncı dosyası (yayinci_bilgisi.json) çekiliyor...");
-                    // execPromise komutu dosyanın en üstünde tanımlı olmalı!
-                    await execPromise('git pull origin main --rebase');
-                    console.log("✅ Git Pull başarılı, dosyalar güncel.");
-                } catch (gitErr) {
-                    console.log("⚠️ Git Pull yapılamadı (Önemli değil, eski veriyle devam edilecek)");
-                }
-            }
-
-            // 🌉 HARİCİ DOSYAYI HER DÖNGÜDE TAZE OKU
-            loadExternalBroadcasters();
+            // 🌉 HARİCİ DOSYAYI HER DÖNGÜDE BULUTTAN TAZE OKU
+            await loadExternalBroadcasters();
 
             const now = Date.now();
             const isMatchTime = footballStatus.nextMatchTimestamp && (now >= (footballStatus.nextMatchTimestamp - 60000));
