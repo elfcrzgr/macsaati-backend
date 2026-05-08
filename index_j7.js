@@ -623,7 +623,7 @@ async function updateF1() {
 }
 
 // =========================================================================
-// 🔄 ANA DÖNGÜ (OPTİMİZE EDİLMİŞ)
+// 🔄 ANA DÖNGÜ (OPTİMİZE EDİLMİŞ + OTOMATİK GİT PULL)
 // =========================================================================
 async function main() {
     console.log("============================================================");
@@ -638,6 +638,18 @@ async function main() {
         try {
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
             
+            // 🚀 YENİ: 20 DAKİKADA BİR GITHUB'DAN OTOMATİK PULL YAP
+            if (timeSinceLastFullUpdate >= FULL_UPDATE_INTERVAL_MS) {
+                try {
+                    console.log("📥 GitHub'dan güncel yayıncı dosyası (yayinci_bilgisi.json) çekiliyor...");
+                    // execPromise komutu dosyanın en üstünde tanımlı olmalı!
+                    await execPromise('git pull origin main --rebase');
+                    console.log("✅ Git Pull başarılı, dosyalar güncel.");
+                } catch (gitErr) {
+                    console.log("⚠️ Git Pull yapılamadı (Önemli değil, eski veriyle devam edilecek)");
+                }
+            }
+
             // 🌉 HARİCİ DOSYAYI HER DÖNGÜDE TAZE OKU
             loadExternalBroadcasters();
 
