@@ -523,39 +523,35 @@ async function updateTennis() {
 }
 
 // =========================================================================
-// 🏎️ FORMULA 1 GÜNCEL VERİLER VE PİST DETAYLARI (TAM SÜRÜM)
+// 🏎️ FORMULA 1 GÜNCEL VERİLER VE PİST DETAYLARI (UYGULAMA UYUMLU)
 // =========================================================================
 
-// NOT: GITHUB_USER ve REPO_NAME dosyanın en başında tanımlı olduğu için burada tekrar yazmıyoruz.
-const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/tournament_logos/`;
-const F1_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/logos/`;
-
-// Pist teknik detayları (Tur sayısı ve Rekor bilgileri)
+// Pist teknik detayları - Android modelindeki circuitStats yapısına uygun
 const CIRCUIT_DETAILS = {
-    "bahrain": { laps: "57", record: "1:31.447 (P. de la Rosa)" },
-    "jeddah": { laps: "50", record: "1:30.734 (L. Hamilton)" },
-    "albert_park": { laps: "58", record: "1:19.813 (C. Leclerc)" },
-    "suzuka": { laps: "53", record: "1:30.983 (L. Hamilton)" },
-    "shanghai": { laps: "56", record: "1:32.238 (M. Schumacher)" },
-    "miami": { laps: "57", record: "1:29.708 (M. Verstappen)" },
-    "imola": { laps: "63", record: "1:15.484 (L. Hamilton)" },
-    "monaco": { laps: "78", record: "1:12.909 (L. Hamilton)" },
-    "villeneuve": { laps: "70", record: "1:13.078 (V. Bottas)" },
-    "catalunya": { laps: "66", record: "1:18.149 (M. Verstappen)" },
-    "red_bull_ring": { laps: "71", record: "1:05.619 (C. Sainz)" },
-    "silverstone": { laps: "52", record: "1:27.097 (M. Verstappen)" },
-    "hungaroring": { laps: "70", record: "1:16.627 (L. Hamilton)" },
-    "spa": { laps: "44", record: "1:46.286 (V. Bottas)" },
-    "zandvoort": { laps: "72", record: "1:11.097 (L. Hamilton)" },
-    "monza": { laps: "53", record: "1:21.046 (R. Barrichello)" },
-    "baku": { laps: "51", record: "1:43.009 (C. Leclerc)" },
-    "marina_bay": { laps: "62", record: "1:35.867 (L. Hamilton)" },
-    "americas": { laps: "56", record: "1:36.169 (C. Leclerc)" },
-    "rodriguez": { laps: "71", record: "1:17.774 (V. Bottas)" },
-    "interlagos": { laps: "71", record: "1:10.540 (V. Bottas)" },
-    "vegas": { laps: "50", record: "1:35.490 (O. Piastri)" },
-    "losail": { laps: "57", record: "1:24.319 (M. Verstappen)" },
-    "yas_marina": { laps: "58", record: "1:26.103 (M. Verstappen)" }
+    "bahrain": { laps: "57", length: "5.412 km", record: "1:31.447 - Pedro de la Rosa" },
+    "jeddah": { laps: "50", length: "6.174 km", record: "1:30.734 - Lewis Hamilton" },
+    "albert_park": { laps: "58", length: "5.278 km", record: "1:19.813 - Charles Leclerc" },
+    "suzuka": { laps: "53", length: "5.807 km", record: "1:30.983 - Lewis Hamilton" },
+    "shanghai": { laps: "56", length: "5.451 km", record: "1:32.238 - Michael Schumacher" },
+    "miami": { laps: "57", length: "5.412 km", record: "1:29.708 - Max Verstappen" },
+    "imola": { laps: "63", length: "4.909 km", record: "1:15.484 - Lewis Hamilton" },
+    "monaco": { laps: "78", length: "3.337 km", record: "1:12.909 - Lewis Hamilton" },
+    "villeneuve": { laps: "70", length: "4.361 km", record: "1:13.078 - Valtteri Bottas" },
+    "catalunya": { laps: "66", length: "4.675 km", record: "1:18.149 - Max Verstappen" },
+    "red_bull_ring": { laps: "71", length: "4.318 km", record: "1:05.619 - Carlos Sainz" },
+    "silverstone": { laps: "52", length: "5.891 km", record: "1:27.097 - Max Verstappen" },
+    "hungaroring": { laps: "70", length: "4.381 km", record: "1:16.627 - Lewis Hamilton" },
+    "spa": { laps: "44", length: "7.004 km", record: "1:46.286 - Valtteri Bottas" },
+    "zandvoort": { laps: "72", length: "4.259 km", record: "1:11.097 - Lewis Hamilton" },
+    "monza": { laps: "53", length: "5.793 km", record: "1:21.046 - Rubens Barrichello" },
+    "baku": { laps: "51", length: "6.003 km", record: "1:43.009 - Charles Leclerc" },
+    "marina_bay": { laps: "62", length: "4.940 km", record: "1:35.867 - Lewis Hamilton" },
+    "americas": { laps: "56", length: "5.513 km", record: "1:36.169 - Charles Leclerc" },
+    "rodriguez": { laps: "71", length: "4.304 km", record: "1:17.774 - Valtteri Bottas" },
+    "interlagos": { laps: "71", length: "4.309 km", record: "1:10.540 - Valtteri Bottas" },
+    "vegas": { laps: "50", length: "6.201 km", record: "1:35.490 - Oscar Piastri" },
+    "losail": { laps: "57", length: "5.419 km", record: "1:24.319 - Max Verstappen" },
+    "yas_marina": { laps: "58", length: "5.281 km", record: "1:26.103 - Max Verstappen" }
 };
 
 async function updateF1() {
@@ -580,8 +576,8 @@ async function updateF1() {
             const circuitId = race.Circuit.circuitId;
             const countryName = race.Circuit.Location.country;
             
-            // Veri eşleme (Laps & Record)
-            const circuitTech = CIRCUIT_DETAILS[circuitId] || { laps: "-", record: "-" };
+            // Uygulamanın beklediği circuitStats yapısı
+            const circuitStats = CIRCUIT_DETAILS[circuitId] || { laps: "-", length: "-", record: "-" };
 
             let flagCode = countryToCode[countryName] || countryName.toLowerCase().substring(0, 2);
             if (countryName.toLowerCase().includes("usa")) flagCode = "us";
@@ -601,8 +597,8 @@ async function updateF1() {
                     grandPrix: race.raceName,
                     sessionName: sessionName,
                     trackName: race.Circuit.circuitName,
-                    laps: circuitTech.laps,           // Tur sayısı
-                    lapRecord: circuitTech.record,    // Tur rekoru
+                    // Uygulamanın beklediği nested obje yapısı
+                    circuitStats: circuitStats, 
                     countryLogo: F1_LOGO_BASE + flagCode + ".png", 
                     tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png"
                 });
@@ -625,12 +621,13 @@ async function updateF1() {
             events: finalEvents 
         });
         
-        console.log(`  ✅ Başarılı: Toplam ${finalEvents.length} F1 seansı ve pist verileri Maç Saati için kaydedildi.`);
+        console.log(`  ✅ Uygulama hiyerarşisiyle uyumlu F1 verileri yüklendi.`);
         
     } catch (error) { 
         console.error(`   ⚠️ F1 hatası: ${error.message}`); 
     }
 }
+
 
 
 
