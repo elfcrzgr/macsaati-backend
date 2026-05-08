@@ -42,26 +42,38 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const dayData = externalBroadcasters[dateStr];
     if (!dayData || !dayData.matches) return fallback;
 
-    // Saat bilgisinden CANLI gibi yazıları temizleyip sadece "22:00" kısmını alırız
-    const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").trim();
     const hName = (homeName || "").toLowerCase();
     const aName = (awayName || "").toLowerCase();
 
+    // Takım isimlerindeki 3 harften büyük anlamlı kelimeleri çıkar (Örn: "Borussia Dortmund" -> ["borussia", "dortmund"])
+    const getWords = (name) => name.replace(/[^\w\sğüşıöç]/gi, ' ').split(/\s+/).filter(w => w.length > 3);
+    const hWords = getWords(hName);
+    const aWords = getWords(aName);
+
     for (const m of dayData.matches) {
         if (m.spor && m.spor.toLowerCase() === sportCategory.toLowerCase()) {
-            const mTime = (m.saat || "").trim();
             const mTitle = (m.mac || "").toLowerCase();
 
-            // Takım isimlerinden kelimeleri al (Hata yapmamak için 3 harften uzunları seç)
-            const hWords = hName.split(' ').filter(w => w.length > 3);
-            const aWords = aName.split(' ').filter(w => w.length > 3);
-            const hCheck = hWords.length > 0 ? hWords[0] : hName.split(' ')[0];
-            const aCheck = aWords.length > 0 ? aWords[0] : aName.split(' ')[0];
+            let hMatch = false;
+            let aMatch = false;
 
-            // Saat tutuyorsa ve takım ismi başlıkta geçiyorsa YAYINCIYI AL!
-            if (mTime === cleanTime && (mTitle.includes(hCheck) || mTitle.includes(aCheck))) {
-                // 🚀 EKLENEN MUHBİR LOG: Terminale bilgi basar!
-                console.log(`   📺 [SPOREKRANI] -> ${homeName} vs ${awayName} | Kanal: ${m.yayin}`);
+            // Ev sahibi takımın kelimelerinden HERHANGİ BİRİ Sporekranı başlığında geçiyor mu?
+            if (hWords.length > 0) {
+                hMatch = hWords.some(w => mTitle.includes(w));
+            } else {
+                hMatch = mTitle.includes(hName); // İsim çok kısaysa direkt ara
+            }
+
+            // Deplasman takımının kelimelerinden HERHANGİ BİRİ Sporekranı başlığında geçiyor mu?
+            if (aWords.length > 0) {
+                aMatch = aWords.some(w => mTitle.includes(w));
+            } else {
+                aMatch = mTitle.includes(aName);
+            }
+
+            // 🚀 SAAT KONTROLÜNÜ SİLDİK! İki takım da eşleştiyse yayıncıyı al!
+            if (hMatch && aMatch) {
+                console.log(`   📺 [SPOREKRANI] EŞLEŞTİ -> ${homeName} vs ${awayName} | Kanal: ${m.yayin}`);
                 return m.yayin; 
             }
         }
