@@ -265,10 +265,10 @@ function calculateLiveMinute(eventData) {
 }
 
 async function updateFootball() {
-    console.log(`⚽ Futbol güncelleniyor...`);
+    console.log(`⚽ Futbol güncelleniyor (Play-off ve Tarih Fix)...`);
     let allEvents = [];
     
-    // 🚀 DÜZELTME 1: Pazar maçlarını yakalamak için 3 gün taranıyor
+    // 🚀 DÜZELTME 1: Pazar maçlarını yakalamak için tarama alanını 3 güne çıkardık
     for (const date of [getTRDate(0), getTRDate(1), getTRDate(2)]) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
@@ -277,12 +277,13 @@ async function updateFootball() {
                 const utName = (e.tournament?.uniqueTournament?.name || "").toLowerCase();
                 const tourName = (e.tournament?.name || "").toLowerCase();
                 
-                // 🚀 DÜZELTME 2: ID listede olmasa bile, turnuva adında "3. lig" VEYA "playoff" geçiyorsa ve takım Türk ise zorla çek!
-                const isTurkishLowerLeague = utName.includes("3. lig") || tourName.includes("3. lig") || 
-                                             ((utName.includes("playoff") || utName.includes("play-off")) && 
-                                              (e.homeTeam.name.toLowerCase().includes("spor") || e.awayTeam.name.toLowerCase().includes("spor")));
+                // 🚀 DÜZELTME 2: ID listede olmasa bile "3. lig" veya "playoff" geçiyorsa ZORLA ÇEK
+                const isTargetLeague = ALL_FOOT_TARGETS.includes(utId) || 
+                                     utName.includes("3. lig") || 
+                                     tourName.includes("3. lig") ||
+                                     (utName.includes("play-off") && (e.homeTeam.name.toLowerCase().includes("spor") || e.awayTeam.name.toLowerCase().includes("spor")));
 
-                return ALL_FOOT_TARGETS.includes(utId) || isTurkishLowerLeague;
+                return isTargetLeague;
             }));
         }
     }
@@ -301,52 +302,49 @@ async function updateFootball() {
         
         const hName = e.homeTeam.name || "";
         const aName = e.awayTeam.name || "";
-        const tName = e.tournament?.name || "";
         const utName = e.tournament?.uniqueTournament?.name || "";
         
+        // İsmi listede yoksa bile SofaScore'un kendi adını kullan
         const cleanTournamentName = footballLeagues[leagueId] || e.tournament?.name || utName;
 
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
-        const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
+        const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, "", utName);
         const finalBroadcaster = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
 
-        // 🚀 DÜZELTME 3: Bu sinsi Play-Off maçları filtreye takılmasın diye onları "Elite" yapıyoruz.
-        const isEliteMatch = ELITE_FOOT_IDS.includes(leagueId) || utName.toLowerCase().includes("3. lig") || utName.toLowerCase().includes("play");
+        // 🚀 DÜZELTME 3: Play-off maçları filtreye takılmasın diye "Elite" yapıyoruz
+        const isEliteMatch = ELITE_FOOT_IDS.includes(leagueId) || utName.includes("3. lig") || utName.includes("play");
 
         duplicateTracker.set(e.id, {
             id: e.id,
-            isElite: isEliteMatch,
+            isElite: isEliteMatch, 
             status: status,
             liveMinute: isLive ? calculateLiveMinute(e) : "",
             fixedDate: dayTR,
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
-            
             broadcaster: finalBroadcaster,
-            
             homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
-            
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
-            
             tournament: cleanTournamentName
         });
     });
 
     const matches = Array.from(duplicateTracker.values()).sort((a, b) => a.timestamp - b.timestamp);
 
+    // Firebase'e gönder
     await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
     
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
     const upcomingMatches = matches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
     const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
 
-    console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
+    console.log(`  ✅ Toplam ${matches.length} futbol maçı Firebase'e gönderildi.`);
     return { hasLiveMatch, nextMatchTimestamp };
 }
 
