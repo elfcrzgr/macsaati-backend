@@ -1,55 +1,126 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+const puppeteer = require('puppeteer');
+const fs = require('fs');
 
 async function getBroadcasterData() {
-    console.log("🌐 Spor Ekranı verileri çekiliyor (Termux Modu)...");
+    const sports = ['futbol', 'basketbol', 'tenis'];
     
-    try {
-        const url = 'https://www.sporekrani.com/';
-        // Gerçek kullanıcı gibi görünmek için Header ekliyoruz
-        const { data } = await axios.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
-            }
-        });
-
-        const $ = cheerio.load(data);
-        const results = [];
-
-        // Her maç satırını tara
-        $('.list-group-item').each((i, element) => {
-            const time = $(element).find('.saat').text().trim();
-            const title = $(element).find('.mac-adi').text().trim();
-            const sport = $(element).find('.spor-dali').text().trim();
+    // Sistem saatine göre bugün ve yarını hesapla
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const todayStr = today.toISOString().split('T')[0];
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    
+    console.log(`📅 Bugün: ${todayStr}`);
+    console.log(`📅 Yarın: ${tomorrowStr}\n`);
+    
+    const allMatches = {
+        [todayStr]: { title: `📅 BUGÜN (${today.toLocaleDateString('tr-TR', { month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
+        [tomorrowStr]: { title: `📅 YARIN (${tomorrow.toLocaleDateString('tr-TR', { month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
+    };
+    
+    for (const sport of sports) {
+        console.log(`\n🚀 ${sport.toUpperCase()} sayfası açılıyor...\n`);
+        
+        const browser = await puppeteer.launch({ headless: true });
+        const page = await browser.newPage();
+        
+        try {
+            const url = `https://www.sporekrani.com/home/sport/${sport}`;
+            await page.goto(url, { waitUntil: 'networkidle2' });
             
-            const channels = [];
-            $(element).find('.kanallar a, .kanallar img').each((j, ch) => {
-                const name = $(ch).attr('title') || $(ch).attr('alt') || $(ch).text().trim();
-                if (name && !channels.includes(name)) {
-                    channels.push(name);
+            // JSON-LD script tag'ını al
+            const jsonLdData = await page.evaluate(() => {
+                const script = document.querySelector('script[type="application/ld+json"]');
+                if (script) {
+                    try {
+                        return JSON.parse(script.innerHTML);
+                    } catch (e) {
+                        return null;
+                    }
+                }
+                return null;
+            });
+            
+            if (!jsonLdData) {
+                console.log(`⚠️ ${sport}: JSON-LD bulunamadı`);
+                await browser.close();
+                continue;
+            }
+            
+            // BroadcastEvent'leri işle
+            const events = Array.isArray(jsonLdData) ? jsonLdData : [jsonLdData];
+            console.log(`✅ ${sport}: ${events.length} event bulundu`);
+            
+            events.forEach(event => {
+                if (event['@type'] !== 'BroadcastEvent') return;
+                
+                const broadcastEvent = event.broadcastOfEvent;
+                if (!broadcastEvent) return;
+                
+                const startDate = new Date(broadcastEvent.startDate);
+                const dateStr = startDate.toISOString().split('T')[0];
+                
+                if (!allMatches[dateStr]) return;
+                
+                // Kanal adı
+                const channel = event.broadcastChannel?.name || 'Bilinmiyor';
+                
+                // Maç adı
+                let eventName = broadcastEvent.name || '';
+                
+                // Eğer maç gibi görünüyorsa (takım vs takım formatında)
+                if (eventName.includes(' - ') || eventName.includes(' vs ')) {
+                    const time = startDate.toLocaleTimeString('tr-TR', { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+                    
+                    allMatches[dateStr].matches.push({
+                        saat: time,
+                        spor: sport.charAt(0).toUpperCase() + sport.slice(1),
+                        mac: eventName,
+                        yayin: channel
+                    });
                 }
             });
-
-            if (title && time) {
-                results.push({
-                    saat: time,
-                    spor: sport,
-                    mac: title,
-                    yayin: channels.join(' / ')
-                });
-            }
-        });
-
-        if (results.length === 0) {
-            console.log("⚠️ Veri bulunamadı. Site korumasına takılmış olabiliriz.");
-        } else {
-            console.log(`✅ ${results.length} yayın bilgisi bulundu.\n`);
-            console.table(results.slice(0, 15)); // İlk 15 sonucu göster
+            
+            await browser.close();
+            
+        } catch (error) {
+            console.error(`🚨 ${sport} hatası:`, error.message);
+            await browser.close();
         }
-
-    } catch (error) {
-        console.error("🚨 Hata oluştu:", error.message);
     }
+    
+    // Sonuçları göster
+    console.log("\n" + "=".repeat(80));
+    [todayStr, tomorrowStr].forEach(key => {
+        const group = allMatches[key];
+        console.log(`\n\x1b[33m${group.title}\x1b[0m`);
+        
+        if (group.matches.length === 0) {
+            console.log("   ⚠️ Maç bulunamadı.");
+        } else {
+            // Mükerrer kontrol
+            const uniqueMatches = Array.from(
+                new Set(group.matches.map(JSON.stringify))
+            ).map(JSON.parse);
+            
+            // Saate göre sırala
+            const sorted = uniqueMatches.sort((a, b) => 
+                a.saat.localeCompare(b.saat)
+            );
+            
+            console.table(sorted);
+            console.log(`   ✅ Toplam ${sorted.length} maç`);
+        }
+    });
+    
+    // Dosyaya kaydet
+    fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
+    console.log("\n💾 matches.json dosyasına kaydedildi");
 }
 
 getBroadcasterData();
