@@ -188,7 +188,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
         10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 
         13363: "USL YouTube", 11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 
-        696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus"
+        696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 53: "beIN Sports"
     };
 
     if (staticConfigs[utId]) return staticConfigs[utId];
