@@ -2,22 +2,30 @@ name: 📺 Daily Broadcaster Update
 
 on:
   schedule:
-    - cron: '21 0 * * *'  # UTC 00:21 = TR 03:21
+    - cron: '21 0 * * *'  # UTC 00:21 = TR 03:21 (gece sonrası)
   workflow_dispatch:
 
 jobs:
   update-broadcasters:
     runs-on: ubuntu-latest
-    container:
-      image: node:18-bullseye  # Chrome önceden var
     
     steps:
       - uses: actions/checkout@v4
       
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
       - name: Install dependencies
         run: npm install puppeteer
       
+      - name: Install Chrome for Puppeteer
+        run: sudo apt-get update && sudo apt-get install -y chromium-browser
+      
       - name: Run yayinci.js
+        env:
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
         run: node yayinci.js
       
       - name: Commit and Push
