@@ -523,10 +523,17 @@ async function updateTennis() {
 }
 
 // =========================================================================
-// 🏎️ FORMULA 1 GÜNCEL VERİLER VE PİST BİLGİLERİ
+// 🏎️ FORMULA 1 GÜNCEL VERİLER VE PİST DETAYLARI (TAM SÜRÜM)
 // =========================================================================
 
-// Pist teknik detaylarını içeren mapping objesi
+// GitHub değişkenlerini kendi bilgilerine göre güncellediğinden emin ol
+const GITHUB_USER = "elfcrzgr"; 
+const REPO_NAME = "macsaati-backend";
+
+const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/tournament_logos/`;
+const F1_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/logos/`;
+
+// Pist teknik detayları (Tur sayısı ve Rekor bilgileri)
 const CIRCUIT_DETAILS = {
     "bahrain": { laps: "57", record: "1:31.447 (P. de la Rosa)" },
     "jeddah": { laps: "50", record: "1:30.734 (L. Hamilton)" },
@@ -563,13 +570,20 @@ async function updateF1() {
         const races = response.MRData?.RaceTable?.Races || [];
         const finalEvents = [];
         
-        const countryToCode = { "Bahrain": "bh", "Saudi Arabia": "sa", "Australia": "au", "Japan": "jp", "China": "cn", "USA": "us", "United States": "us", "Italy": "it", "Monaco": "mc", "Canada": "ca", "Spain": "es", "Austria": "at", "UK": "gb", "Hungary": "hu", "Belgium": "be", "Netherlands": "nl", "Azerbaijan": "az", "Singapore": "sg", "Mexico": "mx", "Brazil": "br", "Qatar": "qa", "UAE": "ae" };
+        const countryToCode = { 
+            "Bahrain": "bh", "Saudi Arabia": "sa", "Australia": "au", "Japan": "jp", 
+            "China": "cn", "USA": "us", "United States": "us", "Italy": "it", 
+            "Monaco": "mc", "Canada": "ca", "Spain": "es", "Austria": "at", 
+            "UK": "gb", "Hungary": "hu", "Belgium": "be", "Netherlands": "nl", 
+            "Azerbaijan": "az", "Singapore": "sg", "Mexico": "mx", "Brazil": "br", 
+            "Qatar": "qa", "UAE": "ae" 
+        };
 
         races.forEach(race => {
             const circuitId = race.Circuit.circuitId;
             const countryName = race.Circuit.Location.country;
             
-            // Ekstra pist bilgilerini çek (Yoksa varsayılan "-" koy)
+            // Veri eşleme (Laps & Record)
             const circuitTech = CIRCUIT_DETAILS[circuitId] || { laps: "-", record: "-" };
 
             let flagCode = countryToCode[countryName] || countryName.toLowerCase().substring(0, 2);
@@ -590,13 +604,14 @@ async function updateF1() {
                     grandPrix: race.raceName,
                     sessionName: sessionName,
                     trackName: race.Circuit.circuitName,
-                    laps: circuitTech.laps,           // Yeni: Tur sayısı
-                    lapRecord: circuitTech.record,    // Yeni: Tur rekoru
+                    laps: circuitTech.laps,           // Ekranın için Tur bilgisi
+                    lapRecord: circuitTech.record,    // Ekranın için Rekor bilgisi
                     countryLogo: F1_LOGO_BASE + flagCode + ".png", 
                     tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png"
                 });
             };
 
+            // Seansları ekle
             if (race.FirstPractice) addSession("1. Antrenman", race.FirstPractice.date, race.FirstPractice.time);
             if (race.SecondPractice) addSession("2. Antrenman", race.SecondPractice.date, race.SecondPractice.time);
             if (race.ThirdPractice) addSession("3. Antrenman", race.ThirdPractice.date, race.ThirdPractice.time);
@@ -605,9 +620,10 @@ async function updateF1() {
             addSession("Yarış", race.date, race.time);
         });
 
+        // Tarihe göre sırala
         finalEvents.sort((a, b) => a.timestamp - b.timestamp);
-        
-        // Firebase'e gönder
+
+        // Firebase'e tek seferde yükle
         await uploadToFirebase("f1", { 
             success: true, 
             lastUpdated: new Date().toISOString(), 
@@ -615,12 +631,13 @@ async function updateF1() {
             events: finalEvents 
         });
         
-        console.log(`  ✅ Toplam ${finalEvents.length} F1 seansı ve pist detayları güncellendi.`);
+        console.log(`  ✅ Başarılı: Toplam ${finalEvents.length} F1 seansı ve pist teknik verileri kaydedildi.`);
         
     } catch (error) { 
         console.error(`   ⚠️ F1 hatası: ${error.message}`); 
     }
 }
+
 
 
 
