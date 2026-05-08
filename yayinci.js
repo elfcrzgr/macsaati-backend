@@ -30,7 +30,7 @@ async function getBroadcasterData() {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
             await page.goto(url, { waitUntil: 'networkidle2' });
             
-            // JSON-LD script tag'ını al
+            // JSON-LD'yi al
             const jsonLdData = await page.evaluate(() => {
                 const script = document.querySelector('script[type="application/ld+json"]');
                 if (script) {
@@ -64,13 +64,20 @@ async function getBroadcasterData() {
                 
                 if (!allMatches[dateStr]) return;
                 
-                // Kanal adı
-                const channel = event.broadcastChannel?.name || 'Bilinmiyor';
+                // broadcastChannel ARRAY olabilir veya single object
+                let channels = [];
+                if (Array.isArray(event.broadcastChannel)) {
+                    channels = event.broadcastChannel.map(ch => ch.name).filter(n => n);
+                } else if (event.broadcastChannel?.name) {
+                    channels = [event.broadcastChannel.name];
+                }
+                
+                const channelStr = channels.length > 0 ? channels.join(' / ') : 'Bilinmiyor';
                 
                 // Maç adı
                 let eventName = broadcastEvent.name || '';
                 
-                // Eğer maç gibi görünüyorsa (takım vs takım formatında)
+                // Eğer maç gibi görünüyorsa
                 if (eventName.includes(' - ') || eventName.includes(' vs ')) {
                     const time = startDate.toLocaleTimeString('tr-TR', { 
                         hour: '2-digit', 
@@ -81,7 +88,7 @@ async function getBroadcasterData() {
                         saat: time,
                         spor: sport.charAt(0).toUpperCase() + sport.slice(1),
                         mac: eventName,
-                        yayin: channel
+                        yayin: channelStr
                     });
                 }
             });
@@ -95,7 +102,7 @@ async function getBroadcasterData() {
     }
     
     // Sonuçları göster
-    console.log("\n" + "=".repeat(80));
+    console.log("\n" + "=".repeat(100));
     [todayStr, tomorrowStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
@@ -120,7 +127,10 @@ async function getBroadcasterData() {
     
     // Dosyaya kaydet
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 matches.json dosyasına kaydedildi");
+    console.log("\n💾 yayinci_bilgisi.json dosyasına kaydedildi");
 }
 
-getBroadcasterData();
+getBroadcasterData().catch(e => {
+    console.error("🚨 Fatal Error:", e);
+    process.exit(1);
+});
