@@ -187,8 +187,9 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 7: "TRT 1 / Tabii", 351: "S Sport Plus", 
         37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
         10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 
-        13363: "USL YouTube", 11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube", 
-        696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN", 1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus", 38: "beIN Sports", 36: "beIN Sports"
+        11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube",
+        13363: "USL YouTube", 696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN",
+        1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus", 38: "beIN Sports", 36: "beIN Sports"
     };
 
     if (staticConfigs[utId]) return staticConfigs[utId];
@@ -200,13 +201,15 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
 };
 
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363];
-const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242];
+const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242, 11415, 11416, 11417, 15938];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 const footballLeagues = {
     17: "İngiltere Premier Lig", 8: "İspanya La Liga", 35: "Almanya Bundesliga",
     23: "İtalya Serie A", 34: "Fransa Ligue 1", 52: "Türkiye Süper Lig", 
-    98: "Trendyol 1. Lig", 97: "TFF 2. Lig", 53: "İtalya Serie B",
+    98: "Trendyol 1. Lig", 97: "TFF 2. Lig",
+    11417: "TFF 3. Lig Grup 1", 11416: "TFF 3. Lig Grup 2", 11415: "TFF 3. Lig Grup 3", 15938: "TFF 3. Lig Grup 4",
+    53: "İtalya Serie B",
     37: "Hollanda Eredivisie", 238: "Portekiz Primeira Liga", 38: "Belçika Pro League", 
     36: "İskoçya Premiership", 19: "FA Cup", 938: "Türkiye Kupası", 
     7: "UEFA Şampiyonlar Ligi", 679: "UEFA Avrupa Ligi", 17015: "UEFA Konferans Ligi", 
@@ -253,6 +256,15 @@ async function updateFootball() {
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
         }
     }
+
+    // 🔎 TFF 2. Lig alt grup ID'lerini bulmak için debug log
+    allEvents.forEach(e => {
+        const utId = e.tournament?.uniqueTournament?.id;
+        const utName = (e.tournament?.uniqueTournament?.name || "").toLowerCase();
+        if (utName.includes("tff") || utName.includes("2. lig") || utName.includes("kırmızı") || utName.includes("beyaz") || utName.includes("red") || utName.includes("white")) {
+            console.log(`🔎 [TFF DEBUG] ID=${utId} | İsim=${e.tournament?.uniqueTournament?.name}`);
+        }
+    });
 
     const duplicateTracker = new Map();
     const leagueCount = {};
