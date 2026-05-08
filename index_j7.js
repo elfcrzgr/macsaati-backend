@@ -60,13 +60,14 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 
             // Saat tutuyorsa ve takım ismi başlıkta geçiyorsa YAYINCIYI AL!
             if (mTime === cleanTime && (mTitle.includes(hCheck) || mTitle.includes(aCheck))) {
+                // 🚀 EKLENEN MUHBİR LOG: Terminale bilgi basar!
+                console.log(`   📺 [SPOREKRANI] -> ${homeName} vs ${awayName} | Kanal: ${m.yayin}`);
                 return m.yayin; 
             }
         }
     }
     return fallback; // Harici dosyada bulunamadı, senin eski koda dön!
 }
-
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR VE BUKELEMUN HEADER (ANTİ-BAN)
 // =========================================================================
