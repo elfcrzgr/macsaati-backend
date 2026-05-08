@@ -2,11 +2,7 @@ name: 📺 Daily Broadcaster Update
 
 on:
   schedule:
-    - cron: '21 0 * * *'  # Günde 1 kere (saat 03:21 UTC = 06:21 TR, ama EN YAKINI 00:21 TR)
-    # NOTE: GitHub Actions UTC saatiyle çalışır. Türkiye UTC+3'tür.
-    # Gece 00:00 TR = 21:00 UTC önceki gün
-    # Gece 03:00 TR = 00:00 UTC (UTC saat 00:00)
-    # Bu cron: UTC 00:21 = TR 03:21 (gece yarısından sonra çalışır)
+    - cron: '21 0 * * *'  # UTC 00:21 = TR 03:21 (gece sonrası)
   workflow_dispatch:
 
 jobs:
@@ -22,7 +18,7 @@ jobs:
           node-version: '18'
       
       - name: Install dependencies
-        run: npm install
+        run: npm install puppeteer
       
       - name: Install Chrome for Puppeteer
         run: sudo apt-get update && sudo apt-get install -y chromium-browser
