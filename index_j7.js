@@ -38,47 +38,40 @@ function loadExternalBroadcasters() {
 
 // Sporekrani dosyasında maç varsa oradan alır, yoksa senin 'fallback' değerini kullanır
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
-    if (!externalBroadcasters[dateStr]) return fallback;
-    const dayData = externalBroadcasters[dateStr];
-    if (!dayData || !dayData.matches) return fallback;
-
     const hName = (homeName || "").toLowerCase();
     const aName = (awayName || "").toLowerCase();
 
-    // Takım isimlerindeki 3 harften büyük anlamlı kelimeleri çıkar (Örn: "Borussia Dortmund" -> ["borussia", "dortmund"])
-    const getWords = (name) => name.replace(/[^\w\sğüşıöç]/gi, ' ').split(/\s+/).filter(w => w.length > 3);
+    // Takım isimlerindeki 'fc', 'spor', 'united' gibi jenerik kelimeleri ve kısa harfleri yoksay
+    const ignoreList = ['spor', 'club', 'team', 'united', 'city', 'real', 'fc', 'fk', 'sk', 'bk', 'de', 'la'];
+    const getWords = (name) => name.replace(/[^\w\sğüşıöç]/gi, ' ').split(/\s+/).filter(w => w.length > 2 && !ignoreList.includes(w));
+    
     const hWords = getWords(hName);
     const aWords = getWords(aName);
 
-    for (const m of dayData.matches) {
-        if (m.spor && m.spor.toLowerCase() === sportCategory.toLowerCase()) {
-            const mTitle = (m.mac || "").toLowerCase();
+    // 🚀 DÜZELTME 1: Tarihe takılma! Sporekranı dosyasındaki TÜM günleri ara (UTC kaymasını yok eder)
+    for (const dateKey in externalBroadcasters) {
+        const dayData = externalBroadcasters[dateKey];
+        if (!dayData || !dayData.matches) continue;
 
-            let hMatch = false;
-            let aMatch = false;
+        for (const m of dayData.matches) {
+            if (m.spor && m.spor.toLowerCase() === sportCategory.toLowerCase()) {
+                const mTitle = (m.mac || "").toLowerCase();
 
-            // Ev sahibi takımın kelimelerinden HERHANGİ BİRİ Sporekranı başlığında geçiyor mu?
-            if (hWords.length > 0) {
-                hMatch = hWords.some(w => mTitle.includes(w));
-            } else {
-                hMatch = mTitle.includes(hName); // İsim çok kısaysa direkt ara
-            }
+                // 🚀 DÜZELTME 2: Takımın belirgin kelimelerinden HERHANGİ BİRİ geçiyorsa kabul et
+                // Örn: "Borussia Dortmund" için hWords = ["borussia", "dortmund"]. Sporekranı "B.Dortmund" yazsa bile "dortmund" eşleşir!
+                let hMatch = hWords.length > 0 ? hWords.some(w => mTitle.includes(w)) : mTitle.includes(hName);
+                let aMatch = aWords.length > 0 ? aWords.some(w => mTitle.includes(w)) : mTitle.includes(aName);
 
-            // Deplasman takımının kelimelerinden HERHANGİ BİRİ Sporekranı başlığında geçiyor mu?
-            if (aWords.length > 0) {
-                aMatch = aWords.some(w => mTitle.includes(w));
-            } else {
-                aMatch = mTitle.includes(aName);
-            }
-
-            // 🚀 SAAT KONTROLÜNÜ SİLDİK! İki takım da eşleştiyse yayıncıyı al!
-            if (hMatch && aMatch) {
-                console.log(`   📺 [SPOREKRANI] EŞLEŞTİ -> ${homeName} vs ${awayName} | Kanal: ${m.yayin}`);
-                return m.yayin; 
+                // Eğer iki takımın da belirgin bir kelimesi başlıkta varsa, saat ve tarihe bakmadan YAYINCIYI AL!
+                if (hMatch && aMatch) {
+                    console.log(`   📺 [SPOREKRANI] EŞLEŞTİ -> ${homeName} vs ${awayName} | Kanal: ${m.yayin}`);
+                    return m.yayin; 
+                }
             }
         }
     }
-    return fallback; // Harici dosyada bulunamadı, senin eski koda dön!
+
+    return fallback; // Hiçbir günde bulunamadıysa senin eski koda dön!
 }
 
 // =========================================================================
