@@ -33,15 +33,16 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Actions"
           
-          if ! git diff --quiet yayinci_bilgisi.json; then
-            git add yayinci_bilgisi.json
+          # 🚀 DÜZELTME 1: Sadece yayıncı dosyasını değil, masadaki her şeyi pakete dahil et
+          git add .
+          
+          # 🚀 DÜZELTME 2: Sahneye alınmış bir değişiklik var mı kontrol et
+          if ! git diff --staged --quiet; then
             git commit -m "🔄 Auto: Yayıncı bilgileri güncellendi $(date '+%Y-%m-%d %H:%M:%S')"
             
-            # 🚀 İŞTE TRAFİK KAZASINI ÖNLEYEN SATIR: 
-            # Push yapmadan önce GitHub'daki güncellemeleri (J7'nin attıklarını) çek ve birleştir.
+            # Artık ortalık tertemiz olduğu için rebase ASLA hata vermeyecek
             git pull origin main --rebase
-            
             git push
           else
-            echo "✅ yayinci_bilgisi.json değişmedi"
+            echo "✅ Herhangi bir değişiklik yok, push edilmedi."
           fi
