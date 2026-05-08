@@ -523,10 +523,14 @@ async function updateTennis() {
 }
 
 // =========================================================================
-// 🏎️ FORMULA 1 GÜNCEL VERİLER VE PİST DETAYLARI (UYGULAMA UYUMLU)
+// 🏎️ FORMULA 1 GÜNCEL VERİLER VE PİST DETAYLARI (HATASIZ VE TAM SÜRÜM)
 // =========================================================================
 
-// Pist teknik detayları - Android modelindeki circuitStats yapısına uygun
+// NOT: GITHUB_USER ve REPO_NAME dosyanın en başında tanımlı olduğu için burada tekrar yazmıyoruz.
+const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/tournament_logos/`;
+const F1_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/logos/`;
+
+// Pist teknik detayları - Android modelindeki circuitStats yapısına birebir uygun
 const CIRCUIT_DETAILS = {
     "bahrain": { laps: "57", length: "5.412 km", record: "1:31.447 - Pedro de la Rosa" },
     "jeddah": { laps: "50", length: "6.174 km", record: "1:30.734 - Lewis Hamilton" },
@@ -576,8 +580,8 @@ async function updateF1() {
             const circuitId = race.Circuit.circuitId;
             const countryName = race.Circuit.Location.country;
             
-            // Uygulamanın beklediği circuitStats yapısı
-            const circuitStats = CIRCUIT_DETAILS[circuitId] || { laps: "-", length: "-", record: "-" };
+            // Uygulamanın Java kodundaki circuitStats hiyerarşisi
+            const stats = CIRCUIT_DETAILS[circuitId] || { laps: "-", length: "-", record: "-" };
 
             let flagCode = countryToCode[countryName] || countryName.toLowerCase().substring(0, 2);
             if (countryName.toLowerCase().includes("usa")) flagCode = "us";
@@ -597,8 +601,12 @@ async function updateF1() {
                     grandPrix: race.raceName,
                     sessionName: sessionName,
                     trackName: race.Circuit.circuitName,
-                    // Uygulamanın beklediği nested obje yapısı
-                    circuitStats: circuitStats, 
+                    // BURASI ÖNEMLİ: Java tarafındaki target.circuitStats.laps için gereken yapı
+                    circuitStats: {
+                        laps: stats.laps,
+                        length: stats.length,
+                        record: stats.record
+                    },
                     countryLogo: F1_LOGO_BASE + flagCode + ".png", 
                     tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png"
                 });
@@ -621,12 +629,13 @@ async function updateF1() {
             events: finalEvents 
         });
         
-        console.log(`  ✅ Uygulama hiyerarşisiyle uyumlu F1 verileri yüklendi.`);
+        console.log(`  ✅ F1: Değişken hatası giderildi ve uygulama hiyerarşisi (circuitStats) sağlandı.`);
         
     } catch (error) { 
         console.error(`   ⚠️ F1 hatası: ${error.message}`); 
     }
 }
+
 
 
 
