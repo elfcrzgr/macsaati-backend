@@ -320,7 +320,24 @@ const leagueConfigs = {
     235: "S Sport Plus",              // Adriyatik Ligi (ABA)
     1438: "TRT Spor / beIN Sports"    // VTB Birleşik Ligi
 };
-
+// YENİ: İngilizce isimleri Türkçeye çeviren sözlük (Android ile birebir uyumlu)
+const basketballLeagues = {
+    132: "NBA",
+    138: "EuroLeague",
+    141: "EuroCup",
+    9357: "Basketbol Şampiyonlar Ligi (BCL)",
+    519: "Basketbol Süper Ligi (BSL)",
+    1179: "Türkiye Erkekler Basketbol Kupası",
+    19844: "Türkiye Basketbol 2. Ligi (TB2L)",
+    264: "İspanya Liga ACB",
+    304: "Yunanistan Basketbol Ligi",
+    227: "Almanya BBL",
+    156: "Fransa LNB Pro A",
+    1524: "Avustralya NBL",
+    235: "Adriyatik Ligi (ABA)",
+    1438: "VTB Birleşik Ligi",
+    285: "FIBA EuroBasket"
+};
 const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 
 async function updateBasketball() {
@@ -365,6 +382,10 @@ async function updateBasketball() {
 
         const hasScore = isFinished || isInProgress;
 
+        // YENİ: Çeviriyi burada uyguluyoruz. Sözlükte varsa onu, yoksa API'den geleni kullan.
+        const cleanTournamentName = basketballLeagues[utId] || (isNBA ? "NBA" : utName);
+
+        
         finalMatches.push({
             id: e.id,
             isElite: ELITE_LEAGUE_IDS.includes(utId), 
@@ -384,7 +405,7 @@ async function updateBasketball() {
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${isNBA ? "3547" : utId}.png`,
             homeScore: hasScore ? String(e.homeScore?.display ?? "0") : "-",
             awayScore: hasScore ? String(e.awayScore?.display ?? "0") : "-",
-            tournament: isNBA ? "NBA" : utName
+            tournament: cleanTournamentName
         });
         duplicateTracker.add(matchKey);
         
