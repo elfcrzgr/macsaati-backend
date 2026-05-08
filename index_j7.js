@@ -242,13 +242,14 @@ async function updateFootball() {
         if (data?.events) {
             // 🔎 TFF 2. LİG ALT GRUP ID DEBUG - ID'LERİ BULDUKTAN SONRA BU BLOĞU SİL
             // 🔎 TÜM LİGLER DEBUG
-            data.events.forEach(e => {
-                const utId = e.tournament?.uniqueTournament?.id;
-                const utName = e.tournament?.uniqueTournament?.name || "";
-                const cat = e.tournament?.category?.name || "";
-                console.log(`🔎 ID=${utId} | ${utName} | Kategori=${cat}`);
-
-            });
+            // 🔎 TFF 2. LİG ALT GRUP ID DEBUG - ID'LERİ BULDUKTAN SONRA BU BLOĞU SİL
+data.events.forEach(e => {
+    const utId = e.tournament?.uniqueTournament?.id;
+    const cat = (e.tournament?.category?.name || "").toLowerCase();
+    if (cat.includes("turkey")) {
+        console.log(`🇹🇷 ID=${utId} | ${e.tournament?.uniqueTournament?.name}`);
+    }
+});
             // 🔎 DEBUG SONU
 
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
