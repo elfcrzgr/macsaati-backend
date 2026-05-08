@@ -9,15 +9,16 @@ async function getBroadcasterData() {
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
     
-    const todayStr = today.toISOString().split('T')[0];
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    // 🚀 DÜZELTME 1: toISOString() yerine Türkiye saat dilimine göre YYYY-MM-DD alıyoruz
+    const todayStr = today.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+    const tomorrowStr = tomorrow.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     
     console.log(`📅 Bugün: ${todayStr}`);
     console.log(`📅 Yarın: ${tomorrowStr}\n`);
     
     const allMatches = {
-        [todayStr]: { title: `📅 BUGÜN (${today.toLocaleDateString('tr-TR', { month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
-        [tomorrowStr]: { title: `📅 YARIN (${tomorrow.toLocaleDateString('tr-TR', { month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
+        [todayStr]: { title: `📅 BUGÜN (${today.toLocaleDateString('tr-TR', { timeZone: 'Europe/Istanbul', month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
+        [tomorrowStr]: { title: `📅 YARIN (${tomorrow.toLocaleDateString('tr-TR', { timeZone: 'Europe/Istanbul', month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
     };
     
     for (const sport of sports) {
@@ -60,7 +61,9 @@ async function getBroadcasterData() {
                 if (!broadcastEvent) return;
                 
                 const startDate = new Date(broadcastEvent.startDate);
-                const dateStr = startDate.toISOString().split('T')[0];
+                
+                // 🚀 DÜZELTME 2: Maçın gününü de Türkiye saatine göre belirliyoruz (Gece maçları dünün listesine düşmesin diye)
+                const dateStr = startDate.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                 
                 if (!allMatches[dateStr]) return;
                 
@@ -79,7 +82,9 @@ async function getBroadcasterData() {
                 
                 // Eğer maç gibi görünüyorsa
                 if (eventName.includes(' - ') || eventName.includes(' vs ')) {
+                    // 🚀 DÜZELTME 3: İŞTE 3 SAAT FARKINI ÇÖZEN SATIR!
                     const time = startDate.toLocaleTimeString('tr-TR', { 
+                        timeZone: 'Europe/Istanbul', // Saati Türkiye'ye zorla
                         hour: '2-digit', 
                         minute: '2-digit' 
                     });
