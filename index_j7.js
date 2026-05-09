@@ -117,27 +117,27 @@ const getTRDate = (offset = 0) => {
 };
 
 // =========================================================================
-// ⚽ FUTBOL
+// FUTBOL
 // =========================================================================
 const teamTranslations = {
-“turkey”: “Türkiye”, “germany”: “Almanya”, “france”: “Fransa”, “england”: “İngiltere”,
-“spain”: “İspanya”, “italy”: “İtalya”, “portugal”: “Portekiz”, “netherlands”: “Hollanda”,
-“belgium”: “Belçika”, “switzerland”: “İsviçre”, “austria”: “Avusturya”, “croatia”: “Hırvatistan”,
-“denmark”: “Danimarka”, “scotland”: “İskoçya”, “hungary”: “Macaristan”, “serbia”: “Sırbistan”,
-“poland”: “Polonya”, “czechia”: “Çekya”, “romania”: “Romanya”, “slovakia”: “Slovakya”,
-“slovenia”: “Slovenya”, “georgia”: “Gürcistan”, “albania”: “Arnavutluk”, “norway”: “Norveç”,
-“sweden”: “İsveç”, “ukraine”: “Ukrayna”, “greece”: “Yunanistan”, “wales”: “Galler”,
-“finland”: “Finlandiya”, “ireland”: “İrlanda”, “northernireland”: “Kuzey İrlanda”,
-“iceland”: “İzlanda”, “israel”: “İsrail”, “bulgaria”: “Bulgaristan”, “kazakhstan”: “Kazakistan”,
-“azerbaijan”: “Azerbaycan”, “armenia”: “Ermenistan”, “kosovo”: “Kosova”, “montenegro”: “Karadağ”,
+“turkey”: “Turkiye”, “germany”: “Almanya”, “france”: “Fransa”, “england”: “Ingiltere”,
+“spain”: “Ispanya”, “italy”: “Italya”, “portugal”: “Portekiz”, “netherlands”: “Hollanda”,
+“belgium”: “Belcika”, “switzerland”: “Isvicre”, “austria”: “Avusturya”, “croatia”: “Hirvatistan”,
+“denmark”: “Danimarka”, “scotland”: “Iskocya”, “hungary”: “Macaristan”, “serbia”: “Sirbistan”,
+“poland”: “Polonya”, “czechia”: “Cekya”, “romania”: “Romanya”, “slovakia”: “Slovakya”,
+“slovenia”: “Slovenya”, “georgia”: “Gurcistan”, “albania”: “Arnavutluk”, “norway”: “Norvec”,
+“sweden”: “Isvec”, “ukraine”: “Ukrayna”, “greece”: “Yunanistan”, “wales”: “Galler”,
+“finland”: “Finlandiya”, “ireland”: “Irlanda”, “northernireland”: “Kuzey Irlanda”,
+“iceland”: “Izlanda”, “israel”: “Israil”, “bulgaria”: “Bulgaristan”, “kazakhstan”: “Kazakistan”,
+“azerbaijan”: “Azerbaycan”, “armenia”: “Ermenistan”, “kosovo”: “Kosova”, “montenegro”: “Karadag”,
 “estonia”: “Estonya”, “latvia”: “Letonya”, “lithuania”: “Litvanya”, “belarus”: “Belarus”,
-“moldova”: “Moldova”, “luxembourg”: “Lüksemburg”, “faroeislands”: “Faroe Adaları”,
-“malta”: “Malta”, “andorra”: “Andorra”, “sanmarino”: “San Marino”, “gibraltar”: “Cebelitarık”,
-“liechtenstein”: “Liechtenstein”, “northmacedonia”: “K. Makedonya”, “cyprus”: “Güney Kıbrıs”,
+“moldova”: “Moldova”, “luxembourg”: “Luksemburg”, “faroeislands”: “Faroe Adalari”,
+“malta”: “Malta”, “andorra”: “Andorra”, “sanmarino”: “San Marino”, “gibraltar”: “Cebelitarik”,
+“liechtenstein”: “Liechtenstein”, “northmacedonia”: “K. Makedonya”, “cyprus”: “Guney Kibris”,
 “brazil”: “Brezilya”, “argentina”: “Arjantin”, “uruguay”: “Uruguay”, “colombia”: “Kolombiya”,
-“chile”: “Şili”, “peru”: “Peru”, “ecuador”: “Ekvador”, “paraguay”: “Paraguay”,
+“chile”: “Sili”, “peru”: “Peru”, “ecuador”: “Ekvador”, “paraguay”: “Paraguay”,
 “venezuela”: “Venezuela”, “bolivia”: “Bolivya”, “usa”: “ABD”, “mexico”: “Meksika”,
-“canada”: “Kanada”, “japan”: “Japonya”, “southkorea”: “Güney Kore”, “australia”: “Avustralya”
+“canada”: “Kanada”, “japan”: “Japonya”, “southkorea”: “Guney Kore”, “australia”: “Avustralya”
 };
 
 const translateTeam = (name) => {
@@ -161,11 +161,11 @@ const tn = (tName || “”).toLowerCase();
 const utn = (utName || “”).toLowerCase();
 
 ```
-const isTurkey = hn.includes("turkey") || an.includes("turkey") || hn.includes("türkiye") || an.includes("türkiye");
+const isTurkey = hn.includes("turkey") || an.includes("turkey") || hn.includes("turkiye") || an.includes("turkiye");
 const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || utn.includes("play-off") || utn.includes("playoff");
 
 if (utId === 748 || utId === 750) return isTurkey ? "TRT Spor / Tabii" : "Exxen";
-if (utId === 11 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
+if (utId === 11 || utn.includes("world cup qual") || utn.includes("dunya kupasi eleme")) {
     if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
     return isPlayoff ? "Exxen" : "S Sport Plus";
 }
@@ -183,9 +183,9 @@ const staticConfigs = {
 if (staticConfigs[utId]) return staticConfigs[utId];
 if (utn.includes("j1 league")) return "YouTube (J.League Int.)";
 if (utn.includes("baller league")) return "Twitch / YouTube (Global)";
-if (utn.includes("primera a") || utn.includes("primera división")) return "TV Yayını Yok (Yerel)";
+if (utn.includes("primera a") || utn.includes("primera division")) return "TV Yayini Yok (Yerel)";
 if (utn.includes("mls next pro")) return "Apple TV / OneFootball";
-return "Resmi Yayıncı / Canlı Skor";
+return "Resmi Yayinci / Canli Skor";
 ```
 
 };
@@ -195,25 +195,23 @@ const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242, 11415, 11416, 11417, 15938];
 const ALL_FOOT_TARGETS = […new Set([…ELITE_FOOT_IDS, …REGULAR_FOOT_IDS])];
 
 const footballLeagues = {
-17: “İngiltere Premier Lig”, 8: “İspanya La Liga”, 35: “Almanya Bundesliga”,
-23: “İtalya Serie A”, 34: “Fransa Ligue 1”, 52: “Türkiye Süper Lig”,
+17: “Ingiltere Premier Lig”, 8: “Ispanya La Liga”, 35: “Almanya Bundesliga”,
+23: “Italya Serie A”, 34: “Fransa Ligue 1”, 52: “Turkiye Super Lig”,
 98: “Trendyol 1. Lig”, 97: “TFF 2. Lig”,
 11417: “TFF 3. Lig Grup 1”, 11416: “TFF 3. Lig Grup 2”, 11415: “TFF 3. Lig Grup 3”, 15938: “TFF 3. Lig Grup 4”,
-53: “İtalya Serie B”,
-37: “Hollanda Eredivisie”, 238: “Portekiz Primeira Liga”, 38: “Belçika Pro League”,
-36: “İskoçya Premiership”, 19: “FA Cup”, 938: “Türkiye Kupası”,
-7: “UEFA Şampiyonlar Ligi”, 679: “UEFA Avrupa Ligi”, 17015: “UEFA Konferans Ligi”,
-16: “FIFA Dünya Kupası”, 1: “UEFA EURO”, 133: “Copa America”,
-270: “Afrika Uluslar Kupası”, 299: “Uluslararası Hazırlık Maçları”,
-6516: “Kulüp Hazırlık Maçları”, 325: “Brezilya Serie A”,
+53: “Italya Serie B”,
+37: “Hollanda Eredivisie”, 238: “Portekiz Primeira Liga”, 38: “Belcika Pro League”,
+36: “Iskocya Premiership”, 19: “FA Cup”, 938: “Turkiye Kupasi”,
+7: “UEFA Sampiyonlar Ligi”, 679: “UEFA Avrupa Ligi”, 17015: “UEFA Konferans Ligi”,
+16: “FIFA Dunya Kupasi”, 1: “UEFA EURO”, 133: “Copa America”,
+270: “Afrika Uluslar Kupasi”, 299: “Uluslararasi Hazirlik Maclari”,
+6516: “Kulup Hazirlik Maclari”, 325: “Brezilya Serie A”,
 155: “Arjantin Liga Profesional”, 242: “MLS”, 13363: “USL Championship”
 };
 
-// TFF 2. Lig alt grup isimleri — uniqueTournament.id=97 ortak,
-// grupları ayırt etmek için e.tournament.id kullanılıyor.
 const TFF2_GROUP_NAMES = {
 1993: “TFF 2. Lig Beyaz Grup”,
-1994: “TFF 2. Lig Kırmızı Grup”
+1994: “TFF 2. Lig Kirmizi Grup”
 };
 
 function calculateLiveMinute(eventData) {
@@ -226,7 +224,7 @@ if (time?.currentMinute !== undefined && time.currentMinute !== null) {
     return String(time.currentMinute) + "'";
 }
 if (status?.code === 31 || status?.description === "Halftime") {
-    return "İY";
+    return "IY";
 }
 if (time?.currentPeriodStartTimestamp) {
     const now = Math.floor(Date.now() / 1000);
@@ -241,28 +239,26 @@ if (time?.currentPeriodStartTimestamp) {
     }
     return String(calcMinute) + "'";
 }
-return "Canlı";
+return "Canli";
 ```
 
 }
 
 async function updateFootball() {
-console.log(`⚽ Futbol güncelleniyor...`);
+console.log(“Futbol guncelleniyor…”);
 let allEvents = [];
 
 ```
 for (const date of [getTRDate(0), getTRDate(1)]) {
-    const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
+    const data = await fetchData("https://www.sofascore.com/api/v1/sport/football/scheduled-events/" + date + "?_=" + Date.now());
     if (data?.events) {
-        // 🔎 Türkiye ligleri debug — ID'ler netleştikten sonra bu bloğu sil
         data.events.forEach(e => {
             const utId = e.tournament?.uniqueTournament?.id;
             const cat = (e.tournament?.category?.name || "").toLowerCase();
             if (cat.includes("turkey")) {
-                console.log(`🇹🇷 ID=${utId} | TournamentID=${e.tournament?.id} | ${e.tournament?.uniqueTournament?.name} | ${e.tournament?.name}`);
+                console.log("TR ID=" + utId + " | TournamentID=" + e.tournament?.id + " | " + (e.tournament?.uniqueTournament?.name || "") + " | " + (e.tournament?.name || ""));
             }
         });
-        // 🔎 DEBUG SONU
 
         allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
     }
@@ -275,7 +271,7 @@ allEvents.forEach(e => {
     if (duplicateTracker.has(e.id)) return;
 
     const status = e.status.type;
-    const isLive = status === 'inprogress';
+    const isLive = status === "inprogress";
     const leagueId = e.tournament?.uniqueTournament?.id;
     const tournamentSubId = e.tournament?.id;
 
@@ -286,7 +282,6 @@ allEvents.forEach(e => {
     const tName = e.tournament?.name || "";
     const utName = e.tournament?.uniqueTournament?.name || "";
 
-    // TFF 2. Lig gruplarını tournament.id ile ayırt et
     let cleanTournamentName;
     if (leagueId === 97 && TFF2_GROUP_NAMES[tournamentSubId]) {
         cleanTournamentName = TFF2_GROUP_NAMES[tournamentSubId];
@@ -295,8 +290,8 @@ allEvents.forEach(e => {
     }
 
     const dateTR = new Date(e.startTimestamp * 1000);
-    const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-    const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+    const dayTR = dateTR.toLocaleDateString("en-CA", { timeZone: "Europe/Istanbul" });
+    const timeString = dateTR.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
 
     const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
     const finalBroadcaster = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
@@ -310,29 +305,34 @@ allEvents.forEach(e => {
         fixedTime: timeString,
         timestamp: e.startTimestamp * 1000,
         broadcaster: finalBroadcaster,
-        homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
-        awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
-        tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
-        homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
-        awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
+        homeTeam: {
+            name: translateTeam(hName),
+            logo: "https://raw.githubusercontent.com/" + GITHUB_USER + "/" + REPO_NAME + "/main/football/logos/" + e.homeTeam.id + ".png"
+        },
+        awayTeam: {
+            name: translateTeam(aName),
+            logo: "https://raw.githubusercontent.com/" + GITHUB_USER + "/" + REPO_NAME + "/main/football/logos/" + e.awayTeam.id + ".png"
+        },
+        tournamentLogo: "https://raw.githubusercontent.com/" + GITHUB_USER + "/" + REPO_NAME + "/main/football/tournament_logos/" + leagueId + ".png",
+        homeScore: (isLive || status === "finished") ? String(e.homeScore?.display ?? "0") : "-",
+        awayScore: (isLive || status === "finished") ? String(e.awayScore?.display ?? "0") : "-",
         tournament: cleanTournamentName
     });
 });
 
 const matches = Array.from(duplicateTracker.values()).sort((a, b) => a.timestamp - b.timestamp);
 
-await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
+await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString("tr-TR"), matches });
 
-const hasLiveMatch = matches.some(m => m.status === 'inprogress');
-const upcomingMatches = matches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
+const hasLiveMatch = matches.some(m => m.status === "inprogress");
+const upcomingMatches = matches.filter(m => m.status === "notstarted" || m.status === "delayed");
 const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
 
-console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
+console.log("Toplam " + matches.length + " futbol maci " + (hasLiveMatch ? "(CANLI MAC VAR)" : "(Canli mac yok)"));
 return { hasLiveMatch, nextMatchTimestamp };
 ```
 
 }
-
 // =========================================================================
 // 🏀 BASKETBOL
 // =========================================================================
