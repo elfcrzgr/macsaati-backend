@@ -208,9 +208,12 @@ const footballLeagues = {
     155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship"
 };
 
+
+
 const TFF2_GROUP_NAMES = {
     1993: "TFF 2. Lig Beyaz Grup",
-    1994: "TFF 2. Lig Kirmizi Grup"
+    1994: "TFF 2. Lig Kirmizi Grup",
+    8302: "TFF 2. Lig Play-off"
 };
 
 function calculateLiveMinute(eventData) {
