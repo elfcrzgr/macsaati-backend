@@ -1,37 +1,66 @@
-name: Gece Logo Avcisi
+name: Logo Test
 
 on:
   workflow_dispatch:
 
 jobs:
-  update-logos:
+  logo-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Repo Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Node Kur
+        uses: actions/setup-node@v4
         with:
-          node-version: '24'
-          cache: 'npm'
+          node-version: 20
 
-      - run: npm ci
-
-      - name: Scripti Olustur
-        run: python3 make_script.py
-
-      - name: Eksik Logolari Indir
-        run: node logo_masters.js
-
-      - name: Pushla
+      - name: Dependencies Kur
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add football/ basketball/ tennis/
-          if ! git diff --staged --quiet; then
-            git commit -m "Yeni Logolar Eklendi"
-            git pull origin main --rebase
-            git push origin main
-            echo "Yeni logolar GitHub a gonderildi."
+          npm install axios
+          npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
+
+      - name: Puppeteer Chrome Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 \
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxrandr2 \
+            libgbm1 \
+            libxkbcommon0 \
+            libasound2 \
+            libpangocairo-1.0-0 \
+            libgtk-3-0
+
+      - name: Logo Script Çalıştır
+        run: |
+          node logo_downloader.js
+
+      - name: Değişiklik Var mı Kontrol
+        id: verify
+        run: |
+          git status
+
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
           else
-            echo "Indirilecek yeni logo yoktu."
+            echo "changed=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Commit & Push
+        if: steps.verify.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add .
+
+          git commit -m "logo update"
+
+          git push
