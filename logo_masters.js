@@ -20,11 +20,7 @@ const configs = [
     dirs: {
       team: path.join(__dirname, "basketball", "logos"),
       nba: path.join(__dirname, "basketball", "logos", "NBA"),
-      tournament: path.join(
-        __dirname,
-        "basketball",
-        "tournament_logos"
-      ),
+      tournament: path.join(__dirname, "basketball", "tournament_logos"),
     },
   },
   {
@@ -37,7 +33,7 @@ const configs = [
   },
 ];
 
-// klasörler
+// Klasörleri oluştur
 for (const c of configs) {
   Object.values(c.dirs).forEach((d) => {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
@@ -45,6 +41,14 @@ for (const c of configs) {
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// ─────────────────────────────────────────
+// 1) COOKIE'Yİ BURAYA YAPISTIR
+//    Tarayıcıdan kopyaladığın cookie string'i
+//    Örnek: "OptanonConsent=xxx; _ga=GA1.1.xxx; ..."
+//    Cookie almak istemiyorsan boş bırak → ""
+// ─────────────────────────────────────────
+const SOFASCORE_COOKIE = "";
 
 async function fetchFirebase(file) {
   try {
@@ -62,23 +66,36 @@ function exists(dir, id) {
   return fs.existsSync(path.join(dir, `${id}.png`));
 }
 
-/**
- * 🔥 MULTI SOURCE + 403 SAFE DOWNLOAD
- */
 async function downloadImage(urls, outPath, name) {
   for (const url of urls) {
-    for (let i = 1; i <= 2; i++) {
+    for (let attempt = 1; attempt <= 3; attempt++) {
       try {
+        const headers = {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+          Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
+          "Accept-Encoding": "gzip, deflate, br",
+          Referer: "https://www.sofascore.com/",
+          Origin: "https://www.sofascore.com",
+          "Sec-Fetch-Dest": "image",
+          "Sec-Fetch-Mode": "no-cors",
+          "Sec-Fetch-Site": "same-site",
+          "Sec-Ch-Ua": '"Chromium";v="124", "Google Chrome";v="124"',
+          "Sec-Ch-Ua-Mobile": "?0",
+          "Sec-Ch-Ua-Platform": '"Windows"',
+          Connection: "keep-alive",
+        };
+
+        // Cookie varsa ekle
+        if (SOFASCORE_COOKIE) {
+          headers["Cookie"] = SOFASCORE_COOKIE;
+        }
+
         const res = await axios.get(url, {
           responseType: "arraybuffer",
           timeout: 20000,
-          headers: {
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
-            Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
-            Referer: "https://www.sofascore.com/",
-            Origin: "https://www.sofascore.com",
-          },
+          headers,
           validateStatus: () => true,
         });
 
@@ -89,59 +106,75 @@ async function downloadImage(urls, outPath, name) {
         }
 
         if (res.status === 403) {
-          console.log(`   🚫 403 (retry fallback): ${name}`);
+          console.log(`   🚫 403 (deneme ${attempt}/3): ${name} → ${url}`);
+          await sleep(2000 * attempt);
+          break; // Bu URL'den vazgeç, sonraki URL'e geç
+        }
+
+        if (res.status === 404) {
+          console.log(`   ⚠️ 404 (bulunamadı): ${name} → ${url}`);
           break;
         }
+
+        console.log(`   ⚠️ HTTP ${res.status}: ${name}`);
+        await sleep(1000 * attempt);
       } catch (e) {
-        await sleep(800 * i);
+        console.log(`   ⚠️ Hata (deneme ${attempt}/3): ${name} → ${e.message}`);
+        await sleep(1000 * attempt);
       }
     }
   }
 
-  console.log(`   ❌ FINAL FAIL: ${name}`);
+  console.log(`   ❌ BAŞARISIZ: ${name}`);
   return false;
 }
 
 async function start() {
-  console.log("🚀 V6 SYSTEM START (FIREBASE + 403 SAFE + REPO SAFE)\n");
+  console.log("🚀 LOGO İNDİRİCİ BAŞLADI\n");
 
   let totalMissing = 0;
+  let totalSuccess = 0;
+  let totalFail = 0;
 
   for (const conf of configs) {
+    console.log(`\n📂 ${conf.name} işleniyor...`);
+
     const data = await fetchFirebase(conf.file);
 
     if (!data) {
-      console.log(`⚠️ ${conf.name} SKIPPED (firebase null)`);
+      console.log(`⚠️ ${conf.name} ATLANDI (firebase boş döndü)`);
       continue;
     }
 
     const matches = data.matches || data.events || [];
     if (!Array.isArray(matches)) {
-      console.log(`⚠️ ${conf.name} INVALID DATA`);
+      console.log(`⚠️ ${conf.name} GEÇERSİZ VERİ`);
       continue;
     }
 
     const missing = [];
+    const seenIds = new Set(); // Aynı logo'yu tekrar indirme
 
     for (const m of matches) {
-      const isNBA =
-        (m.tournament || "").toUpperCase().includes("NBA");
+      const isNBA = (m.tournament || "").toUpperCase().includes("NBA");
 
-      // 🏆 tournament
+      // 🏆 Turnuva logosu
       if (m.tournamentLogo) {
         const id = m.tournamentLogo.split("/").pop().split(".")[0];
+        const key = `tournament_${id}`;
 
-        if (!exists(conf.dirs.tournament, id)) {
+        if (!seenIds.has(key) && !exists(conf.dirs.tournament, id)) {
+          seenIds.add(key);
           missing.push({
             id,
-            name: m.tournament,
+            name: m.tournament || id,
             type: "tournament",
             dir: conf.dirs.tournament,
           });
         }
       }
 
-      // 👕 teams
+      // 👕 Takım logoları
       for (const t of [m.homeTeam, m.awayTeam]) {
         if (!t) continue;
 
@@ -153,15 +186,18 @@ async function start() {
           const id = url?.split("/").pop().split(".")[0];
           if (!id) continue;
 
-          let dir =
+          const dir =
             conf.name === "Basketbol" && isNBA
               ? conf.dirs.nba
               : conf.dirs.team;
 
-          if (!exists(dir, id)) {
+          const key = `team_${id}`;
+
+          if (!seenIds.has(key) && !exists(dir, id)) {
+            seenIds.add(key);
             missing.push({
               id,
-              name: t.name,
+              name: t.name || id,
               type: "team",
               dir,
             });
@@ -170,7 +206,7 @@ async function start() {
       }
     }
 
-    console.log(`🔍 ${conf.name} Missing: ${missing.length}`);
+    console.log(`🔍 ${conf.name} → Eksik logo sayısı: ${missing.length}`);
     totalMissing += missing.length;
 
     for (const item of missing) {
@@ -178,28 +214,37 @@ async function start() {
 
       if (item.type === "tournament") {
         urls = [
+          `https://img.sofascore.com/api/v1/unique-tournament/${item.id}/image`,
           `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`,
           `https://www.sofascore.com/static/images/tournaments/${item.id}.png`,
         ];
       } else {
         urls = [
+          `https://img.sofascore.com/api/v1/team/${item.id}/image`,
           `https://api.sofascore.app/api/v1/team/${item.id}/image`,
           `https://www.sofascore.com/static/images/teams/${item.id}.png`,
         ];
       }
 
       const outPath = path.join(item.dir, `${item.id}.png`);
+      console.log(`⬇️  İndiriliyor: ${item.name} (ID: ${item.id})`);
 
-      console.log(`⬇️ DOWNLOADING: ${item.name} | ${item.id}`);
+      const ok = await downloadImage(urls, outPath, item.name);
+      if (ok) totalSuccess++;
+      else totalFail++;
 
-      await downloadImage(urls, outPath, item.name);
-      await sleep(700);
+      await sleep(1200); // Rate limit'e girmemek için bekle
     }
 
-    console.log(`✅ ${conf.name} DONE\n`);
+    console.log(`✅ ${conf.name} TAMAMLANDI`);
   }
 
-  console.log(`🏁 TOTAL MISSING: ${totalMissing}`);
+  console.log("\n─────────────────────────────────");
+  console.log(`📊 ÖZET:`);
+  console.log(`   Toplam eksik  : ${totalMissing}`);
+  console.log(`   Başarılı      : ${totalSuccess}`);
+  console.log(`   Başarısız     : ${totalFail}`);
+  console.log("─────────────────────────────────");
 }
 
 start();
