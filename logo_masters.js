@@ -7,156 +7,191 @@ const FIREBASE_BASE_URL =
 
 const configs = [
   {
+    name: "Futbol",
+    file: "matches_football.json",
+    dirs: {
+      team: path.join(__dirname, "football", "logos"),
+      tournament: path.join(__dirname, "football", "tournament_logos"),
+    },
+  },
+  {
     name: "Basketbol",
-    firebasePath: "basketball/matches.json",
+    file: "matches_basketball.json",
     dirs: {
       team: path.join(__dirname, "basketball", "logos"),
       nba: path.join(__dirname, "basketball", "logos", "NBA"),
-      tournament: path.join(__dirname, "basketball", "tournament_logos")
-    }
-  }
+      tournament: path.join(
+        __dirname,
+        "basketball",
+        "tournament_logos"
+      ),
+    },
+  },
+  {
+    name: "Tenis",
+    file: "matches_tennis.json",
+    dirs: {
+      team: path.join(__dirname, "tennis", "logos"),
+      tournament: path.join(__dirname, "tennis", "tournament_logos"),
+    },
+  },
 ];
 
-// ------------------ FOLDERS ------------------
-configs.forEach(conf => {
-  Object.values(conf.dirs).forEach(dir => {
+// klasörleri oluştur
+for (const conf of configs) {
+  Object.values(conf.dirs).forEach((dir) => {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   });
-});
+}
 
-// ------------------ FIREBASE SAFE FETCH ------------------
-async function fetchFirebase(pathUrl) {
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+async function fetchFirebase(file) {
   try {
-    const url = `${FIREBASE_BASE_URL}${pathUrl}`;
+    const url = `${FIREBASE_BASE_URL}${file}`;
     const res = await axios.get(url, { timeout: 15000 });
-
-    const data = res.data;
-
-    if (!data) return { matches: [] };
-
-    if (Array.isArray(data)) return { matches: data };
-
-    if (data.matches) return data;
-
-    if (data.events) return { matches: data.events };
-
-    return { matches: [] };
-  } catch (err) {
-    console.log("⚠️ Firebase fetch error:", err.message);
-    return { matches: [] };
+    return res.data || null;
+  } catch (e) {
+    console.log(`❌ Firebase error: ${file}`);
+    return null;
   }
 }
 
-// ------------------ LOCAL VALIDATION ------------------
-function isValidLocalImage(filePath) {
-  try {
-    if (!fs.existsSync(filePath)) return false;
-
-    const buffer = fs.readFileSync(filePath);
-
-    return (
-      buffer.length > 1000 &&
-      buffer[0] === 0x89 &&
-      buffer[1] === 0x50 &&
-      buffer[2] === 0x4e &&
-      buffer[3] === 0x47
-    );
-  } catch {
-    return false;
-  }
+function fileExists(dir, id) {
+  return fs.existsSync(path.join(dir, `${id}.png`));
 }
 
-// ------------------ SAFE IMAGE DOWNLOAD ------------------
-async function downloadImage(url) {
-  const res = await axios.get(url, {
-    responseType: "arraybuffer",
-    timeout: 15000,
-    validateStatus: () => true,
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
-      Referer: "https://www.sofascore.com/"
-    }
-  });
-
-  const buffer = Buffer.from(res.data);
-  const text = buffer.toString("utf8");
-
-  // ❌ JSON / HTML / BLOCK detection
-  if (
-    res.status === 403 ||
-    text.includes('"error"') ||
-    text.includes("Forbidden") ||
-    text.includes("<html")
-  ) {
-    throw new Error("BLOCKED_RESPONSE");
-  }
-
-  if (buffer.length < 1500) {
-    throw new Error("TOO_SMALL_IMAGE");
-  }
-
-  return buffer;
-}
-
-// ------------------ MAIN ------------------
-async function start() {
-  console.log("🚀 V5 SYSTEM START (FIREBASE SAFE + IMAGE SAFE)");
-
-  for (const conf of configs) {
-    const data = await fetchFirebase(conf.firebasePath);
-
-    const matches = data?.matches || [];
-
-    let missing = [];
-
-    matches.forEach(m => {
-      const teams = [m?.homeTeam, m?.awayTeam];
-
-      teams.forEach(team => {
-        if (!team?.logo) return;
-
-        const id = team.logo.split("/").pop().split(".")[0];
-
-        const dir =
-          conf.name === "Basketbol" &&
-          (m?.tournament || "").includes("NBA")
-            ? conf.dirs.nba
-            : conf.dirs.team;
-
-        const targetPath = path.join(dir, `${id}.png`);
-
-        if (!isValidLocalImage(targetPath)) {
-          missing.push({
-            id,
-            name: team.name || "Unknown",
-            url: team.logo,
-            path: targetPath
-          });
-        }
+async function downloadImage(url, pathOut, name) {
+  for (let i = 1; i <= 3; i++) {
+    try {
+      const res = await axios.get(url, {
+        responseType: "arraybuffer",
+        timeout: 15000,
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
+          Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+          Referer: "https://www.sofascore.com/",
+          "Cache-Control": "no-cache",
+        },
       });
-    });
 
-    console.log(`🔍 Missing: ${missing.length}`);
-
-    for (const item of missing) {
-      console.log(`⬇️ DOWNLOADING: ${item.name} | ${item.id}`);
-
-      try {
-        const buffer = await downloadImage(item.url);
-
-        fs.writeFileSync(item.path, buffer);
-
-        console.log(`   ✅ OK: ${item.name}`);
-      } catch (err) {
-        console.log(`   ❌ FAIL: ${item.name} | ${err.message}`);
+      if (!res.data || res.data.byteLength < 800) {
+        throw new Error("Invalid image");
       }
 
-      await new Promise(r => setTimeout(r, 800));
+      fs.writeFileSync(pathOut, res.data);
+      console.log(`   ✅ OK: ${name}`);
+      return true;
+    } catch (e) {
+      const code = e.response?.status || "ERR";
+      console.log(`   🚫 ${code} BLOCK (${i}/3): ${name}`);
+      await sleep(1000 * i);
+    }
+  }
+
+  console.log(`   ❌ FINAL FAIL: ${name}`);
+  return false;
+}
+
+async function start() {
+  console.log("🚀 V5 SYSTEM START (FIREBASE SAFE + REPO SAFE)\n");
+
+  let totalMissing = 0;
+
+  for (const conf of configs) {
+    const data = await fetchFirebase(conf.file);
+
+    if (!data) {
+      console.log(`⚠️ ${conf.name} SKIPPED (no firebase data)`);
+      continue;
     }
 
-    console.log(`✅ ${conf.name} DONE`);
+    const matches = data.matches || data.events || [];
+    if (!Array.isArray(matches)) {
+      console.log(`⚠️ ${conf.name} INVALID DATA`);
+      continue;
+    }
+
+    const missing = [];
+
+    for (const m of matches) {
+      const tourName = m.tournament || "";
+      const isNBA = tourName.toUpperCase().includes("NBA");
+
+      // 🏆 Tournament logo
+      if (m.tournamentLogo) {
+        const id = m.tournamentLogo.split("/").pop().split(".")[0];
+
+        const exists = fileExists(conf.dirs.tournament, id);
+        if (!exists && id && id !== "default") {
+          missing.push({
+            id,
+            name: tourName,
+            type: "tournament",
+          });
+        }
+      }
+
+      // 👕 Team logos
+      const teams = [m.homeTeam, m.awayTeam];
+
+      for (const t of teams) {
+        if (!t) continue;
+
+        const logos = Array.isArray(t.logos)
+          ? t.logos
+          : [t.logo].filter(Boolean);
+
+        for (const url of logos) {
+          const id = url?.split("/").pop().split(".")[0];
+          if (!id) continue;
+
+          let dir =
+            conf.name === "Basketbol" && isNBA
+              ? conf.dirs.nba
+              : conf.dirs.team;
+
+          const exists = fileExists(dir, id);
+
+          if (!exists) {
+            missing.push({
+              id,
+              name: t.name,
+              type: "team",
+              dir,
+            });
+          }
+        }
+      }
+    }
+
+    console.log(`🔍 ${conf.name} Missing: ${missing.length}`);
+    totalMissing += missing.length;
+
+    for (const item of missing) {
+      let url = "";
+
+      if (item.type === "tournament") {
+        url = `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`;
+      } else {
+        url = `https://api.sofascore.app/api/v1/team/${item.id}/image`;
+      }
+
+      const outPath = path.join(item.dir, `${item.id}.png`);
+
+      console.log(`⬇️ DOWNLOADING: ${item.name} | ${item.id}`);
+
+      await downloadImage(url, outPath, item.name);
+      await sleep(800);
+    }
+
+    console.log(`✅ ${conf.name} DONE\n`);
   }
+
+  console.log(`🏁 TOTAL MISSING: ${totalMissing}`);
 }
 
 start();
