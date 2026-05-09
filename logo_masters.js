@@ -42,12 +42,7 @@ for (const c of configs) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// ─────────────────────────────────────────
-// 1) COOKIE'Yİ BURAYA YAPISTIR
-//    Tarayıcıdan kopyaladığın cookie string'i
-//    Örnek: "OptanonConsent=xxx; _ga=GA1.1.xxx; ..."
-//    Cookie almak istemiyorsan boş bırak → ""
-// ─────────────────────────────────────────
+// Cookie varsa buraya yapıştır, yoksa boş bırak
 const SOFASCORE_COOKIE = "";
 
 async function fetchFirebase(file) {
@@ -87,7 +82,6 @@ async function downloadImage(urls, outPath, name) {
           Connection: "keep-alive",
         };
 
-        // Cookie varsa ekle
         if (SOFASCORE_COOKIE) {
           headers["Cookie"] = SOFASCORE_COOKIE;
         }
@@ -108,7 +102,7 @@ async function downloadImage(urls, outPath, name) {
         if (res.status === 403) {
           console.log(`   🚫 403 (deneme ${attempt}/3): ${name} → ${url}`);
           await sleep(2000 * attempt);
-          break; // Bu URL'den vazgeç, sonraki URL'e geç
+          break;
         }
 
         if (res.status === 404) {
@@ -153,7 +147,7 @@ async function start() {
     }
 
     const missing = [];
-    const seenIds = new Set(); // Aynı logo'yu tekrar indirme
+    const seenIds = new Set();
 
     for (const m of matches) {
       const isNBA = (m.tournament || "").toUpperCase().includes("NBA");
@@ -214,14 +208,18 @@ async function start() {
 
       if (item.type === "tournament") {
         urls = [
-          `https://img.sofascore.com/api/v1/unique-tournament/${item.id}/image`,
+          `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image/dark`,
           `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`,
+          `https://img.sofascore.com/api/v1/unique-tournament/${item.id}/image/dark`,
+          `https://img.sofascore.com/api/v1/unique-tournament/${item.id}/image`,
           `https://www.sofascore.com/static/images/tournaments/${item.id}.png`,
         ];
       } else {
         urls = [
-          `https://img.sofascore.com/api/v1/team/${item.id}/image`,
+          `https://api.sofascore.app/api/v1/team/${item.id}/image/dark`,
           `https://api.sofascore.app/api/v1/team/${item.id}/image`,
+          `https://img.sofascore.com/api/v1/team/${item.id}/image/dark`,
+          `https://img.sofascore.com/api/v1/team/${item.id}/image`,
           `https://www.sofascore.com/static/images/teams/${item.id}.png`,
         ];
       }
@@ -233,7 +231,7 @@ async function start() {
       if (ok) totalSuccess++;
       else totalFail++;
 
-      await sleep(1200); // Rate limit'e girmemek için bekle
+      await sleep(1200);
     }
 
     console.log(`✅ ${conf.name} TAMAMLANDI`);
