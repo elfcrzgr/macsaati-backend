@@ -1,202 +1,150 @@
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-
-puppeteer.use(StealthPlugin());
 
 const FIREBASE_BASE_URL =
   "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 const configs = [
   {
-    name: "Futbol",
-    firebasePath: "matches_football.json",
-    dirs: {
-      team: path.join(__dirname, "football", "logos"),
-      tournament: path.join(__dirname, "football", "tournament_logos"),
-    },
-  },
-  {
     name: "Basketbol",
-    firebasePath: "matches_basketball.json",
+    firebasePath: "basketball/matches.json",
     dirs: {
       team: path.join(__dirname, "basketball", "logos"),
       nba: path.join(__dirname, "basketball", "logos", "NBA"),
-      tournament: path.join(__dirname, "basketball", "tournament_logos"),
-    },
-  },
-  {
-    name: "Tenis",
-    firebasePath: "matches_tennis.json",
-    dirs: {
-      tournament: path.join(__dirname, "tennis", "tournament_logos"),
-      team: path.join(__dirname, "tennis", "logos"),
-    },
-  },
+      tournament: path.join(__dirname, "basketball", "tournament_logos")
+    }
+  }
 ];
 
-// klasörler
-for (const c of configs) {
-  Object.values(c.dirs).forEach((d) => {
-    if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
+// klasör oluştur
+configs.forEach(conf => {
+  Object.values(conf.dirs).forEach(dir => {
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   });
-}
+});
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-function extractId(url) {
-  if (!url) return null;
-  return url.split("/").pop().split(".")[0];
-}
-
-async function fetchFirebase(file) {
-  const res = await axios.get(`${FIREBASE_BASE_URL}${file}`);
+async function fetchFirebase(pathUrl) {
+  const url = `${FIREBASE_BASE_URL}${pathUrl}`;
+  const res = await axios.get(url);
   return res.data;
 }
 
-// ===============================
-// 🧠 PUPPETEER POOL (V4 CORE)
-// ===============================
-let browserInstance = null;
+// ❗ Local dosya bozuk mu kontrol
+function isValidLocalImage(filePath) {
+  try {
+    if (!fs.existsSync(filePath)) return false;
+    const buffer = fs.readFileSync(filePath);
 
-async function getBrowser() {
-  if (!browserInstance) {
-    browserInstance = await puppeteer.launch({
-      headless: "new",
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-      ],
-    });
+    // PNG header check
+    return (
+      buffer[0] === 0x89 &&
+      buffer[1] === 0x50 &&
+      buffer[2] === 0x4e &&
+      buffer[3] === 0x47 &&
+      buffer.length > 1000
+    );
+  } catch {
+    return false;
   }
-  return browserInstance;
 }
 
-// ===============================
-// 🚀 IMAGE DOWNLOAD (REAL BROWSER)
-// ===============================
-async function downloadWithBrowser(url, filePath) {
-  const browser = await getBrowser();
-  const page = await browser.newPage();
-
-  await page.setUserAgent(
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124 Safari/537.36"
-  );
-
-  const response = await page.goto(url, {
-    waitUntil: "networkidle2",
-    timeout: 30000,
+// ❗ Remote image güvenli indir
+async function downloadImage(url) {
+  const res = await axios.get(url, {
+    responseType: "arraybuffer",
+    timeout: 15000,
+    validateStatus: () => true,
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
+      Referer: "https://www.sofascore.com/"
+    }
   });
 
-  if (!response) throw new Error("no response");
+  const buffer = Buffer.from(res.data);
+  const text = buffer.toString("utf8");
 
-  const buffer = await response.buffer();
-  fs.writeFileSync(filePath, buffer);
-
-  await page.close();
-}
-
-// ===============================
-// 🔁 SMART RETRY ENGINE
-// ===============================
-async function safeDownload(url, filePath, name) {
-  let delay = 2000;
-
-  for (let i = 0; i < 3; i++) {
-    try {
-      await downloadWithBrowser(url, filePath);
-      console.log(`   ✅ OK: ${name}`);
-      return true;
-    } catch (e) {
-      console.log(`   🚫 FAIL (${i + 1}/3): ${name}`);
-
-      await sleep(delay);
-      delay *= 2; // exponential backoff
-    }
+  // ❌ JSON error yakala (403 vs)
+  if (
+    text.includes('"error"') ||
+    text.includes("Forbidden") ||
+    res.status === 403
+  ) {
+    throw new Error("403_BLOCK");
   }
 
-  console.log(`   ❌ FINAL FAIL: ${name}`);
-  return false;
+  // ❌ HTML block
+  if (text.includes("<html")) {
+    throw new Error("HTML_BLOCK");
+  }
+
+  // ❌ çok küçük response
+  if (buffer.length < 1500) {
+    throw new Error("TOO_SMALL");
+  }
+
+  return buffer;
 }
 
-// ===============================
-// 🚀 ENGINE START
-// ===============================
 async function start() {
-  console.log("🚀 LOGO ENGINE V4 STARTED\n");
-
-  let success = 0;
-  let fail = 0;
+  console.log("🚀 V4.1 FIREBASE LOGO SYSTEM START");
 
   for (const conf of configs) {
-    console.log(`\n📦 ===== ${conf.name} =====`);
-
     const data = await fetchFirebase(conf.firebasePath);
-    const matches = data.matches || data.events || [];
 
-    console.log(`📄 Matches: ${matches.length}`);
-
+    const matches = data.matches || [];
     const missing = [];
-    const cache = new Set();
 
-    for (const m of matches) {
-      if (!m.homeTeam || !m.awayTeam) continue;
-
+    matches.forEach(m => {
       const teams = [m.homeTeam, m.awayTeam];
 
-      for (const t of teams) {
-        if (!t?.logo) continue;
+      teams.forEach(team => {
+        if (!team || !team.logo) return;
 
-        const id = extractId(t.logo);
-        if (!id || cache.has(id)) continue;
+        const id = team.logo.split("/").pop().split(".")[0];
 
-        cache.add(id);
+        const dir =
+          conf.name === "Basketbol" &&
+          (m.tournament || "").includes("NBA")
+            ? conf.dirs.nba
+            : conf.dirs.team;
 
-        const isNBA =
-          (m.tournament || "").toUpperCase().includes("NBA");
+        const targetPath = path.join(dir, `${id}.png`);
 
-        let dir = conf.dirs.team;
-        if (conf.name === "Basketbol" && isNBA) {
-          dir = conf.dirs.nba;
+        if (!isValidLocalImage(targetPath)) {
+          missing.push({
+            id,
+            name: team.name,
+            url: team.logo,
+            path: targetPath
+          });
         }
+      });
+    });
 
-        const filePath = path.join(dir, `${id}.png`);
+    console.log(`🔍 Missing: ${missing.length}`);
 
-        if (!fs.existsSync(filePath)) {
-          console.log(`❌ MISSING: ${t.name} (${id})`);
-          missing.push({ id, name: t.name, path: filePath });
-        }
-      }
-    }
-
-    console.log(`\n🔍 Missing: ${missing.length}`);
-
-    // QUEUE SYSTEM (IMPORTANT)
     for (const item of missing) {
-      const url = `https://api.sofascore.app/api/v1/team/${item.id}/image`;
-
       console.log(`⬇️ DOWNLOADING: ${item.name} | ${item.id}`);
 
-      const ok = await safeDownload(url, item.path, item.name);
+      try {
+        const buffer = await downloadImage(item.url);
 
-      if (ok) success++;
-      else fail++;
+        fs.writeFileSync(item.path, buffer);
 
-      // 🔥 CRITICAL ANTI-BLOCK DELAY
-      await sleep(3500);
+        console.log(`   ✅ OK: ${item.name}`);
+      } catch (err) {
+        console.log(`   ❌ FAIL: ${item.name} | ${err.message}`);
+
+        // fallback: boş dosya yazma YOK (bilerek)
+      }
+
+      await new Promise(r => setTimeout(r, 800));
     }
 
-    console.log(`\n✅ ${conf.name} DONE`);
+    console.log("✅ DONE");
   }
-
-  if (browserInstance) await browserInstance.close();
-
-  console.log(`\n📊 FINAL RESULT`);
-  console.log(`✅ Success: ${success}`);
-  console.log(`❌ Fail: ${fail}`);
 }
 
 start();
