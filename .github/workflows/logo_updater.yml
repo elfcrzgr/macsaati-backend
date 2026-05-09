@@ -26,7 +26,7 @@ jobs:
 
       - name: Logo Script Çalıştır
         run: |
-          node logo_downloader.js
+          node logo_masters.js
 
       - name: Git Status
         id: verify
