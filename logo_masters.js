@@ -33,13 +33,43 @@ const configs = [
   }
 ];
 
+// =========================
+// INIT FOLDERS
+// =========================
+for (const conf of configs) {
+  for (const dir of Object.values(conf.dirs)) {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  }
+}
+
+// =========================
+// HELPERS
+// =========================
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// =========================
+// DEBUG CHECK
+// =========================
+function checkFile(confName, teamName, teamId, filePath) {
+
+  const exists = fs.existsSync(filePath);
+
+  console.log(`🔎 [${confName}] ${teamName} (${teamId})`);
+  console.log(`   📂 ${filePath}`);
+  console.log(`   👉 ${exists ? 'VAR ✅' : 'YOK ❌'}`);
+
+  return exists;
+}
 
 // =========================
 // DOWNLOAD
 // =========================
 async function download(url, filePath, name) {
+
   try {
+
     const res = await axios.get(url, {
       responseType: 'arraybuffer',
       timeout: 20000,
@@ -50,19 +80,25 @@ async function download(url, filePath, name) {
 
     fs.writeFileSync(filePath, res.data);
 
-    console.log(`   ✅ ${name}`);
+    console.log(`   💾 DOWNLOAD OK → ${name}`);
+
     return true;
 
   } catch (e) {
-    console.log(`   ❌ ${name} -> ${e.response?.status || e.message}`);
+
+    console.log(
+      `   ❌ DOWNLOAD FAIL → ${name} (${e.response?.status || e.message})`
+    );
+
     return false;
   }
 }
 
 // =========================
-// SOFASCORE FALLBACK
+// SOFA FALLBACK
 // =========================
-const getLogo = (type, id) => {
+const getSofaUrl = (type, id) => {
+
   if (type === 'team') {
     return `https://img.sofascore.com/api/v1/team/${id}/image`;
   }
@@ -79,28 +115,38 @@ const getLogo = (type, id) => {
 // =========================
 async function start() {
 
-  console.log('🚀 Repo-based Logo Sync Started\n');
+  console.log('🚀 DEBUG LOGO SYSTEM STARTED\n');
 
   let ok = 0;
   let fail = 0;
 
   for (const conf of configs) {
 
-    console.log(`📦 ${conf.name}`);
+    console.log(`\n📦 ===== ${conf.name} =====`);
 
-    const res = await axios.get(
-      `${FIREBASE_BASE_URL}${conf.firebaseFile}.json`
-    );
+    let data;
+
+    try {
+      const res = await axios.get(
+        `${FIREBASE_BASE_URL}${conf.firebaseFile}.json`
+      );
+
+      data = res.data;
+
+    } catch (e) {
+      console.log('❌ Firebase error');
+      continue;
+    }
 
     const matches =
-      res.data?.matches || res.data?.events || [];
+      data?.matches || data?.events || [];
 
-    console.log(`📄 ${matches.length} matches`);
+    console.log(`📄 Matches: ${matches.length}`);
 
     const missing = [];
 
     // =========================
-    // BUILD MISSING FROM FILESYSTEM ONLY
+    // LOOP MATCHES
     // =========================
     for (const m of matches) {
 
@@ -111,7 +157,10 @@ async function start() {
 
       for (const t of teams) {
 
-        if (!t?.id || !t?.name) continue;
+        if (!t?.id || !t?.name) {
+          console.log('⚠️ SKIP: invalid team');
+          continue;
+        }
 
         let dir = conf.dirs.team;
 
@@ -122,8 +171,10 @@ async function start() {
         const filePath =
           path.join(dir, `${t.id}.png`);
 
-        // 🔥 TEK GERÇEK KAYNAK BURASI
-        if (!fs.existsSync(filePath)) {
+        const exists =
+          checkFile(conf.name, t.name, t.id, filePath);
+
+        if (!exists) {
 
           missing.push({
             type: 'team',
@@ -134,7 +185,9 @@ async function start() {
         }
       }
 
-      // tournament
+      // =========================
+      // TOURNAMENT
+      // =========================
       if (m.tournamentId) {
 
         const filePath =
@@ -143,7 +196,22 @@ async function start() {
             `${m.tournamentId}.png`
           );
 
-        if (!fs.existsSync(filePath)) {
+        const exists =
+          fs.existsSync(filePath);
+
+        console.log(
+          `🏆 [${conf.name}] Tournament ${m.tournament} (${m.tournamentId})`
+        );
+
+        console.log(
+          `   📂 ${filePath}`
+        );
+
+        console.log(
+          `   👉 ${exists ? 'VAR ✅' : 'YOK ❌'}`
+        );
+
+        if (!exists) {
 
           missing.push({
             type: 'tournament',
@@ -155,7 +223,7 @@ async function start() {
       }
     }
 
-    console.log(`🔍 Missing: ${missing.length}`);
+    console.log(`\n🔍 Missing: ${missing.length}`);
 
     // =========================
     // DOWNLOAD
@@ -163,7 +231,9 @@ async function start() {
     for (const item of missing) {
 
       const url =
-        getLogo(item.type, item.id);
+        getSofaUrl(item.type, item.id);
+
+      if (!url) continue;
 
       const success =
         await download(url, item.filePath, item.name);
@@ -174,10 +244,10 @@ async function start() {
       await sleep(300);
     }
 
-    console.log(`✅ ${conf.name} done\n`);
+    console.log(`✅ ${conf.name} DONE`);
   }
 
-  console.log('\n📊 FINAL');
+  console.log('\n📊 FINAL RESULT');
   console.log(`✅ Success: ${ok}`);
   console.log(`❌ Fail: ${fail}`);
 }
