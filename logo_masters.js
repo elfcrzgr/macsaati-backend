@@ -17,39 +17,56 @@ const configs = [
   }
 ];
 
-// klasör oluştur
+// ------------------ FOLDERS ------------------
 configs.forEach(conf => {
   Object.values(conf.dirs).forEach(dir => {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   });
 });
 
+// ------------------ FIREBASE SAFE FETCH ------------------
 async function fetchFirebase(pathUrl) {
-  const url = `${FIREBASE_BASE_URL}${pathUrl}`;
-  const res = await axios.get(url);
-  return res.data;
+  try {
+    const url = `${FIREBASE_BASE_URL}${pathUrl}`;
+    const res = await axios.get(url, { timeout: 15000 });
+
+    const data = res.data;
+
+    if (!data) return { matches: [] };
+
+    if (Array.isArray(data)) return { matches: data };
+
+    if (data.matches) return data;
+
+    if (data.events) return { matches: data.events };
+
+    return { matches: [] };
+  } catch (err) {
+    console.log("⚠️ Firebase fetch error:", err.message);
+    return { matches: [] };
+  }
 }
 
-// ❗ Local dosya bozuk mu kontrol
+// ------------------ LOCAL VALIDATION ------------------
 function isValidLocalImage(filePath) {
   try {
     if (!fs.existsSync(filePath)) return false;
+
     const buffer = fs.readFileSync(filePath);
 
-    // PNG header check
     return (
+      buffer.length > 1000 &&
       buffer[0] === 0x89 &&
       buffer[1] === 0x50 &&
       buffer[2] === 0x4e &&
-      buffer[3] === 0x47 &&
-      buffer.length > 1000
+      buffer[3] === 0x47
     );
   } catch {
     return false;
   }
 }
 
-// ❗ Remote image güvenli indir
+// ------------------ SAFE IMAGE DOWNLOAD ------------------
 async function downloadImage(url) {
   const res = await axios.get(url, {
     responseType: "arraybuffer",
@@ -65,48 +82,45 @@ async function downloadImage(url) {
   const buffer = Buffer.from(res.data);
   const text = buffer.toString("utf8");
 
-  // ❌ JSON error yakala (403 vs)
+  // ❌ JSON / HTML / BLOCK detection
   if (
+    res.status === 403 ||
     text.includes('"error"') ||
     text.includes("Forbidden") ||
-    res.status === 403
+    text.includes("<html")
   ) {
-    throw new Error("403_BLOCK");
+    throw new Error("BLOCKED_RESPONSE");
   }
 
-  // ❌ HTML block
-  if (text.includes("<html")) {
-    throw new Error("HTML_BLOCK");
-  }
-
-  // ❌ çok küçük response
   if (buffer.length < 1500) {
-    throw new Error("TOO_SMALL");
+    throw new Error("TOO_SMALL_IMAGE");
   }
 
   return buffer;
 }
 
+// ------------------ MAIN ------------------
 async function start() {
-  console.log("🚀 V4.1 FIREBASE LOGO SYSTEM START");
+  console.log("🚀 V5 SYSTEM START (FIREBASE SAFE + IMAGE SAFE)");
 
   for (const conf of configs) {
     const data = await fetchFirebase(conf.firebasePath);
 
-    const matches = data.matches || [];
-    const missing = [];
+    const matches = data?.matches || [];
+
+    let missing = [];
 
     matches.forEach(m => {
-      const teams = [m.homeTeam, m.awayTeam];
+      const teams = [m?.homeTeam, m?.awayTeam];
 
       teams.forEach(team => {
-        if (!team || !team.logo) return;
+        if (!team?.logo) return;
 
         const id = team.logo.split("/").pop().split(".")[0];
 
         const dir =
           conf.name === "Basketbol" &&
-          (m.tournament || "").includes("NBA")
+          (m?.tournament || "").includes("NBA")
             ? conf.dirs.nba
             : conf.dirs.team;
 
@@ -115,7 +129,7 @@ async function start() {
         if (!isValidLocalImage(targetPath)) {
           missing.push({
             id,
-            name: team.name,
+            name: team.name || "Unknown",
             url: team.logo,
             path: targetPath
           });
@@ -136,14 +150,12 @@ async function start() {
         console.log(`   ✅ OK: ${item.name}`);
       } catch (err) {
         console.log(`   ❌ FAIL: ${item.name} | ${err.message}`);
-
-        // fallback: boş dosya yazma YOK (bilerek)
       }
 
       await new Promise(r => setTimeout(r, 800));
     }
 
-    console.log("✅ DONE");
+    console.log(`✅ ${conf.name} DONE`);
   }
 }
 
