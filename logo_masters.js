@@ -5,8 +5,6 @@ const axios = require('axios');
 const FIREBASE_BASE_URL =
   'https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/';
 
-const CONCURRENCY = 8;
-
 const configs = [
   {
     name: 'Futbol',
@@ -35,21 +33,10 @@ const configs = [
   }
 ];
 
-// =========================
-// INIT FOLDERS
-// =========================
-for (const conf of configs) {
-  for (const dir of Object.values(conf.dirs)) {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-  }
-}
-
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // =========================
-// SAFE DOWNLOAD
+// DOWNLOAD
 // =========================
 async function download(url, filePath, name) {
   try {
@@ -57,12 +44,9 @@ async function download(url, filePath, name) {
       responseType: 'arraybuffer',
       timeout: 20000,
       headers: {
-        'User-Agent': 'Mozilla/5.0',
-        'Accept': 'image/*'
+        'User-Agent': 'Mozilla/5.0'
       }
     });
-
-    if (!res.data || res.data.byteLength < 500) return false;
 
     fs.writeFileSync(filePath, res.data);
 
@@ -78,16 +62,24 @@ async function download(url, filePath, name) {
 // =========================
 // SOFASCORE FALLBACK
 // =========================
-function getSofaUrl(id) {
-  return `https://img.sofascore.com/api/v1/team/${id}/image`;
-}
+const getLogo = (type, id) => {
+  if (type === 'team') {
+    return `https://img.sofascore.com/api/v1/team/${id}/image`;
+  }
+
+  if (type === 'tournament') {
+    return `https://img.sofascore.com/api/v1/unique-tournament/${id}/image`;
+  }
+
+  return null;
+};
 
 // =========================
 // MAIN
 // =========================
 async function start() {
 
-  console.log('🚀 Missing Logo Engine Started\n');
+  console.log('🚀 Repo-based Logo Sync Started\n');
 
   let ok = 0;
   let fail = 0;
@@ -96,30 +88,20 @@ async function start() {
 
     console.log(`📦 ${conf.name}`);
 
-    let data;
-
-    try {
-      const res = await axios.get(
-        `${FIREBASE_BASE_URL}${conf.firebaseFile}.json`
-      );
-
-      data = res.data;
-
-    } catch (e) {
-      console.log('❌ Firebase error');
-      continue;
-    }
+    const res = await axios.get(
+      `${FIREBASE_BASE_URL}${conf.firebaseFile}.json`
+    );
 
     const matches =
-      data?.matches || data?.events || [];
+      res.data?.matches || res.data?.events || [];
 
     console.log(`📄 ${matches.length} matches`);
 
-    // =========================
-    // COLLECT MISSING
-    // =========================
     const missing = [];
 
+    // =========================
+    // BUILD MISSING FROM FILESYSTEM ONLY
+    // =========================
     for (const m of matches) {
 
       const isNBA =
@@ -140,13 +122,34 @@ async function start() {
         const filePath =
           path.join(dir, `${t.id}.png`);
 
+        // 🔥 TEK GERÇEK KAYNAK BURASI
         if (!fs.existsSync(filePath)) {
 
           missing.push({
+            type: 'team',
             id: t.id,
             name: t.name,
-            filePath,
-            url: t.logo || getSofaUrl(t.id)
+            filePath
+          });
+        }
+      }
+
+      // tournament
+      if (m.tournamentId) {
+
+        const filePath =
+          path.join(
+            conf.dirs.tournament,
+            `${m.tournamentId}.png`
+          );
+
+        if (!fs.existsSync(filePath)) {
+
+          missing.push({
+            type: 'tournament',
+            id: m.tournamentId,
+            name: m.tournament,
+            filePath
           });
         }
       }
@@ -155,31 +158,18 @@ async function start() {
     console.log(`🔍 Missing: ${missing.length}`);
 
     // =========================
-    // PARALLEL DOWNLOAD
+    // DOWNLOAD
     // =========================
-    const chunks = [];
+    for (const item of missing) {
 
-    for (let i = 0; i < missing.length; i += CONCURRENCY) {
-      chunks.push(missing.slice(i, i + CONCURRENCY));
-    }
+      const url =
+        getLogo(item.type, item.id);
 
-    for (const chunk of chunks) {
+      const success =
+        await download(url, item.filePath, item.name);
 
-      await Promise.all(
-        chunk.map(async item => {
-
-          const success =
-            await download(
-              item.url,
-              item.filePath,
-              item.name
-            );
-
-          if (success) ok++;
-          else fail++;
-
-        })
-      );
+      if (success) ok++;
+      else fail++;
 
       await sleep(300);
     }
@@ -187,7 +177,7 @@ async function start() {
     console.log(`✅ ${conf.name} done\n`);
   }
 
-  console.log('\n📊 FINAL RESULT');
+  console.log('\n📊 FINAL');
   console.log(`✅ Success: ${ok}`);
   console.log(`❌ Fail: ${fail}`);
 }
