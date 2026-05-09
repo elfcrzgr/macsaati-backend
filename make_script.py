@@ -1,191 +1,101 @@
-import os
+import base64, os
 
-code = [
-‘“use strict”;’,
-‘’,
-‘var fs = require(“fs”);’,
-‘var path = require(“path”);’,
-‘var axios = require(“axios”);’,
-‘var puppeteer = require(“puppeteer-extra”);’,
-‘var StealthPlugin = require(“puppeteer-extra-plugin-stealth”);’,
-‘’,
-‘puppeteer.use(StealthPlugin());’,
-‘’,
-‘var FIREBASE_BASE_URL = “https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app”;’,
-‘’,
-‘async function fetchMatches(nodeName) {’,
-’    var url = FIREBASE_BASE_URL + “/” + nodeName + “.json”;’,
-’    console.log(“Firebase: “ + url);’,
-’    try {’,
-’        var res = await axios.get(url, { timeout: 20000 });’,
-’        if (!res.data) return [];’,
-’        if (Array.isArray(res.data)) return res.data.filter(Boolean);’,
-’        if (Array.isArray(res.data.matches)) return res.data.matches.filter(Boolean);’,
-’        if (Array.isArray(res.data.events)) return res.data.events.filter(Boolean);’,
-’        return Object.values(res.data).filter(function(v) { return v && typeof v === “object”; });’,
-’    } catch (e) {’,
-’        console.error(“Firebase hatasi (” + nodeName + “): “ + e.message);’,
-’        return [];’,
-’    }’,
-‘}’,
-‘’,
-‘function localDirFromUrl(logoUrl) {’,
-’    var after = logoUrl.split(”/main/”)[1];’,
-’    if (!after) return null;’,
-’    var parts = after.split(”/”);’,
-’    parts.pop();’,
-’    return path.join.apply(path, [__dirname].concat(parts));’,
-‘}’,
-‘’,
-‘function sofascoreUrls(id, type) {’,
-’    if (type === “tournament”) {’,
-’        return [’,
-’            “https://api.sofascore.app/api/v1/unique-tournament/” + id + “/image”,’,
-’            “https://www.sofascore.com/api/v1/unique-tournament/” + id + “/image”’,
-’        ];’,
-’    }’,
-’    return [’,
-’        “https://api.sofascore.app/api/v1/team/” + id + “/image”,’,
-’        “https://www.sofascore.com/api/v1/team/” + id + “/image”’,
-’    ];’,
-‘}’,
-‘’,
-‘async function downloadImage(urls, headers) {’,
-’    for (var i = 0; i < urls.length; i++) {’,
-’        try {’,
-’            var res = await axios.get(urls[i], {’,
-’                responseType: “arraybuffer”,’,
-’                timeout: 15000,’,
-’                headers: headers’,
-’            });’,
-’            if (res.data.byteLength > 800) return res.data;’,
-’        } catch (e) {}’,
-’    }’,
-’    return null;’,
-‘}’,
-‘’,
-‘function collectMissing(matches) {’,
-’    var seen = new Set();’,
-’    var missing = [];’,
-‘’,
-’    function add(logoUrl, type) {’,
-’        if (!logoUrl || typeof logoUrl !== “string”) return;’,
-’        if (logoUrl.indexOf(”/main/”) === -1) return;’,
-’        var fileName = logoUrl.split(”/”).pop();’,
-’        var id = fileName.split(”.”)[0];’,
-’        if (!id || isNaN(id)) return;’,
-’        var key = type + “:” + id;’,
-’        if (seen.has(key)) return;’,
-’        seen.add(key);’,
-’        var dir = localDirFromUrl(logoUrl);’,
-’        if (!dir) return;’,
-’        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });’,
-’        var filePath = path.join(dir, id + “.png”);’,
-’        if (!fs.existsSync(filePath)) {’,
-’            missing.push({ id: id, type: type, dir: dir, filePath: filePath });’,
-’        }’,
-’    }’,
-‘’,
-’    matches.forEach(function(m) {’,
-’        if (!m) return;’,
-’        add(m.tournamentLogo, “tournament”);’,
-’        if (m.homeTeam) add(m.homeTeam.logo, “team”);’,
-’        if (m.awayTeam) add(m.awayTeam.logo, “team”);’,
-’    });’,
-‘’,
-’    return missing;’,
-‘}’,
-‘’,
-‘var NODES = [’,
-’    { label: “Futbol”,    node: “matches_football”   },’,
-’    { label: “Basketbol”, node: “matches_basketball” },’,
-’    { label: “Tenis”,     node: “matches_tennis”     }’,
-‘];’,
-‘’,
-‘async function start() {’,
-’    console.log(”=== Mac Saati Logo Avcisi Basladi ===”);’,
-‘’,
-’    var browser = await puppeteer.launch({’,
-’        headless: “new”,’,
-’        args: [”–no-sandbox”, “–disable-setuid-sandbox”]’,
-’    });’,
-’    var page = await browser.newPage();’,
-’    var userAgent = “Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36”;’,
-’    await page.setUserAgent(userAgent);’,
-‘’,
-’    try {’,
-’        console.log(“Sofascore session olusturuluyor…”);’,
-’        await page.goto(“https://www.sofascore.com”, { waitUntil: “networkidle2”, timeout: 30000 });’,
-’        var cookies = await page.cookies();’,
-’        var cookieStr = cookies.map(function(c) { return c.name + “=” + c.value; }).join(”; “);’,
-‘’,
-’        var headers = {’,
-’            “User-Agent”: userAgent,’,
-’            “Cookie”: cookieStr,’,
-’            “Referer”: “https://www.sofascore.com/”,’,
-’            “Cache-Control”: “no-cache”,’,
-’            “Accept”: “image/png,image/webp,image/*,*/*”,’,
-’            “Accept-Language”: “tr-TR,tr;q=0.9,en;q=0.8”’,
-’        };’,
-‘’,
-’        var totalDownloaded = 0;’,
-’        var totalDefaulted = 0;’,
-’        var totalFailed = 0;’,
-‘’,
-’        for (var i = 0; i < NODES.length; i++) {’,
-’            var label = NODES[i].label;’,
-’            var nodeName = NODES[i].node;’,
-’            console.log(”\n— “ + label + “ —”);’,
-‘’,
-’            var matches = await fetchMatches(nodeName);’,
-’            if (!matches.length) {’,
-’                console.log(“Mac bulunamadi, atlaniyor.”);’,
-’                continue;’,
-’            }’,
-’            console.log(matches.length + “ mac alindi.”);’,
-‘’,
-’            var missing = collectMissing(matches);’,
-’            if (!missing.length) {’,
-’                console.log(“Tum logolar mevcut.”);’,
-’                continue;’,
-’            }’,
-’            console.log(missing.length + “ eksik logo indiriliyor…”);’,
-‘’,
-’            for (var j = 0; j < missing.length; j++) {’,
-’                var item = missing[j];’,
-’                var defaultPath = path.join(item.dir, “default.png”);’,
-’                var data = await downloadImage(sofascoreUrls(item.id, item.type), headers);’,
-‘’,
-’                if (data) {’,
-’                    fs.writeFileSync(item.filePath, data);’,
-’                    console.log(”  OK: “ + item.type + “ ID:” + item.id);’,
-’                    totalDownloaded++;’,
-’                } else if (fs.existsSync(defaultPath)) {’,
-’                    fs.copyFileSync(defaultPath, item.filePath);’,
-’                    console.log(”  DEFAULT: “ + item.type + “ ID:” + item.id);’,
-’                    totalDefaulted++;’,
-’                } else {’,
-’                    console.log(”  ERR: “ + item.type + “ ID:” + item.id);’,
-’                    totalFailed++;’,
-’                }’,
-’                await new Promise(function(r) { setTimeout(r, 1200); });’,
-’            }’,
-’        }’,
-‘’,
-’        console.log(”\n=== OZET: “ + totalDownloaded + “ Indirildi | “ + totalDefaulted + “ Varsayilan | “ + totalFailed + “ Hata ===”);’,
-‘’,
-’    } catch (err) {’,
-’        console.error(“Kritik hata: “ + err.message);’,
-’        process.exit(1);’,
-’    } finally {’,
-’        await browser.close();’,
-’    }’,
-‘}’,
-‘’,
-‘start();’,
-]
+js_b64 = (
+“InVzZSBzdHJpY3QiOwoKdmFyIGZzID0gcmVxdWlyZSgiZnMiKTsKdmFyIHBhdGggPSByZXF1aXJlKCJwYXRoIik7”
+“CnZhciBheGlvcyA9IHJlcXVpcmUoImF4aW9zIik7CnZhciBwdXBwZXRlZXIgPSByZXF1aXJlKCJwdXBwZXRlZXIt”
+“ZXh0cmEiKTsKdmFyIFN0ZWFsdGhQbHVnaW4gPSByZXF1aXJlKCJwdXBwZXRlZXItZXh0cmEtcGx1Z2luLXN0ZWFs”
+“dGgiKTsKCnB1cHBldGVlci51c2UoU3RlYWx0aFBsdWdpbigpKTsKCnZhciBGSVJFQkFTRV9CQVNFX1VSTCA9ICJo”
+“dHRwczovL21hY3NhYXRpLWE3NDNhLWRlZmF1bHQtcnRkYi5ldXJvcGUtd2VzdDEuZmlyZWJhc2VkYXRhYmFzZS5h”
+“cHAiOwoKYXN5bmMgZnVuY3Rpb24gZmV0Y2hNYXRjaGVzKG5vZGVOYW1lKSB7CiAgICB2YXIgdXJsID0gRklSRUJB”
+“U0VfQkFTRV9VUkwgKyAiLyIgKyBub2RlTmFtZSArICIuanNvbiI7CiAgICBjb25zb2xlLmxvZygiRmlyZWJhc2U6”
+“ICIgKyB1cmwpOwogICAgdHJ5IHsKICAgICAgICB2YXIgcmVzID0gYXdhaXQgYXhpb3MuZ2V0KHVybCwgeyB0aW1l”
+“b3V0OiAyMDAwMCB9KTsKICAgICAgICBpZiAoIXJlcy5kYXRhKSByZXR1cm4gW107CiAgICAgICAgaWYgKEFycmF5”
+“LmlzQXJyYXkocmVzLmRhdGEpKSByZXR1cm4gcmVzLmRhdGEuZmlsdGVyKEJvb2xlYW4pOwogICAgICAgIGlmIChB”
+“cnJheS5pc0FycmF5KHJlcy5kYXRhLm1hdGNoZXMpKSByZXR1cm4gcmVzLmRhdGEubWF0Y2hlcy5maWx0ZXIoQm9v”
+“bGVhbik7CiAgICAgICAgaWYgKEFycmF5LmlzQXJyYXkocmVzLmRhdGEuZXZlbnRzKSkgcmV0dXJuIHJlcy5kYXRh”
+“LmV2ZW50cy5maWx0ZXIoQm9vbGVhbik7CiAgICAgICAgcmV0dXJuIE9iamVjdC52YWx1ZXMocmVzLmRhdGEpLmZp”
+“bHRlcihmdW5jdGlvbih2KSB7IHJldHVybiB2ICYmIHR5cGVvZiB2ID09PSAib2JqZWN0IjsgfSk7CiAgICB9IGNh”
+“dGNoIChlKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmlyZWJhc2UgaGF0YXNpICgiICsgbm9kZU5hbWUgKyAi”
+“KTogIiArIGUubWVzc2FnZSk7CiAgICAgICAgcmV0dXJuIFtdOwogICAgfQp9CgpmdW5jdGlvbiBsb2NhbERpckZy”
+“b21VcmwobG9nb1VybCkgewogICAgdmFyIGFmdGVyID0gbG9nb1VybC5zcGxpdCgiL21haW4vIilbMV07CiAgICBp”
+“ZiAoIWFmdGVyKSByZXR1cm4gbnVsbDsKICAgIHZhciBwYXJ0cyA9IGFmdGVyLnNwbGl0KCIvIik7CiAgICBwYXJ0”
+“cy5wb3AoKTsKICAgIHJldHVybiBwYXRoLmpvaW4uYXBwbHkocGF0aCwgW19fZGlybmFtZV0uY29uY2F0KHBhcnRz”
+“KSk7Cn0KCmZ1bmN0aW9uIHNvZmFzY29yZVVybHMoaWQsIHR5cGUpIHsKICAgIGlmICh0eXBlID09PSAidG91cm5h”
+“bWVudCIpIHsKICAgICAgICByZXR1cm4gWwogICAgICAgICAgICAiaHR0cHM6Ly9hcGkuc29mYXNjb3JlLmFwcC9h”
+“cGkvdjEvdW5pcXVlLXRvdXJuYW1lbnQvIiArIGlkICsgIi9pbWFnZSIsCiAgICAgICAgICAgICJodHRwczovL3d3”
+“dy5zb2Zhc2NvcmUuY29tL2FwaS92MS91bmlxdWUtdG91cm5hbWVudC8iICsgaWQgKyAiL2ltYWdlIgogICAgICAg”
+“IF07CiAgICB9CiAgICByZXR1cm4gWwogICAgICAgICJodHRwczovL2FwaS5zb2Zhc2NvcmUuYXBwL2FwaS92MS90”
+“ZWFtLyIgKyBpZCArICIvaW1hZ2UiLAogICAgICAgICJodHRwczovL3d3dy5zb2Zhc2NvcmUuY29tL2FwaS92MS90”
+“ZWFtLyIgKyBpZCArICIvaW1hZ2UiCiAgICBdOwp9CgphbnluYyBmdW5jdGlvbiBkb3dubG9hZEltYWdlKHVybHMs”
+“IGhlYWRlcnMpIHsKICAgIGZvciAodmFyIGkgPSAwOyBpIDwgdXJscy5sZW5ndGg7IGkrKykgewogICAgICAgIHRy”
+“eSB7CiAgICAgICAgICAgIHZhciByZXMgPSBhd2FpdCBheGlvcy5nZXQodXJsc1tpXSwgewogICAgICAgICAgICAg”
+“ICAgcmVzcG9uc2VUeXBlOiAiYXJyYXlidWZmZXIiLAogICAgICAgICAgICAgICAgdGltZW91dDogMTUwMDAsCiAg”
+“ICAgICAgICAgICAgICBoZWFkZXJzOiBoZWFkZXJzCiAgICAgICAgICAgIH0pOwogICAgICAgICAgICBpZiAocmVz”
+“LmRhdGEuYnl0ZUxlbmd0aCA+IDgwMCkgcmV0dXJuIHJlcy5kYXRhOwogICAgICAgIH0gY2F0Y2ggKGUpIHt9CiAg”
+“ICB9CiAgICByZXR1cm4gbnVsbDsKfQoKZnVuY3Rpb24gY29sbGVjdE1pc3NpbmcobWF0Y2hlcykgewogICAgdmFy”
+“IHNlZW4gPSBuZXcgU2V0KCk7CiAgICB2YXIgbWlzc2luZyA9IFtdOwoKICAgIGZ1bmN0aW9uIGFkZChsb2dvVXJs”
+“LCB0eXBlKSB7CiAgICAgICAgaWYgKCFsb2dvVXJsIHx8IHR5cGVvZiBsb2dvVXJsICE9PSAic3RyaW5nIikgcmV0”
+“dXJuOwogICAgICAgIGlmIChsb2dvVXJsLmluZGV4T2YoIi9tYWluLyIpID09PSAtMSkgcmV0dXJuOwogICAgICAg”
+“IHZhciBmaWxlTmFtZSA9IGxvZ29Vcmwuc3BsaXQoIi8iKS5wb3AoKTsKICAgICAgICB2YXIgaWQgPSBmaWxlTmFt”
+“ZS5zcGxpdCgiLiIpWzBdOwogICAgICAgIGlmICghaWQgfHwgaXNOYU4oaWQpKSByZXR1cm47CiAgICAgICAgdmFy”
+“IGtleSA9IHR5cGUgKyAiOiIgKyBpZDsKICAgICAgICBpZiAoc2Vlbi5oYXMoa2V5KSkgcmV0dXJuOwogICAgICAg”
+“IHNlZW4uYWRkKGtleSk7CiAgICAgICAgdmFyIGRpciA9IGxvY2FsRGlyRnJvbVVybChsb2dvVXJsKTsKICAgICAg”
+“ICBpZiAoIWRpcikgcmV0dXJuOwogICAgICAgIGlmICghZnMuZXhpc3RzU3luYyhkaXIpKSBmcy5ta2RpclN5bmMo”
+“ZGlyLCB7IHJlY3Vyc2l2ZTogdHJ1ZSB9KTsKICAgICAgICB2YXIgZmlsZVBhdGggPSBwYXRoLmpvaW4oZGlyLCBp”
+“ZCArICIucG5nIik7CiAgICAgICAgaWYgKCFmcy5leGlzdHNTeW5jKGZpbGVQYXRoKSkgewogICAgICAgICAgICBt”
+“aXNzaW5nLnB1c2goeyBpZDogaWQsIHR5cGU6IHR5cGUsIGRpcjogZGlyLCBmaWxlUGF0aDogZmlsZVBhdGggfSk7”
+“CiAgICAgICAgfQogICAgfQoKICAgIG1hdGNoZXMuZm9yRWFjaChmdW5jdGlvbihtKSB7CiAgICAgICAgaWYgKCFt”
+“KSByZXR1cm47CiAgICAgICAgYWRkKG0udG91cm5hbWVudExvZ28sICJ0b3VybmFtZW50Iik7CiAgICAgICAgaWYg”
+“KG0uaG9tZVRlYW0pIGFkZChtLmhvbWVUZWFtLmxvZ28sICJ0ZWFtIik7CiAgICAgICAgaWYgKG0uYXdheVRlYW0p”
+“IGFkZChtLmF3YXlUZWFtLmxvZ28sICJ0ZWFtIik7CiAgICB9KTsKCiAgICByZXR1cm4gbWlzc2luZzsKfQoKdmFy”
+“IE5PREVTID0gWwogICAgeyBsYWJlbDogIkZ1dGJvbCIsICAgIG5vZGU6ICJtYXRjaGVzX2Zvb3RiYWxsIiAgIH0s”
+“CiAgICB7IGxhYmVsOiAiQmFza2V0Ym9sIiwgbm9kZTogIm1hdGNoZXNfYmFza2V0YmFsbCIgfSwKICAgIHsgbGFi”
+“ZWw6ICJUZW5pcyIsICAgICBub2RlOiAibWF0Y2hlc190ZW5uaXMiICAgICB9Cl07CgphbnluYyBmdW5jdGlvbiBz”
+“dGFydCgpIHsKICAgIGNvbnNvbGUubG9nKCI9PT0gTWFjIFNhYXRpIExvZ28gQXZjaXNpIEJhc2xhZGkgPT09Iik7”
+“CgogICAgdmFyIGJyb3dzZXIgPSBhd2FpdCBwdXBwZXRlZXIubGF1bmNoKHsKICAgICAgICBoZWFkbGVzczogIm5l”
+“dyIsCiAgICAgICAgYXJnczogWyItLW5vLXNhbmRib3giLCAiLS1kaXNhYmxlLXNldHVpZC1zYW5kYm94Il0KICAg”
+“IH0pOwogICAgdmFyIHBhZ2UgPSBhd2FpdCBicm93c2VyLm5ld1BhZ2UoKTsKICAgIHZhciB1c2VyQWdlbnQgPSAi”
+“TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRN”
+“TCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyNC4wLjAuMCBTYWZhcmkvNTM3LjM2IjsKICAgIGF3YWl0IHBhZ2Uuc2V0”
+“VXNlckFnZW50KHVzZXJBZ2VudCk7CgogICAgdHJ5IHsKICAgICAgICBjb25zb2xlLmxvZygiU29mYXNjb3JlIHNl”
+“c3Npb24gb2x1c3R1cnVsdXlvci4uLiIpOwogICAgICAgIGF3YWl0IHBhZ2UuZ290bygiaHR0cHM6Ly93d3cuc29m”
+“YXNjb3JlLmNvbSIsIHsgd2FpdFVudGlsOiAibmV0d29ya2lkbGUyIiwgdGltZW91dDogMzAwMDAgfSk7CiAgICAg”
+“ICAgdmFyIGNvb2tpZXMgPSBhd2FpdCBwYWdlLmNvb2tpZXMoKTsKICAgICAgICB2YXIgY29va2llU3RyID0gY29v”
+“a2llcy5tYXAoZnVuY3Rpb24oYykgeyByZXR1cm4gYy5uYW1lICsgIj0iICsgYy52YWx1ZTsgfSkuam9pbigiOyAi”
+“KTsKCiAgICAgICAgdmFyIGhlYWRlcnMgPSB7CiAgICAgICAgICAgICJVc2VyLUFnZW50IjogdXNlckFnZW50LAog”
+“ICAgICAgICAgICAiQ29va2llIjogY29va2llU3RyLAogICAgICAgICAgICAiUmVmZXJlciI6ICJodHRwczovL3d3”
+“dy5zb2Zhc2NvcmUuY29tLyIsCiAgICAgICAgICAgICJDYWNoZS1Db250cm9sIjogIm5vLWNhY2hlIiwKICAgICAg”
+“ICAgICAgIkFjY2VwdCI6ICJpbWFnZS9wbmcsaW1hZ2Uvd2VicCxpbWFnZS8qLCovKiIsCiAgICAgICAgICAgICJB”
+“Y2NlcHQtTGFuZ3VhZ2UiOiAidHItVFIsdHI7cT0wLjksZW47cT0wLjgiCiAgICAgICAgfTsKCiAgICAgICAgdmFy”
+“IHRvdGFsRG93bmxvYWRlZCA9IDA7CiAgICAgICAgdmFyIHRvdGFsRGVmYXVsdGVkID0gMDsKICAgICAgICB2YXIg”
+“dG90YWxGYWlsZWQgPSAwOwoKICAgICAgICBmb3IgKHZhciBpID0gMDsgaSA8IE5PREVTLMB0bGVuZ3RoOyBpKysp”
+“IHsKICAgICAgICAgICAgdmFyIGxhYmVsID0gTk9ERVNbaV0ubGFiZWw7CiAgICAgICAgICAgIHZhciBub2RlTmFt”
+“ZSA9IE5PREVTW2ldLm5vZGU7CiAgICAgICAgICAgIGNvbnNvbGUubG9nKCJcbi0tLSAiICsgbGFiZWwgKyAiIC0t”
+“LSIpOwogICAgICAgICAgICB2YXIgbWF0Y2hlcyA9IGF3YWl0IGZldGNoTWF0Y2hlcyhub2RlTmFtZSk7CiAgICAg”
+“ICAgICAgIGlmICghbWF0Y2hlcy5sZW5ndGgpIHsgY29uc29sZS5sb2coIk1hYyBidWx1bmFtYWRpLCBhdGxhbml5”
+“b3IuIik7IGNvbnRpbnVlOyB9CiAgICAgICAgICAgIGNvbnNvbGUubG9nKG1hdGNoZXMubGVuZ3RoICsgIiBtYWMg”
+“YWxpbmRpLiIpOwogICAgICAgICAgICB2YXIgbWlzc2luZyA9IGNvbGxlY3RNaXNzaW5nKG1hdGNoZXMpOwogICAg”
+“ICAgICAgICBpZiAoIW1pc3NpbmcubGVuZ3RoKSB7IGNvbnNvbGUubG9nKCJUdW0gbG9nb2xhciBtZXZjdXQuIik7”
+“IGNvbnRpbnVlOyB9CiAgICAgICAgICAgIGNvbnNvbGUubG9nKG1pc3NpbmcubGVuZ3RoICsgIiBla3NpayBsb2dv”
+“IGluZGlyaWxpeW9yLi4uIik7CiAgICAgICAgICAgIGZvciAodmFyIGogPSAwOyBqIDwgbWlzc2luZy5sZW5ndGg7”
+“IGorKykgewogICAgICAgICAgICAgICAgdmFyIGl0ZW0gPSBtaXNzaW5nW2pdOwogICAgICAgICAgICAgICAgdmFy”
+“IGRlZmF1bHRQYXRoID0gcGF0aC5qb2luKGl0ZW0uZGlyLCAiZGVmYXVsdC5wbmciKTsKICAgICAgICAgICAgICAg”
+“IHZhciBkYXRhID0gYXdhaXQgZG93bmxvYWRJbWFnZShzb2Zhc2NvcmVVcmxzKGl0ZW0uaWQsIGl0ZW0udHlwZSks”
+“IGhlYWRlcnMpOwogICAgICAgICAgICAgICAgaWYgKGRhdGEpIHsgZnMud3JpdGVGaWxlU3luYyhpdGVtLmZpbGVQ”
+“YXRoLCBkYXRhKTsgY29uc29sZS5sb2coIiAgT0s6ICIgKyBpdGVtLnR5cGUgKyAiIElEOiIgKyBpdGVtLmlkKTsg”
+“dG90YWxEb3dubG9hZGVkKys7IH0KICAgICAgICAgICAgICAgIGVsc2UgaWYgKGZzLmV4aXN0c1N5bmMoZGVmYXVs”
+“dFBhdGgpKSB7IGZzLmNvcHlGaWxlU3luYyhkZWZhdWx0UGF0aCwgaXRlbS5maWxlUGF0aCk7IGNvbnNvbGUubG9n”
+“KCIgIERFRkFVTFQ6ICIgKyBpdGVtLnR5cGUgKyAiIElEOiIgKyBpdGVtLmlkKTsgdG90YWxEZWZhdWx0ZWQrKzsg”
+“fQogICAgICAgICAgICAgICAgZWxzZSB7IGNvbnNvbGUubG9nKCIgIEVSUjogIiArIGl0ZW0udHlwZSArICIgSUQ6”
+“IiArIGl0ZW0uaWQpOyB0b3RhbEZhaWxlZCsrOyB9CiAgICAgICAgICAgICAgICBhd2FpdCBuZXcgUHJvbWlzZShm”
+“dW5jdGlvbihyKSB7IHNldFRpbWVvdXQociwgMTIwMCk7IH0pOwogICAgICAgICAgICB9CiAgICAgICAgfQogICAg”
+“ICAgIGNvbnNvbGUubG9nKCJcbj09PSBPWkVUOiAiICsgdG90YWxEb3dubG9hZGVkICsgIiBJbmRpcmlsZGkgfCAi”
+“ICsgdG90YWxEZWZhdWx0ZWQgKyAiIFZhcnNheWlsYW4gfCAiICsgdG90YWxGYWlsZWQgKyAiIEhhdGEgPT09Iik7”
+“CiAgICB9IGNhdGNoIChlcnIpIHsKICAgICAgICBjb25zb2xlLmVycm9yKCJLcml0aWsgaGF0YTogIiArIGVyci5t”
+“ZXNzYWdlKTsKICAgICAgICBwcm9jZXNzLmV4aXQoMSk7CiAgICB9IGZpbmFsbHkgewogICAgICAgIGF3YWl0IGJy”
+“b3dzZXIuY2xvc2UoKTsKICAgIH0KfQoKc3RhcnQoKTsK”
+)
 
-with open(‘logo_masters.js’, ‘w’, encoding=‘utf-8’, newline=’\n’) as f:
-f.write(’\n’.join(code))
-
-print(’logo_masters.js olusturuldu. Satir sayisi: ’ + str(len(code)))
+with open(“logo_masters.js”, “wb”) as f:
+f.write(base64.b64decode(js_b64))
+print(“logo_masters.js olusturuldu.”)
