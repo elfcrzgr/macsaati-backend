@@ -37,21 +37,20 @@ const configs = [
   },
 ];
 
-// klasörleri oluştur
-for (const conf of configs) {
-  Object.values(conf.dirs).forEach((dir) => {
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+// klasörler
+for (const c of configs) {
+  Object.values(c.dirs).forEach((d) => {
+    if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
   });
 }
 
-function sleep(ms) {
-  return new Promise((r) => setTimeout(r, ms));
-}
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function fetchFirebase(file) {
   try {
-    const url = `${FIREBASE_BASE_URL}${file}`;
-    const res = await axios.get(url, { timeout: 15000 });
+    const res = await axios.get(`${FIREBASE_BASE_URL}${file}`, {
+      timeout: 15000,
+    });
     return res.data || null;
   } catch (e) {
     console.log(`❌ Firebase error: ${file}`);
@@ -59,36 +58,43 @@ async function fetchFirebase(file) {
   }
 }
 
-function fileExists(dir, id) {
+function exists(dir, id) {
   return fs.existsSync(path.join(dir, `${id}.png`));
 }
 
-async function downloadImage(url, pathOut, name) {
-  for (let i = 1; i <= 3; i++) {
-    try {
-      const res = await axios.get(url, {
-        responseType: "arraybuffer",
-        timeout: 15000,
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
-          Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
-          Referer: "https://www.sofascore.com/",
-          "Cache-Control": "no-cache",
-        },
-      });
+/**
+ * 🔥 MULTI SOURCE + 403 SAFE DOWNLOAD
+ */
+async function downloadImage(urls, outPath, name) {
+  for (const url of urls) {
+    for (let i = 1; i <= 2; i++) {
+      try {
+        const res = await axios.get(url, {
+          responseType: "arraybuffer",
+          timeout: 20000,
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
+            Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+            Referer: "https://www.sofascore.com/",
+            Origin: "https://www.sofascore.com",
+          },
+          validateStatus: () => true,
+        });
 
-      if (!res.data || res.data.byteLength < 800) {
-        throw new Error("Invalid image");
+        if (res.status === 200 && res.data?.byteLength > 800) {
+          fs.writeFileSync(outPath, res.data);
+          console.log(`   ✅ OK: ${name}`);
+          return true;
+        }
+
+        if (res.status === 403) {
+          console.log(`   🚫 403 (retry fallback): ${name}`);
+          break;
+        }
+      } catch (e) {
+        await sleep(800 * i);
       }
-
-      fs.writeFileSync(pathOut, res.data);
-      console.log(`   ✅ OK: ${name}`);
-      return true;
-    } catch (e) {
-      const code = e.response?.status || "ERR";
-      console.log(`   🚫 ${code} BLOCK (${i}/3): ${name}`);
-      await sleep(1000 * i);
     }
   }
 
@@ -97,7 +103,7 @@ async function downloadImage(url, pathOut, name) {
 }
 
 async function start() {
-  console.log("🚀 V5 SYSTEM START (FIREBASE SAFE + REPO SAFE)\n");
+  console.log("🚀 V6 SYSTEM START (FIREBASE + 403 SAFE + REPO SAFE)\n");
 
   let totalMissing = 0;
 
@@ -105,7 +111,7 @@ async function start() {
     const data = await fetchFirebase(conf.file);
 
     if (!data) {
-      console.log(`⚠️ ${conf.name} SKIPPED (no firebase data)`);
+      console.log(`⚠️ ${conf.name} SKIPPED (firebase null)`);
       continue;
     }
 
@@ -118,27 +124,25 @@ async function start() {
     const missing = [];
 
     for (const m of matches) {
-      const tourName = m.tournament || "";
-      const isNBA = tourName.toUpperCase().includes("NBA");
+      const isNBA =
+        (m.tournament || "").toUpperCase().includes("NBA");
 
-      // 🏆 Tournament logo
+      // 🏆 tournament
       if (m.tournamentLogo) {
         const id = m.tournamentLogo.split("/").pop().split(".")[0];
 
-        const exists = fileExists(conf.dirs.tournament, id);
-        if (!exists && id && id !== "default") {
+        if (!exists(conf.dirs.tournament, id)) {
           missing.push({
             id,
-            name: tourName,
+            name: m.tournament,
             type: "tournament",
+            dir: conf.dirs.tournament,
           });
         }
       }
 
-      // 👕 Team logos
-      const teams = [m.homeTeam, m.awayTeam];
-
-      for (const t of teams) {
+      // 👕 teams
+      for (const t of [m.homeTeam, m.awayTeam]) {
         if (!t) continue;
 
         const logos = Array.isArray(t.logos)
@@ -154,9 +158,7 @@ async function start() {
               ? conf.dirs.nba
               : conf.dirs.team;
 
-          const exists = fileExists(dir, id);
-
-          if (!exists) {
+          if (!exists(dir, id)) {
             missing.push({
               id,
               name: t.name,
@@ -172,20 +174,26 @@ async function start() {
     totalMissing += missing.length;
 
     for (const item of missing) {
-      let url = "";
+      let urls = [];
 
       if (item.type === "tournament") {
-        url = `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`;
+        urls = [
+          `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`,
+          `https://www.sofascore.com/static/images/tournaments/${item.id}.png`,
+        ];
       } else {
-        url = `https://api.sofascore.app/api/v1/team/${item.id}/image`;
+        urls = [
+          `https://api.sofascore.app/api/v1/team/${item.id}/image`,
+          `https://www.sofascore.com/static/images/teams/${item.id}.png`,
+        ];
       }
 
       const outPath = path.join(item.dir, `${item.id}.png`);
 
       console.log(`⬇️ DOWNLOADING: ${item.name} | ${item.id}`);
 
-      await downloadImage(url, outPath, item.name);
-      await sleep(800);
+      await downloadImage(urls, outPath, item.name);
+      await sleep(700);
     }
 
     console.log(`✅ ${conf.name} DONE\n`);
