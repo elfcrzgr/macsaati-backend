@@ -1,10 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-
-puppeteer.use(StealthPlugin());
 
 const FIREBASE_BASE_URL =
   'https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/';
@@ -37,6 +33,10 @@ const configs = [
   }
 ];
 
+// =========================
+// KLASÖRLERİ OLUŞTUR
+// =========================
+
 configs.forEach(conf => {
   Object.values(conf.dirs).forEach(dir => {
     if (!fs.existsSync(dir)) {
@@ -45,35 +45,66 @@ configs.forEach(conf => {
   });
 });
 
+// =========================
+// HELPERS
+// =========================
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function extractId(url) {
-  if (!url || typeof url !== 'string') return null;
+  if (!url || typeof url !== 'string') {
+    return null;
+  }
 
-  // Yeni format
+  // Yeni format:
+/*
+https://img.sofascore.com/api/v1/team/2817/image
+*/
+
   let match = url.match(/\/(\d+)\/image/);
-  if (match) return match[1];
 
-  // Eski png formatı
+  if (match) {
+    return match[1];
+  }
+
+  // Eski png format:
+/*
+.../2817.png
+*/
+
   match = url.match(/\/(\d+)\.(png|jpg|jpeg|webp)/i);
-  if (match) return match[1];
+
+  if (match) {
+    return match[1];
+  }
 
   // Son fallback
+
   match = url.match(/(\d+)/);
-  if (match) return match[1];
+
+  if (match) {
+    return match[1];
+  }
 
   return null;
 }
 
 async function fetchWithRetry(url, options = {}, retry = 3) {
+
   for (let i = 0; i < retry; i++) {
+
     try {
+
       return await axios.get(url, options);
 
     } catch (e) {
-      const status = e.response?.status || 'NO_RESPONSE';
 
-      console.log(`      Retry ${i + 1}/${retry} -> ${status}`);
+      const status =
+        e.response?.status || 'NO_RESPONSE';
+
+      console.log(
+        `      Retry ${i + 1}/${retry} -> ${status}`
+      );
 
       if (i === retry - 1) {
         throw e;
@@ -84,299 +115,328 @@ async function fetchWithRetry(url, options = {}, retry = 3) {
   }
 }
 
+// =========================
+// MAIN
+// =========================
+
 async function start() {
-  console.log('🚀 Maç Saati Logo Sistemi Başlatıldı...\n');
 
-  const browser = await puppeteer.launch({
-    headless: 'new',
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox'
-    ]
-  });
-
-  const page = await browser.newPage();
+  console.log('🚀 Logo Sistemi Başlatıldı...\n');
 
   const userAgent =
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
-  await page.setUserAgent(userAgent);
+  let totalDownloaded = 0;
+  let totalDefaulted = 0;
+  let totalFailed = 0;
 
-  try {
-    console.log('🔑 Sofascore session oluşturuluyor...\n');
+  for (const conf of configs) {
 
-    await page.goto('https://www.sofascore.com', {
-      waitUntil: 'networkidle2',
-      timeout: 60000
-    });
+    console.log(`\n📦 ${conf.name} Firebase verisi çekiliyor...`);
 
-    const cookies = await page.cookies();
+    let firebaseData;
 
-    const cookieString = cookies
-      .map(c => `${c.name}=${c.value}`)
-      .join('; ');
+    // =========================
+    // FIREBASE DATA
+    // =========================
 
-    let totalDownloaded = 0;
-    let totalDefaulted = 0;
-    let totalFailed = 0;
+    try {
 
-    for (const conf of configs) {
+      const firebaseUrl =
+        `${FIREBASE_BASE_URL}${conf.firebaseFile}.json`;
 
-      console.log(`\n📦 ${conf.name} Firebase verisi çekiliyor...`);
+      const response = await axios.get(firebaseUrl, {
+        timeout: 30000
+      });
 
-      let firebaseData;
+      firebaseData = response.data;
 
-      try {
-        const firebaseUrl =
-          `${FIREBASE_BASE_URL}${conf.firebaseFile}.json`;
+    } catch (e) {
 
-        const response = await axios.get(firebaseUrl, {
-          timeout: 30000
-        });
+      console.log(
+        `❌ Firebase okunamadı: ${conf.name}`
+      );
 
-        firebaseData = response.data;
+      continue;
+    }
 
-      } catch (e) {
-        console.log(`❌ Firebase okunamadı: ${conf.name}`);
-        continue;
+    if (!firebaseData) {
+
+      console.log(`⚠️ Veri boş: ${conf.name}`);
+
+      continue;
+    }
+
+    const matches =
+      firebaseData.matches ||
+      firebaseData.events ||
+      [];
+
+    console.log(`📄 ${matches.length} maç bulundu`);
+
+    const missing = [];
+
+    // =========================
+    // MAÇLARI TARA
+    // =========================
+
+    matches.forEach(m => {
+
+      const tournamentName =
+        m.tournament || '';
+
+      const isNBA =
+        tournamentName
+          .toUpperCase()
+          .includes('NBA');
+
+      // =========================
+      // TURNOVA LOGOSU
+      // =========================
+
+      if (m.tournamentLogo) {
+
+        const id =
+          extractId(m.tournamentLogo);
+
+        if (
+          id &&
+          id !== 'default' &&
+          id !== 'null'
+        ) {
+
+          const targetPath =
+            path.join(
+              conf.dirs.tournament,
+              `${id}.png`
+            );
+
+          if (!fs.existsSync(targetPath)) {
+
+            missing.push({
+              id,
+              name: tournamentName,
+              type: 'Turnuva',
+              dir: conf.dirs.tournament,
+              sport: conf.name
+            });
+          }
+        }
       }
 
-      if (!firebaseData) {
-        console.log(`⚠️ Veri boş: ${conf.name}`);
-        continue;
-      }
+      // =========================
+      // TAKIMLAR
+      // =========================
 
-      const matches =
-        firebaseData.matches ||
-        firebaseData.events ||
-        [];
+      const teams = [
+        { team: m.homeTeam },
+        { team: m.awayTeam }
+      ];
 
-      console.log(`📄 ${matches.length} maç bulundu`);
+      teams.forEach(t => {
 
-      const missing = [];
+        if (!t.team) return;
 
-      matches.forEach(m => {
+        const logos =
+          Array.isArray(t.team.logos)
+            ? t.team.logos
+            : [t.team.logo];
 
-        const tournamentName = m.tournament || '';
-
-        const isNBA =
-          tournamentName.toUpperCase().includes('NBA');
-
-        // =========================
-        // TURNOVA LOGOSU
-        // =========================
-
-        if (m.tournamentLogo) {
-
-          const id = extractId(m.tournamentLogo);
+        logos.forEach(logoUrl => {
 
           if (
-            id &&
-            id !== 'default' &&
-            id !== 'null'
+            !logoUrl ||
+            typeof logoUrl !== 'string'
           ) {
+            return;
+          }
 
-            const targetPath =
-              path.join(
-                conf.dirs.tournament,
-                `${id}.png`
-              );
+          const id =
+            extractId(logoUrl);
 
-            if (!fs.existsSync(targetPath)) {
+          if (
+            !id ||
+            id === 'default' ||
+            id === 'null'
+          ) {
+            return;
+          }
+
+          let targetDir =
+            conf.name === 'Basketbol' && isNBA
+              ? conf.dirs.nba
+              : conf.dirs.team;
+
+          const targetPath =
+            path.join(
+              targetDir,
+              `${id}.png`
+            );
+
+          if (!fs.existsSync(targetPath)) {
+
+            if (!missing.find(x => x.id === id)) {
 
               missing.push({
                 id,
-                name: tournamentName,
-                type: 'Turnuva',
-                dir: conf.dirs.tournament,
+                name: t.team.name,
+                type: 'Logo',
+                dir: targetDir,
                 sport: conf.name
               });
             }
           }
-        }
-
-        // =========================
-        // TAKIM LOGOLARI
-        // =========================
-
-        const teams = [
-          { team: m.homeTeam },
-          { team: m.awayTeam }
-        ];
-
-        teams.forEach(t => {
-
-          if (!t.team) return;
-
-          const logos =
-            Array.isArray(t.team.logos)
-              ? t.team.logos
-              : [t.team.logo];
-
-          logos.forEach(logoUrl => {
-
-            if (
-              !logoUrl ||
-              typeof logoUrl !== 'string'
-            ) {
-              return;
-            }
-
-            const id = extractId(logoUrl);
-
-            if (
-              !id ||
-              id === 'default' ||
-              id === 'null'
-            ) {
-              return;
-            }
-
-            let targetDir =
-              conf.name === 'Basketbol' && isNBA
-                ? conf.dirs.nba
-                : conf.dirs.team;
-
-            const targetPath =
-              path.join(targetDir, `${id}.png`);
-
-            if (!fs.existsSync(targetPath)) {
-
-              if (!missing.find(x => x.id === id)) {
-
-                missing.push({
-                  id,
-                  name: t.team.name,
-                  type: 'Logo',
-                  dir: targetDir,
-                  sport: conf.name
-                });
-              }
-            }
-          });
         });
       });
+    });
 
-      if (missing.length === 0) {
-        console.log(`✅ ${conf.name} güncel`);
-        continue;
+    // =========================
+    // SONUÇ
+    // =========================
+
+    if (missing.length === 0) {
+
+      console.log(`✅ ${conf.name} güncel`);
+
+      continue;
+    }
+
+    console.log(
+      `🔍 ${missing.length} eksik logo bulundu\n`
+    );
+
+    // =========================
+    // İNDİR
+    // =========================
+
+    for (const item of missing) {
+
+      const targetPath =
+        path.join(
+          item.dir,
+          `${item.id}.png`
+        );
+
+      const defaultPath =
+        path.join(
+          item.dir,
+          'default.png'
+        );
+
+      let apiUrl = '';
+
+      // =========================
+      // TURNOVA
+      // =========================
+
+      if (item.type === 'Turnuva') {
+
+        apiUrl =
+          `https://img.sofascore.com/api/v1/unique-tournament/${item.id}/image`;
+
+      // =========================
+      // TENİS BAYRAKLARI
+      // =========================
+
+      } else if (
+        item.sport === 'Tenis' &&
+        item.type === 'Logo'
+      ) {
+
+        apiUrl =
+          `https://www.sofascore.com/static/images/flags/${item.id.toLowerCase()}.png`;
+
+      // =========================
+      // NORMAL TAKIM
+      // =========================
+
+      } else {
+
+        apiUrl =
+          `https://img.sofascore.com/api/v1/team/${item.id}/image`;
       }
 
-      console.log(`🔍 ${missing.length} eksik logo bulundu\n`);
+      try {
 
-      for (const item of missing) {
-
-        const targetPath =
-          path.join(item.dir, `${item.id}.png`);
-
-        const defaultPath =
-          path.join(item.dir, 'default.png');
-
-        let apiUrl = '';
-
-        // =========================
-        // TURNOVA
-        // =========================
-
-        if (item.type === 'Turnuva') {
-
-          apiUrl =
-            `https://api.sofascore.app/api/v1/unique-tournament/${item.id}/image`;
-
-        // =========================
-        // TENİS BAYRAKLARI
-        // =========================
-
-        } else if (
-          item.sport === 'Tenis' &&
-          item.type === 'Logo'
-        ) {
-
-          apiUrl =
-            `https://www.sofascore.com/static/images/flags/${item.id.toLowerCase()}.png`;
-
-        // =========================
-        // NORMAL TAKIM
-        // =========================
-
-        } else {
-
-          apiUrl =
-            `https://api.sofascore.app/api/v1/team/${item.id}/image`;
-        }
-
-        try {
-
-          const response = await fetchWithRetry(
+        const response =
+          await fetchWithRetry(
             apiUrl,
             {
               responseType: 'arraybuffer',
               timeout: 30000,
               headers: {
                 'User-Agent': userAgent,
-                'Cookie': cookieString,
                 'Referer': 'https://www.sofascore.com/',
-                'Origin': 'https://www.sofascore.com',
-                'Accept': 'image/png,image/*,*/*',
-                'Cache-Control': 'no-cache'
+                'Accept': 'image/png,image/*,*/*'
               }
             },
             3
           );
 
-          const size = response.data.byteLength;
+        const size =
+          response.data.byteLength;
 
-          if (size < 1000) {
-            throw new Error(`Dosya çok küçük: ${size}`);
-          }
+        // Boş dosya kontrolü
 
-          fs.writeFileSync(targetPath, response.data);
-
-          console.log(`   ✅ ${item.name}`);
-
-          totalDownloaded++;
-
-        } catch (e) {
-
-          const status =
-            e.response?.status || 'ERR';
-
-          console.log(
-            `   ❌ ${item.name} -> ${status}`
+        if (size < 1000) {
+          throw new Error(
+            `Dosya çok küçük: ${size}`
           );
-
-          if (fs.existsSync(defaultPath)) {
-
-            fs.copyFileSync(defaultPath, targetPath);
-
-            console.log('      ↳ default kullanıldı');
-
-            totalDefaulted++;
-
-          } else {
-
-            totalFailed++;
-          }
         }
 
-        // Rate limit koruması
-        await sleep(1800);
+        fs.writeFileSync(
+          targetPath,
+          response.data
+        );
+
+        console.log(`   ✅ ${item.name}`);
+
+        totalDownloaded++;
+
+      } catch (e) {
+
+        const status =
+          e.response?.status || 'ERR';
+
+        console.log(
+          `   ❌ ${item.name} -> ${status}`
+        );
+
+        // default varsa kopyala
+
+        if (fs.existsSync(defaultPath)) {
+
+          fs.copyFileSync(
+            defaultPath,
+            targetPath
+          );
+
+          console.log(
+            '      ↳ default kullanıldı'
+          );
+
+          totalDefaulted++;
+
+        } else {
+
+          totalFailed++;
+        }
       }
+
+      // rate limit koruması
+
+      await sleep(1800);
     }
-
-    console.log('\n📊 ÖZET');
-    console.log(`✅ Başarılı: ${totalDownloaded}`);
-    console.log(`⚠️ Default: ${totalDefaulted}`);
-    console.log(`❌ Hata: ${totalFailed}`);
-
-  } catch (err) {
-
-    console.error('\n❌ Kritik hata:', err.message);
-
-  } finally {
-
-    await browser.close();
   }
+
+  // =========================
+  // ÖZET
+  // =========================
+
+  console.log('\n📊 ÖZET');
+  console.log(`✅ Başarılı: ${totalDownloaded}`);
+  console.log(`⚠️ Default: ${totalDefaulted}`);
+  console.log(`❌ Hata: ${totalFailed}`);
 }
 
 start();
