@@ -18,31 +18,17 @@ jobs:
 
       - name: Dependencies Kur
         run: |
+          npm install
           npm install axios
-          npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
-
-      - name: Puppeteer Chrome Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 \
-            libatk1.0-0 \
-            libatk-bridge2.0-0 \
-            libcups2 \
-            libxcomposite1 \
-            libxdamage1 \
-            libxrandr2 \
-            libgbm1 \
-            libxkbcommon0 \
-            libasound2 \
-            libpangocairo-1.0-0 \
-            libgtk-3-0
+          npm install puppeteer
+          npm install puppeteer-extra
+          npm install puppeteer-extra-plugin-stealth
 
       - name: Logo Script Çalıştır
         run: |
           node logo_downloader.js
 
-      - name: Değişiklik Var mı Kontrol
+      - name: Git Status
         id: verify
         run: |
           git status
