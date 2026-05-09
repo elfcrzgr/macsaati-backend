@@ -2,154 +2,169 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 
-const FIREBASE_BASE_URL = "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
+const FIREBASE_BASE_URL =
+  "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 const configs = [
-{
+  {
     name: 'Futbol',
     firebasePath: 'matches_football.json',
     dirs: {
-        team: path.join(__dirname, 'football', 'logos'),
-        tournament: path.join(__dirname, 'football', 'tournament_logos')
+      team: path.join(__dirname, 'football', 'logos'),
+      tournament: path.join(__dirname, 'football', 'tournament_logos')
     }
-},
-{
+  },
+  {
     name: 'Basketbol',
     firebasePath: 'matches_basketball.json',
     dirs: {
-        team: path.join(__dirname, 'basketball', 'logos'),
-        nba: path.join(__dirname, 'basketball', 'logos', 'NBA'),
-        tournament: path.join(__dirname, 'basketball', 'tournament_logos')
+      team: path.join(__dirname, 'basketball', 'logos'),
+      nba: path.join(__dirname, 'basketball', 'logos', 'NBA'),
+      tournament: path.join(__dirname, 'basketball', 'tournament_logos')
     }
-},
-{
+  },
+  {
     name: 'Tenis',
     firebasePath: 'matches_tennis.json',
     dirs: {
-        tournament: path.join(__dirname, 'tennis', 'tournament_logos'),
-        team: path.join(__dirname, 'tennis', 'logos')
+      tournament: path.join(__dirname, 'tennis', 'tournament_logos'),
+      team: path.join(__dirname, 'tennis', 'logos')
     }
-}
+  }
 ];
 
-// klasörleri hazırla
-for (const conf of configs) {
-    Object.values(conf.dirs).forEach(dir => {
-        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    });
+// klasörleri oluştur
+for (const c of configs) {
+  Object.values(c.dirs).forEach(dir => {
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  });
 }
 
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
 function extractId(url) {
-    if (!url || typeof url !== 'string') return null;
-    const parts = url.split('/');
-    return parts[parts.length - 1].split('.')[0];
+  if (!url) return null;
+  return url.split('/').pop().split('.')[0];
 }
 
 async function fetchFirebase(file) {
-    const url = `${FIREBASE_BASE_URL}${file}`;
-    const res = await axios.get(url);
-    return res.data;
+  const url = `${FIREBASE_BASE_URL}${file}`;
+  const res = await axios.get(url);
+  return res.data;
 }
 
-async function download(url, filePath) {
-    const res = await axios.get(url, { responseType: 'arraybuffer' });
-    fs.writeFileSync(filePath, res.data);
+// 🔥 KRİTİK: SofaScore anti-bot bypass (light)
+async function downloadImage(url, filePath) {
+  const res = await axios.get(url, {
+    responseType: 'arraybuffer',
+    timeout: 15000,
+    headers: {
+      'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36',
+      'Referer': 'https://www.sofascore.com/',
+      'Origin': 'https://www.sofascore.com',
+      'Accept':
+        'image/avif,image/webp,image/apng,image/*,*/*;q=0.8'
+    }
+  });
+
+  fs.writeFileSync(filePath, res.data);
+}
+
+// 🔥 retry + 403 handling
+async function safeDownload(url, filePath, name) {
+  for (let i = 0; i < 3; i++) {
+    try {
+      await downloadImage(url, filePath);
+      console.log(`   ✅ OK: ${name}`);
+      return true;
+    } catch (e) {
+      const status = e.response?.status;
+
+      if (status === 403) {
+        console.log(`   🚫 403 BLOCK (${i + 1}/3): ${name}`);
+        await sleep(2500 + i * 2000);
+      } else {
+        console.log(`   ❌ FAIL ${status || "ERR"}: ${name}`);
+        return false;
+      }
+    }
+  }
+
+  console.log(`   ❌ FINAL FAIL: ${name}`);
+  return false;
 }
 
 async function start() {
-    console.log("🚀 DEBUG LOGO SYSTEM + FIREBASE STARTED\n");
+  console.log("🚀 LOGO SYSTEM STARTED (FIXED VERSION)\n");
 
-    let totalSuccess = 0;
-    let totalFail = 0;
+  let success = 0;
+  let fail = 0;
 
-    for (const conf of configs) {
+  for (const conf of configs) {
+    console.log(`\n📦 ===== ${conf.name} =====`);
 
-        console.log(`\n📦 ===== ${conf.name.toUpperCase()} =====`);
+    const data = await fetchFirebase(conf.firebasePath);
+    const matches = data.matches || data.events || [];
 
-        const data = await fetchFirebase(conf.firebasePath);
+    console.log(`📄 Matches: ${matches.length}`);
 
-        const matches = data.matches || data.events || [];
-        console.log(`📄 Matches: ${matches.length}`);
+    const missing = [];
 
-        const missing = [];
+    for (const m of matches) {
+      if (!m.homeTeam || !m.awayTeam) continue;
 
-        for (const m of matches) {
+      const teams = [m.homeTeam, m.awayTeam];
 
-            // 🧠 TEAM DEBUG
-            if (!m.homeTeam || !m.awayTeam) {
-                console.log("⚠️ SKIP: missing team structure");
-                continue;
-            }
+      for (const t of teams) {
+        if (!t?.logo) continue;
 
-            const teams = [m.homeTeam, m.awayTeam];
+        const id = extractId(t.logo);
+        if (!id) continue;
 
-            for (const team of teams) {
+        const isNBA = (m.tournament || "").toUpperCase().includes("NBA");
 
-                if (!team || !team.logo) {
-                    console.log("⚠️ SKIP: no logo field", team?.name);
-                    continue;
-                }
-
-                const id = extractId(team.logo);
-
-                console.log(`🔎 CHECK TEAM: ${team.name} | ID: ${id}`);
-
-                if (!id) {
-                    console.log("⚠️ SKIP: invalid id");
-                    continue;
-                }
-
-                const isNBA = (m.tournament || "").toUpperCase().includes("NBA");
-
-                let targetDir = conf.dirs.team;
-                if (conf.name === "Basketbol" && isNBA) {
-                    targetDir = conf.dirs.nba;
-                }
-
-                const targetPath = path.join(targetDir, `${id}.png`);
-
-                if (!fs.existsSync(targetPath)) {
-                    console.log(`❌ MISSING: ${team.name} → ${id}`);
-                    missing.push({ id, name: team.name, path: targetPath });
-                } else {
-                    console.log(`✅ EXISTS: ${team.name}`);
-                }
-            }
+        let dir = conf.dirs.team;
+        if (conf.name === 'Basketbol' && isNBA) {
+          dir = conf.dirs.nba;
         }
 
-        console.log(`\n🔍 Missing: ${missing.length}`);
+        const filePath = path.join(dir, `${id}.png`);
 
-        for (const item of missing) {
-            try {
-                const url = `https://api.sofascore.app/api/v1/team/${item.id}/image`;
+        console.log(`🔎 CHECK: ${t.name} (${id})`);
 
-                console.log(`⬇️ DOWNLOADING: ${item.name} | ${item.id}`);
-
-                const res = await axios.get(url, { responseType: 'arraybuffer' });
-
-                if (res.data.byteLength > 800) {
-                    fs.writeFileSync(item.path, res.data);
-                    console.log(`✅ SAVED: ${item.name}`);
-                    totalSuccess++;
-                } else {
-                    console.log(`⚠️ SMALL FILE SKIP: ${item.name}`);
-                    totalFail++;
-                }
-
-            } catch (e) {
-                console.log(`❌ FAIL: ${item.name} | ${e.response?.status || "NO_RESPONSE"}`);
-                totalFail++;
-            }
-
-            await new Promise(r => setTimeout(r, 800));
+        if (!fs.existsSync(filePath)) {
+          missing.push({
+            id,
+            name: t.name,
+            path: filePath
+          });
         }
-
-        console.log(`\n✅ ${conf.name} DONE`);
+      }
     }
 
-    console.log(`\n📊 FINAL`);
-    console.log(`✅ Success: ${totalSuccess}`);
-    console.log(`❌ Fail: ${totalFail}`);
+    console.log(`\n🔍 Missing: ${missing.length}`);
+
+    for (const item of missing) {
+      const url = `https://api.sofascore.app/api/v1/team/${item.id}/image`;
+
+      console.log(`⬇️ DOWNLOADING: ${item.name} | ${item.id}`);
+
+      const ok = await safeDownload(url, item.path, item.name);
+
+      if (ok) success++;
+      else fail++;
+
+      // 🔥 CRITICAL RATE LIMIT FIX
+      await sleep(2800);
+    }
+
+    console.log(`\n✅ ${conf.name} DONE`);
+  }
+
+  console.log(`\n📊 FINAL RESULT`);
+  console.log(`✅ Success: ${success}`);
+  console.log(`❌ Fail: ${fail}`);
 }
 
 start();
