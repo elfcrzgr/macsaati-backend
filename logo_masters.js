@@ -47,32 +47,27 @@ configs.forEach(conf => {
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // =========================
-// SOFA SCORE FALLBACK SCRAPER
+// SOFASCORE FALLBACK
 // =========================
-async function fetchSofaLogo(teamId) {
+async function getSofaLogo(teamId) {
   try {
 
     const url =
-      `https://www.sofascore.com/team/${teamId}`;
+      `https://img.sofascore.com/api/v1/team/${teamId}/image`;
 
-    const html = await axios.get(url, {
+    const res = await axios.get(url, {
       headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+        'User-Agent': 'Mozilla/5.0'
       },
-      timeout: 15000
-    }).then(r => r.data);
+      timeout: 15000,
+      responseType: 'arraybuffer'
+    });
 
-    // logo url yakala
-    const match = html.match(
-      /https:\/\/img\.sofascore\.com\/api\/v1\/team\/\d+\/image/g
-    );
-
-    if (match && match.length > 0) {
-      return match[0];
+    if (!res.data || res.data.byteLength < 500) {
+      return null;
     }
 
-    return null;
+    return url;
 
   } catch (e) {
     return null;
@@ -82,22 +77,17 @@ async function fetchSofaLogo(teamId) {
 // =========================
 // DOWNLOAD
 // =========================
-async function downloadImage(url, filePath, name) {
+async function download(url, filePath, name) {
   try {
 
     const res = await axios.get(url, {
       responseType: 'arraybuffer',
       timeout: 20000,
-      maxRedirects: 5,
       headers: {
         'User-Agent': 'Mozilla/5.0',
         'Accept': 'image/*'
       }
     });
-
-    if (!res.data || res.data.byteLength < 500) {
-      throw new Error('invalid image');
-    }
 
     fs.writeFileSync(filePath, res.data);
 
@@ -105,9 +95,11 @@ async function downloadImage(url, filePath, name) {
     return true;
 
   } catch (err) {
+
     console.log(
       `   ❌ ${name} -> ${err.response?.status || err.message}`
     );
+
     return false;
   }
 }
@@ -117,7 +109,7 @@ async function downloadImage(url, filePath, name) {
 // =========================
 async function start() {
 
-  console.log('🚀 Logo Masters Başladı...\n');
+  console.log('🚀 Logo Masters FIXED VERSION\n');
 
   let ok = 0;
   let fail = 0;
@@ -145,6 +137,11 @@ async function start() {
 
     console.log(`📄 ${matches.length} maç`);
 
+    // =========================
+    // EXTRACT ALL MISSING FIRST
+    // =========================
+    const missing = [];
+
     for (const m of matches) {
 
       const isNBA =
@@ -156,70 +153,81 @@ async function start() {
 
         if (!t?.id || !t?.name) continue;
 
+        let dir = conf.dirs.team;
+
+        if (conf.name === 'Basketbol' && isNBA) {
+          dir = conf.dirs.nba;
+        }
+
         const filePath =
-          path.join(
-            conf.name === 'Basketbol' && isNBA
-              ? conf.dirs.nba
-              : conf.dirs.team,
-            `${t.id}.png`
-          );
+          path.join(dir, `${t.id}.png`);
 
-        if (fs.existsSync(filePath)) continue;
+        if (!fs.existsSync(filePath)) {
 
-        // =========================
-        // 1. Önce Firebase URL (varsa)
-        // =========================
-        let logoUrl = t.logo || null;
-
-        // =========================
-        // 2. Yoksa SofaScore fallback
-        // =========================
-        if (!logoUrl) {
-          console.log(`🔄 fallback: ${t.name}`);
-          logoUrl = await fetchSofaLogo(t.id);
+          missing.push({
+            id: t.id,
+            name: t.name,
+            dir,
+            filePath
+          });
         }
-
-        if (!logoUrl) {
-          console.log(`❌ logo yok: ${t.name}`);
-          fail++;
-          continue;
-        }
-
-        const success = await downloadImage(
-          logoUrl,
-          filePath,
-          t.name
-        );
-
-        if (success) ok++;
-        else fail++;
-
-        await sleep(300);
       }
 
-      // =========================
-      // tournament logo
-      // =========================
-      if (m.tournamentLogo) {
+      // tournament
+      if (m.tournamentLogo && m.tournamentId) {
 
         const filePath =
           path.join(
             conf.dirs.tournament,
-            path.basename(m.tournamentLogo)
+            `${m.tournamentId}.png`
           );
 
         if (!fs.existsSync(filePath)) {
 
-          const success = await downloadImage(
-            m.tournamentLogo,
+          missing.push({
+            id: m.tournamentId,
+            name: m.tournament,
+            dir: conf.dirs.tournament,
             filePath,
-            m.tournament
-          );
-
-          if (success) ok++;
-          else fail++;
+            isTournament: true
+          });
         }
       }
+    }
+
+    console.log(`🔍 Eksik: ${missing.length}`);
+
+    // =========================
+    // DOWNLOAD
+    // =========================
+    for (const item of missing) {
+
+      let url = null;
+
+      // team or tournament
+      if (item.isTournament) {
+        url =
+          `https://img.sofascore.com/api/v1/unique-tournament/${item.id}/image`;
+      } else {
+        url =
+          `https://img.sofascore.com/api/v1/team/${item.id}/image`;
+      }
+
+      // fallback test
+      const finalUrl =
+        await getSofaLogo(item.id) || url;
+
+      const success =
+        await download(
+          finalUrl,
+          item.filePath,
+          item.name
+        );
+
+      if (success) ok++;
+      else fail++;
+
+      await sleep(400);
     }
 
     console.log(`✅ ${conf.name} tamam\n`);
