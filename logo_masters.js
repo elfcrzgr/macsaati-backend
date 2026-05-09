@@ -2,254 +2,154 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 
-const FIREBASE_BASE_URL =
-  'https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/';
+const FIREBASE_BASE_URL = "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 const configs = [
-  {
+{
     name: 'Futbol',
-    firebaseFile: 'matches_football',
+    firebasePath: 'matches_football.json',
     dirs: {
-      team: path.join(__dirname, 'football', 'logos'),
-      tournament: path.join(__dirname, 'football', 'tournament_logos')
+        team: path.join(__dirname, 'football', 'logos'),
+        tournament: path.join(__dirname, 'football', 'tournament_logos')
     }
-  },
-  {
+},
+{
     name: 'Basketbol',
-    firebaseFile: 'matches_basketball',
+    firebasePath: 'matches_basketball.json',
     dirs: {
-      team: path.join(__dirname, 'basketball', 'logos'),
-      nba: path.join(__dirname, 'basketball', 'logos', 'NBA'),
-      tournament: path.join(__dirname, 'basketball', 'tournament_logos')
+        team: path.join(__dirname, 'basketball', 'logos'),
+        nba: path.join(__dirname, 'basketball', 'logos', 'NBA'),
+        tournament: path.join(__dirname, 'basketball', 'tournament_logos')
     }
-  },
-  {
+},
+{
     name: 'Tenis',
-    firebaseFile: 'matches_tennis',
+    firebasePath: 'matches_tennis.json',
     dirs: {
-      team: path.join(__dirname, 'tennis', 'logos'),
-      tournament: path.join(__dirname, 'tennis', 'tournament_logos')
+        tournament: path.join(__dirname, 'tennis', 'tournament_logos'),
+        team: path.join(__dirname, 'tennis', 'logos')
     }
-  }
+}
 ];
 
-// =========================
-// INIT FOLDERS
-// =========================
+// klasörleri hazırla
 for (const conf of configs) {
-  for (const dir of Object.values(conf.dirs)) {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-  }
-}
-
-// =========================
-// HELPERS
-// =========================
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-// =========================
-// DEBUG CHECK
-// =========================
-function checkFile(confName, teamName, teamId, filePath) {
-
-  const exists = fs.existsSync(filePath);
-
-  console.log(`🔎 [${confName}] ${teamName} (${teamId})`);
-  console.log(`   📂 ${filePath}`);
-  console.log(`   👉 ${exists ? 'VAR ✅' : 'YOK ❌'}`);
-
-  return exists;
-}
-
-// =========================
-// DOWNLOAD
-// =========================
-async function download(url, filePath, name) {
-
-  try {
-
-    const res = await axios.get(url, {
-      responseType: 'arraybuffer',
-      timeout: 20000,
-      headers: {
-        'User-Agent': 'Mozilla/5.0'
-      }
+    Object.values(conf.dirs).forEach(dir => {
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     });
-
-    fs.writeFileSync(filePath, res.data);
-
-    console.log(`   💾 DOWNLOAD OK → ${name}`);
-
-    return true;
-
-  } catch (e) {
-
-    console.log(
-      `   ❌ DOWNLOAD FAIL → ${name} (${e.response?.status || e.message})`
-    );
-
-    return false;
-  }
 }
 
-// =========================
-// SOFA FALLBACK
-// =========================
-const getSofaUrl = (type, id) => {
+function extractId(url) {
+    if (!url || typeof url !== 'string') return null;
+    const parts = url.split('/');
+    return parts[parts.length - 1].split('.')[0];
+}
 
-  if (type === 'team') {
-    return `https://img.sofascore.com/api/v1/team/${id}/image`;
-  }
+async function fetchFirebase(file) {
+    const url = `${FIREBASE_BASE_URL}${file}`;
+    const res = await axios.get(url);
+    return res.data;
+}
 
-  if (type === 'tournament') {
-    return `https://img.sofascore.com/api/v1/unique-tournament/${id}/image`;
-  }
+async function download(url, filePath) {
+    const res = await axios.get(url, { responseType: 'arraybuffer' });
+    fs.writeFileSync(filePath, res.data);
+}
 
-  return null;
-};
-
-// =========================
-// MAIN
-// =========================
 async function start() {
+    console.log("🚀 DEBUG LOGO SYSTEM + FIREBASE STARTED\n");
 
-  console.log('🚀 DEBUG LOGO SYSTEM STARTED\n');
+    let totalSuccess = 0;
+    let totalFail = 0;
 
-  let ok = 0;
-  let fail = 0;
+    for (const conf of configs) {
 
-  for (const conf of configs) {
+        console.log(`\n📦 ===== ${conf.name.toUpperCase()} =====`);
 
-    console.log(`\n📦 ===== ${conf.name} =====`);
+        const data = await fetchFirebase(conf.firebasePath);
 
-    let data;
+        const matches = data.matches || data.events || [];
+        console.log(`📄 Matches: ${matches.length}`);
 
-    try {
-      const res = await axios.get(
-        `${FIREBASE_BASE_URL}${conf.firebaseFile}.json`
-      );
+        const missing = [];
 
-      data = res.data;
+        for (const m of matches) {
 
-    } catch (e) {
-      console.log('❌ Firebase error');
-      continue;
+            // 🧠 TEAM DEBUG
+            if (!m.homeTeam || !m.awayTeam) {
+                console.log("⚠️ SKIP: missing team structure");
+                continue;
+            }
+
+            const teams = [m.homeTeam, m.awayTeam];
+
+            for (const team of teams) {
+
+                if (!team || !team.logo) {
+                    console.log("⚠️ SKIP: no logo field", team?.name);
+                    continue;
+                }
+
+                const id = extractId(team.logo);
+
+                console.log(`🔎 CHECK TEAM: ${team.name} | ID: ${id}`);
+
+                if (!id) {
+                    console.log("⚠️ SKIP: invalid id");
+                    continue;
+                }
+
+                const isNBA = (m.tournament || "").toUpperCase().includes("NBA");
+
+                let targetDir = conf.dirs.team;
+                if (conf.name === "Basketbol" && isNBA) {
+                    targetDir = conf.dirs.nba;
+                }
+
+                const targetPath = path.join(targetDir, `${id}.png`);
+
+                if (!fs.existsSync(targetPath)) {
+                    console.log(`❌ MISSING: ${team.name} → ${id}`);
+                    missing.push({ id, name: team.name, path: targetPath });
+                } else {
+                    console.log(`✅ EXISTS: ${team.name}`);
+                }
+            }
+        }
+
+        console.log(`\n🔍 Missing: ${missing.length}`);
+
+        for (const item of missing) {
+            try {
+                const url = `https://api.sofascore.app/api/v1/team/${item.id}/image`;
+
+                console.log(`⬇️ DOWNLOADING: ${item.name} | ${item.id}`);
+
+                const res = await axios.get(url, { responseType: 'arraybuffer' });
+
+                if (res.data.byteLength > 800) {
+                    fs.writeFileSync(item.path, res.data);
+                    console.log(`✅ SAVED: ${item.name}`);
+                    totalSuccess++;
+                } else {
+                    console.log(`⚠️ SMALL FILE SKIP: ${item.name}`);
+                    totalFail++;
+                }
+
+            } catch (e) {
+                console.log(`❌ FAIL: ${item.name} | ${e.response?.status || "NO_RESPONSE"}`);
+                totalFail++;
+            }
+
+            await new Promise(r => setTimeout(r, 800));
+        }
+
+        console.log(`\n✅ ${conf.name} DONE`);
     }
 
-    const matches =
-      data?.matches || data?.events || [];
-
-    console.log(`📄 Matches: ${matches.length}`);
-
-    const missing = [];
-
-    // =========================
-    // LOOP MATCHES
-    // =========================
-    for (const m of matches) {
-
-      const isNBA =
-        (m.tournament || '').toUpperCase().includes('NBA');
-
-      const teams = [m.homeTeam, m.awayTeam];
-
-      for (const t of teams) {
-
-        if (!t?.id || !t?.name) {
-          console.log('⚠️ SKIP: invalid team');
-          continue;
-        }
-
-        let dir = conf.dirs.team;
-
-        if (conf.name === 'Basketbol' && isNBA) {
-          dir = conf.dirs.nba;
-        }
-
-        const filePath =
-          path.join(dir, `${t.id}.png`);
-
-        const exists =
-          checkFile(conf.name, t.name, t.id, filePath);
-
-        if (!exists) {
-
-          missing.push({
-            type: 'team',
-            id: t.id,
-            name: t.name,
-            filePath
-          });
-        }
-      }
-
-      // =========================
-      // TOURNAMENT
-      // =========================
-      if (m.tournamentId) {
-
-        const filePath =
-          path.join(
-            conf.dirs.tournament,
-            `${m.tournamentId}.png`
-          );
-
-        const exists =
-          fs.existsSync(filePath);
-
-        console.log(
-          `🏆 [${conf.name}] Tournament ${m.tournament} (${m.tournamentId})`
-        );
-
-        console.log(
-          `   📂 ${filePath}`
-        );
-
-        console.log(
-          `   👉 ${exists ? 'VAR ✅' : 'YOK ❌'}`
-        );
-
-        if (!exists) {
-
-          missing.push({
-            type: 'tournament',
-            id: m.tournamentId,
-            name: m.tournament,
-            filePath
-          });
-        }
-      }
-    }
-
-    console.log(`\n🔍 Missing: ${missing.length}`);
-
-    // =========================
-    // DOWNLOAD
-    // =========================
-    for (const item of missing) {
-
-      const url =
-        getSofaUrl(item.type, item.id);
-
-      if (!url) continue;
-
-      const success =
-        await download(url, item.filePath, item.name);
-
-      if (success) ok++;
-      else fail++;
-
-      await sleep(300);
-    }
-
-    console.log(`✅ ${conf.name} DONE`);
-  }
-
-  console.log('\n📊 FINAL RESULT');
-  console.log(`✅ Success: ${ok}`);
-  console.log(`❌ Fail: ${fail}`);
+    console.log(`\n📊 FINAL`);
+    console.log(`✅ Success: ${totalSuccess}`);
+    console.log(`❌ Fail: ${totalFail}`);
 }
 
 start();
