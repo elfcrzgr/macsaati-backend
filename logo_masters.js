@@ -5,6 +5,8 @@ const axios = require('axios');
 const FIREBASE_BASE_URL =
   'https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/';
 
+const CONCURRENCY = 8;
+
 const configs = [
   {
     name: 'Futbol',
@@ -34,52 +36,23 @@ const configs = [
 ];
 
 // =========================
-// FOLDERS
+// INIT FOLDERS
 // =========================
-configs.forEach(conf => {
-  Object.values(conf.dirs).forEach(dir => {
+for (const conf of configs) {
+  for (const dir of Object.values(conf.dirs)) {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-  });
-});
+  }
+}
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // =========================
-// SOFASCORE FALLBACK
-// =========================
-async function getSofaLogo(teamId) {
-  try {
-
-    const url =
-      `https://img.sofascore.com/api/v1/team/${teamId}/image`;
-
-    const res = await axios.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0'
-      },
-      timeout: 15000,
-      responseType: 'arraybuffer'
-    });
-
-    if (!res.data || res.data.byteLength < 500) {
-      return null;
-    }
-
-    return url;
-
-  } catch (e) {
-    return null;
-  }
-}
-
-// =========================
-// DOWNLOAD
+// SAFE DOWNLOAD
 // =========================
 async function download(url, filePath, name) {
   try {
-
     const res = await axios.get(url, {
       responseType: 'arraybuffer',
       timeout: 20000,
@@ -89,19 +62,24 @@ async function download(url, filePath, name) {
       }
     });
 
+    if (!res.data || res.data.byteLength < 500) return false;
+
     fs.writeFileSync(filePath, res.data);
 
     console.log(`   ✅ ${name}`);
     return true;
 
-  } catch (err) {
-
-    console.log(
-      `   ❌ ${name} -> ${err.response?.status || err.message}`
-    );
-
+  } catch (e) {
+    console.log(`   ❌ ${name} -> ${e.response?.status || e.message}`);
     return false;
   }
+}
+
+// =========================
+// SOFASCORE FALLBACK
+// =========================
+function getSofaUrl(id) {
+  return `https://img.sofascore.com/api/v1/team/${id}/image`;
 }
 
 // =========================
@@ -109,14 +87,14 @@ async function download(url, filePath, name) {
 // =========================
 async function start() {
 
-  console.log('🚀 Logo Masters FIXED VERSION\n');
+  console.log('🚀 Missing Logo Engine Started\n');
 
   let ok = 0;
   let fail = 0;
 
   for (const conf of configs) {
 
-    console.log(`📦 ${conf.name} Firebase...`);
+    console.log(`📦 ${conf.name}`);
 
     let data;
 
@@ -135,10 +113,10 @@ async function start() {
     const matches =
       data?.matches || data?.events || [];
 
-    console.log(`📄 ${matches.length} maç`);
+    console.log(`📄 ${matches.length} matches`);
 
     // =========================
-    // EXTRACT ALL MISSING FIRST
+    // COLLECT MISSING
     // =========================
     const missing = [];
 
@@ -167,75 +145,51 @@ async function start() {
           missing.push({
             id: t.id,
             name: t.name,
-            dir,
-            filePath
-          });
-        }
-      }
-
-      // tournament
-      if (m.tournamentLogo && m.tournamentId) {
-
-        const filePath =
-          path.join(
-            conf.dirs.tournament,
-            `${m.tournamentId}.png`
-          );
-
-        if (!fs.existsSync(filePath)) {
-
-          missing.push({
-            id: m.tournamentId,
-            name: m.tournament,
-            dir: conf.dirs.tournament,
             filePath,
-            isTournament: true
+            url: t.logo || getSofaUrl(t.id)
           });
         }
       }
     }
 
-    console.log(`🔍 Eksik: ${missing.length}`);
+    console.log(`🔍 Missing: ${missing.length}`);
 
     // =========================
-    // DOWNLOAD
+    // PARALLEL DOWNLOAD
     // =========================
-    for (const item of missing) {
+    const chunks = [];
 
-      let url = null;
-
-      // team or tournament
-      if (item.isTournament) {
-        url =
-          `https://img.sofascore.com/api/v1/unique-tournament/${item.id}/image`;
-      } else {
-        url =
-          `https://img.sofascore.com/api/v1/team/${item.id}/image`;
-      }
-
-      // fallback test
-      const finalUrl =
-        await getSofaLogo(item.id) || url;
-
-      const success =
-        await download(
-          finalUrl,
-          item.filePath,
-          item.name
-        );
-
-      if (success) ok++;
-      else fail++;
-
-      await sleep(400);
+    for (let i = 0; i < missing.length; i += CONCURRENCY) {
+      chunks.push(missing.slice(i, i + CONCURRENCY));
     }
 
-    console.log(`✅ ${conf.name} tamam\n`);
+    for (const chunk of chunks) {
+
+      await Promise.all(
+        chunk.map(async item => {
+
+          const success =
+            await download(
+              item.url,
+              item.filePath,
+              item.name
+            );
+
+          if (success) ok++;
+          else fail++;
+
+        })
+      );
+
+      await sleep(300);
+    }
+
+    console.log(`✅ ${conf.name} done\n`);
   }
 
-  console.log('\n📊 SONUÇ');
-  console.log(`✅ Başarılı: ${ok}`);
-  console.log(`❌ Hata: ${fail}`);
+  console.log('\n📊 FINAL RESULT');
+  console.log(`✅ Success: ${ok}`);
+  console.log(`❌ Fail: ${fail}`);
 }
 
 start();
