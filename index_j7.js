@@ -246,16 +246,30 @@ let allEvents = [];
 for (const date of [getTRDate(0), getTRDate(1)]) {
     const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
     if (data?.events) {
+        // 🔎 TÜM LİGLER DEBUG
+        data.events.forEach(e => {
+            const utId = e.tournament?.uniqueTournament?.id;
+            const cat = (e.tournament?.category?.name || "").toLowerCase();
+            if (cat.includes("turkey")) {
+                console.log(`🇹🇷 ID=${utId} | TournamentID=${e.tournament?.id} | ${e.tournament?.uniqueTournament?.name}`);
+            }
+        });
+        // 🔎 DEBUG SONU
+
         allEvents.push(...data.events.filter(e => {
             const utId = e.tournament?.uniqueTournament?.id;
             const tId = e.tournament?.id;
             
-            // uniqueTournament.id 97 ise, tournament.id ile grup kontrolü yap
+            // TFF 2. LİG - Beyaz ve Kırmızı Grup
             if (utId === 97) {
-                return tId === 1993 || tId === 1994; // Sadece Beyaz ve Kırmızı Gruplar
+                const isGroupMatch = tId === 1993 || tId === 1994;
+                if (isGroupMatch) {
+                    console.log(`🟢 TFF 2. LİG MAÇI BULUNDU: ${e.homeTeam.name} vs ${e.awayTeam.name} (Grup ID: ${tId})`);
+                }
+                return isGroupMatch;
             }
             
-            // Diğer ligler normal şekilde kontrol et
+            // Diğer hedef ligler
             return ALL_FOOT_TARGETS.includes(utId);
         }));
     }
@@ -270,7 +284,6 @@ allEvents.forEach(e => {
     const status = e.status.type;
     const isLive = status === 'inprogress';
     const leagueId = e.tournament?.uniqueTournament?.id;
-    const tournamentId = e.tournament?.id;
     
     leagueCount[leagueId] = (leagueCount[leagueId] || 0) + 1;
     
@@ -279,11 +292,15 @@ allEvents.forEach(e => {
     const tName = e.tournament?.name || "";
     const utName = e.tournament?.uniqueTournament?.name || "";
     
-    let cleanTournamentName;
-    if (leagueId === 97 && TFF2_GROUP_IDS[tournamentId]) {
-        cleanTournamentName = TFF2_GROUP_IDS[tournamentId];
-    } else {
-        cleanTournamentName = footballLeagues[leagueId] || e.tournament?.name || utName;
+    // TFF 2. LİG İÇİN GRUP AYIRIMI
+    let cleanTournamentName = footballLeagues[leagueId] || e.tournament?.name || utName;
+    if (leagueId === 97) {
+        const tId = e.tournament?.id;
+        if (tId === 1993) {
+            cleanTournamentName = "TFF 2. Lig (Beyaz Grup)";
+        } else if (tId === 1994) {
+            cleanTournamentName = "TFF 2. Lig (Kırmızı Grup)";
+        }
     }
 
     const dateTR = new Date(e.startTimestamp * 1000);
