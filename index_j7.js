@@ -176,7 +176,17 @@ const staticConfigs = {
     10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 
     11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube",
     13363: "USL YouTube", 696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN",
-    1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus", 38: "beIN Sports", 36: "beIN Sports"
+    1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus", 38: "beIN Sports", 36: "beIN Sports",
+
+
+    955: "S Sport Plus / TV+", // Suudi Arabistan
+    18: "beIN Sports",        // Championship
+    155: "Spor Smart / S Sport+", // Arjantin
+    325: "Spor Smart / S Sport+" // Brezilya
+
+
+
+
 };
 
 if (staticConfigs[utId]) return staticConfigs[utId];
@@ -218,7 +228,6 @@ const footballLeagues = {
     955: "Suudi Arabistan Pro Lig",
     18: "İngiltere Championship"
     
-};
 
 
 };
