@@ -188,7 +188,7 @@ return "Resmi Yayıncı / Canlı Skor";
 };
 
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363];
-const REGULAR_FOOT_IDS = [299, 6516, 325, 155, 242, 11415, 11416, 11417, 15938];
+const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 325, 155, 242, 11415, 11416, 11417, 15938];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 const TFF2_GROUP_IDS = {
@@ -209,7 +209,18 @@ const footballLeagues = {
 16: "FIFA Dünya Kupası", 1: "UEFA EURO", 133: "Copa America",
 270: "Afrika Uluslar Kupası", 299: "Uluslararası Hazırlık Maçları",
 6516: "Kulüp Hazırlık Maçları", 325: "Brezilya Serie A",
-155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship"
+155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship",
+
+
+    
+    155: "Arjantin Liga Profesional", 
+    325: "Brezilya Serie A",
+    955: "Suudi Arabistan Pro Lig",
+    18: "İngiltere Championship"
+    
+};
+
+
 };
 
 function calculateLiveMinute(eventData) {
