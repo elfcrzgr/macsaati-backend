@@ -463,7 +463,9 @@ return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 async function updateTennis() {
 console.log(`🎾 Tenis güncelleniyor...`);
 let rawEvents = [];
-const targetDates = [getTRDate(0), getTRDate(1)];
+
+// 1. BURASI: Kapsamı 4 güne çıkardık (-1, 0, 1, 2)
+const targetDates = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
 const seenEventIds = new Set();
 
 for (const date of targetDates) {
@@ -499,6 +501,8 @@ for (const e of rawEvents) {
         const startTimestamp = e.startTimestamp * 1000;
         const dateTR = new Date(startTimestamp);
         const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        
+        // 2. BURASI: targetDates artık 4 günü kapsadığı için bu filtre otomatik olarak genişledi
         if (!targetDates.includes(fixedDate)) continue;
 
         const tourName = e.tournament?.name || "";
@@ -561,8 +565,9 @@ for (const e of rawEvents) {
 
 finalMatches.sort((a, b) => a.timestamp - b.timestamp);
 await uploadToFirebase("tennis", { success: true, matches: finalMatches });
-console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi`);
+console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi.`);
 }
+
 
 // =========================================================================
 // 🏎️ FORMULA 1 GÜNCEL VERİLER VE PİST DETAYLARI (HATASIZ VE TAM SÜRÜM)
