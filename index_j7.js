@@ -371,7 +371,8 @@ async function updateBasketball() {
 console.log(`🏀 Basketbol güncelleniyor...`);
 let allEvents = [];
 
-for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
+// 1. BURASI: getTRDate(2) ekleyerek kapsamı 4 güne çıkardık
+for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)]) {
     const data = await fetchData(`https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`);
     if (data?.events) {
         allEvents.push(...data.events.filter(e => targetBaskIds.includes(e.tournament?.uniqueTournament?.id)));
@@ -380,8 +381,12 @@ for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1)]) {
 
 const finalMatches = [];
 const duplicateTracker = new Set();
+
+// 2. BURASI: Senin stilinde 4 günü de tanımladık
+const trYesterday = getTRDate(-1);
 const trToday = getTRDate(0);
 const trTomorrow = getTRDate(1);
+const trNextDay = getTRDate(2);
 
 for (const e of allEvents) {
     const utId = e.tournament?.uniqueTournament?.id;
@@ -389,7 +394,8 @@ for (const e of allEvents) {
     const dateTR = new Date(e.startTimestamp * 1000);
     const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
     
-    if (dayStr !== trToday && dayStr !== trTomorrow) continue;
+    // 3. BURASI: Filtreyi 4 günü de kabul edecek şekilde güncelledik
+    if (dayStr !== trYesterday && dayStr !== trToday && dayStr !== trTomorrow && dayStr !== trNextDay) continue;
 
     const isNBA = (utId === 3547 || utName.toUpperCase() === "NBA");
     const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
@@ -428,8 +434,9 @@ for (const e of allEvents) {
 
 finalMatches.sort((a, b) => a.timestamp - b.timestamp);
 await uploadToFirebase("basketball", { success: true, matches: finalMatches });
-console.log(`  ✅ Toplam ${finalMatches.length} basketbol maçı`);
+console.log(`  ✅ Toplam ${finalMatches.length} basketbol maçı kaydedildi.`);
 }
+
 
 // =========================================================================
 // 🎾 TENİS
