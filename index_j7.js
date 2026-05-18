@@ -263,7 +263,10 @@ async function updateFootball() {
 console.log(`⚽ Futbol güncelleniyor...`);
 let allEvents = [];
 
-for (const date of [getTRDate(0), getTRDate(1)]) {
+// Tarama aralığı uygulamanın genel yapısına uygun olarak 4 güne çıkarıldı
+const targetDates = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
+
+for (const date of targetDates) {
     const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
     if (data?.events) {
         allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
@@ -312,8 +315,14 @@ allEvents.forEach(e => {
 
     const dateTR = new Date(e.startTimestamp * 1000);
     const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+    
+    // Çekilen verilerden sadece hedef 4 güne ait olanları filtrele
+    if (!targetDates.includes(dayTR)) return;
+
+    // ORIJİNAL FUTBOL FORMATI: Saat string'ine \nCANLI eklemiyoruz, saf bırakıyoruz
     const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
+    // Önce kod içindeki yedek yayıncıyı al, sonra GitHub JSON (Öncelikli) kontrolüne gönder
     const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
     const finalBroadcaster = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
 
@@ -323,7 +332,7 @@ allEvents.forEach(e => {
         status: status,
         liveMinute: isLive ? calculateLiveMinute(e) : "",
         fixedDate: dayTR,
-        fixedTime: timeString,
+        fixedTime: timeString, // Mobil uygulamanızın beklediği saf "HH:mm" formatı
         timestamp: e.startTimestamp * 1000,
         broadcaster: finalBroadcaster,
         homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
