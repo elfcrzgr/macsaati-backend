@@ -180,23 +180,20 @@ if (utId === 11 || utn.includes("world cup qual") || utn.includes("dünya kupas�
 }
 
 const staticConfigs = {
-    34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii", 
-    17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 7: "TRT 1 / Tabii", 351: "S Sport Plus", 
-    37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen", 
-    10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube", 
+    34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii",
+    96: "TRT 1 / Tabii",
+    17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 7: "TRT 1 / Tabii", 351: "S Sport Plus",
+    37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii", 155: "Spor Smart / Exxen",
+    10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor", 97: "TFF YouTube",
     11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube",
     13363: "USL YouTube", 696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN",
     1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus", 38: "beIN Sports", 36: "beIN Sports",
+    335: "beIN Sports",
 
-
-    955: "S Sport Plus / TV+", // Suudi Arabistan
-    18: "beIN Sports",        // Championship
-    155: "Spor Smart / S Sport+", // Arjantin
-    325: "Spor Smart / S Sport+" // Brezilya
-
-
-
-
+    955: "S Sport Plus / TV+",
+    18: "beIN Sports",
+    155: "Spor Smart / S Sport+",
+    325: "Spor Smart / S Sport+"
 };
 
 if (staticConfigs[utId]) return staticConfigs[utId];
@@ -207,7 +204,7 @@ if (utn.includes("mls next pro")) return "Apple TV / OneFootball";
 return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 13363];
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363];
 const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 325, 155, 242, 11415, 11416, 11417, 15938];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
@@ -224,22 +221,18 @@ const footballLeagues = {
 11417: "TFF 3. Lig Grup 1", 11416: "TFF 3. Lig Grup 2", 11415: "TFF 3. Lig Grup 3", 15938: "TFF 3. Lig Grup 4",
 53: "İtalya Serie B",
 37: "Hollanda Eredivisie", 238: "Portekiz Primeira Liga", 38: "Belçika Pro League",
-36: "İskoçya Premiership", 19: "FA Cup", 938: "Türkiye Kupası",
+36: "İskoçya Premiership", 19: "FA Cup", 938: "Türkiye Kupası", 96: "Türkiye Kupası",
 7: "UEFA Şampiyonlar Ligi", 679: "UEFA Avrupa Ligi", 17015: "UEFA Konferans Ligi",
 16: "FIFA Dünya Kupası", 1: "UEFA EURO", 133: "Copa America",
 270: "Afrika Uluslar Kupası", 299: "Uluslararası Hazırlık Maçları",
 6516: "Kulüp Hazırlık Maçları", 325: "Brezilya Serie A",
 155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship",
+335: "Fransa Kupası",
 
-
-    
-    155: "Arjantin Liga Profesional", 
+    155: "Arjantin Liga Profesional",
     325: "Brezilya Serie A",
     955: "Suudi Arabistan Pro Lig",
     18: "İngiltere Championship"
-    
-
-
 };
 
 function calculateLiveMinute(eventData) {
@@ -258,10 +251,10 @@ if (time?.currentPeriodStartTimestamp) {
     const elapsed = now - time.currentPeriodStartTimestamp;
     let calcMinute = Math.floor(elapsed / 60);
     if (calcMinute < 0) calcMinute = 0;
-    if (status?.code === 7) { 
+    if (status?.code === 7) {
         calcMinute += 45;
         return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
-    } else if (status?.code === 6) { 
+    } else if (status?.code === 6) {
         return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
     }
     return String(calcMinute) + "'";
@@ -273,7 +266,6 @@ async function updateFootball() {
 console.log(`⚽ Futbol güncelleniyor...`);
 let allEvents = [];
 
-// Tarama aralığı uygulamanın genel yapısına uygun olarak 4 güne çıkarıldı
 const targetDates = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
 
 for (const date of targetDates) {
@@ -283,7 +275,6 @@ for (const date of targetDates) {
     }
 }
 
-// TFF 2. Lig maçlarının detaylarını çek
 const tff2Matches = allEvents.filter(e => e.tournament?.uniqueTournament?.id === 97);
 for (const match of tff2Matches) {
     const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}`);
@@ -302,15 +293,14 @@ allEvents.forEach(e => {
     const status = e.status.type;
     const isLive = status === 'inprogress';
     const leagueId = e.tournament?.uniqueTournament?.id;
-    
+
     leagueCount[leagueId] = (leagueCount[leagueId] || 0) + 1;
-    
+
     const hName = e.homeTeam.name || "";
     const aName = e.awayTeam.name || "";
     const tName = e.tournament?.name || "";
     const utName = e.tournament?.uniqueTournament?.name || "";
-    
-    // TFF 2. LİG İÇİN GRUP AYIRIMI
+
     let cleanTournamentName = footballLeagues[leagueId] || e.tournament?.name || utName;
     if (leagueId === 97) {
         const tId = e.tournament?.id;
@@ -325,14 +315,11 @@ allEvents.forEach(e => {
 
     const dateTR = new Date(e.startTimestamp * 1000);
     const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-    
-    // Çekilen verilerden sadece hedef 4 güne ait olanları filtrele
+
     if (!targetDates.includes(dayTR)) return;
 
-    // ORIJİNAL FUTBOL FORMATI: Saat string'ine \nCANLI eklemiyoruz, saf bırakıyoruz
     const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
-    // Önce kod içindeki yedek yayıncıyı al, sonra GitHub JSON (Öncelikli) kontrolüne gönder
     const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
     const finalBroadcaster = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
 
@@ -342,7 +329,7 @@ allEvents.forEach(e => {
         status: status,
         liveMinute: isLive ? calculateLiveMinute(e) : "",
         fixedDate: dayTR,
-        fixedTime: timeString, // Mobil uygulamanızın beklediği saf "HH:mm" formatı
+        fixedTime: timeString,
         timestamp: e.startTimestamp * 1000,
         broadcaster: finalBroadcaster,
         homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
