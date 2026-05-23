@@ -256,6 +256,10 @@ async function checkAndSendNotifications(newMatches) {
     console.log(`🔍 [NOTIFIER] ${newMatches.length} maç kontrol ediliyor...`);
 
     for (const match of newMatches) {
+        
+        if (match.status === 'inprogress') {
+            console.log(`⚽ CANLI MAÇ: ${match.homeTeam.name} | Status: ${match.status} | ID: ${match.id}`);
+        }
         const matchIdStr = String(match.id);
         const prev = previousMatchStates.get(matchIdStr);
         
