@@ -29,7 +29,7 @@ function loadState() {
             console.error("❌ Hafıza dosyası okunamadı, yeni başlatılıyor.");
         }
     }
-    }
+    
 
 
 
@@ -52,8 +52,7 @@ if (!admin.apps.length) {
     });
 }
 
-// Önceki maç durumlarını RAM'de tut
-const previousMatchStates = new Map(); // matchId -> { status, homeScore, awayScore }
+
 
 // =========================================================================
 // 🌉 HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
@@ -330,26 +329,7 @@ async function sendPush(id, title, body) {
 }
 
 
-// Global bir "son bildirim zamanı" tutalım
-const lastNotificationTime = new Map();
 
-async function sendPush(id, title, body) {
-    const now = Date.now();
-    const lastTime = lastNotificationTime.get(id) || 0;
-    
-    // Aynı maç için 15 saniye içinde ikinci bir bildirim atma (Gürültü engelleme)
-    if (now - lastTime < 15000) return; 
-
-    try {
-        await admin.messaging().send({
-            topic: `match_${id}`,
-            notification: { title, body },
-            data: { matchId: id, type: "match_update" }
-        });
-        lastNotificationTime.set(id, now); // Zamanı güncelle
-        console.log(`✅ [BİLDİRİM GÖNDERİLDİ] ${title}: ${body}`);
-    } catch (e) { console.error("❌ Hata:", e.message); }
-}
 
 
 
