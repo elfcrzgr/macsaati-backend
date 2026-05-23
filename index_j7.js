@@ -288,6 +288,10 @@ const duplicateTracker = new Map();
 const leagueCount = {};
 
 allEvents.forEach(e => {
+    
+    // 🛑 İptal edilen veya ertelenen maçları filtrele
+if (e.status?.description === "Cancelled" || e.status?.description === "Postponed") return;
+
     if (duplicateTracker.has(e.id)) return;
 
     const status = e.status.type;
