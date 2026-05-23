@@ -251,34 +251,42 @@ return "Canlı";
 // =========================================================================
 // 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
 // =========================================================================
+// 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME (Tam ve Hataları Yakalayan Hali)
 async function checkAndSendNotifications(newMatches) {
+    console.log(`🔍 [NOTIFIER] ${newMatches.length} maç kontrol ediliyor...`);
+
     for (const match of newMatches) {
-        const prev = previousMatchStates.get(String(match.id));
+        const matchIdStr = String(match.id);
+        const prev = previousMatchStates.get(matchIdStr);
+        
+        // Mevcut durum
         const curr = {
-            status: match.status,
+            status: match.status, // API'den gelen status (inprogress, finished, notstarted vb.)
             homeScore: match.homeScore,
             awayScore: match.awayScore
         };
 
+        // Eğer bu maçı ilk defa görüyoruz, bildirim atma sadece kaydet
         if (!prev) {
-            // İlk kez görüyoruz, sadece kaydet
-            previousMatchStates.set(String(match.id), curr);
+            previousMatchStates.set(matchIdStr, curr);
             continue;
         }
 
         const homeName = match.homeTeam?.name ?? "Ev Sahibi";
         const awayName = match.awayTeam?.name ?? "Deplasman";
-        const topic = `match_${match.id}`;
+        const topic = `match_${matchIdStr}`;
 
         let title = null;
         let body = null;
 
-        // 1. Maç BAŞLADI
+        // --- MANTIKSAL KONTROLLER ---
+
+        // 1. MAÇ BAŞLADI (Notstarted -> Inprogress)
         if (prev.status !== 'inprogress' && curr.status === 'inprogress') {
             title = "⚽ Maç Başladı!";
             body = `${homeName} - ${awayName}`;
         }
-        // 2. GOL (skor değişti ve maç canlı)
+        // 2. GOL OLDU (Durum hala inprogress ve skorlar değişmiş)
         else if (
             curr.status === 'inprogress' &&
             (prev.homeScore !== curr.homeScore || prev.awayScore !== curr.awayScore) &&
@@ -287,7 +295,7 @@ async function checkAndSendNotifications(newMatches) {
             title = "⚽ GOL!";
             body = `${homeName} ${curr.homeScore} - ${curr.awayScore} ${awayName}`;
         }
-        // 3. Maç BİTTİ
+        // 3. MAÇ BİTTİ (Inprogress -> Finished/Ended)
         else if (
             prev.status === 'inprogress' &&
             ['finished', 'ended', 'closed'].includes(curr.status)
@@ -296,27 +304,42 @@ async function checkAndSendNotifications(newMatches) {
             body = `${homeName} ${curr.homeScore} - ${curr.awayScore} ${awayName}`;
         }
 
+        // --- BİLDİRİM GÖNDERME ---
         if (title) {
             try {
+                // Firebase'e bildirimi gönder
                 await admin.messaging().send({
-                    topic,
-                    notification: { title, body },
+                    topic: topic,
+                    notification: {
+                        title: title,
+                        body: body
+                    },
                     apns: {
-                        payload: { aps: { sound: "default" } }
+                        payload: {
+                            aps: {
+                                sound: "default",
+                                badge: 1
+                            }
+                        }
                     },
                     data: {
-                        matchId: String(match.id),
+                        matchId: matchIdStr,
                         type: "match_update"
                     }
                 });
-                console.log(`🔔 Bildirim gönderildi → [${topic}] | ${title}: ${body}`);
+                console.log(`✅ [BİLDİRİM GÖNDERİLDİ] Topic: ${topic} | ${title}`);
             } catch (err) {
-                console.error(`❌ Bildirim gönderilemedi [${topic}]:`, err.message);
+                console.error(`❌ [BİLDİRİM HATASI] Topic: ${topic} | Hata: ${err.message}`);
+                
+                // Eğer hata "Topic not found" veya benzeri bir abonelik hatasıysa logu temizle
+                if (err.code === 'messaging/topic-management-failed') {
+                    console.log(`⚠️ Uyarı: ${topic} için abone bulunamadı.`);
+                }
             }
         }
 
-        // Her durumda yeni state'i kaydet
-        previousMatchStates.set(String(match.id), curr);
+        // Yeni durumu hafızaya kaydet
+        previousMatchStates.set(matchIdStr, curr);
     }
 }
 
