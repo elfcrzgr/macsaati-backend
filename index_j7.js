@@ -258,17 +258,18 @@ async function checkAndSendNotifications(newMatches) {
         const matchIdStr = String(match.id);
         const prev = previousMatchStates.get(matchIdStr);
         
-        // Skorları sayısal olarak al (Hatalı karşılaştırmaları önlemek için)
+        // Skorları sayısal olarak al (String/Number hatasını önlemek için)
         const currH = Number(match.homeScore) || 0;
         const currA = Number(match.awayScore) || 0;
         
         const curr = {
             status: match.status,
-            homeScore: currH, // Sayı olarak kaydediyoruz
+            homeScore: currH,
             awayScore: currA,
             date: match.fixedDate
         };
 
+        // Maç hafızada yoksa, ilk defa görüyoruz: kaydet ve devam et (bildirim atma)
         if (!prev) {
             previousMatchStates.set(matchIdStr, curr);
             continue;
@@ -285,13 +286,13 @@ async function checkAndSendNotifications(newMatches) {
             title = "⚽ Maç Başladı!";
             body = `${homeName} - ${awayName}`;
         } 
-        // 2. GOL (Sadece skor gerçekten değiştiyse ve toplam skor arttıysa)
+        // 2. GOL VEYA GOL İPTALİ (Skor değiştiyse)
         else if (
             curr.status === 'inprogress' &&
-            (prev.homeScore !== curr.homeScore || prev.awayScore !== curr.awayScore) &&
-            (curr.homeScore + curr.awayScore) > (prev.homeScore + prev.awayScore)
+            (prev.homeScore !== curr.homeScore || prev.awayScore !== curr.awayScore)
         ) {
-            title = "⚽ GOL!";
+            const isGoal = (curr.homeScore + curr.awayScore) > (prev.homeScore + prev.awayScore);
+            title = isGoal ? "⚽ GOL!" : "🚫 GOL İPTALİ!";
             body = `${homeName} ${curr.homeScore} - ${curr.awayScore} ${awayName}`;
         } 
         // 3. MAÇ BİTTİ
@@ -303,6 +304,7 @@ async function checkAndSendNotifications(newMatches) {
             body = `${homeName} ${curr.homeScore} - ${curr.awayScore} ${awayName}`;
         }
 
+        // BİLDİRİM GÖNDERME
         if (title) {
             try {
                 await admin.messaging().send({
@@ -313,7 +315,7 @@ async function checkAndSendNotifications(newMatches) {
                 });
                 console.log(`✅ [BİLDİRİM GÖNDERİLDİ] ${title}: ${body}`);
             } catch (err) {
-                console.error(`❌ [BİLDİRİM HATASI]: ${err.message}`);
+                console.error(`❌ [BİLDİRİM HATASI] (${topic}): ${err.message}`);
             }
         }
 
@@ -321,6 +323,7 @@ async function checkAndSendNotifications(newMatches) {
         previousMatchStates.set(matchIdStr, curr);
     }
 }
+
 
 
 
