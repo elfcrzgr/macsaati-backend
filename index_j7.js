@@ -254,7 +254,20 @@ return "Canlı";
 async function checkAndSendNotifications(newMatches) {
     console.log(`🔍 [NOTIFIER] ${newMatches.length} maç kontrol ediliyor.`);
 
+
+
+
+
+
+
+
     for (const match of newMatches) {
+        
+        
+        
+           console.log(`DEBUG: ${match.homeTeam.name} | Status: ${match.status}`);
+        
+        
         const matchIdStr = String(match.id);
         const prev = previousMatchStates.get(matchIdStr);
         
