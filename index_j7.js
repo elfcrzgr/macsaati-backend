@@ -289,8 +289,13 @@ const leagueCount = {};
 
 allEvents.forEach(e => {
     
-    // 🛑 İptal edilen veya ertelenen maçları filtrele
-if (e.status?.description === "Cancelled" || e.status?.description === "Postponed") return;
+    const statusType = e.status?.type || "";
+    const statusDesc = e.status?.description || "";
+    
+    if (statusType === 'canceled' || statusType === 'postponed' || 
+        statusDesc.toLowerCase() === 'canceled' || statusDesc.toLowerCase() === 'postponed') {
+        return; 
+    }
 
     if (duplicateTracker.has(e.id)) return;
 
