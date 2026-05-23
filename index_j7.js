@@ -251,78 +251,59 @@ return "Canlı";
 // =========================================================================
 // 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
 // =========================================================================
-async function checkAndSendNotifications(newMatches) {
-    console.log(`🔍 [NOTIFIER] ${newMatches.length} maç kontrol ediliyor.`);
+// Global Map'i bu şekilde kullanmaya devam et
+// previousMatchStates.get(matchIdStr) -> { status, homeScore, awayScore, hasNotifiedStart }
 
+async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
-        const prev = previousMatchStates.get(matchIdStr);
+        const prev = previousMatchStates.get(matchIdStr) || { 
+            status: null, 
+            homeScore: 0, 
+            awayScore: 0, 
+            hasNotifiedStart: false // BAŞLANGIÇ BİLDİRİMİ GİTTİ Mİ?
+        };
         
-        // Skorları sayısal olarak al (String/Number hatasını önlemek için)
         const currH = Number(match.homeScore) || 0;
         const currA = Number(match.awayScore) || 0;
         
-        const curr = {
+        // 1. MAÇ BAŞLADI (Sadece bir kez gönder)
+        if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
+            await sendPush(matchIdStr, "⚽ Maç Başladı!", `${match.homeTeam.name} - ${match.awayTeam.name}`);
+            prev.hasNotifiedStart = true; // Gönderildi olarak işaretle
+        }
+        // 2. GOL VEYA İPTAL (Skor değiştiyse)
+        else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
+            const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
+            await sendPush(matchIdStr, isGoal ? "⚽ GOL!" : "🚫 GOL İPTALİ!", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
+        }
+        // 3. MAÇ BİTTİ
+        else if (['finished', 'ended', 'closed'].includes(match.status) && prev.status === 'inprogress') {
+            await sendPush(matchIdStr, "🏁 Maç Bitti", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
+        }
+
+        // Durumu ve skorları hafızaya güncelle
+        previousMatchStates.set(matchIdStr, {
             status: match.status,
             homeScore: currH,
             awayScore: currA,
-            date: match.fixedDate
-        };
-
-        // Maç hafızada yoksa, ilk defa görüyoruz: kaydet ve devam et (bildirim atma)
-        if (!prev) {
-            previousMatchStates.set(matchIdStr, curr);
-            continue;
-        }
-
-        const homeName = match.homeTeam?.name ?? "Ev Sahibi";
-        const awayName = match.awayTeam?.name ?? "Deplasman";
-        const topic = `match_${matchIdStr}`;
-        let title = null;
-        let body = null;
-
-        // 1. MAÇ BAŞLADI
-        if (prev.status !== 'inprogress' && curr.status === 'inprogress') {
-            title = "⚽ Maç Başladı!";
-            body = `${homeName} - ${awayName}`;
-        } 
-        // 2. GOL VEYA GOL İPTALİ (Skor değiştiyse)
-        else if (
-            curr.status === 'inprogress' &&
-            (prev.homeScore !== curr.homeScore || prev.awayScore !== curr.awayScore)
-        ) {
-            const isGoal = (curr.homeScore + curr.awayScore) > (prev.homeScore + prev.awayScore);
-            title = isGoal ? "⚽ GOL!" : "🚫 GOL İPTALİ!";
-            body = `${homeName} ${curr.homeScore} - ${curr.awayScore} ${awayName}`;
-        } 
-        // 3. MAÇ BİTTİ
-        else if (
-            prev.status === 'inprogress' &&
-            ['finished', 'ended', 'closed'].includes(curr.status)
-        ) {
-            title = "🏁 Maç Bitti";
-            body = `${homeName} ${curr.homeScore} - ${curr.awayScore} ${awayName}`;
-        }
-
-        // BİLDİRİM GÖNDERME
-        if (title) {
-            try {
-                await admin.messaging().send({
-                    topic: topic,
-                    notification: { title, body },
-                    apns: { payload: { aps: { sound: "default", badge: 1 } } },
-                    data: { matchId: matchIdStr, type: "match_update" }
-                });
-                console.log(`✅ [BİLDİRİM GÖNDERİLDİ] ${title}: ${body}`);
-            } catch (err) {
-                console.error(`❌ [BİLDİRİM HATASI] (${topic}): ${err.message}`);
-            }
-        }
-
-        // Güncel durumu kaydet
-        previousMatchStates.set(matchIdStr, curr);
+            hasNotifiedStart: prev.hasNotifiedStart
+        });
     }
 }
+
+// Yardımcı bildirim fonksiyonu (kodun tekrarını önlemek için)
+async function sendPush(id, title, body) {
+    try {
+        await admin.messaging().send({
+            topic: `match_${id}`,
+            notification: { title, body },
+            data: { matchId: id, type: "match_update" }
+        });
+        console.log(`✅ [BİLDİRİM GÖNDERİLDİ] ${title}: ${body}`);
+    } catch (e) { console.error("❌ Hata:", e.message); }
+}
+
 
 
 
