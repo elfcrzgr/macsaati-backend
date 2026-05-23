@@ -547,7 +547,7 @@ for (const e of rawEvents) {
             }
         }
 
-        const fallbackBroadcaster = "S Sport / beIN Sports";
+        const fallbackBroadcaster = "-";
         const finalBroadcaster = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
 
         finalMatches.push({
