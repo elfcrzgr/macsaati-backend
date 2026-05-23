@@ -252,23 +252,23 @@ return "Canlı";
 // 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
 // =========================================================================
 async function checkAndSendNotifications(newMatches) {
-    // Fonksiyonun tetiklendiğini logla
     console.log(`🔍 [NOTIFIER] ${newMatches.length} maç kontrol ediliyor.`);
 
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
         const prev = previousMatchStates.get(matchIdStr);
         
-        // Şimdiki durumu kaydet
+        // Skorları sayısal olarak al (Hatalı karşılaştırmaları önlemek için)
+        const currH = Number(match.homeScore) || 0;
+        const currA = Number(match.awayScore) || 0;
+        
         const curr = {
             status: match.status,
-            homeScore: match.homeScore,
-            awayScore: match.awayScore,
+            homeScore: currH, // Sayı olarak kaydediyoruz
+            awayScore: currA,
             date: match.fixedDate
         };
 
-        // Eğer maç yeni gelmişse (prev yoksa) sadece hafızaya al, 
-        // bildirim atma (maçın halihazırda başlamış olduğunu varsayıyoruz)
         if (!prev) {
             previousMatchStates.set(matchIdStr, curr);
             continue;
@@ -280,23 +280,21 @@ async function checkAndSendNotifications(newMatches) {
         let title = null;
         let body = null;
 
-        // --- BİLDİRİM MANTIĞI ---
-        
-        // 1. Maç Başladı
+        // 1. MAÇ BAŞLADI
         if (prev.status !== 'inprogress' && curr.status === 'inprogress') {
             title = "⚽ Maç Başladı!";
             body = `${homeName} - ${awayName}`;
         } 
-        // 2. GOL (Skor değiştiyse ve maç canlıysa)
+        // 2. GOL (Sadece skor gerçekten değiştiyse ve toplam skor arttıysa)
         else if (
             curr.status === 'inprogress' &&
-            (String(prev.homeScore) !== String(curr.homeScore) || String(prev.awayScore) !== String(curr.awayScore)) &&
-            curr.homeScore !== "-" && curr.awayScore !== "-"
+            (prev.homeScore !== curr.homeScore || prev.awayScore !== curr.awayScore) &&
+            (curr.homeScore + curr.awayScore) > (prev.homeScore + prev.awayScore)
         ) {
             title = "⚽ GOL!";
             body = `${homeName} ${curr.homeScore} - ${curr.awayScore} ${awayName}`;
         } 
-        // 3. Maç Bitti
+        // 3. MAÇ BİTTİ
         else if (
             prev.status === 'inprogress' &&
             ['finished', 'ended', 'closed'].includes(curr.status)
@@ -305,30 +303,25 @@ async function checkAndSendNotifications(newMatches) {
             body = `${homeName} ${curr.homeScore} - ${curr.awayScore} ${awayName}`;
         }
 
-        // --- BİLDİRİM GÖNDERME ---
         if (title) {
             try {
                 await admin.messaging().send({
                     topic: topic,
-                    notification: { title: title, body: body },
-                    apns: { 
-                        payload: { aps: { sound: "default", badge: 1 } } 
-                    },
-                    data: { 
-                        matchId: matchIdStr, 
-                        type: "match_update" 
-                    }
+                    notification: { title, body },
+                    apns: { payload: { aps: { sound: "default", badge: 1 } } },
+                    data: { matchId: matchIdStr, type: "match_update" }
                 });
                 console.log(`✅ [BİLDİRİM GÖNDERİLDİ] ${title}: ${body}`);
             } catch (err) {
-                console.error(`❌ [BİLDİRİM HATASI] (${topic}): ${err.message}`);
+                console.error(`❌ [BİLDİRİM HATASI]: ${err.message}`);
             }
         }
 
-        // Durumu güncelle
+        // Güncel durumu kaydet
         previousMatchStates.set(matchIdStr, curr);
     }
 }
+
 
 
 
