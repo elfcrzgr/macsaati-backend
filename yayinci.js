@@ -56,6 +56,18 @@ async function getBroadcasterData() {
                 
                 const broadcastEvent = event.broadcastOfEvent;
                 if (!broadcastEvent) return;
+                // 🛑 KARA LİSTE FİLTRESİ
+    const eventNameLower = (broadcastEvent.name || '').toLowerCase();
+    const isCancelled = eventNameLower.includes('iptal') || 
+                        eventNameLower.includes('ertelendi') || 
+                        eventNameLower.includes('postponed') || 
+                        eventNameLower.includes('cancelled');
+    
+    if (isCancelled) {
+        console.log(`🗑️ İptal edilen maç atlandı: ${broadcastEvent.name}`);
+        return; // Bu maçı listeye hiç ekleme
+    }
+                
                 
                 const startDate = new Date(broadcastEvent.startDate);
                 const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
