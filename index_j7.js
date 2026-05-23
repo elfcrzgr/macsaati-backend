@@ -5,6 +5,34 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 
+
+// 1. HAFIZA İÇİN MAP
+const previousMatchStates = new Map();
+
+// 2. ADIMDA EKLEDİĞİMİZ YARDIMCI FONKSİYONLAR (Buraya yapıştır)
+const STATE_FILE = 'match_states.json';
+
+function saveState() {
+    const obj = Object.fromEntries(previousMatchStates);
+    fs.writeFileSync(STATE_FILE, JSON.stringify(obj));
+}
+
+function loadState() {
+    if (fs.existsSync(STATE_FILE)) {
+        try {
+            const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+            for (const [key, val] of Object.entries(data)) {
+                previousMatchStates.set(key, val);
+            }
+            console.log(`📂 [HAFIZA] ${previousMatchStates.size} maç durumu dosyadan yüklendi.`);
+        } catch (e) {
+            console.error("❌ Hafıza dosyası okunamadı, yeni başlatılıyor.");
+        }
+    }
+    }
+
+
+
 // =========================================================================
 // ⚙️ AYARLAR VE FIREBASE BAĞLANTISI
 // =========================================================================
@@ -258,31 +286,22 @@ async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
         const prev = previousMatchStates.get(matchIdStr) || { 
-            status: null, 
-            homeScore: 0, 
-            awayScore: 0, 
-            hasNotifiedStart: false // BAŞLANGIÇ BİLDİRİMİ GİTTİ Mİ?
+            status: null, homeScore: 0, awayScore: 0, hasNotifiedStart: false 
         };
         
         const currH = Number(match.homeScore) || 0;
         const currA = Number(match.awayScore) || 0;
         
-        // 1. MAÇ BAŞLADI (Sadece bir kez gönder)
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             await sendPush(matchIdStr, "⚽ Maç Başladı!", `${match.homeTeam.name} - ${match.awayTeam.name}`);
-            prev.hasNotifiedStart = true; // Gönderildi olarak işaretle
-        }
-        // 2. GOL VEYA İPTAL (Skor değiştiyse)
-        else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
+            prev.hasNotifiedStart = true;
+        } else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
             await sendPush(matchIdStr, isGoal ? "⚽ GOL!" : "🚫 GOL İPTALİ!", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
-        }
-        // 3. MAÇ BİTTİ
-        else if (['finished', 'ended', 'closed'].includes(match.status) && prev.status === 'inprogress') {
+        } else if (['finished', 'ended', 'closed'].includes(match.status) && prev.status === 'inprogress') {
             await sendPush(matchIdStr, "🏁 Maç Bitti", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
         }
 
-        // Durumu ve skorları hafızaya güncelle
         previousMatchStates.set(matchIdStr, {
             status: match.status,
             homeScore: currH,
@@ -290,7 +309,26 @@ async function checkAndSendNotifications(newMatches) {
             hasNotifiedStart: prev.hasNotifiedStart
         });
     }
+    saveState(); // Bildirimlerden sonra dosyaya kaydet
 }
+
+const lastNotificationTime = new Map();
+async function sendPush(id, title, body) {
+    const now = Date.now();
+    const lastTime = lastNotificationTime.get(id) || 0;
+    if (now - lastTime < 15000) return; 
+
+    try {
+        await admin.messaging().send({
+            topic: `match_${id}`,
+            notification: { title, body },
+            data: { matchId: id, type: "match_update" }
+        });
+        lastNotificationTime.set(id, now);
+        console.log(`✅ [BİLDİRİM GÖNDERİLDİ] ${title}: ${body}`);
+    } catch (e) { console.error("❌ Hata:", e.message); }
+}
+
 
 // Global bir "son bildirim zamanı" tutalım
 const lastNotificationTime = new Map();
@@ -333,6 +371,8 @@ console.log(`⚽ Futbol güncelleniyor...`);
             console.log(`🧹 [HAFIZA] Eski maç silindi: ${id}`);
         }
     }
+    
+    saveState();
 
 
 let allEvents = [];
@@ -711,6 +751,8 @@ if (!response) return;
 // 🔄 ANA DÖNGÜ
 // =========================================================================
 async function main() {
+    
+    loadState(); 
 console.log("============================================================");
 console.log("🟢 J7 CANLI SUNUCU BAŞLADI (FIREBASE + AKILLI ZAMANLAYICI)");
 console.log("============================================================");
