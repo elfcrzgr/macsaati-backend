@@ -318,6 +318,17 @@ async function checkAndSendNotifications(newMatches) {
 
 async function updateFootball() {
 console.log(`⚽ Futbol güncelleniyor...`);
+    
+    // 🧹 ESKİ MAÇLARI TEMİZLE
+    const today = getTRDate(0);
+    for (const [id, state] of previousMatchStates.entries()) {
+        if (state.date && state.date !== today) {
+            previousMatchStates.delete(id);
+            console.log(`🧹 [HAFIZA] Eski maç silindi: ${id}`);
+        }
+    }
+
+
 let allEvents = [];
 const targetDates = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
 for (const date of targetDates) {
