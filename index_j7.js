@@ -286,46 +286,52 @@ async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
         
-        // 1. HAFIZAYI GENİŞLETİYORUZ: Devre arası (HT) ve İkinci Yarı (SH) takibi için yeni bayraklar ekledik
         const prev = previousMatchStates.get(matchIdStr) || { 
-            status: null, 
-            homeScore: 0, 
-            awayScore: 0, 
-            hasNotifiedStart: false,
-            hasNotifiedHT: false, // İlk Yarı Bitti bildirimi atıldı mı?
-            hasNotifiedSH: false  // İkinci Yarı Başladı bildirimi atıldı mı?
+            status: null, homeScore: 0, awayScore: 0, 
+            hasNotifiedStart: false, hasNotifiedHT: false, hasNotifiedSH: false
         };
         
         const currH = Number(match.homeScore) || 0;
         const currA = Number(match.awayScore) || 0;
-        const liveMin = match.liveMinute; // Senin calculateLiveMinute fonksiyonundan gelen değer
+        const liveMin = match.liveMinute || ""; 
         
-        // --- BİLDİRİM SENARYOLARI ---
-
         // 1. Maç Başladı
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             await sendPush(matchIdStr, "⚽ Maç Başladı!", `${match.homeTeam.name} - ${match.awayTeam.name}`);
             prev.hasNotifiedStart = true;
         } 
         
-        // 2. İlk Yarı Bitti (Devre Arası)
-        // Eğer durum inprogress, dakika "İY" ise ve daha önce İY bildirimi atılmadıysa
+        // 2. İlk Yarı Bitti
         else if (match.status === 'inprogress' && liveMin === "İY" && !prev.hasNotifiedHT) {
             await sendPush(matchIdStr, "⏱️ İlk Yarı Sonucu", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
             prev.hasNotifiedHT = true;
         }
 
         // 3. İkinci Yarı Başladı
-        // Eğer İY bildirimi atıldıysa, ama artık dakika "İY" DEĞİLSE (örneğin 46' olduysa) ve SH bildirimi atılmadıysa
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
             await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", `Heyecan kaldığı yerden devam ediyor!`);
             prev.hasNotifiedSH = true;
         }
 
-        // 4. Gol veya Skor Değişimi
+        // 🚀 4. GOL DURUMU (Özelleştirilmiş)
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
-            await sendPush(matchIdStr, isGoal ? "⚽ GOL!" : "🚫 GOL İPTALİ!", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
+            
+            if (isGoal) {
+                // Golü kimin attığını buluyoruz
+                const homeScored = currH > prev.homeScore;
+                const scoringTeamName = homeScored ? match.homeTeam.name : match.awayTeam.name;
+                const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
+                
+                // Başlık: ⚽ Gol - Takım Adı (Dakika')
+                const title = `⚽ Gol - ${scoringTeamName} (${liveMin})`;
+                // Gövde: Ev Sahibi 1 - 0 Deplasman
+                const body = `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                
+                await sendPush(matchIdStr, title, body, scoringTeamLogo);
+            } else {
+                await sendPush(matchIdStr, "🚫 GOL İPTALİ!", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
+            }
         } 
         
         // 5. Maç Bitti
@@ -333,38 +339,60 @@ async function checkAndSendNotifications(newMatches) {
             await sendPush(matchIdStr, "🏁 Maç Bitti", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
         }
 
-        // 2. HAFIZAYI GÜNCELLİYORUZ
         previousMatchStates.set(matchIdStr, {
-            status: match.status,
-            homeScore: currH,
-            awayScore: currA,
-            hasNotifiedStart: prev.hasNotifiedStart,
-            hasNotifiedHT: prev.hasNotifiedHT, // Güncel durumu kaydet
-            hasNotifiedSH: prev.hasNotifiedSH  // Güncel durumu kaydet
+            status: match.status, homeScore: currH, awayScore: currA,
+            hasNotifiedStart: prev.hasNotifiedStart, hasNotifiedHT: prev.hasNotifiedHT, hasNotifiedSH: prev.hasNotifiedSH
         });
     }
     
-    saveState(); // Bildirimlerden sonra dosyaya kaydet
+    saveState();
 }
-
-
 const lastNotificationTime = new Map();
-async function sendPush(id, title, body) {
+// 🚀 BİLDİRİM GÖNDERME FONKSİYONU (Resim Desteği Düzeltildi)
+async function sendPush(id, title, body, imageUrl = null) {
     const now = Date.now();
     const lastTime = lastNotificationTime.get(id) || 0;
     if (now - lastTime < 15000) return; 
 
     try {
-        await admin.messaging().send({
+        const payload = {
             topic: `match_${id}`,
-            notification: { title, body },
-            data: { matchId: id, type: "match_update" }
-        });
-        lastNotificationTime.set(id, now);
-        console.log(`✅ [BİLDİRİM GÖNDERİLDİ] ${title}: ${body}`);
-    } catch (e) { console.error("❌ Hata:", e.message); }
-}
+            notification: { 
+                title: title, 
+                body: body 
+            },
+            data: { 
+                matchId: String(id), 
+                type: "match_update" 
+            },
+            // 🚀 İŞTE DÜZELTİLEN KISIM: Apple (iOS) İçin
+            apns: {
+                payload: {
+                    aps: {
+                        "mutable-content": 1 // iOS'e resim ekleme yetkisi
+                    }
+                }
+            }
+        };
 
+        // 🚀 İŞTE DÜZELTİLEN KISIM: Resmi iOS ve Android'in beklediği doğru yerlere koyuyoruz
+        if (imageUrl) {
+            // iOS'in beklediği yer (fcm_options.image)
+            payload.apns.fcm_options = { image: imageUrl };
+            
+            // Eğer Android tarafı da resimli bildirim destekliyorsa, orası için de ekleyelim:
+            payload.android = {
+                notification: { image: imageUrl }
+            };
+        }
+
+        await admin.messaging().send(payload);
+        lastNotificationTime.set(id, now);
+        console.log(`✅ [BİLDİRİM] ${title}: ${body}`);
+    } catch (e) { 
+        console.error("❌ Bildirim Hatası:", e.message); 
+    }
+}
 async function updateFootball() {
 console.log(`⚽ Futbol güncelleniyor...`);
     
