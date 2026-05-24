@@ -295,37 +295,37 @@ async function checkAndSendNotifications(newMatches) {
         const currA = Number(match.awayScore) || 0;
         const liveMin = match.liveMinute || ""; 
         
-        // 1. Maç Başladı
+        // 🚀 SADECE DEVRE ARASI İÇİN GEÇERLİ DÜDÜK İKONU URL'Sİ
+        const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
+
+        // 1. Maç Başladı (Resim parametresi gönderilmiyor, eski sade haline döndü)
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             await sendPush(matchIdStr, "⚽ Maç Başladı!", `${match.homeTeam.name} - ${match.awayTeam.name}`);
             prev.hasNotifiedStart = true;
         } 
         
-        // 2. İlk Yarı Bitti
+        // 2. İlk Yarı Bitti (Sadece burada düdük görseli gitmeye devam ediyor)
         else if (match.status === 'inprogress' && liveMin === "İY" && !prev.hasNotifiedHT) {
-            await sendPush(matchIdStr, "⏱️ İlk Yarı Sonucu", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
+            await sendPush(matchIdStr, "⏱️ İlk Yarı Sonucu", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
 
-        // 3. İkinci Yarı Başladı
+        // 3. İkinci Yarı Başladı (Eski sade haline döndü)
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
             await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", `Heyecan kaldığı yerden devam ediyor!`);
             prev.hasNotifiedSH = true;
         }
 
-        // 🚀 4. GOL DURUMU (Özelleştirilmiş)
+        // 4. GOL DURUMU (Golü atan takımın kendi logosu gidiyor)
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
             
             if (isGoal) {
-                // Golü kimin attığını buluyoruz
                 const homeScored = currH > prev.homeScore;
                 const scoringTeamName = homeScored ? match.homeTeam.name : match.awayTeam.name;
                 const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
                 
-                // Başlık: ⚽ Gol - Takım Adı (Dakika')
                 const title = `⚽ Gol - ${scoringTeamName} (${liveMin})`;
-                // Gövde: Ev Sahibi 1 - 0 Deplasman
                 const body = `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 
                 await sendPush(matchIdStr, title, body, scoringTeamLogo);
@@ -334,7 +334,7 @@ async function checkAndSendNotifications(newMatches) {
             }
         } 
         
-        // 5. Maç Bitti
+        // 5. Maç Bitti (Eski sade haline döndü)
         else if (['finished', 'ended', 'closed'].includes(match.status) && prev.status === 'inprogress') {
             await sendPush(matchIdStr, "🏁 Maç Bitti", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
         }
@@ -347,6 +347,11 @@ async function checkAndSendNotifications(newMatches) {
     
     saveState();
 }
+
+
+
+
+
 const lastNotificationTime = new Map();
 // 🚀 BİLDİRİM GÖNDERME FONKSİYONU (Resim Desteği Düzeltildi)
 async function sendPush(id, title, body, imageUrl = null) {
