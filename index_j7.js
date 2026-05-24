@@ -590,7 +590,7 @@ for (const e of rawEvents) {
                 if (hScore !== undefined && aScore !== undefined) sets.push(`${hScore}-${aScore}`);
             }
         }
-        const fallbackBroadcaster = "-";
+        const fallbackBroadcaster = "S Sport Plus / Eurosport";
         const finalBroadcaster = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
         finalMatches.push({
             id: e.id,
