@@ -295,28 +295,34 @@ async function checkAndSendNotifications(newMatches) {
         const currA = Number(match.awayScore) || 0;
         const liveMin = match.liveMinute || ""; 
         
-        // 🚀 BÜTÜN DURUMLAR İÇİN STANDART DÜDÜK GÖRSELİ
+        // 🚀 SADECE DEVRE ARASI İÇİN GEÇERLİ DÜDÜK İKONU URL'Sİ
         const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
+        
+        // 🌟 SABİT UYGULAMA BAŞLIĞI (Mackolik gibi en üstte kalın yazacak)
+        const appTitle = "Maç Saati"; 
 
-        // 1. Maç Başladı (Düdük Eklendi)
+        // 1. Maç Başladı
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
-            await sendPush(matchIdStr, "⚽ Maç Başladı!", `${match.homeTeam.name} - ${match.awayTeam.name}`, whistleIconUrl);
+            const bodyText = `⚽ Maç Başladı!\n${match.homeTeam.name} - ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, appTitle, bodyText);
             prev.hasNotifiedStart = true;
         } 
         
-        // 2. İlk Yarı Bitti (Düdük Eklendi)
+        // 2. İlk Yarı Bitti (Sadece burada düdük görseli var)
         else if (match.status === 'inprogress' && liveMin === "İY" && !prev.hasNotifiedHT) {
-            await sendPush(matchIdStr, "⏱️ İlk Yarı Sonucu", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`, whistleIconUrl);
+            const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
 
-        // 3. İkinci Yarı Başladı (Düdük Eklendi)
+        // 3. İkinci Yarı Başladı
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
-            await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`, whistleIconUrl);
+            const bodyText = `▶️ İkinci Yarı Başladı\nHeyecan kaldığı yerden devam ediyor!`;
+            await sendPush(matchIdStr, appTitle, bodyText);
             prev.hasNotifiedSH = true;
         }
 
-        // 4. GOL DURUMU (Gol atana Takım Logosu, İptale Düdük)
+        // 4. GOL DURUMU (Golü atan takımın kendi logosu gidiyor)
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
             
@@ -325,20 +331,21 @@ async function checkAndSendNotifications(newMatches) {
                 const scoringTeamName = homeScored ? match.homeTeam.name : match.awayTeam.name;
                 const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
                 
-                const title = `⚽ Gol - ${scoringTeamName} (${liveMin})`;
-                const body = `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                // Olay ve Skor alt alta birleştirildi
+                const bodyText = `⚽ Gol - ${scoringTeamName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 
-                // GOLDE TAKIM LOGOSU
-                await sendPush(matchIdStr, title, body, scoringTeamLogo);
+                // Sağ tarafa takım logosu gidiyor
+                await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
             } else {
-                // GOL İPTALİNDE DÜDÜK GÖRSELİ
-                await sendPush(matchIdStr, "🚫 GOL İPTALİ!", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`, whistleIconUrl);
+                const bodyText = `🚫 GOL İPTALİ!\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                await sendPush(matchIdStr, appTitle, bodyText);
             }
         } 
         
-        // 5. Maç Bitti (Düdük Eklendi)
+        // 5. Maç Bitti
         else if (['finished', 'ended', 'closed'].includes(match.status) && prev.status === 'inprogress') {
-            await sendPush(matchIdStr, "🏁 Maç Bitti", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`, whistleIconUrl);
+            const bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, appTitle, bodyText);
         }
 
         previousMatchStates.set(matchIdStr, {
@@ -349,7 +356,6 @@ async function checkAndSendNotifications(newMatches) {
     
     saveState();
 }
-
 
 
 
