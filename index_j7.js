@@ -293,15 +293,17 @@ async function checkAndSendNotifications(newMatches) {
             hasNotifiedInjuryTime1: false, hasNotifiedInjuryTime2: false
         };
         
-        const currH = Number(match.homeScore) || 0;
-        const currA = Number(match.awayScore) || 0;
+        // 🚀 LET OLARAK DEĞİŞTİRDİK: Glitch koruması anında müdahale edebilsin diye
+        let currH = Number(match.homeScore) || 0;
+        let currA = Number(match.awayScore) || 0;
         const liveMin = match.liveMinute || ""; 
         const tObj = match.timeObj || {}; // API'den gelen zaman (uzatma) verisi
         
         // Sabit başlık ve ikonlar
         const appTitle = "Maç Saati"; 
         const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
-        const substitutionBoardUrl = "https://img.icons8.com/fluency/96/scorecard.png"; 
+        // 🚀 PATLAYAN İKON ÇALIŞAN KRONOMETRE İKONU İLE DEĞİŞTİRİLDİ
+        const substitutionBoardUrl = "https://img.icons8.com/color/96/stopwatch--v1.png"; 
 
         // 1. Maç Başladı
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
@@ -340,7 +342,7 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedInjuryTime2 = true;
         }
 
-        // 6. GOL DURUMU VE GOL İPTALİ
+        // 6. GOL DURUMU VE GOL İPTALİ (🚀 ANINDA DOĞRULAMALI YENİ SİSTEM)
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
             
@@ -352,13 +354,32 @@ async function checkAndSendNotifications(newMatches) {
                 const bodyText = `⚽ Gol - ${scoringTeamName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
             } else {
-                // Gol İptali detayı (Hangi takımın iptal oldu?)
-                const homeCancelled = currH < prev.homeScore;
-                const awayCancelled = currA < prev.awayScore;
-                const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
+                // 🚀 ANINDA DOĞRULAMA (Beklemek Yok!)
+                // CDN dalgalanması mı, gerçek iptal mi? Tekil maç servisinden anında teyit ediyoruz.
+                console.log(`⚠️ Şüpheli skor düşüşü tespit edildi (${match.homeTeam.name}). Anında teyit ediliyor...`);
                 
-                const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+                const truthData = await fetchData(`https://www.sofascore.com/api/v1/event/${matchIdStr}`);
+                if (truthData?.event) {
+                    const realH = Number(truthData.event.homeScore?.display ?? truthData.event.homeScore?.current ?? 0);
+                    const realA = Number(truthData.event.awayScore?.display ?? truthData.event.awayScore?.current ?? 0);
+                    
+                    if (realH === currH && realA === currA) {
+                        // Skor GERÇEKTEN düşmüş (VAR iptali onaylandı, bildirim gönder!)
+                        const homeCancelled = currH < prev.homeScore;
+                        const awayCancelled = currA < prev.awayScore;
+                        const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
+                        
+                        const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                        await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+                    } else {
+                        // SAHTE VERİ (CDN Glitch)! Bildirim atma ve Firebase'e gidecek skoru anında DÜZELT.
+                        console.log(`✅ Sahte gol iptali engellendi! Gerçek Skor: ${realH}-${realA} (Eski gelen: ${currH}-${currA})`);
+                        currH = realH; 
+                        currA = realA;
+                        match.homeScore = String(realH); // Firebase'e doğru skor gitsin diye objeyi onardık
+                        match.awayScore = String(realA);
+                    }
+                }
             }
         } 
         
@@ -479,7 +500,7 @@ allEvents.forEach(e => {
         statusDesc.toLowerCase() === 'canceled' || statusDesc.toLowerCase() === 'postponed') {
         return; 
     }
-    if (duplicateTracker.has(e.id)) return;
+    // 🚀 O ESKİ ÖNBELEK HATASINA YOL AÇAN duplicateTracker.has SATIRI BURADAN SİLİNDİ!
     const status = e.status.type;
     const isLive = status === 'inprogress';
     const leagueId = e.tournament?.uniqueTournament?.id;
