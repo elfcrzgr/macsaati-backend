@@ -340,8 +340,14 @@ else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY
                 // Sağ tarafa takım logosu gidiyor
                 await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
             } else {
-                const bodyText = `🚫 GOL İPTALİ!\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                await sendPush(matchIdStr, appTitle, bodyText);
+                // 🚀 GOL İPTALİ KONTROLÜ (Hangi takımın golü iptal oldu?)
+                // Skor azaldıysa, daha fazla olan skorun sahibi iptali yaşamıştır.
+                const homeCancelled = currH < prev.homeScore;
+                const awayCancelled = currA < prev.awayScore;
+                const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
+                
+                const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             }
         } 
         
