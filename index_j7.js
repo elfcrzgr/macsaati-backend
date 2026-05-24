@@ -390,7 +390,7 @@ async function sendPush(id, title, body, imageUrl = null) {
             apns: {
                 payload: {
                     aps: {
-                        "mutable-content": 1 // iOS'e resim ekleme yetkisi
+                        "mutable-content": 1, // iOS'e resim ekleme yetkisi
                         "badge":0
                     }
                 }
