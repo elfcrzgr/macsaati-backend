@@ -286,19 +286,17 @@ async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
         
+        // 🚀 1. GÜNCELLEME: "hasNotifiedFinished" kilidi eklendi
         const prev = previousMatchStates.get(matchIdStr) || { 
             status: null, homeScore: 0, awayScore: 0, 
-            hasNotifiedStart: false, hasNotifiedHT: false, hasNotifiedSH: false
+            hasNotifiedStart: false, hasNotifiedHT: false, hasNotifiedSH: false, hasNotifiedFinished: false
         };
         
         const currH = Number(match.homeScore) || 0;
         const currA = Number(match.awayScore) || 0;
         const liveMin = match.liveMinute || ""; 
         
-        // 🚀 SADECE DEVRE ARASI İÇİN GEÇERLİ DÜDÜK İKONU URL'Sİ
         const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
-        
-        // 🌟 SABİT UYGULAMA BAŞLIĞI (Mackolik gibi en üstte kalın yazacak)
         const appTitle = "Maç Saati"; 
 
         // 1. Maç Başladı
@@ -308,24 +306,21 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedStart = true;
         } 
         
-        // 2. İlk Yarı Bitti (Sadece burada düdük görseli var)
+        // 2. İlk Yarı Bitti
         else if (match.status === 'inprogress' && liveMin === "İY" && !prev.hasNotifiedHT) {
             const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
 
-        // 3. İkinci Yarı Başladı (GÜNCELLENDİ)
-else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
-    // 🚀 BURAYI DEĞİŞTİRDİK: Heyecan metni yerine takım isimlerini ve skoru koyduk
-    const bodyText = `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-    
-    // Başlık kısmını da Mackolik stiliyle koruyoruz
-    await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", bodyText);
-    prev.hasNotifiedSH = true;
-}
+        // 3. İkinci Yarı Başladı
+        else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
+            const bodyText = `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", bodyText);
+            prev.hasNotifiedSH = true;
+        }
 
-        // 4. GOL DURUMU (Golü atan takımın kendi logosu gidiyor)
+        // 4. GOL DURUMU
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
             
@@ -334,14 +329,9 @@ else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY
                 const scoringTeamName = homeScored ? match.homeTeam.name : match.awayTeam.name;
                 const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
                 
-                // Olay ve Skor alt alta birleştirildi
                 const bodyText = `⚽ Gol - ${scoringTeamName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                
-                // Sağ tarafa takım logosu gidiyor
                 await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
             } else {
-                // 🚀 GOL İPTALİ KONTROLÜ (Hangi takımın golü iptal oldu?)
-                // Skor azaldıysa, daha fazla olan skorun sahibi iptali yaşamıştır.
                 const homeCancelled = currH < prev.homeScore;
                 const awayCancelled = currA < prev.awayScore;
                 const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
@@ -352,14 +342,25 @@ else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY
         } 
         
         // 5. Maç Bitti
-        else if (['finished', 'ended', 'closed'].includes(match.status) && prev.status === 'inprogress') {
-            const bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText);
+        // 🚀 2. GÜNCELLEME: "hasNotifiedFinished" kilidi kapalıysa içeri girer
+        else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
+            
+            // Eğer maç başından beri bizdeyse ve yeni bittiyse bildirim at
+            if (prev.status === 'inprogress') {
+                const bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                await sendPush(matchIdStr, appTitle, bodyText);
+            }
+            
+            // Bildirim atsa da atmasa da kilidi kapat. Bir daha asla bu maç için bildirim gitmez!
+            prev.hasNotifiedFinished = true;
         }
 
+        // 🚀 3. GÜNCELLEME: "date" verisi eklendi. Böylece gece 12'den sonra dünün maçları RAM'den silinebilecek.
         previousMatchStates.set(matchIdStr, {
             status: match.status, homeScore: currH, awayScore: currA,
-            hasNotifiedStart: prev.hasNotifiedStart, hasNotifiedHT: prev.hasNotifiedHT, hasNotifiedSH: prev.hasNotifiedSH
+            hasNotifiedStart: prev.hasNotifiedStart, hasNotifiedHT: prev.hasNotifiedHT, 
+            hasNotifiedSH: prev.hasNotifiedSH, hasNotifiedFinished: prev.hasNotifiedFinished,
+            date: getTRDate(0) 
         });
     }
     
