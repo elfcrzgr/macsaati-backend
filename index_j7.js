@@ -315,12 +315,15 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedHT = true;
         }
 
-        // 3. İkinci Yarı Başladı
-        else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
-            const bodyText = `▶️ İkinci Yarı Başladı\nHeyecan kaldığı yerden devam ediyor!`;
-            await sendPush(matchIdStr, appTitle, bodyText);
-            prev.hasNotifiedSH = true;
-        }
+        // 3. İkinci Yarı Başladı (GÜNCELLENDİ)
+else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
+    // 🚀 BURAYI DEĞİŞTİRDİK: Heyecan metni yerine takım isimlerini ve skoru koyduk
+    const bodyText = `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+    
+    // Başlık kısmını da Mackolik stiliyle koruyoruz
+    await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", bodyText);
+    prev.hasNotifiedSH = true;
+}
 
         // 4. GOL DURUMU (Golü atan takımın kendi logosu gidiyor)
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
