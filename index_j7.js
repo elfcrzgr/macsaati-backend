@@ -285,32 +285,68 @@ return "Canlı";
 async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
+        
+        // 1. HAFIZAYI GENİŞLETİYORUZ: Devre arası (HT) ve İkinci Yarı (SH) takibi için yeni bayraklar ekledik
         const prev = previousMatchStates.get(matchIdStr) || { 
-            status: null, homeScore: 0, awayScore: 0, hasNotifiedStart: false 
+            status: null, 
+            homeScore: 0, 
+            awayScore: 0, 
+            hasNotifiedStart: false,
+            hasNotifiedHT: false, // İlk Yarı Bitti bildirimi atıldı mı?
+            hasNotifiedSH: false  // İkinci Yarı Başladı bildirimi atıldı mı?
         };
         
         const currH = Number(match.homeScore) || 0;
         const currA = Number(match.awayScore) || 0;
+        const liveMin = match.liveMinute; // Senin calculateLiveMinute fonksiyonundan gelen değer
         
+        // --- BİLDİRİM SENARYOLARI ---
+
+        // 1. Maç Başladı
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             await sendPush(matchIdStr, "⚽ Maç Başladı!", `${match.homeTeam.name} - ${match.awayTeam.name}`);
             prev.hasNotifiedStart = true;
-        } else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
+        } 
+        
+        // 2. İlk Yarı Bitti (Devre Arası)
+        // Eğer durum inprogress, dakika "İY" ise ve daha önce İY bildirimi atılmadıysa
+        else if (match.status === 'inprogress' && liveMin === "İY" && !prev.hasNotifiedHT) {
+            await sendPush(matchIdStr, "⏱️ İlk Yarı Sonucu", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
+            prev.hasNotifiedHT = true;
+        }
+
+        // 3. İkinci Yarı Başladı
+        // Eğer İY bildirimi atıldıysa, ama artık dakika "İY" DEĞİLSE (örneğin 46' olduysa) ve SH bildirimi atılmadıysa
+        else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
+            await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", `Heyecan kaldığı yerden devam ediyor!`);
+            prev.hasNotifiedSH = true;
+        }
+
+        // 4. Gol veya Skor Değişimi
+        else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
             await sendPush(matchIdStr, isGoal ? "⚽ GOL!" : "🚫 GOL İPTALİ!", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
-        } else if (['finished', 'ended', 'closed'].includes(match.status) && prev.status === 'inprogress') {
+        } 
+        
+        // 5. Maç Bitti
+        else if (['finished', 'ended', 'closed'].includes(match.status) && prev.status === 'inprogress') {
             await sendPush(matchIdStr, "🏁 Maç Bitti", `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`);
         }
 
+        // 2. HAFIZAYI GÜNCELLİYORUZ
         previousMatchStates.set(matchIdStr, {
             status: match.status,
             homeScore: currH,
             awayScore: currA,
-            hasNotifiedStart: prev.hasNotifiedStart
+            hasNotifiedStart: prev.hasNotifiedStart,
+            hasNotifiedHT: prev.hasNotifiedHT, // Güncel durumu kaydet
+            hasNotifiedSH: prev.hasNotifiedSH  // Güncel durumu kaydet
         });
     }
+    
     saveState(); // Bildirimlerden sonra dosyaya kaydet
 }
+
 
 const lastNotificationTime = new Map();
 async function sendPush(id, title, body) {
