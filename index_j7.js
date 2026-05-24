@@ -453,23 +453,25 @@ async function sendPush(id, title, body, imageUrl = null) {
 async function updateFootball() {
 console.log(`⚽ Futbol güncelleniyor...`);
     
-        console.log(`⚽ Futbol güncelleniyor...`);
-    
-    // 🧹 ESKİ MAÇLARI TEMİZLE (GÜNCELLENDİ: Gece yarısı kalkanı eklendi)
+            // 🧹 ESKİ MAÇLARI TEMİZLE (ÖLÜMSÜZ VE GÜNCELLENEBİLİR KALKAN)
     const today = getTRDate(0);
     for (const [id, state] of previousMatchStates.entries()) {
-        // Eğer maçın tarihi bugün değilse...
+        
+        // 1. Eğer maç dün kaldıysa ve artık BİTTİYSE sil.
         if (state.date && state.date !== today) {
-            // ...VE maç artık canlı (inprogress) DEĞİLSE sil.
-            // Bu sayede gece 00:00'ı geçen Güney Amerika maçları hafızadan silinmez ve spam atmaz!
             if (state.status !== 'inprogress') {
                 previousMatchStates.delete(id);
                 console.log(`🧹 [HAFIZA] Eski maç silindi: ${id}`);
-            } else {
-                console.log(`🛡️ [HAFIZA] Gece yarısını geçen canlı maç korundu: ${id}`);
+            } 
+            // 2. Eğer maç dün kaldı ama hala CANLIYSA, tarihini BUGÜN olarak güncelle (Tarih Güncelleme Kalkanı)
+            else {
+                state.date = today;
+                previousMatchStates.set(id, state);
+                console.log(`🛡️ [HAFIZA] Canlı maç tarihi bugüne güncellendi: ${id}`);
             }
         }
     }
+
     
     saveState();
 
