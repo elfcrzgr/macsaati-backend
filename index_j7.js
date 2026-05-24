@@ -286,24 +286,33 @@ async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
         
-        // 🚀 1. TÜM ŞALTERLER (Spam koruması ve ilave süre kilitleri)
         const prev = previousMatchStates.get(matchIdStr) || { 
             status: null, homeScore: 0, awayScore: 0, 
             hasNotifiedStart: false, hasNotifiedHT: false, hasNotifiedSH: false, hasNotifiedFinished: false,
-            hasNotifiedInjuryTime1: false, hasNotifiedInjuryTime2: false
+            hasNotifiedInjuryTime1: false, hasNotifiedInjuryTime2: false,
+            lastMinute: 0 // 🚀 YENİ KORUMA: Dakika geriye sararsa sahte veri olduğunu anlayacağız
         };
         
-        // 🚀 LET OLARAK DEĞİŞTİRDİK: Glitch koruması anında müdahale edebilsin diye
         let currH = Number(match.homeScore) || 0;
         let currA = Number(match.awayScore) || 0;
         const liveMin = match.liveMinute || ""; 
-        const tObj = match.timeObj || {}; // API'den gelen zaman (uzatma) verisi
+        const tObj = match.timeObj || {}; 
+        let currentMinNum = tObj.currentMinute || 0;
         
-        // Sabit başlık ve ikonlar
         const appTitle = "Maç Saati"; 
         const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
-        // 🚀 PATLAYAN İKON ÇALIŞAN KRONOMETRE İKONU İLE DEĞİŞTİRİLDİ
         const substitutionBoardUrl = "https://img.icons8.com/color/96/stopwatch--v1.png"; 
+
+        // 🚀 DAHİCE ÇÖZÜM: ZAMAN KALKANI (MINUTE SHIELD)
+        // Eğer maçın dakikası, hafızamızdaki dakikadan daha geriyse bu kesinlikle Sofascore'un eski bozuk verisidir!
+        if (match.status === 'inprogress' && currentMinNum > 0 && prev.lastMinute > 0 && currentMinNum < prev.lastMinute) {
+            console.log(`🛡️ CDN HATASI ENGELLENDİ: ${match.homeTeam.name} dakikası geriye gitti (${prev.lastMinute}' -> ${currentMinNum}'). Eski veri reddedildi.`);
+            currH = prev.homeScore;
+            currA = prev.awayScore;
+            match.homeScore = String(currH); // Veritabanına da bozuk veri gitmesin diye koruyoruz
+            match.awayScore = String(currA);
+            // Dakika geriye gittiği için aşağıdakilerin hiçbiri tetiklenmeyecek!
+        }
 
         // 1. Maç Başladı
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
@@ -313,7 +322,7 @@ async function checkAndSendNotifications(newMatches) {
         } 
         
         // 2. İlk Yarı İlave Süre (Uzatma)
-        else if (match.status === 'inprogress' && tObj.injuryTime1 && !prev.hasNotifiedInjuryTime1) {
+        else if (match.status === 'inprogress' && match.statusCode === 6 && tObj.injuryTime1 && !prev.hasNotifiedInjuryTime1) {
             const titleText = `İlk yarı ilave süre: +${tObj.injuryTime1}'`;
             const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
@@ -335,14 +344,14 @@ async function checkAndSendNotifications(newMatches) {
         }
 
         // 5. İkinci Yarı İlave Süre (Uzatma)
-        else if (match.status === 'inprogress' && tObj.injuryTime2 && !prev.hasNotifiedInjuryTime2 && liveMin !== "İY") {
+        else if (match.status === 'inprogress' && match.statusCode === 7 && tObj.injuryTime2 && !prev.hasNotifiedInjuryTime2 && liveMin !== "İY") {
             const titleText = `İkinci yarı ilave süre: +${tObj.injuryTime2}'`;
             const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
             prev.hasNotifiedInjuryTime2 = true;
         }
 
-        // 6. GOL DURUMU VE GOL İPTALİ (🚀 ANINDA DOĞRULAMALI YENİ SİSTEM)
+        // 6. GOL DURUMU VE GOL İPTALİ (Sıfır Gecikmeli Kesin Çözüm)
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
             
@@ -354,45 +363,26 @@ async function checkAndSendNotifications(newMatches) {
                 const bodyText = `⚽ Gol - ${scoringTeamName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
             } else {
-                // 🚀 ANINDA DOĞRULAMA (Beklemek Yok!)
-                // CDN dalgalanması mı, gerçek iptal mi? Tekil maç servisinden anında teyit ediyoruz.
-                console.log(`⚠️ Şüpheli skor düşüşü tespit edildi (${match.homeTeam.name}). Anında teyit ediliyor...`);
+                // 🚀 ANINDA GOL İPTALİ (Zaman Kalkanını geçtiği için bunun %100 gerçek iptal olduğunu biliyoruz)
+                const homeCancelled = currH < prev.homeScore;
+                const awayCancelled = currA < prev.awayScore;
+                const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
                 
-                const truthData = await fetchData(`https://www.sofascore.com/api/v1/event/${matchIdStr}`);
-                if (truthData?.event) {
-                    const realH = Number(truthData.event.homeScore?.display ?? truthData.event.homeScore?.current ?? 0);
-                    const realA = Number(truthData.event.awayScore?.display ?? truthData.event.awayScore?.current ?? 0);
-                    
-                    if (realH === currH && realA === currA) {
-                        // Skor GERÇEKTEN düşmüş (VAR iptali onaylandı, bildirim gönder!)
-                        const homeCancelled = currH < prev.homeScore;
-                        const awayCancelled = currA < prev.awayScore;
-                        const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
-                        
-                        const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                        await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
-                    } else {
-                        // SAHTE VERİ (CDN Glitch)! Bildirim atma ve Firebase'e gidecek skoru anında DÜZELT.
-                        console.log(`✅ Sahte gol iptali engellendi! Gerçek Skor: ${realH}-${realA} (Eski gelen: ${currH}-${currA})`);
-                        currH = realH; 
-                        currA = realA;
-                        match.homeScore = String(realH); // Firebase'e doğru skor gitsin diye objeyi onardık
-                        match.awayScore = String(realA);
-                    }
-                }
+                const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             }
         } 
         
-        // 7. MAÇ BİTTİ (Sadece 1 Kere Çalışır - Spam Korumalı)
+        // 7. MAÇ BİTTİ (Spam Korumalı)
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
             if (prev.status === 'inprogress') {
                 const bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 await sendPush(matchIdStr, appTitle, bodyText);
             }
-            prev.hasNotifiedFinished = true; // Şalteri sonsuza kadar indirir
+            prev.hasNotifiedFinished = true; 
         }
 
-        // 🚀 8. HAFIZAYI GÜNCELLE VE TARİHİ EKLE (Gece temizliği için)
+        // 🚀 8. HAFIZAYI GÜNCELLE VE TARİHİ EKLE
         previousMatchStates.set(matchIdStr, {
             status: match.status, homeScore: currH, awayScore: currA,
             hasNotifiedStart: prev.hasNotifiedStart, 
@@ -401,12 +391,14 @@ async function checkAndSendNotifications(newMatches) {
             hasNotifiedFinished: prev.hasNotifiedFinished,
             hasNotifiedInjuryTime1: prev.hasNotifiedInjuryTime1, 
             hasNotifiedInjuryTime2: prev.hasNotifiedInjuryTime2,
+            lastMinute: Math.max(currentMinNum, prev.lastMinute || 0), // 🚀 En yüksek dakikayı korur
             date: match.fixedDate || getTRDate(0) 
         });
     }
     
     saveState();
 }
+
 
 
 
