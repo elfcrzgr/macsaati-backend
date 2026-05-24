@@ -286,18 +286,22 @@ async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
         
-        // 🚀 1. GÜNCELLEME: "hasNotifiedFinished" kilidi eklendi
+        // 🚀 1. TÜM ŞALTERLER (Spam koruması ve ilave süre kilitleri)
         const prev = previousMatchStates.get(matchIdStr) || { 
             status: null, homeScore: 0, awayScore: 0, 
-            hasNotifiedStart: false, hasNotifiedHT: false, hasNotifiedSH: false, hasNotifiedFinished: false
+            hasNotifiedStart: false, hasNotifiedHT: false, hasNotifiedSH: false, hasNotifiedFinished: false,
+            hasNotifiedInjuryTime1: false, hasNotifiedInjuryTime2: false
         };
         
         const currH = Number(match.homeScore) || 0;
         const currA = Number(match.awayScore) || 0;
         const liveMin = match.liveMinute || ""; 
+        const tObj = match.timeObj || {}; // API'den gelen zaman (uzatma) verisi
         
-        const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
+        // Sabit başlık ve ikonlar
         const appTitle = "Maç Saati"; 
+        const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
+        const substitutionBoardUrl = "https://img.icons8.com/fluency/96/scorecard.png"; 
 
         // 1. Maç Başladı
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
@@ -306,21 +310,37 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedStart = true;
         } 
         
-        // 2. İlk Yarı Bitti
+        // 2. İlk Yarı İlave Süre (Uzatma)
+        else if (match.status === 'inprogress' && tObj.injuryTime1 && !prev.hasNotifiedInjuryTime1) {
+            const titleText = `İlk yarı ilave süre: +${tObj.injuryTime1}'`;
+            const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
+            prev.hasNotifiedInjuryTime1 = true;
+        }
+
+        // 3. İlk Yarı Bitti
         else if (match.status === 'inprogress' && liveMin === "İY" && !prev.hasNotifiedHT) {
             const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
 
-        // 3. İkinci Yarı Başladı
+        // 4. İkinci Yarı Başladı
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
             const bodyText = `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", bodyText);
             prev.hasNotifiedSH = true;
         }
 
-        // 4. GOL DURUMU
+        // 5. İkinci Yarı İlave Süre (Uzatma)
+        else if (match.status === 'inprogress' && tObj.injuryTime2 && !prev.hasNotifiedInjuryTime2 && liveMin !== "İY") {
+            const titleText = `İkinci yarı ilave süre: +${tObj.injuryTime2}'`;
+            const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
+            prev.hasNotifiedInjuryTime2 = true;
+        }
+
+        // 6. GOL DURUMU VE GOL İPTALİ
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
             
@@ -332,6 +352,7 @@ async function checkAndSendNotifications(newMatches) {
                 const bodyText = `⚽ Gol - ${scoringTeamName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
             } else {
+                // Gol İptali detayı (Hangi takımın iptal oldu?)
                 const homeCancelled = currH < prev.homeScore;
                 const awayCancelled = currA < prev.awayScore;
                 const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
@@ -341,31 +362,31 @@ async function checkAndSendNotifications(newMatches) {
             }
         } 
         
-        // 5. Maç Bitti
-        // 🚀 2. GÜNCELLEME: "hasNotifiedFinished" kilidi kapalıysa içeri girer
+        // 7. MAÇ BİTTİ (Sadece 1 Kere Çalışır - Spam Korumalı)
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
-            
-            // Eğer maç başından beri bizdeyse ve yeni bittiyse bildirim at
             if (prev.status === 'inprogress') {
                 const bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 await sendPush(matchIdStr, appTitle, bodyText);
             }
-            
-            // Bildirim atsa da atmasa da kilidi kapat. Bir daha asla bu maç için bildirim gitmez!
-            prev.hasNotifiedFinished = true;
+            prev.hasNotifiedFinished = true; // Şalteri sonsuza kadar indirir
         }
 
-        // 🚀 3. GÜNCELLEME: "date" verisi eklendi. Böylece gece 12'den sonra dünün maçları RAM'den silinebilecek.
+        // 🚀 8. HAFIZAYI GÜNCELLE VE TARİHİ EKLE (Gece temizliği için)
         previousMatchStates.set(matchIdStr, {
             status: match.status, homeScore: currH, awayScore: currA,
-            hasNotifiedStart: prev.hasNotifiedStart, hasNotifiedHT: prev.hasNotifiedHT, 
-            hasNotifiedSH: prev.hasNotifiedSH, hasNotifiedFinished: prev.hasNotifiedFinished,
-            date: getTRDate(0) 
+            hasNotifiedStart: prev.hasNotifiedStart, 
+            hasNotifiedHT: prev.hasNotifiedHT, 
+            hasNotifiedSH: prev.hasNotifiedSH, 
+            hasNotifiedFinished: prev.hasNotifiedFinished,
+            hasNotifiedInjuryTime1: prev.hasNotifiedInjuryTime1, 
+            hasNotifiedInjuryTime2: prev.hasNotifiedInjuryTime2,
+            date: match.fixedDate || getTRDate(0) 
         });
     }
     
     saveState();
 }
+
 
 
 
@@ -498,7 +519,8 @@ allEvents.forEach(e => {
         tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
         homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
         awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
-        tournament: cleanTournamentName
+        tournament: cleanTournamentName,
+        timeObj: e.time
     });
 });
 const matches = Array.from(duplicateTracker.values()).sort((a, b) => a.timestamp - b.timestamp);
