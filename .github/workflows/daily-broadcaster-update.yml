@@ -2,7 +2,8 @@ name: 📺 Daily Broadcaster Update
 
 on:
   schedule:
-    - cron: '21 0 * * *'  # UTC 00:21 = TR 03:21 (gece sonrası)
+    - cron: '0 22 * * *'  # UTC 22:00 = TR 01:00 (Gece)
+    - cron: '0 9 * * *'   # UTC 09:00 = TR 12:00 (Öğlen)
   workflow_dispatch:
 
 jobs:
