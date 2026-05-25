@@ -338,8 +338,9 @@ async function checkAndSendNotifications(newMatches) {
 
         // 4. İkinci Yarı Başladı
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
-            const bodyText = `${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, "▶️ İkinci Yarı Başladı", bodyText);
+            const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            // DÜZELTME: "Maç Saati" yazması için başlık kısmına appTitle verildi.
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedSH = true;
         }
 
@@ -360,7 +361,29 @@ async function checkAndSendNotifications(newMatches) {
                 const scoringTeamName = homeScored ? match.homeTeam.name : match.awayTeam.name;
                 const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
                 
-                const bodyText = `⚽ Gol - ${scoringTeamName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                // 🚀 GOL ATAN OYUNCUYU ÇEKME
+                let scorerName = scoringTeamName; // Fallback: Veri çekilemezse takım adı yazmaya devam etsin
+                try {
+                    // Sadece gol olduğunda o maçın olay (incidents) verisine istek atıyoruz
+                    const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
+                    
+                    if (incidentsData && incidentsData.incidents) {
+                        // Sadece 'goal' olan olayları filtrele
+                        const goals = incidentsData.incidents.filter(inc => inc.incidentType === 'goal');
+                        if (goals.length > 0) {
+                            // En son atılan golü süreye göre sıralayarak buluyoruz
+                            const lastGoal = goals.sort((a, b) => (b.time + (b.addedTime || 0)) - (a.time + (a.addedTime || 0)))[0];
+                            if (lastGoal && lastGoal.player && lastGoal.player.name) {
+                                scorerName = lastGoal.player.name;
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.log(`⚠️ Gol atan oyuncu çekilemedi, takım adıyla devam ediliyor. Maç ID: ${match.id}`);
+                }
+                
+                // Oyuncu adı ve dakika ile birlikte bildirim metnini oluşturuyoruz
+                const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
             } else {
                 // 🚀 ANINDA GOL İPTALİ (Zaman Kalkanını geçtiği için bunun %100 gerçek iptal olduğunu biliyoruz)
@@ -371,7 +394,7 @@ async function checkAndSendNotifications(newMatches) {
                 const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             }
-        } 
+        }
         
         // 7. MAÇ BİTTİ (Spam Korumalı)
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
