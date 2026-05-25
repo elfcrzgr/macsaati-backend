@@ -77,25 +77,33 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     if (!externalBroadcasters[dateStr]) return fallback;
     const dayData = externalBroadcasters[dateStr];
     if (!dayData || !dayData.matches) return fallback;
-    // 2. Saat formatını garantiye al (Örn: "22:00" -> "22:00")
+    
+    // 2. Saat formatını garantiye al
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     
-    // 3. İsimleri küçük harfe çevir ve içindeki Türkçe/özel karakterleri riske atmamak için temizle
+    // 3. İsimleri küçük harfe çevir ve temizle
     const hName = (homeName || "").toLowerCase().trim();
     const aName = (awayName || "").toLowerCase().trim();
+    
     for (const m of dayData.matches) {
         if (m.spor && m.spor.toLowerCase() === sportCategory.toLowerCase()) {
             const mTime = (m.saat || "").replace('.', ':').trim();
             const mTitle = (m.mac || "").toLowerCase();
+            
             // 4. DAHA GÜÇLÜ KELİME EŞLEŞTİRME
-            // Karmaşık split filtreleri yerine, takımların ham isimlerinin (en az 4 karakterlik kısmının)
-            // JSON'daki maç başlığında geçip geçmediğine doğrudan bakalım.
             const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
             const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
-            // Alternatif olarak: Sofascore'dan gelen kelimelerden herhangi biri JSON'da var mı?
+            
             const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
             const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
-            if (mTime === cleanTime && (mTitle.includes(hCheck) || mTitle.includes(aCheck) || anyHomeWordMatch || anyAwayWordMatch)) {
+            
+            // Eşleşme durumlarını değişkenlere alıyoruz
+            const isNameMatch = mTitle.includes(hCheck) || mTitle.includes(aCheck) || anyHomeWordMatch || anyAwayWordMatch;
+            const isTimeMatch = (mTime === cleanTime);
+            const isTennis = (sportCategory.toLowerCase() === "tenis");
+
+            // 🚀 YENİ MANTIK: Eğer spor Tenis ise saat kontrolünü esnet, isimlerin uyuşması yeterli!
+            if ((isTimeMatch || isTennis) && isNameMatch) {
                 console.log(`   📺 [SPOREKRANI] -> ${homeName} vs ${awayName} | Kanal: ${m.yayin}`);
                 return m.yayin; 
             }
@@ -103,6 +111,11 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     }
     return fallback;
 }
+
+
+
+
+
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR
 // =========================================================================
