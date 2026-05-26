@@ -386,6 +386,7 @@ else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.away
     if (isGoal) {
         // 🚀 GOL ATAN OYUNCUYU ÇEKME (Aynen eski kodun)
         let scorerName = match.homeTeam.name;
+        
         try {
             const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
             if (incidentsData && incidentsData.incidents) {
@@ -398,6 +399,9 @@ else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.away
                 }
             }
         } catch (e) { }
+        
+        const homeScored = currH > prev.homeScore;
+        const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
         const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
         await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
 
