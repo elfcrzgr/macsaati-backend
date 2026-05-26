@@ -312,28 +312,33 @@ async function checkAndSendNotifications(newMatches) {
             await sendPush(matchIdStr, appTitle, bodyText);
             prev.hasNotifiedStart = true;
         } 
+                // 2. İlk Yarı İlave Süre (Uzatma) -> statusCode === 6
         else if (match.status === 'inprogress' && match.statusCode === 6 && tObj.injuryTime1 && !prev.hasNotifiedInjuryTime1) {
             const titleText = `İlk yarı ilave süre: +${tObj.injuryTime1}'`;
             const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
             prev.hasNotifiedInjuryTime1 = true;
         }
-        else if (match.status === 'inprogress' && liveMin === "İY" && !prev.hasNotifiedHT) {
+        // 3. İlk Yarı Bitti -> statusCode === 31 veya liveMin === "İY"
+        else if (match.status === 'inprogress' && (liveMin === "İY" || match.statusCode === 31) && !prev.hasNotifiedHT) {
             const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
-        else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && !prev.hasNotifiedSH) {
+        // 4. İkinci Yarı Başladı -> İlk yarı bittiyse ve artık 31 değilse
+        else if (match.status === 'inprogress' && prev.hasNotifiedHT && (liveMin !== "İY" && match.statusCode !== 31) && !prev.hasNotifiedSH) {
             const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedSH = true;
         }
+        // 5. İkinci Yarı İlave Süre (Uzatma) -> statusCode === 7
         else if (match.status === 'inprogress' && match.statusCode === 7 && tObj.injuryTime2 && !prev.hasNotifiedInjuryTime2 && liveMin !== "İY") {
             const titleText = `İkinci yarı ilave süre: +${tObj.injuryTime2}'`;
             const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
             prev.hasNotifiedInjuryTime2 = true;
         }
+
         else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
             const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
 
@@ -416,7 +421,7 @@ async function sendPush(id, title, body, imageUrl = null) {
 
         if (imageUrl) {
             payload.apns.fcm_options = { image: imageUrl };
-            payload.android = { notification: { image: imageUrl } };
+            // payload.android = { notification: { image: imageUrl } };
         }
 
         await admin.messaging().send(payload);
@@ -515,6 +520,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
             status: status,
+            statusCode: e.status?.code,
             liveMinute: isLive ? calculateLiveMinute(e) : "",
             fixedDate: dayTR,
             fixedTime: timeString,
