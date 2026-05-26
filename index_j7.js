@@ -17,7 +17,6 @@ const STATE_FILE = 'match_states.json';
 
 function logMatchesBySport(matchGroups) {
     for (const sportType of Object.keys(matchGroups)) {
-        // Sadece Sporekrani'nden yakalananlar:
         const sporekraniMatches = matchGroups[sportType].filter(
             matchInfo => matchInfo.source === "sporekrani"
         );
@@ -26,10 +25,16 @@ function logMatchesBySport(matchGroups) {
         if (sportType === "futbol" || sportType === "football") icon = "⚽";
         if (sportType === "basketbol" || sportType === "basketball") icon = "🏀";
         if (sportType === "tenis" || sportType === "tennis") icon = "🎾";
-        console.log(`\n--------- ${icon} ${sportType.toUpperCase()} SPOREKRANI ---------`);
+        console.log(`\n========= ${icon} ${sportType.toUpperCase()} SPOREKRANI =========`);
+        console.log("|    TAKIMLAR                 |  KANAL                  |");
+        console.log("----------------------------------------------------------");
         for (const matchInfo of sporekraniMatches) {
             const {home, away, kanal} = matchInfo;
-            console.log(`${icon} ${home} vs ${away} | Kanal: ${kanal} [SPOREKRANI]`);
+            // Takım adlarını tablomsu hizalı biçimde kesmek için padEnd kullan
+            const takımlar = `${home} vs ${away}`.padEnd(25);
+            const kanalOut = `${kanal}`.padEnd(22);
+            console.log(`| ${takımlar} | ${kanalOut} |`);
+            console.log("----------------------------------------------------------");
         }
     }
 }
