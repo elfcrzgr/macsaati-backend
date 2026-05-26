@@ -9,6 +9,9 @@ const admin = require('firebase-admin');
 // 1. HAFIZA İÇİN MAP
 const previousMatchStates = new Map();
 
+// Gol iptali şüphelerini geçici tutar
+const pendingGoalCancel = new Map();
+
 // 2. ADIMDA EKLEDİĞİMİZ YARDIMCI FONKSİYONLAR (Buraya yapıştır)
 const STATE_FILE = 'match_states.json';
 
@@ -365,49 +368,59 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedInjuryTime2 = true;
         }
 
-        // 6. GOL DURUMU VE GOL İPTALİ (Sıfır Gecikmeli Kesin Çözüm)
-        else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
-            const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
-            
-            if (isGoal) {
-                const homeScored = currH > prev.homeScore;
-                const scoringTeamName = homeScored ? match.homeTeam.name : match.awayTeam.name;
-                const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
-                
-                // 🚀 GOL ATAN OYUNCUYU ÇEKME
-                let scorerName = scoringTeamName; // Fallback: Veri çekilemezse takım adı yazmaya devam etsin
-                try {
-                    // Sadece gol olduğunda o maçın olay (incidents) verisine istek atıyoruz
-                    const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
-                    
-                    if (incidentsData && incidentsData.incidents) {
-                        // Sadece 'goal' olan olayları filtrele
-                        const goals = incidentsData.incidents.filter(inc => inc.incidentType === 'goal');
-                        if (goals.length > 0) {
-                            // En son atılan golü süreye göre sıralayarak buluyoruz
-                            const lastGoal = goals.sort((a, b) => (b.time + (b.addedTime || 0)) - (a.time + (a.addedTime || 0)))[0];
-                            if (lastGoal && lastGoal.player && lastGoal.player.name) {
-                                scorerName = lastGoal.player.name;
-                            }
-                        }
+        // 6. GOL DURUMU VE GOL İPTALİ (Korumalı)
+else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
+    const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
+
+    if (isGoal) {
+        // 🚀 GOL ATAN OYUNCUYU ÇEKME (Aynen eski kodun)
+        let scorerName = match.homeTeam.name;
+        try {
+            const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
+            if (incidentsData && incidentsData.incidents) {
+                const goals = incidentsData.incidents.filter(inc => inc.incidentType === 'goal');
+                if (goals.length > 0) {
+                    const lastGoal = goals.sort((a, b) => (b.time + (b.addedTime || 0)) - (a.time + (a.addedTime || 0)))[0];
+                    if (lastGoal && lastGoal.player && lastGoal.player.name) {
+                        scorerName = lastGoal.player.name;
                     }
-                } catch (e) {
-                    console.log(`⚠️ Gol atan oyuncu çekilemedi, takım adıyla devam ediliyor. Maç ID: ${match.id}`);
                 }
-                
-                // Oyuncu adı ve dakika ile birlikte bildirim metnini oluşturuyoruz
-                const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
-            } else {
-                // 🚀 ANINDA GOL İPTALİ (Zaman Kalkanını geçtiği için bunun %100 gerçek iptal olduğunu biliyoruz)
+            }
+        } catch (e) { }
+        const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+        await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
+
+        // Gol geldi, tüm pending iptali temizle!
+        pendingGoalCancel.delete(matchIdStr);
+
+    } else {
+        // PENDING GOL İPTALİ MANTIĞI BAŞLIYOR
+
+        const pending = pendingGoalCancel.get(matchIdStr);
+
+        if (!pending) {
+            // İlk defa skor düştü; şimdilik sadece pending'e yaz
+            pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA });
+            // Şimdi bildirim gönderme!
+        } else {
+            // İkinci defa yine skor düşükse kesinleşmiş iptal say!
+            if (pending.homeScore === currH && pending.awayScore === currA) {
+                // PENDING'i sil, bildirimi gönder!
+                pendingGoalCancel.delete(matchIdStr);
+
                 const homeCancelled = currH < prev.homeScore;
                 const awayCancelled = currA < prev.awayScore;
                 const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
-                
+
                 const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
                 await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            } else {
+                // Skor tekrar değişmiş/gol olmuş vs: pending'i sıfırla
+                pendingGoalCancel.delete(matchIdStr);
             }
         }
+    }
+}
         
         // 7. MAÇ BİTTİ (Spam Korumalı)
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
