@@ -387,6 +387,9 @@ else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.away
                 }
             }
         } catch (e) { }
+        
+        const homeScored = currH > prev.homeScore;
+        const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
         const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
         await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
 
