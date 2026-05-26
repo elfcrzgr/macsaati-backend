@@ -28,7 +28,16 @@ async function getBroadcasterData() {
     for (const sport of sports) {
         console.log(`\n🚀 ${sport.toUpperCase()} sayfası açılıyor...\n`);
         
-        const browser = await puppeteer.launch({ headless: true });
+       
+    
+    const browser = await puppeteer.launch({ 
+    headless: true,
+    args: [
+        '--no-sandbox', 
+        '--disable-setuid-sandbox'
+    ]
+});
+
         const page = await browser.newPage();
         
         try {
