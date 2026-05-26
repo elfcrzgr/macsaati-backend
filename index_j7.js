@@ -17,15 +17,19 @@ const STATE_FILE = 'match_states.json';
 
 function logMatchesBySport(matchGroups) {
     for (const sportType of Object.keys(matchGroups)) {
+        // Sadece Sporekrani'nden yakalananlar:
+        const sporekraniMatches = matchGroups[sportType].filter(
+            matchInfo => matchInfo.source === "sporekrani"
+        );
+        if (sporekraniMatches.length === 0) continue;
         let icon = "🏟️";
         if (sportType === "futbol" || sportType === "football") icon = "⚽";
         if (sportType === "basketbol" || sportType === "basketball") icon = "🏀";
         if (sportType === "tenis" || sportType === "tennis") icon = "🎾";
-        console.log(`\n--------- ${icon} ${sportType.toUpperCase()} ---------`);
-        for (const matchInfo of matchGroups[sportType]) {
-            const {home, away, kanal, source} = matchInfo;
-            const sourceTag = source === "sporekrani" ? "[SPOREKRANI]" : "[FALLBACK]";
-            console.log(`${icon} ${home} vs ${away} | Kanal: ${kanal} ${sourceTag}`);
+        console.log(`\n--------- ${icon} ${sportType.toUpperCase()} SPOREKRANI ---------`);
+        for (const matchInfo of sporekraniMatches) {
+            const {home, away, kanal} = matchInfo;
+            console.log(`${icon} ${home} vs ${away} | Kanal: ${kanal} [SPOREKRANI]`);
         }
     }
 }
