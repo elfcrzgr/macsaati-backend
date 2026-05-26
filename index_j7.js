@@ -519,8 +519,9 @@ async function sendPush(id, title, body, imageUrl = null) {
     }
 }
 
-async function updateFootball() {
-    console.log(`⚽ Futbol güncelleniyor...`);
+async function updateFootball(targetDates = [getTRDate(0)]) {
+console.log(`⚽ Futbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
+    
     const today = getTRDate(0);
     for (const [id, state] of previousMatchStates.entries()) {
         if (state.date && state.date !== today) {
@@ -537,7 +538,7 @@ async function updateFootball() {
     saveState();
 
     let allEvents = [];
-    const targetDates = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
+
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
@@ -653,10 +654,11 @@ const basketballLeagues = {
 const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 
 
-async function updateBasketball() {
-    console.log(`🏀 Basketbol güncelleniyor...`);
+async function updateBasketball(targetDates = [getTRDate(0)]) {
+console.log(`🏀 Basketbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
     let allEvents = [];
-    for (const date of [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)]) {
+    
+    for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => targetBaskIds.includes(e.tournament?.uniqueTournament?.id)));
@@ -677,7 +679,7 @@ async function updateBasketball() {
         const utName = e.tournament?.uniqueTournament?.name || "";
         const dateTR = new Date(e.startTimestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        if (dayStr !== trYesterday && dayStr !== trToday && dayStr !== trTomorrow && dayStr !== trNextDay) continue;
+        if (!targetDates.includes(dayStr)) continue;
         const isNBA = (utId === 3547 || utName.toUpperCase() === "NBA");
         const matchKey = `${dayStr}_${e.homeTeam.name}_${e.awayTeam.name}_${utId}`;
         if (duplicateTracker.has(matchKey)) continue;
@@ -745,10 +747,10 @@ if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return
 return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
-async function updateTennis() {
-    console.log(`🎾 Tenis güncelleniyor...`);
+async function updateTennis(targetDates = [getTRDate(0)]) {
+console.log(`🎾 Tenis güncelleniyor... (Taranan gün: ${targetDates.length})`);
     let rawEvents = [];
-    const targetDates = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
+
     const seenEventIds = new Set();
     // ---- LOG için hazırlık
     let tenisMatchesLog = [];
@@ -959,56 +961,111 @@ if (!response) return;
 }
 }
 // =========================================================================
-// 🔄 ANA DÖNGÜ
+// 🔄 ANA DÖNGÜ (00:10 GECİKMELİ 4 PERİYOT V3)
 // =========================================================================
 async function main() {
-    
     loadState(); 
-console.log("============================================================");
-console.log("🟢 J7 CANLI SUNUCU BAŞLADI (FIREBASE + AKILLI ZAMANLAYICI)");
-console.log("============================================================");
-let iteration = 1;
-let footballStatus = { hasLiveMatch: false, nextMatchTimestamp: null };
-let timeSinceLastFullUpdate = FULL_UPDATE_INTERVAL_MS; 
-while (true) {
-    try {
-        console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
-        
-        loadExternalBroadcasters();
-        const now = Date.now();
-        const isMatchTime = footballStatus.nextMatchTimestamp && (now >= (footballStatus.nextMatchTimestamp - 60000));
-        
-        if (timeSinceLastFullUpdate >= FULL_UPDATE_INTERVAL_MS) {
-            console.log("🔄 20 Dakikalık Tam Güncelleme Döngüsü Çalışıyor...");
-            footballStatus = await updateFootball(); 
-            await updateBasketball();
-            await updateTennis();
-            await updateF1();
-            timeSinceLastFullUpdate = 0; 
-        } else if (footballStatus.hasLiveMatch || isMatchTime) { 
-            if (isMatchTime && !footballStatus.hasLiveMatch) {
-                console.log("⏰ Yeni maç saati geldi! Sadece futbol 1 dakikalık döngüde güncelleniyor...");
-            } else {
-                console.log("⚽ Canlı maç var! Sadece futbol 1 dakikalık döngüde güncelleniyor...");
-            }
-            footballStatus = await updateFootball(); 
-        } else {
-            const minutesLeft = Math.round((FULL_UPDATE_INTERVAL_MS - timeSinceLastFullUpdate) / 60000);
-            if (footballStatus.nextMatchTimestamp && (footballStatus.nextMatchTimestamp - now) < (FULL_UPDATE_INTERVAL_MS - timeSinceLastFullUpdate)) {
-                const matchMins = Math.round((footballStatus.nextMatchTimestamp - now) / 60000);
-                console.log(`💤 Canlı maç yok. Tam güncellemeye ${minutesLeft} dk, ilk maça ${matchMins} dk kaldı.`);
-            } else {
-                console.log(`💤 Canlı maç yok. Tam güncellemeye yaklaşık ${minutesLeft} dakika kaldı.`);
-            }
-        }
-    } catch (e) { 
-        console.error("🚨 Hata:", e.message); 
-    }
+    console.log("============================================================");
+    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (00:10 GECİKMELİ ZAMANLAYICI)");
+    console.log("============================================================");
     
-    console.log(`⏳ ${MINUTE_MS / 1000} saniye bekleniyor...\n`);
-    await new Promise(r => setTimeout(r, MINUTE_MS));
-    timeSinceLastFullUpdate += MINUTE_MS;
-    iteration++;
-}
+    let iteration = 1;
+    let footballStatus = { hasLiveMatch: false, nextMatchTimestamp: null };
+    
+    const TEN_MIN_MS = 10 * 60000;     // 10 Dakika
+    const MINUTE_MS = 60000;           // 1 Dakika
+    
+    let lastTenMinUpdate = 0;
+    let lastExecutedPeriod = -1; // Çalışan son periyodu hafızada tutar ki tekrar çalışmasın
+
+    while (true) {
+        try {
+            console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
+            loadExternalBroadcasters();
+            
+            const now = Date.now();
+            const isMatchTime = footballStatus.nextMatchTimestamp && (now >= (footballStatus.nextMatchTimestamp - 60000));
+            
+            // Türkiye saati ile saat ve dakikayı al
+            const trDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+            const trH = trDate.getHours();
+            const trM = trDate.getMinutes();
+
+            // 🌟 YENİ MANTIK: Günü 4 periyoda bölüyoruz ve Gece 00:10'da tetikliyoruz
+            let currentPeriod = -1;
+            let periodName = "";
+            
+            if (trH === 0 && trM < 10) {
+                // Saat tam 00:00 ile 00:09 arasındayken hala dünkü son dilimdeyiz. Bekliyoruz.
+                currentPeriod = 3; 
+            } else if (trH >= 0 && trH < 6) {
+                currentPeriod = 0; periodName = "00:10";
+            } else if (trH >= 6 && trH < 12) {
+                currentPeriod = 1; periodName = "06:00";
+            } else if (trH >= 12 && trH < 18) {
+                currentPeriod = 2; periodName = "12:00";
+            } else {
+                currentPeriod = 3; periodName = "18:00";
+            }
+
+            // ---------------------------------------------------------
+            // 1. DURUM: GÜNDE 4 DEFA TAM GÜNCELLEME (00:10, 06:00, 12:00, 18:00)
+            // ---------------------------------------------------------
+            if (lastExecutedPeriod !== currentPeriod && currentPeriod !== -1) {
+                // Eğer sunucu ilk kez çalışıyorsa lastExecutedPeriod -1'dir, anında çalışır.
+                // Sonraki periyot geçişlerinde sadece bir kez çalışır.
+                console.log(`🔄 [PERİYODİK GÜNCELLEME - ${periodName} DİLİMİ] 4 Günlük Veriler Çekiliyor...`);
+                const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
+                
+                footballStatus = await updateFootball(days4); 
+                await updateBasketball(days4);
+                await updateTennis(days4);
+                await updateF1(); 
+                
+                lastExecutedPeriod = currentPeriod; // Bu periyot çalıştı, işaretle
+                lastTenMinUpdate = now;             // 10 dakikalık sayacı sıfırla ki üst üste binmesin
+            } 
+            // ---------------------------------------------------------
+            // 2. DURUM: 10 DAKİKALIK GÜNCELLEME (SADECE BUGÜN - TÜM SPORLAR)
+            // ---------------------------------------------------------
+            else if (now - lastTenMinUpdate >= TEN_MIN_MS) {
+                console.log("⏱️ [10 DAKİKALIK GÜNCELLEME] Sadece Bugünün Verileri Çekiliyor...");
+                const days1 = [getTRDate(0)];
+                
+                footballStatus = await updateFootball(days1);
+                await updateBasketball(days1);
+                await updateTennis(days1);
+                await updateF1(); 
+                
+                lastTenMinUpdate = now;
+            }
+            // ---------------------------------------------------------
+            // 3. DURUM: 1 DAKİKALIK CANLI FUTBOL GÜNCELLEMESİ (SADECE BUGÜN)
+            // ---------------------------------------------------------
+            else if (footballStatus.hasLiveMatch || isMatchTime) {
+                if (isMatchTime && !footballStatus.hasLiveMatch) {
+                    console.log("⏰ [HIZLI DÖNGÜ] Yeni maç saati geldi! Sadece Futbol (Bugün) güncelleniyor...");
+                } else {
+                    console.log("⚽ [HIZLI DÖNGÜ] Canlı maç var! Sadece Futbol (Bugün) güncelleniyor...");
+                }
+                const days1 = [getTRDate(0)];
+                footballStatus = await updateFootball(days1);
+            } 
+            // ---------------------------------------------------------
+            // 4. DURUM: BEKLEME (Hiçbir koşul sağlanmadıysa)
+            // ---------------------------------------------------------
+            else {
+                const next10Min = Math.ceil((TEN_MIN_MS - (now - lastTenMinUpdate)) / 60000);
+                console.log(`💤 İşlem yok. Sonraki "Bugün" taramasına yaklaşık ${next10Min} dk kaldı.`);
+            }
+            
+        } catch (e) { 
+            console.error("🚨 Hata:", e.message); 
+        }
+        
+        console.log(`⏳ ${MINUTE_MS / 1000} saniye bekleniyor...\n`);
+        await new Promise(r => setTimeout(r, MINUTE_MS));
+        iteration++;
+    }
 }
 main();
