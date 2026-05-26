@@ -17,7 +17,6 @@ const STATE_FILE = 'match_states.json';
 
 function logMatchesBySport(matchGroups) {
     for (const sportType of Object.keys(matchGroups)) {
-        // Sadece Sporekrani'nden yakalananlar:
         const sporekraniMatches = matchGroups[sportType].filter(
             matchInfo => matchInfo.source === "sporekrani"
         );
@@ -30,6 +29,7 @@ function logMatchesBySport(matchGroups) {
         for (const matchInfo of sporekraniMatches) {
             const {home, away, kanal} = matchInfo;
             console.log(`${icon} ${home} vs ${away} | Kanal: ${kanal} [SPOREKRANI]`);
+            console.log('---------------------------------------------'); // <-- Çizgi!
         }
     }
 }
