@@ -111,32 +111,53 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const hName = (homeName || "").toLowerCase().trim();
     const aName = (awayName || "").toLowerCase().trim();
+    
+    // Hem Türkçe hem İngilizce isimlendirmeye karşı önlem
+    const isTennis = sportCategory.toLowerCase() === "tenis" || sportCategory.toLowerCase() === "tennis";
 
     for (const m of dayData.matches) {
-        if (m.spor && m.spor.toLowerCase() === sportCategory.toLowerCase()) {
+        const mSpor = (m.spor || "").toLowerCase();
+        
+        // Spor dalı tutuyor mu? (Sporekranı bazen 'Tenis' bazen 'Tennis' girebilir)
+        if (mSpor === sportCategory.toLowerCase() || (isTennis && mSpor === "tennis")) {
             const mTime = (m.saat || "").replace('.', ':').trim();
             const mTitle = (m.mac || "").toLowerCase();
 
-            const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
-            const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
+            if (isTennis) {
+                // 🎾 TENİS İÇİN ÖZEL MANTIK (SAAT KONTROLÜ YOK)
+                // İsimleri boşluk ve noktalardan böl (Ör: "alcaraz c." -> ["alcaraz", "c"])
+                // Sadece 3 harf ve üzeri kelimeleri (genelde soyisim) alıp başlıkta arıyoruz.
+                const hWords = hName.split(/[\s,.-]+/).filter(w => w.length >= 3);
+                const aWords = aName.split(/[\s,.-]+/).filter(w => w.length >= 3);
 
-            const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
-            const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+                const homeMatch = hWords.some(word => mTitle.includes(word));
+                const awayMatch = aWords.some(word => mTitle.includes(word));
 
-            const isNameMatch = mTitle.includes(hCheck) || mTitle.includes(aCheck) || anyHomeWordMatch || anyAwayWordMatch;
-            const isTimeMatch = (mTime === cleanTime);
-            const isTennis = (sportCategory.toLowerCase() === "tenis");
+                // Teniste oyunculardan/takımlardan birinin soyadının başlıkta geçmesi eşleşme için yeterli
+                if (homeMatch || awayMatch) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                }
+            } else {
+                // ⚽🏀 DİĞER SPORLAR İÇİN MANTIK (SAAT ZORUNLU)
+                const isTimeMatch = (mTime === cleanTime);
+                if (!isTimeMatch) continue; // Saat tutmuyorsa isme hiç bakma, atla.
 
-            if ((isTimeMatch || isTennis) && isNameMatch) {
-                // LOGDA "sporekrani" olarak döndür
-                return { kanal: m.yayin, source: "sporekrani" };
+                const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
+                const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
+
+                const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+                const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+
+                const isNameMatch = mTitle.includes(hCheck) || mTitle.includes(aCheck) || anyHomeWordMatch || anyAwayWordMatch;
+
+                if (isNameMatch) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                }
             }
         }
     }
     return { kanal: fallback, source: "fallback" };
 }
-
-
 
 
 // =========================================================================
