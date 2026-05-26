@@ -2,8 +2,10 @@ name: 📺 Daily Broadcaster Update
 
 on:
   schedule:
-    - cron: '0 22 * * *'  # UTC 22:00 = TR 01:00 (Gece)
-    - cron: '0 9 * * *'   # UTC 09:00 = TR 12:00 (Öğlen)
+    - cron: '0 22 * * *'  # UTC 22:00 = TR 01:00 (Gece seansı ve ilk fikstür)
+    - cron: '0 6 * * *'   # UTC 06:00 = TR 09:00 (Kritik Sabah Güncellemesi - Tenis Başlamadan Önce Fikstürü Yakalar)
+    - cron: '0 9 * * *'   # UTC 09:00 = TR 12:00 (Öğlen Güncellemesi)
+    - cron: '0 12 * * *'  # UTC 12:00 = TR 15:00 (Günün Geri Kalanı ve Sarkan Tenis Maçları)
   workflow_dispatch:
 
 jobs:
@@ -17,16 +19,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+          cache: 'npm' # Hız optimizasyonu için cache eklendi
       
       - name: Install dependencies
         run: npm install puppeteer
       
-      - name: Install Chrome for Puppeteer
-        run: sudo apt-get update && sudo apt-get install -y chromium-browser
-      
+      # 🚀 SÜRE OPTİMİZASYONU: Puppeteer zaten kendi güncel tarayıcısını kurduğu için 
+      # harici apt-get chromium yüklemesini kaldırdık. yayinci.js içinde env silinebilir 
+      # ya da sorunsuz çalışması için varsayılan Puppeteer ayarları kullanılabilir.
       - name: Run yayinci.js
-        env:
-          PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
         run: node yayinci.js
       
       - name: Commit and Push
@@ -34,14 +35,10 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Actions"
           
-          # 🚀 DÜZELTME 1: Sadece yayıncı dosyasını değil, masadaki her şeyi pakete dahil et
           git add .
           
-          # 🚀 DÜZELTME 2: Sahneye alınmış bir değişiklik var mı kontrol et
           if ! git diff --staged --quiet; then
             git commit -m "🔄 Auto: Yayıncı bilgileri güncellendi $(date '+%Y-%m-%d %H:%M:%S')"
-            
-            # Artık ortalık tertemiz olduğu için rebase ASLA hata vermeyecek
             git pull origin main --rebase
             git push
           else
