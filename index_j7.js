@@ -665,7 +665,6 @@ const checkIsEliteMatch = (tournamentName) => {
     if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
-
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
@@ -735,11 +734,21 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
             }
             
-            const statusType = e.status?.type;
+            const statusType = e.status?.type || "";
+            const statusDesc = e.status?.description?.toLowerCase() || "";
+            const isWalkover = statusType === 'walkover' || statusDesc === 'walkover';
+            const isRetired = statusType === 'retired' || statusDesc === 'retired';
+            const isInProgress = statusType === 'inprogress';
+            const isFinished = statusType === 'finished';
+            
+            const hasScore = isInProgress || isFinished || isRetired;
+            
             let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
-            const hasScore = statusType === 'inprogress' || statusType === 'finished';
-            if (statusType === 'inprogress') timeString += "\nCANLI";
-            else if (statusType === 'finished') timeString += "\nMS";
+            if (isInProgress) timeString += "\nCANLI";
+            else if (isFinished) timeString += "\nMS";
+            else if (isWalkover) timeString += "\nHükmen";
+            else if (isRetired) timeString += "\nÇekildi";
+            
             let sets = [];
             if (hasScore && e.homeScore && e.awayScore) {
                 for (let i = 1; i <= 5; i++) {
@@ -748,6 +757,15 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                     if (hScore !== undefined && aScore !== undefined) sets.push(`${hScore}-${aScore}`);
                 }
             }
+
+            let finalHomeScore = !hasScore ? "-" : String(e.homeScore?.display ?? "0");
+            let finalAwayScore = !hasScore ? "-" : String(e.awayScore?.display ?? "0");
+
+            if (isWalkover) {
+                if (e.winnerCode === 1) { finalHomeScore = "W.O."; finalAwayScore = "-"; }
+                else if (e.winnerCode === 2) { finalHomeScore = "-"; finalAwayScore = "W.O."; }
+            }
+
             const fallbackBroadcaster = "Eurosport / S Sport Plus / HBO Max";
             const result = getBroadcasterWithFallback("tenis", fixedDate, timeString, hName, aName, fallbackBroadcaster);
             const finalBroadcaster = result.kanal;
@@ -766,8 +784,8 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 homeTeam: { name: hName, ranking: hRank, logos: homeLogos },
                 awayTeam: { name: aName, ranking: aRank, logos: awayLogos },
                 tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
-                homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"),
-                awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"),
+                homeScore: finalHomeScore,
+                awayScore: finalAwayScore,
                 setScores: sets,
                 tournament: tourName
             });
@@ -781,6 +799,8 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
     logMatchesBySport({ tenis: tenisMatchesLog });
     console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi.`);
 }
+
+
 
 // =========================================================================
 // 🏎️ FORMULA 1 GÜNCELLEME
