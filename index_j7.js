@@ -762,10 +762,18 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             let finalAwayScore = !hasScore ? "-" : String(e.awayScore?.display ?? "0");
 
             if (isWalkover) {
-                if (e.winnerCode === 1) { finalHomeScore = "W.O."; finalAwayScore = "-"; }
-                else if (e.winnerCode === 2) { finalHomeScore = "-"; finalAwayScore = "W.O."; }
+                // Skoru sadece W.O. olarak ayarla, yanına tire koyma
+                if (e.winnerCode === 1) { 
+                    finalHomeScore = "W.O."; 
+                    finalAwayScore = " "; // Boşluk bırakarak tireden kurtulun
+                } else if (e.winnerCode === 2) { 
+                    finalHomeScore = " "; 
+                    finalAwayScore = "W.O."; 
+                } else {
+                    finalHomeScore = "W.O.";
+                    finalAwayScore = "W.O.";
+                }
             }
-
             const fallbackBroadcaster = "Eurosport / S Sport Plus / HBO Max";
             const result = getBroadcasterWithFallback("tenis", fixedDate, timeString, hName, aName, fallbackBroadcaster);
             const finalBroadcaster = result.kanal;
