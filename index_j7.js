@@ -764,11 +764,11 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             if (isWalkover) {
                 // Skoru sadece W.O. olarak ayarla, yanına tire koyma
                 if (e.winnerCode === 1) { 
-                    finalHomeScore = "W.O."; 
+                    finalHomeScore = "Hükmen Galip"; 
                     finalAwayScore = " "; // Boşluk bırakarak tireden kurtulun
                 } else if (e.winnerCode === 2) { 
                     finalHomeScore = " "; 
-                    finalAwayScore = "W.O."; 
+                    finalAwayScore = "Hükmen Galip"; 
                 } else {
                     finalHomeScore = "W.O.";
                     finalAwayScore = "W.O.";
