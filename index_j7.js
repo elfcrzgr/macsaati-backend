@@ -151,21 +151,17 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR
 // =========================================================================
+// =========================================================================
+// 🛠️ YARDIMCI FONKSİYONLAR
+// =========================================================================
 async function uploadToFirebase(sportName, data) {
     try {
-        const url = `${FIREBASE_BASE_URL}matches_${sportName}.json`;
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
-            console.log(`✅ [FIREBASE] ${sportName.toUpperCase()} başarıyla güncellendi!`);
-        } else {
-            console.error(`⚠️ [FIREBASE] Hata: ${response.statusText}`);
-        }
+        const db = admin.database();
+        const ref = db.ref(`matches_${sportName}`);
+        await ref.set(data);
+        console.log(`✅ [FIREBASE] ${sportName.toUpperCase()} başarıyla güncellendi!`);
     } catch (error) {
-        console.error(`⚠️ [FIREBASE] Bağlantı Hatası:`, error.message);
+        console.error(`❌ [FIREBASE] ${sportName} Hata:`, error.message);
     }
 }
 
