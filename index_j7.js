@@ -11,10 +11,37 @@ const admin = require('firebase-admin');
 const previousMatchStates = new Map();
 const pendingGoalCancel = new Map();
 
-// 👇 Firebase'den silinmemesi için tüm günleri tutan ana önbellekler
 const globalFootballCache = new Map();
 const globalBasketballCache = new Map();
 const globalTennisCache = new Map();
+
+// 🆕 HER SPORT IÇIN BAĞIMSIZ GÜNCELLEME DURUMU
+const sportUpdateStatus = {
+    football: {
+        lastFullUpdate: 0,
+        lastQuickUpdate: 0,
+        nextMatchTime: null,
+        hasLiveMatch: false,
+        isInQuickMode: false
+    },
+    basketball: {
+        lastFullUpdate: 0,
+        lastQuickUpdate: 0,
+        nextMatchTime: null,
+        hasLiveMatch: false,
+        isInQuickMode: false
+    },
+    tennis: {
+        lastFullUpdate: 0,
+        lastQuickUpdate: 0,
+        nextMatchTime: null,
+        hasLiveMatch: false,
+        isInQuickMode: false
+    },
+    f1: {
+        lastFullUpdate: 0
+    }
+};
 
 const STATE_FILE = 'match_states.json';
 
@@ -312,26 +339,22 @@ async function checkAndSendNotifications(newMatches) {
             await sendPush(matchIdStr, appTitle, bodyText);
             prev.hasNotifiedStart = true;
         } 
-                // 2. İlk Yarı İlave Süre (Uzatma) -> statusCode === 6
         else if (match.status === 'inprogress' && match.statusCode === 6 && tObj.injuryTime1 && !prev.hasNotifiedInjuryTime1) {
             const titleText = `İlk yarı ilave süre: +${tObj.injuryTime1}'`;
             const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
             prev.hasNotifiedInjuryTime1 = true;
         }
-        // 3. İlk Yarı Bitti -> statusCode === 31 veya liveMin === "İY"
         else if (match.status === 'inprogress' && (liveMin === "İY" || match.statusCode === 31) && !prev.hasNotifiedHT) {
             const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
-        // 4. İkinci Yarı Başladı -> İlk yarı bittiyse ve artık 31 değilse
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && (liveMin !== "İY" && match.statusCode !== 31) && !prev.hasNotifiedSH) {
             const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedSH = true;
         }
-        // 5. İkinci Yarı İlave Süre (Uzatma) -> statusCode === 7
         else if (match.status === 'inprogress' && match.statusCode === 7 && tObj.injuryTime2 && !prev.hasNotifiedInjuryTime2 && liveMin !== "İY") {
             const titleText = `İkinci yarı ilave süre: +${tObj.injuryTime2}'`;
             const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
@@ -421,7 +444,6 @@ async function sendPush(id, title, body, imageUrl = null) {
 
         if (imageUrl) {
             payload.apns.fcm_options = { image: imageUrl };
-            // payload.android = { notification: { image: imageUrl } };
         }
 
         await admin.messaging().send(payload);
@@ -430,6 +452,34 @@ async function sendPush(id, title, body, imageUrl = null) {
     } catch (e) { 
         console.error("❌ Bildirim Hatası:", e.message); 
     }
+}
+
+// =========================================================================
+// 🆕 SONRAKI MAÇI BULMA FONKSIYONLARI
+// =========================================================================
+function findNextMatchTime(cache, now = Date.now()) {
+    let nextTime = null;
+    
+    for (const match of cache.values()) {
+        // Sadece geleceği ve henüz başlamamış maçlar
+        if (match.timestamp > now && (match.status === 'notstarted' || match.status === 'delayed')) {
+            if (!nextTime || match.timestamp < nextTime) {
+                nextTime = match.timestamp;
+            }
+        }
+    }
+    
+    return nextTime;
+}
+
+function hasTodayMatches(cache) {
+    const today = getTRDate(0);
+    for (const match of cache.values()) {
+        if (match.fixedDate === today) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // =========================================================================
@@ -443,17 +493,14 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         if (state.date && state.date !== today) {
             if (state.status !== 'inprogress') {
                 previousMatchStates.delete(id);
-                console.log(`🧹 [HAFIZA] Eski maç silindi: ${id}`);
             } else {
                 state.date = today;
                 previousMatchStates.set(id, state);
-                console.log(`🛡️ [HAFIZA] Canlı maç tarihi bugüne güncellendi: ${id}`);
             }
         }
     }
     saveState();
 
-    // 🌟 SADECE ÇEKİLEN GÜNLERİN ESKİ VERİSİNİ CACHE'DEN TEMİZLE
     for (const [id, match] of globalFootballCache.entries()) {
         if (targetDates.includes(match.fixedDate)) {
             globalFootballCache.delete(id);
@@ -473,11 +520,9 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}`);
         if (detailData?.event?.tournament?.id) {
             match.tournament.id = detailData.event.tournament.id;
-            console.log(`🟢 TFF 2. Lig: ${match.homeTeam.name} vs ${match.awayTeam.name} | Grup ID: ${match.tournament.id}`);
         }
     }
     
-    const leagueCount = {};
     let futbolMatchesLog = [];
     
     allEvents.forEach(e => {
@@ -490,7 +535,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         const status = e.status.type;
         const isLive = status === 'inprogress';
         const leagueId = e.tournament?.uniqueTournament?.id;
-        leagueCount[leagueId] = (leagueCount[leagueId] || 0) + 1;
         const hName = e.homeTeam.name || "";
         const aName = e.awayTeam.name || "";
         const tName = e.tournament?.name || "";
@@ -515,7 +559,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         
         futbolMatchesLog.push({ home: translateTeam(hName), away: translateTeam(aName), kanal: finalBroadcaster, source: result.source });
         
-        // 🌟 YENİ VERİLERİ ANA CACHE'E YAZ
         globalFootballCache.set(e.id, {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
@@ -536,20 +579,18 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         });
     });
 
-    // 🌟 FIREBASE'E HER ZAMAN CACHE'İN TAMAMINI (4 GÜNLÜK LİSTEYİ) GÖNDER
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
 
     await checkAndSendNotifications(matches);
     await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
     
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
-    const upcomingMatches = matches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
-    const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
+    const nextMatchTimestamp = findNextMatchTime(globalFootballCache);
     
     logMatchesBySport({ futbol: futbolMatchesLog });
     console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
     
-    return { hasLiveMatch, nextMatchTimestamp };
+    return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
 }
 
 // =========================================================================
@@ -573,7 +614,6 @@ const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 async function updateBasketball(targetDates = [getTRDate(0)]) {
     console.log(`🏀 Basketbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
-    // 🌟 SADECE ÇEKİLEN GÜNLERİN ESKİ VERİSİNİ CACHE'DEN TEMİZLE
     for (const [id, match] of globalBasketballCache.entries()) {
         if (targetDates.includes(match.fixedDate)) {
             globalBasketballCache.delete(id);
@@ -618,7 +658,6 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
         
         basketbolMatchesLog.push({ home: e.homeTeam.name, away: e.awayTeam.name, kanal: finalBroadcaster, source: result.source });
         
-        // 🌟 YENİ VERİLERİ ANA CACHE'E YAZ
         globalBasketballCache.set(e.id, {
             id: e.id,
             isElite: ELITE_LEAGUE_IDS.includes(utId),
@@ -636,12 +675,14 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
         });
     }
     
-    // 🌟 FIREBASE'E HER ZAMAN CACHE'İN TAMAMINI (4 GÜNLÜK LİSTEYİ) GÖNDER
     const finalMatches = Array.from(globalBasketballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase("basketball", { success: true, matches: finalMatches });
     
     logMatchesBySport({ basketbol: basketbolMatchesLog });
+    const nextMatchTimestamp = findNextMatchTime(globalBasketballCache);
     console.log(`  ✅ Toplam ${finalMatches.length} basketbol maçı kaydedildi.`);
+    
+    return { nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
 
 // =========================================================================
@@ -665,10 +706,10 @@ const checkIsEliteMatch = (tournamentName) => {
     if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
+
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
-    // 🌟 SADECE ÇEKİLEN GÜNLERİN ESKİ VERİSİNİ CACHE'DEN TEMİZLE
     for (const [id, match] of globalTennisCache.entries()) {
         if (targetDates.includes(match.fixedDate)) {
             globalTennisCache.delete(id);
@@ -762,10 +803,9 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             let finalAwayScore = !hasScore ? "-" : String(e.awayScore?.display ?? "0");
 
             if (isWalkover) {
-                // Skoru sadece W.O. olarak ayarla, yanına tire koyma
                 if (e.winnerCode === 1) { 
                     finalHomeScore = "W.O"; 
-                    finalAwayScore = " "; // Boşluk bırakarak tireden kurtulun
+                    finalAwayScore = " ";
                 } else if (e.winnerCode === 2) { 
                     finalHomeScore = " "; 
                     finalAwayScore = "W.O"; 
@@ -780,7 +820,6 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             
             tenisMatchesLog.push({ home: hName, away: aName, kanal: finalBroadcaster, source: result.source });
             
-            // 🌟 YENİ VERİLERİ ANA CACHE'E YAZ
             globalTennisCache.set(e.id, {
                 id: e.id,
                 isElite: checkIsEliteMatch(tourName),
@@ -800,15 +839,15 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
         } catch (error) { continue; }
     }
     
-    // 🌟 FIREBASE'E HER ZAMAN CACHE'İN TAMAMINI (4 GÜNLÜK LİSTEYİ) GÖNDER
     const finalMatches = Array.from(globalTennisCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase("tennis", { success: true, matches: finalMatches });
     
     logMatchesBySport({ tenis: tenisMatchesLog });
+    const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
     console.log(`  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi.`);
+    
+    return { nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
-
-
 
 // =========================================================================
 // 🏎️ FORMULA 1 GÜNCELLEME
@@ -896,101 +935,141 @@ async function updateF1() {
         
         finalEvents.sort((a, b) => a.timestamp - b.timestamp);
         await uploadToFirebase("f1", { success: true, lastUpdated: new Date().toISOString(), totalSessions: finalEvents.length, events: finalEvents });
-        console.log(`  ✅ F1: Değişken hatası giderildi ve uygulama hiyerarşisi sağlandı.`);
+        console.log(`  ✅ F1 güncellemesi tamamlandı.`);
     } catch (error) { 
         console.error(`   ⚠️ F1 hatası: ${error.message}`); 
     }
 }
 
 // =========================================================================
-// 🔄 ANA DÖNGÜ (00:10 GECİKMELİ 4 PERİYOT V3)
+// 🆕 ANA DÖNGÜ (AKILLI SPORT BAZLI GÜNCELLEME)
 // =========================================================================
 async function main() {
     loadState(); 
     console.log("============================================================");
-    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (GLOBAL CACHE V4)");
+    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (SMART SPORT-SPECIFIC V5)");
     console.log("============================================================");
     
     let iteration = 1;
-    let footballStatus = { hasLiveMatch: false, nextMatchTimestamp: null };
-    
     const TEN_MIN_MS = 10 * 60000;     
-    const MINUTE_MS = 60000;           
-    
-    let lastTenMinUpdate = 0;
-    let lastExecutedPeriod = -1; 
+    const ONE_MIN_MS = 60000;           
+    const PERIODIC_INTERVAL = 6 * 60 * 60 * 1000; // 6 saat
+
+    let lastPeriodicUpdate = 0;
 
     while (true) {
         try {
+            const now = Date.now();
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
             loadExternalBroadcasters();
             
-            const now = Date.now();
-            const isMatchTime = footballStatus.nextMatchTimestamp && (now >= (footballStatus.nextMatchTimestamp - 60000));
-            
-            const trDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
-            const trH = trDate.getHours();
-            const trM = trDate.getMinutes();
-
-            let currentPeriod = -1;
-            let periodName = "";
-            
-            if (trH === 0 && trM < 10) {
-                currentPeriod = 3; 
-            } else if (trH >= 0 && trH < 6) {
-                currentPeriod = 0; periodName = "00:10";
-            } else if (trH >= 6 && trH < 12) {
-                currentPeriod = 1; periodName = "06:00";
-            } else if (trH >= 12 && trH < 18) {
-                currentPeriod = 2; periodName = "12:00";
-            } else {
-                currentPeriod = 3; periodName = "18:00";
-            }
-
-            if (lastExecutedPeriod !== currentPeriod && currentPeriod !== -1) {
-                console.log(`🔄 [PERİYODİK GÜNCELLEME - ${periodName} DİLİMİ] 4 Günlük Veriler Çekiliyor...`);
+            // =========================================================================
+            // 1️⃣ 6 SAATLİK PERİYODİK GÜNCELLEME (4 GÜN VERİ)
+            // =========================================================================
+            if (now - lastPeriodicUpdate >= PERIODIC_INTERVAL) {
+                console.log("🔄 [PERİYODİK GÜNCELLEME] 6 Saatlik İçerik Taraması (4 Günlük Veri)");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
                 
-                footballStatus = await updateFootball(days4); 
-                await updateBasketball(days4);
-                await updateTennis(days4);
-                await updateF1(); 
+                const footballResult = await updateFootball(days4);
+                const basketballResult = await updateBasketball(days4);
+                const tennisResult = await updateTennis(days4);
+                await updateF1();
                 
-                lastExecutedPeriod = currentPeriod; 
-                lastTenMinUpdate = now;             
-            } 
-            else if (now - lastTenMinUpdate >= TEN_MIN_MS) {
-                console.log("⏱️ [10 DAKİKALIK GÜNCELLEME] Sadece Bugünün Verileri Çekiliyor...");
-                const days1 = [getTRDate(0)];
+                // Sonraki maç zamanlarını güncelle
+                sportUpdateStatus.football.nextMatchTime = footballResult.nextMatchTimestamp;
+                sportUpdateStatus.basketball.nextMatchTime = basketballResult.nextMatchTimestamp;
+                sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
                 
-                footballStatus = await updateFootball(days1);
-                await updateBasketball(days1);
-                await updateTennis(days1);
-                await updateF1(); 
+                sportUpdateStatus.football.hasLiveMatch = footballResult.hasLiveMatch;
                 
-                lastTenMinUpdate = now;
+                lastPeriodicUpdate = now;
             }
-            else if (footballStatus.hasLiveMatch || isMatchTime) {
-                if (isMatchTime && !footballStatus.hasLiveMatch) {
-                    console.log("⏰ [HIZLI DÖNGÜ] Yeni maç saati geldi! Sadece Futbol (Bugün) güncelleniyor...");
-                } else {
-                    console.log("⚽ [HIZLI DÖNGÜ] Canlı maç var! Sadece Futbol (Bugün) güncelleniyor...");
+            
+            // =========================================================================
+            // 2️⃣ FUTBOL - CANLI MAÇ VARSA HER DAKİKA
+            // =========================================================================
+            if (sportUpdateStatus.football.hasLiveMatch) {
+                if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
+                    console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Bugünün verileri güncelleniyor...");
+                    const footResult = await updateFootball([getTRDate(0)]);
+                    sportUpdateStatus.football.lastQuickUpdate = now;
+                    sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
+                    sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
                 }
-                const days1 = [getTRDate(0)];
-                footballStatus = await updateFootball(days1);
-            } 
-            else {
-                const next10Min = Math.ceil((TEN_MIN_MS - (now - lastTenMinUpdate)) / 60000);
-                console.log(`💤 İşlem yok. Sonraki "Bugün" taramasına yaklaşık ${next10Min} dk kaldı.`);
             }
+            // Yaklaşan futbol maçı varsa, saati 1 dk öncesinden itibaren her dakika çek
+            else if (sportUpdateStatus.football.nextMatchTime && 
+                     now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 1.1)) {
+                if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
+                    console.log("⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç saati yaklaştı - Bugünün verileri güncelleniyor...");
+                    const footResult = await updateFootball([getTRDate(0)]);
+                    sportUpdateStatus.football.lastQuickUpdate = now;
+                    sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
+                    sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
+                }
+            }
+            
+            // =========================================================================
+            // 3️⃣ BASKETBOL - CANLI MAÇ VARSA HER 10 DAKİKA, YAKLASAN VARSA HER 10 DAKİKA
+            // =========================================================================
+            const hasUpcomingBasketball = sportUpdateStatus.basketball.nextMatchTime && 
+                                          now >= (sportUpdateStatus.basketball.nextMatchTime - ONE_MIN_MS * 11);
+            
+            if ((sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball) &&
+                now - sportUpdateStatus.basketball.lastQuickUpdate >= TEN_MIN_MS) {
+                const logMsg = sportUpdateStatus.basketball.hasLiveMatch ? 
+                    "🏀 [HIZLI DÖNGÜ] Canlı basketbol maçı var" : 
+                    "🏀 [YAKLAŞAN] Yaklaşan basketbol maçı";
+                console.log(`${logMsg} - Bugünün verileri güncelleniyor...`);
+                const basketResult = await updateBasketball([getTRDate(0)]);
+                sportUpdateStatus.basketball.lastQuickUpdate = now;
+                sportUpdateStatus.basketball.nextMatchTime = basketResult.nextMatchTimestamp;
+            }
+            
+            // =========================================================================
+            // 4️⃣ TENİS - CANLI MAÇ VARSA HER 10 DAKİKA, YAKLASAN VARSA HER 10 DAKİKA
+            // =========================================================================
+            const hasUpcomingTennis = sportUpdateStatus.tennis.nextMatchTime && 
+                                      now >= (sportUpdateStatus.tennis.nextMatchTime - ONE_MIN_MS * 11);
+            
+            if ((sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) &&
+                now - sportUpdateStatus.tennis.lastQuickUpdate >= TEN_MIN_MS) {
+                const logMsg = sportUpdateStatus.tennis.hasLiveMatch ? 
+                    "🎾 [HIZLI DÖNGÜ] Canlı tenis maçı var" : 
+                    "🎾 [YAKLAŞAN] Yaklaşan tenis maçı";
+                console.log(`${logMsg} - Bugünün verileri güncelleniyor...`);
+                const tennisResult = await updateTennis([getTRDate(0)]);
+                sportUpdateStatus.tennis.lastQuickUpdate = now;
+                sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
+            }
+            
+            // =========================================================================
+            // 5️⃣ SLEEP LOGIC
+            // =========================================================================
+            let sleepTime = ONE_MIN_MS; // Default 1 dakika
+            
+            // Eğer hiç maç veya yaklaşan maç yoksa daha uzun bekle
+            if (!sportUpdateStatus.football.hasLiveMatch && 
+                !sportUpdateStatus.basketball.hasLiveMatch && 
+                !sportUpdateStatus.tennis.hasLiveMatch &&
+                !hasUpcomingBasketball && 
+                !hasUpcomingTennis &&
+                (!sportUpdateStatus.football.nextMatchTime || 
+                 now < (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 12))) {
+                sleepTime = TEN_MIN_MS;
+                console.log("💤 Hiç maç yok, 10 dakika uyku modu...");
+            } else {
+                console.log("⚡ Aktif maçlar var, 1 dakika sonra kontrol...");
+            }
+            
+            await new Promise(r => setTimeout(r, sleepTime));
+            iteration++;
             
         } catch (e) { 
             console.error("🚨 Hata:", e.message); 
+            await new Promise(r => setTimeout(r, ONE_MIN_MS));
         }
-        
-        console.log(`⏳ ${MINUTE_MS / 1000} saniye bekleniyor...\n`);
-        await new Promise(r => setTimeout(r, MINUTE_MS));
-        iteration++;
     }
 }
+
 main();
