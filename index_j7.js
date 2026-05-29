@@ -1039,27 +1039,52 @@ async function main() {
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
             }
             
+                        // =========================================================================
+            // 5️⃣ SLEEP LOGIC (DİNAMİK HESAPLAMA)
             // =========================================================================
-            // 5️⃣ SLEEP LOGIC
-            // =========================================================================
-            let sleepTime = ONE_MIN_MS; // Default 1 dakika
-            
-            // Eğer hiç maç veya yaklaşan maç yoksa daha uzun bekle
-            if (!sportUpdateStatus.football.hasLiveMatch && 
-                !sportUpdateStatus.basketball.hasLiveMatch && 
-                !sportUpdateStatus.tennis.hasLiveMatch &&
-                !hasUpcomingBasketball && 
-                !hasUpcomingTennis &&
-                (!sportUpdateStatus.football.nextMatchTime || 
-                 now < (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 12))) {
-                sleepTime = TEN_MIN_MS;
-                console.log("💤 Hiç maç yok, 10 dakika uyku modu...");
-            } else {
-                console.log("⚡ Aktif maçlar var, 1 dakika sonra kontrol...");
+            let sleepTime = TEN_MIN_MS; // Varsayılanı 10 dakika (maksimum uyku) yapıyoruz
+
+            // Futbol için 1 dakikalık sıkı takibe ihtiyaç var mı?
+            const isFootballActive = sportUpdateStatus.football.hasLiveMatch || 
+                (sportUpdateStatus.football.nextMatchTime && now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 12));
+
+            if (isFootballActive) {
+                // Eğer futbol canlıysa veya başlamak üzereyse kaçarı yok, 1 dakika uyuyacağız.
+                sleepTime = ONE_MIN_MS;
+                console.log("⚡ Aktif futbol takibi, 1 dakika sonra kontrol...");
+            } 
+            else if (sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball || 
+                     sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) {
+                
+                // Futbol yok ama basketbol veya tenis var. Bir sonraki API sorgusuna ne kadar kalmış hesaplayalım.
+                let timeToNextBask = TEN_MIN_MS;
+                let timeToNextTen = TEN_MIN_MS;
+
+                if (sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball) {
+                    timeToNextBask = TEN_MIN_MS - (now - sportUpdateStatus.basketball.lastQuickUpdate);
+                }
+                
+                if (sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) {
+                    timeToNextTen = TEN_MIN_MS - (now - sportUpdateStatus.tennis.lastQuickUpdate);
+                }
+
+                // Hangisinin vakti daha yakınsa o kadar uyumalıyız
+                sleepTime = Math.min(timeToNextBask, timeToNextTen);
+
+                // Matematiksel güvenlik önlemi: Kalan süre 1 dakikanın altına düşerse minimum 1 dk uyu (anlık sıfıra inip döngüyü kilitlemesin)
+                if (sleepTime < ONE_MIN_MS) sleepTime = ONE_MIN_MS;
+
+                const sleepMin = Math.ceil(sleepTime / 60000);
+                console.log(`⏱️ Basketbol/Tenis takibi: Terminal beklemede, sonraki uyandırma ${sleepMin} dakika sonra...`);
+            } 
+            else {
+                // Hiçbir spor dalında canlı veya yaklaşan maç yok
+                console.log("💤 Hiç maç yok, 10 dakika derin uyku modu...");
             }
-            
+
             await new Promise(r => setTimeout(r, sleepTime));
             iteration++;
+
             
         } catch (e) { 
             console.error("🚨 Hata:", e.message); 
