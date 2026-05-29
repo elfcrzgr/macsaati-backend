@@ -451,14 +451,21 @@ async function sendPush(id, title, body, imageUrl = null) {
 }
 
 // =========================================================================
-// 🆕 SONRAKI MAÇI BULMA FONKSIYONLARI
+// 🆕 SONRAKİ MAÇI BULMA FONKSİYONU (GECİKMELER İÇİN DÜZELTİLDİ)
 // =========================================================================
 function findNextMatchTime(cache, now = Date.now()) {
     let nextTime = null;
     
     for (const match of cache.values()) {
-        // Sadece geleceği ve henüz başlamamış maçlar
-        if (match.timestamp > now && (match.status === 'notstarted' || match.status === 'delayed')) {
+        if (match.status === 'notstarted' || match.status === 'delayed') {
+            
+            // MAÇIN SAATİ GELDİ VEYA GEÇTİ AMA BAŞLAMADI (GECİKME DURUMU)
+            // Sistemi uyanık tutmak ve 10 dakikalık döngüyü sürdürmek için hedef zamanı "şu an" yapıyoruz.
+            if (match.timestamp <= now) {
+                return now; 
+            }
+
+            // MAÇ GELECEKTEYSE (Normal Senaryo)
             if (!nextTime || match.timestamp < nextTime) {
                 nextTime = match.timestamp;
             }
@@ -467,6 +474,7 @@ function findNextMatchTime(cache, now = Date.now()) {
     
     return nextTime;
 }
+
 
 function hasTodayMatches(cache) {
     const today = getTRDate(0);
