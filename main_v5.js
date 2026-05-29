@@ -151,21 +151,17 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR
 // =========================================================================
+// ✅ ADMIN SDK KULLANARAK FIREBASE'E YAZMA
 async function uploadToFirebase(sportName, data) {
     try {
-        const url = `${FIREBASE_BASE_URL}matches_${sportName}.json`;
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
-            console.log(`✅ [FIREBASE] ${sportName.toUpperCase()} başarıyla güncellendi!`);
-        } else {
-            console.error(`⚠️ [FIREBASE] Hata: ${response.statusText}`);
-        }
+        const db = admin.database();
+        const ref = db.ref(`matches_${sportName}`);
+        await ref.set(data);
+        console.log(`✅ [FIREBASE] ${sportName.toUpperCase()} başarıyla güncellendi!`);
+        return true;
     } catch (error) {
-        console.error(`⚠️ [FIREBASE] Bağlantı Hatası:`, error.message);
+        console.error(`❌ [FIREBASE] ${sportName} Hata:`, error.message);
+        return false;
     }
 }
 
@@ -1037,7 +1033,7 @@ async function main() {
                 const logMsg = sportUpdateStatus.tennis.hasLiveMatch ? 
                     "🎾 [HIZLI DÖNGÜ] Canlı tenis maçı var" : 
                     "🎾 [YAKLAŞAN] Yaklaşan tenis maçı";
-                console.log(`${logMsg} - Bugünün verileri güncelleniyor...`);
+                console.log(`${logMsg} - Bugün��n verileri güncelleniyor...`);
                 const tennisResult = await updateTennis([getTRDate(0)]);
                 sportUpdateStatus.tennis.lastQuickUpdate = now;
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
