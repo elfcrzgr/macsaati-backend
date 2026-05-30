@@ -389,7 +389,7 @@ async function checkAndSendNotifications(newMatches) {
             match.awayScore = String(currA);
         }
 
-                // =====================================================================
+        // =====================================================================
         // A. STATÜ VE ZAMAN DEĞİŞİKLİKLERİ (İlave Süre, Uzatma, Penaltı vs.)
         // =====================================================================
         
@@ -423,15 +423,16 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedInjuryTime2 = true;
         }
         
-        // DÜZELTİLDİ: PENALTILARA GİTTİ (Önce Penaltıyı Kontrol Ediyoruz!)
-        // Code 50 veya Awaiting penalties açıklamasını gördüğünde tetikler.
-        else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || desc.includes("awaiting penalties") || liveMin === "Penaltılar" || liveMin === "120+") && !prev.hasNotifiedPenalties) {
+        // 9. PENALTILARA GİTTİ (Önce Penaltıyı Kontrol Ediyoruz!)
+        else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || desc.includes("awaiting penalties") || liveMin.includes("PEN")) && !prev.hasNotifiedPenalties) {
             const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedPenalties = true;
         }
-        // DÜZELTİLDİ: MAÇ UZATMALARA GİTTİ (Penaltı değilse uzatmadır)
-        else if (match.status === 'inprogress' && (match.statusCode === 34 || match.statusCode === 10 || desc.includes("awaiting extra time") || liveMin === "90+") && !prev.hasNotifiedETWait && !prev.hasNotifiedPenalties) {
+        
+        // 6. MAÇ GERÇEKTEN UZATMALARA GİTTİ (Lig maçlarındaki 90+ değil, gerçek kupa uzatması)
+        // DÜZELTİLDİ: Sadece Code 34, 10 veya açıklamasında extra time geçen maçlar alınır. liveMin === "90+" kaldırıldı.
+        else if (match.status === 'inprogress' && (match.statusCode === 34 || match.statusCode === 10 || desc.includes("awaiting extra time")) && !prev.hasNotifiedETWait && !prev.hasNotifiedPenalties) {
             const bodyText = `⏱️ Maç Uzatmalara Gitti!\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETWait = true;
@@ -443,13 +444,17 @@ async function checkAndSendNotifications(newMatches) {
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETHT = true;
         }
-        // 8. UZATMA İKİNCİ YARI BAŞLADI
-        else if (match.status === 'inprogress' && (match.statusCode === 11 || match.statusCode === 12 || match.statusCode === 14 || currentMinNum > 105) && !prev.hasNotifiedETSH) {
+        
+        // 8. UZATMA İKİNCİ YARI BAŞLADI 
+        // DÜZELTİLDİ: currentMinNum > 105 sigortası, sadece maç gerçek bir uzatma evresindeyse (prev.hasNotifiedETWait true ise) çalışmalı.
+        else if (match.status === 'inprogress' && (match.statusCode === 11 || match.statusCode === 12 || match.statusCode === 14 || (currentMinNum > 105 && prev.hasNotifiedETWait)) && !prev.hasNotifiedETSH) {
             const bodyText = `▶️ Uzatma İkinci Yarı Başladı\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETSH = true;
         }
 
+
+                
         // 9. PENALTILARA GİTTİ
         else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || liveMin === "Penaltılar") && !prev.hasNotifiedPenalties) {
             const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
