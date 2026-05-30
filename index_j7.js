@@ -423,17 +423,22 @@ async function checkAndSendNotifications(newMatches) {
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedPenalties = true;
         }
-        // 10. MAÇ BİTTİ (Bildirim Metni Uzatma/Penaltı durumuna göre değişir)
+                // 10. MAÇ BİTTİ (Bildirim Metni Uzatma/Penaltı durumuna göre değişir)
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
-            let bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-            if (prev.hasNotifiedPenalties) {
-                bodyText = `🏁 Maç Sonucu (Penaltılarla)\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-            } else if (prev.hasNotifiedETWait) {
-                bodyText = `🏁 Maç Sonucu (Uzatmalarla)\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            // SİGORTA: Sadece bir önceki durumu "inprogress" (canlı) olan maçlar bittiğinde bildirim at.
+            if (prev.status === 'inprogress') {
+                let bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                if (prev.hasNotifiedPenalties) {
+                    bodyText = `🏁 Maç Sonucu (Penaltılarla)\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                } else if (prev.hasNotifiedETWait) {
+                    bodyText = `🏁 Maç Sonucu (Uzatmalarla)\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                }
+                await sendPush(matchIdStr, appTitle, bodyText);
             }
-            await sendPush(matchIdStr, appTitle, bodyText);
+            // Bildirim atılmasa bile (önceden bitmiş maçsa) işlendi olarak işaretle ki bir daha sormasın
             prev.hasNotifiedFinished = true; 
         }
+
 
         // =====================================================================
         // B. GOL VE SKOR DEĞİŞİKLİĞİ (Statüden Bağımsız, Her Zaman Çalışır)
