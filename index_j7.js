@@ -433,9 +433,24 @@ async function sendPush(id, title, body, imageUrl = null) {
     try {
         const payload = {
             topic: `match_${id}`,
-            notification: { title: title, body: body },
-            data: { matchId: String(id), type: "match_update" },
-            apns: { payload: { aps: { "mutable-content": 1, "badge":0 } } }
+            // 🚀 ANDROID İÇİN GİZLİ VERİ PAKETİ (Java servisimiz bunu yakalayacak)
+            data: { 
+                matchId: String(id), 
+                type: "match_update",
+                title: title,
+                body: body,
+                imageUrl: imageUrl || ""
+            },
+            // 🚀 iOS İÇİN STANDART BİLDİRİM (Apple bunu istiyor)
+            apns: { 
+                payload: { 
+                    aps: { 
+                        alert: { title: title, body: body }, // iOS metinleri buradan okur
+                        "mutable-content": 1, 
+                        "badge": 0 
+                    } 
+                }
+            }
         };
 
         if (imageUrl) {
