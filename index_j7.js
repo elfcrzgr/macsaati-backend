@@ -276,27 +276,48 @@ function calculateLiveMinute(eventData) {
     if (!eventData) return "";
     const status = eventData.status;
     const time = eventData.time;
+
+    // 1. API doğrudan dakika veriyorsa onu kullan
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
         return String(time.currentMinute) + "'";
     }
-    if (status?.code === 31 || status?.description === "Halftime") {
-        return "İY";
-    }
+
+    // 2. Özel Durumlar (Devre Arası, Uzatma Bekleme, Penaltılar)
+    if (status?.code === 31 || status?.description === "Halftime") return "İY";
+    if (status?.code === 34 || status?.description?.includes("Awaiting extra time")) return "90+"; 
+    if (status?.description?.includes("Extra time halftime")) return "UZ İY"; 
+    if (status?.code === 60 || status?.description?.includes("Penalties")) return "Penaltılar";
+
+    // 3. Fallback: Timestamp üzerinden hesaplama
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
         let calcMinute = Math.floor(elapsed / 60);
+        
         if (calcMinute < 0) calcMinute = 0;
-        if (status?.code === 7) {
+
+        const code = status?.code;
+        const desc = (status?.description || "").toLowerCase();
+
+        if (code === 6) {
+            return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
+        } else if (code === 7) {
             calcMinute += 45;
             return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
-        } else if (status?.code === 6) {
-            return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
+        } else if (code === 10 || code === 13 || desc.includes("1st extra")) { // 1. Uzatma
+            calcMinute += 90;
+            return calcMinute > 105 ? "105+" : String(calcMinute) + "'";
+        } else if (code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) { // 2. Uzatma
+            calcMinute += 105;
+            return calcMinute > 120 ? "120+" : String(calcMinute) + "'";
         }
+
         return String(calcMinute) + "'";
     }
+
     return "Canlı";
 }
+
 
 // =========================================================================
 // 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
