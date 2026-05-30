@@ -283,16 +283,21 @@ function calculateLiveMinute(eventData) {
     // 1. ÖNCELİKLİ DURUMLAR (Dakikadan bağımsız, ekrana direkt basılacaklar)
     // =====================================================================
     
-    // Devre araları
     if (code === 31 || desc === "halftime") return "İY";
     if (desc.includes("extra time halftime")) return "UZ İY"; 
     
-    // 120 dakika bitti, penaltılar bekleniyor (50) veya penaltılar atılıyor (60)
     if (code === 50 || code === 60 || desc.includes("penalt")) {
-        return "PEN"; 
+        // Penaltı skorlarını Sofascore'dan çekip yeşil kutuya yazdırıyoruz
+        const hPen = eventData.homeScore?.penalties;
+        const aPen = eventData.awayScore?.penalties;
+        
+        if (hPen !== undefined && aPen !== undefined) {
+            return `PEN ${hPen}-${aPen}`; // Örn: PEN 4-3
+        }
+        // Eğer skor henüz girilmediyse, ön yüz gizlemesin diye kesme işaretiyle gönderiyoruz
+        return "PEN'"; 
     }
     
-    // 90 dakika bitti, uzatma devresi başlaması bekleniyor
     if (code === 34 || desc.includes("awaiting extra time")) return "90+"; 
 
     // =====================================================================
@@ -342,6 +347,7 @@ function calculateLiveMinute(eventData) {
 
     return "Canlı";
 }
+
 
 
 
