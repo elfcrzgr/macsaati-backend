@@ -276,28 +276,40 @@ function calculateLiveMinute(eventData) {
     if (!eventData) return "";
     const status = eventData.status;
     const time = eventData.time;
+    const code = status?.code;
+    const desc = (status?.description || "").toLowerCase();
 
-    // 1. API doğrudan dakika veriyorsa onu kullan
+    // 1. API doğrudan dakika veriyorsa
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
-        return String(time.currentMinute) + "'";
+        let min = time.currentMinute;
+        
+        // SofaScore dakikayı dondurup addedTime verirse uzatmada kabul edelim
+        if (time.addedTime && min === 90) return "90+";
+        if (time.addedTime && min === 45) return "45+";
+
+        // Normal akışta dakikayı aşmışsa rakamı gizle, sabit artı (+) koy
+        if (code === 6 && min > 45) return "45+";
+        if (code === 7 && min > 90) return "90+";
+        if ((code === 10 || code === 13 || desc.includes("1st extra")) && min > 105) return "105+";
+        if ((code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) && min > 120) return "120+";
+
+        // Henüz uzatmalara girmediyse o anki dakikayı aynen yazdır (Örn: 82')
+        return String(min) + "'";
     }
 
     // 2. Özel Durumlar (Devre Arası, Uzatma Bekleme, Penaltılar)
-    if (status?.code === 31 || status?.description === "Halftime") return "İY";
-    if (status?.code === 34 || status?.description?.includes("Awaiting extra time")) return "90+"; 
-    if (status?.description?.includes("Extra time halftime")) return "UZ İY"; 
-    if (status?.code === 60 || status?.description?.includes("Penalties")) return "Penaltılar";
+    if (code === 31 || status?.description === "Halftime") return "İY";
+    if (code === 34 || desc.includes("awaiting extra time")) return "90+"; 
+    if (desc.includes("extra time halftime")) return "UZ İY"; 
+    if (code === 60 || desc.includes("penalties")) return "Penaltılar";
 
-    // 3. Fallback: Timestamp üzerinden hesaplama
+    // 3. Fallback: Timestamp üzerinden manuel hesaplama
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
         let calcMinute = Math.floor(elapsed / 60);
         
         if (calcMinute < 0) calcMinute = 0;
-
-        const code = status?.code;
-        const desc = (status?.description || "").toLowerCase();
 
         if (code === 6) {
             return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
@@ -317,6 +329,7 @@ function calculateLiveMinute(eventData) {
 
     return "Canlı";
 }
+
 
 
 // =========================================================================
