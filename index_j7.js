@@ -279,7 +279,25 @@ function calculateLiveMinute(eventData) {
     const code = status?.code;
     const desc = (status?.description || "").toLowerCase();
 
-    // 1. API doğrudan dakika veriyorsa
+    // =====================================================================
+    // 1. ÖNCELİKLİ DURUMLAR (Dakikadan bağımsız, ekrana direkt basılacaklar)
+    // =====================================================================
+    
+    // Devre araları
+    if (code === 31 || desc === "halftime") return "İY";
+    if (desc.includes("extra time halftime")) return "UZ İY"; 
+    
+    // 120 dakika bitti, penaltılar bekleniyor (50) veya penaltılar atılıyor (60)
+    if (code === 50 || code === 60 || desc.includes("penalt")) {
+        return "PEN"; 
+    }
+    
+    // 90 dakika bitti, uzatma devresi başlaması bekleniyor
+    if (code === 34 || desc.includes("awaiting extra time")) return "90+"; 
+
+    // =====================================================================
+    // 2. API DOĞRUDAN DAKİKA VERİYORSA
+    // =====================================================================
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
         let min = time.currentMinute;
         
@@ -296,18 +314,9 @@ function calculateLiveMinute(eventData) {
         return String(min) + "'";
     }
 
-    // 2. Özel Durumlar (Devre Arası, Uzatma Bekleme, Penaltılar)
-    if (code === 31 || desc === "halftime") return "İY";
-    
-    // BURASI DÜZELTİLDİ: Penaltı bekleme anı
-    if (code === 50 || desc.includes("awaiting penalties")) return "120+"; 
-    
-    // Uzatma bekleme anı
-    if (code === 34 || desc.includes("awaiting extra time")) return "90+"; 
-    if (desc.includes("extra time halftime")) return "UZ İY"; 
-    if (code === 60 || desc.includes("penalties")) return "Penaltılar";
-
-    // 3. Fallback: Timestamp üzerinden manuel hesaplama
+    // =====================================================================
+    // 3. FALLBACK: Zaman farkı (timestamp) üzerinden manuel hesaplama
+    // =====================================================================
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
@@ -333,6 +342,7 @@ function calculateLiveMinute(eventData) {
 
     return "Canlı";
 }
+
 
 
 
