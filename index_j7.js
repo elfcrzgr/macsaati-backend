@@ -440,51 +440,57 @@ async function checkAndSendNotifications(newMatches) {
         }
 
 
-        // =====================================================================
-        // B. GOL VE SKOR DEĞİŞİKLİĞİ (Statüden Bağımsız, Her Zaman Çalışır)
+                // =====================================================================
+        // B. GOL VE SKOR DEĞİŞİKLİĞİ (Sadece CANLI maçlarda çalışır!)
         // =====================================================================
         
-        if (prev.homeScore !== currH || prev.awayScore !== currA) {
-            const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
+        // SİGORTA 1: Sadece 'inprogress' (canlı) olan maçlarda gol ara.
+        // SİGORTA 2: prev.status !== null (Sunucu yeni açıldığında eski golleri yeni sanıp spamlamasını önler)
+        if (match.status === 'inprogress' && prev.status !== null) {
+            
+            if (prev.homeScore !== currH || prev.awayScore !== currA) {
+                const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
 
-            if (isGoal) {
-                let scorerName = match.homeTeam.name;
-                try {
-                    const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
-                    if (incidentsData && incidentsData.incidents) {
-                        const goals = incidentsData.incidents.filter(inc => inc.incidentType === 'goal');
-                        if (goals.length > 0) {
-                            const lastGoal = goals.sort((a, b) => (b.time + (b.addedTime || 0)) - (a.time + (a.addedTime || 0)))[0];
-                            if (lastGoal && lastGoal.player && lastGoal.player.name) {
-                                scorerName = lastGoal.player.name;
+                if (isGoal) {
+                    let scorerName = match.homeTeam.name;
+                    try {
+                        const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
+                        if (incidentsData && incidentsData.incidents) {
+                            const goals = incidentsData.incidents.filter(inc => inc.incidentType === 'goal');
+                            if (goals.length > 0) {
+                                const lastGoal = goals.sort((a, b) => (b.time + (b.addedTime || 0)) - (a.time + (a.addedTime || 0)))[0];
+                                if (lastGoal && lastGoal.player && lastGoal.player.name) {
+                                    scorerName = lastGoal.player.name;
+                                }
                             }
                         }
-                    }
-                } catch (e) { }
-                
-                const homeScored = currH > prev.homeScore;
-                const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
-                const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
-                pendingGoalCancel.delete(matchIdStr);
-            } else {
-                const pending = pendingGoalCancel.get(matchIdStr);
-                if (!pending) {
-                    pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA });
+                    } catch (e) { }
+                    
+                    const homeScored = currH > prev.homeScore;
+                    const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
+                    const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                    await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
+                    pendingGoalCancel.delete(matchIdStr);
                 } else {
-                    if (pending.homeScore === currH && pending.awayScore === currA) {
-                        pendingGoalCancel.delete(matchIdStr);
-                        const homeCancelled = currH < prev.homeScore;
-                        const awayCancelled = currA < prev.awayScore;
-                        const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
-                        const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                        await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+                    const pending = pendingGoalCancel.get(matchIdStr);
+                    if (!pending) {
+                        pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA });
                     } else {
-                        pendingGoalCancel.delete(matchIdStr);
+                        if (pending.homeScore === currH && pending.awayScore === currA) {
+                            pendingGoalCancel.delete(matchIdStr);
+                            const homeCancelled = currH < prev.homeScore;
+                            const awayCancelled = currA < prev.awayScore;
+                            const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
+                            const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+                        } else {
+                            pendingGoalCancel.delete(matchIdStr);
+                        }
                     }
                 }
             }
         }
+
 
         // 🆕 TÜM YENİ DURUMLAR HAFIZAYA KAYDEDİLİYOR
         previousMatchStates.set(matchIdStr, {
