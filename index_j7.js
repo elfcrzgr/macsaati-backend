@@ -283,22 +283,26 @@ function calculateLiveMinute(eventData) {
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
         let min = time.currentMinute;
         
-        // SofaScore dakikayı dondurup addedTime verirse uzatmada kabul edelim
         if (time.addedTime && min === 90) return "90+";
         if (time.addedTime && min === 45) return "45+";
+        if (time.addedTime && min === 105) return "105+";
+        if (time.addedTime && min === 120) return "120+";
 
-        // Normal akışta dakikayı aşmışsa rakamı gizle, sabit artı (+) koy
         if (code === 6 && min > 45) return "45+";
         if (code === 7 && min > 90) return "90+";
         if ((code === 10 || code === 13 || desc.includes("1st extra")) && min > 105) return "105+";
         if ((code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) && min > 120) return "120+";
 
-        // Henüz uzatmalara girmediyse o anki dakikayı aynen yazdır (Örn: 82')
         return String(min) + "'";
     }
 
     // 2. Özel Durumlar (Devre Arası, Uzatma Bekleme, Penaltılar)
-    if (code === 31 || status?.description === "Halftime") return "İY";
+    if (code === 31 || desc === "halftime") return "İY";
+    
+    // BURASI DÜZELTİLDİ: Penaltı bekleme anı
+    if (code === 50 || desc.includes("awaiting penalties")) return "120+"; 
+    
+    // Uzatma bekleme anı
     if (code === 34 || desc.includes("awaiting extra time")) return "90+"; 
     if (desc.includes("extra time halftime")) return "UZ İY"; 
     if (code === 60 || desc.includes("penalties")) return "Penaltılar";
@@ -316,10 +320,10 @@ function calculateLiveMinute(eventData) {
         } else if (code === 7) {
             calcMinute += 45;
             return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
-        } else if (code === 10 || code === 13 || desc.includes("1st extra")) { // 1. Uzatma
+        } else if (code === 10 || code === 13 || desc.includes("1st extra")) { 
             calcMinute += 90;
             return calcMinute > 105 ? "105+" : String(calcMinute) + "'";
-        } else if (code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) { // 2. Uzatma
+        } else if (code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) { 
             calcMinute += 105;
             return calcMinute > 120 ? "120+" : String(calcMinute) + "'";
         }
@@ -329,6 +333,7 @@ function calculateLiveMinute(eventData) {
 
     return "Canlı";
 }
+
 
 
 
@@ -368,10 +373,12 @@ async function checkAndSendNotifications(newMatches) {
             match.awayScore = String(currA);
         }
 
-        // =====================================================================
+                // =====================================================================
         // A. STATÜ VE ZAMAN DEĞİŞİKLİKLERİ (İlave Süre, Uzatma, Penaltı vs.)
         // =====================================================================
         
+        const desc = (match.statusDesc || match.status?.description || "").toLowerCase();
+
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             const bodyText = `⚽ Maç Başladı!\n${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText);
@@ -399,24 +406,34 @@ async function checkAndSendNotifications(newMatches) {
             await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
             prev.hasNotifiedInjuryTime2 = true;
         }
-        // 6. MAÇ UZATMALARA GİTTİ 
-        else if (match.status === 'inprogress' && (match.statusCode === 34 || match.statusCode === 10) && !prev.hasNotifiedETWait) {
+        
+        // DÜZELTİLDİ: PENALTILARA GİTTİ (Önce Penaltıyı Kontrol Ediyoruz!)
+        // Code 50 veya Awaiting penalties açıklamasını gördüğünde tetikler.
+        else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || desc.includes("awaiting penalties") || liveMin === "Penaltılar" || liveMin === "120+") && !prev.hasNotifiedPenalties) {
+            const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            prev.hasNotifiedPenalties = true;
+        }
+        // DÜZELTİLDİ: MAÇ UZATMALARA GİTTİ (Penaltı değilse uzatmadır)
+        else if (match.status === 'inprogress' && (match.statusCode === 34 || match.statusCode === 10 || desc.includes("awaiting extra time") || liveMin === "90+") && !prev.hasNotifiedETWait && !prev.hasNotifiedPenalties) {
             const bodyText = `⏱️ Maç Uzatmalara Gitti!\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETWait = true;
         }
+        
         // 7. UZATMA İLK YARI BİTTİ
         else if (match.status === 'inprogress' && (match.statusCode === 40 || liveMin === "UZ İY") && !prev.hasNotifiedETHT) {
             const bodyText = `⏱️ Uzatma İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETHT = true;
         }
-        // 8. UZATMA İKİNCİ YARI BAŞLADI (Sigorta Eklendi: API kod 11 göndermese bile dakika 105'i geçtiyse tetikler)
+        // 8. UZATMA İKİNCİ YARI BAŞLADI
         else if (match.status === 'inprogress' && (match.statusCode === 11 || match.statusCode === 12 || match.statusCode === 14 || currentMinNum > 105) && !prev.hasNotifiedETSH) {
             const bodyText = `▶️ Uzatma İkinci Yarı Başladı\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETSH = true;
         }
+
         // 9. PENALTILARA GİTTİ
         else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || liveMin === "Penaltılar") && !prev.hasNotifiedPenalties) {
             const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
