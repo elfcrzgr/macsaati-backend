@@ -901,44 +901,43 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
     return { nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
 
-// =========================================================================
-// 🎾 TENİS GÜNCELLEME (GLOBAL CACHE İLE GÜNCELLENDİ)
+=========================================================================
+// 🎾 TENİS GÜNCELLEME (BEYAZ LİSTE İLE GÜNCELLENDİ)
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
-// İstenmeyen alt kategoriler (Çiftler hariç tutuldu)
-const EXCLUDE_KEYWORDS = ["GIRLS", "BOYS", "JUNIOR", "YOUTH", "WHEELCHAIR", "LEGENDS", "EXHIBITION", "QUALIFYING", "QUALIFIERS"];
+// 1. KALKAN: Grand Slam'lere sızmaları önlemek için (Bu kelimeler varsa anında reddedilir)
+const EXCLUDE_SUB = ["GIRLS", "BOYS", "JUNIOR", "YOUTH", "WHEELCHAIR", "LEGENDS", "EXHIBITION", "QUALIFYING", "QUALIFIERS"];
 
-const isGarbage = (tourName, catName) => {
-    const t = (tourName || "").toUpperCase();
-    const c = (catName || "").toUpperCase();
-    
-    // 1. Orijinal çöpler (ITF, Challenger, UTR)
-    const hasGarbageWord = t.includes("ITF") || t.includes("CHALLENGER") || t.includes("UTR") ||
-                           c.includes("ITF") || c.includes("CHALLENGER") || c.includes("UTR");
-                           
-    // 2. Yeni dışlananlar (Girls, Boys, Wheelchair vb.)
-    const hasExcludedWord = EXCLUDE_KEYWORDS.some(keyword => t.includes(keyword) || c.includes(keyword));
+// 2. ELİT LİGLER (1000 ve Üstü: Grand Slam'ler, Masters, Finaller, Olimpiyat)
+const ELITE_TOURNAMENTS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC", "ATP FINALS", "WTA FINALS", "MONTE CARLO", "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", "MONTREAL", "TORONTO", "SHANGHAI", "PARIS", "MASTERS", "ATP 1000", "WTA 1000"];
 
-    return hasGarbageWord || hasExcludedWord;
+// 3. STANDART LİGLER (500 Seviyesi)
+const STANDARD_TOURNAMENTS = ["ATP 500", "WTA 500"];
+
+// YENİ AKILLI KONTROL FONKSİYONU
+const checkTournamentStatus = (tourName) => {
+    const nameUpper = (tourName || "").toUpperCase();
+
+    // Adım 1: İçinde Girls, Boys, Elemeler vs. geçiyorsa turnuva adı ne olursa olsun REDDET
+    if (EXCLUDE_SUB.some(kw => nameUpper.includes(kw))) {
+        return { isAllowed: false, isElite: false };
+    }
+
+    // Adım 2: 1000 ve Üstü (Elit) listesinde mi? (İzin ver ve Elit yap)
+    if (ELITE_TOURNAMENTS.some(kw => nameUpper.includes(kw))) {
+        return { isAllowed: true, isElite: true };
+    }
+
+    // Adım 3: Sadece 500 listesinde mi? (İzin ver ama Elit yapma)
+    if (STANDARD_TOURNAMENTS.some(kw => nameUpper.includes(kw))) {
+        return { isAllowed: true, isElite: false };
+    }
+
+    // Adım 4: Bunların hiçbiri değilse (250'ler, ITF'ler, Üniversite ligleri vs.) REDDET
+    return { isAllowed: false, isElite: false };
 };
-
-
-
-const ELITE_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC", "ATP FINALS", "WTA FINALS", "MONTE CARLO", "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", "MONTREAL", "TORONTO", "SHANGHAI", "PARIS", "MASTERS", "ATP 1000", "WTA 1000", "ATP 500", "WTA 500"];
-
-
-
-const checkIsEliteMatch = (tournamentName) => {
-    if (!tournamentName) return false;
-    const nameUpper = tournamentName.toUpperCase();
-    return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
-};
-
-
-
-
 
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor... (Taranan gün: ${targetDates.length})`);
@@ -954,9 +953,12 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             if (data?.events) {
                 const filtered = data.events.filter(e => {
                     const tourName = e.tournament?.name;
-                    const catName = e.tournament?.category?.name;
-                    if (isGarbage(tourName, catName)) return false;
+                    // YENİ: Tek bir fonksiyonla hem izin hem elit kontrolü
+                    const status = checkTournamentStatus(tourName);
+                    
+                    if (!status.isAllowed) return false;
                     if (seenEventIds.has(e.id)) return false;
+                    
                     seenEventIds.add(e.id);
                     return true;
                 });
@@ -1063,9 +1065,12 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             
             tenisMatchesLog.push({ home: hName, away: aName, kanal: finalBroadcaster, source: result.source });
             
+            // YENİ: Cache'e yazarken Elit durumunu objeden alıyoruz
+            const statusInfo = checkTournamentStatus(tourName);
+
             globalTennisCache.set(e.id, {
                 id: e.id,
-                isElite: checkIsEliteMatch(tourName),
+                isElite: statusInfo.isElite, 
                 status: statusType,
                 fixedDate: fixedDate,
                 fixedTime: timeString,
@@ -1091,6 +1096,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
     
     return { nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
+
 
 // =========================================================================
 // 🏎️ FORMULA 1 GÜNCELLEME
