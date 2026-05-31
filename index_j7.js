@@ -261,7 +261,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
         return isPlayoff ? "Exxen" : "S Sport Plus";
     }
-    if ((utId === 299 || utId === 851) && isTurkey) return "TRT Spor / TRT 1";
+    
     
     const staticConfigs = {
         34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii",
