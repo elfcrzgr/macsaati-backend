@@ -670,6 +670,20 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             finalAwayScore = `${finalAwayScore}\n(PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
         }
 
+        // 🌟 YENİ: MİLLİ TAKIM BAYRAK YÖNLENDİRMESİ
+        // Varsayılan olarak kulüp logosu klasörüne (ID ile) bakar
+        let homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png`;
+        let awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png`;
+
+        // Eğer maç bir milli maç turnuvasındaysa rotayı tenis (bayrak) klasörüne çevir
+        if (NATIONAL_LEAGUES.includes(leagueId)) {
+            const hCode = e.homeTeam?.country?.alpha2?.toLowerCase();
+            const aCode = e.awayTeam?.country?.alpha2?.toLowerCase();
+            
+            if (hCode) homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${hCode}.png`;
+            if (aCode) awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${aCode}.png`;
+        }
+
         globalFootballCache.set(e.id, {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
