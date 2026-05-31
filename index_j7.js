@@ -236,13 +236,19 @@ const teamTranslations = {
 
 const translateTeam = (name) => {
     if (!name) return name;
-    let translatedName = name;
-    const cleanSearch = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    const lowerName = name.toLowerCase().trim();
+    
+    // 1. Önce tam isim eşleşmesi ara (Örn: "North Macedonia" -> "Kuzey Makedonya")
+    if (teamTranslations[lowerName]) {
+        return teamTranslations[lowerName];
+    }
+
+    // 2. Kısmi eşleşme (Örn: "Turkey U21" -> "Türkiye U21")
     for (const [eng, tr] of Object.entries(teamTranslations)) {
-        if (cleanSearch.includes(eng)) {
-            translatedName = name.replace(new RegExp(eng, 'i'), tr);
-            if (cleanSearch === eng) return tr;
-            return translatedName;
+        // Kelime bazlı arama yapıyoruz ki karışıklık olmasın
+        const regex = new RegExp(`\\b${eng}\\b`, 'i');
+        if (regex.test(name)) {
+            return name.replace(regex, tr);
         }
     }
     return name;
@@ -694,10 +700,16 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         
         const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
         const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
-        const result = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
+
+        // 🌟 YENİ: İsimleri daha en baştan Türkçeye çeviriyoruz!
+        const translatedHome = translateTeam(hName);
+        const translatedAway = translateTeam(aName);
+
+        // DİKKAT: Sporekrani'na İngilizce (hName) değil, Türkçe isimleri yolluyoruz ki eşleşme bulabilsin.
+        const result = getBroadcasterWithFallback("futbol", dayTR, timeString, translatedHome, translatedAway, fallbackBroadcaster);
         const finalBroadcaster = result.kanal;
         
-        futbolMatchesLog.push({ home: translateTeam(hName), away: translateTeam(aName), kanal: finalBroadcaster, source: result.source });
+        futbolMatchesLog.push({ home: translatedHome, away: translatedAway, kanal: finalBroadcaster, source: result.source });
         
         let finalHomeScore = (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-";
         let finalAwayScore = (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-";
@@ -732,8 +744,8 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
             broadcaster: finalBroadcaster,
-            homeTeam: { name: translateTeam(hName), logo: homeLogoUrl },
-            awayTeam: { name: translateTeam(aName), logo: awayLogoUrl },
+            homeTeam: { name: translatedHome, logo: homeLogoUrl },
+            awayTeam: { name: translatedAway, logo: awayLogoUrl },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: finalHomeScore,
             awayScore: finalAwayScore,
