@@ -672,16 +672,20 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             finalAwayScore = `${finalAwayScore}\n(PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
         }
 
-        // 🌟 YENİ: MİLLİ TAKIM BAYRAK YÖNLENDİRMESİ
+       // 🌟 YENİ VE KUSURSUZ: MİLLİ TAKIM BAYRAK YÖNLENDİRMESİ
         // Varsayılan olarak kulüp logosu klasörüne (ID ile) bakar
         let homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png`;
         let awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png`;
 
-        // Eğer maç bir milli maç turnuvasındaysa rotayı tenis (bayrak) klasörüne çevir
-        if (NATIONAL_LEAGUES.includes(leagueId)) {
+        // DÜZELTME: Sadece lig ID'sine değil, takımın milli takım olup olmadığına bakıyoruz!
+        // Eğer turnuva listemizdeyse VEYA SofaScore bu takımı milli takım olarak işaretlediyse...
+        if (NATIONAL_LEAGUES.includes(leagueId) || e.homeTeam.national === true || e.awayTeam.national === true) {
+            
+            // Ülke kodunu al (örn: 'kr' South Korea için)
             const hCode = e.homeTeam?.country?.alpha2?.toLowerCase();
             const aCode = e.awayTeam?.country?.alpha2?.toLowerCase();
             
+            // Eğer kod varsa tenis (bayrak) klasörüne yönlendir, yoksa varsayılanda kalsın
             if (hCode) homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${hCode}.png`;
             if (aCode) awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${aCode}.png`;
         }
