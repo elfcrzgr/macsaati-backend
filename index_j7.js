@@ -198,10 +198,37 @@ const getTRDate = (offset = 0) => {
 // ⚽ FUTBOL YAPILANDIRMASI
 // =========================================================================
 const teamTranslations = {
-    "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
-    "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "netherlands": "Hollanda",
-    "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", "croatia": "Hırvatistan",
-    "brazil": "Brezilya", "argentina": "Arjantin", "usa": "ABD" 
+    // Avrupa (UEFA)
+    "turkey": "Türkiye", "türkiye": "Türkiye", "germany": "Almanya", "france": "Fransa", 
+    "england": "İngiltere", "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", 
+    "netherlands": "Hollanda", "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", 
+    "croatia": "Hırvatistan", "denmark": "Danimarka", "sweden": "İsveç", "norway": "Norveç", 
+    "poland": "Polonya", "ukraine": "Ukrayna", "czech republic": "Çekya", "czechia": "Çekya", 
+    "serbia": "Sırbistan", "hungary": "Macaristan", "romania": "Romanya", "greece": "Yunanistan", 
+    "slovakia": "Slovakya", "wales": "Galler", "scotland": "İskoçya", "ireland": "İrlanda", 
+    "northern ireland": "Kuzey İrlanda", "albania": "Arnavutluk", "north macedonia": "Kuzey Makedonya", 
+    "georgia": "Gürcistan", "slovenia": "Slovenya", "iceland": "İzlanda", "finland": "Finlandiya", 
+    "bosnia & herzegovina": "Bosna-Hersek", "bosnia and herzegovina": "Bosna-Hersek", 
+    "montenegro": "Karadağ", "bulgaria": "Bulgaristan", "russia": "Rusya",
+
+    // Güney Amerika (CONMEBOL)
+    "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya",
+    "chile": "Şili", "peru": "Peru", "venezuela": "Venezuela", "paraguay": "Paraguay",
+    "bolivia": "Bolivya", "ecuador": "Ekvador",
+
+    // Kuzey ve Orta Amerika (CONCACAF)
+    "usa": "ABD", "united states": "ABD", "mexico": "Meksika", "canada": "Kanada",
+    "costa rica": "Kosta Rika", "jamaica": "Jamaika", "panama": "Panama", "honduras": "Honduras",
+
+    // Afrika (CAF)
+    "senegal": "Senegal", "morocco": "Fas", "egypt": "Mısır", "tunisia": "Tunus", "nigeria": "Nijerya",
+    "cameroon": "Kamerun", "ghana": "Gana", "ivory coast": "Fildişi Sahili", "cote d'ivoire": "Fildişi Sahili",
+    "algeria": "Cezayir", "south africa": "Güney Afrika", "mali": "Mali",
+
+    // Asya ve Okyanusya (AFC & OFC)
+    "south korea": "Güney Kore", "japan": "Japonya", "iran": "İran", "saudi arabia": "Suudi Arabistan",
+    "qatar": "Katar", "australia": "Avustralya", "new zealand": "Yeni Zelanda", "china": "Çin",
+    "india": "Hindistan", "united arab emirates": "BAE", "uae": "BAE", "iraq": "Irak", "uzbekistan": "Özbekistan"
 };
 
 const translateTeam = (name) => {
