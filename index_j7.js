@@ -117,31 +117,61 @@ function loadExternalBroadcasters() {
 }
 
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
-    if (!externalBroadcasters[dateStr]) return { kanal: fallback, source: "fallback" };
-    const dayData = externalBroadcasters[dateStr];
-    if (!dayData || !dayData.matches) return { kanal: fallback, source: "fallback" };
-
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
-    const hName = (homeName || "").toLowerCase().trim();
-    const aName = (awayName || "").toLowerCase().trim();
+    const [cH, cM] = cleanTime.split(':').map(Number);
+    
+    const toTR = (str) => str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase().trim();
+    const hName = toTR(homeName || "");
+    const aName = toTR(awayName || "");
 
-    for (const m of dayData.matches) {
-        if (m.spor && m.spor.toLowerCase() === sportCategory.toLowerCase()) {
-            const mTime = (m.saat || "").replace('.', ':').trim();
-            const mTitle = (m.mac || "").toLowerCase();
+    // 🌟 SAĞLIKLI KAPSAM: Sadece Bugün ve Yarın (Tarih karmaşasını çözer)
+    const getSafeDates = (baseStr) => {
+        const [y, m, d] = baseStr.split('-').map(Number);
+        return [0, 1].map(offset => {
+            const dateObj = new Date(y, m - 1, d + offset);
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${month}-${day}`;
+        });
+    };
 
-            const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
-            const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
+    const safeDates = getSafeDates(dateStr);
 
-            const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
-            const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+    for (const dateKey of safeDates) {
+        const dayData = externalBroadcasters[dateKey];
+        if (!dayData || !dayData.matches) continue;
 
-            const isNameMatch = mTitle.includes(hCheck) || mTitle.includes(aCheck) || anyHomeWordMatch || anyAwayWordMatch;
-            const isTimeMatch = (mTime === cleanTime);
-            const isTennis = (sportCategory.toLowerCase() === "tenis");
+        for (const m of dayData.matches) {
+            if (m.spor && toTR(m.spor) === toTR(sportCategory)) {
+                const mTime = (m.saat || "").replace('.', ':').trim();
+                const [mH, mM] = mTime.split(':').map(Number);
+                const mTitle = toTR(m.mac || "");
 
-            if ((isTimeMatch || isTennis) && isNameMatch) {
-                return { kanal: m.yayin, source: "sporekrani" };
+                const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
+                const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
+
+                const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+                const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+
+                const matchHome = mTitle.includes(hCheck) || anyHomeWordMatch;
+                const matchAway = mTitle.includes(aCheck) || anyAwayWordMatch;
+                const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
+
+                let diff = 9999;
+                if (mTime === cleanTime) {
+                    diff = 0;
+                } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) {
+                    diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM));
+                    if (diff > 1000) diff = Math.abs(diff - 1440); 
+                }
+
+                // 🎯 KURAL: İki takım tutuyorsa 120dk esne, tek takım tutuyorsa 15dk esne
+                if (matchScore === 2 && diff <= 120) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                } 
+                else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                }
             }
         }
     }
