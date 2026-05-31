@@ -151,9 +151,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR
 // =========================================================================
-// =========================================================================
-// 🛠️ YARDIMCI FONKSİYONLAR
-// =========================================================================
 async function uploadToFirebase(sportName, data) {
     try {
         const db = admin.database();
@@ -279,30 +276,18 @@ function calculateLiveMinute(eventData) {
     const code = status?.code;
     const desc = (status?.description || "").toLowerCase();
 
-    // =====================================================================
-    // 1. ÖNCELİKLİ DURUMLAR (Dakikadan bağımsız, ekrana direkt basılacaklar)
-    // =====================================================================
-    
+    // 1. ÖNCELİKLİ DURUMLAR
     if (code === 31 || desc === "halftime") return "İY";
     if (desc.includes("extra time halftime")) return "UZ İY"; 
     
+    // Penaltı anında sadece PEN yazsın
     if (code === 50 || code === 60 || desc.includes("penalt")) {
-        // Penaltı skorlarını Sofascore'dan çekip yeşil kutuya yazdırıyoruz
-        const hPen = eventData.homeScore?.penalties;
-        const aPen = eventData.awayScore?.penalties;
-        
-        if (hPen !== undefined && aPen !== undefined) {
-            return `PEN ${hPen}-${aPen}`; // Örn: PEN 4-3
-        }
-        // Eğer skor henüz girilmediyse, ön yüz gizlemesin diye kesme işaretiyle gönderiyoruz
-        return "PEN'"; 
+        return "PEN"; 
     }
     
     if (code === 34 || desc.includes("awaiting extra time")) return "90+"; 
 
-    // =====================================================================
     // 2. API DOĞRUDAN DAKİKA VERİYORSA
-    // =====================================================================
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
         let min = time.currentMinute;
         
@@ -319,9 +304,7 @@ function calculateLiveMinute(eventData) {
         return String(min) + "'";
     }
 
-    // =====================================================================
-    // 3. FALLBACK: Zaman farkı (timestamp) üzerinden manuel hesaplama
-    // =====================================================================
+    // 3. FALLBACK
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
@@ -348,14 +331,6 @@ function calculateLiveMinute(eventData) {
     return "Canlı";
 }
 
-
-
-
-
-
-// =========================================================================
-// 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
-// =========================================================================
 // =========================================================================
 // 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
 // =========================================================================
@@ -371,8 +346,10 @@ async function checkAndSendNotifications(newMatches) {
             lastMinute: 0 
         };
         
-        let currH = Number(match.homeScore) || 0;
-        let currA = Number(match.awayScore) || 0;
+        // parseInt kullanıyoruz ki "(PEN 3-2)" eklentisi gol matematiğini çökertmesin
+        let currH = parseInt(match.homeScore) || 0;
+        let currA = parseInt(match.awayScore) || 0;
+        
         const liveMin = match.liveMinute || ""; 
         const tObj = match.timeObj || {}; 
         let currentMinNum = tObj.currentMinute || 0;
@@ -389,12 +366,11 @@ async function checkAndSendNotifications(newMatches) {
             match.awayScore = String(currA);
         }
 
-        // =====================================================================
-        // A. STATÜ VE ZAMAN DEĞİŞİKLİKLERİ (İlave Süre, Uzatma, Penaltı vs.)
-        // =====================================================================
-        
         const desc = (match.statusDesc || match.status?.description || "").toLowerCase();
 
+        // =====================================================================
+        // A. STATÜ VE ZAMAN DEĞİŞİKLİKLERİ
+        // =====================================================================
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             const bodyText = `⚽ Maç Başladı!\n${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText);
@@ -407,12 +383,13 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedInjuryTime1 = true;
         }
         else if (match.status === 'inprogress' && (liveMin === "İY" || match.statusCode === 31) && !prev.hasNotifiedHT) {
-            const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            // Bildirim metinlerinde ham match.awayScore kullanıyoruz ki parantez içi görünsün
+            const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && (liveMin !== "İY" && match.statusCode !== 31) && !prev.hasNotifiedSH && match.statusCode === 7) {
-            const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedSH = true;
         }
@@ -422,70 +399,44 @@ async function checkAndSendNotifications(newMatches) {
             await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
             prev.hasNotifiedInjuryTime2 = true;
         }
-        
-        // 9. PENALTILARA GİTTİ (Önce Penaltıyı Kontrol Ediyoruz!)
-        else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || desc.includes("awaiting penalties") || liveMin.includes("PEN")) && !prev.hasNotifiedPenalties) {
-            const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+        else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || desc.includes("awaiting penalties") || liveMin === "PEN") && !prev.hasNotifiedPenalties) {
+            const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedPenalties = true;
         }
-        
-        // 6. MAÇ GERÇEKTEN UZATMALARA GİTTİ (Lig maçlarındaki 90+ değil, gerçek kupa uzatması)
-        // DÜZELTİLDİ: Sadece Code 34, 10 veya açıklamasında extra time geçen maçlar alınır. liveMin === "90+" kaldırıldı.
         else if (match.status === 'inprogress' && (match.statusCode === 34 || match.statusCode === 10 || desc.includes("awaiting extra time")) && !prev.hasNotifiedETWait && !prev.hasNotifiedPenalties) {
-            const bodyText = `⏱️ Maç Uzatmalara Gitti!\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            const bodyText = `⏱️ Maç Uzatmalara Gitti!\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETWait = true;
         }
-        
-        // 7. UZATMA İLK YARI BİTTİ
         else if (match.status === 'inprogress' && (match.statusCode === 40 || liveMin === "UZ İY") && !prev.hasNotifiedETHT) {
-            const bodyText = `⏱️ Uzatma İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            const bodyText = `⏱️ Uzatma İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETHT = true;
         }
-        
-        // 8. UZATMA İKİNCİ YARI BAŞLADI 
-        // DÜZELTİLDİ: currentMinNum > 105 sigortası, sadece maç gerçek bir uzatma evresindeyse (prev.hasNotifiedETWait true ise) çalışmalı.
         else if (match.status === 'inprogress' && (match.statusCode === 11 || match.statusCode === 12 || match.statusCode === 14 || (currentMinNum > 105 && prev.hasNotifiedETWait)) && !prev.hasNotifiedETSH) {
-            const bodyText = `▶️ Uzatma İkinci Yarı Başladı\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            const bodyText = `▶️ Uzatma İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETSH = true;
         }
-
-
-                
-        // 9. PENALTILARA GİTTİ
-        else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || liveMin === "Penaltılar") && !prev.hasNotifiedPenalties) {
-            const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
-            prev.hasNotifiedPenalties = true;
-        }
-                // 10. MAÇ BİTTİ (Bildirim Metni Uzatma/Penaltı durumuna göre değişir)
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
-            // SİGORTA: Sadece bir önceki durumu "inprogress" (canlı) olan maçlar bittiğinde bildirim at.
             if (prev.status === 'inprogress') {
-                let bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                let bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
                 if (prev.hasNotifiedPenalties) {
-                    bodyText = `🏁 Maç Sonucu (Penaltılarla)\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                    bodyText = `🏁 Maç Sonucu (Penaltılarla)\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
                 } else if (prev.hasNotifiedETWait) {
-                    bodyText = `🏁 Maç Sonucu (Uzatmalarla)\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                    bodyText = `🏁 Maç Sonucu (Uzatmalarla)\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
                 }
                 await sendPush(matchIdStr, appTitle, bodyText);
             }
-            // Bildirim atılmasa bile (önceden bitmiş maçsa) işlendi olarak işaretle ki bir daha sormasın
             prev.hasNotifiedFinished = true; 
         }
 
-
-                // =====================================================================
+        // =====================================================================
         // B. GOL VE SKOR DEĞİŞİKLİĞİ (Sadece CANLI maçlarda çalışır!)
         // =====================================================================
-        
-        // SİGORTA 1: Sadece 'inprogress' (canlı) olan maçlarda gol ara.
-        // SİGORTA 2: prev.status !== null (Sunucu yeni açıldığında eski golleri yeni sanıp spamlamasını önler)
         if (match.status === 'inprogress' && prev.status !== null) {
-            
+            // currH ve currA parseInt edilmiş halleridir, gol hesabı bunlarla yapılır.
             if (prev.homeScore !== currH || prev.awayScore !== currA) {
                 const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
 
@@ -506,7 +457,8 @@ async function checkAndSendNotifications(newMatches) {
                     
                     const homeScored = currH > prev.homeScore;
                     const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
-                    const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                    // Gol bildiriminde de match.homeScore ve match.awayScore kullanılır ki penaltı skorları görünsün
+                    const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
                     await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
                     pendingGoalCancel.delete(matchIdStr);
                 } else {
@@ -519,7 +471,7 @@ async function checkAndSendNotifications(newMatches) {
                             const homeCancelled = currH < prev.homeScore;
                             const awayCancelled = currA < prev.awayScore;
                             const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
-                            const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                            const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
                             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
                         } else {
                             pendingGoalCancel.delete(matchIdStr);
@@ -529,10 +481,8 @@ async function checkAndSendNotifications(newMatches) {
             }
         }
 
-
-        // 🆕 TÜM YENİ DURUMLAR HAFIZAYA KAYDEDİLİYOR
         previousMatchStates.set(matchIdStr, {
-            status: match.status, homeScore: currH, awayScore: currA,
+            status: match.status, homeScore: currH, awayScore: currA, // Hafızaya her zaman saf int değerleri yazılır
             hasNotifiedStart: prev.hasNotifiedStart, 
             hasNotifiedHT: prev.hasNotifiedHT, 
             hasNotifiedSH: prev.hasNotifiedSH, 
@@ -551,8 +501,6 @@ async function checkAndSendNotifications(newMatches) {
     saveState();
 }
 
-
-
 const lastNotificationTime = new Map();
 async function sendPush(id, title, body, imageUrl = null) {
     const now = Date.now();
@@ -562,7 +510,6 @@ async function sendPush(id, title, body, imageUrl = null) {
     try {
         const payload = {
             topic: `match_${id}`,
-            // 🚀 ANDROID İÇİN GİZLİ VERİ PAKETİ (Java servisimiz bunu yakalayacak)
             data: { 
                 matchId: String(id), 
                 type: "match_update",
@@ -570,20 +517,21 @@ async function sendPush(id, title, body, imageUrl = null) {
                 body: body,
                 imageUrl: imageUrl || ""
             },
-            // 🚀 iOS İÇİN STANDART BİLDİRİM (Apple bunu istiyor)
             apns: { 
                 payload: { 
                     aps: { 
-                        alert: { title: title, body: body }, // iOS metinleri buradan okur
+                        alert: { title: title, body: body },
                         "mutable-content": 1, 
-                        "badge": 0 
-                    } 
+                        sound: "default"
+                    },
+                    matchId: String(id),
+                    type: "match_update"
                 }
             }
         };
 
         if (imageUrl) {
-            payload.apns.fcm_options = { image: imageUrl };
+            payload.apns.fcmOptions = { imageUrl: imageUrl };
         }
 
         await admin.messaging().send(payload);
@@ -595,30 +543,23 @@ async function sendPush(id, title, body, imageUrl = null) {
 }
 
 // =========================================================================
-// 🆕 SONRAKİ MAÇI BULMA FONKSİYONU (GECİKMELER İÇİN DÜZELTİLDİ)
+// 🆕 SONRAKİ MAÇI BULMA FONKSİYONU
 // =========================================================================
 function findNextMatchTime(cache, now = Date.now()) {
     let nextTime = null;
     
     for (const match of cache.values()) {
         if (match.status === 'notstarted' || match.status === 'delayed') {
-            
-            // MAÇIN SAATİ GELDİ VEYA GEÇTİ AMA BAŞLAMADI (GECİKME DURUMU)
-            // Sistemi uyanık tutmak ve 10 dakikalık döngüyü sürdürmek için hedef zamanı "şu an" yapıyoruz.
             if (match.timestamp <= now) {
                 return now; 
             }
-
-            // MAÇ GELECEKTEYSE (Normal Senaryo)
             if (!nextTime || match.timestamp < nextTime) {
                 nextTime = match.timestamp;
             }
         }
     }
-    
     return nextTime;
 }
-
 
 function hasTodayMatches(cache) {
     const today = getTRDate(0);
@@ -707,6 +648,13 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         
         futbolMatchesLog.push({ home: translateTeam(hName), away: translateTeam(aName), kanal: finalBroadcaster, source: result.source });
         
+        let finalHomeScore = (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-";
+        let finalAwayScore = (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-";
+
+        if (e.homeScore?.penalties !== undefined && e.awayScore?.penalties !== undefined) {
+            finalAwayScore = `${finalAwayScore} (PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
+        }
+
         globalFootballCache.set(e.id, {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
@@ -720,8 +668,8 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
             awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
-            homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
-            awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
+            homeScore: finalHomeScore,
+            awayScore: finalAwayScore,
             tournament: cleanTournamentName,
             timeObj: e.time
         });
@@ -1191,24 +1139,21 @@ async function main() {
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
             }
             
-                        // =========================================================================
+            // =========================================================================
             // 5️⃣ SLEEP LOGIC (DİNAMİK HESAPLAMA)
             // =========================================================================
             let sleepTime = TEN_MIN_MS; // Varsayılanı 10 dakika (maksimum uyku) yapıyoruz
 
-            // Futbol için 1 dakikalık sıkı takibe ihtiyaç var mı?
             const isFootballActive = sportUpdateStatus.football.hasLiveMatch || 
                 (sportUpdateStatus.football.nextMatchTime && now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 12));
 
             if (isFootballActive) {
-                // Eğer futbol canlıysa veya başlamak üzereyse kaçarı yok, 1 dakika uyuyacağız.
                 sleepTime = ONE_MIN_MS;
                 console.log("⚡ Aktif futbol takibi, 1 dakika sonra kontrol...");
             } 
             else if (sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball || 
                      sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) {
                 
-                // Futbol yok ama basketbol veya tenis var. Bir sonraki API sorgusuna ne kadar kalmış hesaplayalım.
                 let timeToNextBask = TEN_MIN_MS;
                 let timeToNextTen = TEN_MIN_MS;
 
@@ -1220,24 +1165,19 @@ async function main() {
                     timeToNextTen = TEN_MIN_MS - (now - sportUpdateStatus.tennis.lastQuickUpdate);
                 }
 
-                // Hangisinin vakti daha yakınsa o kadar uyumalıyız
                 sleepTime = Math.min(timeToNextBask, timeToNextTen);
-
-                // Matematiksel güvenlik önlemi: Kalan süre 1 dakikanın altına düşerse minimum 1 dk uyu (anlık sıfıra inip döngüyü kilitlemesin)
                 if (sleepTime < ONE_MIN_MS) sleepTime = ONE_MIN_MS;
 
                 const sleepMin = Math.ceil(sleepTime / 60000);
                 console.log(`⏱️ Basketbol/Tenis takibi: Terminal beklemede, sonraki uyandırma ${sleepMin} dakika sonra...`);
             } 
             else {
-                // Hiçbir spor dalında canlı veya yaklaşan maç yok
                 console.log("💤 Hiç maç yok, 10 dakika derin uyku modu...");
             }
 
             await new Promise(r => setTimeout(r, sleepTime));
             iteration++;
 
-            
         } catch (e) { 
             console.error("🚨 Hata:", e.message); 
             await new Promise(r => setTimeout(r, ONE_MIN_MS));
