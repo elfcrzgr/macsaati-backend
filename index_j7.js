@@ -728,6 +728,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         }
         const status = e.status.type;
         const isLive = status === 'inprogress';
+        const isSuspended = status === 'suspended' || status === 'interrupted' || status === 'abandoned';
         const leagueId = e.tournament?.uniqueTournament?.id;
         const hName = e.homeTeam.name || "";
         const aName = e.awayTeam.name || "";
@@ -762,6 +763,11 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         let finalHomeScore = (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-";
         let finalAwayScore = (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-";
 
+        // YENİ: Maç durdurulmuşsa (isSuspended) skoru silme, olduğu gibi bırak
+        let finalHomeScore = (isLive || status === 'finished' || isSuspended) ? String(e.homeScore?.display ?? "0") : "-";
+        let finalAwayScore = (isLive || status === 'finished' || isSuspended) ? String(e.awayScore?.display ?? "0") : "-";
+
+
         if (e.homeScore?.penalties !== undefined && e.awayScore?.penalties !== undefined) {
             finalAwayScore = `${finalAwayScore}\n(PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
         }
@@ -787,6 +793,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             isElite: ELITE_FOOT_IDS.includes(leagueId),
             status: status,
             statusCode: e.status?.code,
+            liveMinute: isLive ? calculateLiveMinute(e) : (isSuspended ? "Durduruldu" : ""),
             liveMinute: isLive ? calculateLiveMinute(e) : "",
             fixedDate: dayTR,
             fixedTime: timeString,
