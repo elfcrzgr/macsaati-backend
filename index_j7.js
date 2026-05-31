@@ -760,8 +760,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         
         futbolMatchesLog.push({ home: translatedHome, away: translatedAway, kanal: finalBroadcaster, source: result.source });
         
-        let finalHomeScore = (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-";
-        let finalAwayScore = (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-";
+        
 
         // YENİ: Maç durdurulmuşsa (isSuspended) skoru silme, olduğu gibi bırak
         let finalHomeScore = (isLive || status === 'finished' || isSuspended) ? String(e.homeScore?.display ?? "0") : "-";
@@ -794,7 +793,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             status: status,
             statusCode: e.status?.code,
             liveMinute: isLive ? calculateLiveMinute(e) : (isSuspended ? "Durduruldu" : ""),
-            liveMinute: isLive ? calculateLiveMinute(e) : "",
             fixedDate: dayTR,
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
