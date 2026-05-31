@@ -219,16 +219,19 @@ const teamTranslations = {
     // Kuzey ve Orta Amerika (CONCACAF)
     "usa": "ABD", "united states": "ABD", "mexico": "Meksika", "canada": "Kanada",
     "costa rica": "Kosta Rika", "jamaica": "Jamaika", "panama": "Panama", "honduras": "Honduras",
+    "curaçao": "Curaçao", "curacao": "Curaçao",
 
     // Afrika (CAF)
     "senegal": "Senegal", "morocco": "Fas", "egypt": "Mısır", "tunisia": "Tunus", "nigeria": "Nijerya",
     "cameroon": "Kamerun", "ghana": "Gana", "ivory coast": "Fildişi Sahili", "cote d'ivoire": "Fildişi Sahili",
-    "algeria": "Cezayir", "south africa": "Güney Afrika", "mali": "Mali",
+    "algeria": "Cezayir", "south africa": "Güney Afrika", "mali": "Mali", 
+    "cabo verde": "Yeşil Burun Adaları", "cape verde": "Yeşil Burun Adaları", "madagascar": "Madagaskar",
 
     // Asya ve Okyanusya (AFC & OFC)
     "south korea": "Güney Kore", "japan": "Japonya", "iran": "İran", "saudi arabia": "Suudi Arabistan",
     "qatar": "Katar", "australia": "Avustralya", "new zealand": "Yeni Zelanda", "china": "Çin",
-    "india": "Hindistan", "united arab emirates": "BAE", "uae": "BAE", "iraq": "Irak", "uzbekistan": "Özbekistan"
+    "india": "Hindistan", "united arab emirates": "BAE", "uae": "BAE", "iraq": "Irak", "uzbekistan": "Özbekistan",
+    "jordan": "Ürdün", "maldives": "Maldivler", "afghanistan": "Afganistan"
 };
 
 const translateTeam = (name) => {
