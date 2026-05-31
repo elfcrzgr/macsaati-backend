@@ -231,7 +231,6 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
         return isPlayoff ? "Exxen" : "S Sport Plus";
     }
-    // YENİ: Türkiye'nin hazırlık maçları için TRT yayıncı garantisi
     if ((utId === 299 || utId === 851) && isTurkey) return "TRT Spor / TRT 1";
     
     const staticConfigs = {
@@ -274,6 +273,24 @@ const footballLeagues = {
     851: "Uluslararası Hazırlık Maçları"
 };
 
+// 🌟 YENİ: MİLLİ TAKIM SÖZLÜĞÜ (API gizli kodu göndermezse devreye girecek)
+const nationalTeamCodes = {
+    "turkey": "tr", "türkiye": "tr", "germany": "de", "france": "fr", "england": "en",
+    "spain": "es", "italy": "it", "portugal": "pt", "netherlands": "nl", "belgium": "be",
+    "switzerland": "ch", "austria": "at", "croatia": "hr", "brazil": "br", "argentina": "ar",
+    "usa": "us", "mexico": "mx", "ecuador": "ec", "south korea": "kr", "japan": "jp",
+    "uruguay": "uy", "colombia": "co", "chile": "cl", "peru": "pe", "venezuela": "ve",
+    "paraguay": "py", "bolivia": "bo", "canada": "ca", "costa rica": "cr", "jamaica": "jm",
+    "senegal": "sn", "morocco": "ma", "egypt": "eg", "tunisia": "tn", "nigeria": "ng",
+    "cameroon": "cm", "ghana": "gh", "ivory coast": "ci", "algeria": "dz", "australia": "au",
+    "iran": "ir", "saudi arabia": "sa", "qatar": "qa", "denmark": "dk", "sweden": "se",
+    "norway": "no", "poland": "pl", "ukraine": "ua", "czech republic": "cz", "serbia": "rs",
+    "hungary": "hu", "romania": "ro", "greece": "gr", "slovakia": "sk", "wales": "wa",
+    "scotland": "sc", "ireland": "ie", "albania": "al", "north macedonia": "mk", "georgia": "ge",
+    "slovenia": "si", "iceland": "is", "finland": "fi", "bosnia & herzegovina": "ba", 
+    "bosnia and herzegovina": "ba", "new zealand": "nz"
+};
+
 function calculateLiveMinute(eventData) {
     if (!eventData) return "";
     const status = eventData.status;
@@ -281,18 +298,15 @@ function calculateLiveMinute(eventData) {
     const code = status?.code;
     const desc = (status?.description || "").toLowerCase();
 
-    // 1. ÖNCELİKLİ DURUMLAR
     if (code === 31 || desc === "halftime") return "İY";
     if (desc.includes("extra time halftime")) return "UZ İY"; 
     
-    // Penaltı anında sadece PEN yazsın
     if (code === 50 || code === 60 || desc.includes("penalt")) {
         return "PEN"; 
     }
     
     if (code === 34 || desc.includes("awaiting extra time")) return "90+"; 
 
-    // 2. API DOĞRUDAN DAKİKA VERİYORSA
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
         let min = time.currentMinute;
         
@@ -309,7 +323,6 @@ function calculateLiveMinute(eventData) {
         return String(min) + "'";
     }
 
-    // 3. FALLBACK
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
@@ -354,7 +367,6 @@ async function checkAndSendNotifications(newMatches) {
         let currH = parseInt(match.homeScore) || 0;
         let currA = parseInt(match.awayScore) || 0;
         
-        // YENİ: Bildirimde takım adı alt satıra kaymasın diye \n karakterini sadece push mesajında boşluğa çeviriyoruz.
         const notifAwayScore = String(match.awayScore).replace('\n', ' ');
         
         const liveMin = match.liveMinute || ""; 
@@ -375,9 +387,6 @@ async function checkAndSendNotifications(newMatches) {
 
         const desc = (match.statusDesc || match.status?.description || "").toLowerCase();
 
-        // =====================================================================
-        // A. STATÜ VE ZAMAN DEĞİŞİKLİKLERİ
-        // =====================================================================
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             const bodyText = `⚽ Maç Başladı!\n${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText);
@@ -438,9 +447,6 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedFinished = true; 
         }
 
-        // =====================================================================
-        // B. GOL VE SKOR DEĞİŞİKLİĞİ (Sadece CANLI maçlarda çalışır!)
-        // =====================================================================
         if (match.status === 'inprogress' && prev.status !== null) {
             if (prev.homeScore !== currH || prev.awayScore !== currA) {
                 const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
@@ -594,17 +600,16 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     saveState();
 
     let allEvents = [];
-    let successfulDates = []; // YENİ: Sadece verisi çekilebilen günleri hafızada tutacağız
+    let successfulDates = [];
     
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
-            successfulDates.push(date); // Veri başarıyla geldi
+            successfulDates.push(date);
         }
     }
 
-    // GÜVENLİK KALKANI: Eğer API bizi engellediyse ve veri gelmediyse, mevcut hafızayı bozmadan çık
     if (successfulDates.length === 0) {
         console.log("⚠️ API yanıt vermedi. Mevcut futbol önbelleği korunuyor.");
         return { 
@@ -614,7 +619,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         };
     }
 
-    // YENİ: Sadece verisi BAŞARIYLA çekilen günlerin eski önbelleğini sil
     for (const [id, match] of globalFootballCache.entries()) {
         if (successfulDates.includes(match.fixedDate)) {
             globalFootballCache.delete(id);
@@ -672,20 +676,18 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             finalAwayScore = `${finalAwayScore}\n(PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
         }
 
-       // 🌟 YENİ VE KUSURSUZ: MİLLİ TAKIM BAYRAK YÖNLENDİRMESİ
-        // Varsayılan olarak kulüp logosu klasörüne (ID ile) bakar
+        // 🌟 YENİ VE KUSURSUZ: MİLLİ TAKIM BAYRAK YÖNLENDİRMESİ
         let homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png`;
         let awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png`;
 
-        // DÜZELTME: Sadece lig ID'sine değil, takımın milli takım olup olmadığına bakıyoruz!
-        // Eğer turnuva listemizdeyse VEYA SofaScore bu takımı milli takım olarak işaretlediyse...
         if (NATIONAL_LEAGUES.includes(leagueId) || e.homeTeam.national === true || e.awayTeam.national === true) {
             
-            // Ülke kodunu al (örn: 'kr' South Korea için)
-            const hCode = e.homeTeam?.country?.alpha2?.toLowerCase();
-            const aCode = e.awayTeam?.country?.alpha2?.toLowerCase();
+            const hNameLower = (e.homeTeam.name || "").toLowerCase();
+            const aNameLower = (e.awayTeam.name || "").toLowerCase();
             
-            // Eğer kod varsa tenis (bayrak) klasörüne yönlendir, yoksa varsayılanda kalsın
+            const hCode = e.homeTeam?.country?.alpha2?.toLowerCase() || nationalTeamCodes[hNameLower];
+            const aCode = e.awayTeam?.country?.alpha2?.toLowerCase() || nationalTeamCodes[aNameLower];
+            
             if (hCode) homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${hCode}.png`;
             if (aCode) awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${aCode}.png`;
         }
@@ -700,8 +702,8 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
             broadcaster: finalBroadcaster,
-            homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
-            awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
+            homeTeam: { name: translateTeam(hName), logo: homeLogoUrl },
+            awayTeam: { name: translateTeam(aName), logo: awayLogoUrl },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: finalHomeScore,
             awayScore: finalAwayScore,
@@ -746,7 +748,7 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
     console.log(`🏀 Basketbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
     let allEvents = [];
-    let successfulDates = []; // YENİ EKLENDİ
+    let successfulDates = []; 
 
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`);
@@ -855,7 +857,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
     let rawEvents = [];
     const seenEventIds = new Set();
     let tenisMatchesLog = [];
-    let successfulDates = []; // YENİ EKLENDİ
+    let successfulDates = []; 
     
     for (const date of targetDates) {
         try {
@@ -883,7 +885,6 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
         };
     }
 
-    // Sadece başarılı çekilen tarihleri sil
     for (const [id, match] of globalTennisCache.entries()) {
         if (successfulDates.includes(match.fixedDate)) {
             globalTennisCache.delete(id);
@@ -1116,9 +1117,6 @@ async function main() {
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
             loadExternalBroadcasters();
             
-            // =========================================================================
-            // 1️⃣ 6 SAATLİK PERİYODİK GÜNCELLEME (4 GÜN VERİ)
-            // =========================================================================
             if (now - lastPeriodicUpdate >= PERIODIC_INTERVAL) {
                 console.log("🔄 [PERİYODİK GÜNCELLEME] 6 Saatlik İçerik Taraması (4 Günlük Veri)");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
@@ -1128,7 +1126,6 @@ async function main() {
                 const tennisResult = await updateTennis(days4);
                 await updateF1();
                 
-                // Sonraki maç zamanlarını güncelle
                 sportUpdateStatus.football.nextMatchTime = footballResult.nextMatchTimestamp;
                 sportUpdateStatus.basketball.nextMatchTime = basketballResult.nextMatchTimestamp;
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
@@ -1138,9 +1135,6 @@ async function main() {
                 lastPeriodicUpdate = now;
             }
             
-            // =========================================================================
-            // 2️⃣ FUTBOL - CANLI MAÇ VARSA HER DAKİKA
-            // =========================================================================
             if (sportUpdateStatus.football.hasLiveMatch) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
                     console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Bugünün verileri güncelleniyor...");
@@ -1150,7 +1144,6 @@ async function main() {
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
                 }
             }
-            // Yaklaşan futbol maçı varsa, saati 1 dk öncesinden itibaren her dakika çek
             else if (sportUpdateStatus.football.nextMatchTime && 
                      now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 1.1)) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
@@ -1162,9 +1155,6 @@ async function main() {
                 }
             }
             
-            // =========================================================================
-            // 3️⃣ BASKETBOL - CANLI MAÇ VARSA HER 10 DAKİKA, YAKLASAN VARSA HER 10 DAKİKA
-            // =========================================================================
             const hasUpcomingBasketball = sportUpdateStatus.basketball.nextMatchTime && 
                                           now >= (sportUpdateStatus.basketball.nextMatchTime - ONE_MIN_MS * 11);
             
@@ -1179,9 +1169,6 @@ async function main() {
                 sportUpdateStatus.basketball.nextMatchTime = basketResult.nextMatchTimestamp;
             }
             
-            // =========================================================================
-            // 4️⃣ TENİS - CANLI MAÇ VARSA HER 10 DAKİKA, YAKLASAN VARSA HER 10 DAKİKA
-            // =========================================================================
             const hasUpcomingTennis = sportUpdateStatus.tennis.nextMatchTime && 
                                       now >= (sportUpdateStatus.tennis.nextMatchTime - ONE_MIN_MS * 11);
             
@@ -1196,10 +1183,7 @@ async function main() {
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
             }
             
-            // =========================================================================
-            // 5️⃣ SLEEP LOGIC (DİNAMİK HESAPLAMA)
-            // =========================================================================
-            let sleepTime = TEN_MIN_MS; // Varsayılanı 10 dakika (maksimum uyku) yapıyoruz
+            let sleepTime = TEN_MIN_MS; 
 
             const isFootballActive = sportUpdateStatus.football.hasLiveMatch || 
                 (sportUpdateStatus.football.nextMatchTime && now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 12));
