@@ -591,17 +591,31 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     }
     saveState();
 
-    for (const [id, match] of globalFootballCache.entries()) {
-        if (targetDates.includes(match.fixedDate)) {
-            globalFootballCache.delete(id);
-        }
-    }
-
     let allEvents = [];
+    let successfulDates = []; // YENİ: Sadece verisi çekilebilen günleri hafızada tutacağız
+    
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
+            successfulDates.push(date); // Veri başarıyla geldi
+        }
+    }
+
+    // GÜVENLİK KALKANI: Eğer API bizi engellediyse ve veri gelmediyse, mevcut hafızayı bozmadan çık
+    if (successfulDates.length === 0) {
+        console.log("⚠️ API yanıt vermedi. Mevcut futbol önbelleği korunuyor.");
+        return { 
+            hasLiveMatch: sportUpdateStatus.football.hasLiveMatch, 
+            nextMatchTimestamp: sportUpdateStatus.football.nextMatchTime, 
+            hasAnyMatches: globalFootballCache.size > 0 
+        };
+    }
+
+    // YENİ: Sadece verisi BAŞARIYLA çekilen günlerin eski önbelleğini sil
+    for (const [id, match] of globalFootballCache.entries()) {
+        if (successfulDates.includes(match.fixedDate)) {
+            globalFootballCache.delete(id);
         }
     }
     
@@ -652,7 +666,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         let finalHomeScore = (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-";
         let finalAwayScore = (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-";
 
-        // YENİ: Uygulamada alt satıra geçmesi için \n karakteri kullanıldı
         if (e.homeScore?.penalties !== undefined && e.awayScore?.penalties !== undefined) {
             finalAwayScore = `${finalAwayScore}\n(PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
         }
@@ -712,17 +725,28 @@ const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 async function updateBasketball(targetDates = [getTRDate(0)]) {
     console.log(`🏀 Basketbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
-    for (const [id, match] of globalBasketballCache.entries()) {
-        if (targetDates.includes(match.fixedDate)) {
-            globalBasketballCache.delete(id);
-        }
-    }
-
     let allEvents = [];
+    let successfulDates = []; // YENİ EKLENDİ
+
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => targetBaskIds.includes(e.tournament?.uniqueTournament?.id)));
+            successfulDates.push(date);
+        }
+    }
+
+    if (successfulDates.length === 0) {
+        console.log("⚠️ API yanıt vermedi. Mevcut basketbol önbelleği korunuyor.");
+        return { 
+            nextMatchTimestamp: sportUpdateStatus.basketball.nextMatchTime, 
+            hasAnyMatches: globalBasketballCache.size > 0 
+        };
+    }
+
+    for (const [id, match] of globalBasketballCache.entries()) {
+        if (successfulDates.includes(match.fixedDate)) {
+            globalBasketballCache.delete(id);
         }
     }
     
@@ -807,16 +831,11 @@ const checkIsEliteMatch = (tournamentName) => {
 
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor... (Taranan gün: ${targetDates.length})`);
-    
-    for (const [id, match] of globalTennisCache.entries()) {
-        if (targetDates.includes(match.fixedDate)) {
-            globalTennisCache.delete(id);
-        }
-    }
 
     let rawEvents = [];
     const seenEventIds = new Set();
     let tenisMatchesLog = [];
+    let successfulDates = []; // YENİ EKLENDİ
     
     for (const date of targetDates) {
         try {
@@ -831,8 +850,24 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                     return true;
                 });
                 rawEvents.push(...filtered);
+                successfulDates.push(date);
             }
         } catch (error) { continue; }
+    }
+
+    if (successfulDates.length === 0) {
+        console.log("⚠️ API yanıt vermedi. Mevcut tenis önbelleği korunuyor.");
+        return { 
+            nextMatchTimestamp: sportUpdateStatus.tennis.nextMatchTime, 
+            hasAnyMatches: globalTennisCache.size > 0 
+        };
+    }
+
+    // Sadece başarılı çekilen tarihleri sil
+    for (const [id, match] of globalTennisCache.entries()) {
+        if (successfulDates.includes(match.fixedDate)) {
+            globalTennisCache.delete(id);
+        }
     }
     
     const detailPromises = rawEvents.map(e =>
