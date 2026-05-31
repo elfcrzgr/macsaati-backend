@@ -1225,7 +1225,6 @@ async function main() {
     let iteration = 1;
     const TEN_MIN_MS = 10 * 60000;     
     const ONE_MIN_MS = 60000;           
-    const PERIODIC_INTERVAL = 6 * 60 * 60 * 1000; // 6 saat
 
     let lastPeriodicUpdate = 0;
 
@@ -1235,8 +1234,38 @@ async function main() {
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
             loadExternalBroadcasters();
             
-            if (now - lastPeriodicUpdate >= PERIODIC_INTERVAL) {
-                console.log("🔄 [PERİYODİK GÜNCELLEME] 6 Saatlik İçerik Taraması (4 Günlük Veri)");
+            // ---------------------------------------------------------
+            // 🔄 YENİ 4 GÜNLÜK PERİYODİK GÜNCELLEME MANTIĞI 
+            // Hedef Saatler: 00:10, 06:10, 12:10, 18:10
+            // ---------------------------------------------------------
+            const d = new Date(now);
+            // Günün başlangıç milisaniyesi (Gece 00:00:00)
+            const startOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+            const msSinceMidnight = now - startOfDay;
+
+            // Gün içindeki hedef zaman dilimleri (Milisaniye cinsinden)
+            const TARGET_TIMES = [
+                10 * 60 * 1000,               // 00:10
+                (6 * 60 + 10) * 60 * 1000,    // 06:10
+                (12 * 60 + 10) * 60 * 1000,   // 12:10
+                (18 * 60 + 10) * 60 * 1000    // 18:10
+            ];
+
+            // Şu ana kadar geçilmiş olan en son hedefi bul
+            // Eğer saat 00:00 - 00:09 arasıysa hedef dünün 18:10'udur
+            let activeTarget = startOfDay - (5 * 60 + 50) * 60 * 1000; 
+            for (let i = TARGET_TIMES.length - 1; i >= 0; i--) {
+                if (msSinceMidnight >= TARGET_TIMES[i]) {
+                    activeTarget = startOfDay + TARGET_TIMES[i];
+                    break;
+                }
+            }
+
+            // Eğer son güncelleme zamanı, bu geçilen hedef saatten daha eskiyse GÜNCELLE
+            if (lastPeriodicUpdate < activeTarget) {
+                console.log("🔄 [PERİYODİK GÜNCELLEME] Ana Saat Dilimi (00:10 / 06:10 / 12:10 / 18:10) Tetiklendi!");
+                console.log("📅 4 Günlük Veri Taraması Başlıyor...");
+                
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
                 
                 const footballResult = await updateFootball(days4);
@@ -1252,6 +1281,7 @@ async function main() {
                 
                 lastPeriodicUpdate = now;
             }
+            // ---------------------------------------------------------
             
             if (sportUpdateStatus.football.hasLiveMatch) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
@@ -1345,3 +1375,4 @@ async function main() {
 }
 
 main();
+
