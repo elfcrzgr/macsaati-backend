@@ -914,14 +914,26 @@ const isGarbage = (tourName, catName) => {
     c.includes("ITF") || c.includes("CHALLENGER") || c.includes("UTR");
 };
 
+
 const ELITE_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC", "ATP FINALS", "WTA FINALS", "MONTE CARLO", "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", "MONTREAL", "TORONTO", "SHANGHAI", "PARIS", "MASTERS", "ATP 1000", "WTA 1000", "ATP 500", "WTA 500"];
+
+// İstenmeyen alt kategoriler (Çiftler listeye dahil edilmedi, elit maçsa gösterilecek)
+const EXCLUDE_KEYWORDS = ["GIRLS", "BOYS", "JUNIOR", "YOUTH", "WHEELCHAIR", "LEGENDS", "EXHIBITION", "QUALIFYING", "QUALIFIERS"];
 
 const checkIsEliteMatch = (tournamentName) => {
     if (!tournamentName) return false;
     const nameUpper = tournamentName.toUpperCase();
-    if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
+    
+    // 1. Adım: Gençler, tekerlekli sandalye veya elemeler gibi istenmeyenleri direkt ele
+    if (EXCLUDE_KEYWORDS.some(keyword => nameUpper.includes(keyword))) {
+        return false;
+    }
+
+    // 2. Adım: Kalan temiz isimler içinde elit kelime var mı kontrol et
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
+
+
 
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor... (Taranan gün: ${targetDates.length})`);
