@@ -541,6 +541,16 @@ async function checkAndSendNotifications(newMatches) {
                     const pending = pendingGoalCancel.get(matchIdStr);
                     if (!pending) {
                         pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA });
+                        
+                        // 🛠️ DÜZELTME BURADA:
+                        // Eğer bu bir API dalgalanmasıysa, döngü sonunda hatalı düşük skorun 
+                        // kaydedilmesini engellemek için mevcut değerleri eski yüksek skora geri çekiyoruz.
+                        currH = prev.homeScore;
+                        currA = prev.awayScore;
+                        match.homeScore = String(currH);
+                        match.awayScore = String(currA);
+                        
+                        
                     } else {
                         if (pending.homeScore === currH && pending.awayScore === currA) {
                             pendingGoalCancel.delete(matchIdStr);
@@ -551,6 +561,14 @@ async function checkAndSendNotifications(newMatches) {
                             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
                         } else {
                             pendingGoalCancel.delete(matchIdStr);
+                            
+                            
+                             // 🛠️ DÜZELTME BURADA:
+                            // İptal mekanizmasından çıkarken de güvenli limanda (eski skorda) kalalım.
+                            currH = prev.homeScore;
+                            currA = prev.awayScore;
+                            match.homeScore = String(currH);
+                            match.awayScore = String(currA);
                         }
                     }
                 }
