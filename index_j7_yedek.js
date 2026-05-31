@@ -117,40 +117,67 @@ function loadExternalBroadcasters() {
 }
 
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
-    if (!externalBroadcasters[dateStr]) return { kanal: fallback, source: "fallback" };
-    const dayData = externalBroadcasters[dateStr];
-    if (!dayData || !dayData.matches) return { kanal: fallback, source: "fallback" };
-
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
-    const hName = (homeName || "").toLowerCase().trim();
-    const aName = (awayName || "").toLowerCase().trim();
+    const [cH, cM] = cleanTime.split(':').map(Number);
+    
+    const toTR = (str) => str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase().trim();
+    const hName = toTR(homeName || "");
+    const aName = toTR(awayName || "");
 
-    for (const m of dayData.matches) {
-        if (m.spor && m.spor.toLowerCase() === sportCategory.toLowerCase()) {
-            const mTime = (m.saat || "").replace('.', ':').trim();
-            const mTitle = (m.mac || "").toLowerCase();
+    // 🌟 SAĞLIKLI KAPSAM: Sadece Bugün ve Yarın (Tarih karmaşasını çözer)
+    const getSafeDates = (baseStr) => {
+        const [y, m, d] = baseStr.split('-').map(Number);
+        return [0, 1].map(offset => {
+            const dateObj = new Date(y, m - 1, d + offset);
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${month}-${day}`;
+        });
+    };
 
-            const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
-            const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
+    const safeDates = getSafeDates(dateStr);
 
-            const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
-            const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+    for (const dateKey of safeDates) {
+        const dayData = externalBroadcasters[dateKey];
+        if (!dayData || !dayData.matches) continue;
 
-            const isNameMatch = mTitle.includes(hCheck) || mTitle.includes(aCheck) || anyHomeWordMatch || anyAwayWordMatch;
-            const isTimeMatch = (mTime === cleanTime);
-            const isTennis = (sportCategory.toLowerCase() === "tenis");
+        for (const m of dayData.matches) {
+            if (m.spor && toTR(m.spor) === toTR(sportCategory)) {
+                const mTime = (m.saat || "").replace('.', ':').trim();
+                const [mH, mM] = mTime.split(':').map(Number);
+                const mTitle = toTR(m.mac || "");
 
-            if ((isTimeMatch || isTennis) && isNameMatch) {
-                return { kanal: m.yayin, source: "sporekrani" };
+                const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
+                const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
+
+                const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+                const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+
+                const matchHome = mTitle.includes(hCheck) || anyHomeWordMatch;
+                const matchAway = mTitle.includes(aCheck) || anyAwayWordMatch;
+                const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
+
+                let diff = 9999;
+                if (mTime === cleanTime) {
+                    diff = 0;
+                } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) {
+                    diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM));
+                    if (diff > 1000) diff = Math.abs(diff - 1440); 
+                }
+
+                // 🎯 KURAL: İki takım tutuyorsa 120dk esne, tek takım tutuyorsa 15dk esne
+                if (matchScore === 2 && diff <= 120) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                } 
+                else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                }
             }
         }
     }
     return { kanal: fallback, source: "fallback" };
 }
 
-// =========================================================================
-// 🛠️ YARDIMCI FONKSİYONLAR
-// =========================================================================
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR
 // =========================================================================
@@ -201,21 +228,57 @@ const getTRDate = (offset = 0) => {
 // ⚽ FUTBOL YAPILANDIRMASI
 // =========================================================================
 const teamTranslations = {
-    "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere",
-    "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", "netherlands": "Hollanda",
-    "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", "croatia": "Hırvatistan",
-    "brazil": "Brezilya", "argentina": "Arjantin", "usa": "ABD" 
+    // Avrupa (UEFA)
+    "turkey": "Türkiye", "türkiye": "Türkiye", "germany": "Almanya", "france": "Fransa", 
+    "england": "İngiltere", "spain": "İspanya", "italy": "İtalya", "portugal": "Portekiz", 
+    "netherlands": "Hollanda", "belgium": "Belçika", "switzerland": "İsviçre", "austria": "Avusturya", 
+    "croatia": "Hırvatistan", "denmark": "Danimarka", "sweden": "İsveç", "norway": "Norveç", 
+    "poland": "Polonya", "ukraine": "Ukrayna", "czech republic": "Çekya", "czechia": "Çekya", 
+    "serbia": "Sırbistan", "hungary": "Macaristan", "romania": "Romanya", "greece": "Yunanistan", 
+    "slovakia": "Slovakya", "wales": "Galler", "scotland": "İskoçya", "ireland": "İrlanda", 
+    "northern ireland": "Kuzey İrlanda", "albania": "Arnavutluk", "north macedonia": "Kuzey Makedonya", 
+    "georgia": "Gürcistan", "slovenia": "Slovenya", "iceland": "İzlanda", "finland": "Finlandiya", 
+    "bosnia & herzegovina": "Bosna-Hersek", "bosnia and herzegovina": "Bosna-Hersek", 
+    "montenegro": "Karadağ", "bulgaria": "Bulgaristan", "russia": "Rusya",
+
+    // Güney Amerika (CONMEBOL)
+    "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya",
+    "chile": "Şili", "peru": "Peru", "venezuela": "Venezuela", "paraguay": "Paraguay",
+    "bolivia": "Bolivya", "ecuador": "Ekvador",
+
+    // Kuzey ve Orta Amerika (CONCACAF)
+    "usa": "ABD", "united states": "ABD", "mexico": "Meksika", "canada": "Kanada",
+    "costa rica": "Kosta Rika", "jamaica": "Jamaika", "panama": "Panama", "honduras": "Honduras",
+    "curaçao": "Curaçao", "curacao": "Curaçao",
+
+    // Afrika (CAF)
+    "senegal": "Senegal", "morocco": "Fas", "egypt": "Mısır", "tunisia": "Tunus", "nigeria": "Nijerya",
+    "cameroon": "Kamerun", "ghana": "Gana", "ivory coast": "Fildişi Sahili", "cote d'ivoire": "Fildişi Sahili",
+    "algeria": "Cezayir", "south africa": "Güney Afrika", "mali": "Mali", 
+    "cabo verde": "Yeşil Burun Adaları", "cape verde": "Yeşil Burun Adaları", "madagascar": "Madagaskar",
+
+    // Asya ve Okyanusya (AFC & OFC)
+    "south korea": "Güney Kore", "japan": "Japonya", "iran": "İran", "saudi arabia": "Suudi Arabistan",
+    "qatar": "Katar", "australia": "Avustralya", "new zealand": "Yeni Zelanda", "china": "Çin",
+    "india": "Hindistan", "united arab emirates": "BAE", "uae": "BAE", "iraq": "Irak", "uzbekistan": "Özbekistan",
+    "jordan": "Ürdün", "maldives": "Maldivler", "afghanistan": "Afganistan"
 };
 
 const translateTeam = (name) => {
     if (!name) return name;
-    let translatedName = name;
-    const cleanSearch = name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    const lowerName = name.toLowerCase().trim();
+    
+    // 1. Önce tam isim eşleşmesi ara (Örn: "North Macedonia" -> "Kuzey Makedonya")
+    if (teamTranslations[lowerName]) {
+        return teamTranslations[lowerName];
+    }
+
+    // 2. Kısmi eşleşme (Örn: "Turkey U21" -> "Türkiye U21")
     for (const [eng, tr] of Object.entries(teamTranslations)) {
-        if (cleanSearch.includes(eng)) {
-            translatedName = name.replace(new RegExp(eng, 'i'), tr);
-            if (cleanSearch === eng) return tr;
-            return translatedName;
+        // Kelime bazlı arama yapıyoruz ki karışıklık olmasın
+        const regex = new RegExp(`\\b${eng}\\b`, 'i');
+        if (regex.test(name)) {
+            return name.replace(regex, tr);
         }
     }
     return name;
@@ -234,6 +297,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
         return isPlayoff ? "Exxen" : "S Sport Plus";
     }
+    
     
     const staticConfigs = {
         34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii",
@@ -254,7 +318,9 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
 };
 
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363];
-const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938];
+const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851];
+
+const NATIONAL_LEAGUES = [16, 1, 133, 270, 299, 851];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 const footballLeagues = {
@@ -269,32 +335,83 @@ const footballLeagues = {
     270: "Afrika Uluslar Kupası", 299: "Uluslararası Hazırlık Maçları",
     6516: "Kulüp Hazırlık Maçları", 325: "Brezilya Serie A",
     155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship",
-    335: "Fransa Kupası", 955: "Suudi Arabistan Pro Lig", 18: "İngiltere Championship"
+    335: "Fransa Kupası", 955: "Suudi Arabistan Pro Lig", 18: "İngiltere Championship",
+    851: "Uluslararası Hazırlık Maçları"
+};
+
+// 🌟 YENİ: MİLLİ TAKIM SÖZLÜĞÜ (API gizli kodu göndermezse devreye girecek)
+const nationalTeamCodes = {
+    "turkey": "tr", "türkiye": "tr", "germany": "de", "france": "fr", "england": "en",
+    "spain": "es", "italy": "it", "portugal": "pt", "netherlands": "nl", "belgium": "be",
+    "switzerland": "ch", "austria": "at", "croatia": "hr", "brazil": "br", "argentina": "ar",
+    "usa": "us", "mexico": "mx", "ecuador": "ec", "south korea": "kr", "japan": "jp",
+    "uruguay": "uy", "colombia": "co", "chile": "cl", "peru": "pe", "venezuela": "ve",
+    "paraguay": "py", "bolivia": "bo", "canada": "ca", "costa rica": "cr", "jamaica": "jm",
+    "senegal": "sn", "morocco": "ma", "egypt": "eg", "tunisia": "tn", "nigeria": "ng",
+    "cameroon": "cm", "ghana": "gh", "ivory coast": "ci", "algeria": "dz", "australia": "au",
+    "iran": "ir", "saudi arabia": "sa", "qatar": "qa", "denmark": "dk", "sweden": "se",
+    "norway": "no", "poland": "pl", "ukraine": "ua", "czech republic": "cz", "serbia": "rs",
+    "hungary": "hu", "romania": "ro", "greece": "gr", "slovakia": "sk", "wales": "wa",
+    "scotland": "sc", "ireland": "ie", "albania": "al", "north macedonia": "mk", "georgia": "ge",
+    "slovenia": "si", "iceland": "is", "finland": "fi", "bosnia & herzegovina": "ba", 
+    "bosnia and herzegovina": "ba", "new zealand": "nz"
 };
 
 function calculateLiveMinute(eventData) {
     if (!eventData) return "";
     const status = eventData.status;
     const time = eventData.time;
+    const code = status?.code;
+    const desc = (status?.description || "").toLowerCase();
+
+    if (code === 31 || desc === "halftime") return "İY";
+    if (desc.includes("extra time halftime")) return "UZ İY"; 
+    
+    if (code === 50 || code === 60 || desc.includes("penalt")) {
+        return "PEN"; 
+    }
+    
+    if (code === 34 || desc.includes("awaiting extra time")) return "90+"; 
+
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
-        return String(time.currentMinute) + "'";
+        let min = time.currentMinute;
+        
+        if (time.addedTime && min === 90) return "90+";
+        if (time.addedTime && min === 45) return "45+";
+        if (time.addedTime && min === 105) return "105+";
+        if (time.addedTime && min === 120) return "120+";
+
+        if (code === 6 && min > 45) return "45+";
+        if (code === 7 && min > 90) return "90+";
+        if ((code === 10 || code === 13 || desc.includes("1st extra")) && min > 105) return "105+";
+        if ((code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) && min > 120) return "120+";
+
+        return String(min) + "'";
     }
-    if (status?.code === 31 || status?.description === "Halftime") {
-        return "İY";
-    }
+
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
         let calcMinute = Math.floor(elapsed / 60);
+        
         if (calcMinute < 0) calcMinute = 0;
-        if (status?.code === 7) {
+
+        if (code === 6) {
+            return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
+        } else if (code === 7) {
             calcMinute += 45;
             return calcMinute > 90 ? "90+" : String(calcMinute) + "'";
-        } else if (status?.code === 6) {
-            return calcMinute > 45 ? "45+" : String(calcMinute) + "'";
+        } else if (code === 10 || code === 13 || desc.includes("1st extra")) { 
+            calcMinute += 90;
+            return calcMinute > 105 ? "105+" : String(calcMinute) + "'";
+        } else if (code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) { 
+            calcMinute += 105;
+            return calcMinute > 120 ? "120+" : String(calcMinute) + "'";
         }
+
         return String(calcMinute) + "'";
     }
+
     return "Canlı";
 }
 
@@ -309,11 +426,15 @@ async function checkAndSendNotifications(newMatches) {
             status: null, homeScore: 0, awayScore: 0, 
             hasNotifiedStart: false, hasNotifiedHT: false, hasNotifiedSH: false, hasNotifiedFinished: false,
             hasNotifiedInjuryTime1: false, hasNotifiedInjuryTime2: false,
+            hasNotifiedETWait: false, hasNotifiedETHT: false, hasNotifiedETSH: false, hasNotifiedPenalties: false,
             lastMinute: 0 
         };
         
-        let currH = Number(match.homeScore) || 0;
-        let currA = Number(match.awayScore) || 0;
+        let currH = parseInt(match.homeScore) || 0;
+        let currA = parseInt(match.awayScore) || 0;
+        
+        const notifAwayScore = String(match.awayScore).replace('\n', ' ');
+        
         const liveMin = match.liveMinute || ""; 
         const tObj = match.timeObj || {}; 
         let currentMinNum = tObj.currentMinute || 0;
@@ -330,6 +451,8 @@ async function checkAndSendNotifications(newMatches) {
             match.awayScore = String(currA);
         }
 
+        const desc = (match.statusDesc || match.status?.description || "").toLowerCase();
+
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             const bodyText = `⚽ Maç Başladı!\n${match.homeTeam.name} - ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText);
@@ -342,12 +465,12 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedInjuryTime1 = true;
         }
         else if (match.status === 'inprogress' && (liveMin === "İY" || match.statusCode === 31) && !prev.hasNotifiedHT) {
-            const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+            const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
-        else if (match.status === 'inprogress' && prev.hasNotifiedHT && (liveMin !== "İY" && match.statusCode !== 31) && !prev.hasNotifiedSH) {
-            const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+        else if (match.status === 'inprogress' && prev.hasNotifiedHT && (liveMin !== "İY" && match.statusCode !== 31) && !prev.hasNotifiedSH && match.statusCode === 7) {
+            const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedSH = true;
         }
@@ -357,65 +480,95 @@ async function checkAndSendNotifications(newMatches) {
             await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
             prev.hasNotifiedInjuryTime2 = true;
         }
-
-        else if (match.status === 'inprogress' && (prev.homeScore !== currH || prev.awayScore !== currA)) {
-            const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
-
-            if (isGoal) {
-                let scorerName = match.homeTeam.name;
-                try {
-                    const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
-                    if (incidentsData && incidentsData.incidents) {
-                        const goals = incidentsData.incidents.filter(inc => inc.incidentType === 'goal');
-                        if (goals.length > 0) {
-                            const lastGoal = goals.sort((a, b) => (b.time + (b.addedTime || 0)) - (a.time + (a.addedTime || 0)))[0];
-                            if (lastGoal && lastGoal.player && lastGoal.player.name) {
-                                scorerName = lastGoal.player.name;
-                            }
-                        }
-                    }
-                } catch (e) { }
-                
-                const homeScored = currH > prev.homeScore;
-                const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
-                const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
-                pendingGoalCancel.delete(matchIdStr);
-
-            } else {
-                const pending = pendingGoalCancel.get(matchIdStr);
-                if (!pending) {
-                    pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA });
-                } else {
-                    if (pending.homeScore === currH && pending.awayScore === currA) {
-                        pendingGoalCancel.delete(matchIdStr);
-                        const homeCancelled = currH < prev.homeScore;
-                        const awayCancelled = currA < prev.awayScore;
-                        const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
-                        const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
-                        await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
-                    } else {
-                        pendingGoalCancel.delete(matchIdStr);
-                    }
-                }
-            }
+        else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || desc.includes("awaiting penalties") || liveMin === "PEN") && !prev.hasNotifiedPenalties) {
+            const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            prev.hasNotifiedPenalties = true;
+        }
+        else if (match.status === 'inprogress' && (match.statusCode === 34 || match.statusCode === 10 || desc.includes("awaiting extra time")) && !prev.hasNotifiedETWait && !prev.hasNotifiedPenalties) {
+            const bodyText = `⏱️ Maç Uzatmalara Gitti!\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            prev.hasNotifiedETWait = true;
+        }
+        else if (match.status === 'inprogress' && (match.statusCode === 40 || liveMin === "UZ İY") && !prev.hasNotifiedETHT) {
+            const bodyText = `⏱️ Uzatma İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            prev.hasNotifiedETHT = true;
+        }
+        else if (match.status === 'inprogress' && (match.statusCode === 11 || match.statusCode === 12 || match.statusCode === 14 || (currentMinNum > 105 && prev.hasNotifiedETWait)) && !prev.hasNotifiedETSH) {
+            const bodyText = `▶️ Uzatma İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            prev.hasNotifiedETSH = true;
         }
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
             if (prev.status === 'inprogress') {
-                const bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${currH} - ${currA} ${match.awayTeam.name}`;
+                let bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+                if (prev.hasNotifiedPenalties) {
+                    bodyText = `🏁 Maç Sonucu (Penaltılarla)\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+                } else if (prev.hasNotifiedETWait) {
+                    bodyText = `🏁 Maç Sonucu (Uzatmalarla)\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+                }
                 await sendPush(matchIdStr, appTitle, bodyText);
             }
             prev.hasNotifiedFinished = true; 
         }
 
+        if (match.status === 'inprogress' && prev.status !== null) {
+            if (prev.homeScore !== currH || prev.awayScore !== currA) {
+                const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
+
+                if (isGoal) {
+                    let scorerName = match.homeTeam.name;
+                    try {
+                        const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
+                        if (incidentsData && incidentsData.incidents) {
+                            const goals = incidentsData.incidents.filter(inc => inc.incidentType === 'goal');
+                            if (goals.length > 0) {
+                                const lastGoal = goals.sort((a, b) => (b.time + (b.addedTime || 0)) - (a.time + (a.addedTime || 0)))[0];
+                                if (lastGoal && lastGoal.player && lastGoal.player.name) {
+                                    scorerName = lastGoal.player.name;
+                                }
+                            }
+                        }
+                    } catch (e) { }
+                    
+                    const homeScored = currH > prev.homeScore;
+                    const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
+                    const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+                    await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
+                    pendingGoalCancel.delete(matchIdStr);
+                } else {
+                    const pending = pendingGoalCancel.get(matchIdStr);
+                    if (!pending) {
+                        pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA });
+                    } else {
+                        if (pending.homeScore === currH && pending.awayScore === currA) {
+                            pendingGoalCancel.delete(matchIdStr);
+                            const homeCancelled = currH < prev.homeScore;
+                            const awayCancelled = currA < prev.awayScore;
+                            const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
+                            const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
+                            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+                        } else {
+                            pendingGoalCancel.delete(matchIdStr);
+                        }
+                    }
+                }
+            }
+        }
+
         previousMatchStates.set(matchIdStr, {
-            status: match.status, homeScore: currH, awayScore: currA,
+            status: match.status, homeScore: currH, awayScore: currA, 
             hasNotifiedStart: prev.hasNotifiedStart, 
             hasNotifiedHT: prev.hasNotifiedHT, 
             hasNotifiedSH: prev.hasNotifiedSH, 
             hasNotifiedFinished: prev.hasNotifiedFinished,
             hasNotifiedInjuryTime1: prev.hasNotifiedInjuryTime1, 
             hasNotifiedInjuryTime2: prev.hasNotifiedInjuryTime2,
+            hasNotifiedETWait: prev.hasNotifiedETWait,
+            hasNotifiedETHT: prev.hasNotifiedETHT,
+            hasNotifiedETSH: prev.hasNotifiedETSH,
+            hasNotifiedPenalties: prev.hasNotifiedPenalties,
             lastMinute: Math.max(currentMinNum, prev.lastMinute || 0),
             date: match.fixedDate || getTRDate(0) 
         });
@@ -423,7 +576,6 @@ async function checkAndSendNotifications(newMatches) {
     
     saveState();
 }
-
 const lastNotificationTime = new Map();
 async function sendPush(id, title, body, imageUrl = null) {
     const now = Date.now();
@@ -433,7 +585,6 @@ async function sendPush(id, title, body, imageUrl = null) {
     try {
         const payload = {
             topic: `match_${id}`,
-            // 🚀 ANDROID İÇİN GİZLİ VERİ PAKETİ (Java servisimiz bunu yakalayacak)
             data: { 
                 matchId: String(id), 
                 type: "match_update",
@@ -441,20 +592,21 @@ async function sendPush(id, title, body, imageUrl = null) {
                 body: body,
                 imageUrl: imageUrl || ""
             },
-            // 🚀 iOS İÇİN STANDART BİLDİRİM (Apple bunu istiyor)
             apns: { 
                 payload: { 
                     aps: { 
-                        alert: { title: title, body: body }, // iOS metinleri buradan okur
+                        alert: { title: title, body: body },
                         "mutable-content": 1, 
-                        "badge": 0 
-                    } 
+                        sound: "default"
+                    },
+                    matchId: String(id),
+                    type: "match_update"
                 }
             }
         };
 
         if (imageUrl) {
-            payload.apns.fcm_options = { image: imageUrl };
+            payload.apns.fcmOptions = { imageUrl: imageUrl };
         }
 
         await admin.messaging().send(payload);
@@ -466,30 +618,23 @@ async function sendPush(id, title, body, imageUrl = null) {
 }
 
 // =========================================================================
-// 🆕 SONRAKİ MAÇI BULMA FONKSİYONU (GECİKMELER İÇİN DÜZELTİLDİ)
+// 🆕 SONRAKİ MAÇI BULMA FONKSİYONU
 // =========================================================================
 function findNextMatchTime(cache, now = Date.now()) {
     let nextTime = null;
     
     for (const match of cache.values()) {
         if (match.status === 'notstarted' || match.status === 'delayed') {
-            
-            // MAÇIN SAATİ GELDİ VEYA GEÇTİ AMA BAŞLAMADI (GECİKME DURUMU)
-            // Sistemi uyanık tutmak ve 10 dakikalık döngüyü sürdürmek için hedef zamanı "şu an" yapıyoruz.
             if (match.timestamp <= now) {
                 return now; 
             }
-
-            // MAÇ GELECEKTEYSE (Normal Senaryo)
             if (!nextTime || match.timestamp < nextTime) {
                 nextTime = match.timestamp;
             }
         }
     }
-    
     return nextTime;
 }
-
 
 function hasTodayMatches(cache) {
     const today = getTRDate(0);
@@ -520,17 +665,29 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     }
     saveState();
 
-    for (const [id, match] of globalFootballCache.entries()) {
-        if (targetDates.includes(match.fixedDate)) {
-            globalFootballCache.delete(id);
-        }
-    }
-
     let allEvents = [];
+    let successfulDates = [];
+    
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
+            successfulDates.push(date);
+        }
+    }
+
+    if (successfulDates.length === 0) {
+        console.log("⚠️ API yanıt vermedi. Mevcut futbol önbelleği korunuyor.");
+        return { 
+            hasLiveMatch: sportUpdateStatus.football.hasLiveMatch, 
+            nextMatchTimestamp: sportUpdateStatus.football.nextMatchTime, 
+            hasAnyMatches: globalFootballCache.size > 0 
+        };
+    }
+
+    for (const [id, match] of globalFootballCache.entries()) {
+        if (successfulDates.includes(match.fixedDate)) {
+            globalFootballCache.delete(id);
         }
     }
     
@@ -573,11 +730,40 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         
         const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
         const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
-        const result = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
+
+        // 🌟 YENİ: İsimleri daha en baştan Türkçeye çeviriyoruz!
+        const translatedHome = translateTeam(hName);
+        const translatedAway = translateTeam(aName);
+
+        // DİKKAT: Sporekrani'na İngilizce (hName) değil, Türkçe isimleri yolluyoruz ki eşleşme bulabilsin.
+        const result = getBroadcasterWithFallback("futbol", dayTR, timeString, translatedHome, translatedAway, fallbackBroadcaster);
         const finalBroadcaster = result.kanal;
         
-        futbolMatchesLog.push({ home: translateTeam(hName), away: translateTeam(aName), kanal: finalBroadcaster, source: result.source });
+        futbolMatchesLog.push({ home: translatedHome, away: translatedAway, kanal: finalBroadcaster, source: result.source });
         
+        let finalHomeScore = (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-";
+        let finalAwayScore = (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-";
+
+        if (e.homeScore?.penalties !== undefined && e.awayScore?.penalties !== undefined) {
+            finalAwayScore = `${finalAwayScore}\n(PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
+        }
+
+        // 🌟 YENİ VE KUSURSUZ: MİLLİ TAKIM BAYRAK YÖNLENDİRMESİ
+        let homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png`;
+        let awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png`;
+
+        if (NATIONAL_LEAGUES.includes(leagueId) || e.homeTeam.national === true || e.awayTeam.national === true) {
+            
+            const hNameLower = (e.homeTeam.name || "").toLowerCase();
+            const aNameLower = (e.awayTeam.name || "").toLowerCase();
+            
+            const hCode = e.homeTeam?.country?.alpha2?.toLowerCase() || nationalTeamCodes[hNameLower];
+            const aCode = e.awayTeam?.country?.alpha2?.toLowerCase() || nationalTeamCodes[aNameLower];
+            
+            if (hCode) homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${hCode}.png`;
+            if (aCode) awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${aCode}.png`;
+        }
+
         globalFootballCache.set(e.id, {
             id: e.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
@@ -588,11 +774,11 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
             broadcaster: finalBroadcaster,
-            homeTeam: { name: translateTeam(hName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png` },
-            awayTeam: { name: translateTeam(aName), logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png` },
+            homeTeam: { name: translatedHome, logo: homeLogoUrl },
+            awayTeam: { name: translatedAway, logo: awayLogoUrl },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
-            homeScore: (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-",
-            awayScore: (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-",
+            homeScore: finalHomeScore,
+            awayScore: finalAwayScore,
             tournament: cleanTournamentName,
             timeObj: e.time
         });
@@ -633,17 +819,28 @@ const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 async function updateBasketball(targetDates = [getTRDate(0)]) {
     console.log(`🏀 Basketbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
-    for (const [id, match] of globalBasketballCache.entries()) {
-        if (targetDates.includes(match.fixedDate)) {
-            globalBasketballCache.delete(id);
-        }
-    }
-
     let allEvents = [];
+    let successfulDates = []; 
+
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/${date}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => targetBaskIds.includes(e.tournament?.uniqueTournament?.id)));
+            successfulDates.push(date);
+        }
+    }
+
+    if (successfulDates.length === 0) {
+        console.log("⚠️ API yanıt vermedi. Mevcut basketbol önbelleği korunuyor.");
+        return { 
+            nextMatchTimestamp: sportUpdateStatus.basketball.nextMatchTime, 
+            hasAnyMatches: globalBasketballCache.size > 0 
+        };
+    }
+
+    for (const [id, match] of globalBasketballCache.entries()) {
+        if (successfulDates.includes(match.fixedDate)) {
+            globalBasketballCache.delete(id);
         }
     }
     
@@ -710,34 +907,46 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
+// İstenmeyen alt kategoriler (Çiftler hariç tutuldu)
+const EXCLUDE_KEYWORDS = ["GIRLS", "BOYS", "JUNIOR", "YOUTH", "WHEELCHAIR", "LEGENDS", "EXHIBITION", "QUALIFYING", "QUALIFIERS"];
+
 const isGarbage = (tourName, catName) => {
     const t = (tourName || "").toUpperCase();
     const c = (catName || "").toUpperCase();
-    return t.includes("ITF") || t.includes("CHALLENGER") || t.includes("UTR") ||
-    c.includes("ITF") || c.includes("CHALLENGER") || c.includes("UTR");
+    
+    // 1. Orijinal çöpler (ITF, Challenger, UTR)
+    const hasGarbageWord = t.includes("ITF") || t.includes("CHALLENGER") || t.includes("UTR") ||
+                           c.includes("ITF") || c.includes("CHALLENGER") || c.includes("UTR");
+                           
+    // 2. Yeni dışlananlar (Girls, Boys, Wheelchair vb.)
+    const hasExcludedWord = EXCLUDE_KEYWORDS.some(keyword => t.includes(keyword) || c.includes(keyword));
+
+    return hasGarbageWord || hasExcludedWord;
 };
 
+
+
 const ELITE_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC", "ATP FINALS", "WTA FINALS", "MONTE CARLO", "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", "MONTREAL", "TORONTO", "SHANGHAI", "PARIS", "MASTERS", "ATP 1000", "WTA 1000", "ATP 500", "WTA 500"];
+
+
 
 const checkIsEliteMatch = (tournamentName) => {
     if (!tournamentName) return false;
     const nameUpper = tournamentName.toUpperCase();
-    if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
+
+
+
+
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor... (Taranan gün: ${targetDates.length})`);
-    
-    for (const [id, match] of globalTennisCache.entries()) {
-        if (targetDates.includes(match.fixedDate)) {
-            globalTennisCache.delete(id);
-        }
-    }
 
     let rawEvents = [];
     const seenEventIds = new Set();
     let tenisMatchesLog = [];
+    let successfulDates = []; 
     
     for (const date of targetDates) {
         try {
@@ -752,8 +961,23 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                     return true;
                 });
                 rawEvents.push(...filtered);
+                successfulDates.push(date);
             }
         } catch (error) { continue; }
+    }
+
+    if (successfulDates.length === 0) {
+        console.log("⚠️ API yanıt vermedi. Mevcut tenis önbelleği korunuyor.");
+        return { 
+            nextMatchTimestamp: sportUpdateStatus.tennis.nextMatchTime, 
+            hasAnyMatches: globalTennisCache.size > 0 
+        };
+    }
+
+    for (const [id, match] of globalTennisCache.entries()) {
+        if (successfulDates.includes(match.fixedDate)) {
+            globalTennisCache.delete(id);
+        }
     }
     
     const detailPromises = rawEvents.map(e =>
@@ -982,9 +1206,6 @@ async function main() {
             console.log(`\n[İterasyon ${iteration}] ${new Date().toLocaleTimeString('tr-TR')}`);
             loadExternalBroadcasters();
             
-            // =========================================================================
-            // 1️⃣ 6 SAATLİK PERİYODİK GÜNCELLEME (4 GÜN VERİ)
-            // =========================================================================
             if (now - lastPeriodicUpdate >= PERIODIC_INTERVAL) {
                 console.log("🔄 [PERİYODİK GÜNCELLEME] 6 Saatlik İçerik Taraması (4 Günlük Veri)");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
@@ -994,7 +1215,6 @@ async function main() {
                 const tennisResult = await updateTennis(days4);
                 await updateF1();
                 
-                // Sonraki maç zamanlarını güncelle
                 sportUpdateStatus.football.nextMatchTime = footballResult.nextMatchTimestamp;
                 sportUpdateStatus.basketball.nextMatchTime = basketballResult.nextMatchTimestamp;
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
@@ -1004,9 +1224,6 @@ async function main() {
                 lastPeriodicUpdate = now;
             }
             
-            // =========================================================================
-            // 2️⃣ FUTBOL - CANLI MAÇ VARSA HER DAKİKA
-            // =========================================================================
             if (sportUpdateStatus.football.hasLiveMatch) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
                     console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Bugünün verileri güncelleniyor...");
@@ -1016,7 +1233,6 @@ async function main() {
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
                 }
             }
-            // Yaklaşan futbol maçı varsa, saati 1 dk öncesinden itibaren her dakika çek
             else if (sportUpdateStatus.football.nextMatchTime && 
                      now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 1.1)) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
@@ -1028,9 +1244,6 @@ async function main() {
                 }
             }
             
-            // =========================================================================
-            // 3️⃣ BASKETBOL - CANLI MAÇ VARSA HER 10 DAKİKA, YAKLASAN VARSA HER 10 DAKİKA
-            // =========================================================================
             const hasUpcomingBasketball = sportUpdateStatus.basketball.nextMatchTime && 
                                           now >= (sportUpdateStatus.basketball.nextMatchTime - ONE_MIN_MS * 11);
             
@@ -1045,9 +1258,6 @@ async function main() {
                 sportUpdateStatus.basketball.nextMatchTime = basketResult.nextMatchTimestamp;
             }
             
-            // =========================================================================
-            // 4️⃣ TENİS - CANLI MAÇ VARSA HER 10 DAKİKA, YAKLASAN VARSA HER 10 DAKİKA
-            // =========================================================================
             const hasUpcomingTennis = sportUpdateStatus.tennis.nextMatchTime && 
                                       now >= (sportUpdateStatus.tennis.nextMatchTime - ONE_MIN_MS * 11);
             
@@ -1062,24 +1272,18 @@ async function main() {
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
             }
             
-                        // =========================================================================
-            // 5️⃣ SLEEP LOGIC (DİNAMİK HESAPLAMA)
-            // =========================================================================
-            let sleepTime = TEN_MIN_MS; // Varsayılanı 10 dakika (maksimum uyku) yapıyoruz
+            let sleepTime = TEN_MIN_MS; 
 
-            // Futbol için 1 dakikalık sıkı takibe ihtiyaç var mı?
             const isFootballActive = sportUpdateStatus.football.hasLiveMatch || 
                 (sportUpdateStatus.football.nextMatchTime && now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 12));
 
             if (isFootballActive) {
-                // Eğer futbol canlıysa veya başlamak üzereyse kaçarı yok, 1 dakika uyuyacağız.
                 sleepTime = ONE_MIN_MS;
                 console.log("⚡ Aktif futbol takibi, 1 dakika sonra kontrol...");
             } 
             else if (sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball || 
                      sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) {
                 
-                // Futbol yok ama basketbol veya tenis var. Bir sonraki API sorgusuna ne kadar kalmış hesaplayalım.
                 let timeToNextBask = TEN_MIN_MS;
                 let timeToNextTen = TEN_MIN_MS;
 
@@ -1091,24 +1295,19 @@ async function main() {
                     timeToNextTen = TEN_MIN_MS - (now - sportUpdateStatus.tennis.lastQuickUpdate);
                 }
 
-                // Hangisinin vakti daha yakınsa o kadar uyumalıyız
                 sleepTime = Math.min(timeToNextBask, timeToNextTen);
-
-                // Matematiksel güvenlik önlemi: Kalan süre 1 dakikanın altına düşerse minimum 1 dk uyu (anlık sıfıra inip döngüyü kilitlemesin)
                 if (sleepTime < ONE_MIN_MS) sleepTime = ONE_MIN_MS;
 
                 const sleepMin = Math.ceil(sleepTime / 60000);
                 console.log(`⏱️ Basketbol/Tenis takibi: Terminal beklemede, sonraki uyandırma ${sleepMin} dakika sonra...`);
             } 
             else {
-                // Hiçbir spor dalında canlı veya yaklaşan maç yok
                 console.log("💤 Hiç maç yok, 10 dakika derin uyku modu...");
             }
 
             await new Promise(r => setTimeout(r, sleepTime));
             iteration++;
 
-            
         } catch (e) { 
             console.error("🚨 Hata:", e.message); 
             await new Promise(r => setTimeout(r, ONE_MIN_MS));
