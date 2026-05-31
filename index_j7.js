@@ -346,9 +346,11 @@ async function checkAndSendNotifications(newMatches) {
             lastMinute: 0 
         };
         
-        // parseInt kullanıyoruz ki "(PEN 3-2)" eklentisi gol matematiğini çökertmesin
         let currH = parseInt(match.homeScore) || 0;
         let currA = parseInt(match.awayScore) || 0;
+        
+        // YENİ: Bildirimde takım adı alt satıra kaymasın diye \n karakterini sadece push mesajında boşluğa çeviriyoruz.
+        const notifAwayScore = String(match.awayScore).replace('\n', ' ');
         
         const liveMin = match.liveMinute || ""; 
         const tObj = match.timeObj || {}; 
@@ -383,13 +385,12 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedInjuryTime1 = true;
         }
         else if (match.status === 'inprogress' && (liveMin === "İY" || match.statusCode === 31) && !prev.hasNotifiedHT) {
-            // Bildirim metinlerinde ham match.awayScore kullanıyoruz ki parantez içi görünsün
-            const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+            const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedHT = true;
         }
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && (liveMin !== "İY" && match.statusCode !== 31) && !prev.hasNotifiedSH && match.statusCode === 7) {
-            const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+            const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedSH = true;
         }
@@ -400,32 +401,32 @@ async function checkAndSendNotifications(newMatches) {
             prev.hasNotifiedInjuryTime2 = true;
         }
         else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || desc.includes("awaiting penalties") || liveMin === "PEN") && !prev.hasNotifiedPenalties) {
-            const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+            const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedPenalties = true;
         }
         else if (match.status === 'inprogress' && (match.statusCode === 34 || match.statusCode === 10 || desc.includes("awaiting extra time")) && !prev.hasNotifiedETWait && !prev.hasNotifiedPenalties) {
-            const bodyText = `⏱️ Maç Uzatmalara Gitti!\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+            const bodyText = `⏱️ Maç Uzatmalara Gitti!\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETWait = true;
         }
         else if (match.status === 'inprogress' && (match.statusCode === 40 || liveMin === "UZ İY") && !prev.hasNotifiedETHT) {
-            const bodyText = `⏱️ Uzatma İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+            const bodyText = `⏱️ Uzatma İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETHT = true;
         }
         else if (match.status === 'inprogress' && (match.statusCode === 11 || match.statusCode === 12 || match.statusCode === 14 || (currentMinNum > 105 && prev.hasNotifiedETWait)) && !prev.hasNotifiedETSH) {
-            const bodyText = `▶️ Uzatma İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+            const bodyText = `▶️ Uzatma İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
             prev.hasNotifiedETSH = true;
         }
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
             if (prev.status === 'inprogress') {
-                let bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+                let bodyText = `🏁 Maç Bitti\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
                 if (prev.hasNotifiedPenalties) {
-                    bodyText = `🏁 Maç Sonucu (Penaltılarla)\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+                    bodyText = `🏁 Maç Sonucu (Penaltılarla)\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
                 } else if (prev.hasNotifiedETWait) {
-                    bodyText = `🏁 Maç Sonucu (Uzatmalarla)\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+                    bodyText = `🏁 Maç Sonucu (Uzatmalarla)\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
                 }
                 await sendPush(matchIdStr, appTitle, bodyText);
             }
@@ -436,7 +437,6 @@ async function checkAndSendNotifications(newMatches) {
         // B. GOL VE SKOR DEĞİŞİKLİĞİ (Sadece CANLI maçlarda çalışır!)
         // =====================================================================
         if (match.status === 'inprogress' && prev.status !== null) {
-            // currH ve currA parseInt edilmiş halleridir, gol hesabı bunlarla yapılır.
             if (prev.homeScore !== currH || prev.awayScore !== currA) {
                 const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
 
@@ -457,8 +457,7 @@ async function checkAndSendNotifications(newMatches) {
                     
                     const homeScored = currH > prev.homeScore;
                     const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
-                    // Gol bildiriminde de match.homeScore ve match.awayScore kullanılır ki penaltı skorları görünsün
-                    const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+                    const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
                     await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
                     pendingGoalCancel.delete(matchIdStr);
                 } else {
@@ -471,7 +470,7 @@ async function checkAndSendNotifications(newMatches) {
                             const homeCancelled = currH < prev.homeScore;
                             const awayCancelled = currA < prev.awayScore;
                             const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
-                            const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${match.homeScore} - ${match.awayScore} ${match.awayTeam.name}`;
+                            const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
                             await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
                         } else {
                             pendingGoalCancel.delete(matchIdStr);
@@ -482,7 +481,7 @@ async function checkAndSendNotifications(newMatches) {
         }
 
         previousMatchStates.set(matchIdStr, {
-            status: match.status, homeScore: currH, awayScore: currA, // Hafızaya her zaman saf int değerleri yazılır
+            status: match.status, homeScore: currH, awayScore: currA, 
             hasNotifiedStart: prev.hasNotifiedStart, 
             hasNotifiedHT: prev.hasNotifiedHT, 
             hasNotifiedSH: prev.hasNotifiedSH, 
@@ -500,7 +499,6 @@ async function checkAndSendNotifications(newMatches) {
     
     saveState();
 }
-
 const lastNotificationTime = new Map();
 async function sendPush(id, title, body, imageUrl = null) {
     const now = Date.now();
@@ -651,8 +649,9 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         let finalHomeScore = (isLive || status === 'finished') ? String(e.homeScore?.display ?? "0") : "-";
         let finalAwayScore = (isLive || status === 'finished') ? String(e.awayScore?.display ?? "0") : "-";
 
+        // YENİ: Uygulamada alt satıra geçmesi için \n karakteri kullanıldı
         if (e.homeScore?.penalties !== undefined && e.awayScore?.penalties !== undefined) {
-            finalAwayScore = `${finalAwayScore} (PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
+            finalAwayScore = `${finalAwayScore}\n(PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
         }
 
         globalFootballCache.set(e.id, {
