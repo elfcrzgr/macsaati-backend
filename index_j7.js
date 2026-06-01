@@ -540,31 +540,40 @@ async function checkAndSendNotifications(newMatches) {
                 } else {
                     const pending = pendingGoalCancel.get(matchIdStr);
                     if (!pending) {
-                        pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA });
+                        // İlk defa skor düştü. API dalgalanması olabilir, gizlice beklemeye alıyoruz.
+                        pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA, firstSeen: Date.now() });
                         
-                        // 🛠️ DÜZELTME BURADA:
-                        // Eğer bu bir API dalgalanmasıysa, döngü sonunda hatalı düşük skorun 
-                        // kaydedilmesini engellemek için mevcut değerleri eski yüksek skora geri çekiyoruz.
+                        // Hatalı düşük skoru eziyoruz (Sahte gol bildirimini engellemek için kalkan devrede)
                         currH = prev.homeScore;
                         currA = prev.awayScore;
                         match.homeScore = String(currH);
                         match.awayScore = String(currA);
                         
-                        
                     } else {
                         if (pending.homeScore === currH && pending.awayScore === currA) {
-                            pendingGoalCancel.delete(matchIdStr);
-                            const homeCancelled = currH < prev.homeScore;
-                            const awayCancelled = currA < prev.awayScore;
-                            const cancelledTeamName = homeCancelled ? match.homeTeam.name : (awayCancelled ? match.awayTeam.name : "İptal");
-                            const bodyText = `🚫 GOL İPTALİ! (${cancelledTeamName})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
-                            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+                            // Skor hala düşük geliyor. Süreyi kontrol et:
+                            const elapsed = Date.now() - pending.firstSeen;
+                            
+                            if (elapsed >= 120000) { 
+                                // 2 Dakika (120.000 ms) doldu. Bu gerçek bir iptal.
+                                pendingGoalCancel.delete(matchIdStr);
+                                
+                                // 🔇 BİLDİRİM ATMIYORUZ!
+                                // Sadece currH ve currA'yı serbest bırakıyoruz ki Firebase'e ve ekrana düşük skor yansısın.
+                                match.homeScore = String(currH);
+                                match.awayScore = String(currA);
+                            } else {
+                                // Henüz 2 dakika dolmadı. Kalkanı korumaya devam et.
+                                currH = prev.homeScore;
+                                currA = prev.awayScore;
+                                match.homeScore = String(currH);
+                                match.awayScore = String(currA);
+                            }
                         } else {
+                            // 2 dakika dolmadan skor tekrar değişti (Büyük ihtimalle API kendine geldi ve skoru yükseltti)
+                            // İptal listesinden çıkar ve güvenli limanda kal.
                             pendingGoalCancel.delete(matchIdStr);
                             
-                            
-                             // 🛠️ DÜZELTME BURADA:
-                            // İptal mekanizmasından çıkarken de güvenli limanda (eski skorda) kalalım.
                             currH = prev.homeScore;
                             currA = prev.awayScore;
                             match.homeScore = String(currH);
