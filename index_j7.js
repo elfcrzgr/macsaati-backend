@@ -584,7 +584,10 @@ async function checkAndSendNotifications(newMatches) {
     
     saveState();
 }
+
 const lastNotificationTime = new Map();
+
+// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS Bildirim Sorunu Çözümü 
 async function sendPush(id, title, body, imageUrl = null) {
     const now = Date.now();
     const lastTime = lastNotificationTime.get(id) || 0;
@@ -601,11 +604,16 @@ async function sendPush(id, title, body, imageUrl = null) {
                 imageUrl: imageUrl || ""
             },
             apns: { 
+                headers: {
+                    "apns-push-type": "alert", // 🚀 Apple'a bunun arka plan değil görsel bildirim olduğunu söyler
+                    "apns-priority": "10"      // 🚀 Hemen iletilmesini sağlar
+                },
                 payload: { 
                     aps: { 
                         alert: { title: title, body: body },
                         "mutable-content": 1, 
-                        sound: "default"
+                        sound: "default",
+                        category: "MATCH_UPDATE" // 🚀 Kategori belirterek iOS tarafının tanınmasını sağla
                     },
                     matchId: String(id),
                     type: "match_update"
@@ -751,7 +759,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         let finalHomeScore = (isLive || status === 'finished' || isSuspended) ? String(e.homeScore?.display ?? "0") : "-";
         let finalAwayScore = (isLive || status === 'finished' || isSuspended) ? String(e.awayScore?.display ?? "0") : "-";
 
-        // 🚀 GÜNCELLEME: Penaltı skorlarını tenisteki gibi "setScores" dizisine alıyoruz.
         let matchSets = [];
         if (e.homeScore?.penalties !== undefined && e.awayScore?.penalties !== undefined) {
             matchSets.push(`PEN ${e.homeScore.penalties}-${e.awayScore.penalties}`);
@@ -787,7 +794,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: finalHomeScore,
             awayScore: finalAwayScore,
-            setScores: matchSets, // 🚀 EKLENDİ! Penaltı skoru artık burada.
+            setScores: matchSets,
             tournament: cleanTournamentName,
             timeObj: e.time
         });
