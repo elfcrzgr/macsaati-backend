@@ -585,9 +585,9 @@ async function checkAndSendNotifications(newMatches) {
     saveState();
 }
 
+// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS Bildirim Sorunu KESİN Çözümü 
 const lastNotificationTime = new Map();
 
-// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS Bildirim Sorunu Çözümü 
 async function sendPush(id, title, body, imageUrl = null) {
     const now = Date.now();
     const lastTime = lastNotificationTime.get(id) || 0;
@@ -596,6 +596,14 @@ async function sendPush(id, title, body, imageUrl = null) {
     try {
         const payload = {
             topic: `match_${id}`,
+            
+            // 🌟 İŞTE EKSİK OLAN VE iOS'U UYANDIRACAK ANA BLOK 🌟
+            notification: {
+                title: title,
+                body: body
+            },
+            
+            // Android ve uygulama içi yönlendirmeler için gizli veriler
             data: { 
                 matchId: String(id), 
                 type: "match_update",
@@ -603,17 +611,18 @@ async function sendPush(id, title, body, imageUrl = null) {
                 body: body,
                 imageUrl: imageUrl || ""
             },
+            
             apns: { 
                 headers: {
-                    "apns-push-type": "alert", // 🚀 Apple'a bunun arka plan değil görsel bildirim olduğunu söyler
-                    "apns-priority": "10"      // 🚀 Hemen iletilmesini sağlar
+                    "apns-push-type": "alert", 
+                    "apns-priority": "10"      
                 },
                 payload: { 
                     aps: { 
                         alert: { title: title, body: body },
                         "mutable-content": 1, 
                         sound: "default",
-                        category: "MATCH_UPDATE" // 🚀 Kategori belirterek iOS tarafının tanınmasını sağla
+                        category: "MATCH_UPDATE" 
                     },
                     matchId: String(id),
                     type: "match_update"
@@ -621,18 +630,19 @@ async function sendPush(id, title, body, imageUrl = null) {
             }
         };
 
+        // Görsel varsa hem iOS hem Android için evrensel ekleme yapıyoruz
         if (imageUrl) {
             payload.apns.fcmOptions = { imageUrl: imageUrl };
+            payload.android = { notification: { imageUrl: imageUrl } };
         }
 
         await admin.messaging().send(payload);
         lastNotificationTime.set(id, now);
-        console.log(`✅ [BİLDİRİM] ${title}: ${body}`);
+        console.log(`✅ [BİLDİRİM GÖNDERİLDİ] ${title}: ${body}`);
     } catch (e) { 
         console.error("❌ Bildirim Hatası:", e.message); 
     }
 }
-
 // =========================================================================
 // 🆕 SONRAKİ MAÇI BULMA FONKSİYONU
 // =========================================================================
