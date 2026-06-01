@@ -124,7 +124,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const hName = toTR(homeName || "");
     const aName = toTR(awayName || "");
 
-    // 🌟 SAĞLIKLI KAPSAM: Sadece Bugün ve Yarın (Tarih karmaşasını çözer)
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
         return [0, 1].map(offset => {
@@ -165,7 +164,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                     if (diff > 1000) diff = Math.abs(diff - 1440); 
                 }
 
-                // 🎯 KURAL: İki takım tutuyorsa 120dk esne, tek takım tutuyorsa 15dk esne
                 if (matchScore === 2 && diff <= 120) {
                     return { kanal: m.yayin, source: "sporekrani" };
                 } 
@@ -268,14 +266,11 @@ const translateTeam = (name) => {
     if (!name) return name;
     const lowerName = name.toLowerCase().trim();
     
-    // 1. Önce tam isim eşleşmesi ara (Örn: "North Macedonia" -> "Kuzey Makedonya")
     if (teamTranslations[lowerName]) {
         return teamTranslations[lowerName];
     }
 
-    // 2. Kısmi eşleşme (Örn: "Turkey U21" -> "Türkiye U21")
     for (const [eng, tr] of Object.entries(teamTranslations)) {
-        // Kelime bazlı arama yapıyoruz ki karışıklık olmasın
         const regex = new RegExp(`\\b${eng}\\b`, 'i');
         if (regex.test(name)) {
             return name.replace(regex, tr);
@@ -297,7 +292,6 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
         return isPlayoff ? "Exxen" : "S Sport Plus";
     }
-    
     
     const staticConfigs = {
         34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii",
@@ -339,7 +333,6 @@ const footballLeagues = {
     851: "Uluslararası Hazırlık Maçları"
 };
 
-// 🌟 YENİ: MİLLİ TAKIM SÖZLÜĞÜ (API gizli kodu göndermezse devreye girecek)
 const nationalTeamCodes = {
     "turkey": "tr", "türkiye": "tr", "germany": "de", "france": "fr", "england": "en",
     "spain": "es", "italy": "it", "portugal": "pt", "netherlands": "nl", "belgium": "be",
@@ -540,10 +533,7 @@ async function checkAndSendNotifications(newMatches) {
                 } else {
                     const pending = pendingGoalCancel.get(matchIdStr);
                     if (!pending) {
-                        // İlk defa skor düştü. API dalgalanması olabilir, gizlice beklemeye alıyoruz.
                         pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA, firstSeen: Date.now() });
-                        
-                        // Hatalı düşük skoru eziyoruz (Sahte gol bildirimini engellemek için kalkan devrede)
                         currH = prev.homeScore;
                         currA = prev.awayScore;
                         match.homeScore = String(currH);
@@ -551,29 +541,20 @@ async function checkAndSendNotifications(newMatches) {
                         
                     } else {
                         if (pending.homeScore === currH && pending.awayScore === currA) {
-                            // Skor hala düşük geliyor. Süreyi kontrol et:
                             const elapsed = Date.now() - pending.firstSeen;
                             
                             if (elapsed >= 120000) { 
-                                // 2 Dakika (120.000 ms) doldu. Bu gerçek bir iptal.
                                 pendingGoalCancel.delete(matchIdStr);
-                                
-                                // 🔇 BİLDİRİM ATMIYORUZ!
-                                // Sadece currH ve currA'yı serbest bırakıyoruz ki Firebase'e ve ekrana düşük skor yansısın.
                                 match.homeScore = String(currH);
                                 match.awayScore = String(currA);
                             } else {
-                                // Henüz 2 dakika dolmadı. Kalkanı korumaya devam et.
                                 currH = prev.homeScore;
                                 currA = prev.awayScore;
                                 match.homeScore = String(currH);
                                 match.awayScore = String(currA);
                             }
                         } else {
-                            // 2 dakika dolmadan skor tekrar değişti (Büyük ihtimalle API kendine geldi ve skoru yükseltti)
-                            // İptal listesinden çıkar ve güvenli limanda kal.
                             pendingGoalCancel.delete(matchIdStr);
-                            
                             currH = prev.homeScore;
                             currA = prev.awayScore;
                             match.homeScore = String(currH);
@@ -759,28 +740,23 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
         const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
 
-        // 🌟 YENİ: İsimleri daha en baştan Türkçeye çeviriyoruz!
         const translatedHome = translateTeam(hName);
         const translatedAway = translateTeam(aName);
 
-        // DİKKAT: Sporekrani'na İngilizce (hName) değil, Türkçe isimleri yolluyoruz ki eşleşme bulabilsin.
         const result = getBroadcasterWithFallback("futbol", dayTR, timeString, translatedHome, translatedAway, fallbackBroadcaster);
         const finalBroadcaster = result.kanal;
         
         futbolMatchesLog.push({ home: translatedHome, away: translatedAway, kanal: finalBroadcaster, source: result.source });
         
-        
-
-        // YENİ: Maç durdurulmuşsa (isSuspended) skoru silme, olduğu gibi bırak
         let finalHomeScore = (isLive || status === 'finished' || isSuspended) ? String(e.homeScore?.display ?? "0") : "-";
         let finalAwayScore = (isLive || status === 'finished' || isSuspended) ? String(e.awayScore?.display ?? "0") : "-";
 
-
+        // 🚀 GÜNCELLEME: Penaltı skorlarını tenisteki gibi "setScores" dizisine alıyoruz.
+        let matchSets = [];
         if (e.homeScore?.penalties !== undefined && e.awayScore?.penalties !== undefined) {
-            finalAwayScore = `${finalAwayScore}\n(PEN ${e.homeScore.penalties}-${e.awayScore.penalties})`;
+            matchSets.push(`PEN ${e.homeScore.penalties}-${e.awayScore.penalties}`);
         }
 
-        // 🌟 YENİ VE KUSURSUZ: MİLLİ TAKIM BAYRAK YÖNLENDİRMESİ
         let homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png`;
         let awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png`;
 
@@ -811,6 +787,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: finalHomeScore,
             awayScore: finalAwayScore,
+            setScores: matchSets, // 🚀 EKLENDİ! Penaltı skoru artık burada.
             tournament: cleanTournamentName,
             timeObj: e.time
         });
@@ -939,35 +916,21 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
-// 1. KALKAN: Grand Slam'lere sızmaları önlemek için (Bu kelimeler varsa anında reddedilir)
 const EXCLUDE_SUB = ["GIRLS", "BOYS", "JUNIOR", "YOUTH", "WHEELCHAIR", "LEGENDS", "EXHIBITION", "QUALIFYING", "QUALIFIERS"];
-
-// 2. ELİT LİGLER (1000 ve Üstü: Grand Slam'ler, Masters, Finaller, Olimpiyat)
 const ELITE_TOURNAMENTS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC", "ATP FINALS", "WTA FINALS", "MONTE CARLO", "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", "MONTREAL", "TORONTO", "SHANGHAI", "PARIS", "MASTERS", "ATP 1000", "WTA 1000"];
-
-// 3. STANDART LİGLER (500 Seviyesi)
 const STANDARD_TOURNAMENTS = ["ATP 500", "WTA 500"];
 
-// YENİ AKILLI KONTROL FONKSİYONU
 const checkTournamentStatus = (tourName) => {
     const nameUpper = (tourName || "").toUpperCase();
-
-    // Adım 1: İçinde Girls, Boys, Elemeler vs. geçiyorsa turnuva adı ne olursa olsun REDDET
     if (EXCLUDE_SUB.some(kw => nameUpper.includes(kw))) {
         return { isAllowed: false, isElite: false };
     }
-
-    // Adım 2: 1000 ve Üstü (Elit) listesinde mi? (İzin ver ve Elit yap)
     if (ELITE_TOURNAMENTS.some(kw => nameUpper.includes(kw))) {
         return { isAllowed: true, isElite: true };
     }
-
-    // Adım 3: Sadece 500 listesinde mi? (İzin ver ama Elit yapma)
     if (STANDARD_TOURNAMENTS.some(kw => nameUpper.includes(kw))) {
         return { isAllowed: true, isElite: false };
     }
-
-    // Adım 4: Bunların hiçbiri değilse (250'ler, ITF'ler, Üniversite ligleri vs.) REDDET
     return { isAllowed: false, isElite: false };
 };
 
@@ -985,12 +948,9 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             if (data?.events) {
                 const filtered = data.events.filter(e => {
                     const tourName = e.tournament?.name;
-                    // YENİ: Tek bir fonksiyonla hem izin hem elit kontrolü
                     const status = checkTournamentStatus(tourName);
-                    
                     if (!status.isAllowed) return false;
                     if (seenEventIds.has(e.id)) return false;
-                    
                     seenEventIds.add(e.id);
                     return true;
                 });
@@ -1097,7 +1057,6 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             
             tenisMatchesLog.push({ home: hName, away: aName, kanal: finalBroadcaster, source: result.source });
             
-            // YENİ: Cache'e yazarken Elit durumunu objeden alıyoruz
             const statusInfo = checkTournamentStatus(tourName);
 
             globalTennisCache.set(e.id, {
@@ -1260,8 +1219,6 @@ async function main() {
                 (18 * 60 + 10) * 60 * 1000    // 18:10
             ];
 
-            // Şu ana kadar geçilmiş olan en son hedefi bul
-            // Eğer saat 00:00 - 00:09 arasıysa hedef dünün 18:10'udur
             let activeTarget = startOfDay - (5 * 60 + 50) * 60 * 1000; 
             for (let i = TARGET_TIMES.length - 1; i >= 0; i--) {
                 if (msSinceMidnight >= TARGET_TIMES[i]) {
@@ -1270,7 +1227,6 @@ async function main() {
                 }
             }
 
-            // Eğer son güncelleme zamanı, bu geçilen hedef saatten daha eskiyse GÜNCELLE
             if (lastPeriodicUpdate < activeTarget) {
                 console.log("🔄 [PERİYODİK GÜNCELLEME] Ana Saat Dilimi (00:10 / 06:10 / 12:10 / 18:10) Tetiklendi!");
                 console.log("📅 4 Günlük Veri Taraması Başlıyor...");
@@ -1384,4 +1340,3 @@ async function main() {
 }
 
 main();
-
