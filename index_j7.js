@@ -238,6 +238,8 @@ const teamTranslations = {
     "georgia": "Gürcistan", "slovenia": "Slovenya", "iceland": "İzlanda", "finland": "Finlandiya", 
     "bosnia & herzegovina": "Bosna-Hersek", "bosnia and herzegovina": "Bosna-Hersek", 
     "montenegro": "Karadağ", "bulgaria": "Bulgaristan", "russia": "Rusya",
+    "israel": "İsrail", "luxembourg": "Lüksemburg", "cyprus": "Kıbrıs", "andorra": "Andorra", 
+    "liechtenstein": "Lihtenştayn", "azerbaijan": "Azerbaycan", "malta": "Malta", "belarus": "Belarus",
 
     // Güney Amerika (CONMEBOL)
     "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya",
@@ -247,20 +249,29 @@ const teamTranslations = {
     // Kuzey ve Orta Amerika (CONCACAF)
     "usa": "ABD", "united states": "ABD", "mexico": "Meksika", "canada": "Kanada",
     "costa rica": "Kosta Rika", "jamaica": "Jamaika", "panama": "Panama", "honduras": "Honduras",
-    "curaçao": "Curaçao", "curacao": "Curaçao",
+    "curaçao": "Curaçao", "curacao": "Curaçao", "british virgin islands": "Britanya Virjin Adaları",
+    "dominican republic": "Dominik Cumhuriyeti", "el salvador": "El Salvador",
 
     // Afrika (CAF)
     "senegal": "Senegal", "morocco": "Fas", "egypt": "Mısır", "tunisia": "Tunus", "nigeria": "Nijerya",
-    "cameroon": "Kamerun", "ghana": "Gana", "ivory coast": "Fildişi Sahili", "cote d'ivoire": "Fildişi Sahili",
-    "algeria": "Cezayir", "south africa": "Güney Afrika", "mali": "Mali", 
+    "cameroon": "Kamerun", "ghana": "Gana", "algeria": "Cezayir", "south africa": "Güney Afrika", "mali": "Mali", 
     "cabo verde": "Yeşil Burun Adaları", "cape verde": "Yeşil Burun Adaları", "madagascar": "Madagaskar",
+    "dr congo": "Demokratik Kongo", "democratic republic of the congo": "Demokratik Kongo", "guinea": "Gine", 
+    "lesotho": "Lesotho", "kenya": "Kenya", "benin": "Benin", "niger": "Nijer",
+    // Fildişi Sahili varyasyonları (Başlarındaki boşluklar silindi ve hepsi küçük harfe standartlaştırıldı)
+    "ivory coast": "Fildişi Sahili", "cote d'ivoire": "Fildişi Sahili", "côte d'ivoire": "Fildişi Sahili",
 
     // Asya ve Okyanusya (AFC & OFC)
     "south korea": "Güney Kore", "japan": "Japonya", "iran": "İran", "saudi arabia": "Suudi Arabistan",
     "qatar": "Katar", "australia": "Avustralya", "new zealand": "Yeni Zelanda", "china": "Çin",
     "india": "Hindistan", "united arab emirates": "BAE", "uae": "BAE", "iraq": "Irak", "uzbekistan": "Özbekistan",
-    "jordan": "Ürdün", "maldives": "Maldivler", "afghanistan": "Afganistan" , " Côte d'Ivoire": "Fildişi Sahili"
+    "jordan": "Ürdün", "maldives": "Maldivler", "afghanistan": "Afganistan", "philippines": "Filipinler",
+    "guam": "Guam", "bangladesh": "Bangladeş", "pakistan": "Pakistan", "cambodia": "Kamboçya",
+    "bhutan": "Butan", "indonesia": "Endonezya", "oman": "Umman", "tajikistan": "Tacikistan",
+    "syria": "Suriye", "bahrain": "Bahreyn", "hong kong": "Hong Kong", "mongolia": "Moğolistan",
+    "thailand": "Tayland", "kuwait": "Kuveyt"
 };
+
 
 const translateTeam = (name) => {
     if (!name) return name; // Boş veya null ise geri dön
