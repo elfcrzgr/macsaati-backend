@@ -238,7 +238,7 @@ const teamTranslations = {
     "georgia": "Gürcistan", "slovenia": "Slovenya", "iceland": "İzlanda", "finland": "Finlandiya", 
     "bosnia & herzegovina": "Bosna-Hersek", "bosnia and herzegovina": "Bosna-Hersek", 
     "montenegro": "Karadağ", "bulgaria": "Bulgaristan", "russia": "Rusya",
-    "israel": "İsrail", "luxembourg": "Lüksemburg", "cyprus": "Kıbrıs", "andorra": "Andorra", 
+    "israel": "İsrail", "luxembourg": "Lüksemburg", "cyprus": "Kıbrıs Rum Kesimi", "andorra": "Andorra", 
     "liechtenstein": "Lihtenştayn", "azerbaijan": "Azerbaycan", "malta": "Malta", "belarus": "Belarus",
 
     // Güney Amerika (CONMEBOL)
