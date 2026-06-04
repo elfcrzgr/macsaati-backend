@@ -263,21 +263,32 @@ const teamTranslations = {
 };
 
 const translateTeam = (name) => {
-    if (!name) return name;
+    if (!name) return name; // Boş veya null ise geri dön
+    
     const lowerName = name.toLowerCase().trim();
     
+    // 1. Doğrudan Eşleşme (En hızlı ve sorunsuz yol - "Côte d'Ivoire" burada çözülür)
     if (teamTranslations[lowerName]) {
         return teamTranslations[lowerName];
     }
 
+    // 2. Metin İçi Eşleşme (Örn: "Côte d'Ivoire U19" gelirse diye B planı)
+    let translatedName = name; 
+    
     for (const [eng, tr] of Object.entries(teamTranslations)) {
-        const regex = new RegExp(`\\b${eng}\\b`, 'i');
-        if (regex.test(name)) {
-            return name.replace(regex, tr);
+        // Döngüye girmeden önce, eşleşme var mı diye düz metin içinde arıyoruz
+        // Çünkü \b şapkalı ve noktalama işaretli karakterlerde patlıyor.
+        if (translatedName.toLowerCase().includes(eng)) {
+            // Dinamik RegExp oluştururken kelime sınırlarını (\b) çıkardık.
+            // Bunun yerine doğrudan metin eşleştirmesi yapıyoruz.
+            const regex = new RegExp(eng, 'i');
+            translatedName = translatedName.replace(regex, tr);
         }
     }
-    return name;
+    
+    return translatedName;
 };
+
 
 const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     const hn = (hName || "").toLowerCase();
