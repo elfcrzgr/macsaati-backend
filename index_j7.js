@@ -274,30 +274,20 @@ const teamTranslations = {
 
 
 const translateTeam = (name) => {
-    if (!name) return name; // Boş veya null ise geri dön
-    
+    if (!name) return name;
     const lowerName = name.toLowerCase().trim();
     
-    // 1. Doğrudan Eşleşme (En hızlı ve sorunsuz yol - "Côte d'Ivoire" burada çözülür)
     if (teamTranslations[lowerName]) {
         return teamTranslations[lowerName];
     }
 
-    // 2. Metin İçi Eşleşme (Örn: "Côte d'Ivoire U19" gelirse diye B planı)
-    let translatedName = name; 
-    
     for (const [eng, tr] of Object.entries(teamTranslations)) {
-        // Döngüye girmeden önce, eşleşme var mı diye düz metin içinde arıyoruz
-        // Çünkü \b şapkalı ve noktalama işaretli karakterlerde patlıyor.
-        if (translatedName.toLowerCase().includes(eng)) {
-            // Dinamik RegExp oluştururken kelime sınırlarını (\b) çıkardık.
-            // Bunun yerine doğrudan metin eşleştirmesi yapıyoruz.
-            const regex = new RegExp(eng, 'i');
-            translatedName = translatedName.replace(regex, tr);
+        const regex = new RegExp(`\\b${eng}\\b`, 'i');
+        if (regex.test(name)) {
+            return name.replace(regex, tr);
         }
     }
-    
-    return translatedName;
+    return name;
 };
 
 
