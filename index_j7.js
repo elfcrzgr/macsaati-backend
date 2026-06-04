@@ -240,6 +240,7 @@ const teamTranslations = {
     "montenegro": "Karadağ", "bulgaria": "Bulgaristan", "russia": "Rusya",
     "israel": "İsrail", "luxembourg": "Lüksemburg", "cyprus": "Kıbrıs Rum Kesimi", "andorra": "Andorra", 
     "liechtenstein": "Lihtenştayn", "azerbaijan": "Azerbaycan", "malta": "Malta", "belarus": "Belarus",
+    "armenia": "Ermenistan", "kazakhstan": "Kazakistan", "gibraltar": "Cebelitarık",
 
     // Güney Amerika (CONMEBOL)
     "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya",
@@ -251,6 +252,7 @@ const teamTranslations = {
     "costa rica": "Kosta Rika", "jamaica": "Jamaika", "panama": "Panama", "honduras": "Honduras",
     "curaçao": "Curaçao", "curacao": "Curaçao", "british virgin islands": "Britanya Virjin Adaları",
     "dominican republic": "Dominik Cumhuriyeti", "el salvador": "El Salvador",
+    "cayman islands": "Cayman Adaları", "nicaragua": "Nikaragua", "haiti": "Haiti",
 
     // Afrika (CAF)
     "senegal": "Senegal", "morocco": "Fas", "egypt": "Mısır", "tunisia": "Tunus", "nigeria": "Nijerya",
@@ -258,7 +260,8 @@ const teamTranslations = {
     "cabo verde": "Yeşil Burun Adaları", "cape verde": "Yeşil Burun Adaları", "madagascar": "Madagaskar",
     "dr congo": "Demokratik Kongo", "democratic republic of the congo": "Demokratik Kongo", "guinea": "Gine", 
     "lesotho": "Lesotho", "kenya": "Kenya", "benin": "Benin", "niger": "Nijer",
-    // Fildişi Sahili varyasyonları (Başlarındaki boşluklar silindi ve hepsi küçük harfe standartlaştırıldı)
+    "sierra leone": "Sierra Leone", "liberia": "Liberya",
+    // Fildişi Sahili varyasyonları
     "ivory coast": "Fildişi Sahili", "cote d'ivoire": "Fildişi Sahili", "côte d'ivoire": "Fildişi Sahili",
 
     // Asya ve Okyanusya (AFC & OFC)
@@ -269,8 +272,9 @@ const teamTranslations = {
     "guam": "Guam", "bangladesh": "Bangladeş", "pakistan": "Pakistan", "cambodia": "Kamboçya",
     "bhutan": "Butan", "indonesia": "Endonezya", "oman": "Umman", "tajikistan": "Tacikistan",
     "syria": "Suriye", "bahrain": "Bahreyn", "hong kong": "Hong Kong", "mongolia": "Moğolistan",
-    "thailand": "Tayland", "kuwait": "Kuveyt"
+    "thailand": "Tayland", "kuwait": "Kuveyt", "myanmar": "Myanmar"
 };
+
 
 
 const translateTeam = (name) => {
