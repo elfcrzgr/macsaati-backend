@@ -259,7 +259,7 @@ const teamTranslations = {
     "south korea": "Güney Kore", "japan": "Japonya", "iran": "İran", "saudi arabia": "Suudi Arabistan",
     "qatar": "Katar", "australia": "Avustralya", "new zealand": "Yeni Zelanda", "china": "Çin",
     "india": "Hindistan", "united arab emirates": "BAE", "uae": "BAE", "iraq": "Irak", "uzbekistan": "Özbekistan",
-    "jordan": "Ürdün", "maldives": "Maldivler", "afghanistan": "Afganistan" , "Côte d'Ivoire": "Fildişi Sahili"
+    "jordan": "Ürdün", "maldives": "Maldivler", "afghanistan": "Afganistan" , " Côte d'Ivoire": "Fildişi Sahili"
 };
 
 const translateTeam = (name) => {
