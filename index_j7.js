@@ -953,10 +953,7 @@ const isGarbage = (tourName, catName) => {
     const t = (tourName || "").toUpperCase();
     const c = (catName || "").toUpperCase();
     
-    // YENİ: İstenmeyen kelimelerin tam listesi (Elemeler ve Gösteri maçları eklendi)
     const garbageWords = ["ITF", "CHALLENGER", "UTR", "QUALIFYING", "QUALIFIERS", "LEGENDS"];
-    
-    // Eğer turnuva veya kategori adında bu kelimelerden biri varsa o maçı direkt çöpe at
     return garbageWords.some(word => t.includes(word) || c.includes(word));
 };
 
@@ -970,10 +967,10 @@ const checkIsEliteMatch = (tournamentName) => {
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
-async function updateTennis() {
+// DÜZELTİLDİ: targetDates parametresi eklendi
+async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor (Paralel Optimizasyon)...`);
     let rawEvents = [];
-    const targetDates = [getTRDate(0), getTRDate(1)];
     
     const tournamentCount = {};
     const seenEventIds = new Set();
@@ -1142,9 +1139,14 @@ async function updateTennis() {
     console.log(`\n  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi`);
     console.log(`  📊 Turnuvalar: ${Object.keys(tournamentCount).length}`);
     
-    const withRanking = finalMatches.filter(m => m.homeTeam.ranking || m.awayTeam.ranking).length;
-    console.log(`  🏆 Sıralama verisi olan maçlar: ${withRanking}/${finalMatches.length}`);
+    // DÜZELTİLDİ: hasLiveMatch ve nextMatchTimestamp değişkenleri ana döngüye gönderiliyor
+    const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress');
+    const upcomingMatches = finalMatches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
+    const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
+
+    return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
+
 
 
 
