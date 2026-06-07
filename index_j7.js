@@ -952,9 +952,14 @@ const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}
 const isGarbage = (tourName, catName) => {
     const t = (tourName || "").toUpperCase();
     const c = (catName || "").toUpperCase();
-    return t.includes("ITF") || t.includes("CHALLENGER") || t.includes("UTR") ||
-           c.includes("ITF") || c.includes("CHALLENGER") || c.includes("UTR");
+    
+    // YENİ: İstenmeyen kelimelerin tam listesi (Elemeler ve Gösteri maçları eklendi)
+    const garbageWords = ["ITF", "CHALLENGER", "UTR", "QUALIFYING", "QUALIFIERS", "LEGENDS"];
+    
+    // Eğer turnuva veya kategori adında bu kelimelerden biri varsa o maçı direkt çöpe at
+    return garbageWords.some(word => t.includes(word) || c.includes(word));
 };
+
 
 const ELITE_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC", "ATP FINALS", "WTA FINALS", "MONTE CARLO", "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", "MONTREAL", "TORONTO", "SHANGHAI", "PARIS", "MASTERS", "ATP 1000", "WTA 1000", "ATP 500", "WTA 500"];
 
