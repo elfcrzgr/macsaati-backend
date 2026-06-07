@@ -944,7 +944,7 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
 }
 
 // =========================================================================
-// 🎾 TENİS
+// 🎾 TENİS GÜNCELLEME (GLOBAL CACHE İLE EKLENDİ)
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
@@ -957,7 +957,6 @@ const isGarbage = (tourName, catName) => {
     return garbageWords.some(word => t.includes(word) || c.includes(word));
 };
 
-
 const ELITE_KEYWORDS = ["WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC", "ATP FINALS", "WTA FINALS", "MONTE CARLO", "INDIAN WELLS", "MIAMI", "MADRID", "ROME", "CINCINNATI", "MONTREAL", "TORONTO", "SHANGHAI", "PARIS", "MASTERS", "ATP 1000", "WTA 1000", "ATP 500", "WTA 500"];
 
 const checkIsEliteMatch = (tournamentName) => {
@@ -967,14 +966,15 @@ const checkIsEliteMatch = (tournamentName) => {
     return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
-// DÜZELTİLDİ: targetDates parametresi eklendi
 async function updateTennis(targetDates = [getTRDate(0)]) {
-    console.log(`🎾 Tenis güncelleniyor (Paralel Optimizasyon)...`);
-    let rawEvents = [];
+    console.log(`🎾 Tenis güncelleniyor (Paralel Optimizasyon - Taranan gün: ${targetDates.length})...`);
     
-    const tournamentCount = {};
+    let rawEvents = [];
+    let successfulDates = [];
     const seenEventIds = new Set();
+    const tournamentCount = {};
 
+    // 1. AŞAMA: Sofascore'dan verileri çek
     for (const date of targetDates) {
         try {
             const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
@@ -990,16 +990,32 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                     return true;
                 });
                 rawEvents.push(...filtered);
+                successfulDates.push(date);
             }
         } catch (error) {
             console.error(`⚠️ Tarih ${date} için veriler çekilemedi:`, error.message);
-            continue;
+        }
+    }
+
+    if (successfulDates.length === 0) {
+        console.log("⚠️ API yanıt vermedi. Mevcut tenis önbelleği korunuyor.");
+        return { 
+            hasLiveMatch: sportUpdateStatus.tennis.hasLiveMatch, 
+            nextMatchTimestamp: sportUpdateStatus.tennis.nextMatchTime, 
+            hasAnyMatches: globalTennisCache.size > 0 
+        };
+    }
+
+    // 2. AŞAMA: Hafızadaki (Cache) eski ve ezilecek verileri temizle
+    for (const [id, match] of globalTennisCache.entries()) {
+        if (successfulDates.includes(match.fixedDate)) {
+            globalTennisCache.delete(id);
         }
     }
 
     console.log(`  📋 ${rawEvents.length} tekil maç bulundu (Tekrarlar temizlendi)`);
-    const finalMatches = [];
 
+    // 3. AŞAMA: Detay sayfalarından Sıralama ve Ülke bilgilerini çek (Paralel Hızlandırma)
     const detailPromises = rawEvents.map(e => 
         fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`)
             .then(data => ({ eventId: e.id, data }))
@@ -1014,9 +1030,9 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
     detailsResults.forEach(result => {
         detailsMap[result.eventId] = result.data;
     });
-
     console.log(`  ✅ Tüm detaylar çekildi`);
 
+    // 4. AŞAMA: Tüm çekilen maçları işle ve hafızaya (Cache) yaz
     for (let idx = 0; idx < rawEvents.length; idx++) {
         const e = rawEvents[idx];
         
@@ -1024,6 +1040,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             const startTimestamp = e.startTimestamp * 1000;
             const dateTR = new Date(startTimestamp);
             const fixedDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+            
             if (!targetDates.includes(fixedDate)) continue;
 
             const tourName = e.tournament?.name || "";
@@ -1046,21 +1063,13 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 }
 
                 if (!hRank && ev.homeTeam?.subTeams?.length > 0) {
-                    const ranks = ev.homeTeam.subTeams
-                        .map(p => p.ranking)
-                        .filter(r => r !== undefined && r !== null);
-                    if (ranks.length > 0) {
-                        hRank = Math.min(...ranks);
-                    }
+                    const ranks = ev.homeTeam.subTeams.map(p => p.ranking).filter(r => r !== undefined && r !== null);
+                    if (ranks.length > 0) hRank = Math.min(...ranks);
                 }
 
                 if (!aRank && ev.awayTeam?.subTeams?.length > 0) {
-                    const ranks = ev.awayTeam.subTeams
-                        .map(p => p.ranking)
-                        .filter(r => r !== undefined && r !== null);
-                    if (ranks.length > 0) {
-                        aRank = Math.min(...ranks);
-                    }
+                    const ranks = ev.awayTeam.subTeams.map(p => p.ranking).filter(r => r !== undefined && r !== null);
+                    if (ranks.length > 0) aRank = Math.min(...ranks);
                 }
 
                 const getCodes = (team) => {
@@ -1095,7 +1104,8 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 }
             }
 
-            finalMatches.push({
+            // Hafızaya ekle! (En kritik kısım)
+            globalTennisCache.set(e.id, {
                 id: e.id,
                 isElite: checkIsEliteMatch(tourName),
                 status: statusType,
@@ -1103,16 +1113,8 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 fixedTime: timeString,
                 timestamp: startTimestamp,
                 broadcaster: "S Sport / beIN Sports",
-                homeTeam: { 
-                    name: e.homeTeam.name || "Belli Değil", 
-                    ranking: hRank,
-                    logos: homeLogos
-                },
-                awayTeam: { 
-                    name: e.awayTeam.name || "Belli Değil", 
-                    ranking: aRank, 
-                    logos: awayLogos 
-                },
+                homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos },
+                awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
                 tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
                 homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"),
                 awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"),
@@ -1131,18 +1133,18 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
         }
     }
 
-    finalMatches.sort((a, b) => a.timestamp - b.timestamp);
-    
-    // FIREBASE YÜKLEMESİ
+    // 5. AŞAMA: Hafızadaki (Cache) tüm verileri topla, sırala ve Firebase'e gönder
+    const finalMatches = Array.from(globalTennisCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase("tennis", { success: true, matches: finalMatches });
     
     console.log(`\n  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi`);
     console.log(`  📊 Turnuvalar: ${Object.keys(tournamentCount).length}`);
     
-    // DÜZELTİLDİ: hasLiveMatch ve nextMatchTimestamp değişkenleri ana döngüye gönderiliyor
+    const withRanking = finalMatches.filter(m => m.homeTeam.ranking || m.awayTeam.ranking).length;
+    console.log(`  🏆 Sıralama verisi olan maçlar: ${withRanking}/${finalMatches.length}`);
+
     const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress');
-    const upcomingMatches = finalMatches.filter(m => m.status === 'notstarted' || m.status === 'delayed');
-    const nextMatchTimestamp = upcomingMatches.length > 0 ? upcomingMatches[0].timestamp : null;
+    const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
 
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
