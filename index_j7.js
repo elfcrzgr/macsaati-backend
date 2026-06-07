@@ -958,20 +958,26 @@ const isGarbage = (tourName, catName) => {
     const t = (tourName || "").toUpperCase();
     const c = (catName || "").toUpperCase();
     
-    // Çöp kelimeler
+    // Çöp kelimeler (Elemeler, ITF, vs.)
     const garbageWords = ["ITF", "CHALLENGER", "UTR", "QUALIFYING", "QUALIFIERS", "LEGENDS", "FUTURE"];
     if (garbageWords.some(word => t.includes(word) || c.includes(word))) return true;
 
-    // Sadece ALLOWED_KEYWORDS içermeyenleri çöp say
-    return !ALLOWED_KEYWORDS.some(word => t.includes(word));
+    // EĞER İSİMDE VEYA KATEGORİDE BUNLAR VARSA GEÇİR:
+    const allowed = ["ATP", "WTA", "GRAND SLAM", "WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "MASTERS"];
+    
+    // Eğer bunlardan biri yoksa çöp say (Hepsini tek tek eklemek yerine ana başlığı yakala)
+    const isAllowed = allowed.some(word => t.includes(word) || c.includes(word));
+    return !isAllowed; 
 };
 
 // 3. ELİTLİK KONTROLÜ (Sadece 1000 ve üstü)
-const checkIsEliteMatch = (tournamentName) => {
-    if (!tournamentName) return false;
-    const name = tournamentName.toUpperCase();
-    // Sadece 1000 ve üstünü "Elit" kabul et
-    return ["1000", "MASTERS", "GRAND SLAM", "WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN"].some(k => name.includes(k));
+const checkIsEliteMatch = (tourName, catName) => {
+    const name = (tourName + (catName || "")).toUpperCase();
+    
+    // Şu kelimelerden biri varsa Elit say
+    const eliteIndicators = ["1000", "MASTERS", "GRAND SLAM", "WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "ATP FINALS", "WTA FINALS"];
+    
+    return eliteIndicators.some(k => name.includes(k));
 };
 
 async function updateTennis(targetDates = [getTRDate(0)]) {
