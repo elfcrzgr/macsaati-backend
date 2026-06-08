@@ -28,21 +28,28 @@ async function getBroadcasterData() {
     for (const sport of sports) {
         console.log(`\n🚀 ${sport.toUpperCase()} sayfası açılıyor...\n`);
         
-       
-    
-    const browser = await puppeteer.launch({ 
-    headless: true,
-    args: [
-        '--no-sandbox', 
-        '--disable-setuid-sandbox'
-    ]
-});
+        const browser = await puppeteer.launch({ 
+            headless: true,
+            args: [
+                '--no-sandbox', 
+                '--disable-setuid-sandbox'
+            ]
+        });
 
         const page = await browser.newPage();
+
+        // Bot tespitini atlatmak için
+        await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1');
+
+        await page.setExtraHTTPHeaders({
+            'Accept-Language': 'tr-TR,tr;q=0.9',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+        });
         
         try {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
-            await page.goto(url, { waitUntil: 'networkidle2' });
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await new Promise(resolve => setTimeout(resolve, 3000)); // Sayfanın tam yüklenmesi için bekle
             
             const jsonLdData = await page.evaluate(() => {
                 const script = document.querySelector('script[type="application/ld+json"]');
@@ -57,6 +64,8 @@ async function getBroadcasterData() {
                 await browser.close();
                 continue;
             }
+
+            console.log(`✅ ${sport}: JSON-LD bulundu`);
             
             const events = Array.isArray(jsonLdData) ? jsonLdData : [jsonLdData];
             
@@ -65,18 +74,18 @@ async function getBroadcasterData() {
                 
                 const broadcastEvent = event.broadcastOfEvent;
                 if (!broadcastEvent) return;
+
                 // 🛑 KARA LİSTE FİLTRESİ
-    const eventNameLower = (broadcastEvent.name || '').toLowerCase();
-    const isCancelled = eventNameLower.includes('iptal') || 
-                        eventNameLower.includes('ertelendi') || 
-                        eventNameLower.includes('postponed') || 
-                        eventNameLower.includes('cancelled');
-    
-    if (isCancelled) {
-        console.log(`🗑️ İptal edilen maç atlandı: ${broadcastEvent.name}`);
-        return; // Bu maçı listeye hiç ekleme
-    }
+                const eventNameLower = (broadcastEvent.name || '').toLowerCase();
+                const isCancelled = eventNameLower.includes('iptal') || 
+                                    eventNameLower.includes('ertelendi') || 
+                                    eventNameLower.includes('postponed') || 
+                                    eventNameLower.includes('cancelled');
                 
+                if (isCancelled) {
+                    console.log(`🗑️ İptal edilen maç atlandı: ${broadcastEvent.name}`);
+                    return;
+                }
                 
                 const startDate = new Date(broadcastEvent.startDate);
                 const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
