@@ -5,7 +5,6 @@ async function getBroadcasterData() {
     const sports = ['futbol', 'basketbol', 'tenis'];
     const timeZone = 'Europe/Istanbul';
     
-    // Tarihleri Hesapla
     const d = new Date();
     
     const yesterday = new Date(d); yesterday.setDate(d.getDate() - 1);
@@ -30,17 +29,12 @@ async function getBroadcasterData() {
         
         const browser = await puppeteer.launch({ 
             headless: true,
-            args: [
-                '--no-sandbox', 
-                '--disable-setuid-sandbox'
-            ]
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
 
         const page = await browser.newPage();
 
-        // Bot tespitini atlatmak için
         await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1');
-
         await page.setExtraHTTPHeaders({
             'Accept-Language': 'tr-TR,tr;q=0.9',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
@@ -49,7 +43,7 @@ async function getBroadcasterData() {
         try {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
             await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-            await new Promise(resolve => setTimeout(resolve, 3000)); // Sayfanın tam yüklenmesi için bekle
+            await new Promise(resolve => setTimeout(resolve, 3000));
             
             const jsonLdData = await page.evaluate(() => {
                 const script = document.querySelector('script[type="application/ld+json"]');
@@ -66,8 +60,15 @@ async function getBroadcasterData() {
             }
 
             console.log(`✅ ${sport}: JSON-LD bulundu`);
+            console.log("--- HAM VERİ (ilk 2000 karakter) ---");
+            console.log(JSON.stringify(jsonLdData, null, 2).substring(0, 2000));
+            console.log("--- HAM VERİ SONU ---");
             
             const events = Array.isArray(jsonLdData) ? jsonLdData : [jsonLdData];
+            console.log(`📊 Toplam event sayısı: ${events.length}`);
+            if (events.length > 0) {
+                console.log(`📊 İlk event tipi: ${events[0]['@type']}`);
+            }
             
             events.forEach(event => {
                 if (event['@type'] !== 'BroadcastEvent') return;
@@ -75,7 +76,6 @@ async function getBroadcasterData() {
                 const broadcastEvent = event.broadcastOfEvent;
                 if (!broadcastEvent) return;
 
-                // 🛑 KARA LİSTE FİLTRESİ
                 const eventNameLower = (broadcastEvent.name || '').toLowerCase();
                 const isCancelled = eventNameLower.includes('iptal') || 
                                     eventNameLower.includes('ertelendi') || 
@@ -90,7 +90,6 @@ async function getBroadcasterData() {
                 const startDate = new Date(broadcastEvent.startDate);
                 const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
                 
-                // Sadece listemizde olan 4 günün verisini al
                 if (!allMatches[dateStr]) return;
                 
                 let channels = [];
@@ -127,7 +126,6 @@ async function getBroadcasterData() {
         }
     }
     
-    // Çıktı ve Kayıt
     [yesterdayStr, todayStr, tomorrowStr, nextDayStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
