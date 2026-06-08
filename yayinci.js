@@ -39,7 +39,7 @@ async function getBroadcasterData() {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
             await page.goto(url, { waitUntil: 'networkidle2' });
             
-            // YENİ YÖNTEМ: @graph içindeki ListItem'ları bul
+            // Ana sayfadan maç URL'lerini çek
             const matchUrls = await page.evaluate(() => {
                 const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
                 const urls = [];
@@ -49,7 +49,6 @@ async function getBroadcasterData() {
                         const data = JSON.parse(script.innerHTML);
                         if (data['@graph']) {
                             data['@graph'].forEach(item => {
-                                // Schedule listini bul
                                 if (item['@type'] === 'CollectionPage' && item.mainEntity) {
                                     const mainEntity = item.mainEntity;
                                     if (mainEntity.itemListElement && Array.isArray(mainEntity.itemListElement)) {
@@ -78,38 +77,68 @@ async function getBroadcasterData() {
                     await matchPage.goto(matchUrl, { waitUntil: 'networkidle2', timeout: 30000 });
                     
                     const matchData = await matchPage.evaluate(() => {
-                        // Maç detaylarını HTML'den çek
-                        const titleEl = document.querySelector('h1, .match-title, [class*="title"]');
-                        const timeEl = document.querySelector('.match-time, [class*="time"], [class*="saat"]');
-                        const channelEl = document.querySelector('.channel, [class*="channel"], [class*="yayin"]');
-                        
-                        // JSON-LD'den de kontrol et
                         const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
-                        let eventData = null;
+                        let sportsEvent = null;
+                        let broadcasts = [];
                         
                         scripts.forEach(script => {
                             try {
                                 const data = JSON.parse(script.innerHTML);
-                                if (data['@type'] === 'SportsEvent' || data['@graph']) {
-                                    if (data['@type'] === 'SportsEvent') {
-                                        eventData = data;
-                                    } else if (data['@graph']) {
-                                        const event = data['@graph'].find(item => item['@type'] === 'SportsEvent');
-                                        if (event) eventData = event;
-                                    }
+                                if (data['@graph']) {
+                                    data['@graph'].forEach(item => {
+                                        if (item['@type'] === 'SportsEvent') {
+                                            sportsEvent = item;
+                                        }
+                                        if (item['@type'] === 'BroadcastEvent') {
+                                            broadcasts.push(item);
+                                        }
+                                    });
                                 }
                             } catch (e) {}
                         });
                         
-                        return {
-                            title: titleEl?.innerText || '',
-                            time: timeEl?.innerText || '',
-                            channel: channelEl?.innerText || '',
-                            eventData: eventData
-                        };
+                        return { sportsEvent, broadcasts };
                     });
                     
-                    console.log(`  ✓ ${matchData.title || 'Bilinmiyor'}`);
+                    if (matchData.sportsEvent) {
+                        const event = matchData.sportsEvent;
+                        const startDate = new Date(event.startDate);
+                        const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
+                        
+                        // Sadece 4 günün verisini al
+                        if (!allMatches[dateStr]) {
+                            await matchPage.close();
+                            continue;
+                        }
+                        
+                        const time = startDate.toLocaleTimeString('tr-TR', { 
+                            timeZone, 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                        });
+                        
+                        // Kanalları topla
+                        let channels = [];
+                        matchData.broadcasts.forEach(broadcast => {
+                            const channelName = broadcast.broadcastChannel?.['@id'] || '';
+                            const name = channelName.split('/').slice(-1)[0].split('#')[0];
+                            if (name && !channels.includes(name)) {
+                                channels.push(name);
+                            }
+                        });
+                        
+                        const channelStr = channels.length > 0 ? channels.join(' / ') : 'Bilinmiyor';
+                        const matchName = `${event.homeTeam?.name || ''} - ${event.awayTeam?.name || ''}`;
+                        
+                        allMatches[dateStr].matches.push({
+                            saat: time,
+                            spor: sport.charAt(0).toUpperCase() + sport.slice(1),
+                            mac: matchName,
+                            yayin: channelStr
+                        });
+                        
+                        console.log(`  ✓ ${matchName} - ${time}`);
+                    }
                     
                     await matchPage.close();
                 } catch (error) {
@@ -124,6 +153,23 @@ async function getBroadcasterData() {
             await browser.close();
         }
     }
+    
+    // Çıktı ve Kayıt
+    [yesterdayStr, todayStr, tomorrowStr, nextDayStr].forEach(key => {
+        const group = allMatches[key];
+        console.log(`\n\x1b[33m${group.title}\x1b[0m`);
+        
+        if (group.matches.length === 0) {
+            console.log("   ⚠️ Maç bulunamadı.");
+        } else {
+            const uniqueMatches = Array.from(new Set(group.matches.map(JSON.stringify))).map(JSON.parse);
+            const sorted = uniqueMatches.sort((a, b) => a.saat.localeCompare(b.saat));
+            console.table(sorted);
+        }
+    });
+    
+    fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
+    console.log("\n💾 yayinci_bilgisi.json kaydedildi.");
 }
 
 getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
