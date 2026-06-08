@@ -34,19 +34,16 @@ async function getBroadcasterData() {
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
         await page.setViewport({ width: 1280, height: 1024 });
 
-        // Bot korumalarından sıyrılmak için webdriver izini siliyoruz
         await page.evaluateOnNewDocument(() => {
             Object.defineProperty(navigator, 'webdriver', { get: () => false });
         });
 
         let apiData = [];
 
-        // 🎯 1. KATMAN: SAYFANIN ARKA PLANDA ÇEKTİĞİ GİZLİ VERİLERİ HAVADA YAKALAMA
         page.on('response', async (response) => {
             if (['fetch', 'xhr'].includes(response.request().resourceType())) {
                 try {
                     const json = await response.json();
-                    // Gelen JSON içindeki maç dizilerini bulmak için tüm objeyi tarar
                     function findMatchArray(obj) {
                         if (Array.isArray(obj)) {
                             if (obj.length > 0 && obj[0] && (obj[0].homeTeam || obj[0].matchDate || obj[0].broadcastChannels)) {
@@ -67,7 +64,6 @@ async function getBroadcasterData() {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
             await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
             
-            // Sayfayı yavaşça aşağı kaydırarak gizli API isteklerini (Lazy Load) tetikliyoruz
             await page.evaluate(async () => {
                 await new Promise((resolve) => {
                     let totalHeight = 0;
@@ -83,7 +79,6 @@ async function getBroadcasterData() {
                 });
             });
 
-            // İsteklerin tamamlanması için bekleme payı
             await new Promise(resolve => setTimeout(resolve, 3000));
 
             let extractedMatches = [];
@@ -121,15 +116,13 @@ async function getBroadcasterData() {
                         dateStr: dStr,
                         saat: timeStr,
                         mac: matchName,
-                        yayin: channels.length > 0 ? channels.join(' / ') : 'Spor Ekranı'
+                        yayin: channels.length > 0 ? channels.join(' / ') : 'Bilinmiyor'
                     });
                 });
             } else {
                 console.log(`⚠️ API yakalanamadı. Saf metin kazıma (İnsan Gözü) modu devreye giriyor...`);
                 
-                // 🎯 2. KATMAN: EKRANDAKİ SAF YAZILARI OKUMA (Hiçbir HTML Sınıfına İhtiyaç Duymaz)
                 const textFallback = await page.evaluate(() => {
-                    // Sayfadaki tüm yazıları satır satır alır
                     const lines = document.body.innerText.split('\n').map(l => l.trim()).filter(l => l);
                     const matches = [];
                     let currentDateStr = 'BUGÜN';
@@ -137,12 +130,10 @@ async function getBroadcasterData() {
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i];
 
-                        // Tarih başlıklarını tespit etme (Örn: "9 Haziran Cuma" veya "Yarın")
                         if (line.match(/Bugün|Yarın|Pazartesi|Salı|Çarşamba|Perşembe|Cuma|Cumartesi|Pazar/i) && line.length < 25) {
                             currentDateStr = line.toUpperCase();
                         }
 
-                        // Saati yakalarsak altındaki satırlar takımlardır
                         if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(line)) {
                             const chunk = [];
                             for(let j = 1; j <= 4; j++) {
@@ -172,7 +163,7 @@ async function getBroadcasterData() {
                     }
 
                     let mac = '';
-                    let yayin = 'Spor Ekranı';
+                    let yayin = '';
 
                     if (m.lines.length === 2) {
                         mac = m.lines[0];
@@ -182,22 +173,34 @@ async function getBroadcasterData() {
                         yayin = m.lines.slice(2).join(' / ');
                     }
 
+                    // 🧹 İKON, TARİH VE LİNK ARTIKLARINI TEMİZLEME SÜZGECİ
+                    let cleanYayin = yayin
+                        .replace(/chevron_right/gi, '')
+                        .replace(/Daha fazlasını keşfedin/gi, '')
+                        .replace(/\d{2}\.\d{2}\.\d{4}.*/g, '') // "01.07.2026 Çarşamba" gibi tarihleri siler
+                        .replace(/(Futbol|Basketbol|Tenis) Maçları Ne Zaman.*/gi, '')
+                        .replace(/^[ \/]+|[ \/]+$/g, '') // Başta veya sonda kalan fazlalık slash'leri uçurur
+                        .trim();
+
+                    if (!cleanYayin || cleanYayin.length < 2) {
+                        cleanYayin = 'Bilinmiyor';
+                    }
+
                     extractedMatches.push({
                         dateStr: targetDate,
                         saat: m.saat,
                         mac: mac,
-                        yayin: yayin
+                        yayin: cleanYayin
                     });
                 });
             }
 
-            // Gelen verileri filtreleyip listeye yazma
             const sportName = sport.charAt(0).toUpperCase() + sport.slice(1);
             
             extractedMatches.forEach(m => {
                 const lowerMac = m.mac.toLowerCase();
                 
-                // Stüdyo, Reklam ve Program filtresi
+                // Kalan son stüdyo pürüzlerini eleme
                 if (
                     lowerMac.includes('izle') || 
                     lowerMac.includes('program') || 
@@ -227,7 +230,6 @@ async function getBroadcasterData() {
 
     await browser.close();
 
-    // Tabloları Yazdır
     [todayStr, tomorrowStr, nextDayStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
@@ -242,7 +244,7 @@ async function getBroadcasterData() {
     });
 
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 yayinci_bilgisi.json kusursuz maçlarla kaydedildi.");
+    console.log("\n💾 yayinci_bilgisi.json pürüzsüz yayın bilgileriyle kaydedildi.");
 }
 
 getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
