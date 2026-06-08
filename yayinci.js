@@ -6,36 +6,27 @@ async function getBroadcasterData() {
     const timeZone = 'Europe/Istanbul';
     const d = new Date();
     
-    // Tarihleri hatasız oluştur
     const todayStr = d.toLocaleDateString('en-CA', { timeZone });
-    const tomorrow = new Date(d); tomorrow.setDate(d.getDate() + 1);
-    const tomorrowStr = tomorrow.toLocaleDateString('en-CA', { timeZone });
-    const nextDay = new Date(d); nextDay.setDate(d.getDate() + 2);
-    const nextDayStr = nextDay.toLocaleDateString('en-CA', { timeZone });
+    const tomorrowStr = new Date(d.getTime() + 86400000).toLocaleDateString('en-CA', { timeZone });
+    const nextDayStr = new Date(d.getTime() + 172800000).toLocaleDateString('en-CA', { timeZone });
 
     const allMatches = { [todayStr]: [], [tomorrowStr]: [], [nextDayStr]: [] };
 
-  const browser = await puppeteer.launch({ 
+    const browser = await puppeteer.launch({ 
         headless: "new",
-        args: [
-            '--no-sandbox', 
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--no-zygote'
-        ]
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--no-zygote']
     });
 
     for (const sport of sports) {
         const page = await browser.newPage();
-        await page.goto(`https://www.sporekrani.com/home/sport/${sport}`, { waitUntil: 'domcontentloaded' });
+        await page.goto(`https://www.sporekrani.com/home/sport/${sport}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
         
         const data = await page.evaluate(() => {
-            return Array.from(document.querySelectorAll('.match-list-item')).map(card => {
+            return Array.from(document.querySelectorAll('.match-list-item, .match-item')).map(card => {
                 const saat = card.querySelector('.time')?.innerText.trim();
                 const mac = card.querySelector('.match-name')?.innerText.trim();
                 const yayin = card.querySelector('.channel-name')?.innerText.trim() || 'Spor Ekranı';
                 
-                // Tarih başlığını bul
                 let dateHeader = "";
                 let prev = card.previousElementSibling;
                 while(prev) {
@@ -47,18 +38,15 @@ async function getBroadcasterData() {
         });
 
         data.forEach(m => {
-            // Bugünün maçlarını filtrele (Yarın ve Ertesi günü elleme, onları olduğu gibi al)
             let dateKey = null;
             if (m.dateHeader.toLowerCase().includes('bugün')) dateKey = todayStr;
             else if (m.dateHeader.toLowerCase().includes('yarın')) dateKey = tomorrowStr;
             else if (m.dateHeader.toLowerCase().includes('ertesi')) dateKey = nextDayStr;
             
             if (!dateKey) return;
-
-            // BUGÜN FİLTRESİ: Sadece bugün için yan menü çöpünü temizle (tarih başlığı olmayanlar yan menüdür)
+            // BUGÜN FİLTRESİ: Yan menüdeki (tarih başlığı olmayan) maçları Bugün'e alma
             if (dateKey === todayStr && !m.dateHeader) return; 
 
-            // Kanal ismini temizle
             let cleanYayin = m.yayin.split('/')[0].replace(/FIFA.*|Lig|Kupası|Web|App/gi, '').trim();
 
             allMatches[dateKey].push({
@@ -71,7 +59,14 @@ async function getBroadcasterData() {
         await page.close();
     }
     await browser.close();
+    
+    // TABLOLARI YAZDIRMA KISMI GERİ GELDİ!
+    Object.keys(allMatches).forEach(key => {
+        console.log(`\n📅 ${key === todayStr ? 'BUGÜN' : key === tomorrowStr ? 'YARIN' : 'ERTESİ GÜN'} (${key})`);
+        if (allMatches[key].length === 0) console.log("⚠️ Maç bulunamadı.");
+        else console.table(allMatches[key]);
+    });
+
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("✅ Veri başarıyla kaydedildi. Bugün arındırıldı, Yarın/Ertesi gün korundu.");
 }
 getBroadcasterData();
