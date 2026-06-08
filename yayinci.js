@@ -8,16 +8,41 @@ const puppeteer = require('puppeteer');
         });
 
         const page = await browser.newPage();
-        console.log("📍 Sayfaya gidiliyor...");
-        
         await page.goto('https://www.sporekrani.com/home/sport/futbol', { waitUntil: 'networkidle2' });
-        console.log("✅ Sayfa açıldı");
         
-        const scripts = await page.evaluate(() => {
-            return Array.from(document.querySelectorAll('script[type="application/ld+json"]')).length;
+        const jsonData = await page.evaluate(() => {
+            const script = document.querySelector('script[type="application/ld+json"]');
+            if (script) {
+                try {
+                    return JSON.parse(script.innerHTML);
+                } catch (e) {
+                    return { error: "Parse hatası" };
+                }
+            }
+            return { error: "Script bulunamadı" };
         });
         
-        console.log(`📋 JSON-LD script sayısı: ${scripts}`);
+        console.log("📋 JSON-LD Veri:");
+        console.log(JSON.stringify(jsonData, null, 2));
+        
+        // CollectionPage kontrolü
+        if (jsonData['@graph']) {
+            const collectionPage = jsonData['@graph'].find(item => item['@type'] === 'CollectionPage');
+            if (collectionPage) {
+                console.log("\n✅ CollectionPage bulundu!");
+                console.log("mainEntity var mı?", !!collectionPage.mainEntity);
+                if (collectionPage.mainEntity?.itemListElement) {
+                    console.log("Item sayısı:", collectionPage.mainEntity.itemListElement.length);
+                    console.log("\n🔗 İlk 5 maç URL'i:");
+                    collectionPage.mainEntity.itemListElement.slice(0, 5).forEach((item, idx) => {
+                        console.log(`${idx + 1}. ${item.url}`);
+                    });
+                }
+            } else {
+                console.log("\n❌ CollectionPage bulunamadı");
+                console.log("Mevcut types:", jsonData['@graph'].map(i => i['@type']));
+            }
+        }
         
         await browser.close();
     } catch (error) {
