@@ -15,7 +15,15 @@ async function getBroadcasterData() {
 
     const allMatches = { [todayStr]: [], [tomorrowStr]: [], [nextDayStr]: [] };
 
-    const browser = await puppeteer.launch({ headless: "new" });
+  const browser = await puppeteer.launch({ 
+        headless: "new",
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--no-zygote'
+        ]
+    });
 
     for (const sport of sports) {
         const page = await browser.newPage();
