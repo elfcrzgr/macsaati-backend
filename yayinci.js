@@ -23,7 +23,7 @@ async function getBroadcasterData() {
         [nextDayStr]: { title: `📅 ERTESİ GÜN (${nextDay.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
     };
 
-    console.log("🚀 Puppeteer Profesyonel Filtre Modu başlatılıyor...");
+    console.log("🚀 Puppeteer Filtreleme ve Saat Senkronizasyon Modu...");
 
     const browser = await puppeteer.launch({ 
         headless: true,
@@ -36,7 +36,7 @@ async function getBroadcasterData() {
     });
 
     for (const sport of sports) {
-        console.log(`\n📡 ${sport.toUpperCase()} sayfası işleniyor...`);
+        console.log(`\n📡 ${sport.toUpperCase()} sayfası analiz ediliyor...`);
         const page = await browser.newPage();
         
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
@@ -45,8 +45,6 @@ async function getBroadcasterData() {
         try {
             const url = `https://www.sporekrani.com/?sport=${sport}`;
             await page.goto(url, { waitUntil: 'networkidle2', timeout: 50000 });
-            
-            // Sayfanın belleğe oturması için kısa es
             await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 3000)));
 
             const extractedData = await page.evaluate(() => {
@@ -57,17 +55,17 @@ async function getBroadcasterData() {
                     try {
                         const data = JSON.parse(script.innerHTML);
                         
-                        // Şemaları derinlemesine tarayan dahili fonksiyon
                         function scan(obj) {
                             if (!obj || typeof obj !== 'object') return;
                             
-                            // Tam aradığımız BroadcastEvent yapısını süzüyoruz
                             if (obj['@type'] === 'BroadcastEvent' || obj.broadcastOfEvent) {
                                 const subEvent = obj.broadcastOfEvent || {};
                                 const rawName = subEvent.name || obj.name || '';
                                 const rawDate = obj.startDate || subEvent.startDate || '';
                                 
-                                // Kanal bilgisini toplama esnekliği
+                                // Branş kontrolü için şemadaki alt kategorileri kovalıyoruz
+                                const itemSport = obj.sport?.slug || obj.sport || subEvent.sport || '';
+                                
                                 let channelNames = [];
                                 const rawChannels = obj.broadcastChannel || obj.channels || [];
                                 const channelArr = Array.isArray(rawChannels) ? rawChannels : [rawChannels];
@@ -86,6 +84,7 @@ async function getBroadcasterData() {
                                     list.push({
                                         macName: rawName,
                                         rawDate: rawDate,
+                                        sportCategory: itemSport,
                                         yayin: channelNames.length > 0 ? channelNames.join(' / ') : 'Spor Ekranı'
                                     });
                                 }
@@ -104,25 +103,40 @@ async function getBroadcasterData() {
                 return list;
             });
 
-            console.log(`🔍 ${sport.toUpperCase()}: ${extractedData.length} adet ham maç verisi süzülüyor...`);
-
-            // Verileri temizleme ve 4 günlük takvime dağıtma
             extractedData.forEach(item => {
                 const matchName = item.macName.trim();
+                const matchLower = matchName.toLowerCase();
                 
-                // SEO Başlıklarını ve reklamları çöpe atıyoruz (Filtreleme)
-                if (matchName.toLowerCase().includes('spor ekranı') || matchName.toLowerCase().includes('izle') || matchName.length < 5) {
+                // 🛑 GELİŞMİŞ FİLTRELEME: TV Programlarını, stüdyo yayınlarını ve reklamları uçurur
+                if (
+                    matchLower.includes('canlı maç izle') || 
+                    matchLower.includes('haber bülteni') || 
+                    matchLower.includes('spor stüdyosu') ||
+                    matchLower.includes('başlama vuruşu') ||
+                    matchLower.includes('ilk baski') ||
+                    matchLower.includes('sabah sporu') ||
+                    matchLower.includes('gün ortasi') ||
+                    matchLower.includes('ana haber') ||
+                    matchLower.includes('transfer raporu') ||
+                    matchLower.includes('etap') ||
+                    matchLower.includes('satir arasi') ||
+                    matchLower.includes('izle') ||
+                    matchName.length < 5
+                ) {
                     return; 
                 }
 
-                // Kara Liste Filtresi
-                const matchLower = matchName.toLowerCase();
+                // İptal Kontrolü
                 if (matchLower.includes('iptal') || matchLower.includes('ertelendi')) return;
 
+                // Tarih dönüşümünü güvenli yapıyoruz
                 const startDate = new Date(item.rawDate);
+                if (isNaN(startDate.getTime())) return;
+                
                 const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
 
-                if (!allMatches[dateStr]) return; // Hedef günler dışındaysa geç
+                // Sadece hedeflediğimiz 4 günün verisiyse havuzuna ekle
+                if (!allMatches[dateStr]) return;
 
                 const timeStr = startDate.toLocaleTimeString('tr-TR', { 
                     timeZone, 
@@ -130,7 +144,6 @@ async function getBroadcasterData() {
                     minute: '2-digit' 
                 });
 
-                // Güzel formatlama (Kanal isimlerinin baş harflerini büyüt)
                 const formattedChannel = item.yayin
                     .split(' ')
                     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
@@ -153,7 +166,7 @@ async function getBroadcasterData() {
 
     await browser.close();
 
-    // Çıktı ve Kayıt Düzeni
+    // Çıktı ve Sıralama Kontrolü
     [yesterdayStr, todayStr, tomorrowStr, nextDayStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
@@ -161,6 +174,7 @@ async function getBroadcasterData() {
         if (group.matches.length === 0) {
             console.log("   ⚠️ Maç bulunamadı.");
         } else {
+            // Tamamen benzersiz maçları filtrele ve saate göre diz
             const uniqueMatches = Array.from(new Set(group.matches.map(JSON.stringify))).map(JSON.parse);
             const sorted = uniqueMatches.sort((a, b) => a.saat.localeCompare(b.saat));
             console.table(sorted);
@@ -168,7 +182,7 @@ async function getBroadcasterData() {
     });
 
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 yayinci_bilgisi.json başarıyla güncellendi. İşlem tamam!");
+    console.log("\n💾 yayinci_bilgisi.json tamamen arındırılmış ve güncellenmiştir!");
 }
 
 getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
