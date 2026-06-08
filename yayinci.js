@@ -10,32 +10,28 @@ async function debugSporekrani() {
     
     try {
         const url = 'https://www.sporekrani.com/home/sport/futbol';
-        console.log(`🔍 Sayfa açılıyor: ${url}\n`);
-        
         await page.goto(url, { waitUntil: 'networkidle2' });
         
-        // Sayfanın HTML'ini kontrol et
-        const html = await page.content();
-        console.log("📄 Sayfada 'BroadcastEvent' var mı?", html.includes('BroadcastEvent'));
-        console.log("📄 Sayfada 'SportsEvent' var mı?", html.includes('SportsEvent'));
-        console.log("📄 Sayfada 'Event' var mı?", html.includes('Event'));
-        
-        // TÜM JSON-LD scriptleri bul
         const allScripts = await page.evaluate(() => {
             const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
             return scripts.map(s => s.innerHTML);
         });
         
-        console.log(`\n🔗 Bulunan ${allScripts.length} JSON-LD script(i):`);
+        // TÜM JSON-LD'yi tam olarak yazdır
         allScripts.forEach((script, idx) => {
-            console.log(`\n--- JSON-LD #${idx + 1} ---`);
             try {
                 const parsed = JSON.parse(script);
-                console.log(JSON.stringify(parsed, null, 2).substring(0, 500) + '...');
+                console.log(`\n--- JSON-LD #${idx + 1} (FULL) ---`);
+                console.log(JSON.stringify(parsed, null, 2));
             } catch (e) {
-                console.log("❌ Parse hatası:", e.message);
+                console.log("❌ Parse hatası");
             }
         });
+        
+        // Alternatif: HTML'de "match", "mac", "yayin" gibi veri bul
+        const bodyText = await page.evaluate(() => document.body.innerText);
+        console.log("\n\n--- SAYFA METNİNDEN İLK 1000 KARAKTER ---");
+        console.log(bodyText.substring(0, 1000));
         
     } catch (error) {
         console.error('🚨 Hata:', error.message);
