@@ -27,10 +27,14 @@ async function getBroadcasterData() {
         });
 
         const page = await browser.newPage();
+        page.setDefaultTimeout(60000);
+        page.setDefaultNavigationTimeout(60000);
         
         try {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
-            await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+            console.log(`📍 ${url} açılıyor...`);
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            console.log(`✅ Sayfa açıldı\n`);
             
             const matchUrls = await page.evaluate(() => {
                 const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
@@ -54,16 +58,23 @@ async function getBroadcasterData() {
             });
             
             await page.close();
-            console.log(`📋 ${matchUrls.length} maç işleniyor...\n`);
+            console.log(`📋 ${matchUrls.length} maç bulundu\n`);
+            
+            if (matchUrls.length === 0) {
+                console.log("❌ URL bulunamadı!");
+                await browser.close();
+                continue;
+            }
             
             let processed = 0;
             for (const matchUrl of matchUrls) {
                 try {
                     const matchPage = await browser.newPage();
-                    matchPage.setDefaultTimeout(10000);
+                    matchPage.setDefaultTimeout(15000);
+                    matchPage.setDefaultNavigationTimeout(15000);
                     
                     try {
-                        await matchPage.goto(matchUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
+                        await matchPage.goto(matchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
                     } catch (e) {
                         await matchPage.close();
                         continue;
@@ -103,12 +114,9 @@ async function getBroadcasterData() {
                                 minute: '2-digit' 
                             });
                             
-                            // ✅ @id'den kanal adını çıkar
                             let channels = [];
                             matchData.broadcasts.forEach(broadcast => {
                                 const broadcastId = broadcast.broadcastChannel?.['@id'] || '';
-                                // "https://www.sporekrani.com/home/channel/s-sport-plus#broadcastservice"
-                                // → "s-sport-plus"
                                 const match = broadcastId.match(/\/channel\/([^\/]+)/);
                                 if (match) {
                                     let channelName = match[1]
@@ -137,7 +145,7 @@ async function getBroadcasterData() {
                     
                     await matchPage.close();
                     processed++;
-                    if (processed % 5 === 0) console.log(`  ${processed}/${matchUrls.length}`);
+                    if (processed % 5 === 0) console.log(`  ⏳ ${processed}/${matchUrls.length}`);
                     
                 } catch (error) {
                     //
