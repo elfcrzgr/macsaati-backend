@@ -2,9 +2,9 @@ const axios = require('axios');
 const fs = require('fs');
 
 async function getBroadcasterData() {
+    const sports = ['futbol', 'basketbol', 'tenis'];
     const timeZone = 'Europe/Istanbul';
     
-    // Tarihleri Hesapla
     const d = new Date();
     const yesterday = new Date(d); yesterday.setDate(d.getDate() - 1);
     const today = new Date(d);
@@ -23,87 +23,118 @@ async function getBroadcasterData() {
         [nextDayStr]: { title: `📅 ERTESİ GÜN (${nextDay.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
     };
 
-    console.log("🚀 Spor Ekranı API'sine doğrudan bağlanılıyor (Tarayıcısız mod)...");
+    console.log("🚀 Sitenin kaynak kodu (Next.js Hydration) doğrudan deşifre ediliyor...");
 
-    try {
-        // Sitenin tüm spor datalarını bizzat beslediği ham JSON uç noktası
-        const response = await axios.get('https://www.sporekrani.com/api/matches/home', {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-                'Accept': 'application/json',
-                'Referer': 'https://www.sporekrani.com/'
-            },
-            timeout: 15000
-        });
-
-        const entries = response.data;
-
-        if (!entries || !Array.isArray(entries)) {
-            throw new Error("API'den geçersiz veya boş veri döndü.");
-        }
-
-        console.log(`🔍 Toplam ${entries.length} adet ham veri başarıyla indirildi. İşleniyor...`);
-
-        entries.forEach(entry => {
-            // Sadece bizim istediğimiz spor dallarını filtrele
-            const sportSlug = (entry.sport?.slug || entry.sport || '').toLowerCase();
-            if (!['futbol', 'basketbol', 'tenis'].includes(sportSlug)) return;
-
-            const sportName = sportSlug.charAt(0).toUpperCase() + sportSlug.slice(1);
-
-            // Maç Adı (Ev Sahibi - Deplasman)
-            const home = entry.homeTeam?.name || '';
-            const away = entry.awayTeam?.name || '';
-            let matchName = (home && away) ? `${home} - ${away}` : (entry.name || '');
-
-            if (!matchName || matchName.length < 3) return;
-
-            // Kara Liste Filtresi
-            const matchLower = matchName.toLowerCase();
-            if (matchLower.includes('iptal') || matchLower.includes('ertelendi')) return;
-
-            // Tarih ve Saat Ayarları
-            const startDateRaw = entry.startDate || entry.matchDate;
-            if (!startDateRaw) return;
-
-            const startDate = new Date(startDateRaw);
-            const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
-
-            // Sadece hedeflediğimiz 4 günün içindeyse ekle
-            if (!allMatches[dateStr]) return;
-
-            const timeStr = startDate.toLocaleTimeString('tr-TR', { 
-                timeZone, 
-                hour: '2-digit', 
-                minute: '2-digit' 
+    for (const sport of sports) {
+        try {
+            // Sitenin yönlendirme yaptığı ana URL parametresiyle HTML'i ham olarak indiriyoruz
+            const response = await axios.get(`https://www.sporekrani.com/?sport=${sport}`, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'tr,en-US;q=0.7,en;q=0.3'
+                },
+                timeout: 20000
             });
 
-            // Yayıncı Kanal Bilgisi (Garantili Çözüm)
-            let channels = [];
-            if (entry.broadcastChannels && Array.isArray(entry.broadcastChannels)) {
-                channels = entry.broadcastChannels.map(c => c.name).filter(n => n);
-            } else if (entry.channels && Array.isArray(entry.channels)) {
-                channels = entry.channels.map(c => c.name || c).filter(n => n);
-            } else if (entry.channel?.name) {
-                channels = [entry.channel.name];
+            const html = response.data;
+            
+            // Next.js'in sayfa içine gömdüğü devasa veri küpünü cımbızlıyoruz
+            const nextDataMatch = html.match(/<script id="__NEXT_DATA__" type="application\/json">([^<]+)<\/script>/);
+            
+            if (!nextDataMatch || !nextDataMatch[1]) {
+                console.log(`⚠️ ${sport.toUpperCase()}: __NEXT_DATA__ şeması bulunamadı, alternatif aranıyor...`);
+                continue;
             }
 
-            const channelStr = channels.length > 0 ? channels.join(' / ') : 'Spor Ekranı Özel';
+            const nextData = JSON.parse(nextDataMatch[1]);
+            
+            // Next.js state ağacından maçların ham listesini buluyoruz
+            // Genellikle pageProps içinde veya query sonuçlarında olur, recursive fonksiyonla nokta atışı bulalım:
+            function findMatchesArray(obj) {
+                if (!obj || typeof obj !== 'object') return null;
+                // Eğer nesne bir maç listesi barındırıyorsa ve içinde bildiğimiz parametreler varsa yakala
+                if (Array.isArray(obj)) {
+                    const hasMatchData = obj.some(item => item && (item.homeTeam || item.broadcastChannels || item.matchDate || item.sport));
+                    if (hasMatchData) return obj;
+                }
+                for (const key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                        const result = findMatchesArray(obj[key]);
+                        if (result) return result;
+                    }
+                }
+                return null;
+            }
 
-            allMatches[dateStr].matches.push({
-                saat: timeStr,
-                spor: sportName,
-                mac: matchName.toUpperCase().trim(),
-                yayin: channelStr
+            const matchesList = findMatchesArray(nextData);
+
+            if (!matchesList || matchesList.length === 0) {
+                console.log(`⚠️ ${sport.toUpperCase()}: Ham veri listesi boştur veya format değişmiştir.`);
+                continue;
+            }
+
+            console.log(`🔍 ${sport.toUpperCase()}: Kaynak koddan ${matchesList.length} adet gizli veri söküldü.`);
+
+            matchesList.forEach(item => {
+                try {
+                    // Sadece aktif spor dalına ait olanları işle
+                    const itemSport = (item.sport?.slug || item.sport || '').toLowerCase();
+                    if (itemSport !== sport) return;
+
+                    const home = item.homeTeam?.name || item.homeTeam || '';
+                    const away = item.awayTeam?.name || item.awayTeam || '';
+                    let matchName = (home && away) ? `${home} - ${away}` : (item.name || '');
+
+                    if (!matchName || matchName.length < 3) return;
+
+                    // İptal Filtresi
+                    const matchLower = matchName.toLowerCase();
+                    if (matchLower.includes('iptal') || matchLower.includes('ertelendi')) return;
+
+                    // Tarih & Saat
+                    const dateRaw = item.startDate || item.matchDate;
+                    if (!dateRaw) return;
+
+                    const startDate = new Date(dateRaw);
+                    const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
+
+                    if (!allMatches[dateStr]) return;
+
+                    const timeStr = startDate.toLocaleTimeString('tr-TR', { 
+                        timeZone, 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+
+                    // Yayıncı kanalları birleştir
+                    let channels = [];
+                    const rawChannels = item.broadcastChannels || item.channels || item.broadcastChannel;
+                    if (Array.isArray(rawChannels)) {
+                        channels = rawChannels.map(c => c.name || c.title || c).filter(n => n && typeof n === 'string');
+                    } else if (rawChannels && typeof rawChannels === 'object') {
+                        channels = [rawChannels.name || rawChannels.title];
+                    } else if (item.channelName) {
+                        channels = [item.channelName];
+                    }
+
+                    const channelStr = channels.length > 0 ? channels.join(' / ') : 'Spor Ekranı';
+
+                    allMatches[dateStr].matches.push({
+                        saat: timeStr,
+                        spor: sport.charAt(0).toUpperCase() + sport.slice(1),
+                        mac: matchName.toUpperCase().trim(),
+                        yayin: channelStr
+                    });
+                } catch (e) {}
             });
-        });
 
-    } catch (error) {
-        console.error(`🚨 API Bağlantı Hatası:`, error.message);
-        process.exit(1);
+        } catch (error) {
+            console.error(`🚨 ${sport.toUpperCase()} çözme hatası:`, error.message);
+        }
     }
 
-    // Konsol Tablosu Oluşturma ve Doğrulama
+    // Konsol Çıktısı Ekranı
     [yesterdayStr, todayStr, tomorrowStr, nextDayStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
@@ -118,7 +149,7 @@ async function getBroadcasterData() {
     });
 
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 Maç Saati için 'yayinci_bilgisi.json' sıfır hata ile kaydedildi.");
+    console.log("\n💾 Maç Saati veritabanı (yayinci_bilgisi.json) başarıyla kurtarıldı!");
 }
 
 getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
