@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 async function getBroadcasterData() {
-    const sports = ['futbol', 'basketbol', 'tenis'];
     const timeZone = 'Europe/Istanbul';
     
     const d = new Date();
@@ -20,152 +19,197 @@ async function getBroadcasterData() {
         [nextDayStr]: { title: `📅 ERTESİ GÜN (${nextDay.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
     };
 
-    console.log("🚀 Maç Saati DOM Kazıma ve Gelecek Günleri Kurtarma Modu...");
+    console.log("🚀 Ana Sayfa Şema Deşifre ve Temizlik Modu Başlatılıyor...");
 
     const browser = await puppeteer.launch({ 
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--blink-features=AutomationControlled']
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--blink-features=AutomationControlled'
+        ]
     });
 
-    for (const sport of sports) {
-        console.log(`\n📡 ${sport.toUpperCase()} sayfası kazınıyor...`);
-        const page = await browser.newPage();
-        
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
-        await page.setViewport({ width: 1280, height: 800 });
+    const page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+    await page.setViewport({ width: 1280, height: 800 });
 
-        try {
-            // Tam olarak istediğin, gelecek günleri de barındıran orijinal URL yapısı
-            const url = `https://www.sporekrani.com/home/sport/${sport}`;
-            await page.goto(url, { waitUntil: 'networkidle2', timeout: 50000 });
+    try {
+        // Kesin açılan tek ve ana güvenli URL
+        const url = `https://www.sporekrani.com/`;
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 50000 });
+        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 3000)));
+
+        const rawDataList = await page.evaluate(() => {
+            const list = [];
+            const allScripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
             
-            // Sayfanın tamamen yüklenmesi ve listelerin oturması için es veriyoruz
-            await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 4000)));
-
-            // Ekrandaki HTML elementlerinden canlı kazıma yapıyoruz
-            const scrapedItems = await page.evaluate(() => {
-                const results = [];
-                // Sitedeki maç satırlarını temsil eden kart elemanları
-                const items = document.querySelectorAll('.match-list-item, .match-item, [class*="match-list"]');
-                
-                items.forEach(item => {
-                    try {
-                        // 1. Saat tespiti
-                        const timeEl = item.querySelector('.time, .hour, [class*="time"]');
-                        const saat = timeEl ? timeEl.innerText.trim() : '';
-
-                        // 2. Maç/Program metni tespiti
-                        const nameEl = item.querySelector('.match-name, .title, .teams, h3, h4, [class*="name"]');
-                        let mac = nameEl ? nameEl.innerText.trim() : '';
-
-                        // Takımlar alt kırılımdaysa birleştir
-                        if (!mac) {
-                            const home = item.querySelector('.home-team-name, [class*="home"]')?.innerText?.trim() || '';
-                            const away = item.querySelector('.away-team-name, [class*="away"]')?.innerText?.trim() || '';
-                            if (home && away) mac = `${home} - ${away}`;
-                        }
-
-                        // 3. Yayıncı kanal tespiti
-                        let yayin = '';
-                        const channelEl = item.querySelector('.channel-name-text, .channels, [class*="channel"]');
-                        if (channelEl && channelEl.innerText.trim()) {
-                            yayin = channelEl.innerText.trim();
-                        } else {
-                            // Text yoksa logolara bak
-                            const imgs = item.querySelectorAll('img');
-                            const channelList = [];
-                            imgs.forEach(img => {
-                                const alt = img.getAttribute('alt') || img.getAttribute('title') || '';
-                                if (alt && !alt.toLowerCase().includes('logo') && alt.length > 2) {
-                                    channelList.push(alt.replace(/logosu/gi, '').trim());
+            allScripts.forEach(script => {
+                try {
+                    const data = JSON.parse(script.innerHTML);
+                    
+                    function scan(obj) {
+                        if (!obj || typeof obj !== 'object') return;
+                        
+                        if (obj['@type'] === 'BroadcastEvent' || obj.broadcastOfEvent) {
+                            const subEvent = obj.broadcastOfEvent || {};
+                            const rawName = subEvent.name || obj.name || '';
+                            const rawDate = obj.startDate || subEvent.startDate || '';
+                            
+                            // Sitenin gizli tuttuğu spor branş parametreleri
+                            const rawSport = obj.sport?.slug || obj.sport || subEvent.sport || '';
+                            
+                            let channelNames = [];
+                            const rawChannels = obj.broadcastChannel || obj.channels || [];
+                            const channelArr = Array.isArray(rawChannels) ? rawChannels : [rawChannels];
+                            
+                            channelArr.forEach(c => {
+                                if (!c) return;
+                                if (typeof c === 'string') channelNames.push(c);
+                                else if (c.name) channelNames.push(c.name);
+                                else if (c['@id']) {
+                                    const slug = c['@id'].split('/').pop().split('#')[0];
+                                    if (slug) channelNames.push(slug.replace(/-/g, ' '));
                                 }
                             });
-                            if (channelList.length > 0) yayin = channelList.join(' / ');
-                        }
-
-                        // Tarih tespiti: Bu satır hangi günün başlığı altında duruyor?
-                        // DOM ağacında yukarı doğru çıkıp en yakın tarih başlığını (Örn: "9 Haziran Salı") bulmaya çalışıyoruz
-                        let dateText = '';
-                        let parent = item.parentElement;
-                        while (parent) {
-                            const dateHeader = parent.querySelector('.date-header, .match-date-title, [class*="date"]');
-                            if (dateHeader && dateHeader.innerText.trim()) {
-                                dateText = dateHeader.innerText.trim();
-                                break;
+                            
+                            if (rawName && rawDate) {
+                                list.push({
+                                    macName: rawName,
+                                    rawDate: rawDate,
+                                    sportInfo: typeof rawSport === 'string' ? rawSport : (rawSport.name || ''),
+                                    yayin: channelNames.length > 0 ? channelNames.join(' / ') : 'Spor Ekranı'
+                                });
                             }
-                            parent = parent.parentElement;
                         }
+                        
+                        for (const key in obj) {
+                            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                                scan(obj[key]);
+                            }
+                        }
+                    }
+                    
+                    scan(data);
+                } catch (e) {}
+            });
+            return list;
+        });
 
-                        if (saat && mac) {
-                            results.push({ saat, mac, yayin: yayin || 'Spor Ekranı', dateText });
-                        }
-                    } catch (e) {}
-                });
-                return results;
+        console.log(`🔍 Ana Sayfadan ${rawDataList.length} adet ham yayın verisi söküldü. Arındırma odasına alınıyor...`);
+
+        rawDataList.forEach(item => {
+            const matchName = item.macName.trim();
+            const matchLower = matchName.toLowerCase();
+            const sportLower = item.sportInfo.toLowerCase();
+            const channelLower = item.yayin.toLowerCase();
+
+            // 🛑 1. PROGRAM, REKLAM VE BÜLTEN SÜZGECİ
+            if (
+                matchLower.includes('canlı maç izle') || 
+                matchLower.includes('bülteni') || 
+                matchLower.includes('stüdyosu') ||
+                matchLower.includes('vuruşu') ||
+                matchLower.includes('baski') ||
+                matchLower.includes('sporu') ||
+                matchLower.includes('ortasi') ||
+                matchLower.includes('ana haber') ||
+                matchLower.includes('raporu') ||
+                matchLower.includes('etap') ||
+                matchLower.includes('arasi') ||
+                matchLower.includes('ardından') ||
+                matchLower.includes('ekranı') ||
+                matchLower.includes('indirimle') ||
+                matchLower.includes('özeti') ||
+                matchLower.includes('programı') ||
+                matchLower.includes('dergisi') ||
+                matchName.length < 5
+            ) {
+                return; 
+            }
+
+            // 🛑 2. VOLEYBOL, MOTOR SPORLARI VE DİĞER BRANŞLARI ELİYORUZ
+            if (
+                matchLower.includes('vnl') || 
+                matchLower.includes('voleybol') || 
+                matchLower.includes('padel') ||
+                matchLower.includes('f1') ||
+                matchLower.includes('formula') ||
+                matchLower.includes('nascar') ||
+                matchLower.includes('motogp') ||
+                sportLower.includes('voleybol') ||
+                sportLower.includes('padel') ||
+                sportLower.includes('motor')
+            ) {
+                return;
+            }
+
+            // İptal kontrolü
+            if (matchLower.includes('iptal') || matchLower.includes('ertelendi')) return;
+
+            // Tarih kontrolü ve senkronizasyonu
+            const startDate = new Date(item.rawDate);
+            if (isNaN(startDate.getTime()) || startDate.getFullYear() < 2024) return;
+
+            const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
+
+            // Eğer listedeki günlerin dışındaysa pas geç
+            if (!allMatches[dateStr]) return;
+
+            const timeStr = startDate.toLocaleTimeString('tr-TR', { 
+                timeZone, 
+                hour: '2-digit', 
+                minute: '2-digit' 
             });
 
-            console.log(`🔍 ${sport.toUpperCase()}: Sayfadan ${scrapedItems.length} adet satır okundu. Filtreleniyor...`);
+            // 🎯 3. METİN ANALİZİYLE BRANŞ TESPİTİ (FUTBOL / BASKETBOL / TENIS)
+            let detectedSport = 'Futbol'; // Varsayılan futbol
+            if (
+                matchLower.includes('nba') || 
+                matchLower.includes('euroleague') || 
+                matchLower.includes('basketbol') || 
+                matchLower.includes('tbl') || 
+                sportLower.includes('basket') ||
+                channelLower.includes('basket')
+            ) {
+                detectedSport = 'Basketbol';
+            } else if (
+                matchLower.includes('wta') || 
+                matchLower.includes('atp') || 
+                matchLower.includes('tenis') || 
+                matchLower.includes('wimbledon') || 
+                matchLower.includes('open') ||
+                sportLower.includes('tenis')
+            ) {
+                detectedSport = 'Tenis';
+            }
 
-            scrapedItems.forEach(item => {
-                const matchName = item.mac.trim();
-                const matchLower = matchName.toLowerCase();
+            // Eğer isme takılan çiftler maçı veya padel kalıntısı varsa temizle
+            if (detectedSport === 'Tenis' && matchName.includes('/')) return;
 
-                // 🛑 PROGRAM, BÜLTEN VE REKLAM TEMİZLEYİCİ KESİN FİLTRE
-                if (
-                    matchLower.includes('izle') || 
-                    matchLower.includes('bülteni') || 
-                    matchLower.includes('stüdyosu') ||
-                    matchLower.includes('vuruşu') ||
-                    matchLower.includes('baski') ||
-                    matchLower.includes('sporu') ||
-                    matchLower.includes('ortasi') ||
-                    matchLower.includes('ana haber') ||
-                    matchLower.includes('raporu') ||
-                    matchLower.includes('etap') ||
-                    matchLower.includes('arasi') ||
-                    matchLower.includes('ardından') ||
-                    matchLower.includes('ekranı') ||
-                    matchLower.includes('indirimle') ||
-                    matchLower.includes('özeti') ||
-                    !matchLower.includes('-') // İçinde takım ayracı (tire) olmayan düz programları eler
-                ) {
-                    return; 
-                }
+            const formattedChannel = item.yayin
+                .split(' ')
+                .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                .join(' ');
 
-                // Voleybol veya diğer sporların sızmasını önleme doğrulaması
-                if (matchLower.includes('vnl') || matchLower.includes('voleybol') || matchLower.includes('padel')) {
-                    return;
-                }
-
-                // 🎯 TARİH DOĞRULAMA VE GÜNLERE DAĞITMA
-                let targetKey = todayStr; // Varsayılan bugün
-                const dtLower = item.dateText.toLowerCase();
-                
-                // Sayfadaki tarih başlığı metnine göre Yarın veya Ertesi günü buluyoruz
-                if (dtLower.includes('yarın') || dtLower.includes(new Date(tomorrow).getDate().toString())) {
-                    targetKey = tomorrowStr;
-                } else if (dtLower.includes('ertesi') || dtLower.includes(new Date(nextDay).getDate().toString())) {
-                    targetKey = nextDayStr;
-                }
-
-                allMatches[targetKey].matches.push({
-                    saat: item.saat,
-                    spor: sport.charAt(0).toUpperCase() + sport.slice(1),
-                    mac: matchName.toUpperCase(),
-                    yayin: item.yayin
-                });
+            allMatches[dateStr].matches.push({
+                saat: timeStr,
+                spor: detectedSport,
+                mac: matchName.toUpperCase(),
+                yayin: formattedChannel
             });
+        });
 
-        } catch (error) {
-            console.error(`🚨 ${sport.toUpperCase()} hatası:`, error.message);
-        } finally {
-            await page.close();
-        }
+    } catch (error) {
+        console.error(`🚨 Ana sayfa hatası:`, error.message);
+    } finally {
+        await page.close();
     }
 
     await browser.close();
 
-    // Konsol Tabloları
+    // Çıktı Ekranı
     [todayStr, tomorrowStr, nextDayStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
@@ -180,7 +224,7 @@ async function getBroadcasterData() {
     });
 
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 yayinci_bilgisi.json sadece gerçek maçlarla güncellendi.");
+    console.log("\n💾 yayinci_bilgisi.json sadece futbol, basketbol ve tenis maçlarıyla güncellendi.");
 }
 
 getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
