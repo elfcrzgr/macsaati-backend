@@ -44,7 +44,9 @@ async function getBroadcasterData() {
 
         try {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
-            await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+            
+            // Timeout hatasını önlemek için DOM yüklendiğinde geç ve süreyi 60s yap
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
             
             const jsonLdData = await page.evaluate(() => {
                 const script = document.querySelector('script[type="application/ld+json"]');
