@@ -2,177 +2,171 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 async function getBroadcasterData() {
-    const sports = ['futbol'];
+    const sports = ['futbol', 'basketbol', 'tenis'];
     const timeZone = 'Europe/Istanbul';
-    const MATCH_LIMIT = 50;
     
+    // Tarihleri Hesapla
     const d = new Date();
+    
+    const yesterday = new Date(d); yesterday.setDate(d.getDate() - 1);
     const today = new Date(d);
     const tomorrow = new Date(d); tomorrow.setDate(d.getDate() + 1);
+    const nextDay = new Date(d); nextDay.setDate(d.getDate() + 2);
     
+    const yesterdayStr = yesterday.toLocaleDateString('en-CA', { timeZone });
     const todayStr = today.toLocaleDateString('en-CA', { timeZone });
     const tomorrowStr = tomorrow.toLocaleDateString('en-CA', { timeZone });
+    const nextDayStr = nextDay.toLocaleDateString('en-CA', { timeZone });
     
     const allMatches = {
-        [todayStr]: { title: `📅 BUGÜN`, matches: [] },
-        [tomorrowStr]: { title: `📅 YARIN`, matches: [] }
+        [yesterdayStr]: { title: `📅 DÜN (${yesterday.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
+        [todayStr]: { title: `📅 BUGÜN (${today.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
+        [tomorrowStr]: { title: `📅 YARIN (${tomorrow.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
+        [nextDayStr]: { title: `📅 ERTESİ GÜN (${nextDay.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
     };
     
     for (const sport of sports) {
-        console.log(`🚀 ${sport.toUpperCase()} işleniyor...\n`);
+        console.log(`\n🚀 ${sport.toUpperCase()} sayfası açılıyor...\n`);
         
         const browser = await puppeteer.launch({ 
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            headless: "new",
+            args: [
+                '--no-sandbox', 
+                '--disable-setuid-sandbox',
+                '--disable-blink-features=AutomationControlled'
+            ]
         });
 
         const page = await browser.newPage();
-        page.setDefaultTimeout(60000);
-        page.setDefaultNavigationTimeout(60000);
         
+        await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+        await page.setViewport({ width: 1366, height: 768 });
+
         try {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
-            console.log(`📍 ${url} açılıyor...`);
-            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-            console.log(`✅ Sayfa açıldı\n`);
+            await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
             
-            const matchUrls = await page.evaluate(() => {
-                const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
-                const urls = [];
-                
-                scripts.forEach(script => {
-                    try {
-                        const data = JSON.parse(script.innerHTML);
-                        if (data['@graph']) {
-                            const itemList = data['@graph'].find(item => item['@type'] === 'ItemList');
-                            if (itemList && itemList.itemListElement) {
-                                itemList.itemListElement.slice(0, MATCH_LIMIT).forEach(listItem => {
-                                    if (listItem.url) urls.push(listItem.url);
-                                });
-                            }
-                        }
-                    } catch (e) {}
-                });
-                
-                return urls;
+            const jsonLdData = await page.evaluate(() => {
+                const script = document.querySelector('script[type="application/ld+json"]');
+                if (script) {
+                    try { return JSON.parse(script.innerHTML); } catch (e) { return null; }
+                }
+                return null;
             });
             
-            await page.close();
-            console.log(`📋 ${matchUrls.length} maç bulundu\n`);
-            
-            if (matchUrls.length === 0) {
-                console.log("❌ URL bulunamadı!");
+            if (!jsonLdData) {
+                console.log(`⚠️ ${sport}: JSON-LD bulunamadı. Teşhis için sayfa çıktısı alınıyor...`);
+                await page.screenshot({ path: `hata_ekrani_${sport}.png`, fullPage: true });
+                const pageHtml = await page.content();
+                fs.writeFileSync(`hata_html_${sport}.html`, pageHtml);
+                console.log(`📸 hata_ekrani_${sport}.png ve hata_html_${sport}.html kaydedildi.`);
+                
                 await browser.close();
                 continue;
             }
             
-            let processed = 0;
-            for (const matchUrl of matchUrls) {
-                try {
-                    const matchPage = await browser.newPage();
-                    matchPage.setDefaultTimeout(15000);
-                    matchPage.setDefaultNavigationTimeout(15000);
-                    
-                    try {
-                        await matchPage.goto(matchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
-                    } catch (e) {
-                        await matchPage.close();
-                        continue;
+            const events = Array.isArray(jsonLdData) ? jsonLdData : [jsonLdData];
+            
+            events.forEach(event => {
+                if (event['@type'] !== 'BroadcastEvent') return;
+                
+                const broadcastEvent = event.broadcastOfEvent;
+                if (!broadcastEvent) return;
+                
+                // --- 1. MAÇ İSMİNİ AYIKLAMA ---
+                let eventName = broadcastEvent.name || '';
+                
+                if (!eventName && broadcastEvent['@id']) {
+                    const urlMatch = broadcastEvent['@id'].match(/\d{4}\/\d{2}\/\d{2}\/([^#]+)/);
+                    if (urlMatch && urlMatch[1]) {
+                        eventName = urlMatch[1]
+                            .replace(/-hangi-kanalda/g, '')
+                            .replace(/-hazirlik-maci/g, ' (Hazırlık)')
+                            .replace(/-/g, ' ')
+                            .toUpperCase();
                     }
-                    
-                    const matchData = await matchPage.evaluate(() => {
-                        const script = document.querySelector('script[type="application/ld+json"]');
-                        if (!script) return null;
-                        
-                        try {
-                            const data = JSON.parse(script.innerHTML);
-                            let sportsEvent = null;
-                            let broadcasts = [];
-                            
-                            if (data['@graph']) {
-                                data['@graph'].forEach(item => {
-                                    if (item['@type'] === 'SportsEvent') sportsEvent = item;
-                                    if (item['@type'] === 'BroadcastEvent') broadcasts.push(item);
-                                });
-                            }
-                            
-                            return { sportsEvent, broadcasts };
-                        } catch (e) {
-                            return null;
+                }
+                
+                // 🛑 KARA LİSTE FİLTRESİ
+                const eventNameLower = eventName.toLowerCase();
+                const isCancelled = eventNameLower.includes('iptal') || 
+                                    eventNameLower.includes('ertelendi') || 
+                                    eventNameLower.includes('postponed') || 
+                                    eventNameLower.includes('cancelled');
+                
+                if (isCancelled || !eventName) return; 
+                
+                // Tarih verisini al
+                const startDateStr = event.startDate || broadcastEvent.startDate;
+                if (!startDateStr) return;
+
+                const startDate = new Date(startDateStr);
+                const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
+                
+                if (!allMatches[dateStr]) return;
+                
+                // --- 2. KANAL İSMİNİ AYIKLAMA ---
+                let channels = [];
+                const channelList = Array.isArray(event.broadcastChannel) ? event.broadcastChannel : [event.broadcastChannel];
+                
+                channelList.forEach(ch => {
+                    if (!ch) return;
+                    if (ch.name) {
+                        channels.push(ch.name);
+                    } else if (ch['@id']) {
+                        const chMatch = ch['@id'].match(/\/channel\/([^#]+)/);
+                        if (chMatch && chMatch[1]) {
+                            const formattedName = chMatch[1]
+                                .split('-')
+                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                .join(' ');
+                            channels.push(formattedName);
                         }
+                    }
+                });
+                
+                const channelStr = channels.length > 0 ? channels.join(' / ') : 'Bilinmiyor';
+                
+                if (eventName.length > 3) {
+                    const time = startDate.toLocaleTimeString('tr-TR', { 
+                        timeZone, 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
                     });
                     
-                    if (matchData?.sportsEvent) {
-                        const event = matchData.sportsEvent;
-                        const startDate = new Date(event.startDate);
-                        const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
-                        
-                        if (allMatches[dateStr]) {
-                            const time = startDate.toLocaleTimeString('tr-TR', { 
-                                timeZone, 
-                                hour: '2-digit', 
-                                minute: '2-digit' 
-                            });
-                            
-                            let channels = [];
-                            matchData.broadcasts.forEach(broadcast => {
-                                const broadcastId = broadcast.broadcastChannel?.['@id'] || '';
-                                const match = broadcastId.match(/\/channel\/([^\/]+)/);
-                                if (match) {
-                                    let channelName = match[1]
-                                        .replace(/-/g, ' ')
-                                        .split(' ')
-                                        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-                                        .join(' ');
-                                    
-                                    if (!channels.includes(channelName)) {
-                                        channels.push(channelName);
-                                    }
-                                }
-                            });
-                            
-                            const matchName = `${event.homeTeam?.name || ''} - ${event.awayTeam?.name || ''}`;
-                            
-                            allMatches[dateStr].matches.push({
-                                saat: time,
-                                mac: matchName,
-                                yayin: channels.join(' / ') || 'Bilinmiyor'
-                            });
-                            
-                            console.log(`✓ ${matchName} → ${channels.join(' / ') || 'Bilinmiyor'}`);
-                        }
-                    }
-                    
-                    await matchPage.close();
-                    processed++;
-                    if (processed % 5 === 0) console.log(`  ⏳ ${processed}/${matchUrls.length}`);
-                    
-                } catch (error) {
-                    //
+                    allMatches[dateStr].matches.push({
+                        saat: time,
+                        spor: sport.charAt(0).toUpperCase() + sport.slice(1),
+                        mac: eventName,
+                        yayin: channelStr
+                    });
                 }
-            }
+            });
             
             await browser.close();
             
         } catch (error) {
-            console.error(`🚨 Hata:`, error.message);
+            console.error(`🚨 ${sport} hatası:`, error.message);
             await browser.close();
         }
     }
     
-    // Çıktı
-    Object.entries(allMatches).forEach(([key, group]) => {
+    // Çıktı ve Kayıt
+    [yesterdayStr, todayStr, tomorrowStr, nextDayStr].forEach(key => {
+        const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
+        
         if (group.matches.length === 0) {
-            console.log("   Maç yok");
+            console.log("   ⚠️ Maç bulunamadı.");
         } else {
-            const sorted = group.matches.sort((a, b) => a.saat.localeCompare(b.saat));
+            const uniqueMatches = Array.from(new Set(group.matches.map(JSON.stringify))).map(JSON.parse);
+            const sorted = uniqueMatches.sort((a, b) => a.saat.localeCompare(b.saat));
             console.table(sorted);
         }
     });
     
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 yayinci_bilgisi.json kaydedildi");
+    console.log("\n💾 yayinci_bilgisi.json kaydedildi.");
 }
 
-getBroadcasterData().catch(e => console.error(e));
+getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
