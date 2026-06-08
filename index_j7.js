@@ -1024,53 +1024,7 @@ const ATP_500_TOURNAMENTS = [
     "NEWPORT BEACH"
 ];
 
-// ❌ AYIKLANACAK ATP 250 VE ALTLARI
-const ATP_250_AND_BELOW = [
-    "BIRMINGHAM",
-    "FOGGIA",
-    "MAKARSKA",
-    "HERTOGENBOSCH",
-    "STUTTGART",
-    "LONDON",
-    "ILKLEY",
-    "SAN FELICE",
-    "KOVACIC",
-    "TRIESTE",
-    "BRISBANE",
-    "AUCKLAND",
-    "ADELAIDE",
-    "PERTH",
-    "SYDNEY",
-    "MELBOURNE",
-    "PUNE",
-    "MUMBAI",
-    "DUBAI",
-    "ABU DHABI",
-    "MARRAKECH",
-    "MEXICO CITY",
-    "COLOMBIA",
-    "BOGOTA",
-    "ATLANTA",
-    "WINSTON-SALEM",
-    "LEXINGTON",
-    "ATLANTA",
-    "PUNE",
-    "CHARLOTTE",
-    "NEWPORT",
-    "UMAG",
-    "BRAUNSCHWEIG",
-    "TRANSNISTRIA",
-    "WICHITA",
-    "LOS CABOS",
-    "VANCOUVER",
-    "CALGARY",
-    "MONTREAL",
-    "TORONTO",
-    "WINSTON",
-    "BANGKOK",
-    "PÖRTOROŽ",
-    "PORTOROZ"
-];
+
 
 const checkIsEliteMatch = (tournamentName) => {
     if (!tournamentName) return false;
@@ -1085,29 +1039,19 @@ const checkIsEliteMatch = (tournamentName) => {
     return false;
 };
 
-const checkIsATP500Plus = (tournamentName) => {
+const checkIsValidTournament = (tournamentName) => {
     if (!tournamentName) return false;
     const nameUpper = tournamentName.toUpperCase();
     
-    // Qualifying maçlarını hariç tut
+    // Qualifying hariç
     if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
     
-    // Elit turnuvaları kontrol et
-    if (ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword))) return true;
-    
-    // ATP 500 turnuvalarını kontrol et
-    if (ATP_500_TOURNAMENTS.some(keyword => nameUpper.includes(keyword))) return true;
-    
-    return false;
+    // ITF/Challenger zaten isGarbage'da yakalanıyor
+    // Elit + ATP 500 + ATP 250 → hepsini geçir
+    return true; // isGarbage filtresi geçtiyse kabul et
 };
 
-const shouldFilterTournament = (tournamentName) => {
-    if (!tournamentName) return false;
-    const nameUpper = tournamentName.toUpperCase();
-    
-    // ATP 250 ve altları filtrele
-    return ATP_250_AND_BELOW.some(keyword => nameUpper.includes(keyword));
-};
+
 
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor (Paralel Optimizasyon - Taranan gün: ${targetDates.length})...`);
@@ -1122,24 +1066,18 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
         try {
             const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
             if (data?.events) {
-                const filtered = data.events.filter(e => {
-                    const tourName = e.tournament?.name;
-                    const catName = e.tournament?.category?.name;
-                    
-                    if (isGarbage(tourName, catName)) return false;
-                    if (shouldFilterTournament(tourName)) {
-                        console.log(`  ⏭️ ${tourName} - ATP 250/altı, atlanıyor`);
-                        return false;
-                    }
-                    if (!checkIsATP500Plus(tourName)) {
-                        console.log(`  ⏭️ ${tourName} - ATP 500+ kategorisinde değil, atlanıyor`);
-                        return false;
-                    }
-                    if (seenEventIds.has(e.id)) return false; 
-                    
-                    seenEventIds.add(e.id);
-                    return true;
-                });
+               const filtered = data.events.filter(e => {
+    const tourName = e.tournament?.name;
+    const catName = e.tournament?.category?.name;
+    
+    if (isGarbage(tourName, catName)) return false;  // ITF/Challenger/UTR engelle
+    if (!checkIsValidTournament(tourName)) return false;
+    if (seenEventIds.has(e.id)) return false;
+    
+    seenEventIds.add(e.id);
+    return true;
+});
+
                 rawEvents.push(...filtered);
                 successfulDates.push(date);
             }
