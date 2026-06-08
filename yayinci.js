@@ -1,175 +1,52 @@
 const puppeteer = require('puppeteer');
-const fs = require('fs');
 
-async function getBroadcasterData() {
-    const sports = ['futbol', 'basketbol', 'tenis'];
-    const timeZone = 'Europe/Istanbul';
-    
-    // Tarihleri Hesapla
-    const d = new Date();
-    const yesterday = new Date(d); yesterday.setDate(d.getDate() - 1);
-    const today = new Date(d);
-    const tomorrow = new Date(d); tomorrow.setDate(d.getDate() + 1);
-    const nextDay = new Date(d); nextDay.setDate(d.getDate() + 2);
-    
-    const yesterdayStr = yesterday.toLocaleDateString('en-CA', { timeZone });
-    const todayStr = today.toLocaleDateString('en-CA', { timeZone });
-    const tomorrowStr = tomorrow.toLocaleDateString('en-CA', { timeZone });
-    const nextDayStr = nextDay.toLocaleDateString('en-CA', { timeZone });
-    
-    const allMatches = {
-        [yesterdayStr]: { title: `📅 DÜN (${yesterday.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
-        [todayStr]: { title: `📅 BUGÜN (${today.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
-        [tomorrowStr]: { title: `📅 YARIN (${tomorrow.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] },
-        [nextDayStr]: { title: `📅 ERTESİ GÜN (${nextDay.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
-    };
-    
-    for (const sport of sports) {
-        console.log(`\n🚀 ${sport.toUpperCase()} sayfası açılıyor...\n`);
-        
-        const browser = await puppeteer.launch({ 
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
+async function debugMain() {
+    const browser = await puppeteer.launch({ 
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
 
-        const page = await browser.newPage();
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+    const page = await browser.newPage();
+    await page.goto('https://www.sporekrani.com/home/sport/futbol', { waitUntil: 'networkidle2' });
+    
+    const result = await page.evaluate(() => {
+        const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
+        console.log("📋 Toplam JSON-LD script sayısı:", scripts.length);
         
-        try {
-            const url = `https://www.sporekrani.com/home/sport/${sport}`;
-            await page.goto(url, { waitUntil: 'networkidle2' });
-            
-            // Ana sayfadan maç URL'lerini çek
-            const matchUrls = await page.evaluate(() => {
-                const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
-                const urls = [];
+        let allData = [];
+        scripts.forEach((script, idx) => {
+            try {
+                const data = JSON.parse(script.innerHTML);
+                console.log(`\n--- JSON-LD #${idx} ---`);
+                console.log("@type:", Array.isArray(data['@graph']) ? 'Graph' : data['@type']);
                 
-                scripts.forEach(script => {
-                    try {
-                        const data = JSON.parse(script.innerHTML);
-                        if (data['@graph']) {
-                            data['@graph'].forEach(item => {
-                                if (item['@type'] === 'CollectionPage' && item.mainEntity) {
-                                    const mainEntity = item.mainEntity;
-                                    if (mainEntity.itemListElement && Array.isArray(mainEntity.itemListElement)) {
-                                        mainEntity.itemListElement.forEach(listItem => {
-                                            if (listItem.url) {
-                                                urls.push(listItem.url);
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                        }
-                    } catch (e) {}
-                });
-                
-                return urls;
-            });
-            
-            console.log(`📋 Bulunan ${matchUrls.length} maç URL'i`);
-            
-            // Her maç sayfasını aç ve detayları çek
-            for (const matchUrl of matchUrls) {
-                try {
-                    const matchPage = await browser.newPage();
-                    await matchPage.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
-                    await matchPage.goto(matchUrl, { waitUntil: 'networkidle2', timeout: 30000 });
-                    
-                    const matchData = await matchPage.evaluate(() => {
-                        const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
-                        let sportsEvent = null;
-                        let broadcasts = [];
-                        
-                        scripts.forEach(script => {
-                            try {
-                                const data = JSON.parse(script.innerHTML);
-                                if (data['@graph']) {
-                                    data['@graph'].forEach(item => {
-                                        if (item['@type'] === 'SportsEvent') {
-                                            sportsEvent = item;
-                                        }
-                                        if (item['@type'] === 'BroadcastEvent') {
-                                            broadcasts.push(item);
-                                        }
-                                    });
-                                }
-                            } catch (e) {}
-                        });
-                        
-                        return { sportsEvent, broadcasts };
-                    });
-                    
-                    if (matchData.sportsEvent) {
-                        const event = matchData.sportsEvent;
-                        const startDate = new Date(event.startDate);
-                        const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
-                        
-                        // Sadece 4 günün verisini al
-                        if (!allMatches[dateStr]) {
-                            await matchPage.close();
-                            continue;
-                        }
-                        
-                        const time = startDate.toLocaleTimeString('tr-TR', { 
-                            timeZone, 
-                            hour: '2-digit', 
-                            minute: '2-digit' 
-                        });
-                        
-                        // Kanalları topla
-                        let channels = [];
-                        matchData.broadcasts.forEach(broadcast => {
-                            const channelName = broadcast.broadcastChannel?.['@id'] || '';
-                            const name = channelName.split('/').slice(-1)[0].split('#')[0];
-                            if (name && !channels.includes(name)) {
-                                channels.push(name);
+                if (data['@graph']) {
+                    data['@graph'].forEach((item, i) => {
+                        console.log(`  Item ${i}: ${item['@type']}`);
+                        if (item['@type'] === 'CollectionPage') {
+                            console.log("    ✓ CollectionPage bulundu!");
+                            console.log("    mainEntity:", !!item.mainEntity);
+                            if (item.mainEntity?.itemListElement) {
+                                console.log("    Item sayısı:", item.mainEntity.itemListElement.length);
+                                // İlk 3 item'ı göster
+                                item.mainEntity.itemListElement.slice(0, 3).forEach((li, j) => {
+                                    console.log(`      [${j}] position: ${li.position}, url: ${li.url?.substring(0, 80)}`);
+                                });
                             }
-                        });
-                        
-                        const channelStr = channels.length > 0 ? channels.join(' / ') : 'Bilinmiyor';
-                        const matchName = `${event.homeTeam?.name || ''} - ${event.awayTeam?.name || ''}`;
-                        
-                        allMatches[dateStr].matches.push({
-                            saat: time,
-                            spor: sport.charAt(0).toUpperCase() + sport.slice(1),
-                            mac: matchName,
-                            yayin: channelStr
-                        });
-                        
-                        console.log(`  ✓ ${matchName} - ${time}`);
-                    }
-                    
-                    await matchPage.close();
-                } catch (error) {
-                    console.log(`  ✗ Maç açılamadı: ${error.message}`);
+                        }
+                    });
                 }
+                
+                allData.push(data);
+            } catch (e) {
+                console.log(`❌ Parse hatası: ${e.message}`);
             }
-            
-            await browser.close();
-            
-        } catch (error) {
-            console.error(`🚨 ${sport} hatası:`, error.message);
-            await browser.close();
-        }
-    }
-    
-    // Çıktı ve Kayıt
-    [yesterdayStr, todayStr, tomorrowStr, nextDayStr].forEach(key => {
-        const group = allMatches[key];
-        console.log(`\n\x1b[33m${group.title}\x1b[0m`);
+        });
         
-        if (group.matches.length === 0) {
-            console.log("   ⚠️ Maç bulunamadı.");
-        } else {
-            const uniqueMatches = Array.from(new Set(group.matches.map(JSON.stringify))).map(JSON.parse);
-            const sorted = uniqueMatches.sort((a, b) => a.saat.localeCompare(b.saat));
-            console.table(sorted);
-        }
+        return allData;
     });
     
-    fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 yayinci_bilgisi.json kaydedildi.");
+    await browser.close();
 }
 
-getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
+debugMain().catch(console.error);
