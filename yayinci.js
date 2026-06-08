@@ -4,6 +4,7 @@ const fs = require('fs');
 async function getBroadcasterData() {
     const sports = ['futbol', 'basketbol', 'tenis'];
     const timeZone = 'Europe/Istanbul';
+    const MAX_CONCURRENT = 5; // Eşzamanlı açık browser sayısı
     
     // Tarihleri Hesapla
     const d = new Date();
@@ -24,6 +25,109 @@ async function getBroadcasterData() {
         [nextDayStr]: { title: `📅 ERTESİ GÜN (${nextDay.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
     };
     
+    // Maçı aç ve veri çek
+    async function fetchMatchData(matchUrl, browser) {
+        try {
+            const page = await browser.newPage();
+            await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+            await page.goto(matchUrl, { waitUntil: 'networkidle2', timeout: 30000 });
+            
+            const matchData = await page.evaluate(() => {
+                const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
+                let sportsEvent = null;
+                let broadcasts = [];
+                
+                scripts.forEach(script => {
+                    try {
+                        const data = JSON.parse(script.innerHTML);
+                        if (data['@graph']) {
+                            data['@graph'].forEach(item => {
+                                if (item['@type'] === 'SportsEvent') {
+                                    sportsEvent = item;
+                                }
+                                if (item['@type'] === 'BroadcastEvent') {
+                                    broadcasts.push(item);
+                                }
+                            });
+                        }
+                    } catch (e) {}
+                });
+                
+                return { sportsEvent, broadcasts };
+            });
+            
+            await page.close();
+            return matchData;
+        } catch (error) {
+            console.log(`  ✗ ${error.message}`);
+            return null;
+        }
+    }
+    
+    // Maçları işle
+    async function processMatches(matchUrls, sport) {
+        const browser = await puppeteer.launch({ 
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        
+        // Chunk'lar halinde işle
+        for (let i = 0; i < matchUrls.length; i += MAX_CONCURRENT) {
+            const chunk = matchUrls.slice(i, i + MAX_CONCURRENT);
+            const promises = chunk.map(url => fetchMatchData(url, browser));
+            const results = await Promise.all(promises);
+            
+            results.forEach(matchData => {
+                if (!matchData?.sportsEvent) return;
+                
+                const event = matchData.sportsEvent;
+                const startDate = new Date(event.startDate);
+                const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
+                
+                if (!allMatches[dateStr]) return;
+                
+                // İptal kontrolü
+                const eventNameLower = (event.name || '').toLowerCase();
+                const isCancelled = eventNameLower.includes('iptal') || 
+                                  eventNameLower.includes('ertelendi') || 
+                                  eventNameLower.includes('postponed') || 
+                                  eventNameLower.includes('cancelled');
+                
+                if (isCancelled) return;
+                
+                const time = startDate.toLocaleTimeString('tr-TR', { 
+                    timeZone, 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                
+                let channels = [];
+                matchData.broadcasts.forEach(broadcast => {
+                    const channelName = broadcast.broadcastChannel?.name || '';
+                    if (channelName && !channels.includes(channelName)) {
+                        channels.push(channelName);
+                    }
+                });
+                
+                const channelStr = channels.length > 0 ? channels.join(' / ') : 'Bilinmiyor';
+                const matchName = `${event.homeTeam?.name || ''} - ${event.awayTeam?.name || ''}`;
+                
+                allMatches[dateStr].matches.push({
+                    saat: time,
+                    spor: sport.charAt(0).toUpperCase() + sport.slice(1),
+                    mac: matchName,
+                    yayin: channelStr
+                });
+                
+                console.log(`  ✓ ${matchName} - ${time}`);
+            });
+            
+            console.log(`  ${Math.min(i + MAX_CONCURRENT, matchUrls.length)}/${matchUrls.length}`);
+        }
+        
+        await browser.close();
+    }
+    
     for (const sport of sports) {
         console.log(`\n🚀 ${sport.toUpperCase()} sayfası açılıyor...\n`);
         
@@ -39,7 +143,6 @@ async function getBroadcasterData() {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
             await page.goto(url, { waitUntil: 'networkidle2' });
             
-            // Ana sayfadan maç URL'lerini çek
             const matchUrls = await page.evaluate(() => {
                 const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
                 const urls = [];
@@ -48,13 +151,10 @@ async function getBroadcasterData() {
                     try {
                         const data = JSON.parse(script.innerHTML);
                         if (data['@graph']) {
-                            // ItemList'i bul (CollectionPage değil!)
                             const itemList = data['@graph'].find(item => item['@type'] === 'ItemList');
-                            if (itemList && itemList.itemListElement && Array.isArray(itemList.itemListElement)) {
+                            if (itemList && itemList.itemListElement) {
                                 itemList.itemListElement.forEach(listItem => {
-                                    if (listItem.url) {
-                                        urls.push(listItem.url);
-                                    }
+                                    if (listItem.url) urls.push(listItem.url);
                                 });
                             }
                         }
@@ -64,98 +164,10 @@ async function getBroadcasterData() {
                 return urls;
             });
             
-            console.log(`📋 Bulunan ${matchUrls.length} maç URL'i`);
-            
-            // Her maç sayfasını aç ve detayları çek
-            for (const matchUrl of matchUrls) {
-                try {
-                    const matchPage = await browser.newPage();
-                    await matchPage.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
-                    await matchPage.goto(matchUrl, { waitUntil: 'networkidle2', timeout: 30000 });
-                    
-                    const matchData = await matchPage.evaluate(() => {
-                        const scripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
-                        let sportsEvent = null;
-                        let broadcasts = [];
-                        
-                        scripts.forEach(script => {
-                            try {
-                                const data = JSON.parse(script.innerHTML);
-                                if (data['@graph']) {
-                                    data['@graph'].forEach(item => {
-                                        if (item['@type'] === 'SportsEvent') {
-                                            sportsEvent = item;
-                                        }
-                                        if (item['@type'] === 'BroadcastEvent') {
-                                            broadcasts.push(item);
-                                        }
-                                    });
-                                }
-                            } catch (e) {}
-                        });
-                        
-                        return { sportsEvent, broadcasts };
-                    });
-                    
-                    if (matchData.sportsEvent) {
-                        const event = matchData.sportsEvent;
-                        const startDate = new Date(event.startDate);
-                        const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
-                        
-                        // Sadece 4 günün verisini al
-                        if (!allMatches[dateStr]) {
-                            await matchPage.close();
-                            continue;
-                        }
-                        
-                        // İptal edilen maçları filtrele
-                        const eventNameLower = (event.name || '').toLowerCase();
-                        const isCancelled = eventNameLower.includes('iptal') || 
-                                          eventNameLower.includes('ertelendi') || 
-                                          eventNameLower.includes('postponed') || 
-                                          eventNameLower.includes('cancelled');
-                        
-                        if (isCancelled) {
-                            console.log(`🗑️ İptal edilen maç atlandı: ${event.name}`);
-                            await matchPage.close();
-                            continue;
-                        }
-                        
-                        const time = startDate.toLocaleTimeString('tr-TR', { 
-                            timeZone, 
-                            hour: '2-digit', 
-                            minute: '2-digit' 
-                        });
-                        
-                        // Kanalları topla
-                        let channels = [];
-                        matchData.broadcasts.forEach(broadcast => {
-                            const channelName = broadcast.broadcastChannel?.name || '';
-                            if (channelName && !channels.includes(channelName)) {
-                                channels.push(channelName);
-                            }
-                        });
-                        
-                        const channelStr = channels.length > 0 ? channels.join(' / ') : 'Bilinmiyor';
-                        const matchName = `${event.homeTeam?.name || ''} - ${event.awayTeam?.name || ''}`;
-                        
-                        allMatches[dateStr].matches.push({
-                            saat: time,
-                            spor: sport.charAt(0).toUpperCase() + sport.slice(1),
-                            mac: matchName,
-                            yayin: channelStr
-                        });
-                        
-                        console.log(`  ✓ ${matchName} - ${time}`);
-                    }
-                    
-                    await matchPage.close();
-                } catch (error) {
-                    console.log(`  ✗ Maç açılamadı: ${error.message}`);
-                }
-            }
-            
             await browser.close();
+            
+            console.log(`📋 Bulunan ${matchUrls.length} maç URL'i (paralel işleniyor...)\n`);
+            await processMatches(matchUrls, sport);
             
         } catch (error) {
             console.error(`🚨 ${sport} hatası:`, error.message);
@@ -163,7 +175,7 @@ async function getBroadcasterData() {
         }
     }
     
-    // Çıktı ve Kayıt
+    // Çıktı
     [yesterdayStr, todayStr, tomorrowStr, nextDayStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
