@@ -26,7 +26,7 @@ async function getBroadcasterData() {
     };
     
     for (const sport of sports) {
-        console.log(`\n🚀 ${sport.toUpperCase()} sayfası açılıyor...\n`);
+        console.log(`\n🚀 ${sport.toUpperCase()} sayfası açılıyor...`);
         
         const browser = await puppeteer.launch({ 
             headless: "new",
@@ -44,8 +44,6 @@ async function getBroadcasterData() {
 
         try {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
-            
-            // Timeout hatasını önlemek için DOM yüklendiğinde geç ve süreyi 60s yap
             await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
             
             const jsonLdData = await page.evaluate(() => {
@@ -57,21 +55,32 @@ async function getBroadcasterData() {
             });
             
             if (!jsonLdData) {
-                console.log(`⚠️ ${sport}: JSON-LD bulunamadı. Teşhis için sayfa çıktısı alınıyor...`);
-                await page.screenshot({ path: `hata_ekrani_${sport}.png`, fullPage: true });
-                const pageHtml = await page.content();
-                fs.writeFileSync(`hata_html_${sport}.html`, pageHtml);
-                console.log(`📸 hata_ekrani_${sport}.png ve hata_html_${sport}.html kaydedildi.`);
-                
+                console.log(`⚠️ ${sport}: JSON-LD bulunamadı.`);
                 await browser.close();
                 continue;
             }
             
-            const events = Array.isArray(jsonLdData) ? jsonLdData : [jsonLdData];
+            // Hiyerarşi ne olursa olsun tüm yayın eventlerini derinlemesine bulan recursive fonksiyon
+            function extractEvents(obj) {
+                let found = [];
+                if (!obj || typeof obj !== 'object') return found;
+                
+                if (obj.broadcastOfEvent || obj['@type'] === 'BroadcastEvent') {
+                    found.push(obj);
+                }
+                
+                for (const key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                        found = found.concat(extractEvents(obj[key]));
+                    }
+                }
+                return found;
+            }
+            
+            const events = extractEvents(jsonLdData);
+            console.log(`🔍 ${sport.toUpperCase()}: ${events.length} adet ham yayın verisi yakalandı.`);
             
             events.forEach(event => {
-                if (event['@type'] !== 'BroadcastEvent') return;
-                
                 const broadcastEvent = event.broadcastOfEvent;
                 if (!broadcastEvent) return;
                 
@@ -79,9 +88,16 @@ async function getBroadcasterData() {
                 let eventName = broadcastEvent.name || '';
                 
                 if (!eventName && broadcastEvent['@id']) {
-                    const urlMatch = broadcastEvent['@id'].match(/\d{4}\/\d{2}\/\d{2}\/([^#]+)/);
-                    if (urlMatch && urlMatch[1]) {
-                        eventName = urlMatch[1]
+                    const cleanUrl = broadcastEvent['@id'].split('#')[0];
+                    const urlParts = cleanUrl.split('/');
+                    let slug = urlParts[urlParts.length - 1];
+                    
+                    if (!isNaN(slug) && urlParts.length > 1) {
+                        slug = urlParts[urlParts.length - 2];
+                    }
+                    
+                    if (slug) {
+                        eventName = slug
                             .replace(/-hangi-kanalda/g, '')
                             .replace(/-hazirlik-maci/g, ' (Hazırlık)')
                             .replace(/-/g, ' ')
@@ -116,9 +132,11 @@ async function getBroadcasterData() {
                     if (ch.name) {
                         channels.push(ch.name);
                     } else if (ch['@id']) {
-                        const chMatch = ch['@id'].match(/\/channel\/([^#]+)/);
-                        if (chMatch && chMatch[1]) {
-                            const formattedName = chMatch[1]
+                        const cleanChUrl = ch['@id'].split('#')[0];
+                        const chParts = cleanChUrl.split('/');
+                        const chSlug = chParts[chParts.length - 1];
+                        if (chSlug) {
+                            const formattedName = chSlug
                                 .split('-')
                                 .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                                 .join(' ');
