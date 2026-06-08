@@ -23,10 +23,10 @@ async function getBroadcasterData() {
         [nextDayStr]: { title: `📅 ERTESİ GÜN (${nextDay.toLocaleDateString('tr-TR', { timeZone, month: 'long', day: 'numeric' }).toUpperCase()})`, matches: [] }
     };
 
-    console.log("🚀 Puppeteer Garanti Modu başlatılıyor...");
+    console.log("🚀 Puppeteer Profesyonel Filtre Modu başlatılıyor...");
 
     const browser = await puppeteer.launch({ 
-        headless: "new",
+        headless: true,
         args: [
             '--no-sandbox', 
             '--disable-setuid-sandbox',
@@ -36,112 +36,113 @@ async function getBroadcasterData() {
     });
 
     for (const sport of sports) {
-        console.log(`\n📡 ${sport.toUpperCase()} sayfası yükleniyor...`);
+        console.log(`\n📡 ${sport.toUpperCase()} sayfası işleniyor...`);
         const page = await browser.newPage();
         
-        // Bot engelini tamamen aşmak için gerçek cihaz taklidi
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
         await page.setViewport({ width: 1280, height: 800 });
 
         try {
-            // Sitenin yönlendirme yaptığı güncel ana url parametresi
             const url = `https://www.sporekrani.com/?sport=${sport}`;
             await page.goto(url, { waitUntil: 'networkidle2', timeout: 50000 });
             
-            // Sayfanın tamamen render olması için 4 saniye kesin bekleme süresi
-            await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 4000)));
+            // Sayfanın belleğe oturması için kısa es
+            await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 3000)));
 
-            // 🛠️ HİÇBİR SINIFA BAĞIMLI OLMAYAN ESNEK KAZIMA ALGORİTMASI
             const extractedData = await page.evaluate(() => {
                 const list = [];
+                const allScripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
                 
-                // Sayfadaki tüm script etiketlerini tara, bazen veriler window.__NUXT__ veya benzeri nesnelerdedir
-                const allScripts = Array.from(document.querySelectorAll('script'));
-                for (const script of allScripts) {
-                    const content = script.innerHTML;
-                    if (content.includes('match') || content.includes('startDate')) {
-                        // Eğer içeride saklı bir JSON string yakalarsak çıkarmaya çalışalım
-                        const jsonMatch = content.match(/\{["'].*?\}/g);
-                        if (jsonMatch) {
-                            jsonMatch.forEach(str => {
-                                try {
-                                    const parsed = JSON.parse(str);
-                                    if (parsed.startDate && (parsed.homeTeam || parsed.name)) {
-                                        list.push({
-                                            rawDate: parsed.startDate,
-                                            macName: parsed.name || `${parsed.homeTeam?.name} - ${parsed.awayTeam?.name}`,
-                                            kanallar: parsed.broadcastChannel?.name || parsed.channelName || 'Spor Ekranı'
-                                        });
-                                    }
-                                } catch(e) {}
-                            });
-                        }
-                    }
-                }
-
-                // EĞER SCRIPTTE BULAMAZSA DOĞRUDAN EKRANDAKİ METİNLERİ KAZI (Visual DOM Backup)
-                if (list.length === 0) {
-                    // Sitedeki tüm div'leri tara, içinde saat formatı (örn: "21:45") ve takım ayıracı olan her şeyi yakala
-                    const divs = document.querySelectorAll('div, li, tr');
-                    divs.forEach(el => {
-                        // Eğer element doğrudan maç kartı büyüklüğündeyse text analizi yap
-                        if (el.children.length >= 2 && el.children.length <= 10) {
-                            const text = el.innerText || '';
-                            const timeMatch = text.match(/([0-1]?[0-9]|2[0-3]):[0-5][0-9]/); // Saat kontrolü (21:45)
+                allScripts.forEach(script => {
+                    try {
+                        const data = JSON.parse(script.innerHTML);
+                        
+                        // Şemaları derinlemesine tarayan dahili fonksiyon
+                        function scan(obj) {
+                            if (!obj || typeof obj !== 'object') return;
                             
-                            if (timeMatch && (text.includes('-') || text.includes('vs'))) {
-                                const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-                                if (lines.length >= 2) {
+                            // Tam aradığımız BroadcastEvent yapısını süzüyoruz
+                            if (obj['@type'] === 'BroadcastEvent' || obj.broadcastOfEvent) {
+                                const subEvent = obj.broadcastOfEvent || {};
+                                const rawName = subEvent.name || obj.name || '';
+                                const rawDate = obj.startDate || subEvent.startDate || '';
+                                
+                                // Kanal bilgisini toplama esnekliği
+                                let channelNames = [];
+                                const rawChannels = obj.broadcastChannel || obj.channels || [];
+                                const channelArr = Array.isArray(rawChannels) ? rawChannels : [rawChannels];
+                                
+                                channelArr.forEach(c => {
+                                    if (!c) return;
+                                    if (typeof c === 'string') channelNames.push(c);
+                                    else if (c.name) channelNames.push(c.name);
+                                    else if (c['@id']) {
+                                        const slug = c['@id'].split('/').pop().split('#')[0];
+                                        if (slug) channelNames.push(slug.replace(/-/g, ' '));
+                                    }
+                                });
+                                
+                                if (rawName && rawDate) {
                                     list.push({
-                                        rawText: lines.join(' | '),
-                                        isDOM: true
+                                        macName: rawName,
+                                        rawDate: rawDate,
+                                        yayin: channelNames.length > 0 ? channelNames.join(' / ') : 'Spor Ekranı'
                                     });
                                 }
                             }
+                            
+                            for (const key in obj) {
+                                if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                                    scan(obj[key]);
+                                }
+                            }
                         }
-                    });
-                }
-
+                        
+                        scan(data);
+                    } catch (e) {}
+                });
                 return list;
             });
 
-            console.log(`🔍 ${sport.toUpperCase()}: Kaynak seviyesinde ${extractedData.length} adet veri izi yakalandı.`);
+            console.log(`🔍 ${sport.toUpperCase()}: ${extractedData.length} adet ham maç verisi süzülüyor...`);
 
-            // Yakalanan ham izleri anlamlı verilere dönüştürüp temizleme
-            if (extractedData.length > 0) {
-                extractedData.forEach(item => {
-                    if (!item.isDOM && item.rawDate) {
-                        // JSON şemasından gelen tertemiz veriler
-                        const mDate = new Date(item.rawDate);
-                        const dateStr = mDate.toLocaleDateString('en-CA', { timeZone });
-                        if (!allMatches[dateStr]) return;
+            // Verileri temizleme ve 4 günlük takvime dağıtma
+            extractedData.forEach(item => {
+                const matchName = item.macName.trim();
+                
+                // SEO Başlıklarını ve reklamları çöpe atıyoruz (Filtreleme)
+                if (matchName.toLowerCase().includes('spor ekranı') || matchName.toLowerCase().includes('izle') || matchName.length < 5) {
+                    return; 
+                }
 
-                        const timeStr = mDate.toLocaleTimeString('tr-TR', { timeZone, hour: '2-digit', minute: '2-digit' });
-                        allMatches[dateStr].matches.push({
-                            saat: timeStr,
-                            spor: sport.charAt(0).toUpperCase() + sport.slice(1),
-                            mac: item.macName.toUpperCase().trim(),
-                            yayin: item.kanallar
-                        });
-                    } else if (item.isDOM && item.rawText) {
-                        // Düz ekrandan kazınan metinler (Hassas Regex Parse)
-                        // Örnek format: "21:45 | Hollanda - Özbekistan | S Sport"
-                        const parts = item.rawText.split('|').map(p => p.trim());
-                        const saat = parts.find(p => p.match(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/));
-                        const mac = parts.find(p => p.includes('-') && !p.match(/:/));
-                        const yayin = parts.find(p => !p.includes('-') && !p.match(/:/) && p.length > 2) || 'Spor Ekranı';
+                // Kara Liste Filtresi
+                const matchLower = matchName.toLowerCase();
+                if (matchLower.includes('iptal') || matchLower.includes('ertelendi')) return;
 
-                        if (saat && mac) {
-                            allMatches[todayStr].matches.push({
-                                saat: saat,
-                                spor: sport.charAt(0).toUpperCase() + sport.slice(1),
-                                mac: mac.toUpperCase().trim(),
-                                yayin: yayin
-                            });
-                        }
-                    }
+                const startDate = new Date(item.rawDate);
+                const dateStr = startDate.toLocaleDateString('en-CA', { timeZone });
+
+                if (!allMatches[dateStr]) return; // Hedef günler dışındaysa geç
+
+                const timeStr = startDate.toLocaleTimeString('tr-TR', { 
+                    timeZone, 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
                 });
-            }
+
+                // Güzel formatlama (Kanal isimlerinin baş harflerini büyüt)
+                const formattedChannel = item.yayin
+                    .split(' ')
+                    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                    .join(' ');
+
+                allMatches[dateStr].matches.push({
+                    saat: timeStr,
+                    spor: sport.charAt(0).toUpperCase() + sport.slice(1),
+                    mac: matchName.toUpperCase(),
+                    yayin: formattedChannel
+                });
+            });
 
         } catch (error) {
             console.error(`🚨 ${sport.toUpperCase()} hatası:`, error.message);
@@ -152,7 +153,7 @@ async function getBroadcasterData() {
 
     await browser.close();
 
-    // Çıktı Tablosu oluşturma
+    // Çıktı ve Kayıt Düzeni
     [yesterdayStr, todayStr, tomorrowStr, nextDayStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
@@ -167,7 +168,7 @@ async function getBroadcasterData() {
     });
 
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 yayinci_bilgisi.json başarıyla güncellendi.");
+    console.log("\n💾 yayinci_bilgisi.json başarıyla güncellendi. İşlem tamam!");
 }
 
 getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
