@@ -427,6 +427,9 @@ function calculateLiveMinute(eventData) {
 // =========================================================================
 // 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
 // =========================================================================
+// =========================================================================
+// 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
+// =========================================================================
 async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
@@ -462,51 +465,52 @@ async function checkAndSendNotifications(newMatches) {
 
         const desc = (match.statusDesc || match.status?.description || "").toLowerCase();
 
+        // 🚀 DİKKAT: Artık tüm sendPush çağrılarına `match` objesini de fırlatıyoruz!
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             const bodyText = `⚽ Maç Başladı!\n${match.homeTeam.name} - ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText);
+            await sendPush(matchIdStr, appTitle, bodyText, null, match);
             prev.hasNotifiedStart = true;
         } 
         else if (match.status === 'inprogress' && match.statusCode === 6 && tObj.injuryTime1 && !prev.hasNotifiedInjuryTime1) {
             const titleText = `İlk yarı ilave süre: +${tObj.injuryTime1}'`;
             const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
+            await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl, match);
             prev.hasNotifiedInjuryTime1 = true;
         }
         else if (match.status === 'inprogress' && (liveMin === "İY" || match.statusCode === 31) && !prev.hasNotifiedHT) {
             const bodyText = `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl, match);
             prev.hasNotifiedHT = true;
         }
         else if (match.status === 'inprogress' && prev.hasNotifiedHT && (liveMin !== "İY" && match.statusCode !== 31) && !prev.hasNotifiedSH && match.statusCode === 7) {
             const bodyText = `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl, match);
             prev.hasNotifiedSH = true;
         }
         else if (match.status === 'inprogress' && match.statusCode === 7 && tObj.injuryTime2 && !prev.hasNotifiedInjuryTime2 && liveMin !== "İY") {
             const titleText = `İkinci yarı ilave süre: +${tObj.injuryTime2}'`;
             const bodyText = `${match.homeTeam.name} - ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl);
+            await sendPush(matchIdStr, titleText, bodyText, substitutionBoardUrl, match);
             prev.hasNotifiedInjuryTime2 = true;
         }
         else if (match.status === 'inprogress' && (match.statusCode === 50 || match.statusCode === 60 || desc.includes("awaiting penalties") || liveMin === "PEN") && !prev.hasNotifiedPenalties) {
             const bodyText = `🎯 Eşitlik Bozulmadı! Maç Penaltılara Gitti\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl, match);
             prev.hasNotifiedPenalties = true;
         }
         else if (match.status === 'inprogress' && (match.statusCode === 34 || match.statusCode === 10 || desc.includes("awaiting extra time")) && !prev.hasNotifiedETWait && !prev.hasNotifiedPenalties) {
             const bodyText = `⏱️ Maç Uzatmalara Gitti!\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl, match);
             prev.hasNotifiedETWait = true;
         }
         else if (match.status === 'inprogress' && (match.statusCode === 40 || liveMin === "UZ İY") && !prev.hasNotifiedETHT) {
             const bodyText = `⏱️ Uzatma İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl, match);
             prev.hasNotifiedETHT = true;
         }
         else if (match.status === 'inprogress' && (match.statusCode === 11 || match.statusCode === 12 || match.statusCode === 14 || (currentMinNum > 105 && prev.hasNotifiedETWait)) && !prev.hasNotifiedETSH) {
             const bodyText = `▶️ Uzatma İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
-            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl);
+            await sendPush(matchIdStr, appTitle, bodyText, whistleIconUrl, match);
             prev.hasNotifiedETSH = true;
         }
         else if (['finished', 'ended', 'closed'].includes(match.status) && !prev.hasNotifiedFinished) {
@@ -517,7 +521,7 @@ async function checkAndSendNotifications(newMatches) {
                 } else if (prev.hasNotifiedETWait) {
                     bodyText = `🏁 Maç Sonucu (Uzatmalarla)\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
                 }
-                await sendPush(matchIdStr, appTitle, bodyText);
+                await sendPush(matchIdStr, appTitle, bodyText, null, match);
             }
             prev.hasNotifiedFinished = true; 
         }
@@ -544,7 +548,8 @@ async function checkAndSendNotifications(newMatches) {
                     const homeScored = currH > prev.homeScore;
                     const scoringTeamLogo = homeScored ? match.homeTeam.logo : match.awayTeam.logo;
                     const bodyText = `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`;
-                    await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo);
+                    
+                    await sendPush(matchIdStr, appTitle, bodyText, scoringTeamLogo, match);
                     pendingGoalCancel.delete(matchIdStr);
                 } else {
                     const pending = pendingGoalCancel.get(matchIdStr);
@@ -604,7 +609,7 @@ async function checkAndSendNotifications(newMatches) {
 // 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS Bildirim Sorunu KESİN Çözümü 
 const lastNotificationTime = new Map();
 
-async function sendPush(id, title, body, imageUrl = null) {
+async function sendPush(id, title, body, imageUrl = null, matchData = null) {
     const now = Date.now();
     const lastTime = lastNotificationTime.get(id) || 0;
     if (now - lastTime < 15000) return; 
@@ -613,18 +618,17 @@ async function sendPush(id, title, body, imageUrl = null) {
         const payload = {
             topic: `match_${id}`,
             
-            // 🌟 İŞTE EKSİK OLAN VE iOS'U UYANDIRACAK ANA BLOK 🌟
             notification: {
                 title: title,
                 body: body
             },
             
-            // Android ve uygulama içi yönlendirmeler için gizli veriler
+            // Android ve uygulama içi yönlendirmeler için ana veriler
             data: { 
                 matchId: String(id), 
                 type: "match_update",
-                title: title,
-                body: body,
+                title: String(title),
+                body: String(body),
                 imageUrl: imageUrl || ""
             },
             
@@ -645,6 +649,18 @@ async function sendPush(id, title, body, imageUrl = null) {
                 }
             }
         };
+
+        // 🚀 BÜYÜ BURADA: matchData gönderilmişse tüm detayları FCM data objesine şırınga ediyoruz!
+        if (matchData) {
+            payload.data.homeName = String(matchData.homeTeam?.name || "Ev Sahibi");
+            payload.data.awayName = String(matchData.awayTeam?.name || "Deplasman");
+            payload.data.homeScore = String(matchData.homeScore || "-");
+            payload.data.awayScore = String(matchData.awayScore || "-");
+            payload.data.homeLogo = String(matchData.homeTeam?.logo || "");
+            payload.data.awayLogo = String(matchData.awayTeam?.logo || "");
+            payload.data.status = String(matchData.status || "inprogress");
+            payload.data.timeOrMinute = String(matchData.liveMinute || "");
+        }
 
         // Görsel varsa hem iOS hem Android için evrensel ekleme yapıyoruz
         if (imageUrl) {
@@ -1024,53 +1040,7 @@ const ATP_500_TOURNAMENTS = [
     "NEWPORT BEACH"
 ];
 
-// ❌ AYIKLANACAK ATP 250 VE ALTLARI
-const ATP_250_AND_BELOW = [
-    "BIRMINGHAM",
-    "FOGGIA",
-    "MAKARSKA",
-    "HERTOGENBOSCH",
-    "STUTTGART",
-    "LONDON",
-    "ILKLEY",
-    "SAN FELICE",
-    "KOVACIC",
-    "TRIESTE",
-    "BRISBANE",
-    "AUCKLAND",
-    "ADELAIDE",
-    "PERTH",
-    "SYDNEY",
-    "MELBOURNE",
-    "PUNE",
-    "MUMBAI",
-    "DUBAI",
-    "ABU DHABI",
-    "MARRAKECH",
-    "MEXICO CITY",
-    "COLOMBIA",
-    "BOGOTA",
-    "ATLANTA",
-    "WINSTON-SALEM",
-    "LEXINGTON",
-    "ATLANTA",
-    "PUNE",
-    "CHARLOTTE",
-    "NEWPORT",
-    "UMAG",
-    "BRAUNSCHWEIG",
-    "TRANSNISTRIA",
-    "WICHITA",
-    "LOS CABOS",
-    "VANCOUVER",
-    "CALGARY",
-    "MONTREAL",
-    "TORONTO",
-    "WINSTON",
-    "BANGKOK",
-    "PÖRTOROŽ",
-    "PORTOROZ"
-];
+
 
 const checkIsEliteMatch = (tournamentName) => {
     if (!tournamentName) return false;
@@ -1085,29 +1055,19 @@ const checkIsEliteMatch = (tournamentName) => {
     return false;
 };
 
-const checkIsATP500Plus = (tournamentName) => {
+const checkIsValidTournament = (tournamentName) => {
     if (!tournamentName) return false;
     const nameUpper = tournamentName.toUpperCase();
     
-    // Qualifying maçlarını hariç tut
+    // Qualifying hariç
     if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
     
-    // Elit turnuvaları kontrol et
-    if (ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword))) return true;
-    
-    // ATP 500 turnuvalarını kontrol et
-    if (ATP_500_TOURNAMENTS.some(keyword => nameUpper.includes(keyword))) return true;
-    
-    return false;
+    // ITF/Challenger zaten isGarbage'da yakalanıyor
+    // Elit + ATP 500 + ATP 250 → hepsini geçir
+    return true; // isGarbage filtresi geçtiyse kabul et
 };
 
-const shouldFilterTournament = (tournamentName) => {
-    if (!tournamentName) return false;
-    const nameUpper = tournamentName.toUpperCase();
-    
-    // ATP 250 ve altları filtrele
-    return ATP_250_AND_BELOW.some(keyword => nameUpper.includes(keyword));
-};
+
 
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor (Paralel Optimizasyon - Taranan gün: ${targetDates.length})...`);
@@ -1122,24 +1082,18 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
         try {
             const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
             if (data?.events) {
-                const filtered = data.events.filter(e => {
-                    const tourName = e.tournament?.name;
-                    const catName = e.tournament?.category?.name;
-                    
-                    if (isGarbage(tourName, catName)) return false;
-                    if (shouldFilterTournament(tourName)) {
-                        console.log(`  ⏭️ ${tourName} - ATP 250/altı, atlanıyor`);
-                        return false;
-                    }
-                    if (!checkIsATP500Plus(tourName)) {
-                        console.log(`  ⏭️ ${tourName} - ATP 500+ kategorisinde değil, atlanıyor`);
-                        return false;
-                    }
-                    if (seenEventIds.has(e.id)) return false; 
-                    
-                    seenEventIds.add(e.id);
-                    return true;
-                });
+               const filtered = data.events.filter(e => {
+    const tourName = e.tournament?.name;
+    const catName = e.tournament?.category?.name;
+    
+    if (isGarbage(tourName, catName)) return false;  // ITF/Challenger/UTR engelle
+    if (!checkIsValidTournament(tourName)) return false;
+    if (seenEventIds.has(e.id)) return false;
+    
+    seenEventIds.add(e.id);
+    return true;
+});
+
                 rawEvents.push(...filtered);
                 successfulDates.push(date);
             }
