@@ -42,7 +42,6 @@ async function getBroadcasterData() {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
             await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
             
-            // Sitenin gizlediği o devasa global listeyi açığa çıkarmak için tam kaydırma yapıyoruz
             await page.evaluate(async () => {
                 await new Promise((resolve) => {
                     let totalHeight = 0;
@@ -60,9 +59,7 @@ async function getBroadcasterData() {
 
             await new Promise(resolve => setTimeout(resolve, 3000));
 
-                        // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
             const textFallback = await page.evaluate(() => {
-                // Sitedeki tüm logoları bul ve yanlarına kanal ismini görünmez metin olarak yaz
                 document.querySelectorAll('img').forEach(img => {
                     const alt = img.getAttribute('alt') || img.getAttribute('title') || '';
                     if (alt && alt.length > 2) {
@@ -76,7 +73,7 @@ async function getBroadcasterData() {
 
                 const lines = document.body.innerText.split('\n').map(l => l.trim()).filter(l => l);
                 const matches = [];
-                let currentDateStr = ''; // 🌟 DEĞİŞİKLİK: Başlangıçta boş bırakıyoruz ki üstteki tarihsiz öne çıkanlar bugüne sızmasın
+                let currentDateStr = ''; 
 
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i];
@@ -85,7 +82,6 @@ async function getBroadcasterData() {
                         currentDateStr = line.toUpperCase();
                     }
 
-                    // Saati bulursan altındaki satırları maç verisi olarak topla
                     if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(line)) {
                         const chunk = [];
                         for(let j = 1; j <= 5; j++) {
@@ -94,7 +90,6 @@ async function getBroadcasterData() {
                             chunk.push(nextLine);
                         }
 
-                        // 🌟 DEĞİŞİKLİK: Sadece net bir gün başlığı altına girildiyse veriyi kabul et
                         if (currentDateStr && chunk.length >= 2) {
                             matches.push({ saat: line, dateSection: currentDateStr, lines: chunk });
                         }
@@ -103,40 +98,41 @@ async function getBroadcasterData() {
                 return matches;
             });
 
-
-                        console.log(`🔍 ${sport.toUpperCase()}: Ekrandan ${textFallback.length} adet ham maç bloğu okundu. Ligler temizleniyor...`);
+            console.log(`🔍 ${sport.toUpperCase()}: Ekrandan ${textFallback.length} adet ham maç bloğu okundu. Ligler temizleniyor...`);
 
             const sportName = sport.charAt(0).toUpperCase() + sport.slice(1);
 
             textFallback.forEach(m => {
-                // 🌟 DEĞİŞİKLİK: Kusursuz Tarih Eşleme Mantığı
-                let targetDate = todayStr;
-                if (m.dateSection.includes('YARIN')) {
+                let targetDate = null; // 🌟 DEĞİŞİKLİK: Varsayılan "Bugün" atamasını sildik.
+                
+                if (m.dateSection.includes('BUGÜN')) {
+                    targetDate = todayStr;
+                } else if (m.dateSection.includes('YARIN')) {
                     targetDate = tomorrowStr;
-                } else if (!m.dateSection.includes('BUGÜN')) {
-                    // "11 HAZİRAN" gibi sayı içeren gün başlıklarını doğru tarihe yönlendirir
+                } else {
                     const matchedKey = [todayStr, tomorrowStr, nextDayStr].find(str => {
                         const dayNum = new Date(str).getDate().toString();
-                        return m.dateSection.includes(dayNum);
+                        // 🌟 DEĞİŞİKLİK: Tam kelime eşleşmesi. (Örn: 1 ararken 15'i eşleştirmez)
+                        return new RegExp(`\\b${dayNum}\\b`).test(m.dateSection);
                     });
                     if (matchedKey) targetDate = matchedKey;
                 }
 
+                // 🌟 DEĞİŞİKLİK: Tarih bizim 3 günümüzle eşleşmediyse (örneğin 5 gün sonraki maçsa) tamamen pas geç.
+                if (!targetDate) return; 
+
                 let mac = '';
                 let rawChannels = [];
 
-                // Maç ismini bul
                 const matchIdx = m.lines.findIndex(l => l.includes('-') || l.toLowerCase().includes(' vs '));
                 if (matchIdx !== -1) {
                     mac = m.lines[matchIdx];
-                    // 🌟 DEĞİŞİKLİK: Kanal ismi maçın üstünde de olsa altında da olsa yakala (Maç satırı hariç her şeyi kanal kabul et)
                     rawChannels = m.lines.filter((_, idx) => idx !== matchIdx);
                 } else {
                     mac = m.lines[0];
                     rawChannels = m.lines.slice(1);
                 }
 
-                // 🛑 LİG VE KATEGORİ İSİMLERİNİ TEMİZLEYEN MUCİZE FİLTRE
                 let filteredChannels = rawChannels.filter(line => {
                     let l = line.toLowerCase();
                     return !(
@@ -144,11 +140,10 @@ async function getBroadcasterData() {
                         l.includes('kupas') || l.includes('lig') || l.includes('championship') ||
                         l.includes('elemeler') || l.includes('hazirlik') || l.includes('hazırlık') ||
                         l.includes('final') || l.includes('turnuva') || l.includes('şampiyon') ||
-                        l.includes('wta') || l.includes('atp') || l.includes('wnba')
+                        l.includes('wta') || l.includes('atp') || l.includes('wnba') || l.includes('fikstür')
                     );
                 });
 
-                // Artıkları da tıraşla
                 let cleanYayin = filteredChannels.join(' / ')
                     .replace(/chevron_right/gi, '')
                     .replace(/Daha fazlasını keşfedin/gi, '')
@@ -158,11 +153,11 @@ async function getBroadcasterData() {
                     .replace(/\s+\/\s+/g, ' / ')
                     .trim();
 
-                if (!cleanYayin || cleanYayin === '/' || cleanYayin.length < 2) cleanYayin = 'Bilinmiyor';
+                // 🌟 DEĞİŞİKLİK: "Bilinmiyor" yerine uygulama mantığına daha uygun olan "Yayın Yok" kullanıldı.
+                if (!cleanYayin || cleanYayin === '/' || cleanYayin.length < 2) cleanYayin = 'Yayın Yok';
 
                 const lowerMac = mac.toLowerCase();
                 
-                // Program ve Reklam süzgeci
                 if (
                     lowerMac.includes('izle') || 
                     lowerMac.includes('program') || 
@@ -183,7 +178,6 @@ async function getBroadcasterData() {
                 }
             });
 
-
         } catch (error) {
             console.error(`🚨 ${sport.toUpperCase()} hatası:`, error.message);
         } finally {
@@ -193,7 +187,6 @@ async function getBroadcasterData() {
 
     await browser.close();
 
-    // Tabloları Yazdır
     [todayStr, tomorrowStr, nextDayStr].forEach(key => {
         const group = allMatches[key];
         console.log(`\n\x1b[33m${group.title}\x1b[0m`);
