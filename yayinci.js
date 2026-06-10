@@ -59,13 +59,28 @@ async function getBroadcasterData() {
 
             await new Promise(resolve => setTimeout(resolve, 3000));
 
+           // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
             const textFallback = await page.evaluate(() => {
+                
                 document.querySelectorAll('img').forEach(img => {
-                    const alt = img.getAttribute('alt') || img.getAttribute('title') || '';
+                    let alt = img.getAttribute('alt') || img.getAttribute('title') || '';
+                    let src = img.getAttribute('src') || '';
+
+                    // 🌟 YENİ: Logoda 'alt' etiketi yoksa veya boşsa, dosya adından (örn: youtube.png) kanal adını kurtar
+                    if ((!alt || alt.length < 2) && src) {
+                        let match = src.match(/\/([^\/?#]+)\.(png|jpe?g|webp|gif)/i);
+                        if (match && match[1]) {
+                            alt = match[1].replace(/[-_]/g, ' '); // Tire ve alt çizgileri boşluk yap
+                        }
+                    }
+
                     if (alt && alt.length > 2) {
-                        const cleanAlt = alt.replace(/logosu|logo/gi, '').trim();
-                        if (cleanAlt) {
-                            const txt = document.createTextNode(` ${cleanAlt} `);
+                        const cleanAlt = alt.replace(/logosu|logo|icon/gi, '').trim();
+                        // İşimize yaramayacak sistem ikonlarını atla
+                        if (cleanAlt && !cleanAlt.match(/chevron|arrow|play/i)) {
+                            // 🌟 KRİTİK ÇÖZÜM: \n ekleyerek kanal ismini zorla alt/üst satıra itiyoruz.
+                            // Böylece lig adıyla bitişip "championship" filtresine kurban gitmiyor!
+                            const txt = document.createTextNode(`\n${cleanAlt}\n`);
                             img.parentNode.insertBefore(txt, img);
                         }
                     }
