@@ -59,27 +59,24 @@ async function getBroadcasterData() {
 
             await new Promise(resolve => setTimeout(resolve, 3000));
 
-           // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
+            // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
             const textFallback = await page.evaluate(() => {
-                
                 document.querySelectorAll('img').forEach(img => {
                     let alt = img.getAttribute('alt') || img.getAttribute('title') || '';
                     let src = img.getAttribute('src') || '';
 
-                    // 🌟 YENİ: Logoda 'alt' etiketi yoksa veya boşsa, dosya adından (örn: youtube.png) kanal adını kurtar
+                    // 🌟 LOGO KURTARMA: Alt etiketi boşsa görsel url'inden (youtube.png vb.) ismi çek
                     if ((!alt || alt.length < 2) && src) {
                         let match = src.match(/\/([^\/?#]+)\.(png|jpe?g|webp|gif)/i);
                         if (match && match[1]) {
-                            alt = match[1].replace(/[-_]/g, ' '); // Tire ve alt çizgileri boşluk yap
+                            alt = match[1].replace(/[-_]/g, ' ');
                         }
                     }
 
                     if (alt && alt.length > 2) {
                         const cleanAlt = alt.replace(/logosu|logo|icon/gi, '').trim();
-                        // İşimize yaramayacak sistem ikonlarını atla
                         if (cleanAlt && !cleanAlt.match(/chevron|arrow|play/i)) {
-                            // 🌟 KRİTİK ÇÖZÜM: \n ekleyerek kanal ismini zorla alt/üst satıra itiyoruz.
-                            // Böylece lig adıyla bitişip "championship" filtresine kurban gitmiyor!
+                            // 🌟 KRİTİK ÇÖZÜM: \n ile kanal ismini izole ediyoruz ki lig adıyla birleşip filtreye kurban gitmesin
                             const txt = document.createTextNode(`\n${cleanAlt}\n`);
                             img.parentNode.insertBefore(txt, img);
                         }
@@ -99,7 +96,8 @@ async function getBroadcasterData() {
 
                     if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(line)) {
                         const chunk = [];
-                        for(let j = 1; j <= 5; j++) {
+                        // 🌟 LİMİT ARTIRILDI: Kanalları alt satıra ittiğimiz için tarama dikey sınırını 8 yaptık
+                        for(let j = 1; j <= 8; j++) { 
                             const nextLine = lines[i+j];
                             if (!nextLine || /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(nextLine) || nextLine.match(/Bugün|Yarın/i)) break;
                             chunk.push(nextLine);
@@ -118,7 +116,7 @@ async function getBroadcasterData() {
             const sportName = sport.charAt(0).toUpperCase() + sport.slice(1);
 
             textFallback.forEach(m => {
-                let targetDate = null; // 🌟 DEĞİŞİKLİK: Varsayılan "Bugün" atamasını sildik.
+                let targetDate = null; 
                 
                 if (m.dateSection.includes('BUGÜN')) {
                     targetDate = todayStr;
@@ -127,13 +125,12 @@ async function getBroadcasterData() {
                 } else {
                     const matchedKey = [todayStr, tomorrowStr, nextDayStr].find(str => {
                         const dayNum = new Date(str).getDate().toString();
-                        // 🌟 DEĞİŞİKLİK: Tam kelime eşleşmesi. (Örn: 1 ararken 15'i eşleştirmez)
                         return new RegExp(`\\b${dayNum}\\b`).test(m.dateSection);
                     });
                     if (matchedKey) targetDate = matchedKey;
                 }
 
-                // 🌟 DEĞİŞİKLİK: Tarih bizim 3 günümüzle eşleşmediyse (örneğin 5 gün sonraki maçsa) tamamen pas geç.
+                // 🌟 SIZINTI KORUMASI: Eğer 3 günlük takvime uymuyorsa (slider reklamı vb.) işleme alma
                 if (!targetDate) return; 
 
                 let mac = '';
@@ -168,7 +165,6 @@ async function getBroadcasterData() {
                     .replace(/\s+\/\s+/g, ' / ')
                     .trim();
 
-                // 🌟 DEĞİŞİKLİK: "Bilinmiyor" yerine uygulama mantığına daha uygun olan "Yayın Yok" kullanıldı.
                 if (!cleanYayin || cleanYayin === '/' || cleanYayin.length < 2) cleanYayin = 'Yayın Yok';
 
                 const lowerMac = mac.toLowerCase();
@@ -216,7 +212,7 @@ async function getBroadcasterData() {
     });
 
     fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(allMatches, null, 2));
-    console.log("\n💾 yayinci_bilgisi.json kusursuz maçlar ve temiz kanallarla kaydedildi.");
+    console.log("\n💾 yayinci_bilgisi.json kusursuz maçlar ve taze kanallarla kaydedildi.");
 }
 
 getBroadcasterData().catch(e => { console.error(e); process.exit(1); });
