@@ -65,7 +65,15 @@ async function getBroadcasterData() {
                     let alt = img.getAttribute('alt') || img.getAttribute('title') || '';
                     let src = img.getAttribute('src') || '';
 
-                    // 🌟 LOGO KURTARMA: Alt etiketi boşsa görsel url'inden (youtube.png vb.) ismi çek
+                    // 🛑 REKLAM VE MOBİL BANNER ENGELİ: Alakasız görselleri kesinlikle es geç
+                    if (
+                        src.match(/google-play|app-store|mobil|banner|reklam|advertisement|logo-site|site-logo|header|footer|avatar/i) ||
+                        alt.match(/indir|download|store|banner|reklam|logo|icon|chevron|arrow/i)
+                    ) {
+                        return;
+                    }
+
+                    // Alt etiketi boşsa görsel url'inden ismi kurtar
                     if ((!alt || alt.length < 2) && src) {
                         let match = src.match(/\/([^\/?#]+)\.(png|jpe?g|webp|gif)/i);
                         if (match && match[1]) {
@@ -75,8 +83,7 @@ async function getBroadcasterData() {
 
                     if (alt && alt.length > 2) {
                         const cleanAlt = alt.replace(/logosu|logo|icon/gi, '').trim();
-                        if (cleanAlt && !cleanAlt.match(/chevron|arrow|play/i)) {
-                            // 🌟 KRİTİK ÇÖZÜM: \n ile kanal ismini izole ediyoruz ki lig adıyla birleşip filtreye kurban gitmesin
+                        if (cleanAlt && !cleanAlt.match(/chevron|arrow|play|menu|search|user/i)) {
                             const txt = document.createTextNode(`\n${cleanAlt}\n`);
                             img.parentNode.insertBefore(txt, img);
                         }
@@ -96,7 +103,6 @@ async function getBroadcasterData() {
 
                     if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(line)) {
                         const chunk = [];
-                        // 🌟 LİMİT ARTIRILDI: Kanalları alt satıra ittiğimiz için tarama dikey sınırını 8 yaptık
                         for(let j = 1; j <= 8; j++) { 
                             const nextLine = lines[i+j];
                             if (!nextLine || /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(nextLine) || nextLine.match(/Bugün|Yarın/i)) break;
@@ -130,7 +136,6 @@ async function getBroadcasterData() {
                     if (matchedKey) targetDate = matchedKey;
                 }
 
-                // 🌟 SIZINTI KORUMASI: Eğer 3 günlük takvime uymuyorsa (slider reklamı vb.) işleme alma
                 if (!targetDate) return; 
 
                 let mac = '';
@@ -145,22 +150,67 @@ async function getBroadcasterData() {
                     rawChannels = m.lines.slice(1);
                 }
 
-                let filteredChannels = rawChannels.filter(line => {
+                // 🌟 MUCİZE CİMBİZ FİLTRE: Satırı silmek yerine sadece lig/kupa kelimelerini temizler
+                let cleanedChannels = rawChannels.map(line => {
+                    let l = line;
+                    
+                    const junkPatterns = [
+                        /abd usl championship/gi,
+                        /usl championship/gi,
+                        /championship/gi,
+                        /hazırlık maçı/gi,
+                        /hazirlik maçi/gi,
+                        /hazırlık/gi,
+                        /hazirlik/gi,
+                        /fifa \d{4} dünya kupası/gi,
+                        /fifa \d{4} dünya kupasi/gi,
+                        /dünya kupası/gi,
+                        /dünya kupasi/gi,
+                        /kupası/gi,
+                        /kupasi/gi,
+                        /ligleri/gi,
+                        /ligi/gi,
+                        /lig/gi,
+                        /elemeler/gi,
+                        /elemeleri/gi,
+                        /finali/gi,
+                        /final/gi,
+                        /turnuvası/gi,
+                        /turnuvasi/gi,
+                        /turnuva/gi,
+                        /şampiyonası/gi,
+                        /sampiyonasi/gi,
+                        /şampiyon/gi,
+                        /sampiyon/gi,
+                        /wta/gi,
+                        /atp/gi,
+                        /wnba/gi,
+                        /fikstür/gi,
+                        /maçları/gi,
+                        /maclari/gi
+                    ];
+
+                    l = l.replace(/\b(futbol|basketbol|tenis)\b/gi, '');
+
+                    junkPatterns.forEach(pattern => {
+                        l = l.replace(pattern, '');
+                    });
+
+                    return l.trim();
+                });
+
+                // Boş kalan veya anlamsızlaşan satırları ayıkla
+                let filteredChannels = cleanedChannels.filter(line => {
+                    if (!line) return false;
                     let l = line.toLowerCase();
-                    return !(
-                        l === 'futbol' || l === 'basketbol' || l === 'tenis' ||
-                        l.includes('kupas') || l.includes('lig') || l.includes('championship') ||
-                        l.includes('elemeler') || l.includes('hazirlik') || l.includes('hazırlık') ||
-                        l.includes('final') || l.includes('turnuva') || l.includes('şampiyon') ||
-                        l.includes('wta') || l.includes('atp') || l.includes('wnba') || l.includes('fikstür')
-                    );
+                    if (l === '/' || l === '-' || l === 'vs' || line.length < 2) return false;
+                    return true;
                 });
 
                 let cleanYayin = filteredChannels.join(' / ')
                     .replace(/chevron_right/gi, '')
                     .replace(/Daha fazlasını keşfedin/gi, '')
                     .replace(/\d{2}\.\d{2}\.\d{4}.*/g, '')
-                    .replace(/(Futbol|Basketbol|Tenis) Maçları.*/gi, '')
                     .replace(/^[ \/]+|[ \/]+$/g, '')
                     .replace(/\s+\/\s+/g, ' / ')
                     .trim();
