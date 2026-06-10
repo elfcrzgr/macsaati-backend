@@ -60,7 +60,7 @@ async function getBroadcasterData() {
 
             await new Promise(resolve => setTimeout(resolve, 3000));
 
-            // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
+                        // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
             const textFallback = await page.evaluate(() => {
                 // Sitedeki tüm logoları bul ve yanlarına kanal ismini görünmez metin olarak yaz
                 document.querySelectorAll('img').forEach(img => {
@@ -76,7 +76,7 @@ async function getBroadcasterData() {
 
                 const lines = document.body.innerText.split('\n').map(l => l.trim()).filter(l => l);
                 const matches = [];
-                let currentDateStr = 'BUGÜN';
+                let currentDateStr = ''; // 🌟 DEĞİŞİKLİK: Başlangıçta boş bırakıyoruz ki üstteki tarihsiz öne çıkanlar bugüne sızmasın
 
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i];
@@ -94,7 +94,8 @@ async function getBroadcasterData() {
                             chunk.push(nextLine);
                         }
 
-                        if (chunk.length >= 2) {
+                        // 🌟 DEĞİŞİKLİK: Sadece net bir gün başlığı altına girildiyse veriyi kabul et
+                        if (currentDateStr && chunk.length >= 2) {
                             matches.push({ saat: line, dateSection: currentDateStr, lines: chunk });
                         }
                     }
@@ -102,16 +103,23 @@ async function getBroadcasterData() {
                 return matches;
             });
 
-            console.log(`🔍 ${sport.toUpperCase()}: Ekrandan ${textFallback.length} adet ham maç bloğu okundu. Ligler temizleniyor...`);
+
+                        console.log(`🔍 ${sport.toUpperCase()}: Ekrandan ${textFallback.length} adet ham maç bloğu okundu. Ligler temizleniyor...`);
 
             const sportName = sport.charAt(0).toUpperCase() + sport.slice(1);
 
             textFallback.forEach(m => {
+                // 🌟 DEĞİŞİKLİK: Kusursuz Tarih Eşleme Mantığı
                 let targetDate = todayStr;
-                if (m.dateSection.includes('YARIN')) targetDate = tomorrowStr;
-                else if (!m.dateSection.includes('BUGÜN')) {
-                    const nextDayNumber = new Date(nextDay).getDate().toString();
-                    if (m.dateSection.includes(nextDayNumber)) targetDate = nextDayStr;
+                if (m.dateSection.includes('YARIN')) {
+                    targetDate = tomorrowStr;
+                } else if (!m.dateSection.includes('BUGÜN')) {
+                    // "11 HAZİRAN" gibi sayı içeren gün başlıklarını doğru tarihe yönlendirir
+                    const matchedKey = [todayStr, tomorrowStr, nextDayStr].find(str => {
+                        const dayNum = new Date(str).getDate().toString();
+                        return m.dateSection.includes(dayNum);
+                    });
+                    if (matchedKey) targetDate = matchedKey;
                 }
 
                 let mac = '';
@@ -121,7 +129,8 @@ async function getBroadcasterData() {
                 const matchIdx = m.lines.findIndex(l => l.includes('-') || l.toLowerCase().includes(' vs '));
                 if (matchIdx !== -1) {
                     mac = m.lines[matchIdx];
-                    rawChannels = m.lines.slice(matchIdx + 1);
+                    // 🌟 DEĞİŞİKLİK: Kanal ismi maçın üstünde de olsa altında da olsa yakala (Maç satırı hariç her şeyi kanal kabul et)
+                    rawChannels = m.lines.filter((_, idx) => idx !== matchIdx);
                 } else {
                     mac = m.lines[0];
                     rawChannels = m.lines.slice(1);
@@ -173,6 +182,7 @@ async function getBroadcasterData() {
                     });
                 }
             });
+
 
         } catch (error) {
             console.error(`🚨 ${sport.toUpperCase()} hatası:`, error.message);
