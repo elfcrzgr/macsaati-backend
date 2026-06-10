@@ -146,14 +146,23 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                 const [mH, mM] = mTime.split(':').map(Number);
                 const mTitle = toTR(m.mac || "");
 
-                const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
-                const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
+               
+// Nokta, slaş, boşluk fark etmeksizin isimleri kelimelere böler ve kısa harfleri (J., M.) eler
+const getCleanWords = (str) => {
+    return str.replace(/[^a-z0-9ıüşöğç]/g, ' ')
+              .split(' ')
+              .map(w => w.trim())
+              .filter(w => w.length >= 3); 
+};
 
-                const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
-                const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+const hWords = getCleanWords(hName);
+const aWords = getCleanWords(aName);
 
-                const matchHome = mTitle.includes(hCheck) || anyHomeWordMatch;
-                const matchAway = mTitle.includes(aCheck) || anyAwayWordMatch;
+// Kelimelerden herhangi biri Spor Ekranı başlığında geçiyorsa eşleşti sayar
+const matchHome = hWords.length === 0 || hWords.some(w => mTitle.includes(w));
+const matchAway = aWords.length === 0 || aWords.some(w => mTitle.includes(w));
+
+                
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
 
                 let diff = 9999;
@@ -1209,6 +1218,11 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 }
             }
 
+            // 🌟 DEĞİŞİKLİK BURADA BAŞLIYOR: Yayıncı bilgisini dinamik olarak sorguluyoruz
+            const fallbackBroadcaster = "S Sport / beIN Sports";
+            const result = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
+           
+            
             // Hafızaya ekle! (En kritik kısım)
             globalTennisCache.set(e.id, {
                 id: e.id,
@@ -1217,7 +1231,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 fixedDate: fixedDate,
                 fixedTime: timeString,
                 timestamp: startTimestamp,
-                broadcaster: "S Sport / beIN Sports",
+                broadcaster: result.kanal,
                 homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos },
                 awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
                 tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
