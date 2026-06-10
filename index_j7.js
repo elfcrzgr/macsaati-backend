@@ -615,7 +615,7 @@ async function checkAndSendNotifications(newMatches) {
     saveState();
 }
 
-// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS Bildirim Sorunu KESİN Çözümü 
+// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS ve Android Tam Uyumlu
 const lastNotificationTime = new Map();
 
 async function sendPush(id, title, body, imageUrl = null, matchData = null) {
@@ -653,6 +653,7 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
                         sound: "default",
                         category: "MATCH_UPDATE" 
                     },
+                    // iOS tarafının doğrudan (userInfo["matchId"]) okuyacağı kök veriler
                     matchId: String(id),
                     type: "match_update"
                 }
@@ -661,14 +662,22 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
 
         // 🚀 BÜYÜ BURADA: matchData gönderilmişse tüm detayları FCM data objesine şırınga ediyoruz!
         if (matchData) {
-            payload.data.homeName = String(matchData.homeTeam?.name || "Ev Sahibi");
-            payload.data.awayName = String(matchData.awayTeam?.name || "Deplasman");
+            const hName = String(matchData.homeTeam?.name || "Ev Sahibi");
+            const aName = String(matchData.awayTeam?.name || "Deplasman");
+
+            // 1. Standart Data objesine ekle (Android vb. için)
+            payload.data.homeName = hName;
+            payload.data.awayName = aName;
             payload.data.homeScore = String(matchData.homeScore || "-");
             payload.data.awayScore = String(matchData.awayScore || "-");
             payload.data.homeLogo = String(matchData.homeTeam?.logo || "");
             payload.data.awayLogo = String(matchData.awayTeam?.logo || "");
             payload.data.status = String(matchData.status || "inprogress");
             payload.data.timeOrMinute = String(matchData.liveMinute || "");
+
+            // 2. iOS İÇİN KESİN GARANTİ: apns.payload içine de ekliyoruz
+            payload.apns.payload.homeName = hName;
+            payload.apns.payload.awayName = aName;
         }
 
         // Görsel varsa hem iOS hem Android için evrensel ekleme yapıyoruz
