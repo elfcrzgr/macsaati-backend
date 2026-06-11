@@ -150,10 +150,16 @@ async function getBroadcasterData() {
                     rawChannels = m.lines.slice(1);
                 }
 
-                // 🌟 MUCİZE CİMBİZ FİLTRE: Satırı silmek yerine sadece lig/kupa kelimelerini temizler
+             // 🌟 MUCİZE CİMBİZ FİLTRE (GÜNCELLENDİ)
                 let cleanedChannels = rawChannels.map(line => {
                     let l = line;
                     
+                    // 🛑 FOOTER VE MENÜ SIZINTILARINI BLOKLA: 
+                    // Bu kelimeleri içeren satırlar yayıncı olamaz, satırı tamamen yok et.
+                    if (l.match(/Canlı TV izle|TV Yayın Akışı|TV ve Video|Kupalar|oyun|Futbolu|Tenisin|Daha fazlasını/i)) {
+                        return ''; 
+                    }
+
                     const junkPatterns = [
                         /abd usl championship/gi,
                         /usl championship/gi,
@@ -166,15 +172,17 @@ async function getBroadcasterData() {
                         /fifa \d{4} dünya kupasi/gi,
                         /dünya kupası/gi,
                         /dünya kupasi/gi,
-                        /kupası/gi,
-                        /kupasi/gi,
-                        /ligleri/gi,
-                        /ligi/gi,
-                        /lig/gi,
+                        /\bkupası\b/gi, // Kelime sınırları (\b) eklendi
+                        /\bkupasi\b/gi,
+                        /\bligleri\b/gi,
+                        /\bligi\b/gi,
+                        /\blig\b/gi,
                         /elemeler/gi,
                         /elemeleri/gi,
-                        /finali/gi,
-                        /final/gi,
+                        /\bfinali\b/gi,
+                        /\bfinal\b/gi,
+                        /\bfinals\b/gi, // The Finals -> The s hatasını çözer
+                        /\bfinal-four\b/gi,
                         /turnuvası/gi,
                         /turnuvasi/gi,
                         /turnuva/gi,
@@ -182,12 +190,15 @@ async function getBroadcasterData() {
                         /sampiyonasi/gi,
                         /şampiyon/gi,
                         /sampiyon/gi,
-                        /wta/gi,
-                        /atp/gi,
-                        /wnba/gi,
+                        /\bwta\b/gi,
+                        /\batp\b/gi,
+                        /\bwnba\b/gi,
                         /fikstür/gi,
                         /maçları/gi,
-                        /maclari/gi
+                        /maclari/gi,
+                        /\bthe s\b/gi, // Eğer yine de "The s" kaçarsa temizler
+                        /\bçiler\b/gi, // Tenisçiler'den kalan artığı temizler
+                        /\byarı\b/gi   // Yarı Final'den kalan "Yarı" kelimesini temizler
                     ];
 
                     l = l.replace(/\b(futbol|basketbol|tenis)\b/gi, '');
@@ -209,10 +220,9 @@ async function getBroadcasterData() {
 
                 let cleanYayin = filteredChannels.join(' / ')
                     .replace(/chevron_right/gi, '')
-                    .replace(/Daha fazlasını keşfedin/gi, '')
                     .replace(/\d{2}\.\d{2}\.\d{4}.*/g, '')
-                    .replace(/^[ \/]+|[ \/]+$/g, '')
-                    .replace(/\s+\/\s+/g, ' / ')
+                    .replace(/^[ \/]+|[ \/]+$/g, '') // Baştaki ve sondaki gereksiz slash'leri siler
+                    .replace(/\s*\/\s*\/\s*/g, ' / ') // 3-4 tane yan yana gelen slashleri teke düşürür
                     .trim();
 
                 if (!cleanYayin || cleanYayin === '/' || cleanYayin.length < 2) cleanYayin = 'Yayın Yok';
