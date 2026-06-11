@@ -208,37 +208,48 @@ const USER_AGENTS = [
 
 async function fetchData(url) {
     try {
-        // 1. İnsan Taklidi: Her istekten önce 500ms ile 2500ms arası rastgele bekleme (Jitter)
+        // 1. İnsan Taklidi: İstekler arasına rastgele esneme payı
         const delay = Math.floor(Math.random() * 2000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        const randomAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
-        
-        // 2. Zenginleştirilmiş Tarayıcı Başlıkları
-        const response = await fetch(url, {
-            headers: {
-                "User-Agent": randomAgent,
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-                "Accept-Language": "tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3",
-                "Accept-Encoding": "gzip, deflate, br", // Çoğu WAF (Cloudflare) bunu titizlikle kontrol eder
-                "Connection": "keep-alive",
-                "Upgrade-Insecure-Requests": "1",
-                "Sec-Fetch-Dest": "document",
-                "Sec-Fetch-Mode": "navigate",
-                "Sec-Fetch-Site": "none",
-                "Sec-Fetch-User": "?1",
-                "Cache-Control": "max-age=0"
-            }
-        });
+        // 2. SIFIR BÜTÇE PROXY HAVUZU 
+        // Bu sunucular Cloudflare'i bizim yerimize aşacak
+        const proxies = [
+            `https://api.allorigins.win/raw?url=`,
+            `https://api.codetabs.com/v1/proxy?quest=`,
+            `https://corsproxy.io/?`
+        ];
 
-        if (!response.ok) {
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) - Kısa süreli WAF engeli olabilir.`);
-            return null;
+        const randomAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+        const headers = {
+            "User-Agent": randomAgent,
+            "Accept": "application/json, text/plain, */*",
+            "Cache-Control": "no-cache"
+        };
+
+        let response;
+        
+        // 3. Sırayla Proxy'leri Dene
+        for (const proxyBase of proxies) {
+            const proxiedUrl = proxyBase + encodeURIComponent(url);
+            
+            response = await fetch(proxiedUrl, { headers });
+            
+            // Eğer HTTP 200 (Başarılı) dönerse döngüyü kır ve veriyi al
+            if (response.ok) {
+                return await response.json();
+            }
+            
+            // Proxy 403 yediyse logla ve hemen sonrakine geç
+            const proxyName = proxyBase.split('/')[2];
+            console.log(`⚠️ ${proxyName} takıldı, yedek proxy'ye geçiliyor...`);
         }
 
-        return await response.json();
+        // 3 proxy de o an için engelliyse sistemi çökertmeden pas geç
+        console.log(`❌ Tüm proxyler anlık olarak 403 yedi. Geçici blokaj.`);
+        return null;
+
     } catch (e) {
-        // Hata logunu sessizce geçiştirip sistemi çökertmiyoruz
         return null;
     }
 }
