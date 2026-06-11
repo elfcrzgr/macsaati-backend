@@ -150,82 +150,40 @@ async function getBroadcasterData() {
                     rawChannels = m.lines.slice(1);
                 }
 
-             // 🌟 MUCİZE CİMBİZ FİLTRE (GÜNCELLENDİ)
-                let cleanedChannels = rawChannels.map(line => {
-                    let l = line;
+             // 🌟 AKILLI BEYAZ LİSTE (WHITELIST) FİLTRESİ
+                // Kara liste yerine sadece bildiğimiz gerçek kanalları tutan aşılmaz duvar.
+                const validChannels = [
+                    "trt", "bein", "beın", "s sport", "ssport", "tivibu", "smart spor", "spor smart",
+                    "d-smart", "euroleague tv", "nba tv", "nba league pass", "prime video", "youtube", 
+                    "exxen", "tv8", "a spor", "eurosport", "içtimai", "cbc sport", "idman", "az tv", 
+                    "fb tv", "gs tv", "bjk tv", "kanal d", "star tv", "show tv", "atv", "ntv", "tabii", 
+                    "red bull", "wta tv", "atp tv", "fiba tv", "tbf tv", "yayın yok"
+                ];
+
+                let filteredChannels = rawChannels.filter(line => {
+                    if (!line || line.length < 2) return false;
+                    const l = line.toLowerCase();
                     
-                    // 🛑 FOOTER VE MENÜ SIZINTILARINI BLOKLA: 
-                    // Bu kelimeleri içeren satırlar yayıncı olamaz, satırı tamamen yok et.
-                    if (l.match(/Canlı TV izle|TV Yayın Akışı|TV ve Video|Kupalar|oyun|Futbolu|Tenisin|Daha fazlasını/i)) {
-                        return ''; 
+                    // Sitenin en altındaki anlamsız footer metinleri kanalların arasına sızmasın
+                    if (l.match(/canlı tv|yayın akışı|video|kupalar|oyun|futbolu|tenisin|aboneliği/i)) {
+                        return false;
                     }
 
-                    const junkPatterns = [
-                        /abd usl championship/gi,
-                        /usl championship/gi,
-                        /championship/gi,
-                        /hazırlık maçı/gi,
-                        /hazirlik maçi/gi,
-                        /hazırlık/gi,
-                        /hazirlik/gi,
-                        /fifa \d{4} dünya kupası/gi,
-                        /fifa \d{4} dünya kupasi/gi,
-                        /dünya kupası/gi,
-                        /dünya kupasi/gi,
-                        /\bkupası\b/gi, // Kelime sınırları (\b) eklendi
-                        /\bkupasi\b/gi,
-                        /\bligleri\b/gi,
-                        /\bligi\b/gi,
-                        /\blig\b/gi,
-                        /elemeler/gi,
-                        /elemeleri/gi,
-                        /\bfinali\b/gi,
-                        /\bfinal\b/gi,
-                        /\bfinals\b/gi, // The Finals -> The s hatasını çözer
-                        /\bfinal-four\b/gi,
-                        /turnuvası/gi,
-                        /turnuvasi/gi,
-                        /turnuva/gi,
-                        /şampiyonası/gi,
-                        /sampiyonasi/gi,
-                        /şampiyon/gi,
-                        /sampiyon/gi,
-                        /\bwta\b/gi,
-                        /\batp\b/gi,
-                        /\bwnba\b/gi,
-                        /fikstür/gi,
-                        /maçları/gi,
-                        /maclari/gi,
-                        /\bthe s\b/gi, // Eğer yine de "The s" kaçarsa temizler
-                        /\bçiler\b/gi, // Tenisçiler'den kalan artığı temizler
-                        /\byarı\b/gi   // Yarı Final'den kalan "Yarı" kelimesini temizler
-                    ];
-
-                    l = l.replace(/\b(futbol|basketbol|tenis)\b/gi, '');
-
-                    junkPatterns.forEach(pattern => {
-                        l = l.replace(pattern, '');
-                    });
-
-                    return l.trim();
+                    // Satırın içinde geçerli bir kanal adı var mı? (Örn: "Bein Sports Max 1" -> "bein" içeriyor, KABUL ET!)
+                    // İçermiyorsa (Örn: "Stuttgart Yarı", "İtalya Play-Off") -> REDDET!
+                    return validChannels.some(channel => l.includes(channel));
                 });
 
-                // Boş kalan veya anlamsızlaşan satırları ayıkla
-                let filteredChannels = cleanedChannels.filter(line => {
-                    if (!line) return false;
-                    let l = line.toLowerCase();
-                    if (l === '/' || l === '-' || l === 'vs' || line.length < 2) return false;
-                    return true;
-                });
-
+                // Kalan tertemiz kanalları birleştir
                 let cleanYayin = filteredChannels.join(' / ')
                     .replace(/chevron_right/gi, '')
-                    .replace(/\d{2}\.\d{2}\.\d{4}.*/g, '')
-                    .replace(/^[ \/]+|[ \/]+$/g, '') // Baştaki ve sondaki gereksiz slash'leri siler
-                    .replace(/\s*\/\s*\/\s*/g, ' / ') // 3-4 tane yan yana gelen slashleri teke düşürür
+                    .replace(/^[ \/]+|[ \/]+$/g, '')    // Baştaki/sondaki yalnız slash'leri sil
+                    .replace(/\s*\/\s*\/\s*/g, ' / ')   // Aralarda kalan / / gibi çoklu slashleri teke düşür
                     .trim();
 
                 if (!cleanYayin || cleanYayin === '/' || cleanYayin.length < 2) cleanYayin = 'Yayın Yok';
+
+               
 
                 const lowerMac = mac.toLowerCase();
                 
