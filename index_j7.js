@@ -208,48 +208,29 @@ const USER_AGENTS = [
 
 async function fetchData(url) {
     try {
-        // 1. İnsan Taklidi: İstekler arasına rastgele esneme payı
-        const delay = Math.floor(Math.random() * 2000) + 500;
+        // İnsan Taklidi: 1 ile 3 saniye arası rastgele gecikme
+        const delay = Math.floor(Math.random() * 2000) + 1000;
         await new Promise(r => setTimeout(r, delay));
 
-        // 2. SIFIR BÜTÇE PROXY HAVUZU 
-        // Bu sunucular Cloudflare'i bizim yerimize aşacak
-        const proxies = [
-            `https://api.allorigins.win/raw?url=`,
-            `https://api.codetabs.com/v1/proxy?quest=`,
-            `https://corsproxy.io/?`
-        ];
-
         const randomAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
-        const headers = {
-            "User-Agent": randomAgent,
-            "Accept": "application/json, text/plain, */*",
-            "Cache-Control": "no-cache"
-        };
-
-        let response;
         
-        // 3. Sırayla Proxy'leri Dene
-        for (const proxyBase of proxies) {
-            const proxiedUrl = proxyBase + encodeURIComponent(url);
-            
-            response = await fetch(proxiedUrl, { headers });
-            
-            // Eğer HTTP 200 (Başarılı) dönerse döngüyü kır ve veriyi al
-            if (response.ok) {
-                return await response.json();
-            }
-            
-            // Proxy 403 yediyse logla ve hemen sonrakine geç
-            const proxyName = proxyBase.split('/')[2];
-            console.log(`⚠️ ${proxyName} takıldı, yedek proxy'ye geçiliyor...`);
+        // Node.js yerine doğrudan Android/Linux sisteminin 'curl' komutunu kullanıyoruz
+        // Bu, Cloudflare'in bot parmak izi korumasını (JA3) atlatmanın en etkili ücretsiz yoludur
+        const command = `curl -s --connect-timeout 15 -m 20 -H "User-Agent: ${randomAgent}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7" -H "Referer: https://www.sofascore.com/" -H "Connection: keep-alive" -H "Sec-Fetch-Dest: empty" -H "Sec-Fetch-Mode: cors" -H "Sec-Fetch-Site: same-origin" --compressed "${url}"`;
+
+        const { stdout, stderr } = await execPromise(command);
+
+        // Eğer sonuç boş dönerse veya Cloudflare'in meşhur hata sayfalarından biri gelirse
+        if (!stdout || stdout.includes("error code: 1020") || stdout.includes("Cloudflare")) {
+            console.log(`⚠️ Curl engellendi veya boş yanıt döndü. Geçici blokaj.`);
+            return null;
         }
 
-        // 3 proxy de o an için engelliyse sistemi çökertmeden pas geç
-        console.log(`❌ Tüm proxyler anlık olarak 403 yedi. Geçici blokaj.`);
-        return null;
+        // Başarılı bir şekilde JSON verisi geldiyse parse et
+        return JSON.parse(stdout);
 
     } catch (e) {
+        // Sessizce hatayı yut ve döngünün devam etmesini sağla
         return null;
     }
 }
