@@ -207,22 +207,37 @@ const USER_AGENTS = [
 ];
 
 async function fetchData(url) {
-    try {
-        const randomAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
-        const response = await fetch(url, {
-            headers: {
-                "User-Agent": randomAgent,
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Referer": "https://www.sofascore.com/",
-                "Connection": "keep-alive",
-                "Cache-Control": "no-cache"
-            }
-        });
-        return response.ok ? await response.json() : null;
-    } catch (e) {
-        return null;
-    }
+    try {
+        // İnsan taklidi gecikmeyi tutuyoruz
+        const delay = Math.floor(Math.random() * 1500) + 500;
+        await new Promise(r => setTimeout(r, delay));
+
+        // 🌟 HAYAT KURTARAN HAMLE: URL'yi Web'den Mobil API'ye Çeviriyoruz
+        // www.sofascore.com adresini api.sofascore.com olarak anında değiştiriyoruz
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+
+        const response = await fetch(mobileUrl, {
+            headers: {
+                // Tarayıcı değiliz, artık resmi bir Android cihazıyız!
+                "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-S918B Build/TP1A.220624.014)",
+                "Accept": "*/*",
+                "Connection": "Keep-Alive",
+                "Accept-Encoding": "gzip",
+                "Cache-Control": "no-cache",
+                // Mobil sunucuların aradığı o sihirli başlık
+                "x-sofascore-client": "android" 
+            }
+        });
+
+        if (!response.ok) {
+            console.log(`⚠️ Mobil API Reddi (HTTP ${response.status})`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (e) {
+        return null;
+    }
 }
 
 const getTRDate = (offset = 0) => {
