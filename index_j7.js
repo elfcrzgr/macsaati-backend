@@ -146,14 +146,23 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                 const [mH, mM] = mTime.split(':').map(Number);
                 const mTitle = toTR(m.mac || "");
 
-                const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
-                const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
+               
+// Nokta, slaş, boşluk fark etmeksizin isimleri kelimelere böler ve kısa harfleri (J., M.) eler
+const getCleanWords = (str) => {
+    return str.replace(/[^a-z0-9ıüşöğç]/g, ' ')
+              .split(' ')
+              .map(w => w.trim())
+              .filter(w => w.length >= 3); 
+};
 
-                const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
-                const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+const hWords = getCleanWords(hName);
+const aWords = getCleanWords(aName);
 
-                const matchHome = mTitle.includes(hCheck) || anyHomeWordMatch;
-                const matchAway = mTitle.includes(aCheck) || anyAwayWordMatch;
+// Kelimelerden herhangi biri Spor Ekranı başlığında geçiyorsa eşleşti sayar
+const matchHome = hWords.length === 0 || hWords.some(w => mTitle.includes(w));
+const matchAway = aWords.length === 0 || aWords.some(w => mTitle.includes(w));
+
+                
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
 
                 let diff = 9999;
@@ -199,29 +208,40 @@ const USER_AGENTS = [
 
 async function fetchData(url) {
     try {
+        // 1. İnsan Taklidi: Her istekten önce 500ms ile 2500ms arası rastgele bekleme (Jitter)
+        const delay = Math.floor(Math.random() * 2000) + 500;
+        await new Promise(r => setTimeout(r, delay));
+
         const randomAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+        
+        // 2. Zenginleştirilmiş Tarayıcı Başlıkları
         const response = await fetch(url, {
             headers: {
                 "User-Agent": randomAgent,
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Referer": "https://www.sofascore.com/",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                "Accept-Language": "tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3",
+                "Accept-Encoding": "gzip, deflate, br", // Çoğu WAF (Cloudflare) bunu titizlikle kontrol eder
                 "Connection": "keep-alive",
-                "Cache-Control": "no-cache"
+                "Upgrade-Insecure-Requests": "1",
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "none",
+                "Sec-Fetch-User": "?1",
+                "Cache-Control": "max-age=0"
             }
         });
-        return response.ok ? await response.json() : null;
+
+        if (!response.ok) {
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) - Kısa süreli WAF engeli olabilir.`);
+            return null;
+        }
+
+        return await response.json();
     } catch (e) {
+        // Hata logunu sessizce geçiştirip sistemi çökertmiyoruz
         return null;
     }
 }
-
-const getTRDate = (offset = 0) => {
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-};
-
 // =========================================================================
 // ⚽ FUTBOL YAPILANDIRMASI
 // =========================================================================
@@ -606,7 +626,7 @@ async function checkAndSendNotifications(newMatches) {
     saveState();
 }
 
-// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS Bildirim Sorunu KESİN Çözümü 
+// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS ve Android Tam Uyumlu
 const lastNotificationTime = new Map();
 
 async function sendPush(id, title, body, imageUrl = null, matchData = null) {
@@ -644,6 +664,7 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
                         sound: "default",
                         category: "MATCH_UPDATE" 
                     },
+                    // iOS tarafının doğrudan (userInfo["matchId"]) okuyacağı kök veriler
                     matchId: String(id),
                     type: "match_update"
                 }
@@ -652,14 +673,22 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
 
         // 🚀 BÜYÜ BURADA: matchData gönderilmişse tüm detayları FCM data objesine şırınga ediyoruz!
         if (matchData) {
-            payload.data.homeName = String(matchData.homeTeam?.name || "Ev Sahibi");
-            payload.data.awayName = String(matchData.awayTeam?.name || "Deplasman");
+            const hName = String(matchData.homeTeam?.name || "Ev Sahibi");
+            const aName = String(matchData.awayTeam?.name || "Deplasman");
+
+            // 1. Standart Data objesine ekle (Android vb. için)
+            payload.data.homeName = hName;
+            payload.data.awayName = aName;
             payload.data.homeScore = String(matchData.homeScore || "-");
             payload.data.awayScore = String(matchData.awayScore || "-");
             payload.data.homeLogo = String(matchData.homeTeam?.logo || "");
             payload.data.awayLogo = String(matchData.awayTeam?.logo || "");
             payload.data.status = String(matchData.status || "inprogress");
             payload.data.timeOrMinute = String(matchData.liveMinute || "");
+
+            // 2. iOS İÇİN KESİN GARANTİ: apns.payload içine de ekliyoruz
+            payload.apns.payload.homeName = hName;
+            payload.apns.payload.awayName = aName;
         }
 
         // Görsel varsa hem iOS hem Android için evrensel ekleme yapıyoruz
@@ -1209,6 +1238,11 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 }
             }
 
+            // 🌟 DEĞİŞİKLİK BURADA BAŞLIYOR: Yayıncı bilgisini dinamik olarak sorguluyoruz
+            const fallbackBroadcaster = "S Sport / beIN Sports";
+            const result = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
+           
+            
             // Hafızaya ekle! (En kritik kısım)
             globalTennisCache.set(e.id, {
                 id: e.id,
@@ -1217,7 +1251,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 fixedDate: fixedDate,
                 fixedTime: timeString,
                 timestamp: startTimestamp,
-                broadcaster: "S Sport / beIN Sports",
+                broadcaster: result.kanal,
                 homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos },
                 awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
                 tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
@@ -1507,4 +1541,4 @@ async function main() {
     }
 }
 
-main();
+main(); 
