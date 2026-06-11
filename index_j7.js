@@ -146,23 +146,14 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                 const [mH, mM] = mTime.split(':').map(Number);
                 const mTitle = toTR(m.mac || "");
 
-               
-// Nokta, slaş, boşluk fark etmeksizin isimleri kelimelere böler ve kısa harfleri (J., M.) eler
-const getCleanWords = (str) => {
-    return str.replace(/[^a-z0-9ıüşöğç]/g, ' ')
-              .split(' ')
-              .map(w => w.trim())
-              .filter(w => w.length >= 3); 
-};
+                const hCheck = hName.length > 4 ? hName.substring(0, 4) : hName;
+                const aCheck = aName.length > 4 ? aName.substring(0, 4) : aName;
 
-const hWords = getCleanWords(hName);
-const aWords = getCleanWords(aName);
+                const anyHomeWordMatch = hName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
+                const anyAwayWordMatch = aName.split(' ').some(word => word.length > 3 && mTitle.includes(word));
 
-// Kelimelerden herhangi biri Spor Ekranı başlığında geçiyorsa eşleşti sayar
-const matchHome = hWords.length === 0 || hWords.some(w => mTitle.includes(w));
-const matchAway = aWords.length === 0 || aWords.some(w => mTitle.includes(w));
-
-                
+                const matchHome = mTitle.includes(hCheck) || anyHomeWordMatch;
+                const matchAway = mTitle.includes(aCheck) || anyAwayWordMatch;
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
 
                 let diff = 9999;
@@ -615,7 +606,7 @@ async function checkAndSendNotifications(newMatches) {
     saveState();
 }
 
-// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS ve Android Tam Uyumlu
+// 🚀 GÜNCELLENEN sendPush FONKSİYONU - iOS Bildirim Sorunu KESİN Çözümü 
 const lastNotificationTime = new Map();
 
 async function sendPush(id, title, body, imageUrl = null, matchData = null) {
@@ -653,7 +644,6 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
                         sound: "default",
                         category: "MATCH_UPDATE" 
                     },
-                    // iOS tarafının doğrudan (userInfo["matchId"]) okuyacağı kök veriler
                     matchId: String(id),
                     type: "match_update"
                 }
@@ -662,22 +652,14 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
 
         // 🚀 BÜYÜ BURADA: matchData gönderilmişse tüm detayları FCM data objesine şırınga ediyoruz!
         if (matchData) {
-            const hName = String(matchData.homeTeam?.name || "Ev Sahibi");
-            const aName = String(matchData.awayTeam?.name || "Deplasman");
-
-            // 1. Standart Data objesine ekle (Android vb. için)
-            payload.data.homeName = hName;
-            payload.data.awayName = aName;
+            payload.data.homeName = String(matchData.homeTeam?.name || "Ev Sahibi");
+            payload.data.awayName = String(matchData.awayTeam?.name || "Deplasman");
             payload.data.homeScore = String(matchData.homeScore || "-");
             payload.data.awayScore = String(matchData.awayScore || "-");
             payload.data.homeLogo = String(matchData.homeTeam?.logo || "");
             payload.data.awayLogo = String(matchData.awayTeam?.logo || "");
             payload.data.status = String(matchData.status || "inprogress");
             payload.data.timeOrMinute = String(matchData.liveMinute || "");
-
-            // 2. iOS İÇİN KESİN GARANTİ: apns.payload içine de ekliyoruz
-            payload.apns.payload.homeName = hName;
-            payload.apns.payload.awayName = aName;
         }
 
         // Görsel varsa hem iOS hem Android için evrensel ekleme yapıyoruz
@@ -1227,11 +1209,6 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 }
             }
 
-            // 🌟 DEĞİŞİKLİK BURADA BAŞLIYOR: Yayıncı bilgisini dinamik olarak sorguluyoruz
-            const fallbackBroadcaster = "S Sport / beIN Sports";
-            const result = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
-           
-            
             // Hafızaya ekle! (En kritik kısım)
             globalTennisCache.set(e.id, {
                 id: e.id,
@@ -1240,7 +1217,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 fixedDate: fixedDate,
                 fixedTime: timeString,
                 timestamp: startTimestamp,
-                broadcaster: result.kanal,
+                broadcaster: "S Sport / beIN Sports",
                 homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos },
                 awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
                 tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
