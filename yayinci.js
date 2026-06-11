@@ -197,11 +197,30 @@ async function getBroadcasterData() {
                     mac.length < 5
                 ) return;
 
+                // 🔄 TAKIM İSMİ DÜZELTME SÖZLÜĞÜ (MAPPING)
+                const teamNameDictionary = {
+                    "BARCELONA": "Barça Basket",
+                    "IBEROSTAR TENERIFE": "La Laguna Tenerife"
+                    // İhtiyaç duydukça buraya "ESKİ İSİM": "YENİ İSİM" şeklinde ekleme yapabilirsin
+                };
+
+                // Önce ana maç metnini büyük harflere çevirip boşluklarını alıyoruz
+                let finalMac = mac.toUpperCase().trim();
+                
+                // Sözlükteki kelimeleri sırayla arayıp, bulursa Firebase'deki isimle değiştiriyoruz
+                Object.keys(teamNameDictionary).forEach(sporekraniName => {
+                    if (finalMac.includes(sporekraniName)) {
+                        finalMac = finalMac.replace(sporekraniName, teamNameDictionary[sporekraniName]);
+                    }
+                });
+
+                
+
                 if (allMatches[targetDate]) {
                     allMatches[targetDate].matches.push({
                         saat: m.saat,
                         spor: sportName,
-                        mac: mac.toUpperCase().trim(),
+                        mac: finalMac,
                         yayin: cleanYayin
                     });
                 }
