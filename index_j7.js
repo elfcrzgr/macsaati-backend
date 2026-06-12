@@ -356,7 +356,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         97: "TFF YouTube", 11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube",
         13363: "USL YouTube", 696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN",
         1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus", 38: "beIN Sports", 36: "beIN Sports",
-        335: "beIN Sports", 955: "S Sport Plus / TV+", 18: "beIN Sports", 325: "Spor Smart / S Sport+"
+        335: "beIN Sports", 955: "S Sport Plus / TV+", 18: "beIN Sports", 325: "Spor Smart / S Sport+", 16: "TRT 1"
     };
     if (staticConfigs[utId]) return staticConfigs[utId];
     if (utn.includes("j1 league")) return "YouTube (J.League Int.)";
