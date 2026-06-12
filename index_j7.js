@@ -120,7 +120,13 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
     
-    const toTR = (str) => str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase().trim();
+    const toTR = (str) => str
+    .replace(/İ/g, 'i')
+    .replace(/I/g, 'i')
+    .replace(/ı/g, 'i')
+    .toLowerCase()
+    .trim();
+    
     const hName = toTR(homeName || "");
     const aName = toTR(awayName || "");
 
@@ -149,10 +155,19 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                
 // Nokta, slaş, boşluk fark etmeksizin isimleri kelimelere böler ve kısa harfleri (J., M.) eler
 const getCleanWords = (str) => {
-    return str.replace(/[^a-z0-9ıüşöğç]/g, ' ')
-              .split(' ')
-              .map(w => w.trim())
-              .filter(w => w.length >= 3); 
+    return str
+        .replace(/İ/g, 'i').replace(/I/g, 'i')
+        .replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+        .replace(/Ü/g, 'u').replace(/ü/g, 'u')
+        .replace(/Ş/g, 's').replace(/ş/g, 's')
+        .replace(/Ö/g, 'o').replace(/ö/g, 'o')
+        .replace(/Ç/g, 'c').replace(/ç/g, 'c')
+        .replace(/ı/g, 'i')
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, ' ')
+        .split(' ')
+        .map(w => w.trim())
+        .filter(w => w.length >= 3);
 };
 
 const hWords = getCleanWords(hName);
