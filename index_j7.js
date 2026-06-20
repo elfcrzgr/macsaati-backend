@@ -1346,14 +1346,13 @@ async function updateF1() {
         console.error(`   ⚠️ F1 hatası: ${error.message}`); 
     }
 }
-
 // =========================================================================
 // 🆕 ANA DÖNGÜ (AKILLI SPORT BAZLI GÜNCELLEME)
 // =========================================================================
 async function main() {
     loadState(); 
     console.log("============================================================");
-    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (SMART SPORT-SPECIFIC V5)");
+    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (GECE YARISI KORUMALI V6)");
     console.log("============================================================");
     
     let iteration = 1;
@@ -1388,8 +1387,7 @@ async function main() {
             }
 
             if (lastPeriodicUpdate < activeTarget) {
-                console.log("🔄 [PERİYODİK GÜNCELLEME] Ana Saat Dilimi (00:10 / 06:10 / 12:10 / 18:10) Tetiklendi!");
-                console.log("📅 4 Günlük Veri Taraması Başlıyor...");
+                console.log("🔄 [PERİYODİK GÜNCELLEME] Ana Saat Dilimi Tetiklendi!");
                 
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
                 
@@ -1407,10 +1405,13 @@ async function main() {
                 lastPeriodicUpdate = now;
             }
             
+            // 🚀 BÜYÜK DÜZELTME: Gece yarısını geçen canlı maçlar donmasın diye her hızlı döngüde (Dün, Bugün, Yarın) taranır.
+            const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
+
             if (sportUpdateStatus.football.hasLiveMatch) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
-                    console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Bugünün verileri güncelleniyor...");
-                    const footResult = await updateFootball([getTRDate(0)]);
+                    console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Veriler güncelleniyor...");
+                    const footResult = await updateFootball(quickScanDates);
                     sportUpdateStatus.football.lastQuickUpdate = now;
                     sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
@@ -1419,8 +1420,8 @@ async function main() {
             else if (sportUpdateStatus.football.nextMatchTime && 
                      now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 1.1)) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
-                    console.log("⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç saati yaklaştı - Bugünün verileri güncelleniyor...");
-                    const footResult = await updateFootball([getTRDate(0)]);
+                    console.log("⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç saati yaklaştı - Veriler güncelleniyor...");
+                    const footResult = await updateFootball(quickScanDates);
                     sportUpdateStatus.football.lastQuickUpdate = now;
                     sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
@@ -1432,11 +1433,8 @@ async function main() {
             
             if ((sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball) &&
                 now - sportUpdateStatus.basketball.lastQuickUpdate >= TEN_MIN_MS) {
-                const logMsg = sportUpdateStatus.basketball.hasLiveMatch ? 
-                    "🏀 [HIZLI DÖNGÜ] Canlı basketbol maçı var" : 
-                    "🏀 [YAKLAŞAN] Yaklaşan basketbol maçı";
-                console.log(`${logMsg} - Bugünün verileri güncelleniyor...`);
-                const basketResult = await updateBasketball([getTRDate(0)]);
+                console.log("🏀 [HIZLI DÖNGÜ] Basketbol verileri güncelleniyor...");
+                const basketResult = await updateBasketball(quickScanDates);
                 sportUpdateStatus.basketball.lastQuickUpdate = now;
                 sportUpdateStatus.basketball.nextMatchTime = basketResult.nextMatchTimestamp;
             }
@@ -1446,11 +1444,8 @@ async function main() {
             
             if ((sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) &&
                 now - sportUpdateStatus.tennis.lastQuickUpdate >= TEN_MIN_MS) {
-                const logMsg = sportUpdateStatus.tennis.hasLiveMatch ? 
-                    "🎾 [HIZLI DÖNGÜ] Canlı tenis maçı var" : 
-                    "🎾 [YAKLAŞAN] Yaklaşan tenis maçı";
-                console.log(`${logMsg} - Bugünün verileri güncelleniyor...`);
-                const tennisResult = await updateTennis([getTRDate(0)]);
+                console.log("🎾 [HIZLI DÖNGÜ] Tenis verileri güncelleniyor...");
+                const tennisResult = await updateTennis(quickScanDates);
                 sportUpdateStatus.tennis.lastQuickUpdate = now;
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
             }
@@ -1499,3 +1494,5 @@ async function main() {
 }
 
 main();
+
+
