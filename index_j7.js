@@ -499,10 +499,12 @@ async function checkAndSendNotifications(newMatches) {
                                 awayScore: String(match.awayScore || '0'),
                                 liveMinute: String(match.liveMinute || ''),
                                 tournament: String(match.tournament || ''),
-                                homeTeamId: String(match.homeTeam?.id || '0'),  // 🚀 EKLENDİ
-                                awayTeamId: String(match.awayTeam?.id || '0')   // 🚀 EKLENDİ
+                                homeTeamId: String(match.homeTeam?.id || '0'),
+                                awayTeamId: String(match.awayTeam?.id || '0'),
+                                homeLogo: String(match.homeTeam?.logo || ''),  // 🚀 EKLENDİ
+                                awayLogo: String(match.awayTeam?.logo || '')   // 🚀 EKLENDİ
                             }
-                    }
+                        }
                 };
                 
                 try {
@@ -748,9 +750,14 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
             payload.data.status = String(matchData.status || "inprogress");
             payload.data.timeOrMinute = String(matchData.liveMinute || "");
 
+         
             // 2. iOS İÇİN KESİN GARANTİ: apns.payload içine de ekliyoruz
-            payload.apns.payload.homeName = hName;
-            payload.apns.payload.awayName = aName;
+                payload.apns.payload.homeName = hName;
+                payload.apns.payload.awayName = aName;
+                payload.apns.payload.homeLogo = String(matchData.homeTeam?.logo || '');   // 🚀 EKLENDİ
+                payload.apns.payload.awayLogo = String(matchData.awayTeam?.logo || '');   // 🚀 EKLENDİ
+                payload.apns.payload.homeTeamId = String(matchData.homeTeam?.id || '0');  // 🚀 EKLENDİ
+                payload.apns.payload.awayTeamId = String(matchData.awayTeam?.id || '0');  // 🚀 EKLENDİ
         }
 
         // Görsel varsa hem iOS hem Android için evrensel ekleme yapıyoruz
