@@ -490,16 +490,18 @@ async function checkAndSendNotifications(newMatches) {
                             'apns-priority': '5'
                         },
                         payload: {
-                            aps: { 'content-available': 1 },
-                            type: isFinished ? 'END_LIVE_ACTIVITY' : 'START_LIVE_ACTIVITY',
-                            matchId: matchIdStr,
-                            homeName: String(match.homeTeam?.name || ''),
-                            awayName: String(match.awayTeam?.name || ''),
-                            homeScore: String(match.homeScore || '0'),
-                            awayScore: String(match.awayScore || '0'),
-                            liveMinute: String(match.liveMinute || ''),
-                            tournament: String(match.tournament || '')
-                        }
+                                aps: { 'content-available': 1 },
+                                type: isFinished ? 'END_LIVE_ACTIVITY' : 'START_LIVE_ACTIVITY',
+                                matchId: matchIdStr,
+                                homeName: String(match.homeTeam?.name || ''),
+                                awayName: String(match.awayTeam?.name || ''),
+                                homeScore: String(match.homeScore || '0'),
+                                awayScore: String(match.awayScore || '0'),
+                                liveMinute: String(match.liveMinute || ''),
+                                tournament: String(match.tournament || ''),
+                                homeTeamId: String(match.homeTeam?.id || '0'),  // 🚀 EKLENDİ
+                                awayTeamId: String(match.awayTeam?.id || '0')   // 🚀 EKLENDİ
+                            }
                     }
                 };
                 
@@ -920,8 +922,8 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             fixedTime: timeString,
             timestamp: e.startTimestamp * 1000,
             broadcaster: finalBroadcaster,
-            homeTeam: { name: translatedHome, logo: homeLogoUrl },
-            awayTeam: { name: translatedAway, logo: awayLogoUrl },
+            homeTeam: { name: translatedHome, logo: homeLogoUrl, id: e.homeTeam.id},
+            awayTeam: { name: translatedAway, logo: awayLogoUrl, id: e.awayTeam.id},
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
             homeScore: finalHomeScore,
             awayScore: finalAwayScore,
