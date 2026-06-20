@@ -152,7 +152,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                 const [mH, mM] = mTime.split(':').map(Number);
                 const mTitle = toTR(m.mac || "");
 
-                // Nokta, slaş, boşluk fark etmeksizin isimleri kelimelere böler ve kısa harfleri (J., M.) eler
                 const getCleanWords = (str) => {
                     return str
                         .replace(/İ/g, 'i').replace(/I/g, 'i')
@@ -172,7 +171,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                 const hWords = getCleanWords(hName);
                 const aWords = getCleanWords(aName);
 
-                // Kelimelerden herhangi biri Spor Ekranı başlığında geçiyorsa eşleşti sayar
                 const matchHome = hWords.length === 0 || hWords.some(w => mTitle.includes(w));
                 const matchAway = aWords.length === 0 || aWords.some(w => mTitle.includes(w));
 
@@ -221,11 +219,9 @@ const USER_AGENTS = [
 
 async function fetchData(url) {
     try {
-        // İnsan taklidi gecikmeyi tutuyoruz
         const delay = Math.floor(Math.random() * 1500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // 🌟 HAYAT KURTARAN HAMLE: URL'yi Web'den Mobil API'ye Çeviriyoruz
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
         const response = await fetch(mobileUrl, {
@@ -440,7 +436,7 @@ function calculateLiveMinute(eventData) {
 }
 
 // =========================================================================
-// 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME (TAMİR EDİLEN BLOK)
+// 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
 // =========================================================================
 
 const lastNotificationTime = new Map();
@@ -526,7 +522,7 @@ async function checkAndSendNotifications(newMatches) {
             hasNotifiedInjuryTime1: false, hasNotifiedInjuryTime2: false,
             hasNotifiedETWait: false, hasNotifiedETHT: false, hasNotifiedETSH: false, hasNotifiedPenalties: false,
             lastMinute: 0,
-            liveMinuteStr: "" // Değişim tespiti için eklendi
+            liveMinuteStr: "" // Değişim tespiti için
         };
         
         let currH = parseInt(match.homeScore) || 0;
@@ -576,12 +572,12 @@ async function checkAndSendNotifications(newMatches) {
                 },
                 apns: {
                     headers: {
-                        'apns-push-type': 'background', // SESSİZ PUSH ŞARTI 1
-                        'apns-priority': '5'            // SESSİZ PUSH ŞARTI 2
+                        'apns-push-type': 'background',
+                        'apns-priority': '5'
                     },
                     payload: {
                         aps: {
-                            'content-available': 1      // SESSİZ PUSH ŞARTI 3
+                            'content-available': 1
                         }
                     }
                 }
@@ -779,14 +775,13 @@ function hasTodayMatches(cache) {
 async function updateFootball(targetDates = [getTRDate(0)]) {
     console.log(`⚽ Futbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
-    const today = getTRDate(0);
+    // 🚀 BUG FIX 1: Gece 12'yi geçince tüm hafızayı siliyordu. Artık sadece 3 günden eski maçları silecek.
+    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
+    
     for (const [id, state] of previousMatchStates.entries()) {
-        if (state.date && state.date !== today) {
+        if (state.date && !validDates.includes(state.date)) {
             if (state.status !== 'inprogress') {
                 previousMatchStates.delete(id);
-            } else {
-                state.date = today;
-                previousMatchStates.set(id, state);
             }
         }
     }
@@ -812,8 +807,9 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         };
     }
 
+    // 🚀 BUG FIX 2: Sistemin şişmemesi için 3 günden eski maçları ana bellekten de atıyoruz
     for (const [id, match] of globalFootballCache.entries()) {
-        if (successfulDates.includes(match.fixedDate)) {
+        if (!validDates.includes(match.fixedDate)) {
             globalFootballCache.delete(id);
         }
     }
@@ -946,6 +942,8 @@ const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 async function updateBasketball(targetDates = [getTRDate(0)]) {
     console.log(`🏀 Basketbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
+    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
+
     let allEvents = [];
     let successfulDates = []; 
 
@@ -966,7 +964,7 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
     }
 
     for (const [id, match] of globalBasketballCache.entries()) {
-        if (successfulDates.includes(match.fixedDate)) {
+        if (!validDates.includes(match.fixedDate)) {
             globalBasketballCache.delete(id);
         }
     }
@@ -1076,6 +1074,8 @@ const checkIsValidTournament = (tournamentName) => {
 async function updateTennis(targetDates = [getTRDate(0)]) {
     console.log(`🎾 Tenis güncelleniyor (Paralel Optimizasyon - Taranan gün: ${targetDates.length})...`);
     
+    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
+
     let rawEvents = [];
     let successfulDates = [];
     const seenEventIds = new Set();
@@ -1115,7 +1115,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
     }
 
     for (const [id, match] of globalTennisCache.entries()) {
-        if (successfulDates.includes(match.fixedDate)) {
+        if (!validDates.includes(match.fixedDate)) {
             globalTennisCache.delete(id);
         }
     }
