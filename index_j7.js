@@ -470,8 +470,49 @@ function calculateLiveMinute(eventData) {
 // 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
 // =========================================================================
 async function checkAndSendNotifications(newMatches) {
-    for (const match of newMatches) {
-        const matchIdStr = String(match.id);
+    
+    for (const match of newMatches) {
+        const matchIdStr = String(match.id);  // 🚀 EN ÜSTE TAŞINDI
+        
+        // 🚀 LIVE ACTIVITY PUSH - Sadece hedef maçlar
+        const LIVE_ACTIVITY_MATCH_IDS = ['15186957'];
+        if (LIVE_ACTIVITY_MATCH_IDS.includes(matchIdStr)) {
+            const statusType = match.status;
+            const isLive = statusType === 'inprogress';
+            const isFinished = ['finished', 'ended', 'closed'].includes(statusType);
+            
+            if (isLive || isFinished) {
+                const liveActivityPayload = {
+                    topic: 'live_activity_trigger',
+                    apns: {
+                        headers: {
+                            'apns-push-type': 'background',
+                            'apns-priority': '5'
+                        },
+                        payload: {
+                            aps: { 'content-available': 1 },
+                            type: isFinished ? 'END_LIVE_ACTIVITY' : 'START_LIVE_ACTIVITY',
+                            matchId: matchIdStr,
+                            homeName: String(match.homeTeam?.name || ''),
+                            awayName: String(match.awayTeam?.name || ''),
+                            homeScore: String(match.homeScore || '0'),
+                            awayScore: String(match.awayScore || '0'),
+                            liveMinute: String(match.liveMinute || ''),
+                            tournament: String(match.tournament || '')
+                        }
+                    }
+                };
+                
+                try {
+                    await admin.messaging().send(liveActivityPayload);
+                    console.log(`📲 [LIVE ACTIVITY] Push gönderildi: ${matchIdStr} | ${statusType} | ${match.liveMinute}`);
+                } catch (e) {
+                    console.error('❌ [LIVE ACTIVITY] Push hatası:', e.message);
+                }
+            }
+        }
+        
+       
         
         const prev = previousMatchStates.get(matchIdStr) || { 
             status: null, homeScore: 0, awayScore: 0, 
