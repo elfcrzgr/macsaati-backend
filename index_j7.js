@@ -554,8 +554,9 @@ async function checkAndSendNotifications(newMatches) {
         const statusChanged = statusType !== prev.status;
 
         if ((isLive || isFinished) && (minuteChanged || scoreChanged || statusChanged)) {
-            const liveActivityPayload = {
-    topic: `match_${matchIdStr}`,  // 🚀 Zil ile aynı topic
+            // checkAndSendNotifications içinde Live Activity bloğunu bul ve topic'i değiştir:
+const liveActivityPayload = {
+    topic: `live_${matchIdStr}`,  // 🚀 match_ değil live_ prefix
     apns: {
         headers: {
             'apns-push-type': 'background',
