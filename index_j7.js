@@ -555,33 +555,29 @@ async function checkAndSendNotifications(newMatches) {
 
         if ((isLive || isFinished) && (minuteChanged || scoreChanged || statusChanged)) {
             const liveActivityPayload = {
-                topic: 'live_activity_trigger',
-                data: {
-                    type: isFinished ? 'END_LIVE_ACTIVITY' : 'START_LIVE_ACTIVITY',
-                    matchId: matchIdStr,
-                    homeName: String(match.homeTeam?.name || ''),
-                    awayName: String(match.awayTeam?.name || ''),
-                    homeScore: String(currH),
-                    awayScore: String(currA),
-                    liveMinute: String(liveMin),
-                    tournament: String(match.tournament || ''),
-                    homeTeamId: String(match.homeTeam?.id || '0'),
-                    awayTeamId: String(match.awayTeam?.id || '0'),
-                    homeLogo: String(match.homeTeam?.logo || ''),
-                    awayLogo: String(match.awayTeam?.logo || '')
-                },
-                apns: {
-                    headers: {
-                        'apns-push-type': 'background',
-                        'apns-priority': '5'
-                    },
-                    payload: {
-                        aps: {
-                            'content-available': 1
-                        }
-                    }
-                }
-            };
+    topic: `match_${matchIdStr}`,  // 🚀 Zil ile aynı topic
+    apns: {
+        headers: {
+            'apns-push-type': 'background',
+            'apns-priority': '5'
+        },
+        payload: {
+            aps: { 'content-available': 1 },
+            type: isFinished ? 'END_LIVE_ACTIVITY' : 'START_LIVE_ACTIVITY',
+            matchId: matchIdStr,
+            homeName: String(match.homeTeam?.name || ''),
+            awayName: String(match.awayTeam?.name || ''),
+            homeScore: String(currH),
+            awayScore: String(currA),
+            liveMinute: String(liveMin),
+            tournament: String(match.tournament || ''),
+            homeTeamId: String(match.homeTeam?.id || '0'),
+            awayTeamId: String(match.awayTeam?.id || '0'),
+            homeLogo: String(match.homeTeam?.logo || ''),
+            awayLogo: String(match.awayTeam?.logo || '')
+        }
+    }
+};
             
             try {
                 await admin.messaging().send(liveActivityPayload);
