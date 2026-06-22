@@ -19,13 +19,14 @@ if (!admin.apps.length) {
     console.log("🔥 Firebase zaten başlatılmış.");
 }
 // 🚀 APPLE APNS BAĞLANTISI (KİLİT EKRANI İÇİN)
-let apnProvider;
+// 🚀 APPLE APNS BAĞLANTISI (KİLİT EKRANI İÇİN)
+let apnProvider = null; // = null ekledik
 try {
     apnProvider = new apn.Provider({
         token: {
             key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
             keyId: "9JFB2X7TY9",
-            teamId: "9MQ7UDX75J" // <--- BURAYA KENDİ 10 HANELİ TEAM ID'Nİ YAZ
+            teamId: "9MQ7UDX75J" 
         },
         production: false
     });
@@ -1393,6 +1394,10 @@ async function updateF1() {
 // 🆕 ANA DÖNGÜ (AKILLI SPORT BAZLI GÜNCELLEME)
 // =========================================================================
 async function main() {
+    // 🛡️ BAĞLANTI KONTROLÜ
+    if (!apnProvider) {
+        console.error("⚠️ KRİTİK HATA: APNs Sağlayıcı başlatılamadı! Lütfen .p8 dosyasını ve Team ID'yi kontrol et.");
+    }
     loadState(); 
     console.log("============================================================");
     console.log("🟢 J7 CANLI SUNUCU BAŞLADI (GERÇEK LIVE ACTIVITY APNS V7)");
