@@ -6,6 +6,18 @@ const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
 
+
+// 🛡️ ÖNCE FIREBASE'İ GÜVENLE BAŞLAT
+const serviceAccount = require('./serviceAccountKey.json');
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
+    });
+    console.log("🔥 Firebase Admin başarıyla başlatıldı.");
+} else {
+    console.log("🔥 Firebase zaten başlatılmış.");
+}
 // 🚀 APPLE APNS BAĞLANTISI (KİLİT EKRANI İÇİN)
 let apnProvider;
 try {
