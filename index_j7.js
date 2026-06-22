@@ -6,27 +6,29 @@ const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
 
-
-// 🛡️ ÖNCE FIREBASE'İ GÜVENLE BAŞLAT
+// 🛡️ EN GÜVENLİ BAŞLATMA BLOKLARI
 const serviceAccount = require('./serviceAccountKey.json');
-if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
-    });
-    console.log("🔥 Firebase Admin başarıyla başlatıldı.");
-} else {
-    console.log("🔥 Firebase zaten başlatılmış.");
+
+try {
+    if (!admin.apps.length) {
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+            databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
+        });
+        console.log("🔥 Firebase Admin başarıyla başlatıldı.");
+    }
+} catch (e) {
+    console.log("🔥 Firebase zaten başlatılmış veya bir hata oluştu.");
 }
+
 // 🚀 APPLE APNS BAĞLANTISI (KİLİT EKRANI İÇİN)
-// 🚀 APPLE APNS BAĞLANTISI (KİLİT EKRANI İÇİN)
-let apnProvider = null; // = null ekledik
+let apnProvider = null;
 try {
     apnProvider = new apn.Provider({
         token: {
             key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
             keyId: "9JFB2X7TY9",
-            teamId: "9MQ7UDX75J" 
+            teamId: "9MQ7UDX75J"
         },
         production: false
     });
