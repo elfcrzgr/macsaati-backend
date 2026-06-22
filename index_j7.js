@@ -5,6 +5,24 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 
+const admin = require('firebase-admin');
+const serviceAccount = require('./serviceAccountKey.json');
+
+const app = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
+});
+
+// 🔥 KRİTİK HİLE: admin.database fonksiyonunu, 
+// bizim oluşturduğumuz 'app' instance'ına yönlendiriyoruz.
+// Böylece kodun altındaki "admin.database()" çağrıları otomatik olarak bizim 'app'imize bağlanır.
+const originalDatabase = admin.database;
+admin.database = function() {
+    return originalDatabase(app);
+};
+
+console.log("🔥 Firebase Admin başarıyla başlatıldı ve veritabanı eşlendi.");
+
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
 // =========================================================================
