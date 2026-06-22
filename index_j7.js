@@ -7,14 +7,20 @@ const admin = require('firebase-admin');
 const apn = require('apn');
 
 // 🚀 APPLE APNS BAĞLANTISI (KİLİT EKRANI İÇİN)
-const apnProvider = new apn.Provider({
-    token: {
-        key: __dirname + "/AuthKey_9JFB2X7TY9.p8", // Klasördeki yeni p8 dosyan
-        keyId: "9JFB2X7TY9",
-        teamId: "BURAYA_TEAM_ID_YAZ" // ⚠️ DİKKAT: Apple hesabındaki 10 haneli Team ID'ni buraya yazmayı unutma!
-    },
-    production: false // Uygulamayı kabloyla atıyorsan false, App Store'a çıkınca true olacak!
-});
+let apnProvider;
+try {
+    apnProvider = new apn.Provider({
+        token: {
+            key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
+            keyId: "9JFB2X7TY9",
+            teamId: "X1Y2Z3A4B5" // <--- BURAYA KENDİ 10 HANELİ TEAM ID'Nİ YAZ
+        },
+        production: false
+    });
+    console.log("🍏 Apple APNs sağlayıcısı başarıyla başlatıldı.");
+} catch (err) {
+    console.error("❌ Apple APNs başlatılamadı:", err);
+}
 
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
@@ -522,7 +528,7 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
         console.error("❌ Bildirim Hatası:", e.message); 
     }
 }
-
+if (!apnProvider) { console.error("⚠️ APNs Sağlayıcı aktif değil, bildirim gönderilemedi!"); return; }
 async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
