@@ -6,18 +6,20 @@ const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
 
-// 🛡️ EN GÜVENLİ BAŞLATMA BLOKLARI
-const serviceAccount = require('./serviceAccountKey.json');
-
+// 🛡️ FIREBASE BAŞLATMA
 try {
-    
-        console.log("🔥 Firebase Admin başarıyla başlatıldı.");
+    if (!admin.apps.length) {
+        admin.initializeApp({
+            credential: admin.credential.cert(require('./serviceAccountKey.json')),
+            databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
+        });
+        console.log("🔥 Firebase Admin başlatıldı.");
     }
 } catch (e) {
-    console.log("🔥 Firebase zaten başlatılmış veya bir hata oluştu.");
+    console.log("🔥 Firebase zaten başlatılmış veya hata:", e.message);
 }
 
-// 🚀 APPLE APNS BAĞLANTISI (KİLİT EKRANI İÇİN)
+// 🚀 APPLE APNS BAĞLANTISI
 let apnProvider = null;
 try {
     apnProvider = new apn.Provider({
@@ -28,7 +30,7 @@ try {
         },
         production: false
     });
-    console.log("🍏 Apple APNs sağlayıcısı başarıyla başlatıldı.");
+    console.log("🍏 Apple APNs başarıyla başlatıldı.");
 } catch (err) {
     console.error("❌ Apple APNs başlatılamadı:", err);
 }
