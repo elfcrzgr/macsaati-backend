@@ -4,6 +4,17 @@ const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
+const apn = require('apn');
+
+// 🚀 APPLE APNS BAĞLANTISI (KİLİT EKRANI İÇİN)
+const apnProvider = new apn.Provider({
+    token: {
+        key: __dirname + "/AuthKey_9JFB2X7TY9.p8", // Klasördeki yeni p8 dosyan
+        keyId: "9JFB2X7TY9",
+        teamId: "BURAYA_TEAM_ID_YAZ" // ⚠️ DİKKAT: Apple hesabındaki 10 haneli Team ID'ni buraya yazmayı unutma!
+    },
+    production: false // Uygulamayı kabloyla atıyorsan false, App Store'a çıkınca true olacak!
+});
 
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
@@ -564,51 +575,51 @@ async function checkAndSendNotifications(newMatches) {
             if (tokensObj) {
                 const tokenList = Object.keys(tokensObj);
                 
-                // 2. Her bir cihaza doğrudan "liveactivity" push paketi gönderiyoruz
+                // 🚀 2. DOĞRUDAN APPLE APNS ÜZERİNDEN LIVE ACTIVITY GÖNDERİYORUZ (Firebase aradan çıktı)
                 const promises = tokenList.map(async (deviceToken) => {
-                    const liveActivityPayload = {
-                        token: deviceToken, // Genel topic değil, doğrudan cihaza vuruş!
-                        apns: {
-                            headers: {
-                                'apns-push-type': 'liveactivity', // 🌟 APPLE'IN ASLA ENGELLEMEDİĞİ KRİTİK BAŞLIK
-                                'apns-topic': 'com.elfcrzgr.macsaati.push-type.liveactivity', // 🌟 Bundle ID Kontrolü (Gerekirse Kendi Bundle ID'nle Değiştir)
-                                'apns-priority': '10' // Anında kilit ekranına düşer
-                            },
-                            payload: {
-                                aps: {
-                                    timestamp: Math.floor(Date.now() / 1000),
-                                    event: isFinished ? 'end' : 'update', // Maç bittiyse widget'ı tamamen kapatır
-                                    contentState: {
-                                        // WidgetKit modellerindeki (Swift) değişken isimleriyle birebir eşleşmeli
-                                        homeScore: currH,
-                                        awayScore: currA,
-                                        matchMinute: isFinished ? "MS" : String(liveMin)
-                                    }
-                                }
+                    let notification = new apn.Notification();
+                    notification.rawPayload = {
+                        aps: {
+                            timestamp: Math.floor(Date.now() / 1000),
+                            event: isFinished ? 'end' : 'update',
+                            "content-state": {
+                                homeScore: currH,
+                                awayScore: currA,
+                                matchMinute: isFinished ? "MS" : String(liveMin)
                             }
                         }
                     };
+                    notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
+                    notification.priority = 10;
+                    notification.pushType = "liveactivity";
 
                     try {
-                        await admin.messaging().send(liveActivityPayload);
-                    } catch (e) {
-                        // Eğer kullanıcı kilit ekranını kapattıysa token eskir, Firebase'den temizleyip veritabanını rahatlatıyoruz
-                        if (e.code === 'messaging/invalid-argument' || e.code === 'messaging/registration-token-not-registered') {
-                            await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
-                        } else {
-                            console.error(`❌ Token hatası (${deviceToken}):`, e.message);
+                        const result = await apnProvider.send(notification, deviceToken);
+                        if (result.failed.length > 0) {
+                            const err = result.failed[0];
+                            const errorReason = err.response ? err.response.reason : err.error;
+                            
+                            // Token gerçekten eskiyse veya geçersizse klasörden sil
+                            if (errorReason === 'BadDeviceToken' || errorReason === 'Unregistered') {
+                                await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
+                                console.log(`🗑️ Eski veya geçersiz kilit ekranı token'ı temizlendi.`);
+                            } else {
+                                console.error(`❌ Apple APNs Reddi:`, errorReason);
+                            }
                         }
+                    } catch (e) {
+                        console.error("APNs Bağlantı Hatası:", e);
                     }
                 });
 
                 // Tüm kullanıcılara gönderimi asenkron tamamla
                 await Promise.all(promises);
-                console.log(`📲 [LIVE ACTIVITY APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı güncellendi.`);
+                console.log(`📲 [LIVE ACTIVITY APPLE APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı güncellendi.`);
             }
         }
 
         // =========================================================
-        // GOL VE NORMAL MAÇ BİLDİRİM KONTROLLERİ
+        // GOL VE NORMAL MAÇ BİLDİRİM KONTROLLERİ (BURADAN AŞAĞISI HİÇ EKLENMEDİ / BOZULMADI)
         // =========================================================
         const appTitle = "Maç Saati"; 
         const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
@@ -755,7 +766,6 @@ async function checkAndSendNotifications(newMatches) {
     
     saveState();
 }
-
 // =========================================================================
 // 🆕 SONRAKİ MAÇI BULMA FONKSİYONU
 // =========================================================================
