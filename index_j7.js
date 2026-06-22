@@ -543,7 +543,7 @@ async function checkAndSendNotifications(newMatches) {
         }
 
         // =========================================================
-        // 🚀 LIVE ACTIVITY SESSİZ PUSH KONTROLÜ (SPAM KORUMALI)
+        // 🚀 GERÇEK LIVE ACTIVITY SESSİZ PUSH KONTROLÜ (APPLE YASAL)
         // =========================================================
         const statusType = match.status;
         const isLive = statusType === 'inprogress';
@@ -553,38 +553,57 @@ async function checkAndSendNotifications(newMatches) {
         const scoreChanged = currH !== prev.homeScore || currA !== prev.awayScore;
         const statusChanged = statusType !== prev.status;
 
+        // Maç canlıysa veya yeni bittiyse ve veride bir değişim varsa gönder
         if ((isLive || isFinished) && (minuteChanged || scoreChanged || statusChanged)) {
-            // checkAndSendNotifications içinde Live Activity bloğunu bul ve topic'i değiştir:
-const liveActivityPayload = {
-    topic: `live_${matchIdStr}`,  // 🚀 match_ değil live_ prefix
-    apns: {
-        headers: {
-            'apns-push-type': 'background',
-            'apns-priority': '5'
-        },
-        payload: {
-            aps: { 'content-available': 1 },
-            type: isFinished ? 'END_LIVE_ACTIVITY' : 'START_LIVE_ACTIVITY',
-            matchId: matchIdStr,
-            homeName: String(match.homeTeam?.name || ''),
-            awayName: String(match.awayTeam?.name || ''),
-            homeScore: String(currH),
-            awayScore: String(currA),
-            liveMinute: String(liveMin),
-            tournament: String(match.tournament || ''),
-            homeTeamId: String(match.homeTeam?.id || '0'),
-            awayTeamId: String(match.awayTeam?.id || '0'),
-            homeLogo: String(match.homeTeam?.logo || ''),
-            awayLogo: String(match.awayTeam?.logo || '')
-        }
-    }
-};
             
-            try {
-                await admin.messaging().send(liveActivityPayload);
-                console.log(`📲 [LIVE ACTIVITY PUSH] ${match.homeTeam?.name} | Dk: ${liveMin} | Skor: ${currH}-${currA}`);
-            } catch (e) {
-                console.error('❌ [LIVE ACTIVITY PUSH] Hatası:', e.message);
+            // 1. Firebase'den o maçı kilit ekranında izleyen cihazların token listesini çekiyoruz
+            const tokensRef = admin.database().ref(`live_activity_tokens/${matchIdStr}`);
+            const snapshot = await tokensRef.once('value');
+            const tokensObj = snapshot.val();
+
+            if (tokensObj) {
+                const tokenList = Object.keys(tokensObj);
+                
+                // 2. Her bir cihaza doğrudan "liveactivity" push paketi gönderiyoruz
+                const promises = tokenList.map(async (deviceToken) => {
+                    const liveActivityPayload = {
+                        token: deviceToken, // Genel topic değil, doğrudan cihaza vuruş!
+                        apns: {
+                            headers: {
+                                'apns-push-type': 'liveactivity', // 🌟 APPLE'IN ASLA ENGELLEMEDİĞİ KRİTİK BAŞLIK
+                                'apns-topic': 'com.elfcrzgr.macsaati.push-type.liveactivity', // 🌟 Bundle ID Kontrolü (Gerekirse Kendi Bundle ID'nle Değiştir)
+                                'apns-priority': '10' // Anında kilit ekranına düşer
+                            },
+                            payload: {
+                                aps: {
+                                    timestamp: Math.floor(Date.now() / 1000),
+                                    event: isFinished ? 'end' : 'update', // Maç bittiyse widget'ı tamamen kapatır
+                                    contentState: {
+                                        // WidgetKit modellerindeki (Swift) değişken isimleriyle birebir eşleşmeli
+                                        homeScore: currH,
+                                        awayScore: currA,
+                                        matchMinute: isFinished ? "MS" : String(liveMin)
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    try {
+                        await admin.messaging().send(liveActivityPayload);
+                    } catch (e) {
+                        // Eğer kullanıcı kilit ekranını kapattıysa token eskir, Firebase'den temizleyip veritabanını rahatlatıyoruz
+                        if (e.code === 'messaging/invalid-argument' || e.code === 'messaging/registration-token-not-registered') {
+                            await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
+                        } else {
+                            console.error(`❌ Token hatası (${deviceToken}):`, e.message);
+                        }
+                    }
+                });
+
+                // Tüm kullanıcılara gönderimi asenkron tamamla
+                await Promise.all(promises);
+                console.log(`📲 [LIVE ACTIVITY APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı güncellendi.`);
             }
         }
 
@@ -772,7 +791,6 @@ function hasTodayMatches(cache) {
 async function updateFootball(targetDates = [getTRDate(0)]) {
     console.log(`⚽ Futbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
     
-    // 🚀 BUG FIX 1: Gece 12'yi geçince tüm hafızayı siliyordu. Artık sadece 3 günden eski maçları silecek.
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
     
     for (const [id, state] of previousMatchStates.entries()) {
@@ -804,7 +822,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
         };
     }
 
-    // 🚀 BUG FIX 2: Sistemin şişmemesi için 3 günden eski maçları ana bellekten de atıyoruz
     for (const [id, match] of globalFootballCache.entries()) {
         if (!validDates.includes(match.fixedDate)) {
             globalFootballCache.delete(id);
@@ -1343,13 +1360,14 @@ async function updateF1() {
         console.error(`   ⚠️ F1 hatası: ${error.message}`); 
     }
 }
+
 // =========================================================================
 // 🆕 ANA DÖNGÜ (AKILLI SPORT BAZLI GÜNCELLEME)
 // =========================================================================
 async function main() {
     loadState(); 
     console.log("============================================================");
-    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (GECE YARISI KORUMALI V6)");
+    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (GERÇEK LIVE ACTIVITY APNS V7)");
     console.log("============================================================");
     
     let iteration = 1;
@@ -1402,7 +1420,6 @@ async function main() {
                 lastPeriodicUpdate = now;
             }
             
-            // 🚀 BÜYÜK DÜZELTME: Gece yarısını geçen canlı maçlar donmasın diye her hızlı döngüde (Dün, Bugün, Yarın) taranır.
             const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
 
             if (sportUpdateStatus.football.hasLiveMatch) {
@@ -1491,5 +1508,3 @@ async function main() {
 }
 
 main();
-
-
