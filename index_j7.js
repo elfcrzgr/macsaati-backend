@@ -4,26 +4,6 @@ const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
-const apn = require('apn');
-
-// Firebase Başlatma (Hata ihtimali kalmasın)
-const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf8'));
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
-});
-console.log("🔥 Firebase Admin başlatıldı.");
-
-// APN Başlatma
-const apnProvider = new apn.Provider({
-    token: {
-        key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
-        keyId: "9JFB2X7TY9",
-        teamId: "9MQ7UDX75J"
-    },
-    production: false
-});
-console.log("🍏 Apple APNs hazır.");
 
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
@@ -531,7 +511,7 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
         console.error("❌ Bildirim Hatası:", e.message); 
     }
 }
-if (!apnProvider) { console.error("⚠️ APNs Sağlayıcı aktif değil, bildirim gönderilemedi!"); return; }
+
 async function checkAndSendNotifications(newMatches) {
     for (const match of newMatches) {
         const matchIdStr = String(match.id);
@@ -584,51 +564,51 @@ async function checkAndSendNotifications(newMatches) {
             if (tokensObj) {
                 const tokenList = Object.keys(tokensObj);
                 
-                // 🚀 2. DOĞRUDAN APPLE APNS ÜZERİNDEN LIVE ACTIVITY GÖNDERİYORUZ (Firebase aradan çıktı)
+                // 2. Her bir cihaza doğrudan "liveactivity" push paketi gönderiyoruz
                 const promises = tokenList.map(async (deviceToken) => {
-                    let notification = new apn.Notification();
-                    notification.rawPayload = {
-                        aps: {
-                            timestamp: Math.floor(Date.now() / 1000),
-                            event: isFinished ? 'end' : 'update',
-                            "content-state": {
-                                homeScore: currH,
-                                awayScore: currA,
-                                matchMinute: isFinished ? "MS" : String(liveMin)
+                    const liveActivityPayload = {
+                        token: deviceToken, // Genel topic değil, doğrudan cihaza vuruş!
+                        apns: {
+                            headers: {
+                                'apns-push-type': 'liveactivity', // 🌟 APPLE'IN ASLA ENGELLEMEDİĞİ KRİTİK BAŞLIK
+                                'apns-topic': 'com.elfcrzgr.macsaati.push-type.liveactivity', // 🌟 Bundle ID Kontrolü (Gerekirse Kendi Bundle ID'nle Değiştir)
+                                'apns-priority': '10' // Anında kilit ekranına düşer
+                            },
+                            payload: {
+                                aps: {
+                                    timestamp: Math.floor(Date.now() / 1000),
+                                    event: isFinished ? 'end' : 'update', // Maç bittiyse widget'ı tamamen kapatır
+                                    contentState: {
+                                        // WidgetKit modellerindeki (Swift) değişken isimleriyle birebir eşleşmeli
+                                        homeScore: currH,
+                                        awayScore: currA,
+                                        matchMinute: isFinished ? "MS" : String(liveMin)
+                                    }
+                                }
                             }
                         }
                     };
-                    notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
-                    notification.priority = 10;
-                    notification.pushType = "liveactivity";
 
                     try {
-                        const result = await apnProvider.send(notification, deviceToken);
-                        if (result.failed.length > 0) {
-                            const err = result.failed[0];
-                            const errorReason = err.response ? err.response.reason : err.error;
-                            
-                            // Token gerçekten eskiyse veya geçersizse klasörden sil
-                            if (errorReason === 'BadDeviceToken' || errorReason === 'Unregistered') {
-                                await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
-                                console.log(`🗑️ Eski veya geçersiz kilit ekranı token'ı temizlendi.`);
-                            } else {
-                                console.error(`❌ Apple APNs Reddi:`, errorReason);
-                            }
-                        }
+                        await admin.messaging().send(liveActivityPayload);
                     } catch (e) {
-                        console.error("APNs Bağlantı Hatası:", e);
+                        // Eğer kullanıcı kilit ekranını kapattıysa token eskir, Firebase'den temizleyip veritabanını rahatlatıyoruz
+                        if (e.code === 'messaging/invalid-argument' || e.code === 'messaging/registration-token-not-registered') {
+                            await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
+                        } else {
+                            console.error(`❌ Token hatası (${deviceToken}):`, e.message);
+                        }
                     }
                 });
 
                 // Tüm kullanıcılara gönderimi asenkron tamamla
                 await Promise.all(promises);
-                console.log(`📲 [LIVE ACTIVITY APPLE APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı güncellendi.`);
+                console.log(`📲 [LIVE ACTIVITY APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı güncellendi.`);
             }
         }
 
         // =========================================================
-        // GOL VE NORMAL MAÇ BİLDİRİM KONTROLLERİ (BURADAN AŞAĞISI HİÇ EKLENMEDİ / BOZULMADI)
+        // GOL VE NORMAL MAÇ BİLDİRİM KONTROLLERİ
         // =========================================================
         const appTitle = "Maç Saati"; 
         const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
@@ -775,6 +755,7 @@ async function checkAndSendNotifications(newMatches) {
     
     saveState();
 }
+
 // =========================================================================
 // 🆕 SONRAKİ MAÇI BULMA FONKSİYONU
 // =========================================================================
@@ -1384,10 +1365,6 @@ async function updateF1() {
 // 🆕 ANA DÖNGÜ (AKILLI SPORT BAZLI GÜNCELLEME)
 // =========================================================================
 async function main() {
-    // 🛡️ BAĞLANTI KONTROLÜ
-    if (!apnProvider) {
-        console.error("⚠️ KRİTİK HATA: APNs Sağlayıcı başlatılamadı! Lütfen .p8 dosyasını ve Team ID'yi kontrol et.");
-    }
     loadState(); 
     console.log("============================================================");
     console.log("🟢 J7 CANLI SUNUCU BAŞLADI (GERÇEK LIVE ACTIVITY APNS V7)");
