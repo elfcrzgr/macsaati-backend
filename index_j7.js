@@ -6,34 +6,24 @@ const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
 
-// 🛡️ FIREBASE BAŞLATMA
-try {
-    if (!admin.apps.length) {
-        admin.initializeApp({
-            credential: admin.credential.cert(require('./serviceAccountKey.json')),
-            databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
-        });
-        console.log("🔥 Firebase Admin başlatıldı.");
-    }
-} catch (e) {
-    console.log("🔥 Firebase zaten başlatılmış veya hata:", e.message);
-}
+// 🛡️ FIREBASE BAŞLATMA (Hata riskini sıfırladık)
+const serviceAccount = require('./serviceAccountKey.json');
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
+});
+console.log("🔥 Firebase Admin başarıyla başlatıldı.");
 
 // 🚀 APPLE APNS BAĞLANTISI
-let apnProvider = null;
-try {
-    apnProvider = new apn.Provider({
-        token: {
-            key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
-            keyId: "9JFB2X7TY9",
-            teamId: "9MQ7UDX75J"
-        },
-        production: false
-    });
-    console.log("🍏 Apple APNs başarıyla başlatıldı.");
-} catch (err) {
-    console.error("❌ Apple APNs başlatılamadı:", err);
-}
+const apnProvider = new apn.Provider({
+    token: {
+        key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
+        keyId: "9JFB2X7TY9",
+        teamId: "9MQ7UDX75J"
+    },
+    production: false
+});
+console.log("🍏 Apple APNs sağlayıcısı başarıyla başlatıldı.");
 
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
