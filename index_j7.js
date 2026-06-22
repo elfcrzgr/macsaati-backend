@@ -13,7 +13,7 @@ try {
         token: {
             key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
             keyId: "9JFB2X7TY9",
-            teamId: "X1Y2Z3A4B5" // <--- BURAYA KENDİ 10 HANELİ TEAM ID'Nİ YAZ
+            teamId: "9MQ7UDX75J" // <--- BURAYA KENDİ 10 HANELİ TEAM ID'Nİ YAZ
         },
         production: false
     });
