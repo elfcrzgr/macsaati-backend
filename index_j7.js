@@ -120,13 +120,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
     
-    const toTR = (str) => str
-    .replace(/İ/g, 'i')
-    .replace(/I/g, 'i')
-    .replace(/ı/g, 'i')
-    .toLowerCase()
-    .trim();
-    
+    const toTR = (str) => str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase().trim();
     const hName = toTR(homeName || "");
     const aName = toTR(awayName || "");
 
@@ -155,19 +149,10 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                
 // Nokta, slaş, boşluk fark etmeksizin isimleri kelimelere böler ve kısa harfleri (J., M.) eler
 const getCleanWords = (str) => {
-    return str
-        .replace(/İ/g, 'i').replace(/I/g, 'i')
-        .replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
-        .replace(/Ü/g, 'u').replace(/ü/g, 'u')
-        .replace(/Ş/g, 's').replace(/ş/g, 's')
-        .replace(/Ö/g, 'o').replace(/ö/g, 'o')
-        .replace(/Ç/g, 'c').replace(/ç/g, 'c')
-        .replace(/ı/g, 'i')
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, ' ')
-        .split(' ')
-        .map(w => w.trim())
-        .filter(w => w.length >= 3);
+    return str.replace(/[^a-z0-9ıüşöğç]/g, ' ')
+              .split(' ')
+              .map(w => w.trim())
+              .filter(w => w.length >= 3); 
 };
 
 const hWords = getCleanWords(hName);
@@ -222,37 +207,22 @@ const USER_AGENTS = [
 ];
 
 async function fetchData(url) {
-    try {
-        // İnsan taklidi gecikmeyi tutuyoruz
-        const delay = Math.floor(Math.random() * 1500) + 500;
-        await new Promise(r => setTimeout(r, delay));
-
-        // 🌟 HAYAT KURTARAN HAMLE: URL'yi Web'den Mobil API'ye Çeviriyoruz
-        // www.sofascore.com adresini api.sofascore.com olarak anında değiştiriyoruz
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-
-        const response = await fetch(mobileUrl, {
-            headers: {
-                // Tarayıcı değiliz, artık resmi bir Android cihazıyız!
-                "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-S918B Build/TP1A.220624.014)",
-                "Accept": "*/*",
-                "Connection": "Keep-Alive",
-                "Accept-Encoding": "gzip",
-                "Cache-Control": "no-cache",
-                // Mobil sunucuların aradığı o sihirli başlık
-                "x-sofascore-client": "android" 
-            }
-        });
-
-        if (!response.ok) {
-            console.log(`⚠️ Mobil API Reddi (HTTP ${response.status})`);
-            return null;
-        }
-
-        return await response.json();
-    } catch (e) {
-        return null;
-    }
+    try {
+        const randomAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+        const response = await fetch(url, {
+            headers: {
+                "User-Agent": randomAgent,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Referer": "https://www.sofascore.com/",
+                "Connection": "keep-alive",
+                "Cache-Control": "no-cache"
+            }
+        });
+        return response.ok ? await response.json() : null;
+    } catch (e) {
+        return null;
+    }
 }
 
 const getTRDate = (offset = 0) => {
@@ -356,7 +326,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
         97: "TFF YouTube", 11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube",
         13363: "USL YouTube", 696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN",
         1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus", 38: "beIN Sports", 36: "beIN Sports",
-        335: "beIN Sports", 955: "S Sport Plus / TV+", 18: "beIN Sports", 325: "Spor Smart / S Sport+", 16: "TRT 1"
+        335: "beIN Sports", 955: "S Sport Plus / TV+", 18: "beIN Sports", 325: "Spor Smart / S Sport+"
     };
     if (staticConfigs[utId]) return staticConfigs[utId];
     if (utn.includes("j1 league")) return "YouTube (J.League Int.)";
