@@ -91,12 +91,7 @@ const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000; 
 const FIREBASE_BASE_URL = "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
-if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(require('./serviceAccountKey.json')),
-        databaseURL: FIREBASE_BASE_URL
-    });
-}
+
 
 // =========================================================================
 // 🌉 HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
