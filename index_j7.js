@@ -10,11 +10,7 @@ const apn = require('apn');
 const serviceAccount = require('./serviceAccountKey.json');
 
 try {
-    if (!admin.apps.length) {
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
-        });
+    
         console.log("🔥 Firebase Admin başarıyla başlatıldı.");
     }
 } catch (e) {
