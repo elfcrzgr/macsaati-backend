@@ -935,11 +935,10 @@ if (forcedMatches[String(e.id)] === true) {
     } catch (err) {
         console.error("❌ Tetikleme Hatası:", err);
     }
-}
-        })();
+})();
 
         
-    });
+ 
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
 
