@@ -815,6 +815,8 @@ async function triggerPushToStart(matchId) {
     const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
     const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
 
+   
+
     console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name} maçı (${cleanMinute}) ${tokensToAlert.length} cihaza başlatılıyor...`);
 
     for (const token of tokensToAlert) {
@@ -841,16 +843,15 @@ async function triggerPushToStart(matchId) {
                     "homeScore": Number(cleanHomeScore),
                     "awayScore": Number(cleanAwayScore),
                     "matchMinute": String(cleanMinute)
-
-                    },
-                // 👇 APPLE'IN ZORUNLU TUTTUĞU KISIM (BUNU EKLEMEDEN ASLA ÇALIŞMAZ)
+                },
+                // 👇 APPLE'IN ZORUNLU TUTTUĞU KISIM 
                 "alert": {
                     "title": "Maç Saati",
-                    "body": "Canlı maç takibi başladı!"
+                    "body": `${match.homeTeam.name} - ${match.awayTeam.name} canlı takibi başladı!`
                 }
-                }
-            }
-        };
+            } // aps kapanışı
+        }; // rawPayload kapanışı
+
         notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
         notification.pushType = "liveactivity";
         notification.priority = 10;
@@ -862,7 +863,6 @@ async function triggerPushToStart(matchId) {
         }
     }
 }
-
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
 // =========================================================================
