@@ -925,17 +925,16 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
                 const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
                 const forcedMatches = forcedSnapshot.val() || {};
 
-                // updateFootball içerisindeki o "Kritik Maç" bloğunu bununla değiştir:
-if (forcedMatches[String(e.id)] === true) {
-    console.log(`🌟 [KRİTİK MAÇ] ${e.homeTeam.name} Zorunlu Listede!`);
-    
-    // Fonksiyonu doğrudan burada tanımlayıp veya yukarıya taşıyıp çağırıyoruz
-    try {
-        await triggerPushToStart(e.id);
-    } catch (err) {
-        console.error("❌ Tetikleme Hatası:", err);
-    }
-})();
+                if (forcedMatches[String(e.id)] === true) {
+                    console.log(`🌟 [KRİTİK MAÇ] ${e.homeTeam.name} Zorunlu Listede!`);
+                    await triggerPushToStart(e.id);
+                }
+            } catch (err) {
+                console.error("❌ Tetikleme Hatası:", err);
+            }
+        })();
+
+    });
 
         
  
