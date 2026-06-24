@@ -604,8 +604,7 @@ async function checkAndSendNotifications(newMatches) {
                             };
                         }
 
-                    try {
-                        const result = await apnProvider.send(notification, deviceToken);
+            
                     try {
                         const result = await apnProvider.send(notification, deviceToken);
                         if (result.failed.length > 0) {
