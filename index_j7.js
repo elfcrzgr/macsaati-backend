@@ -841,6 +841,13 @@ async function triggerPushToStart(matchId) {
                     "homeScore": Number(cleanHomeScore),
                     "awayScore": Number(cleanAwayScore),
                     "matchMinute": String(cleanMinute)
+
+                    },
+                // 👇 APPLE'IN ZORUNLU TUTTUĞU KISIM (BUNU EKLEMEDEN ASLA ÇALIŞMAZ)
+                "alert": {
+                    "title": "Maç Saati",
+                    "body": "Canlı maç takibi başladı!"
+                }
                 }
             }
         };
