@@ -574,18 +574,25 @@ async function checkAndSendNotifications(newMatches) {
                 const tokenList = Object.keys(tokensObj);
 
                 const promises = tokenList.map(async (deviceToken) => {
-                    let notification = new apn.Notification();
-                    notification.rawPayload = {
-                        aps: {
-                            timestamp: Math.floor(Date.now() / 1000),
-                            event: isFinished ? 'end' : 'update',
-                            "content-state": {
-                                homeScore: currH,
-                                awayScore: currA,
-                                matchMinute: isFinished ? "MS" : String(liveMin)
-                            }
-                        }
-                    };
+    let notification = new apn.Notification();
+    
+    // 🌟 BURASI KRİTİK: Apple'ın "headers" kısmını eksiksiz ekliyoruz
+    notification.headers = {
+        "apns-push-type": "liveactivity",
+        "apns-priority": "10"
+    };
+    
+    notification.rawPayload = {
+        aps: {
+            timestamp: Math.floor(Date.now() / 1000),
+            event: isFinished ? 'end' : 'update',
+            "content-state": {
+                homeScore: currH,
+                awayScore: currA,
+                matchMinute: isFinished ? "MS" : String(liveMin)
+            }
+        }
+    };
                     notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
                     notification.priority = 10;
                     notification.pushType = "liveactivity";
