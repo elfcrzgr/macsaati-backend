@@ -1533,14 +1533,17 @@ async function main() {
                 lastPeriodicUpdate = now;
             }
 
-           const todayOnly = [getTRDate(0)]; // Sadece bugün
-            const upcomingScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)]; // Yaklaşanlar için 3 gün
+           // 🌟 BURAYA HER İKİSİNİ DE EKLİYORUZ (Basketbol ve Tenis quickScanDates'i kullanmaya devam edecek)
+            const todayOnly = [getTRDate(0)]; 
+            const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)]; 
 
             if (sportUpdateStatus.football.hasLiveMatch) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
-                    console.log("⚽ [HIZLI DÖNGÜ] CANLI MAÇ VAR - Sadece bugünün maçları çok hızlı güncelleniyor...");
-                    // 🚀 Sadece bugünü gönderiyoruz, diğer günler hafızada güvende kalıyor!
+                    console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Sadece bugün güncelleniyor...");
+                    
+                    // Futbol canlıyken sadece bugünü kullanır
                     const footResult = await updateFootball(todayOnly); 
+                    
                     sportUpdateStatus.football.lastQuickUpdate = now;
                     sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
@@ -1549,12 +1552,17 @@ async function main() {
                 now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 1.1)) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
                     console.log("⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç saati yaklaştı - 3 günlük kontrol yapılıyor...");
-                    const footResult = await updateFootball(upcomingScanDates);
+                    
+                    // Yaklaşan maç için 3 günlük güvenli tarama
+                    const footResult = await updateFootball(quickScanDates); 
+                    
                     sportUpdateStatus.football.lastQuickUpdate = now;
                     sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
                 }
             }
+
+            
             const hasUpcomingBasketball = sportUpdateStatus.basketball.nextMatchTime &&
                 now >= (sportUpdateStatus.basketball.nextMatchTime - ONE_MIN_MS * 11);
 
