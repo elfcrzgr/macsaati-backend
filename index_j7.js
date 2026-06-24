@@ -351,7 +351,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363, 87177, 853];
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363, 26796, 88783];
 const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851];
 const NATIONAL_LEAGUES = [16, 1, 133, 270, 299, 851];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
@@ -365,7 +365,7 @@ const footballLeagues = {
     36: "İskoçya Premiership", 19: "FA Cup", 938: "Türkiye Kupası", 96: "Türkiye Kupası",
     7: "UEFA Şampiyonlar Ligi", 679: "UEFA Avrupa Ligi", 17015: "UEFA Konferans Ligi",
     16: "FIFA Dünya Kupası", 1: "UEFA EURO", 133: "Copa America",
-    270: "Afrika Uluslar Kupası", 299: "Uluslararası Hazırlık Maçları", 87177:"hazırlık", 853:"hazırlık",
+    270: "Afrika Uluslar Kupası", 299: "Uluslararası Hazırlık Maçları", 26796:"hazırlık", 88783:"hazırlık",
     6516: "Kulüp Hazırlık Maçları", 325: "Brezilya Serie A",
     155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship",
     335: "Fransa Kupası", 955: "Suudi Arabistan Pro Lig", 18: "İngiltere Championship",
@@ -786,38 +786,39 @@ function hasTodayMatches(cache) {
     }
     return false;
 }
-
 async function triggerPushToStart(matchId) {
-    // 1. Maç detaylarını cache'den alıyoruz (Apple'a takım isimlerini göndermek zorundayız)
     const match = globalFootballCache.get(matchId);
-    if (!match) {
-        console.log(`⚠️ HATA: ${matchId} ID'li maç cache'de bulunamadı, zorunlu push iptal.`);
-        return;
+    if (!match) return;
+
+    let tokensToAlert = [];
+
+    // 1. ZORUNLU LİSTEDEYSE: Herkese (Global Havuza) Gönder
+    const forcedSnapshot = await admin.database().ref(`forced_matches/${matchId}`).once('value');
+    if (forcedSnapshot.val() === true) {
+        const globalTokens = (await admin.database().ref(`global_push_tokens`).once('value')).val();
+        if (globalTokens) tokensToAlert.push(...Object.values(globalTokens));
     }
 
-    // 2. ARTIK MAÇ BAZLI DEĞİL, GLOBAL HAVUZA BAKIYORUZ
-    const globalTokensSnapshot = await admin.database().ref(`global_push_tokens`).once('value');
-    const globalTokens = globalTokensSnapshot.val();
-    
-    if (!globalTokens) {
-        console.log(`⚠️ Global token havuzu boş. Kimseye zorunlu maç gönderilemedi.`);
-        return;
-    }
+    // 2. NORMAL TAKİP LİSTESİ: Uygulama içinden zile basanların havuzunu da ekle
+    const normalTokens = (await admin.database().ref(`push_to_start_tokens/${matchId}`).once('value')).val();
+    if (normalTokens) tokensToAlert.push(...Object.keys(normalTokens));
 
-    const deviceIds = Object.keys(globalTokens);
-    console.log(`🚀 [PUSH-TO-START] ${deviceIds.length} cihaza zorunlu final maçı (${match.homeTeam.name}) fırlatılıyor!`);
+    // Token tekrarlarını temizle (Bir kişi hem normal takip edip hem zorunlu listeye girdiyse iki kere gitmesin)
+    tokensToAlert = [...new Set(tokensToAlert)];
+    if (tokensToAlert.length === 0) return;
 
-    for (const deviceId of deviceIds) {
-        const token = globalTokens[deviceId];
+    console.log(`🚀 [PUSH-TO-START] ${matchId} ID'li maç ${tokensToAlert.length} cihaza başlatılıyor...`);
+
+    for (const token of tokensToAlert) {
         let notification = new apn.Notification();
-        
         notification.rawPayload = {
             aps: {
                 timestamp: Math.floor(Date.now() / 1000),
-                event: 'start', // Widget'ı sıfırdan var et
+                event: 'start',
                 
-                // 🌟 APPLE'IN SIFIRDAN WIDGET ÇİZMESİ İÇİN GEREKEN STATİK VERİLER
-                "attributes-type": "MacSaatiWidgetAttributes", 
+                // 🌟 EN KRİTİK NOKTA BURASI: Eğer Widget klasörünün adı farklıysa burayı düzelt!
+                "attributes-type": "MacSaatiWidgetExtension.MacSaatiWidgetAttributes", 
+                
                 "attributes": {
                     "matchId": String(match.id),
                     "homeTeamName": match.homeTeam.name,
@@ -828,15 +829,13 @@ async function triggerPushToStart(matchId) {
                     "homeLogoFile": `logo_home_${match.id}.png`,
                     "awayLogoFile": `logo_away_${match.id}.png`
                 },
-                
                 "content-state": {
-                    "homeScore": 0,
-                    "awayScore": 0,
-                    "matchMinute": "Başlıyor"
+                    "homeScore": match.homeScore ? Number(match.homeScore) : 0,
+                    "awayScore": match.awayScore ? Number(match.awayScore) : 0,
+                    "matchMinute": match.liveMinute || "Başlıyor"
                 }
             }
         };
-        
         notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
         notification.pushType = "liveactivity";
         notification.priority = 10;
@@ -844,11 +843,10 @@ async function triggerPushToStart(matchId) {
         try {
             await apnProvider.send(notification, token);
         } catch (e) {
-            console.error(`❌ Global Push-to-Start İletim Hatası (${deviceId}):`, e);
+            console.error("❌ İletim Hatası:", e);
         }
     }
 }
-
 
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
