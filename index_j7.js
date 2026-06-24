@@ -5,6 +5,7 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
+const triggeredMatches = new Set();
 
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
@@ -1014,6 +1015,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
                 if (forcedMatches[String(e.id)] === true) {
                     console.log(`🌟 [KRİTİK MAÇ] ${e.homeTeam.name} Zorunlu Listede!`);
                     await triggerPushToStart(e.id);
+                    triggeredMatches.add(String(e.id));
                 }
             } catch (err) {
                 console.error("❌ Tetikleme Hatası:", err);
