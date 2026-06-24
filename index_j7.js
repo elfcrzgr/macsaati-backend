@@ -351,7 +351,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363, 10381];
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363, 91320];
 const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851];
 const NATIONAL_LEAGUES = [16, 1, 133, 270, 299, 851];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
@@ -364,7 +364,7 @@ const footballLeagues = {
     53: "İtalya Serie B", 37: "Hollanda Eredivisie", 238: "Portekiz Primeira Liga", 38: "Belçika Pro League",
     36: "İskoçya Premiership", 19: "FA Cup", 938: "Türkiye Kupası", 96: "Türkiye Kupası",
     7: "UEFA Şampiyonlar Ligi", 679: "UEFA Avrupa Ligi", 17015: "UEFA Konferans Ligi",
-    16: "FIFA Dünya Kupası", 1: "UEFA EURO", 133: "Copa America",10381: "Çin CFA Division 2",
+    16: "FIFA Dünya Kupası", 1: "UEFA EURO", 133: "Copa America", 91320: "Çin CFA Division 2",
     270: "Afrika Uluslar Kupası", 299: "Uluslararası Hazırlık Maçları",
     6516: "Kulüp Hazırlık Maçları", 325: "Brezilya Serie A",
     155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship",
