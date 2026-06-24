@@ -788,29 +788,63 @@ function hasTodayMatches(cache) {
 }
 
 async function triggerPushToStart(matchId) {
-    const tokensSnapshot = await admin.database().ref(`push_to_start_tokens/${matchId}`).once('value');
-    const tokens = tokensSnapshot.val();
-    
-    if (!tokens) return;
+    // 1. Maç detaylarını cache'den alıyoruz (Apple'a takım isimlerini göndermek zorundayız)
+    const match = globalFootballCache.get(matchId);
+    if (!match) {
+        console.log(`⚠️ HATA: ${matchId} ID'li maç cache'de bulunamadı, zorunlu push iptal.`);
+        return;
+    }
 
-    for (const token in tokens) {
+    // 2. ARTIK MAÇ BAZLI DEĞİL, GLOBAL HAVUZA BAKIYORUZ
+    const globalTokensSnapshot = await admin.database().ref(`global_push_tokens`).once('value');
+    const globalTokens = globalTokensSnapshot.val();
+    
+    if (!globalTokens) {
+        console.log(`⚠️ Global token havuzu boş. Kimseye zorunlu maç gönderilemedi.`);
+        return;
+    }
+
+    const deviceIds = Object.keys(globalTokens);
+    console.log(`🚀 [PUSH-TO-START] ${deviceIds.length} cihaza zorunlu final maçı (${match.homeTeam.name}) fırlatılıyor!`);
+
+    for (const deviceId of deviceIds) {
+        const token = globalTokens[deviceId];
         let notification = new apn.Notification();
+        
         notification.rawPayload = {
             aps: {
                 timestamp: Math.floor(Date.now() / 1000),
-                event: 'start',
-                "content-state": { homeScore: 0, awayScore: 0, matchMinute: "Başlıyor" }
+                event: 'start', // Widget'ı sıfırdan var et
+                
+                // 🌟 APPLE'IN SIFIRDAN WIDGET ÇİZMESİ İÇİN GEREKEN STATİK VERİLER
+                "attributes-type": "MacSaatiWidgetAttributes", 
+                "attributes": {
+                    "matchId": String(match.id),
+                    "homeTeamName": match.homeTeam.name,
+                    "awayTeamName": match.awayTeam.name,
+                    "leagueName": match.tournament || "Futbol",
+                    "homeTeamId": match.homeTeam.id ? Number(match.homeTeam.id) : 0,
+                    "awayTeamId": match.awayTeam.id ? Number(match.awayTeam.id) : 0,
+                    "homeLogoFile": `logo_home_${match.id}.png`,
+                    "awayLogoFile": `logo_away_${match.id}.png`
+                },
+                
+                "content-state": {
+                    "homeScore": 0,
+                    "awayScore": 0,
+                    "matchMinute": "Başlıyor"
+                }
             }
         };
+        
         notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
         notification.pushType = "liveactivity";
         notification.priority = 10;
 
         try {
             await apnProvider.send(notification, token);
-            console.log(`🚀 [PUSH-TO-START] ${matchId} için kilit ekranı başlatma sinyali Apple'a yollandı!`);
         } catch (e) {
-            console.error("❌ Push-to-Start İletim Hatası:", e);
+            console.error(`❌ Global Push-to-Start İletim Hatası (${deviceId}):`, e);
         }
     }
 }
