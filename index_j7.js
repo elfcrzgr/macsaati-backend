@@ -1007,20 +1007,24 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             timeObj: e.time
         });
                     // 🌟 EKLEYECEĞİN YER: Zorunlu Kilit Ekranı Tetikleyicisi
-        (async () => {
-            try {
-                const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
-                const forcedMatches = forcedSnapshot.val() || {};
+   (async () => {
+    try {
+        const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
+        const forcedMatches = forcedSnapshot.val() || {};
 
-                if (forcedMatches[String(e.id)] === true) {
-                    console.log(`🌟 [KRİTİK MAÇ] ${e.homeTeam.name} Zorunlu Listede!`);
-                    await triggerPushToStart(e.id);
-                    triggeredMatches.add(String(e.id));
-                }
-            } catch (err) {
-                console.error("❌ Tetikleme Hatası:", err);
-            }
-        })();
+        // 🌟 Şartımız: Hem listede olacak HEM DE daha önce tetiklenmemiş olacak
+        if (forcedMatches[String(e.id)] === true && !triggeredMatches.has(String(e.id))) {
+            console.log(`🌟 [KRİTİK MAÇ] ${e.homeTeam.name} ilk kez görülüyor, tetikleniyor!`);
+            
+            await triggerPushToStart(e.id);
+            
+            // 🌟 Tetiklendi olarak işaretle ki bir sonraki döngüde tekrar tetiklenmesin
+            triggeredMatches.add(String(e.id));
+        }
+    } catch (err) {
+        console.error("❌ Tetikleme Hatası:", err);
+    }
+})();
 
     });
 
