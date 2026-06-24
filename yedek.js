@@ -7,6 +7,13 @@ const admin = require('firebase-admin');
 const apn = require('apn');
 
 // =========================================================================
+// 🔥 AYARLAR VE ÇALIŞMA ORTAMI
+// =========================================================================
+// ⚠️ DİKKAT: Uygulamayı TestFlight veya AppStore'dan indirdiyseniz burayı TRUE yapın!
+// Sadece Mac'ten kabloyla atıp test ediyorsanız FALSE kalmalı.
+const IS_PRODUCTION = false; 
+
+// =========================================================================
 // 🔥 FIREBASE & APNs BAŞLATMA
 // =========================================================================
 const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf8'));
@@ -22,9 +29,9 @@ const apnProvider = new apn.Provider({
         keyId: "9JFB2X7TY9",
         teamId: "9MQ7UDX75J"
     },
-    production: false
+    production: IS_PRODUCTION
 });
-console.log("🍏 Apple APNs hazır.");
+console.log(`🍏 Apple APNs hazır. (Mod: ${IS_PRODUCTION ? "CANLI / TESTFLIGHT" : "GELİŞTİRİCİ"})`);
 
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
@@ -587,12 +594,16 @@ async function checkAndSendNotifications(newMatches) {
                         if (result.failed.length > 0) {
                             const err = result.failed[0];
                             const errorReason = err.response ? err.response.reason : err.error;
+                            
+                            // ❗ YENİ EKLENEN GELİŞMİŞ LOG
+                            console.error(`❌ [APNs REDDEDİLDİ] Sebep: ${errorReason} | Token: ${deviceToken.substring(0,10)}...`);
+
                             if (errorReason === 'BadDeviceToken' || errorReason === 'Unregistered') {
                                 await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
-                                console.log(`🗑️ Eski veya geçersiz kilit ekranı token'ı temizlendi.`);
-                            } else {
-                                console.error(`❌ Apple APNs Reddi:`, errorReason);
+                                console.log(`🗑️ Geçersiz kilit ekranı token'ı temizlendi.`);
                             }
+                        } else {
+                            console.log(`✅ [APNs İLETİLDİ] Apple cihazı arka planda uyandırıldı!`);
                         }
                     } catch (e) {
                         console.error("APNs Bağlantı Hatası:", e);
@@ -600,7 +611,7 @@ async function checkAndSendNotifications(newMatches) {
                 });
 
                 await Promise.all(promises);
-                console.log(`📲 [LIVE ACTIVITY APPLE APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı güncellendi.`);
+                console.log(`📲 [LIVE ACTIVITY APPLE APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı işlem gördü.`);
             }
         }
 
