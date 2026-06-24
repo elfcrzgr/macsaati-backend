@@ -788,7 +788,10 @@ function hasTodayMatches(cache) {
 }
 async function triggerPushToStart(matchId) {
     const match = globalFootballCache.get(matchId);
-    if (!match) return;
+    if (!match) {
+        console.log(`⚠️ HATA: ${matchId} ID'li maç cache'de bulunamadı.`);
+        return;
+    }
 
     let tokensToAlert = [];
 
@@ -803,36 +806,41 @@ async function triggerPushToStart(matchId) {
     const normalTokens = (await admin.database().ref(`push_to_start_tokens/${matchId}`).once('value')).val();
     if (normalTokens) tokensToAlert.push(...Object.keys(normalTokens));
 
-    // Token tekrarlarını temizle (Bir kişi hem normal takip edip hem zorunlu listeye girdiyse iki kere gitmesin)
+    // Token tekrarlarını temizle
     tokensToAlert = [...new Set(tokensToAlert)];
     if (tokensToAlert.length === 0) return;
 
-    console.log(`🚀 [PUSH-TO-START] ${matchId} ID'li maç ${tokensToAlert.length} cihaza başlatılıyor...`);
+    // Skorları ve dakikayı güvenli hale getiriyoruz (Apple sayısal Int bekler)
+    const cleanHomeScore = match.homeScore && match.homeScore !== "-" ? Number(match.homeScore) : 0;
+    const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
+    const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
+
+    console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name} maçı (${cleanMinute}) ${tokensToAlert.length} cihaza başlatılıyor...`);
 
     for (const token of tokensToAlert) {
         let notification = new apn.Notification();
         notification.rawPayload = {
             aps: {
                 timestamp: Math.floor(Date.now() / 1000),
-                event: 'start',
+                event: 'start', // Sıfırdan oluşturma emri
                 
-                // 🌟 EN KRİTİK NOKTA BURASI: Eğer Widget klasörünün adı farklıysa burayı düzelt!
+                // 🌟 TARGET ADINLA BİRLİKTE STRUCT ADINI TAM OLARAK BÖYLESİ KABUL EDER
                 "attributes-type": "MacSaatiWidgetExtension.MacSaatiWidgetAttributes", 
                 
                 "attributes": {
                     "matchId": String(match.id),
-                    "homeTeamName": match.homeTeam.name,
-                    "awayTeamName": match.awayTeam.name,
-                    "leagueName": match.tournament || "Futbol",
+                    "homeTeamName": String(match.homeTeam.name),
+                    "awayTeamName": String(match.awayTeam.name),
+                    "leagueName": String(match.tournament || "Futbol"),
                     "homeTeamId": match.homeTeam.id ? Number(match.homeTeam.id) : 0,
                     "awayTeamId": match.awayTeam.id ? Number(match.awayTeam.id) : 0,
                     "homeLogoFile": `logo_home_${match.id}.png`,
                     "awayLogoFile": `logo_away_${match.id}.png`
                 },
                 "content-state": {
-                    "homeScore": match.homeScore ? Number(match.homeScore) : 0,
-                    "awayScore": match.awayScore ? Number(match.awayScore) : 0,
-                    "matchMinute": match.liveMinute || "Başlıyor"
+                    "homeScore": Number(cleanHomeScore),
+                    "awayScore": Number(cleanAwayScore),
+                    "matchMinute": String(cleanMinute)
                 }
             }
         };
