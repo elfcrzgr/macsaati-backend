@@ -351,10 +351,10 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363];
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363, 91320, 853];
 const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851];
 const NATIONAL_LEAGUES = [16, 1, 133, 270, 299, 851];
-const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS, 91320, 853];
+const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 const footballLeagues = {
     17: "İngiltere Premier Lig", 8: "İspanya La Liga", 35: "Almanya Bundesliga",
