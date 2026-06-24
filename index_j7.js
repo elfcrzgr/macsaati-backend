@@ -915,6 +915,22 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             tournament: cleanTournamentName,
             timeObj: e.time
         });
+                    // 🌟 EKLEYECEĞİN YER: Zorunlu Kilit Ekranı Tetikleyicisi
+        (async () => {
+            try {
+                const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
+                const forcedMatches = forcedSnapshot.val() || {};
+
+                if (forcedMatches[String(e.id)] === true) {
+                    console.log(`🌟 [KRİTİK MAÇ] ${translatedHome} - ${translatedAway} Zorunlu Listede!`);
+                    await triggerPushToStart(e.id);
+                }
+            } catch (err) {
+                console.error("❌ Kritik maç tetikleme hatası:", err.message);
+            }
+        })();
+
+        
     });
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
