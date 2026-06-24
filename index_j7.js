@@ -787,6 +787,35 @@ function hasTodayMatches(cache) {
     return false;
 }
 
+async function triggerPushToStart(matchId) {
+    const tokensSnapshot = await admin.database().ref(`push_to_start_tokens/${matchId}`).once('value');
+    const tokens = tokensSnapshot.val();
+    
+    if (!tokens) return;
+
+    for (const token in tokens) {
+        let notification = new apn.Notification();
+        notification.rawPayload = {
+            aps: {
+                timestamp: Math.floor(Date.now() / 1000),
+                event: 'start',
+                "content-state": { homeScore: 0, awayScore: 0, matchMinute: "Başlıyor" }
+            }
+        };
+        notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
+        notification.pushType = "liveactivity";
+        notification.priority = 10;
+
+        try {
+            await apnProvider.send(notification, token);
+            console.log(`🚀 [PUSH-TO-START] ${matchId} için kilit ekranı başlatma sinyali Apple'a yollandı!`);
+        } catch (e) {
+            console.error("❌ Push-to-Start İletim Hatası:", e);
+        }
+    }
+}
+
+
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
 // =========================================================================
