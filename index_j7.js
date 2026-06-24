@@ -806,9 +806,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     for (const date of targetDates) {
         const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
-            allEvents.push(...data.events.filter(e => 
-    ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id) || 
-    e.tournament?.uniqueTournament?.id === 853
+            allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
             successfulDates.push(date);
         }
     }
