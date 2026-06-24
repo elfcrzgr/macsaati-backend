@@ -819,11 +819,8 @@ async function triggerPushToStart(matchId) {
         notification.rawPayload = {
             aps: {
                 timestamp: Math.floor(Date.now() / 1000),
-                event: 'start', // Sıfırdan oluşturma emri
-                
-                // 🌟 YAPISI GEREĞİ SADECE STRUCT ADI (Eğer hala gelmezse burayı "MacSaatiWidgetExtension.MacSaatiWidgetAttributes" yapacağız)
+                event: 'start',
                 "attributes-type": "MacSaatiWidgetAttributes", 
-                
                 "attributes": {
                     "matchId": String(match.id),
                     "homeTeamName": String(match.homeTeam.name),
@@ -839,7 +836,6 @@ async function triggerPushToStart(matchId) {
                     "awayScore": Number(cleanAwayScore),
                     "matchMinute": String(cleanMinute)
                 },
-                // 👇 APPLE'IN EKRANA ÇİZMEK İÇİN ZORUNLU İSTEDİĞİ BİLDİRİM (BUNSUZ ASLA ÇALIŞMAZ!)
                 "alert": {
                     "title": "Maç Saati",
                     "body": `${match.homeTeam.name} - ${match.awayTeam.name} canlı takibi başladı!`
@@ -848,8 +844,18 @@ async function triggerPushToStart(matchId) {
         };
 
         notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
-        notification.pushType = "liveactivity";
         notification.priority = 10;
+        notification.pushType = "liveactivity";
+
+        // 🚀 İŞTE BÜYÜK HİLE BURADA (Eski kütüphanenin arkasından dolanıyoruz)
+        if (typeof notification.headers === 'function') {
+            const originalHeadersFn = notification.headers.bind(notification);
+            notification.headers = function() {
+                let h = originalHeadersFn(); // Kütüphanenin kendi başlıklarını al
+                h["apns-push-type"] = "liveactivity"; // Apple'ın istediği zorunlu başlığı ÇAK!
+                return h;
+            };
+        }
 
         try {
             const result = await apnProvider.send(notification, token);
@@ -858,14 +864,13 @@ async function triggerPushToStart(matchId) {
                 const errorReason = err.response ? err.response.reason : err.error;
                 console.error(`❌ [START REDDEDİLDİ] Sebep: ${errorReason} | Token: ${token.substring(0,10)}...`);
             } else {
-                console.log(`✅ [START BAŞARILI] Sinyal Apple sunucularından geçti ve telefona ulaştı!`);
+                console.log(`✅ [START BAŞARILI] Kütüphane atlatıldı, sinyal Apple'a kusursuz ulaştı!`);
             }
         } catch (e) {
             console.error("❌ İletim Hatası:", e);
         }
     }
 }
-
 
 
 // =========================================================================
