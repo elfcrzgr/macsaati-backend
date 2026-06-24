@@ -591,10 +591,21 @@ async function checkAndSendNotifications(newMatches) {
                         };
                         
                         notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
-                        notification.pushType = "liveactivity"; // apn kütüphanesi bunu zaten otomatik header'a çevirir
+                        notification.pushType = "liveactivity";
                         notification.priority = 10;
-                    notification.pushType = "liveactivity";
 
+                        // 🚀 İŞTE EKSİK OLAN BÜYÜK HİLE BURASI (Güncellemeler için de şart!)
+                        if (typeof notification.headers === 'function') {
+                            const originalHeadersFn = notification.headers.bind(notification);
+                            notification.headers = function() {
+                                let h = originalHeadersFn();
+                                h["apns-push-type"] = "liveactivity"; // Güncelleme (update) için de zorunlu!
+                                return h;
+                            };
+                        }
+
+                    try {
+                        const result = await apnProvider.send(notification, deviceToken);
                     try {
                         const result = await apnProvider.send(notification, deviceToken);
                         if (result.failed.length > 0) {
