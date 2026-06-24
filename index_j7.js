@@ -786,6 +786,8 @@ function hasTodayMatches(cache) {
     }
     return false;
 }
+
+
 async function triggerPushToStart(matchId) {
     const match = globalFootballCache.get(matchId);
     if (!match) {
@@ -815,8 +817,6 @@ async function triggerPushToStart(matchId) {
     const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
     const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
 
-   
-
     console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name} maçı (${cleanMinute}) ${tokensToAlert.length} cihaza başlatılıyor...`);
 
     for (const token of tokensToAlert) {
@@ -826,8 +826,8 @@ async function triggerPushToStart(matchId) {
                 timestamp: Math.floor(Date.now() / 1000),
                 event: 'start', // Sıfırdan oluşturma emri
                 
-                // 🌟 TARGET ADINLA BİRLİKTE STRUCT ADINI TAM OLARAK BÖYLESİ KABUL EDER
-                "attributes-type": "MacSaatiWidgetExtension.MacSaatiWidgetAttributes", 
+                // 🌟 KANUNİ DÜZELTME: Modül adını sildik, sadece Swift'teki yalın Struct adını yazıyoruz!
+                "attributes-type": "MacSaatiWidgetAttributes", 
                 
                 "attributes": {
                     "matchId": String(match.id),
@@ -844,13 +844,12 @@ async function triggerPushToStart(matchId) {
                     "awayScore": Number(cleanAwayScore),
                     "matchMinute": String(cleanMinute)
                 },
-                // 👇 APPLE'IN ZORUNLU TUTTUĞU KISIM 
                 "alert": {
                     "title": "Maç Saati",
                     "body": `${match.homeTeam.name} - ${match.awayTeam.name} canlı takibi başladı!`
                 }
-            } // aps kapanışı
-        }; // rawPayload kapanışı
+            }
+        };
 
         notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
         notification.pushType = "liveactivity";
@@ -863,6 +862,9 @@ async function triggerPushToStart(matchId) {
         }
     }
 }
+
+
+
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
 // =========================================================================
