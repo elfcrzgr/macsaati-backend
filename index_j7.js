@@ -1006,26 +1006,8 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             tournament: cleanTournamentName,
             timeObj: e.time
         });
-                    // 🌟 EKLEYECEĞİN YER: Zorunlu Kilit Ekranı Tetikleyicisi
-   (async () => {
-    try {
-        const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
-        const forcedMatches = forcedSnapshot.val() || {};
-
-        // 🌟 Şartımız: Hem listede olacak HEM DE daha önce tetiklenmemiş olacak
-        if (forcedMatches[String(e.id)] === true && !triggeredMatches.has(String(e.id))) {
-            console.log(`🌟 [KRİTİK MAÇ] ${e.homeTeam.name} ilk kez görülüyor, tetikleniyor!`);
-            
-            await triggerPushToStart(e.id);
-            
-            // 🌟 Tetiklendi olarak işaretle ki bir sonraki döngüde tekrar tetiklenmesin
-            triggeredMatches.add(String(e.id));
-        }
-    } catch (err) {
-        console.error("❌ Tetikleme Hatası:", err);
-    }
-})();
-
+                    
+  
     });
 
         
@@ -1040,6 +1022,21 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     const nextMatchTimestamp = findNextMatchTime(globalFootballCache);
 
     logMatchesBySport({ futbol: futbolMatchesLog });
+    // 🌟 KESİN VE HIZLI TETİKLEYİCİ
+    // Döngü bitti, cache tamamen doldu, şimdi güvenle tetikleyebiliriz!
+    const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
+    const forcedMatches = forcedSnapshot.val() || {};
+
+    for (const [id, match] of globalFootballCache.entries()) {
+        if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
+            console.log(`🌟 [KRİTİK MAÇ] ${match.homeTeam.name} tetikleniyor...`);
+            await triggerPushToStart(id);
+            triggeredMatches.add(String(id));
+        }
+    }
+
+    logMatchesBySport({ futbol: futbolMatchesLog });
+ 
     console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
 
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
