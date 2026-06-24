@@ -790,10 +790,7 @@ function hasTodayMatches(cache) {
 
 async function triggerPushToStart(matchId) {
     const match = globalFootballCache.get(matchId);
-    if (!match) {
-        console.log(`⚠️ HATA: ${matchId} ID'li maç cache'de bulunamadı.`);
-        return;
-    }
+    if (!match) return;
 
     let tokensToAlert = [];
 
@@ -804,15 +801,13 @@ async function triggerPushToStart(matchId) {
         if (globalTokens) tokensToAlert.push(...Object.values(globalTokens));
     }
 
-    // 2. NORMAL TAKİP LİSTESİ: Uygulama içinden zile basanların havuzunu da ekle
+    // 2. NORMAL TAKİP LİSTESİ
     const normalTokens = (await admin.database().ref(`push_to_start_tokens/${matchId}`).once('value')).val();
     if (normalTokens) tokensToAlert.push(...Object.keys(normalTokens));
 
-    // Token tekrarlarını temizle
     tokensToAlert = [...new Set(tokensToAlert)];
     if (tokensToAlert.length === 0) return;
 
-    // Skorları ve dakikayı güvenli hale getiriyoruz (Apple sayısal Int bekler)
     const cleanHomeScore = match.homeScore && match.homeScore !== "-" ? Number(match.homeScore) : 0;
     const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
     const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
@@ -826,7 +821,7 @@ async function triggerPushToStart(matchId) {
                 timestamp: Math.floor(Date.now() / 1000),
                 event: 'start', // Sıfırdan oluşturma emri
                 
-                // 🌟 KANUNİ DÜZELTME: Modül adını sildik, sadece Swift'teki yalın Struct adını yazıyoruz!
+                // 🌟 YAPISI GEREĞİ SADECE STRUCT ADI (Eğer hala gelmezse burayı "MacSaatiWidgetExtension.MacSaatiWidgetAttributes" yapacağız)
                 "attributes-type": "MacSaatiWidgetAttributes", 
                 
                 "attributes": {
@@ -844,6 +839,7 @@ async function triggerPushToStart(matchId) {
                     "awayScore": Number(cleanAwayScore),
                     "matchMinute": String(cleanMinute)
                 },
+                // 👇 APPLE'IN EKRANA ÇİZMEK İÇİN ZORUNLU İSTEDİĞİ BİLDİRİM (BUNSUZ ASLA ÇALIŞMAZ!)
                 "alert": {
                     "title": "Maç Saati",
                     "body": `${match.homeTeam.name} - ${match.awayTeam.name} canlı takibi başladı!`
@@ -856,7 +852,14 @@ async function triggerPushToStart(matchId) {
         notification.priority = 10;
 
         try {
-            await apnProvider.send(notification, token);
+            const result = await apnProvider.send(notification, token);
+            if (result.failed.length > 0) {
+                const err = result.failed[0];
+                const errorReason = err.response ? err.response.reason : err.error;
+                console.error(`❌ [START REDDEDİLDİ] Sebep: ${errorReason} | Token: ${token.substring(0,10)}...`);
+            } else {
+                console.log(`✅ [START BAŞARILI] Sinyal Apple sunucularından geçti ve telefona ulaştı!`);
+            }
         } catch (e) {
             console.error("❌ İletim Hatası:", e);
         }
