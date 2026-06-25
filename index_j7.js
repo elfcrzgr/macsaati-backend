@@ -24,15 +24,7 @@ admin.initializeApp({
 });
 console.log("🔥 Firebase Admin başlatıldı.");
 
-const apnProvider = new apn.Provider({
-    token: {
-        key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
-        keyId: "9JFB2X7TY9",
-        teamId: "9MQ7UDX75J"
-    },
-    production: IS_PRODUCTION
-});
-console.log(`🍏 Apple APNs hazır. (Mod: ${IS_PRODUCTION ? "CANLI / TESTFLIGHT" : "GELİŞTİRİCİ"})`);
+
 
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
@@ -1442,10 +1434,7 @@ async function updateF1() {
 // =========================================================================
 async function main() {
     // 🛡️ APNs KONTROL — artık burada, top-level değil
-    if (!apnProvider) {
-        console.error("⚠️ KRİTİK HATA: APNs Sağlayıcı başlatılamadı! Lütfen .p8 dosyasını ve Team ID'yi kontrol et.");
-        return;
-    }
+   
 
     loadState();
     console.log("============================================================");
