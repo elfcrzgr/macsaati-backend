@@ -238,27 +238,33 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        // İstekler arasına rastgele gecikme ekleyerek ban riskini azaltıyoruz
+        // İstekler arasına rastgele gecikme ekleyerek ban (rate-limit) riskini azaltıyoruz
         const delay = Math.floor(Math.random() * 1500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // Web URL'sini mobil API URL'sine çeviriyoruz
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        // DİKKAT: Artık url.replace ile 'api.sofascore.com'a ÇEVİRMİYORUZ!
+        // Doğrudan fonksiyona gelen orijinal web adresini kullanıyoruz.
 
-        const response = await fetch(mobileUrl, {
+        const response = await fetch(url, {
             headers: {
-                // iPhone Safari yerine stabil çalışan Android mobil uygulama header'ları
-                "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-S918B Build/TP1A.220624.014)",
-                "Accept": "*/*",
-                "Connection": "Keep-Alive",
-                "Accept-Encoding": "gzip",
+                // Güçlü bir Masaüstü Mac/Chrome kimliği
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
                 "Cache-Control": "no-cache",
-                "x-sofascore-client": "android" // En kritik header! Sunucuya mobil cihaz olduğumuzu kanıtlar.
+                "Referer": "https://www.sofascore.com/",
+                "Origin": "https://www.sofascore.com",
+                "Sec-Ch-Ua": '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
+                "Sec-Ch-Ua-Mobile": "?0",
+                "Sec-Ch-Ua-Platform": '"macOS"',
+                "Sec-Fetch-Dest": "empty",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Site": "same-origin"
             }
         });
 
         if (!response.ok) {
-            console.log(`⚠️ Mobil API Reddi (HTTP ${response.status}) - Uç nokta: ${mobileUrl}`);
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) - Uç nokta: ${url}`);
             return null;
         }
 
@@ -268,8 +274,6 @@ async function fetchData(url) {
         return null;
     }
 }
-
-
 
 
 
