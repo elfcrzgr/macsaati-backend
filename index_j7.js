@@ -233,7 +233,39 @@ async function uploadToFirebase(sportName, data) {
 
 
 
+// =========================================================================
+// ⚠️ GEÇİCİ SOFASCORE BAĞLANTISI (Basketbol ve Tenis sunucuyu çökertmesin diye)
+// =========================================================================
+async function fetchData(url) {
+    try {
+        const delay = Math.floor(Math.random() * 500) + 500;
+        await new Promise(r => setTimeout(r, delay));
 
+        const cleanUrl = url.split('?')[0].replace('www.sofascore.com', 'api.sofascore.com');
+
+        const response = await fetch(cleanUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0.0.0 Safari/537.36",
+                "Accept": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            // Cloudflare engellerse sessizce null dön, sistemi çökertme
+            return null; 
+        }
+
+        const text = await response.text();
+        if (text.includes("challenge") || text.includes("Cloudflare") || text.includes("<html")) {
+            return null;
+        }
+
+        return JSON.parse(text);
+    } catch (e) {
+        // Hata durumunda (fetchdata is not defined vb.) çökmesini engeller
+        return null; 
+    }
+}
 
 
 
