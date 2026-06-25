@@ -232,38 +232,36 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
+        // İstekler arasına rastgele gecikme ekleyerek ban riskini azaltıyoruz
         const delay = Math.floor(Math.random() * 1500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
+        // Web URL'sini mobil API URL'sine çeviriyoruz
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
         const response = await fetch(mobileUrl, {
             headers: {
+                // iPhone Safari yerine stabil çalışan Android mobil uygulama header'ları
                 "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-S918B Build/TP1A.220624.014)",
                 "Accept": "*/*",
                 "Connection": "Keep-Alive",
                 "Accept-Encoding": "gzip",
                 "Cache-Control": "no-cache",
-                "x-sofascore-client": "android"
+                "x-sofascore-client": "android" // En kritik header! Sunucuya mobil cihaz olduğumuzu kanıtlar.
             }
         });
 
         if (!response.ok) {
-            console.log(`⚠️ Mobil API Reddi (HTTP ${response.status})`);
+            console.log(`⚠️ Mobil API Reddi (HTTP ${response.status}) - Uç nokta: ${mobileUrl}`);
             return null;
         }
 
         return await response.json();
     } catch (e) {
+        console.error(`❌ Fetch Hatası: ${e.message}`);
         return null;
     }
 }
-
-const getTRDate = (offset = 0) => {
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-};
 
 // =========================================================================
 // ⚽ FUTBOL YAPILANDIRMASI
