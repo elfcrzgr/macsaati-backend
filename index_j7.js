@@ -236,34 +236,34 @@ async function fetchData(url) {
         const delay = Math.floor(Math.random() * 1500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // 🚨 Mobil API yönlendirmesini iptal ediyoruz. Doğrudan www üzerinden istek atacağız.
-        // const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        const response = await fetch(url, { // mobileUrl yerine orijinal url'i kullanıyoruz
+        const response = await fetch(mobileUrl, {
             headers: {
-                // Standart bir güncel masaüstü Chrome tarayıcısı taklidi
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-                "Accept": "*/*",
-                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Connection": "keep-alive",
-                "Cache-Control": "no-cache",
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Accept-Encoding": "gzip, deflate, br",
                 "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com"
-                // x-sofascore-client: android başlığını tamamen kaldırdık!
+                "Origin": "https://www.sofascore.com",
+                "Connection": "keep-alive",
+                "Sec-Fetch-Dest": "empty",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Site": "same-site"
             }
         });
 
         if (!response.ok) {
-            console.log(`⚠️ Web API Reddi (HTTP ${response.status}) - Hedef: ${url}`);
+            console.log(`⚠️ API Reddi (HTTP ${response.status})`);
             return null;
         }
 
         return await response.json();
     } catch (e) {
-        console.error(`❌ Fetch Hatası:`, e.message);
         return null;
     }
 }
+
 
 
 const getTRDate = (offset = 0) => {
