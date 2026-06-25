@@ -231,107 +231,39 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
-
-
-// =========================================================================
-// ⚠️ GEÇİCİ SOFASCORE BAĞLANTISI (Basketbol ve Tenis sunucuyu çökertmesin diye)
-// =========================================================================
-// =========================================================================
-// 🔥 SOFASCORE CLOUDFLARE BYPASS (Termux NATIVE cURL Motoru)
-// =========================================================================
-// Artık doğrudan Sofascore'a gitmiyoruz, aradaki engeli kaldırmak için kendi proxy adresimize gidiyoruz.
 async function fetchData(url) {
     try {
-        // Kendi sunucumuz veya proxy adresimiz (Şu an deneme için bir bypass servisi)
-        const proxyUrl = "https://cors-anywhere.herokuapp.com/" + url; 
-        
-        const response = await fetch(proxyUrl, {
+        const delay = Math.floor(Math.random() * 1500) + 500;
+        await new Promise(r => setTimeout(r, delay));
+
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+
+        const response = await fetch(mobileUrl, {
             headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Referer": "https://www.sofascore.com/",
                 "Origin": "https://www.sofascore.com",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-            }
-        });
-
-        if (!response.ok) return null;
-        return await response.json();
-    } catch (e) {
-        console.log("⚠️ Veri çekme hatası (Proxy):", e.message);
-        return null;
-    }
-}
-
-
-
-
-/*async function fetchData(url) {
-    const cleanUrl = url.split('?')[0].replace('www.sofascore.com', 'api.sofascore.com');
-
-    // Cloudflare engellerini aşmak için 3 farklı açık kaynaklı proxy ağı kullanıyoruz
-    const proxies = [
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(cleanUrl)}`,
-        `https://corsproxy.io/?${encodeURIComponent(cleanUrl)}`,
-        `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(cleanUrl)}`
-    ];
-
-    for (let i = 0; i < proxies.length; i++) {
-        try {
-            // Sunucuları boğmamak ve bot gibi görünmemek için kısa bekleme
-            const delay = Math.floor(Math.random() * 500) + 500;
-            await new Promise(r => setTimeout(r, delay));
-
-            const response = await fetch(proxies[i], {
-                headers: {
-                    // Mümkün olduğunca sıradan bir kullanıcı gibi görünmek için
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-                    "Accept": "application/json"
-                }
-            });
-
-            if (response.ok) {
-                const text = await response.text();
-                
-                // Gelen yanıt Cloudflare'in HTML bulmacası mı kontrol ediyoruz
-                if (!text.includes("challenge") && !text.includes("Cloudflare") && !text.includes("<html")) {
-                    return JSON.parse(text); // Veri temizse parse et ve hemen döndür (diğer proxylere gitme)
-                }
-            }
-        } catch (e) {
-            // Bu proxy çöktüyse veya yanıt vermediyse sessizce diğerine geç
-            continue; 
-        }
-    }
-
-    console.log(`🛡️ CLOUDFLARE: Tüm açık kaynak proxy'ler engellendi - URL: ${cleanUrl}`);
-    return null;
-}*/
-
-async function fetchFootballData(dateStr) {
-    // dateStr formatı 'YYYY-MM-DD' olmalıdır
-    const url = `https://api.football-data.org/v4/matches?dateFrom=${dateStr}&dateTo=${dateStr}`;
-    const API_TOKEN = "2c7fa35b004b4caeadf72d7d97df12b3"; // Ekran görüntüsündeki token
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                "X-Auth-Token": API_TOKEN,
-                "Content-Type": "application/json"
+                "Connection": "keep-alive",
+                "Sec-Fetch-Dest": "empty",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Site": "same-site"
             }
         });
 
         if (!response.ok) {
-            console.log(`⚠️ API Hatası (Football-Data) - HTTP ${response.status}`);
+            console.log(`⚠️ API Reddi (HTTP ${response.status})`);
             return null;
         }
 
-        const data = await response.json();
-        return data;
-
+        return await response.json();
     } catch (e) {
-        console.error("❌ Fetch Hatası (Football-Data):", e.message);
         return null;
     }
 }
+
 
 
 const getTRDate = (offset = 0) => {
@@ -964,28 +896,6 @@ async function triggerPushToStart(matchId) {
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
 // =========================================================================
-// 1. Yeni Veri Çekme Fonksiyonu (updateFootball'un hemen üstüne ekleyin)
-async function fetchFootballData(dateStr) {
-    const url = `https://api.football-data.org/v4/matches?dateFrom=${dateStr}&dateTo=${dateStr}`;
-    const API_TOKEN = "2c7fa35b004b4caeadf72d7d97df12b3"; // Kendi Token'ınız
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                "X-Auth-Token": API_TOKEN,
-                "Content-Type": "application/json"
-            }
-        });
-        if (!response.ok) return null;
-        return await response.json();
-    } catch (e) {
-        console.error("❌ Fetch Hatası (Football-Data):", e.message);
-        return null;
-    }
-}
-
-// 2. Yeni ve Engelsiz updateFootball Fonksiyonu
 async function updateFootball(targetDates = [getTRDate(0)]) {
     console.log(`⚽ Futbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
 
@@ -1149,8 +1059,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
 
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
-} 
-
+}
 
 // =========================================================================
 // 🏀 BASKETBOL GÜNCELLEME
