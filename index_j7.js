@@ -236,29 +236,35 @@ async function fetchData(url) {
         const delay = Math.floor(Math.random() * 1500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        // 🚨 Mobil API yönlendirmesini iptal ediyoruz. Doğrudan www üzerinden istek atacağız.
+        // const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        const response = await fetch(mobileUrl, {
+        const response = await fetch(url, { // mobileUrl yerine orijinal url'i kullanıyoruz
             headers: {
-                "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-S918B Build/TP1A.220624.014)",
+                // Standart bir güncel masaüstü Chrome tarayıcısı taklidi
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
                 "Accept": "*/*",
-                "Connection": "Keep-Alive",
-                "Accept-Encoding": "gzip",
+                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Connection": "keep-alive",
                 "Cache-Control": "no-cache",
-                "x-sofascore-client": "android"
+                "Referer": "https://www.sofascore.com/",
+                "Origin": "https://www.sofascore.com"
+                // x-sofascore-client: android başlığını tamamen kaldırdık!
             }
         });
 
         if (!response.ok) {
-            console.log(`⚠️ Mobil API Reddi (HTTP ${response.status})`);
+            console.log(`⚠️ Web API Reddi (HTTP ${response.status}) - Hedef: ${url}`);
             return null;
         }
 
         return await response.json();
     } catch (e) {
+        console.error(`❌ Fetch Hatası:`, e.message);
         return null;
     }
 }
+
 
 const getTRDate = (offset = 0) => {
     const d = new Date();
