@@ -241,31 +241,39 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 2000) + 1000; // Bekleme süresini 1-3 saniye arası rastele yaptık
+        // İstekler arası 1-3 saniye arası rastgele bekleme (Aşırı istek algılamasını aşmak için)
+        const delay = Math.floor(Math.random() * 2000) + 1000;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        // 1. URL'nin sonundaki "?_=1782..." gibi bot korumasını tetikleyen zaman damgasını atıyoruz
+        const cleanUrl = url.split('?')[0]; 
+        
+        // 2. F1 (Jolpi API) ile SofaScore isteklerini ayırıyoruz
+        const isSofascore = cleanUrl.includes('sofascore.com');
+        
+        // 3. 'api.sofascore.com' YÖNLENDİRMESİNİ SİLDİK.
+        // Doğrudan 'www.sofascore.com' üzerinden sıradan bir web kullanıcısı gibi gideceğiz.
+        const headers = isSofascore ? {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+            "Accept": "*/*",
+            "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Referer": "https://www.sofascore.com/",
+            "Origin": "https://www.sofascore.com",
+            "Connection": "keep-alive",
+            "Sec-Ch-Ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+            "Sec-Ch-Ua-Mobile": "?0",
+            "Sec-Ch-Ua-Platform": '"Windows"',
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin"
+        } : {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0.0.0 Safari/537.36"
+        };
 
-        const response = await fetch(mobileUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-                "Accept": "*/*",
-                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Cache-Control": "no-cache",
-                "Pragma": "no-cache",
-                "Connection": "keep-alive",
-                "Sec-Ch-Ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
-                "Sec-Ch-Ua-Mobile": "?0",
-                "Sec-Ch-Ua-Platform": '"Windows"',
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-site"
-            }
-        });
+        const response = await fetch(cleanUrl, { headers });
 
         if (!response.ok) {
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) - URL: ${mobileUrl}`);
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) - URL: ${cleanUrl}`);
             return null;
         }
 
@@ -275,9 +283,6 @@ async function fetchData(url) {
         return null;
     }
 }
-
-
-
 
 
 
