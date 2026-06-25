@@ -241,31 +241,29 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 2000) + 1000;
+        // Canlı maç trafiğinde çok da beklemeye gerek yok, 500ms - 1 sn yeterli.
+        const delay = Math.floor(Math.random() * 500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
         const cleanUrl = url.split('?')[0];
+        // Mobil uygulama her zaman api.sofascore.com kullanır
         const targetUrl = cleanUrl.replace('www.sofascore.com', 'api.sofascore.com');
 
-        const curlCmd = `curl -s -v --compressed -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" -H "Accept: application/json" -H "Origin: https://www.sofascore.com" "${targetUrl}"`;
+        // BÜYÜK DEĞİŞİKLİK: 
+        // Chrome başlıkları yerine, resmi Sofascore Android uygulamasının arka planda kullandığı
+        // saf okhttp/Dalvik kimliğini (User-Agent) kullanıyoruz. Origin ve Referer KESİNLİKLE YOK.
+        const curlCmd = `curl -s --compressed -H "User-Agent: SofaScore/6.44.2 (Android/13)" -H "Accept: application/json" -H "Connection: Keep-Alive" -H "Accept-Encoding: gzip" "${targetUrl}"`;
 
         const { stdout, stderr } = await execPromise(curlCmd);
 
-        // Hata detaylarını terminale yazdırıyoruz
-        if (!stdout || stdout.trim() === "") {
-            console.log(`⚠️ BOŞ YANIT (cURL) - Bağlantı koptu veya reddedildi.`);
-            console.log(`🔍 DETAY (stderr): \n`, stderr.substring(0, 300)); // Hatanın ilk 300 karakteri
-            return null;
-        }
-
-        if (stdout.includes("error code: 1020") || stdout.includes("Cloudflare")) {
-            console.log(`🛡️ CLOUDFLARE ENGELİ (cURL)`);
+        if (!stdout || stdout.trim() === "" || stdout.includes("error code: 1020") || stdout.includes("challenge")) {
+            console.log(`🛡️ CLOUDFLARE ENGELİ (Mobil Taktik) - URL: ${targetUrl}`);
             return null;
         }
 
         return JSON.parse(stdout);
     } catch (e) {
-        console.error("❌ Fetch Hatası (cURL - TryCatch):", e.message);
+        console.error("❌ Fetch Hatası (Mobil cURL):", e.message);
         return null;
     }
 }
