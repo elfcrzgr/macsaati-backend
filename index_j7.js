@@ -4,8 +4,8 @@ const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
-const http2 = require('http2');
-const crypto = require('crypto');
+const apn = require('apn');
+const triggeredMatches = new Set();
 
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
@@ -24,7 +24,15 @@ admin.initializeApp({
 });
 console.log("🔥 Firebase Admin başlatıldı.");
 
-
+const apnProvider = new apn.Provider({
+    token: {
+        key: __dirname + "/AuthKey_9JFB2X7TY9.p8",
+        keyId: "9JFB2X7TY9",
+        teamId: "9MQ7UDX75J"
+    },
+    production: IS_PRODUCTION
+});
+console.log(`🍏 Apple APNs hazır. (Mod: ${IS_PRODUCTION ? "CANLI / TESTFLIGHT" : "GELİŞTİRİCİ"})`);
 
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
@@ -88,8 +96,6 @@ function saveState() {
     const obj = Object.fromEntries(previousMatchStates);
     fs.writeFileSync(STATE_FILE, JSON.stringify(obj));
 }
-
-
 
 function loadState() {
     if (fs.existsSync(STATE_FILE)) {
@@ -225,90 +231,38 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
-
-
-
-
-// =========================================================================
-// 🔑 APNs JWT TOKEN ÜRETİCİ
-// =========================================================================
-const APNS_KEY_ID = "9JFB2X7TY9";
-const APNS_TEAM_ID = "9MQ7UDX75J";
-const APNS_KEY_PATH = __dirname + "/AuthKey_9JFB2X7TY9.p8";
-
-let cachedJwt = null;
-let jwtGeneratedAt = 0;
-
-function generateApnsJwt() {
-    const now = Math.floor(Date.now() / 1000);
-    if (cachedJwt && (now - jwtGeneratedAt) < 2700) return cachedJwt;
-
-    const keyData = fs.readFileSync(APNS_KEY_PATH, 'utf8');
-    const privateKey = crypto.createPrivateKey(keyData);
-
-    const header = Buffer.from(JSON.stringify({ alg: 'ES256', kid: APNS_KEY_ID })).toString('base64url');
-    const payload = Buffer.from(JSON.stringify({ iss: APNS_TEAM_ID, iat: now })).toString('base64url');
-    const signingInput = `${header}.${payload}`;
-
-    const sign = crypto.createSign('SHA256');
-    sign.update(signingInput);
-    const derSig = sign.sign(privateKey);
-
-    // DER → IEEE P1363 (r||s) dönüşümü
-    const r = derSig.slice(4, 4 + 32);
-    const s = derSig.slice(4 + 32 + 2 + 2);
-    const sig = Buffer.concat([r.slice(-32), s.slice(-32)]).toString('base64url');
-
-    cachedJwt = `${signingInput}.${sig}`;
-    jwtGeneratedAt = now;
-    return cachedJwt;
-}
-
 async function fetchData(url) {
     try {
-        // İstekler arasına rastgele gecikme ekleyerek ban (rate-limit) riskini azaltıyoruz
         const delay = Math.floor(Math.random() * 1500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // DİKKAT: Artık url.replace ile 'api.sofascore.com'a ÇEVİRMİYORUZ!
-        // Doğrudan fonksiyona gelen orijinal web adresini kullanıyoruz.
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        const response = await fetch(url, {
+        const response = await fetch(mobileUrl, {
             headers: {
-                // Güçlü bir Masaüstü Mac/Chrome kimliği
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
                 "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Cache-Control": "no-cache",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Accept-Encoding": "gzip, deflate, br",
                 "Referer": "https://www.sofascore.com/",
                 "Origin": "https://www.sofascore.com",
-                "Sec-Ch-Ua": '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-                "Sec-Ch-Ua-Mobile": "?0",
-                "Sec-Ch-Ua-Platform": '"macOS"',
+                "Connection": "keep-alive",
                 "Sec-Fetch-Dest": "empty",
                 "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-origin"
+                "Sec-Fetch-Site": "same-site"
             }
         });
 
         if (!response.ok) {
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) - Uç nokta: ${url}`);
+            console.log(`⚠️ API Reddi (HTTP ${response.status})`);
             return null;
         }
 
         return await response.json();
     } catch (e) {
-        console.error(`❌ Fetch Hatası: ${e.message}`);
         return null;
     }
 }
-
-
-
-
-
-
-
 
 
 
@@ -317,8 +271,6 @@ const getTRDate = (offset = 0) => {
     d.setDate(d.getDate() + offset);
     return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 };
-
-
 
 // =========================================================================
 // ⚽ FUTBOL YAPILANDIRMASI
@@ -406,8 +358,8 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     return "Resmi Yayıncı / Canlı Skor";
 };
 
-const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363];
-const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851];
+const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363, 26796];
+const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851, 88783];
 const NATIONAL_LEAGUES = [16, 1, 133, 270, 299, 851];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
@@ -425,6 +377,7 @@ const footballLeagues = {
     155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship",
     335: "Fransa Kupası", 955: "Suudi Arabistan Pro Lig", 18: "İngiltere Championship",
     851: "Uluslararası Hazırlık Maçları"
+    
 };
 
 const nationalTeamCodes = {
@@ -627,73 +580,57 @@ async function checkAndSendNotifications(newMatches) {
             if (tokensObj) {
                 const tokenList = Object.keys(tokensObj);
 
-              const APNS_HOST = IS_PRODUCTION ? 'api.push.apple.com' : 'api.sandbox.push.apple.com';
+                const promises = tokenList.map(async (deviceToken) => {
+    let notification = new apn.Notification();
 
-const promises = tokenList.map((deviceToken) => new Promise((resolve) => {
-    const jwt = generateApnsJwt();
-    const topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
+                        // 🌟 ARTIK HEADERS'I BÖYLE DEĞİL, apn kütüphanesinin beklediği gibi set ediyoruz
+                        notification.rawPayload = {
+                            aps: {
+                                timestamp: Math.floor(Date.now() / 1000),
+                                event: isFinished ? 'end' : 'update',
+                                "content-state": {
+                                    homeScore: currH,
+                                    awayScore: currA,
+                                    matchMinute: isFinished ? "MS" : String(liveMin)
+                                }
+                            }
+                        };
+                        
+                        notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
+                        notification.pushType = "liveactivity";
+                        notification.priority = 10;
 
-    const body = JSON.stringify({
-        aps: {
-            timestamp: Math.floor(Date.now() / 1000),
-            event: isFinished ? 'end' : 'update',
-            "content-state": {
-                homeScore: currH,
-                awayScore: currA,
-                matchMinute: isFinished ? "MS" : String(liveMin)
-            }
-        }
-    });
+                        // 🚀 İŞTE EKSİK OLAN BÜYÜK HİLE BURASI (Güncellemeler için de şart!)
+                        if (typeof notification.headers === 'function') {
+                            const originalHeadersFn = notification.headers.bind(notification);
+                            notification.headers = function() {
+                                let h = originalHeadersFn();
+                                h["apns-push-type"] = "liveactivity"; // Güncelleme (update) için de zorunlu!
+                                return h;
+                            };
+                        }
 
-    const client = http2.connect(`https://${APNS_HOST}`);
-    client.on('error', (err) => {
-        console.error(`❌ [APNs BAĞLANTI HATASI] ${err.message}`);
-        resolve();
-    });
+            
+                    try {
+                        const result = await apnProvider.send(notification, deviceToken);
+                        if (result.failed.length > 0) {
+                            const err = result.failed[0];
+                            const errorReason = err.response ? err.response.reason : err.error;
+                            
+                            // ❗ YENİ EKLENEN GELİŞMİŞ LOG
+                            console.error(`❌ [APNs REDDEDİLDİ] Sebep: ${errorReason} | Token: ${deviceToken.substring(0,10)}...`);
 
-    const req = client.request({
-        ':method': 'POST',
-        ':path': `/3/device/${deviceToken}`,
-        ':scheme': 'https',
-        ':authority': APNS_HOST,
-        'authorization': `bearer ${jwt}`,
-        'apns-push-type': 'liveactivity',
-        'apns-topic': topic,
-        'apns-priority': '10',
-        'content-type': 'application/json',
-        'content-length': Buffer.byteLength(body)
-    });
-
-    req.write(body);
-    req.end();
-
-    let responseBody = '';
-    req.on('data', chunk => { responseBody += chunk; });
-
-    req.on('response', (headers) => {
-        const status = headers[':status'];
-        if (status === 200) {
-            console.log(`✅ [APNs İLETİLDİ] Apple cihazı arka planda uyandırıldı!`);
-            client.close();
-            resolve();
-        } else {
-            console.error(`❌ [APNs REDDEDİLDİ] HTTP ${status} | Token: ${deviceToken.substring(0, 10)}...`);
-            req.on('end', async () => {
-                try {
-                    const parsed = JSON.parse(responseBody);
-                    const reason = parsed.reason || 'Bilinmeyen';
-                    console.error(`   Sebep: ${reason}`);
-                    if (reason === 'BadDeviceToken' || reason === 'Unregistered') {
-                        await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
-                        console.log(`🗑️ Geçersiz token temizlendi.`);
+                            if (errorReason === 'BadDeviceToken' || errorReason === 'Unregistered') {
+                                await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
+                                console.log(`🗑️ Geçersiz kilit ekranı token'ı temizlendi.`);
+                            }
+                        } else {
+                            console.log(`✅ [APNs İLETİLDİ] Apple cihazı arka planda uyandırıldı!`);
+                        }
+                    } catch (e) {
+                        console.error("APNs Bağlantı Hatası:", e);
                     }
-                } catch (_) {}
-                client.close();
-                resolve();
-            });
-        }
-    });
-}));
+                });
 
                 await Promise.all(promises);
                 console.log(`📲 [LIVE ACTIVITY APPLE APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı işlem gördü.`);
@@ -867,6 +804,95 @@ function hasTodayMatches(cache) {
     return false;
 }
 
+
+async function triggerPushToStart(matchId) {
+    const match = globalFootballCache.get(matchId);
+    if (!match) return;
+
+    let tokensToAlert = [];
+
+    // --- ZORUNLU LİSTE (Forced) ŞU AN DEVRE DIŞI ---
+    /*
+    const forcedSnapshot = await admin.database().ref(`forced_matches/${matchId}`).once('value');
+    if (forcedSnapshot.val() === true) {
+        const globalTokens = (await admin.database().ref(`global_push_tokens`).once('value')).val();
+        if (globalTokens) tokensToAlert.push(...Object.values(globalTokens));
+    }
+    */
+    // -----------------------------------------------
+
+    // 2. NORMAL TAKİP LİSTESİ (Zile basanlar)
+    const normalTokens = (await admin.database().ref(`push_to_start_tokens/${matchId}`).once('value')).val();
+    if (normalTokens) tokensToAlert.push(...Object.keys(normalTokens));
+
+    tokensToAlert = [...new Set(tokensToAlert)];
+    if (tokensToAlert.length === 0) return;
+
+    const cleanHomeScore = match.homeScore && match.homeScore !== "-" ? Number(match.homeScore) : 0;
+    const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
+    const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
+
+    console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name} maçı (${cleanMinute}) ${tokensToAlert.length} cihaza başlatılıyor...`);
+
+    for (const token of tokensToAlert) {
+        let notification = new apn.Notification();
+        notification.rawPayload = {
+            aps: {
+                timestamp: Math.floor(Date.now() / 1000),
+                event: 'start',
+                "attributes-type": "MacSaatiWidgetAttributes", 
+                "attributes": {
+                    "matchId": String(match.id),
+                    "homeTeamName": String(match.homeTeam.name),
+                    "awayTeamName": String(match.awayTeam.name),
+                    "leagueName": String(match.tournament || "Futbol"),
+                    "homeTeamId": match.homeTeam.id ? Number(match.homeTeam.id) : 0,
+                    "awayTeamId": match.awayTeam.id ? Number(match.awayTeam.id) : 0,
+                    "homeLogoFile": `logo_home_${match.id}.png`,
+                    "awayLogoFile": `logo_away_${match.id}.png`
+                },
+                "content-state": {
+                    "homeScore": Number(cleanHomeScore),
+                    "awayScore": Number(cleanAwayScore),
+                    "matchMinute": String(cleanMinute)
+                },
+                "alert": {
+                    "title": "Maç Saati",
+                    "body": `${match.homeTeam.name} - ${match.awayTeam.name} canlı takibi başladı!`
+                }
+            }
+        };
+
+        notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
+        notification.priority = 10;
+        notification.pushType = "liveactivity";
+
+        // 🚀 KÜTÜPHANE ATLATMA HİLESİ (Aynı şekilde kalıyor)
+        if (typeof notification.headers === 'function') {
+            const originalHeadersFn = notification.headers.bind(notification);
+            notification.headers = function() {
+                let h = originalHeadersFn();
+                h["apns-push-type"] = "liveactivity";
+                return h;
+            };
+        }
+
+        try {
+            const result = await apnProvider.send(notification, token);
+            if (result.failed.length > 0) {
+                const err = result.failed[0];
+                const errorReason = err.response ? err.response.reason : err.error;
+                console.error(`❌ [START REDDEDİLDİ] Sebep: ${errorReason} | Token: ${token.substring(0,10)}...`);
+            } else {
+                console.log(`✅ [START BAŞARILI] Sinyal Apple'a ulaştı!`);
+            }
+        } catch (e) {
+            console.error("❌ İletim Hatası:", e);
+        }
+    }
+}
+
+
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
 // =========================================================================
@@ -999,7 +1025,12 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             tournament: cleanTournamentName,
             timeObj: e.time
         });
+                    
+  
     });
+
+        
+ 
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
 
@@ -1010,6 +1041,21 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     const nextMatchTimestamp = findNextMatchTime(globalFootballCache);
 
     logMatchesBySport({ futbol: futbolMatchesLog });
+    // 🌟 KESİN VE HIZLI TETİKLEYİCİ
+    // Döngü bitti, cache tamamen doldu, şimdi güvenle tetikleyebiliriz!
+    const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
+    const forcedMatches = forcedSnapshot.val() || {};
+
+    for (const [id, match] of globalFootballCache.entries()) {
+        if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
+            console.log(`🌟 [KRİTİK MAÇ] ${match.homeTeam.name} tetikleniyor...`);
+            await triggerPushToStart(id);
+            triggeredMatches.add(String(id));
+        }
+    }
+
+    logMatchesBySport({ futbol: futbolMatchesLog });
+ 
     console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
 
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
@@ -1434,7 +1480,10 @@ async function updateF1() {
 // =========================================================================
 async function main() {
     // 🛡️ APNs KONTROL — artık burada, top-level değil
-   
+    if (!apnProvider) {
+        console.error("⚠️ KRİTİK HATA: APNs Sağlayıcı başlatılamadı! Lütfen .p8 dosyasını ve Team ID'yi kontrol et.");
+        return;
+    }
 
     loadState();
     console.log("============================================================");
@@ -1490,12 +1539,17 @@ async function main() {
                 lastPeriodicUpdate = now;
             }
 
-            const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)];
+           // 🌟 BURAYA HER İKİSİNİ DE EKLİYORUZ (Basketbol ve Tenis quickScanDates'i kullanmaya devam edecek)
+            const todayOnly = [getTRDate(0)]; 
+            const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)]; 
 
             if (sportUpdateStatus.football.hasLiveMatch) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
-                    console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Veriler güncelleniyor...");
-                    const footResult = await updateFootball(quickScanDates);
+                    console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Sadece bugün güncelleniyor...");
+                    
+                    // Futbol canlıyken sadece bugünü kullanır
+                    const footResult = await updateFootball(todayOnly); 
+                    
                     sportUpdateStatus.football.lastQuickUpdate = now;
                     sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
@@ -1503,14 +1557,18 @@ async function main() {
             } else if (sportUpdateStatus.football.nextMatchTime &&
                 now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 1.1)) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
-                    console.log("⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç saati yaklaştı - Veriler güncelleniyor...");
-                    const footResult = await updateFootball(quickScanDates);
+                    console.log("⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç saati yaklaştı - 3 günlük kontrol yapılıyor...");
+                    
+                    // Yaklaşan maç için 3 günlük güvenli tarama
+                    const footResult = await updateFootball(quickScanDates); 
+                    
                     sportUpdateStatus.football.lastQuickUpdate = now;
                     sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
                 }
             }
 
+            
             const hasUpcomingBasketball = sportUpdateStatus.basketball.nextMatchTime &&
                 now >= (sportUpdateStatus.basketball.nextMatchTime - ONE_MIN_MS * 11);
 
