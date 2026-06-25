@@ -241,34 +241,41 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        // Canlı maç trafiğinde çok da beklemeye gerek yok, 500ms - 1 sn yeterli.
+        // İstekler arası küçük bir bekleme
         const delay = Math.floor(Math.random() * 500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
         const cleanUrl = url.split('?')[0];
-        // Mobil uygulama her zaman api.sofascore.com kullanır
         const targetUrl = cleanUrl.replace('www.sofascore.com', 'api.sofascore.com');
 
-        // BÜYÜK DEĞİŞİKLİK: 
-        // Chrome başlıkları yerine, resmi Sofascore Android uygulamasının arka planda kullandığı
-        // saf okhttp/Dalvik kimliğini (User-Agent) kullanıyoruz. Origin ve Referer KESİNLİKLE YOK.
-        const curlCmd = `curl -s --compressed -H "User-Agent: SofaScore/6.44.2 (Android/13)" -H "Accept: application/json" -H "Connection: Keep-Alive" -H "Accept-Encoding: gzip" "${targetUrl}"`;
+        // 🔥 BURAYA KENDİ GOOGLE SCRIPT URL'Nİ YAPIŞTIR 🔥
+        const GOOGLE_PROXY_URL = "https://script.google.com/macros/s/AKfycbyeLtQO8U7Yi3rOPkREO1ZcbSRRHY-riz-2v6rHu-yi8iPnmwmE5vhaHravbLP3AYL0lw/exec";
+        
+        // Termux, isteği Google'a atıyor; Google da Sofascore'a gidip veriyi bize getiriyor
+        const finalUrl = `${GOOGLE_PROXY_URL}?url=${encodeURIComponent(targetUrl)}`;
 
-        const { stdout, stderr } = await execPromise(curlCmd);
+        // Artık cURL'e gerek yok, Node.js'in standart fetch'i ile Google'a bağlanıyoruz
+        const response = await fetch(finalUrl);
 
-        if (!stdout || stdout.trim() === "" || stdout.includes("error code: 1020") || stdout.includes("challenge")) {
-            console.log(`🛡️ CLOUDFLARE ENGELİ (Mobil Taktik) - URL: ${targetUrl}`);
+        if (!response.ok) {
+            console.log(`⚠️ API Reddi (Google Proxy) - HTTP ${response.status}`);
             return null;
         }
 
-        return JSON.parse(stdout);
+        const data = await response.json();
+
+        // Sofascore Google'a hata döndürdüyse (çok nadir olur)
+        if (data && data.error && data.error.code === 403) {
+             console.log(`🛡️ CLOUDFLARE ENGELİ (Google bile takıldı) - URL: ${targetUrl}`);
+             return null;
+        }
+
+        return data;
     } catch (e) {
-        console.error("❌ Fetch Hatası (Mobil cURL):", e.message);
+        console.error("❌ Fetch Hatası (Google Proxy):", e.message);
         return null;
     }
 }
-
-
 
 
 
