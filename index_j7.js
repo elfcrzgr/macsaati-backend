@@ -4,7 +4,8 @@ const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
-const apn = require('apn');
+const http2 = require('http2');
+const crypto = require('crypto');
 
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
@@ -95,6 +96,8 @@ function saveState() {
     const obj = Object.fromEntries(previousMatchStates);
     fs.writeFileSync(STATE_FILE, JSON.stringify(obj));
 }
+
+
 
 function loadState() {
     if (fs.existsSync(STATE_FILE)) {
@@ -234,7 +237,40 @@ async function uploadToFirebase(sportName, data) {
 
 
 
+// =========================================================================
+// 🔑 APNs JWT TOKEN ÜRETİCİ
+// =========================================================================
+const APNS_KEY_ID = "9JFB2X7TY9";
+const APNS_TEAM_ID = "9MQ7UDX75J";
+const APNS_KEY_PATH = __dirname + "/AuthKey_9JFB2X7TY9.p8";
 
+let cachedJwt = null;
+let jwtGeneratedAt = 0;
+
+function generateApnsJwt() {
+    const now = Math.floor(Date.now() / 1000);
+    if (cachedJwt && (now - jwtGeneratedAt) < 2700) return cachedJwt;
+
+    const keyData = fs.readFileSync(APNS_KEY_PATH, 'utf8');
+    const privateKey = crypto.createPrivateKey(keyData);
+
+    const header = Buffer.from(JSON.stringify({ alg: 'ES256', kid: APNS_KEY_ID })).toString('base64url');
+    const payload = Buffer.from(JSON.stringify({ iss: APNS_TEAM_ID, iat: now })).toString('base64url');
+    const signingInput = `${header}.${payload}`;
+
+    const sign = crypto.createSign('SHA256');
+    sign.update(signingInput);
+    const derSig = sign.sign(privateKey);
+
+    // DER → IEEE P1363 (r||s) dönüşümü
+    const r = derSig.slice(4, 4 + 32);
+    const s = derSig.slice(4 + 32 + 2 + 2);
+    const sig = Buffer.concat([r.slice(-32), s.slice(-32)]).toString('base64url');
+
+    cachedJwt = `${signingInput}.${sig}`;
+    jwtGeneratedAt = now;
+    return cachedJwt;
+}
 
 async function fetchData(url) {
     try {
@@ -599,43 +635,73 @@ async function checkAndSendNotifications(newMatches) {
             if (tokensObj) {
                 const tokenList = Object.keys(tokensObj);
 
-                const promises = tokenList.map(async (deviceToken) => {
-                    let notification = new apn.Notification();
-                    notification.rawPayload = {
-                        aps: {
-                            timestamp: Math.floor(Date.now() / 1000),
-                            event: isFinished ? 'end' : 'update',
-                            "content-state": {
-                                homeScore: currH,
-                                awayScore: currA,
-                                matchMinute: isFinished ? "MS" : String(liveMin)
-                            }
-                        }
-                    };
-                    notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
-                    notification.priority = 10;
-                    notification.pushType = "liveactivity";
+              const APNS_HOST = IS_PRODUCTION ? 'api.push.apple.com' : 'api.sandbox.push.apple.com';
 
-                    try {
-                        const result = await apnProvider.send(notification, deviceToken);
-                        if (result.failed.length > 0) {
-                            const err = result.failed[0];
-                            const errorReason = err.response ? err.response.reason : err.error;
-                            
-                            // ❗ YENİ EKLENEN GELİŞMİŞ LOG
-                            console.error(`❌ [APNs REDDEDİLDİ] Sebep: ${errorReason} | Token: ${deviceToken.substring(0,10)}...`);
+const promises = tokenList.map((deviceToken) => new Promise((resolve) => {
+    const jwt = generateApnsJwt();
+    const topic = "com.elfcrzgr.macsaati.push-type.liveactivity";
 
-                            if (errorReason === 'BadDeviceToken' || errorReason === 'Unregistered') {
-                                await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
-                                console.log(`🗑️ Geçersiz kilit ekranı token'ı temizlendi.`);
-                            }
-                        } else {
-                            console.log(`✅ [APNs İLETİLDİ] Apple cihazı arka planda uyandırıldı!`);
-                        }
-                    } catch (e) {
-                        console.error("APNs Bağlantı Hatası:", e);
+    const body = JSON.stringify({
+        aps: {
+            timestamp: Math.floor(Date.now() / 1000),
+            event: isFinished ? 'end' : 'update',
+            "content-state": {
+                homeScore: currH,
+                awayScore: currA,
+                matchMinute: isFinished ? "MS" : String(liveMin)
+            }
+        }
+    });
+
+    const client = http2.connect(`https://${APNS_HOST}`);
+    client.on('error', (err) => {
+        console.error(`❌ [APNs BAĞLANTI HATASI] ${err.message}`);
+        resolve();
+    });
+
+    const req = client.request({
+        ':method': 'POST',
+        ':path': `/3/device/${deviceToken}`,
+        ':scheme': 'https',
+        ':authority': APNS_HOST,
+        'authorization': `bearer ${jwt}`,
+        'apns-push-type': 'liveactivity',
+        'apns-topic': topic,
+        'apns-priority': '10',
+        'content-type': 'application/json',
+        'content-length': Buffer.byteLength(body)
+    });
+
+    req.write(body);
+    req.end();
+
+    let responseBody = '';
+    req.on('data', chunk => { responseBody += chunk; });
+
+    req.on('response', (headers) => {
+        const status = headers[':status'];
+        if (status === 200) {
+            console.log(`✅ [APNs İLETİLDİ] Apple cihazı arka planda uyandırıldı!`);
+            client.close();
+            resolve();
+        } else {
+            console.error(`❌ [APNs REDDEDİLDİ] HTTP ${status} | Token: ${deviceToken.substring(0, 10)}...`);
+            req.on('end', async () => {
+                try {
+                    const parsed = JSON.parse(responseBody);
+                    const reason = parsed.reason || 'Bilinmeyen';
+                    console.error(`   Sebep: ${reason}`);
+                    if (reason === 'BadDeviceToken' || reason === 'Unregistered') {
+                        await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
+                        console.log(`🗑️ Geçersiz token temizlendi.`);
                     }
-                });
+                } catch (_) {}
+                client.close();
+                resolve();
+            });
+        }
+    });
+}));
 
                 await Promise.all(promises);
                 console.log(`📲 [LIVE ACTIVITY APPLE APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı işlem gördü.`);
