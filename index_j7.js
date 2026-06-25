@@ -230,6 +230,12 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
+
+
+
+
+
+
 async function fetchData(url) {
     try {
         // İstekler arasına rastgele gecikme ekleyerek ban riskini azaltıyoruz
@@ -262,6 +268,25 @@ async function fetchData(url) {
         return null;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+const getTRDate = (offset = 0) => {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+};
+
+
 
 // =========================================================================
 // ⚽ FUTBOL YAPILANDIRMASI
