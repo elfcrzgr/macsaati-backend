@@ -231,40 +231,32 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
+
+const { gotScraping } = require('got-scraping');
+
 async function fetchData(url) {
     try {
+        // İstek aralığına rastgele gecikme ekleyerek robotik davranışı gizliyoruz
         const delay = Math.floor(Math.random() * 1500) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-
-        const response = await fetch(mobileUrl, {
+        // URL'yi değiştirmiyoruz, orijinal adrese istek atıyoruz
+        const response = await gotScraping({
+            url: url,
+            responseType: 'json',
             headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9",
-                "Accept-Encoding": "gzip, deflate, br",
                 "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com",
-                "Connection": "keep-alive",
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-site"
+                "Origin": "https://www.sofascore.com"
             }
         });
 
-        if (!response.ok) {
-            console.log(`⚠️ API Reddi (HTTP ${response.status})`);
-            return null;
-        }
+        return response.body;
 
-        return await response.json();
     } catch (e) {
+        console.error(`❌ İstek Hatası (Cloudflare vb.): ${e.message}`);
         return null;
     }
 }
-
-
 
 const getTRDate = (offset = 0) => {
     const d = new Date();
