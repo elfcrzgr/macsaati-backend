@@ -239,30 +239,23 @@ async function uploadToFirebase(sportName, data) {
 // =========================================================================
 // 🔥 SOFASCORE CLOUDFLARE BYPASS (Termux NATIVE cURL Motoru)
 // =========================================================================
+// Artık doğrudan Sofascore'a gitmiyoruz, aradaki engeli kaldırmak için kendi proxy adresimize gidiyoruz.
 async function fetchData(url) {
     try {
-        // Sunucuları boğmamak ve bot gibi görünmemek için rastgele ufak bekleme
-        const delay = Math.floor(Math.random() * 400) + 300;
-        await new Promise(r => setTimeout(r, delay));
+        // Kendi sunucumuz veya proxy adresimiz (Şu an deneme için bir bypass servisi)
+        const proxyUrl = "https://cors-anywhere.herokuapp.com/" + url; 
+        
+        const response = await fetch(proxyUrl, {
+            headers: {
+                "Origin": "https://www.sofascore.com",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+            }
+        });
 
-        const cleanUrl = url.split('?')[0].replace('www.sofascore.com', 'api.sofascore.com');
-
-        // Termux'un yerleşik cURL aracını kullanarak Node.js bot kimliğini gizliyoruz.
-        // Tıpkı Windows'taki bir Chrome tarayıcısı gibi istek atıyoruz.
-        const curlCmd = `curl -s -L --compressed -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" -H "Accept: application/json" -H "Accept-Language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7" -H "Origin: https://www.sofascore.com" -H "Referer: https://www.sofascore.com/" "${cleanUrl}"`;
-
-        // SofaScore'un JSON verileri devasa olabileceği için maxBuffer'ı 10MB yapıyoruz (Çökmeyi engeller)
-        const { stdout } = await execPromise(curlCmd, { maxBuffer: 1024 * 1024 * 10 });
-
-        // Eğer çok ekstrem bir şekilde Cloudflare bulmacasına takılırsa
-        if (stdout.includes("challenge") || stdout.includes("Cloudflare") || stdout.includes("<html")) {
-            console.log(`🛡️ CLOUDFLARE ENGELİ (cURL) - URL: ${cleanUrl}`);
-            return null;
-        }
-
-        return JSON.parse(stdout);
+        if (!response.ok) return null;
+        return await response.json();
     } catch (e) {
-        // Sessizce hatayı yut, FetchData is not defined vb. çökmeleri engelle
+        console.log("⚠️ Veri çekme hatası (Proxy):", e.message);
         return null;
     }
 }
