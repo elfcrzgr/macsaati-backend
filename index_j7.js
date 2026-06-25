@@ -240,44 +240,46 @@ async function uploadToFirebase(sportName, data) {
 
 
 async function fetchData(url) {
-    try {
-        // İstekler arası küçük bir bekleme
-        const delay = Math.floor(Math.random() * 500) + 500;
-        await new Promise(r => setTimeout(r, delay));
+    const cleanUrl = url.split('?')[0].replace('www.sofascore.com', 'api.sofascore.com');
 
-        const cleanUrl = url.split('?')[0];
-        const targetUrl = cleanUrl.replace('www.sofascore.com', 'api.sofascore.com');
+    // Cloudflare engellerini aşmak için 3 farklı açık kaynaklı proxy ağı kullanıyoruz
+    const proxies = [
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(cleanUrl)}`,
+        `https://corsproxy.io/?${encodeURIComponent(cleanUrl)}`,
+        `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(cleanUrl)}`
+    ];
 
-        // 🔥 BURAYA KENDİ GOOGLE SCRIPT URL'Nİ YAPIŞTIR 🔥
-        const GOOGLE_PROXY_URL = "https://script.google.com/macros/s/AKfycbyeLtQO8U7Yi3rOPkREO1ZcbSRRHY-riz-2v6rHu-yi8iPnmwmE5vhaHravbLP3AYL0lw/exec";
-        
-        // Termux, isteği Google'a atıyor; Google da Sofascore'a gidip veriyi bize getiriyor
-        const finalUrl = `${GOOGLE_PROXY_URL}?url=${encodeURIComponent(targetUrl)}`;
+    for (let i = 0; i < proxies.length; i++) {
+        try {
+            // Sunucuları boğmamak ve bot gibi görünmemek için kısa bekleme
+            const delay = Math.floor(Math.random() * 500) + 500;
+            await new Promise(r => setTimeout(r, delay));
 
-        // Artık cURL'e gerek yok, Node.js'in standart fetch'i ile Google'a bağlanıyoruz
-        const response = await fetch(finalUrl);
+            const response = await fetch(proxies[i], {
+                headers: {
+                    // Mümkün olduğunca sıradan bir kullanıcı gibi görünmek için
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+                    "Accept": "application/json"
+                }
+            });
 
-        if (!response.ok) {
-            console.log(`⚠️ API Reddi (Google Proxy) - HTTP ${response.status}`);
-            return null;
+            if (response.ok) {
+                const text = await response.text();
+                
+                // Gelen yanıt Cloudflare'in HTML bulmacası mı kontrol ediyoruz
+                if (!text.includes("challenge") && !text.includes("Cloudflare") && !text.includes("<html")) {
+                    return JSON.parse(text); // Veri temizse parse et ve hemen döndür (diğer proxylere gitme)
+                }
+            }
+        } catch (e) {
+            // Bu proxy çöktüyse veya yanıt vermediyse sessizce diğerine geç
+            continue; 
         }
-
-        const data = await response.json();
-
-        // Sofascore Google'a hata döndürdüyse (çok nadir olur)
-        if (data && data.error && data.error.code === 403) {
-             console.log(`🛡️ CLOUDFLARE ENGELİ (Google bile takıldı) - URL: ${targetUrl}`);
-             return null;
-        }
-
-        return data;
-    } catch (e) {
-        console.error("❌ Fetch Hatası (Google Proxy):", e.message);
-        return null;
     }
+
+    console.log(`🛡️ CLOUDFLARE: Tüm açık kaynak proxy'ler engellendi - URL: ${cleanUrl}`);
+    return null;
 }
-
-
 
 
 const getTRDate = (offset = 0) => {
