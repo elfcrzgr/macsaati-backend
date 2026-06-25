@@ -239,7 +239,7 @@ async function uploadToFirebase(sportName, data) {
 
 
 
-async function fetchData(url) {
+/*async function fetchData(url) {
     const cleanUrl = url.split('?')[0].replace('www.sofascore.com', 'api.sofascore.com');
 
     // Cloudflare engellerini aşmak için 3 farklı açık kaynaklı proxy ağı kullanıyoruz
@@ -279,6 +279,34 @@ async function fetchData(url) {
 
     console.log(`🛡️ CLOUDFLARE: Tüm açık kaynak proxy'ler engellendi - URL: ${cleanUrl}`);
     return null;
+}*/
+
+async function fetchFootballData(dateStr) {
+    // dateStr formatı 'YYYY-MM-DD' olmalıdır
+    const url = `https://api.football-data.org/v4/matches?dateFrom=${dateStr}&dateTo=${dateStr}`;
+    const API_TOKEN = "2c7fa35b004b4caeadf72d7d97df12b3"; // Ekran görüntüsündeki token
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "X-Auth-Token": API_TOKEN,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            console.log(`⚠️ API Hatası (Football-Data) - HTTP ${response.status}`);
+            return null;
+        }
+
+        const data = await response.json();
+        return data;
+
+    } catch (e) {
+        console.error("❌ Fetch Hatası (Football-Data):", e.message);
+        return null;
+    }
 }
 
 
@@ -912,16 +940,37 @@ async function triggerPushToStart(matchId) {
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
 // =========================================================================
+// 1. Yeni Veri Çekme Fonksiyonu (updateFootball'un hemen üstüne ekleyin)
+async function fetchFootballData(dateStr) {
+    const url = `https://api.football-data.org/v4/matches?dateFrom=${dateStr}&dateTo=${dateStr}`;
+    const API_TOKEN = "2c7fa35b004b4caeadf72d7d97df12b3"; // Kendi Token'ınız
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "X-Auth-Token": API_TOKEN,
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) return null;
+        return await response.json();
+    } catch (e) {
+        console.error("❌ Fetch Hatası (Football-Data):", e.message);
+        return null;
+    }
+}
+
+// 2. Yeni ve Engelsiz updateFootball Fonksiyonu
 async function updateFootball(targetDates = [getTRDate(0)]) {
-    console.log(`⚽ Futbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
+    console.log(`⚽ Futbol güncelleniyor... (Taranan gün: ${targetDates.length} | API: Football-Data)`);
 
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
 
+    // Eski cache'i temizle
     for (const [id, state] of previousMatchStates.entries()) {
         if (state.date && !validDates.includes(state.date)) {
-            if (state.status !== 'inprogress') {
-                previousMatchStates.delete(id);
-            }
+            if (state.status !== 'inprogress') previousMatchStates.delete(id);
         }
     }
     saveState();
@@ -929,10 +978,13 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     let allEvents = [];
     let successfulDates = [];
 
+    // Yeni API'den verileri çek
     for (const date of targetDates) {
-        const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
-        if (data?.events) {
-            allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
+        const data = await fetchFootballData(date);
+        if (data && data.matches) {
+            // NOT: Football-Data Ücretsiz planı zaten sadece Elit ligleri (Dünya Kupası, Şampiyonlar Ligi vs.) verir.
+            // Bu yüzden ALL_FOOT_TARGETS filtresine şimdilik gerek yok, gelen her şey elit maçtır.
+            allEvents.push(...data.matches);
             successfulDates.push(date);
         }
     }
@@ -947,53 +999,32 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     }
 
     for (const [id, match] of globalFootballCache.entries()) {
-        if (!validDates.includes(match.fixedDate)) {
-            globalFootballCache.delete(id);
-        }
-    }
-
-    const tff2Matches = allEvents.filter(e => e.tournament?.uniqueTournament?.id === 97);
-    for (const match of tff2Matches) {
-        const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}`);
-        if (detailData?.event?.tournament?.id) {
-            match.tournament.id = detailData.event.tournament.id;
-        }
+        if (!validDates.includes(match.fixedDate)) globalFootballCache.delete(id);
     }
 
     let futbolMatchesLog = [];
 
     allEvents.forEach(e => {
-        const statusType = e.status?.type || "";
-        const statusDesc = e.status?.description || "";
+        const status = e.status; // SCHEDULED, TIMED, IN_PLAY, PAUSED, FINISHED, POSTPONED, CANCELLED
 
-        if (statusType === 'canceled' || statusType === 'postponed' || statusDesc.toLowerCase() === 'canceled' || statusDesc.toLowerCase() === 'postponed') {
-            return;
-        }
+        if (status === 'CANCELLED' || status === 'POSTPONED') return;
 
-        const status = e.status.type;
-        const isLive = status === 'inprogress';
-        const isSuspended = status === 'suspended' || status === 'interrupted' || status === 'abandoned';
-        const leagueId = e.tournament?.uniqueTournament?.id;
-        const hName = e.homeTeam.name || "";
-        const aName = e.awayTeam.name || "";
-        const tName = e.tournament?.name || "";
-        const utName = e.tournament?.uniqueTournament?.name || "";
-        let cleanTournamentName = footballLeagues[leagueId] || e.tournament?.name || utName;
+        const isLive = status === 'IN_PLAY' || status === 'PAUSED';
+        const isSuspended = status === 'SUSPENDED' || status === 'AWARDED';
+        
+        const leagueId = e.competition.id;
+        const hName = e.homeTeam.name || e.homeTeam.shortName || "Bilinmiyor";
+        const aName = e.awayTeam.name || e.awayTeam.shortName || "Bilinmiyor";
+        const tName = e.competition.name || "";
+        const cleanTournamentName = e.competition.name;
 
-        if (leagueId === 97) {
-            const tId = e.tournament?.id;
-            if (tId === 1993) cleanTournamentName = "TFF 2. Lig (Beyaz Grup)";
-            else if (tId === 1994) cleanTournamentName = "TFF 2. Lig (Kırmızı Grup)";
-            else cleanTournamentName = "TFF 2. Lig";
-        }
-
-        const dateTR = new Date(e.startTimestamp * 1000);
-        const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        const dateUTC = new Date(e.utcDate);
+        const dayTR = dateUTC.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         if (!targetDates.includes(dayTR)) return;
 
-        const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-        const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
-
+        const timeString = dateUTC.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' });
+        
+        const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, "");
         const translatedHome = translateTeam(hName);
         const translatedAway = translateTeam(aName);
 
@@ -1002,51 +1033,39 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
 
         futbolMatchesLog.push({ home: translatedHome, away: translatedAway, kanal: finalBroadcaster, source: result.source });
 
-        let finalHomeScore = (isLive || status === 'finished' || isSuspended) ? String(e.homeScore?.display ?? "0") : "-";
-        let finalAwayScore = (isLive || status === 'finished' || isSuspended) ? String(e.awayScore?.display ?? "0") : "-";
+        let finalHomeScore = (isLive || status === 'FINISHED') ? String(e.score?.fullTime?.home ?? "0") : "-";
+        let finalAwayScore = (isLive || status === 'FINISHED') ? String(e.score?.fullTime?.away ?? "0") : "-";
 
         let matchSets = [];
-        if (e.homeScore?.penalties !== undefined && e.awayScore?.penalties !== undefined) {
-            matchSets.push(`PEN ${e.homeScore.penalties}-${e.awayScore.penalties}`);
+        if (e.score?.penalties?.home !== undefined && e.score?.penalties?.away !== undefined) {
+            matchSets.push(`PEN ${e.score.penalties.home}-${e.score.penalties.away}`);
         }
 
-        let homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.homeTeam.id}.png`;
-        let awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${e.awayTeam.id}.png`;
-
-        if (NATIONAL_LEAGUES.includes(leagueId) || e.homeTeam.national === true || e.awayTeam.national === true) {
-            const hNameLower = (e.homeTeam.name || "").toLowerCase();
-            const aNameLower = (e.awayTeam.name || "").toLowerCase();
-            const hCode = e.homeTeam?.country?.alpha2?.toLowerCase() || nationalTeamCodes[hNameLower];
-            const aCode = e.awayTeam?.country?.alpha2?.toLowerCase() || nationalTeamCodes[aNameLower];
-            if (hCode) homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${hCode}.png`;
-            if (aCode) awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${aCode}.png`;
-        }
+        // Harika Özellik: API logoları doğrudan (crest) URL olarak veriyor!
+        let homeLogoUrl = e.homeTeam.crest || `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/default.png`;
+        let awayLogoUrl = e.awayTeam.crest || `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/default.png`;
+        let tournamentLogo = e.competition.emblem || `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/default.png`;
 
         globalFootballCache.set(e.id, {
             id: e.id,
-            isElite: ELITE_FOOT_IDS.includes(leagueId),
-            status: status,
-            statusCode: e.status?.code,
-            liveMinute: isLive ? calculateLiveMinute(e) : (isSuspended ? "Durduruldu" : ""),
+            isElite: true, 
+            status: isLive ? 'inprogress' : (status === 'FINISHED' ? 'finished' : 'notstarted'), // Eski koda uyumluluk için
+            statusCode: status,
+            liveMinute: isLive ? "Canlı" : (isSuspended ? "Durduruldu" : ""), // Ücretsiz plan tam dakika vermez
             fixedDate: dayTR,
             fixedTime: timeString,
-            timestamp: e.startTimestamp * 1000,
+            timestamp: dateUTC.getTime(),
             broadcaster: finalBroadcaster,
             homeTeam: { name: translatedHome, logo: homeLogoUrl, id: e.homeTeam.id },
             awayTeam: { name: translatedAway, logo: awayLogoUrl, id: e.awayTeam.id },
-            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`,
+            tournamentLogo: tournamentLogo,
             homeScore: finalHomeScore,
             awayScore: finalAwayScore,
             setScores: matchSets,
             tournament: cleanTournamentName,
-            timeObj: e.time
+            timeObj: { currentPeriodStartTimestamp: dateUTC.getTime() / 1000 }
         });
-                    
-  
     });
-
-        
- 
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
 
@@ -1056,9 +1075,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalFootballCache);
 
-    logMatchesBySport({ futbol: futbolMatchesLog });
-    // 🌟 KESİN VE HIZLI TETİKLEYİCİ
-    // Döngü bitti, cache tamamen doldu, şimdi güvenle tetikleyebiliriz!
+    // 🌟 KESİN VE HIZLI TETİKLEYİCİ (Live Activities)
     const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
     const forcedMatches = forcedSnapshot.val() || {};
 
@@ -1071,7 +1088,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     }
 
     logMatchesBySport({ futbol: futbolMatchesLog });
- 
     console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
 
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
