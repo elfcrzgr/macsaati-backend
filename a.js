@@ -196,16 +196,18 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
-// 🔥 API-FOOTBALL FETCH FONKSİYONU
+// 🔥 DOĞRUDAN API-FOOTBALL (API-SPORTS) FETCH FONKSİYONU
 async function fetchData(url) {
     try {
-        const RAPIDAPI_HOST = 'api-football-v1.p.rapidapi.com';
-        const RAPIDAPI_KEY = 'BURAYA_YEPYENI_RAPIDAPI_ANAHTARINI_YAPISTIR'; // ⚠️ BURAYI YENİ ANAHTARLA DOLDUR
+        // Eski RapidAPI linkini otomatik olarak Doğrudan API-Football linkine çeviriyoruz
+        const directUrl = url.replace('api-football-v1.p.rapidapi.com/v3', 'v3.football.api-sports.io');
+        
+        // ⚠️ DOĞRUDAN API-FOOTBALL.COM'DAN ALDIĞIN ANAHTARI BURAYA YAPIŞTIR
+        const API_SPORTS_KEY = '870e5a7510c80ee4e84491d6c891bfe7'; 
 
-        const response = await axios.get(url, {
+        const response = await axios.get(directUrl, {
             headers: {
-                'x-rapidapi-host': RAPIDAPI_HOST,
-                'x-rapidapi-key': RAPIDAPI_KEY
+                'x-apisports-key': API_SPORTS_KEY // DİKKAT: RapidAPI başlığı yerine API-Sports başlığı!
             },
             timeout: 10000 
         });
@@ -217,13 +219,13 @@ async function fetchData(url) {
     } catch (e) {
         const status = e.response ? e.response.status : null;
         if (status === 403) {
-            console.error(`❌ API-Football Hatası: HTTP 403 (Anahtar Yasaklı veya Ücretsiz Plana Abone Olunmamış!)`);
+            console.error(`❌ API-Football Hatası: HTTP 403 (Anahtar Geçersiz veya Hesabın Onaylanmamış!)`);
         } else if (status === 429) {
             console.error(`❌ API-Football Hatası: HTTP 429 (Hız/İstek Limiti Aşıldı!)`);
         } else {
             console.error(`❌ API-Football Hatası: HTTP ${status || e.message}`);
         }
-        return null; // Hata durumunda boş dizi [] yerine null dönüyoruz ki sistem hatayı anlasın
+        return null; // Güvenlik kalkanı için null dönüyoruz
     }
 }
 
