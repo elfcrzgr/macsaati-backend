@@ -278,6 +278,25 @@ const footballLeagues = {
     71: "Brezilya Serie A", 119: "Hollanda Eredivisie", 144: "Belçika Pro League"
 };
 
+// [API-FOOTBALL LİG ID'Sİ] : [SENİN GITHUB'DAKİ SOFASCORE LİG ID'N]
+const tournamentLogoMapper = {
+    39: 17,    // İngiltere Premier Lig
+    140: 8,    // İspanya La Liga
+    78: 35,    // Almanya Bundesliga
+    135: 23,   // İtalya Serie A
+    61: 34,    // Fransa Ligue 1
+    203: 52,   // Türkiye Süper Lig
+    204: 98,   // Trendyol 1. Lig
+    205: 97,   // TFF 2. Lig
+    206: 938,  // Türkiye Kupası
+    2: 7,      // Şampiyonlar Ligi
+    3: 679,    // Avrupa Ligi
+    848: 17015,// Konferans Ligi
+    1: 16,     // Dünya Kupası
+    4: 1,      // UEFA EURO
+    9: 133     // Copa America
+};
+
 const getFootBroadcaster = (leagueId, hName, aName) => {
     const hn = (hName || "").toLowerCase();
     const an = (aName || "").toLowerCase();
@@ -612,24 +631,19 @@ async function updateFootball(targetDates) {
         const url = `https://api-football-v1.p.rapidapi.com/v3/fixtures?date=${date}`;
         const fixtures = await fetchData(url);
         
-        // Eğer veriler başarıyla gelmişse listeye ekle
         if (fixtures !== null) {
             allFixtures.push(...fixtures.filter(f => ALL_FOOT_TARGETS.includes(f.league.id)));
             apiSuccessCount++;
         }
 
-        // ⚠️ 429 HATASINI ENGELLEMEK İÇİN KİLİT NOKTA:
-        // Her günün isteği arasında sistemi zorunlu olarak 2 saniye dinlendiriyoruz.
         await new Promise(r => setTimeout(r, 2000));
     }
 
-    // 🛡️ GÜVENLİK KALKANI: API çöktüyse veya banlandıysa eski maçları silme!
     if (apiSuccessCount === 0) {
         console.log("⚠️ API'den hiçbir veri alınamadı! (Hata veya Kota aşımı). Mevcut liste korunuyor...");
-        return; // Fonksiyonu durdur ve hafızayı silmesini engelle
+        return; 
     }
 
-    // API başarılıysa hafıza temizliği yapabiliriz
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
     for (const [id, state] of previousMatchStates.entries()) {
         if (state.date && !validDates.includes(state.date)) {
@@ -692,6 +706,12 @@ async function updateFootball(targetDates) {
         const finalHomeScore = (status === 'inprogress' || status === 'finished') ? String(e.goals.home ?? "0") : "-";
         const finalAwayScore = (status === 'inprogress' || status === 'finished') ? String(e.goals.away ?? "0") : "-";
 
+        // 🔥 LOGO KÖPRÜSÜ (MAPPER) DEVREDE:
+        const repoLogoId = tournamentLogoMapper[leagueId];
+        const finalTournamentLogo = repoLogoId 
+            ? `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${repoLogoId}.png`
+            : e.league.logo;
+
         globalFootballCache.set(e.fixture.id, {
             id: e.fixture.id,
             isElite: ELITE_FOOT_IDS.includes(leagueId),
@@ -704,7 +724,7 @@ async function updateFootball(targetDates) {
             broadcaster: finalBroadcaster,
             homeTeam: { name: hName, logo: e.teams.home.logo, id: e.teams.home.id },
             awayTeam: { name: aName, logo: e.teams.away.logo, id: e.teams.away.id },
-            tournamentLogo: e.league.logo,
+            tournamentLogo: finalTournamentLogo, // Artık GitHub'dan çekecek!
             homeScore: finalHomeScore,
             awayScore: finalAwayScore,
             setScores: [],
