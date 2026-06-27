@@ -652,13 +652,14 @@ async function checkAndSendNotifications(newMatches) {
 // 🔥 ID ÇEVİRİCİ: API-Football ID -> SofaScore/GitHub ID
 
 
+
 async function updateFootball(targetDates) {
-    console.log(`⚽ Sadece Dünya Kupası verisi çekiliyor...`);
+    console.log(`⚽ Tüm maçlar çekiliyor (ID tespiti için)...`);
     let allFixtures = [];
 
     for (const date of targetDates) {
-        // 🔥 league=1 (Dünya Kupası) filtresi ile istek atıyoruz
-        const url = `https://v3.football.api-sports.io/fixtures?date=${date}&league=1&season=2026`;
+        // 🔥 FİLTRESİZ URL: Tüm maçları getir ki lig ID'sini gözümüzle görelim
+        const url = `https://v3.football.api-sports.io/fixtures?date=${date}&season=2026`;
         const fixtures = await fetchData(url);
         
         if (fixtures !== null) {
@@ -668,15 +669,13 @@ async function updateFootball(targetDates) {
     }
 
     if (allFixtures.length === 0) {
-        console.log("⚠️ Dünya Kupası maçı bulunamadı.");
+        console.log("⚠️ Bugün hiçbir maç bulunamadı.");
         return; 
     }
 
-    // 🔥 BURADA TÜM TAKIM ID'LERİNİ BİR KERELİĞİNE LİSTELİYORUZ
-    // Kodu çalıştır, terminale bak, burada takım isimlerini ve ID'lerini göreceksin
+    // 🔥 ID TESPİTİ İÇİN LOG
     allFixtures.forEach(e => {
-        console.log(`🔍 Takım: ${e.teams.home.name} | API ID: ${e.teams.home.id}`);
-        console.log(`🔍 Takım: ${e.teams.away.name} | API ID: ${e.teams.away.id}`);
+        console.log(`🔍 LİG: ${e.league.name} (ID: ${e.league.id}) | MAÇ: ${e.teams.home.name} vs ${e.teams.away.name} (API ID: ${e.teams.home.id})`);
     });
 
     globalFootballCache.clear(); 
@@ -685,7 +684,7 @@ async function updateFootball(targetDates) {
         const hName = translateTeam(e.teams.home.name);
         const aName = translateTeam(e.teams.away.name);
         
-        // 🔥 LOGO EŞLEŞTİRME: TeamID mapper'da varsa kullan, yoksa API'den geleni kullan
+        // Logo için mapper
         const homeId = teamIdMapper[e.teams.home.id] || e.teams.home.id;
         const awayId = teamIdMapper[e.teams.away.id] || e.teams.away.id;
         
@@ -702,13 +701,28 @@ async function updateFootball(targetDates) {
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/16.png`,
             homeScore: String(e.goals.home ?? "0"),
             awayScore: String(e.goals.away ?? "0"),
-            tournament: "FIFA Dünya Kupası"
+            tournament: e.league.name // Dinamik lig adı
         });
     });
 
     await uploadToFirebase("football", { success: true, matches: Array.from(globalFootballCache.values()) });
-    console.log(`✅ ${globalFootballCache.size} Dünya Kupası maçı başarıyla yüklendi.`);
+    console.log(`✅ ${globalFootballCache.size} maç işlendi.`);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // =========================================================================
 // 🆕 AKILLI DÖNGÜ (SMART POLLING) - KOTA KORUYUCU
 // =========================================================================
