@@ -220,40 +220,25 @@ async function fetchData(url) {
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // 1. Verilerin asıl bulunduğu API sunucusuna yöneliyoruz.
-        let cleanUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-        
-        // 2. URL'nin sonundaki '?_=17825...' gibi bozucu parametreleri kesip atıyoruz (404 sebebi).
-        cleanUrl = cleanUrl.split('?')[0]; 
+        // URL ile hiç oynamıyoruz (api.sofascore YAPMIYORUZ).
+        // Sadece URL'yi güvenli formata çevirip ücretsiz AllOrigins proxy tüneline sokuyoruz.
+        // Bu servis Cloudflare'i kendi güçlü sunucularında aşıp bize sadece JSON'ı getirecek.
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
 
-        // 3. Googlebot kimliği ile CF duvarını aşıp doğru rotadan veriyi istiyoruz.
-        const curlCommand = `curl -s -L --compressed \
-            -A "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" \
-            -H "Accept: application/json" \
-            -H "Origin: https://www.sofascore.com" \
-            -H "Referer: https://www.sofascore.com/" \
-            -H "Connection: keep-alive" \
-            "${cleanUrl}"`;
+        // Termux'ta (fetch failed) hatası verdirmeyen Axios ile isteği atıyoruz.
+        const response = await axios.get(proxyUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                "Accept": "application/json"
+            },
+            timeout: 15000 // Termux ağ yavaşlıklarına karşı 15 saniye zaman aşımı
+        });
 
-        const { stdout } = await execPromise(curlCommand);
-
-        if (!stdout || stdout.trim().startsWith('<')) {
-            console.log(`⚠️ CF Engeli / HTML Döndü: ${cleanUrl.split('/').pop()}`);
-            return null;
-        }
-
-        const data = JSON.parse(stdout);
-        
-        // Hata devam ederse bize net olarak gösterecek
-        if (data.error) {
-            console.log(`🔍 [DEBUG] Sofascore Yanıtı:`, JSON.stringify(data));
-            return null;
-        }
-
-        return data;
+        return response.data;
 
     } catch (e) {
-        console.error(`❌ Fetch Hatası:`, e.message);
+        // Eğer proxy yanıt vermezse hatayı net görelim
+        console.error(`❌ Axios Proxy Hatası:`, e.response ? `HTTP ${e.response.status}` : e.message);
         return null;
     }
 }
