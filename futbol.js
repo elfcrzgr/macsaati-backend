@@ -132,9 +132,18 @@ async function fetchData(url) {
         const directUrl = url.replace('api-football-v1.p.rapidapi.com/v3', 'v3.football.api-sports.io');
         const API_SPORTS_KEY = '870e5a7510c80ee4e84491d6c891bfe7'; 
         const response = await axios.get(directUrl, { headers: { 'x-apisports-key': API_SPORTS_KEY }, timeout: 10000 });
+        
+        // Gizli API Hatalarını Yakalama
+        if (response.data && response.data.errors && Object.keys(response.data.errors).length > 0) {
+            console.log(`⚠️ API-SPORTS İZİN HATASI:`, response.data.errors);
+        }
+
         if (response.data && response.data.response) return response.data.response;
         return [];
-    } catch (e) { return null; }
+    } catch (e) { 
+        console.error(`❌ BAĞLANTI HATASI:`, e.message);
+        return null; 
+    }
 }
 
 const getTRDate = (offset = 0) => {
@@ -315,10 +324,19 @@ async function updateFootball(targetDates) {
     let allFixtures = []; let apiSuccessCount = 0;
 
     for (const date of targetDates) {
-        const url = `https://v3.football.api-sports.io/fixtures?date=${date}`;
+        // 🔥 Timezone eklendi! Artık API bizim saat dilimimize göre 1 günü tam verecek
+        const url = `https://v3.football.api-sports.io/fixtures?date=${date}&timezone=Europe/Istanbul`;
         const fixtures = await fetchData(url);
-        if (fixtures !== null && fixtures.length > 0) {
-            allFixtures.push(...fixtures.filter(f => ALL_FOOT_TARGETS.includes(f.league.id)));
+        
+        if (fixtures !== null) {
+            const currentDayMatches = fixtures.filter(f => ALL_FOOT_TARGETS.includes(f.league.id));
+            
+            // 🚨 Hangi güne kaç maç geldiğini bizzat terminalde görebilmen için log koyduk:
+            console.log(`  📅 ${date} tarihi için API'den ${currentDayMatches.length} maç geldi.`);
+            
+            if (currentDayMatches.length > 0) {
+                allFixtures.push(...currentDayMatches);
+            }
             apiSuccessCount++;
         }
         await new Promise(r => setTimeout(r, 1000));
@@ -326,12 +344,12 @@ async function updateFootball(targetDates) {
 
     if (apiSuccessCount === 0) return { hasLiveMatch: sportUpdateStatus.hasLiveMatch, nextMatchTimestamp: sportUpdateStatus.nextMatchTime }; 
 
-    // 🔥 DÜZELTME BURADA YAPILDI: previousMatchga yerine previousMatchStates
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
     for (const [id, state] of previousMatchStates.entries()) {
         if (state.date && !validDates.includes(state.date) && state.status !== 'inprogress') previousMatchStates.delete(id);
     }
     saveState();
+    
     for (const [id, match] of globalFootballCache.entries()) {
         if (!validDates.includes(match.fixedDate)) globalFootballCache.delete(id);
     }
@@ -420,7 +438,11 @@ async function main() {
                 const footballResult = await updateFootball(days4);
                 sportUpdateStatus.nextMatchTime = footballResult.nextMatchTimestamp;
                 sportUpdateStatus.hasLiveMatch = footballResult.hasLiveMatch;
+                
+                // 🔥 Çifte Vuruş (Double Fetch) Hatası Çözümü: 
+                // Periyodik güncelleme yapıldığında Hızlı Döngü'nün hemen peşinden uyanmasını engelliyoruz.
                 lastPeriodicUpdate = now;
+                sportUpdateStatus.lastQuickUpdate = now; 
             }
 
             const isFootballActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - TEN_MIN_MS * 2));
