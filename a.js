@@ -226,36 +226,33 @@ async function fetchData(url) {
         const cleanUrl = url.split('?')[0];
         const urlObj = new URL(cleanUrl);
         
-        // 2. Orijinal URL'nin sadece dizin (path) kısmını alıyoruz
-        let urlPath = urlObj.pathname;
+        // 2. Orijinal URL'nin tam dizinini alıyoruz (örn: /api/v1/sport/football/...)
+        const urlPath = urlObj.pathname;
 
-        // 3. RapidAPI'nin kendi dizin yapısına (sport/football yerine category/1) uyum sağlıyoruz
-        if (urlPath.includes('/sport/football/scheduled-events/')) {
-            urlPath = urlPath.replace('/sport/football/scheduled-events/', '/category/1/scheduled-events/');
-        }
-
-        // 🔑 RAPID API BİLGİLERİ (Ekran görüntüsünden alındı)
+        // 🔑 RAPID API BİLGİLERİ
         const RAPIDAPI_HOST = 'sportapi7.p.rapidapi.com'; 
         const RAPIDAPI_KEY = 'cad6c68efcmsh7c24a8027e11c40p14ed36jsn35b749942faa';
 
-        // 4. Hedef tünel adresini oluşturuyoruz
+        // 3. Yanlış kategoriye değil, orijinal "sport/football" adresine yönlendiriyoruz!
         const rapidApiUrl = `https://${RAPIDAPI_HOST}${urlPath}`;
 
-        // 5. Axios ile RapidAPI üzerinden resmi sorguyu yapıyoruz
         const response = await axios.get(rapidApiUrl, {
             headers: {
                 'x-rapidapi-host': RAPIDAPI_HOST,
                 'x-rapidapi-key': RAPIDAPI_KEY,
                 'Content-Type': 'application/json'
             },
-            timeout: 15000 // Termux ağ gecikmelerine karşı 15 saniye tolerans
+            timeout: 15000 
         });
 
-        // Veri başarıyla RapidAPI tünelinden geldi!
+        // Hangi günden kaç ham maç bulduğunu ekranda görmek için ufak bir log
+        if (response.data && response.data.events) {
+            console.log(`🔍 [DEBUG] RapidAPI: ${urlPath.split('/').pop()} için ${response.data.events.length} ham maç çekildi.`);
+        }
+
         return response.data;
 
     } catch (e) {
-        // Hata durumunda sorunun CF'den mi API'den mi olduğunu logluyoruz
         const endpoint = url.split('/').pop().split('?')[0];
         console.error(`❌ RapidAPI Hatası (${endpoint}):`, e.response ? `HTTP ${e.response.status}` : e.message);
         return null;
