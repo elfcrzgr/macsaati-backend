@@ -220,18 +220,19 @@ async function fetchData(url) {
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        // BÜYÜK DEĞİŞİKLİK: .replace satırını TAMAMEN SİLDİK! 
+        // Yanlış odaya (api.) gitmek yerine doğrudan orijinal (www.) hedefine gidiyoruz.
 
-        // BÜYÜK HİLE: CF'yi aşmak için Google Arama Motoru kılığına giriyoruz!
         const curlCommand = `curl -s -L --compressed \
             -H "User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" \
             -H "Accept: application/json" \
             -H "Connection: keep-alive" \
-            "${mobileUrl}"`;
+            "${url}"`; // mobileUrl yerine doğrudan orijinal url parametresini kullanıyoruz
 
         const { stdout } = await execPromise(curlCommand);
 
         if (!stdout || stdout.trim().startsWith('<')) {
+            console.log(`⚠️ CF Engeli / HTML Döndü: ${url.split('/').pop()}`);
             return null;
         }
 
@@ -249,7 +250,6 @@ async function fetchData(url) {
         return null;
     }
 }
-
 
 
 const getTRDate = (offset = 0) => {
