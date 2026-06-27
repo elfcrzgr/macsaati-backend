@@ -495,7 +495,8 @@ const teamTranslations = {
     "costa rica": "Kosta Rika", "jamaica": "Jamaika", "panama": "Panama", "honduras": "Honduras",
     "curaçao": "Curaçao", "curacao": "Curaçao", "dr congo": "Demokratik Kongo", 
     "ivory coast": "Fildişi Sahili", "south korea": "Güney Kore", "japan": "Japonya", 
-    "iran": "İran", "saudi arabia": "Suudi Arabistan", "qatar": "Katar", "australia": "Avustralya"
+    "iran": "İran", "saudi arabia": "Suudi Arabistan", "qatar": "Katar", "australia": "Avustralya", "New Zealand" : "Yeni Zellanda", "Egytp" : "Mısır", "Cape Verde Islands": "Yeşil Burun Adaları", "Ghana": "Gana",
+    
 };
 
 const translateTeam = (name) => {
