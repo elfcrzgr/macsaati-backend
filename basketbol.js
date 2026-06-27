@@ -43,6 +43,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
         for (const m of dayData.matches) {
             if (m.spor && toTR(m.spor) === toTR(sportCategory)) {
                 const mTime = (m.saat || "").replace('.', ':').trim();
+                const [mH, mM] = mTime.split(':').map(Number);
                 const mTitle = toTR(m.mac || "");
                 const getCleanWords = (str) => str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g').replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's').replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c').replace(/ı/g, 'i').toLowerCase().replace(/[^a-z0-9]/g, ' ').split(' ').map(w => w.trim()).filter(w => w.length >= 3);
                 
