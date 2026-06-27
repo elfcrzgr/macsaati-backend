@@ -223,56 +223,39 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        // 1. URL'nin sonundaki bozan '?_=' parametresini kesiyoruz ve orijinal api hedefine çeviriyoruz
-        const cleanUrl = url.replace('www.sofascore.com', 'api.sofascore.com').split('?')[0];
+        const delay = Math.floor(Math.random() * 1000) + 500;
+        await new Promise(r => setTimeout(r, delay));
 
-        // 2. CF engellerini ve ağ kısıtlamalarını aşacak ÜCRETSİZ proxy tünelleri havuzu
-        const proxies = [
-            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(cleanUrl)}`,
-            `https://corsproxy.io/?${encodeURIComponent(cleanUrl)}`,
-            `https://api.allorigins.win/get?url=${encodeURIComponent(cleanUrl)}`
-        ];
+        // DİKKAT: WWW'yi silmiyoruz, api.sofascore yapmıyoruz!
+        // Sadece URL'nin sonuna yapışan ve 404 verdiren '?_=178...' kısmını kesiyoruz.
+        const cleanUrl = url.split('?')[0];
 
-        // 3. Tünelleri sırayla deniyoruz
-        for (let i = 0; i < proxies.length; i++) {
-            try {
-                const delay = Math.floor(Math.random() * 1000) + 500;
-                await new Promise(r => setTimeout(r, delay));
+        // 1. Ana Tünelimiz (Codetabs)
+        let proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(cleanUrl)}`;
 
-                const response = await axios.get(proxies[i], {
-                    headers: {
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                        "Accept": "application/json"
-                    },
-                    timeout: 12000 // 12 saniye tolerans (Termux ağ dalgalanmaları için)
-                });
-
-                let data = response.data;
-
-                // Allorigins tünelinde veriler "contents" içinde JSON string olarak döner
-                if (proxies[i].includes('allorigins') && data.contents) {
-                    data = JSON.parse(data.contents);
-                }
-
-                // Gelen veride maçlar var mı?
-                if (data && data.events) {
-                    console.log(`✅ [BAŞARILI] Maçlar çekildi! (Kanal: Proxy ${i + 1} - ${cleanUrl.split('/').pop()})`);
-                    return data;
-                }
-
-            } catch (e) {
-                // Eğer bu proxy CF'ye takılırsa veya çökerse sistemi durdurma, sessizce diğerine geç
-                console.log(`⚠️ Proxy ${i + 1} başarısız oldu, diğer tünele geçiliyor...`);
-                continue;
+        try {
+            const res1 = await axios.get(proxyUrl, { timeout: 12000 });
+            if (res1.data && res1.data.events) {
+                console.log(`✅ [BAŞARILI] Ana tünelden veri çekildi.`);
+                return res1.data;
+            }
+        } catch (err1) {
+            console.log(`⚠️ Ana tünel yanıt vermedi, yedek tünele geçiliyor...`);
+            
+            // 2. Yedek Tünelimiz (Corsproxy)
+            proxyUrl = `https://corsproxy.io/?${encodeURIComponent(cleanUrl)}`;
+            const res2 = await axios.get(proxyUrl, { timeout: 12000 });
+            
+            if (res2.data && res2.data.events) {
+                console.log(`✅ [BAŞARILI] Yedek tünelden veri çekildi.`);
+                return res2.data;
             }
         }
 
-        // Bütün tüneller çökerse sistemi korumaya al (önbellekten devam etsin)
-        console.error(`❌ Tüm proxy tünelleri patladı. API yanıt vermedi.`);
-        return null;
+        return null; // Her ikisi de çökerse sistem kendi önbelleğinden devam eder
 
     } catch (e) {
-        console.error(`❌ Genel Fetch Hatası:`, e.message);
+        console.error(`❌ Veri Çekme Hatası:`, e.message);
         return null;
     }
 }
