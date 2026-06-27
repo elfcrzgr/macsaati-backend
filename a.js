@@ -211,38 +211,55 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
+
+
+
+
 async function fetchData(url) {
     try {
         // İnsansı bir gecikme ekliyoruz (500ms - 1500ms arası)
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        // DİKKAT: url.replace('www...', 'api...') KISMINI SİLDİK! 
+        // İstekler doğrudan www üzerinden gidecek.
 
-        // Axios ile tam bir Android cihaz taklidi yapıyoruz
-        const response = await axios.get(mobileUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Linux; Android 13; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Origin": "https://www.sofascore.com",
-                "Referer": "https://www.sofascore.com/",
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-site",
-                "Connection": "keep-alive",
-                "Cache-Control": "no-cache"
-            },
-            timeout: 10000 // Termux olası ağ kopmalarına karşı 10 saniye zaman aşımı
-        });
+        // Termux'un yerleşik curl komutunu kullanarak Node.js kimliğimizi tamamen gizliyoruz.
+        // --compressed parametresi veriyi küçültüp hızı artırır.
+        // -s (silent) terminali gereksiz loglardan temizler.
+        const curlCommand = `curl -s -L --compressed \
+            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
+            -H "Accept: application/json, text/plain, */*" \
+            -H "Accept-Language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7" \
+            -H "Origin: https://www.sofascore.com" \
+            -H "Referer: https://www.sofascore.com/" \
+            -H "Sec-Fetch-Dest: empty" \
+            -H "Sec-Fetch-Mode: cors" \
+            -H "Sec-Fetch-Site: same-site" \
+            "${url}"`;
 
-        return response.data;
+        // İsteği Node.js üzerinden değil, arka planda işletim sistemi üzerinden atıyoruz.
+        const { stdout } = await execPromise(curlCommand);
+
+        // Eğer Sofascore inat edip HTML (Cloudflare engel sayfası) dönerse sistemi çökertmeden yakalayalım.
+        if (!stdout || stdout.trim().startsWith('<') || stdout.includes('Cloudflare')) {
+            console.log(`⚠️ Curl Reddi (CF Engeli) - URL: ${url.split('/').pop()}`);
+            return null;
+        }
+
+        // Gelen tertemiz String veriyi JSON formatına çeviriyoruz.
+        return JSON.parse(stdout);
+
     } catch (e) {
-        // Hata alırsak sorunun ağdan mı yoksa 403'ten mi olduğunu net göreceğiz
-        console.error(`❌ Axios Hatası (${url.split('/').pop()}):`, e.response ? `HTTP ${e.response.status}` : e.message);
+        console.error(`❌ Curl Çalıştırma Hatası:`, e.message);
         return null;
     }
 }
+
+
+
+
+
 const getTRDate = (offset = 0) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
