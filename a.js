@@ -493,10 +493,24 @@ const teamTranslations = {
     "bolivia": "Bolivya", "ecuador": "Ekvador",
     "usa": "ABD", "united states": "ABD", "mexico": "Meksika", "canada": "Kanada",
     "costa rica": "Kosta Rika", "jamaica": "Jamaika", "panama": "Panama", "honduras": "Honduras",
-    "curaçao": "Curaçao", "curacao": "Curaçao", "dr congo": "Demokratik Kongo", 
-    "ivory coast": "Fildişi Sahili", "south korea": "Güney Kore", "japan": "Japonya", 
-    "iran": "İran", "saudi arabia": "Suudi Arabistan", "qatar": "Katar", "australia": "Avustralya", "New Zealand" : "Yeni Zellanda", "Egytp" : "Mısır", "Cape Verde Islands": "Yeşil Burun Adaları", "Ghana": "Gana",
-    
+    "curaçao": "Curaçao", "curacao": "Curaçao", "british virgin islands": "Britanya Virjin Adaları",
+    "dominican republic": "Dominik Cumhuriyeti", "el salvador": "El Salvador",
+    "cayman islands": "Cayman Adaları", "nicaragua": "Nikaragua", "haiti": "Haiti",
+    "senegal": "Senegal", "morocco": "Fas", "egypt": "Mısır", "tunisia": "Tunus", "nigeria": "Nijerya",
+    "cameroon": "Kamerun", "ghana": "Gana", "algeria": "Cezayir", "south africa": "Güney Afrika", "mali": "Mali",
+    "cabo verde": "Yeşil Burun Adaları", "cape verde": "Yeşil Burun Adaları", "madagascar": "Madagaskar",
+    "dr congo": "Demokratik Kongo", "democratic republic of the congo": "Demokratik Kongo", "guinea": "Gine",
+    "lesotho": "Lesotho", "kenya": "Kenya", "benin": "Benin", "niger": "Nijer",
+    "sierra leone": "Sierra Leone", "liberia": "Liberya",
+    "ivory coast": "Fildişi Sahili", "cote d'ivoire": "Fildişi Sahili", "côte d'ivoire": "Fildişi Sahili",
+    "south korea": "Güney Kore", "japan": "Japonya", "iran": "İran", "saudi arabia": "Suudi Arabistan",
+    "qatar": "Katar", "australia": "Avustralya", "new zealand": "Yeni Zelanda", "china": "Çin",
+    "india": "Hindistan", "united arab emirates": "BAE", "uae": "BAE", "iraq": "Irak", "uzbekistan": "Özbekistan",
+    "jordan": "Ürdün", "maldives": "Maldivler", "afghanistan": "Afganistan", "philippines": "Filipinler",
+    "guam": "Guam", "bangladesh": "Bangladeş", "pakistan": "Pakistan", "cambodia": "Kamboçya",
+    "bhutan": "Butan", "indonesia": "Endonezya", "oman": "Umman", "tajikistan": "Tacikistan",
+    "syria": "Suriye", "bahrain": "Bahreyn", "hong kong": "Hong Kong", "mongolia": "Moğolistan",
+    "thailand": "Tayland", "kuwait": "Kuveyt", "myanmar": "Myanmar"
 };
 
 const translateTeam = (name) => {
