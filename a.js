@@ -649,138 +649,66 @@ async function checkAndSendNotifications(newMatches) {
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME (API-FOOTBALL UYUMLU)
 // =========================================================================
-async function updateFootball(targetDates) {
-    console.log(`⚽ Futbol verisi API-Football'dan çekiliyor... (Gün sayısı: ${targetDates.length})`);
+// 🔥 ID ÇEVİRİCİ: API-Football ID -> SofaScore/GitHub ID
 
+
+async function updateFootball(targetDates) {
+    console.log(`⚽ Sadece Dünya Kupası verisi çekiliyor...`);
     let allFixtures = [];
-    let apiSuccessCount = 0;
 
     for (const date of targetDates) {
-        const url = `https://api-football-v1.p.rapidapi.com/v3/fixtures?date=${date}`;
+        // 🔥 league=1 (Dünya Kupası) filtresi ile istek atıyoruz
+        const url = `https://v3.football.api-sports.io/fixtures?date=${date}&league=1&season=2026`;
         const fixtures = await fetchData(url);
         
         if (fixtures !== null) {
-            allFixtures.push(...fixtures.filter(f => ALL_FOOT_TARGETS.includes(f.league.id)));
-            apiSuccessCount++;
+            allFixtures.push(...fixtures);
         }
-
         await new Promise(r => setTimeout(r, 2000));
     }
 
-    if (apiSuccessCount === 0) {
-        console.log("⚠️ API'den hiçbir veri alınamadı! (Hata veya Kota aşımı). Mevcut liste korunuyor...");
+    if (allFixtures.length === 0) {
+        console.log("⚠️ Dünya Kupası maçı bulunamadı.");
         return; 
     }
 
-    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
-    for (const [id, state] of previousMatchStates.entries()) {
-        if (state.date && !validDates.includes(state.date)) {
-            if (state.status !== 'inprogress') {
-                previousMatchStates.delete(id);
-            }
-        }
-    }
-    saveState();
+    // 🔥 BURADA TÜM TAKIM ID'LERİNİ BİR KERELİĞİNE LİSTELİYORUZ
+    // Kodu çalıştır, terminale bak, burada takım isimlerini ve ID'lerini göreceksin
+    allFixtures.forEach(e => {
+        console.log(`🔍 Takım: ${e.teams.home.name} | API ID: ${e.teams.home.id}`);
+        console.log(`🔍 Takım: ${e.teams.away.name} | API ID: ${e.teams.away.id}`);
+    });
 
-    for (const [id, match] of globalFootballCache.entries()) {
-        if (!validDates.includes(match.fixedDate)) {
-            globalFootballCache.delete(id);
-        }
-    }
-
-    let futbolMatchesLog = [];
+    globalFootballCache.clear(); 
 
     allFixtures.forEach(e => {
-        const shortStatus = e.fixture.status.short;
-        if (['PST', 'CANC', 'ABD', 'AWD', 'WO'].includes(shortStatus)) return;
-
-        let status = 'notstarted';
-        let statusCode = 0;
-        let liveMinute = "";
-        let timeObj = {};
-
-        if (['1H', 'HT', '2H', 'ET', 'BT', 'P', 'LIVE'].includes(shortStatus)) {
-            status = 'inprogress';
-            if (shortStatus === '1H') statusCode = 6;
-            else if (shortStatus === 'HT') statusCode = 31;
-            else if (shortStatus === '2H') statusCode = 7;
-            
-            if (shortStatus === 'HT') liveMinute = "İY";
-            else if (shortStatus === 'BT') liveMinute = "UZ İY";
-            else if (shortStatus === 'P') liveMinute = "PEN";
-            else liveMinute = e.fixture.status.elapsed ? `${e.fixture.status.elapsed}'` : "Canlı";
-            
-            timeObj = { currentMinute: e.fixture.status.elapsed || 0 };
-        } 
-        else if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
-            status = 'finished';
-        }
-
-        const leagueId = e.league.id;
         const hName = translateTeam(e.teams.home.name);
         const aName = translateTeam(e.teams.away.name);
-        const cleanTournamentName = footballLeagues[leagueId] || e.league.name;
-
-        const dateTR = new Date(e.fixture.timestamp * 1000);
-        const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-
-        const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName);
-        const result = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
-        const finalBroadcaster = result.kanal;
-
-        futbolMatchesLog.push({ home: hName, away: aName, kanal: finalBroadcaster, source: result.source });
-
-        const finalHomeScore = (status === 'inprogress' || status === 'finished') ? String(e.goals.home ?? "0") : "-";
-        const finalAwayScore = (status === 'inprogress' || status === 'finished') ? String(e.goals.away ?? "0") : "-";
-
-        // 🔥 LOGO KÖPRÜSÜ (MAPPER) DEVREDE:
-        const repoLogoId = tournamentLogoMapper[leagueId];
-        const finalTournamentLogo = repoLogoId 
-            ? `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${repoLogoId}.png`
-            : e.league.logo;
+        
+        // 🔥 LOGO EŞLEŞTİRME: TeamID mapper'da varsa kullan, yoksa API'den geleni kullan
+        const homeId = teamIdMapper[e.teams.home.id] || e.teams.home.id;
+        const awayId = teamIdMapper[e.teams.away.id] || e.teams.away.id;
+        
+        const finalHomeLogo = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${homeId}.png`;
+        const finalAwayLogo = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${awayId}.png`;
 
         globalFootballCache.set(e.fixture.id, {
             id: e.fixture.id,
-            isElite: ELITE_FOOT_IDS.includes(leagueId),
-            status: status,
-            statusCode: statusCode,
-            liveMinute: liveMinute,
-            fixedDate: dayTR,
-            fixedTime: timeString,
-            timestamp: e.fixture.timestamp * 1000,
-            broadcaster: finalBroadcaster,
-            homeTeam: { name: hName, logo: e.teams.home.logo, id: e.teams.home.id },
-            awayTeam: { name: aName, logo: e.teams.away.logo, id: e.teams.away.id },
-            tournamentLogo: finalTournamentLogo, // Artık GitHub'dan çekecek!
-            homeScore: finalHomeScore,
-            awayScore: finalAwayScore,
-            setScores: [],
-            tournament: cleanTournamentName,
-            timeObj: timeObj
+            status: ['1H', 'HT', '2H', 'ET', 'BT', 'P', 'LIVE'].includes(e.fixture.status.short) ? 'inprogress' : 'finished',
+            fixedDate: e.fixture.date.split('T')[0],
+            fixedTime: new Date(e.fixture.timestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
+            homeTeam: { name: hName, logo: finalHomeLogo, id: e.teams.home.id },
+            awayTeam: { name: aName, logo: finalAwayLogo, id: e.teams.away.id },
+            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/16.png`,
+            homeScore: String(e.goals.home ?? "0"),
+            awayScore: String(e.goals.away ?? "0"),
+            tournament: "FIFA Dünya Kupası"
         });
     });
 
-    const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
-    await checkAndSendNotifications(matches);
-    await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
-
-    logMatchesBySport({ futbol: futbolMatchesLog });
-
-    const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
-    const forcedMatches = forcedSnapshot.val() || {};
-    for (const [id, match] of globalFootballCache.entries()) {
-        if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
-            console.log(`🌟 [KRİTİK MAÇ] ${match.homeTeam.name} tetikleniyor...`);
-            await triggerPushToStart(id);
-            triggeredMatches.add(String(id));
-        }
-    }
-
-    const hasLiveMatch = matches.some(m => m.status === 'inprogress');
-    console.log(`  ✅ İşlem tamam. Toplam ${matches.length} maç (${hasLiveMatch ? '🟢 CANLI VAR' : '⚪ CANLI YOK'})`);
+    await uploadToFirebase("football", { success: true, matches: Array.from(globalFootballCache.values()) });
+    console.log(`✅ ${globalFootballCache.size} Dünya Kupası maçı başarıyla yüklendi.`);
 }
-
 // =========================================================================
 // 🆕 AKILLI DÖNGÜ (SMART POLLING) - KOTA KORUYUCU
 // =========================================================================
