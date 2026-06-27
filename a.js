@@ -663,6 +663,14 @@ async function updateFootball(targetDates) {
     let futbolMatchesLog = [];
 
     allFixtures.forEach(e => {
+
+        // 🔥 ID YAKALAMA SATIRLARI
+        console.log(`🔍 MAÇ: ${e.teams.home.name} vs ${e.teams.away.name} | MAÇ ID: ${e.fixture.id} | HOME ID: ${e.teams.home.id} | AWAY ID: ${e.teams.away.id}`);
+
+        const shortStatus = e.fixture.status.short;
+
+
+        
         const shortStatus = e.fixture.status.short;
         if (['PST', 'CANC', 'ABD', 'AWD', 'WO'].includes(shortStatus)) return;
 
