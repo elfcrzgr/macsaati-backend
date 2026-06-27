@@ -246,36 +246,8 @@ const teamTranslations = {
     "poland": "Polonya", "ukraine": "Ukrayna", "czech republic": "Çekya", "czechia": "Çekya",
     "serbia": "Sırbistan", "hungary": "Macaristan", "romania": "Romanya", "greece": "Yunanistan",
     "slovakia": "Slovakya", "wales": "Galler", "scotland": "İskoçya", "ireland": "İrlanda",
-    "northern ireland": "Kuzey İrlanda", "albania": "Arnavutluk", "north macedonia": "Kuzey Makedonya",
-    "georgia": "Gürcistan", "slovenia": "Slovenya", "iceland": "İzlanda", "finland": "Finlandiya",
-    "bosnia & herzegovina": "Bosna-Hersek", "bosnia and herzegovina": "Bosna-Hersek",
-    "montenegro": "Karadağ", "bulgaria": "Bulgaristan", "russia": "Rusya",
-    "israel": "İsrail", "luxembourg": "Lüksemburg", "cyprus": "Kıbrıs Rum Kesimi", "andorra": "Andorra",
-    "liechtenstein": "Lihtenştayn", "azerbaijan": "Azerbaycan", "malta": "Malta", "belarus": "Belarus",
-    "armenia": "Ermenistan", "kazakhstan": "Kazakistan", "gibraltar": "Cebelitarık",
-    "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya",
-    "chile": "Şili", "peru": "Peru", "venezuela": "Venezuela", "paraguay": "Paraguay",
-    "bolivia": "Bolivya", "ecuador": "Ekvador",
     "usa": "ABD", "united states": "ABD", "mexico": "Meksika", "canada": "Kanada",
-    "costa rica": "Kosta Rika", "jamaica": "Jamaika", "panama": "Panama", "honduras": "Honduras",
-    "curaçao": "Curaçao", "curacao": "Curaçao", "british virgin islands": "Britanya Virjin Adaları",
-    "dominican republic": "Dominik Cumhuriyeti", "el salvador": "El Salvador",
-    "cayman islands": "Cayman Adaları", "nicaragua": "Nikaragua", "haiti": "Haiti",
-    "senegal": "Senegal", "morocco": "Fas", "egypt": "Mısır", "tunisia": "Tunus", "nigeria": "Nijerya",
-    "cameroon": "Kamerun", "ghana": "Gana", "algeria": "Cezayir", "south africa": "Güney Afrika", "mali": "Mali",
-    "cabo verde": "Yeşil Burun Adaları", "cape verde": "Yeşil Burun Adaları", "madagascar": "Madagaskar",
-    "dr congo": "Demokratik Kongo", "democratic republic of the congo": "Demokratik Kongo", "guinea": "Gine",
-    "lesotho": "Lesotho", "kenya": "Kenya", "benin": "Benin", "niger": "Nijer",
-    "sierra leone": "Sierra Leone", "liberia": "Liberya",
-    "ivory coast": "Fildişi Sahili", "cote d'ivoire": "Fildişi Sahili", "côte d'ivoire": "Fildişi Sahili",
-    "south korea": "Güney Kore", "japan": "Japonya", "iran": "İran", "saudi arabia": "Suudi Arabistan",
-    "qatar": "Katar", "australia": "Avustralya", "new zealand": "Yeni Zelanda", "china": "Çin",
-    "india": "Hindistan", "united arab emirates": "BAE", "uae": "BAE", "iraq": "Irak", "uzbekistan": "Özbekistan",
-    "jordan": "Ürdün", "maldives": "Maldivler", "afghanistan": "Afganistan", "philippines": "Filipinler",
-    "guam": "Guam", "bangladesh": "Bangladeş", "pakistan": "Pakistan", "cambodia": "Kamboçya",
-    "bhutan": "Butan", "indonesia": "Endonezya", "oman": "Umman", "tajikistan": "Tacikistan",
-    "syria": "Suriye", "bahrain": "Bahreyn", "hong kong": "Hong Kong", "mongolia": "Moğolistan",
-    "thailand": "Tayland", "kuwait": "Kuveyt", "myanmar": "Myanmar"
+    "brazil": "Brezilya", "argentina": "Arjantin", "uruguay": "Uruguay", "colombia": "Kolombiya"
 };
 
 const translateTeam = (name) => {
@@ -649,79 +621,137 @@ async function checkAndSendNotifications(newMatches) {
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME (API-FOOTBALL UYUMLU)
 // =========================================================================
-// 🔥 ID ÇEVİRİCİ: API-Football ID -> SofaScore/GitHub ID
-
-
-
 async function updateFootball(targetDates) {
-    console.log(`⚽ Tüm maçlar çekiliyor (ID tespiti için)...`);
+    console.log(`⚽ Futbol verisi API-Football'dan çekiliyor... (Gün sayısı: ${targetDates.length})`);
+
     let allFixtures = [];
+    let apiSuccessCount = 0;
 
     for (const date of targetDates) {
-        // 🔥 FİLTRESİZ URL: Tüm maçları getir ki lig ID'sini gözümüzle görelim
-        const url = `https://v3.football.api-sports.io/fixtures?date=${date}&season=2026`;
+        const url = `https://api-football-v1.p.rapidapi.com/v3/fixtures?date=${date}`;
         const fixtures = await fetchData(url);
         
         if (fixtures !== null) {
-            allFixtures.push(...fixtures);
+            allFixtures.push(...fixtures.filter(f => ALL_FOOT_TARGETS.includes(f.league.id)));
+            apiSuccessCount++;
         }
+
         await new Promise(r => setTimeout(r, 2000));
     }
 
-    if (allFixtures.length === 0) {
-        console.log("⚠️ Bugün hiçbir maç bulunamadı.");
+    if (apiSuccessCount === 0) {
+        console.log("⚠️ API'den hiçbir veri alınamadı! (Hata veya Kota aşımı). Mevcut liste korunuyor...");
         return; 
     }
 
-    // 🔥 ID TESPİTİ İÇİN LOG
-    allFixtures.forEach(e => {
-        console.log(`🔍 LİG: ${e.league.name} (ID: ${e.league.id}) | MAÇ: ${e.teams.home.name} vs ${e.teams.away.name} (API ID: ${e.teams.home.id})`);
-    });
+    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
+    for (const [id, state] of previousMatchStates.entries()) {
+        if (state.date && !validDates.includes(state.date)) {
+            if (state.status !== 'inprogress') {
+                previousMatchStates.delete(id);
+            }
+        }
+    }
+    saveState();
 
-    globalFootballCache.clear(); 
+    for (const [id, match] of globalFootballCache.entries()) {
+        if (!validDates.includes(match.fixedDate)) {
+            globalFootballCache.delete(id);
+        }
+    }
+
+    let futbolMatchesLog = [];
 
     allFixtures.forEach(e => {
+        const shortStatus = e.fixture.status.short;
+        if (['PST', 'CANC', 'ABD', 'AWD', 'WO'].includes(shortStatus)) return;
+
+        let status = 'notstarted';
+        let statusCode = 0;
+        let liveMinute = "";
+        let timeObj = {};
+
+        if (['1H', 'HT', '2H', 'ET', 'BT', 'P', 'LIVE'].includes(shortStatus)) {
+            status = 'inprogress';
+            if (shortStatus === '1H') statusCode = 6;
+            else if (shortStatus === 'HT') statusCode = 31;
+            else if (shortStatus === '2H') statusCode = 7;
+            
+            if (shortStatus === 'HT') liveMinute = "İY";
+            else if (shortStatus === 'BT') liveMinute = "UZ İY";
+            else if (shortStatus === 'P') liveMinute = "PEN";
+            else liveMinute = e.fixture.status.elapsed ? `${e.fixture.status.elapsed}'` : "Canlı";
+            
+            timeObj = { currentMinute: e.fixture.status.elapsed || 0 };
+        } 
+        else if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
+            status = 'finished';
+        }
+
+        const leagueId = e.league.id;
         const hName = translateTeam(e.teams.home.name);
         const aName = translateTeam(e.teams.away.name);
-        
-        // Logo için mapper
-        const homeId = teamIdMapper[e.teams.home.id] || e.teams.home.id;
-        const awayId = teamIdMapper[e.teams.away.id] || e.teams.away.id;
-        
-        const finalHomeLogo = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${homeId}.png`;
-        const finalAwayLogo = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/logos/${awayId}.png`;
+        const cleanTournamentName = footballLeagues[leagueId] || e.league.name;
+
+        const dateTR = new Date(e.fixture.timestamp * 1000);
+        const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+        const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+
+        const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName);
+        const result = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
+        const finalBroadcaster = result.kanal;
+
+        futbolMatchesLog.push({ home: hName, away: aName, kanal: finalBroadcaster, source: result.source });
+
+        const finalHomeScore = (status === 'inprogress' || status === 'finished') ? String(e.goals.home ?? "0") : "-";
+        const finalAwayScore = (status === 'inprogress' || status === 'finished') ? String(e.goals.away ?? "0") : "-";
+
+        // 🔥 LOGO KÖPRÜSÜ (MAPPER) DEVREDE:
+        const repoLogoId = tournamentLogoMapper[leagueId];
+        const finalTournamentLogo = repoLogoId 
+            ? `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${repoLogoId}.png`
+            : e.league.logo;
 
         globalFootballCache.set(e.fixture.id, {
             id: e.fixture.id,
-            status: ['1H', 'HT', '2H', 'ET', 'BT', 'P', 'LIVE'].includes(e.fixture.status.short) ? 'inprogress' : 'finished',
-            fixedDate: e.fixture.date.split('T')[0],
-            fixedTime: new Date(e.fixture.timestamp * 1000).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
-            homeTeam: { name: hName, logo: finalHomeLogo, id: e.teams.home.id },
-            awayTeam: { name: aName, logo: finalAwayLogo, id: e.teams.away.id },
-            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/16.png`,
-            homeScore: String(e.goals.home ?? "0"),
-            awayScore: String(e.goals.away ?? "0"),
-            tournament: e.league.name // Dinamik lig adı
+            isElite: ELITE_FOOT_IDS.includes(leagueId),
+            status: status,
+            statusCode: statusCode,
+            liveMinute: liveMinute,
+            fixedDate: dayTR,
+            fixedTime: timeString,
+            timestamp: e.fixture.timestamp * 1000,
+            broadcaster: finalBroadcaster,
+            homeTeam: { name: hName, logo: e.teams.home.logo, id: e.teams.home.id },
+            awayTeam: { name: aName, logo: e.teams.away.logo, id: e.teams.away.id },
+            tournamentLogo: finalTournamentLogo, // Artık GitHub'dan çekecek!
+            homeScore: finalHomeScore,
+            awayScore: finalAwayScore,
+            setScores: [],
+            tournament: cleanTournamentName,
+            timeObj: timeObj
         });
     });
 
-    await uploadToFirebase("football", { success: true, matches: Array.from(globalFootballCache.values()) });
-    console.log(`✅ ${globalFootballCache.size} maç işlendi.`);
+    const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
+    await checkAndSendNotifications(matches);
+    await uploadToFirebase("football", { success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
+
+    logMatchesBySport({ futbol: futbolMatchesLog });
+
+    const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
+    const forcedMatches = forcedSnapshot.val() || {};
+    for (const [id, match] of globalFootballCache.entries()) {
+        if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
+            console.log(`🌟 [KRİTİK MAÇ] ${match.homeTeam.name} tetikleniyor...`);
+            await triggerPushToStart(id);
+            triggeredMatches.add(String(id));
+        }
+    }
+
+    const hasLiveMatch = matches.some(m => m.status === 'inprogress');
+    console.log(`  ✅ İşlem tamam. Toplam ${matches.length} maç (${hasLiveMatch ? '🟢 CANLI VAR' : '⚪ CANLI YOK'})`);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // =========================================================================
 // 🆕 AKILLI DÖNGÜ (SMART POLLING) - KOTA KORUYUCU
