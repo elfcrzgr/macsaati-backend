@@ -6,6 +6,7 @@ const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
 const axios = require('axios');
+const cloudscraper = require('cloudscraper');
 const triggeredMatches = new Set();
 
 // =========================================================================
@@ -217,28 +218,29 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
+        // İnsansı gecikme
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // URL ile hiç oynamıyoruz (api.sofascore YAPMIYORUZ).
-        // Sadece URL'yi güvenli formata çevirip ücretsiz AllOrigins proxy tüneline sokuyoruz.
-        // Bu servis Cloudflare'i kendi güçlü sunucularında aşıp bize sadece JSON'ı getirecek.
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-
-        // Termux'ta (fetch failed) hatası verdirmeyen Axios ile isteği atıyoruz.
-        const response = await axios.get(proxyUrl, {
+        // URL ile hiç oynamıyoruz, orijinal adresi cloudscraper'a veriyoruz
+        const options = {
+            method: 'GET',
+            url: url,
             headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                "Accept": "application/json"
-            },
-            timeout: 15000 // Termux ağ yavaşlıklarına karşı 15 saniye zaman aşımı
-        });
+                "Accept": "application/json",
+                "Origin": "https://www.sofascore.com",
+                "Referer": "https://www.sofascore.com/"
+            }
+        };
 
-        return response.data;
+        // cloudscraper CF engelini arkada tarayıcı gibi davranarak çözer
+        const responseString = await cloudscraper(options);
+        
+        return JSON.parse(responseString);
 
     } catch (e) {
-        // Eğer proxy yanıt vermezse hatayı net görelim
-        console.error(`❌ Axios Proxy Hatası:`, e.response ? `HTTP ${e.response.status}` : e.message);
+        // Cloudflare inat ederse hatayı net bir şekilde görelim
+        console.error(`❌ Cloudscraper Hatası (${url.split('/').pop()}):`, e.message);
         return null;
     }
 }
