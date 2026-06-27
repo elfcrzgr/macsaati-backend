@@ -32,7 +32,7 @@ const pendingGoalCancel = new Map();
 const globalFootballCache = new Map();
 
 const sportUpdateStatus = { lastQuickUpdate: 0, nextMatchTime: null, hasLiveMatch: false };
-const STATE_FILE = 'futbol_states.json'; // Çakışmayı önlemek için ismi değiştirildi
+const STATE_FILE = 'futbol_states.json'; 
 
 function saveState() {
     const obj = Object.fromEntries(previousMatchStates);
@@ -326,8 +326,9 @@ async function updateFootball(targetDates) {
 
     if (apiSuccessCount === 0) return { hasLiveMatch: sportUpdateStatus.hasLiveMatch, nextMatchTimestamp: sportUpdateStatus.nextMatchTime }; 
 
+    // 🔥 DÜZELTME BURADA YAPILDI: previousMatchga yerine previousMatchStates
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
-    for (const [id, state] of previousMatchga.entries()) {
+    for (const [id, state] of previousMatchStates.entries()) {
         if (state.date && !validDates.includes(state.date) && state.status !== 'inprogress') previousMatchStates.delete(id);
     }
     saveState();
