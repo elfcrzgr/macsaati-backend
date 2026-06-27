@@ -213,33 +213,36 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
+        // İnsansı bir gecikme ekliyoruz (500ms - 1500ms arası)
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // URL'yi Cloudflare engelini aşması için ücretsiz bir proxy üzerinden geçiriyoruz
-        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        const response = await fetch(proxyUrl, {
+        // Axios ile tam bir Android cihaz taklidi yapıyoruz
+        const response = await axios.get(mobileUrl, {
             headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                "User-Agent": "Mozilla/5.0 (Linux; Android 13; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
                 "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
                 "Origin": "https://www.sofascore.com",
-                "Referer": "https://www.sofascore.com/"
-            }
+                "Referer": "https://www.sofascore.com/",
+                "Sec-Fetch-Dest": "empty",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Site": "same-site",
+                "Connection": "keep-alive",
+                "Cache-Control": "no-cache"
+            },
+            timeout: 10000 // Termux olası ağ kopmalarına karşı 10 saniye zaman aşımı
         });
 
-        if (!response.ok) {
-            console.log(`⚠️ Proxy Reddi (HTTP ${response.status})`);
-            return null;
-        }
-
-        return await response.json();
+        return response.data;
     } catch (e) {
-        console.error(`❌ Proxy Fetch Hatası:`, e.message);
+        // Hata alırsak sorunun ağdan mı yoksa 403'ten mi olduğunu net göreceğiz
+        console.error(`❌ Axios Hatası (${url.split('/').pop()}):`, e.response ? `HTTP ${e.response.status}` : e.message);
         return null;
     }
 }
-
 const getTRDate = (offset = 0) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
