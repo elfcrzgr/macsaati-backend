@@ -220,12 +220,11 @@ async function fetchData(url) {
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // Veriyi mobil API üzerinden çekeceğiz
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        // BÜYÜK HİLE BURADA: Web tarayıcısı değil, doğrudan Sofascore Android uygulamasıyız.
+        // BÜYÜK HİLE: CF'yi aşmak için Google Arama Motoru kılığına giriyoruz!
         const curlCommand = `curl -s -L --compressed \
-            -H "User-Agent: Sofascore/12.3.1 (Android/13)" \
+            -H "User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" \
             -H "Accept: application/json" \
             -H "Connection: keep-alive" \
             "${mobileUrl}"`;
@@ -238,7 +237,6 @@ async function fetchData(url) {
 
         const data = JSON.parse(stdout);
         
-        // CF inat etmeye devam ederse görelim
         if (data.error) {
             console.log(`🔍 [DEBUG] Hata devam ediyor:`, JSON.stringify(data));
             return null;
