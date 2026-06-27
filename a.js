@@ -210,38 +210,68 @@ async function uploadToFirebase(sportName, data) {
     }
 }
 
+
+
+
+
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1500) + 500;
+        // Gecikmeyi biraz daha rastgele ve insansı yapalım (800ms - 2500ms arası)
+        const delay = Math.floor(Math.random() * 1700) + 800;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
+        // Güncel ve farklı User-Agent'lar havuzu
+        const userAgents = [
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (iPad; CPU OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/123.0.6312.52 Mobile/15E148 Safari/604.1"
+        ];
+        
+        const randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
+
         const response = await fetch(mobileUrl, {
             headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+                "User-Agent": randomUA,
                 "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9",
-                "Accept-Encoding": "gzip, deflate, br",
+                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache",
                 "Referer": "https://www.sofascore.com/",
                 "Origin": "https://www.sofascore.com",
-                "Connection": "keep-alive",
                 "Sec-Fetch-Dest": "empty",
                 "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-site"
+                "Sec-Fetch-Site": "same-site",
+                // Cloudflare'i atlatmaya yardımcı olabilecek ek başlıklar
+                "Sec-Ch-Ua": '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
+                "Sec-Ch-Ua-Mobile": randomUA.includes("iPhone") || randomUA.includes("Mobile") ? "?1" : "?0",
+                "Sec-Ch-Ua-Platform": randomUA.includes("Windows") ? '"Windows"' : (randomUA.includes("Mac") ? '"macOS"' : '"iOS"'),
+                "Connection": "keep-alive"
             }
         });
 
         if (!response.ok) {
-            console.log(`⚠️ API Reddi (HTTP ${response.status})`);
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) - Hedef: ${mobileUrl}`);
             return null;
         }
 
         return await response.json();
     } catch (e) {
+        console.error(`❌ Fetch Hatası: ${e.message}`);
         return null;
     }
 }
+
+
+
+
+
+
+
+
+
 
 const getTRDate = (offset = 0) => {
     const d = new Date();
