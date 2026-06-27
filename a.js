@@ -220,41 +220,59 @@ async function uploadToFirebase(sportName, data) {
 
 
 
+
 async function fetchData(url) {
     try {
-        // 1. URL'nin sonundaki gereksiz '?_=178...' parametrelerini temizliyoruz
-        const cleanUrl = url.split('?')[0];
-        const urlObj = new URL(cleanUrl);
-        
-        // 2. Orijinal URL'nin tam dizinini alıyoruz (örn: /api/v1/sport/football/...)
-        const urlPath = urlObj.pathname;
+        // 1. URL'nin sonundaki bozan '?_=' parametresini kesiyoruz ve orijinal api hedefine çeviriyoruz
+        const cleanUrl = url.replace('www.sofascore.com', 'api.sofascore.com').split('?')[0];
 
-        // 🔑 RAPID API BİLGİLERİ
-        const RAPIDAPI_HOST = 'sportapi7.p.rapidapi.com'; 
-        const RAPIDAPI_KEY = 'cad6c68efcmsh7c24a8027e11c40p14ed36jsn35b749942faa';
+        // 2. CF engellerini ve ağ kısıtlamalarını aşacak ÜCRETSİZ proxy tünelleri havuzu
+        const proxies = [
+            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(cleanUrl)}`,
+            `https://corsproxy.io/?${encodeURIComponent(cleanUrl)}`,
+            `https://api.allorigins.win/get?url=${encodeURIComponent(cleanUrl)}`
+        ];
 
-        // 3. Yanlış kategoriye değil, orijinal "sport/football" adresine yönlendiriyoruz!
-        const rapidApiUrl = `https://${RAPIDAPI_HOST}${urlPath}`;
+        // 3. Tünelleri sırayla deniyoruz
+        for (let i = 0; i < proxies.length; i++) {
+            try {
+                const delay = Math.floor(Math.random() * 1000) + 500;
+                await new Promise(r => setTimeout(r, delay));
 
-        const response = await axios.get(rapidApiUrl, {
-            headers: {
-                'x-rapidapi-host': RAPIDAPI_HOST,
-                'x-rapidapi-key': RAPIDAPI_KEY,
-                'Content-Type': 'application/json'
-            },
-            timeout: 15000 
-        });
+                const response = await axios.get(proxies[i], {
+                    headers: {
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                        "Accept": "application/json"
+                    },
+                    timeout: 12000 // 12 saniye tolerans (Termux ağ dalgalanmaları için)
+                });
 
-        // Hangi günden kaç ham maç bulduğunu ekranda görmek için ufak bir log
-        if (response.data && response.data.events) {
-            console.log(`🔍 [DEBUG] RapidAPI: ${urlPath.split('/').pop()} için ${response.data.events.length} ham maç çekildi.`);
+                let data = response.data;
+
+                // Allorigins tünelinde veriler "contents" içinde JSON string olarak döner
+                if (proxies[i].includes('allorigins') && data.contents) {
+                    data = JSON.parse(data.contents);
+                }
+
+                // Gelen veride maçlar var mı?
+                if (data && data.events) {
+                    console.log(`✅ [BAŞARILI] Maçlar çekildi! (Kanal: Proxy ${i + 1} - ${cleanUrl.split('/').pop()})`);
+                    return data;
+                }
+
+            } catch (e) {
+                // Eğer bu proxy CF'ye takılırsa veya çökerse sistemi durdurma, sessizce diğerine geç
+                console.log(`⚠️ Proxy ${i + 1} başarısız oldu, diğer tünele geçiliyor...`);
+                continue;
+            }
         }
 
-        return response.data;
+        // Bütün tüneller çökerse sistemi korumaya al (önbellekten devam etsin)
+        console.error(`❌ Tüm proxy tünelleri patladı. API yanıt vermedi.`);
+        return null;
 
     } catch (e) {
-        const endpoint = url.split('/').pop().split('?')[0];
-        console.error(`❌ RapidAPI Hatası (${endpoint}):`, e.response ? `HTTP ${e.response.status}` : e.message);
+        console.error(`❌ Genel Fetch Hatası:`, e.message);
         return null;
     }
 }
