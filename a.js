@@ -217,46 +217,46 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        // İnsansı bir gecikme ekliyoruz (500ms - 1500ms arası)
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // DİKKAT: url.replace('www...', 'api...') KISMINI SİLDİK! 
-        // İstekler doğrudan www üzerinden gidecek.
+        // ASIL API ADRESİNE GERİ DÖNÜYORUZ! 
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        // Termux'un yerleşik curl komutunu kullanarak Node.js kimliğimizi tamamen gizliyoruz.
-        // --compressed parametresi veriyi küçültüp hızı artırır.
-        // -s (silent) terminali gereksiz loglardan temizler.
         const curlCommand = `curl -s -L --compressed \
             -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
-            -H "Accept: application/json, text/plain, */*" \
+            -H "Accept: */*" \
             -H "Accept-Language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7" \
             -H "Origin: https://www.sofascore.com" \
             -H "Referer: https://www.sofascore.com/" \
-            -H "Sec-Fetch-Dest: empty" \
-            -H "Sec-Fetch-Mode: cors" \
-            -H "Sec-Fetch-Site: same-site" \
-            "${url}"`;
+            "${mobileUrl}"`;
 
-        // İsteği Node.js üzerinden değil, arka planda işletim sistemi üzerinden atıyoruz.
         const { stdout } = await execPromise(curlCommand);
 
-        // Eğer Sofascore inat edip HTML (Cloudflare engel sayfası) dönerse sistemi çökertmeden yakalayalım.
-        if (!stdout || stdout.trim().startsWith('<') || stdout.includes('Cloudflare')) {
-            console.log(`⚠️ Curl Reddi (CF Engeli) - URL: ${url.split('/').pop()}`);
+        if (!stdout) {
+            console.log(`⚠️ Curl Boş Döndü - URL: ${mobileUrl.split('/').pop()}`);
             return null;
         }
 
-        // Gelen tertemiz String veriyi JSON formatına çeviriyoruz.
-        return JSON.parse(stdout);
+        if (stdout.trim().startsWith('<')) {
+            console.log(`⚠️ HTML/CF Engeli - URL: ${mobileUrl.split('/').pop()}`);
+            return null;
+        }
+
+        const data = JSON.parse(stdout);
+        
+        // 🔍 GELEN GİZLİ YANITI EKRANA BASTIRALIM
+        if (!data.events) {
+            console.log(`🔍 [DEBUG] Sofascore'dan beklenen veri gelmedi. Yanıt:`, JSON.stringify(data).substring(0, 200));
+        }
+
+        return data;
 
     } catch (e) {
-        console.error(`❌ Curl Çalıştırma Hatası:`, e.message);
+        console.error(`❌ Fetch/Parse Hatası:`, e.message);
         return null;
     }
 }
-
-
 
 
 
