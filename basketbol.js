@@ -122,7 +122,7 @@ async function updateBasketball(targetDates) {
 
     let basketbolMatchesLog = [];
     for (const g of allGames) {
-        if (!TARGET_BASKET_LEAGUES.includes(g.league.id)) continue;
+       // if (!TARGET_BASKET_LEAGUES.includes(g.league.id)) continue;
         const dateTR = new Date(g.timestamp * 1000); const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         if (!targetDates.includes(dayStr)) continue;
 
