@@ -8,11 +8,242 @@ const apn = require('apn');
 const triggeredMatches = new Set();
 
 // =========================================================================
+// 🛡️ GELIŞMIŞ 403 HATASI AŞMA STRATEJİSİ
+// =========================================================================
+
+class ProxyRotator {
+    constructor() {
+        this.publicProxies = [
+            'https://workers-bypass.elfcrzgr.workers.dev/',
+            'https://api-proxy.example.com/',
+        ];
+        this.currentProxyIndex = 0;
+    }
+
+    getNextProxy() {
+        const proxy = this.publicProxies[this.currentProxyIndex];
+        this.currentProxyIndex = (this.currentProxyIndex + 1) % this.publicProxies.length;
+        return proxy;
+    }
+}
+
+const proxyRotator = new ProxyRotator();
+
+const userAgents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPad; CPU OS 17_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+];
+
+const referrers = [
+    "https://www.google.com/",
+    "https://www.sofascore.com/",
+    "https://www.bing.com/",
+    "https://www.yahoo.com/",
+    "https://duckduckgo.com/"
+];
+
+function getRandomUserAgent() {
+    return userAgents[Math.floor(Math.random() * userAgents.length)];
+}
+
+function getRandomReferrer() {
+    return referrers[Math.floor(Math.random() * referrers.length)];
+}
+
+function getRandomIPSimulation() {
+    return `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+}
+
+class RateLimitManager {
+    constructor() {
+        this.requests = {};
+        this.lastResetTime = Date.now();
+    }
+
+    canMakeRequest(url) {
+        const now = Date.now();
+        if (now - this.lastResetTime >= 60000) {
+            this.requests = {};
+            this.lastResetTime = now;
+        }
+
+        const domain = new URL(url).hostname;
+        this.requests[domain] = (this.requests[domain] || 0) + 1;
+        return this.requests[domain] <= 30;
+    }
+
+    getWaitTime(domain) {
+        return (this.requests[domain] || 0) * 200;
+    }
+}
+
+const rateLimitManager = new RateLimitManager();
+
+const dataCache = new Map();
+const CACHE_EXPIRY = 5 * 60 * 1000;
+
+function cacheData(url, data) {
+    dataCache.set(url, {
+        data: data,
+        timestamp: Date.now()
+    });
+}
+
+function getCachedData(url) {
+    const cached = dataCache.get(url);
+    if (cached && (Date.now() - cached.timestamp) < CACHE_EXPIRY) {
+        return cached;
+    }
+    dataCache.delete(url);
+    return null;
+}
+
+async function fetchDataWith403Bypass(url, retryCount = 0, maxRetries = 5) {
+    if (retryCount >= maxRetries) {
+        console.log(`❌ [403 BYPASS BAŞARISIZ] ${maxRetries} denemenin ardından ${url} erişilemiyor`);
+        const cached = getCachedData(url);
+        if (cached) {
+            console.log(`   📦 Son cache'den döndürülüyor`);
+            return cached.data;
+        }
+        return null;
+    }
+
+    try {
+        if (!rateLimitManager.canMakeRequest(url)) {
+            const waitTime = rateLimitManager.getWaitTime(new URL(url).hostname);
+            await new Promise(r => setTimeout(r, waitTime + Math.random() * 1000));
+        }
+
+        const headers = {
+            "User-Agent": getRandomUserAgent(),
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Referer": getRandomReferrer(),
+            "Origin": "https://www.sofascore.com",
+            "Connection": "keep-alive",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-site",
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+            "X-Forwarded-For": getRandomIPSimulation(),
+            "X-Real-IP": getRandomIPSimulation(),
+            "CF-Connecting-IP": getRandomIPSimulation(),
+            "CF-IPCountry": "TR",
+            "CF-Visitor": `{"scheme":"https"}`,
+            "Sec-Ch-Ua": `"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"`,
+            "Sec-Ch-Ua-Mobile": "?0",
+            "Sec-Ch-Ua-Platform": "Windows"
+        };
+
+        console.log(`🔄 [Deneme ${retryCount + 1}/${maxRetries}] ${url.substring(0, 80)}...`);
+
+        const response = await fetch(url, {
+            headers: headers,
+            timeout: 10000,
+            redirect: 'follow',
+            keepalive: true
+        });
+
+        if (response.status === 403) {
+            console.log(`⚠️ [403 FORBIDDEN] Fallback stratejileri deneniyor...`);
+
+            if (proxyRotator.publicProxies.length > 0) {
+                const proxy = proxyRotator.getNextProxy();
+                console.log(`   → Proxy kullanılıyor: ${proxy}`);
+                
+                try {
+                    const proxyUrl = `${proxy}?url=${encodeURIComponent(url)}`;
+                    const proxyResponse = await fetch(proxyUrl, { headers, timeout: 10000 });
+                    
+                    if (proxyResponse.ok) {
+                        const data = await proxyResponse.json();
+                        cacheData(url, data);
+                        return data;
+                    }
+                } catch (e) {
+                    console.log(`   ❌ Proxy başarısız: ${e.message}`);
+                }
+            }
+
+            const mobileUrl = url.replace('api.sofascore.com', 'mobile-api.sofascore.com');
+            console.log(`   → Mobil API deneniyor: ${mobileUrl}`);
+            
+            try {
+                const mobileResponse = await fetch(mobileUrl, { headers, timeout: 10000 });
+                if (mobileResponse.ok) {
+                    const data = await mobileResponse.json();
+                    cacheData(url, data);
+                    return data;
+                }
+            } catch (e) {
+                console.log(`   ❌ Mobil API başarısız`);
+            }
+
+            const cached = getCachedData(url);
+            if (cached) {
+                console.log(`   📦 Cache'den döndürülüyor`);
+                return cached.data;
+            }
+
+            const exponentialBackoff = Math.min(1000 * Math.pow(2, retryCount), 30000);
+            const jitter = Math.random() * exponentialBackoff * 0.1;
+            const waitTime = exponentialBackoff + jitter;
+
+            console.log(`   ⏳ ${Math.round(waitTime / 1000)}s sonra tekrar deneniyor...`);
+            await new Promise(r => setTimeout(r, waitTime));
+
+            return fetchDataWith403Bypass(url, retryCount + 1, maxRetries);
+        }
+
+        if (!response.ok) {
+            console.log(`⚠️ API Reddi (HTTP ${response.status}): ${response.statusText}`);
+            
+            const cached = getCachedData(url);
+            if (cached && response.status >= 500) {
+                console.log(`   📦 Sunucu hatası, cache'den döndürülüyor`);
+                return cached.data;
+            }
+            
+            return null;
+        }
+
+        const data = await response.json();
+        cacheData(url, data);
+        
+        return data;
+
+    } catch (e) {
+        console.error(`❌ Fetch Hatası (Deneme ${retryCount + 1}): ${e.message}`);
+        
+        const cached = getCachedData(url);
+        if (cached) {
+            console.log(`   📦 Ağ hatası, cache'den döndürülüyor`);
+            return cached.data;
+        }
+
+        if (retryCount < maxRetries - 1) {
+            const waitTime = 2000 * Math.pow(2, retryCount);
+            console.log(`   ⏳ ${Math.round(waitTime / 1000)}s sonra tekrar deneniyor...`);
+            await new Promise(r => setTimeout(r, waitTime));
+            return fetchDataWith403Bypass(url, retryCount + 1, maxRetries);
+        }
+
+        return null;
+    }
+}
+
+// =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
 // =========================================================================
-// ⚠️ DİKKAT: Uygulamayı TestFlight veya AppStore'dan indirdiyseniz burayı TRUE yapın!
-// Sadece Mac'ten kabloyla atıp test ediyorsanız FALSE kalmalı.
-const IS_PRODUCTION = false; 
+const IS_PRODUCTION = false;
 
 // =========================================================================
 // 🔥 FIREBASE & APNs BAŞLATMA
@@ -39,7 +270,6 @@ console.log(`🍏 Apple APNs hazır. (Mod: ${IS_PRODUCTION ? "CANLI / TESTFLIGHT
 // =========================================================================
 const previousMatchStates = new Map();
 const pendingGoalCancel = new Map();
-
 const globalFootballCache = new Map();
 
 const sportUpdateStatus = {
@@ -209,69 +439,6 @@ async function uploadToFirebase(sportName, data) {
         console.error(`❌ [FIREBASE] ${sportName} Hata:`, error.message);
     }
 }
-
-
-
-
-
-async function fetchData(url) {
-    try {
-        // Gecikmeyi biraz daha rastgele ve insansı yapalım (800ms - 2500ms arası)
-        const delay = Math.floor(Math.random() * 1700) + 800;
-        await new Promise(r => setTimeout(r, delay));
-
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-
-        // Güncel ve farklı User-Agent'lar havuzu
-        const userAgents = [
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (iPad; CPU OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/123.0.6312.52 Mobile/15E148 Safari/604.1"
-        ];
-        
-        const randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
-
-        const response = await fetch(mobileUrl, {
-            headers: {
-                "User-Agent": randomUA,
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Cache-Control": "no-cache",
-                "Pragma": "no-cache",
-                "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com",
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-site",
-                // Cloudflare'i atlatmaya yardımcı olabilecek ek başlıklar
-                "Sec-Ch-Ua": '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
-                "Sec-Ch-Ua-Mobile": randomUA.includes("iPhone") || randomUA.includes("Mobile") ? "?1" : "?0",
-                "Sec-Ch-Ua-Platform": randomUA.includes("Windows") ? '"Windows"' : (randomUA.includes("Mac") ? '"macOS"' : '"iOS"'),
-                "Connection": "keep-alive"
-            }
-        });
-
-        if (!response.ok) {
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) - Hedef: ${mobileUrl}`);
-            return null;
-        }
-
-        return await response.json();
-    } catch (e) {
-        console.error(`❌ Fetch Hatası: ${e.message}`);
-        return null;
-    }
-}
-
-
-
-
-
-
-
-
-
 
 const getTRDate = (offset = 0) => {
     const d = new Date();
@@ -567,9 +734,6 @@ async function checkAndSendNotifications(newMatches) {
             currentMinNum = prev.lastMinute;
         }
 
-        // =========================================================
-        // 🚀 LIVE ACTIVITY SESSİZ PUSH
-        // =========================================================
         const statusType = match.status;
         const isLive = statusType === 'inprogress';
         const isFinished = ['finished', 'ended', 'closed'].includes(statusType);
@@ -639,9 +803,6 @@ async function checkAndSendNotifications(newMatches) {
             }
         }
 
-        // =========================================================
-        // GOL VE NORMAL MAÇ BİLDİRİM KONTROLLERİ
-        // =========================================================
         const appTitle = "Maç Saati";
         const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
         const substitutionBoardUrl = "https://img.icons8.com/color/96/stopwatch--v1.png";
@@ -705,7 +866,7 @@ async function checkAndSendNotifications(newMatches) {
                 if (isGoal) {
                     let scorerName = match.homeTeam.name;
                     try {
-                        const incidentsData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
+                        const incidentsData = await fetchDataWith403Bypass(`https://www.sofascore.com/api/v1/event/${match.id}/incidents`);
                         if (incidentsData && incidentsData.incidents) {
                             const goals = incidentsData.incidents.filter(inc => inc.incidentType === 'goal');
                             if (goals.length > 0) {
@@ -812,7 +973,6 @@ async function triggerPushToStart(matchId) {
 
     let tokensToAlert = [];
 
-    // 2. NORMAL TAKİP LİSTESİ (Zile basanlar)
     const normalTokens = (await admin.database().ref(`push_to_start_tokens/${matchId}`).once('value')).val();
     if (normalTokens) tokensToAlert.push(...Object.keys(normalTokens));
 
@@ -904,7 +1064,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     let successfulDates = [];
 
     for (const date of targetDates) {
-        const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
+        const data = await fetchDataWith403Bypass(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}?_=${Date.now()}`);
         if (data?.events) {
             allEvents.push(...data.events.filter(e => ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
             successfulDates.push(date);
@@ -928,7 +1088,7 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
 
     const tff2Matches = allEvents.filter(e => e.tournament?.uniqueTournament?.id === 97);
     for (const match of tff2Matches) {
-        const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${match.id}`);
+        const detailData = await fetchDataWith403Bypass(`https://www.sofascore.com/api/v1/event/${match.id}`);
         if (detailData?.event?.tournament?.id) {
             match.tournament.id = detailData.event.tournament.id;
         }
@@ -992,7 +1152,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
             const aNameLower = (e.awayTeam.name || "").toLowerCase();
             const hCode = e.homeTeam?.country?.alpha2?.toLowerCase() || nationalTeamCodes[hNameLower];
             const aCode = e.awayTeam?.country?.alpha2?.toLowerCase() || nationalTeamCodes[aNameLower];
-            // Not: Orijinal koddaki tenis/logos dizini üzerinden ulusal bayrak çekme yapısı korunmuştur.
             if (hCode) homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${hCode}.png`;
             if (aCode) awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${aCode}.png`;
         }
@@ -1028,7 +1187,6 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
 
     logMatchesBySport({ futbol: futbolMatchesLog });
     
-    // 🌟 KESİN VE HIZLI TETİKLEYİCİ
     const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
     const forcedMatches = forcedSnapshot.val() || {};
 
@@ -1057,7 +1215,7 @@ async function main() {
 
     loadState();
     console.log("============================================================");
-    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (GERÇEK LIVE ACTIVITY APNS V7 - SADECE FUTBOL)");
+    console.log("🟢 J7 CANLI SUNUCU BAŞLADI (403 BYPASS SISTEMI İLE)");
     console.log("============================================================");
 
     let iteration = 1;
@@ -1094,7 +1252,6 @@ async function main() {
             if (lastPeriodicUpdate < activeTarget) {
                 console.log("🔄 [PERİYODİK GÜNCELLEME] Ana Saat Dilimi Tetiklendi!");
 
-                // 4 günlük güncelleme yapısını koruyoruz
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
 
                 const footballResult = await updateFootball(days4);
