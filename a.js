@@ -6,7 +6,7 @@ const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
 const axios = require('axios');
-const cloudscraper = require('cloudscraper');
+
 const triggeredMatches = new Set();
 
 // =========================================================================
@@ -222,31 +222,42 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1000) + 500;
-        await new Promise(r => setTimeout(r, delay));
-
-        // 1. DİKKAT: .replace('www...', 'api...') KISMINI TAMAMEN SİLDİK!
-        // Veriler aslında www.sofascore.com/api/v1/... adresinde.
-        // Sadece URL'nin sonundaki 404 verdiren '?_=...' zaman damgasını kesiyoruz.
+        // 1. URL'nin sonundaki gereksiz '?_=178...' parametrelerini temizliyoruz
         const cleanUrl = url.split('?')[0];
-
-        const options = {
-            method: 'GET',
-            url: cleanUrl, // İstek doğrudan www üzerinden gidecek
-            headers: {
-                "Accept": "application/json",
-                "Origin": "https://www.sofascore.com",
-                "Referer": "https://www.sofascore.com/"
-            }
-        };
-
-        // Cloudscraper CF engelini kıracak ve www sunucusundan JSON'ı çekecek
-        const responseString = await cloudscraper(options);
+        const urlObj = new URL(cleanUrl);
         
-        return JSON.parse(responseString);
+        // 2. Orijinal URL'nin sadece dizin (path) kısmını alıyoruz
+        let urlPath = urlObj.pathname;
+
+        // 3. RapidAPI'nin kendi dizin yapısına (sport/football yerine category/1) uyum sağlıyoruz
+        if (urlPath.includes('/sport/football/scheduled-events/')) {
+            urlPath = urlPath.replace('/sport/football/scheduled-events/', '/category/1/scheduled-events/');
+        }
+
+        // 🔑 RAPID API BİLGİLERİ (Ekran görüntüsünden alındı)
+        const RAPIDAPI_HOST = 'sportapi7.p.rapidapi.com'; 
+        const RAPIDAPI_KEY = 'cad6c68efcmsh7c24a8027e11c40p14ed36jsn35b749942faa';
+
+        // 4. Hedef tünel adresini oluşturuyoruz
+        const rapidApiUrl = `https://${RAPIDAPI_HOST}${urlPath}`;
+
+        // 5. Axios ile RapidAPI üzerinden resmi sorguyu yapıyoruz
+        const response = await axios.get(rapidApiUrl, {
+            headers: {
+                'x-rapidapi-host': RAPIDAPI_HOST,
+                'x-rapidapi-key': RAPIDAPI_KEY,
+                'Content-Type': 'application/json'
+            },
+            timeout: 15000 // Termux ağ gecikmelerine karşı 15 saniye tolerans
+        });
+
+        // Veri başarıyla RapidAPI tünelinden geldi!
+        return response.data;
 
     } catch (e) {
-        console.error(`❌ Cloudscraper Hatası (${url.split('/').pop()}):`, e.message);
+        // Hata durumunda sorunun CF'den mi API'den mi olduğunu logluyoruz
+        const endpoint = url.split('/').pop().split('?')[0];
+        console.error(`❌ RapidAPI Hatası (${endpoint}):`, e.response ? `HTTP ${e.response.status}` : e.message);
         return null;
     }
 }
