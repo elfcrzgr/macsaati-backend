@@ -212,34 +212,29 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        // İnsansı bir gecikme ekliyoruz (500ms - 2000ms arası)
-        const delay = Math.floor(Math.random() * 1500) + 500;
+        const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        // URL'yi Cloudflare engelini aşması için ücretsiz bir proxy üzerinden geçiriyoruz
+        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
 
-        // 🚀 ÇÖZÜM BURADA: ESM paketini CommonJS içinde dinamik olarak yüklüyoruz
-        const { gotScraping } = await import('got-scraping');
-
-        // Cloudflare ve bot korumasını aşan özel istek yapısı
-        const response = await gotScraping({
-            url: mobileUrl,
-            responseType: 'json',
-            headerGeneratorOptions: {
-                browsers: [
-                    { name: 'chrome', minVersion: 110 },
-                    { name: 'safari', minVersion: 15 }
-                ],
-                devices: ['desktop', 'mobile'],
-                operatingSystems: ['macos', 'windows', 'ios']
+        const response = await fetch(proxyUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                "Accept": "application/json, text/plain, */*",
+                "Origin": "https://www.sofascore.com",
+                "Referer": "https://www.sofascore.com/"
             }
         });
 
-        return response.body;
+        if (!response.ok) {
+            console.log(`⚠️ Proxy Reddi (HTTP ${response.status})`);
+            return null;
+        }
 
+        return await response.json();
     } catch (e) {
-        // 403 veya başka bir hata anında sistemi çökertmeden loglar
-        console.error(`❌ API Reddi/Hata (${url}):`, e.response ? e.response.statusCode : e.message);
+        console.error(`❌ Proxy Fetch Hatası:`, e.message);
         return null;
     }
 }
