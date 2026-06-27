@@ -216,7 +216,7 @@ async function uploadToFirebase(sportName, data) {
 
 
 
-const cloudscraper = require('cloudscraper');
+
 
 async function fetchData(url) {
     try {
