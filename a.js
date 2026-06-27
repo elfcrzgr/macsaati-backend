@@ -220,40 +220,34 @@ async function fetchData(url) {
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // ASIL API ADRESİNE GERİ DÖNÜYORUZ! 
+        // Veriyi mobil API üzerinden çekeceğiz
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
+        // BÜYÜK HİLE BURADA: Web tarayıcısı değil, doğrudan Sofascore Android uygulamasıyız.
         const curlCommand = `curl -s -L --compressed \
-            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
-            -H "Accept: */*" \
-            -H "Accept-Language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7" \
-            -H "Origin: https://www.sofascore.com" \
-            -H "Referer: https://www.sofascore.com/" \
+            -H "User-Agent: Sofascore/12.3.1 (Android/13)" \
+            -H "Accept: application/json" \
+            -H "Connection: keep-alive" \
             "${mobileUrl}"`;
 
         const { stdout } = await execPromise(curlCommand);
 
-        if (!stdout) {
-            console.log(`⚠️ Curl Boş Döndü - URL: ${mobileUrl.split('/').pop()}`);
-            return null;
-        }
-
-        if (stdout.trim().startsWith('<')) {
-            console.log(`⚠️ HTML/CF Engeli - URL: ${mobileUrl.split('/').pop()}`);
+        if (!stdout || stdout.trim().startsWith('<')) {
             return null;
         }
 
         const data = JSON.parse(stdout);
         
-        // 🔍 GELEN GİZLİ YANITI EKRANA BASTIRALIM
-        if (!data.events) {
-            console.log(`🔍 [DEBUG] Sofascore'dan beklenen veri gelmedi. Yanıt:`, JSON.stringify(data).substring(0, 200));
+        // CF inat etmeye devam ederse görelim
+        if (data.error) {
+            console.log(`🔍 [DEBUG] Hata devam ediyor:`, JSON.stringify(data));
+            return null;
         }
 
         return data;
 
     } catch (e) {
-        console.error(`❌ Fetch/Parse Hatası:`, e.message);
+        console.error(`❌ Fetch Hatası:`, e.message);
         return null;
     }
 }
