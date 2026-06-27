@@ -216,16 +216,22 @@ async function uploadToFirebase(sportName, data) {
 
 
 
+const cloudscraper = require('cloudscraper');
+
 async function fetchData(url) {
     try {
-        // İnsansı gecikme
         const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        // URL ile hiç oynamıyoruz, orijinal adresi cloudscraper'a veriyoruz
+        // 1. WWW adresini tekrar doğru API hedefine (api.sofascore.com) çeviriyoruz!
+        let cleanUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        
+        // 2. 404 hatasına yol açan sonundaki '?_=17825...' parametresini kesip atıyoruz.
+        cleanUrl = cleanUrl.split('?')[0];
+
         const options = {
             method: 'GET',
-            url: url,
+            url: cleanUrl,
             headers: {
                 "Accept": "application/json",
                 "Origin": "https://www.sofascore.com",
@@ -233,13 +239,13 @@ async function fetchData(url) {
             }
         };
 
-        // cloudscraper CF engelini arkada tarayıcı gibi davranarak çözer
+        // cloudscraper CF engelini aşıp temiz JSON verisini alıyor
         const responseString = await cloudscraper(options);
         
         return JSON.parse(responseString);
 
     } catch (e) {
-        // Cloudflare inat ederse hatayı net bir şekilde görelim
+        // Herhangi bir hatayı net şekilde loglar
         console.error(`❌ Cloudscraper Hatası (${url.split('/').pop()}):`, e.message);
         return null;
     }
