@@ -200,7 +200,7 @@ async function uploadToFirebase(sportName, data) {
 async function fetchData(url) {
     try {
         const RAPIDAPI_HOST = 'api-football-v1.p.rapidapi.com';
-        const RAPIDAPI_KEY = '870e5a7510c80ee4e84491d6c891bfe7'; // ⚠️ BURAYI DOLDUR
+        const RAPIDAPI_KEY = 'BURAYA_YEPYENI_RAPIDAPI_ANAHTARINI_YAPISTIR'; // ⚠️ BURAYI YENİ ANAHTARLA DOLDUR
 
         const response = await axios.get(url, {
             headers: {
@@ -215,8 +215,15 @@ async function fetchData(url) {
         }
         return [];
     } catch (e) {
-        console.error(`❌ API-Football Hatası:`, e.response ? `HTTP ${e.response.status}` : e.message);
-        return [];
+        const status = e.response ? e.response.status : null;
+        if (status === 403) {
+            console.error(`❌ API-Football Hatası: HTTP 403 (Anahtar Yasaklı veya Ücretsiz Plana Abone Olunmamış!)`);
+        } else if (status === 429) {
+            console.error(`❌ API-Football Hatası: HTTP 429 (Hız/İstek Limiti Aşıldı!)`);
+        } else {
+            console.error(`❌ API-Football Hatası: HTTP ${status || e.message}`);
+        }
+        return null; // Hata durumunda boş dizi [] yerine null dönüyoruz ki sistem hatayı anlasın
     }
 }
 
@@ -596,8 +603,32 @@ async function checkAndSendNotifications(newMatches) {
 async function updateFootball(targetDates) {
     console.log(`⚽ Futbol verisi API-Football'dan çekiliyor... (Gün sayısı: ${targetDates.length})`);
 
-    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
+    let allFixtures = [];
+    let apiSuccessCount = 0;
 
+    for (const date of targetDates) {
+        const url = `https://api-football-v1.p.rapidapi.com/v3/fixtures?date=${date}`;
+        const fixtures = await fetchData(url);
+        
+        // Eğer veriler başarıyla gelmişse listeye ekle
+        if (fixtures !== null) {
+            allFixtures.push(...fixtures.filter(f => ALL_FOOT_TARGETS.includes(f.league.id)));
+            apiSuccessCount++;
+        }
+
+        // ⚠️ 429 HATASINI ENGELLEMEK İÇİN KİLİT NOKTA:
+        // Her günün isteği arasında sistemi zorunlu olarak 2 saniye dinlendiriyoruz.
+        await new Promise(r => setTimeout(r, 2000));
+    }
+
+    // 🛡️ GÜVENLİK KALKANI: API çöktüyse veya banlandıysa eski maçları silme!
+    if (apiSuccessCount === 0) {
+        console.log("⚠️ API'den hiçbir veri alınamadı! (Hata veya Kota aşımı). Mevcut liste korunuyor...");
+        return; // Fonksiyonu durdur ve hafızayı silmesini engelle
+    }
+
+    // API başarılıysa hafıza temizliği yapabiliriz
+    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
     for (const [id, state] of previousMatchStates.entries()) {
         if (state.date && !validDates.includes(state.date)) {
             if (state.status !== 'inprogress') {
@@ -606,13 +637,6 @@ async function updateFootball(targetDates) {
         }
     }
     saveState();
-
-    let allFixtures = [];
-    for (const date of targetDates) {
-        const url = `https://api-football-v1.p.rapidapi.com/v3/fixtures?date=${date}`;
-        const fixtures = await fetchData(url);
-        allFixtures.push(...fixtures.filter(f => ALL_FOOT_TARGETS.includes(f.league.id)));
-    }
 
     for (const [id, match] of globalFootballCache.entries()) {
         if (!validDates.includes(match.fixedDate)) {
@@ -735,7 +759,7 @@ async function main() {
             }
 
             if (!hasTodayMatchesInCache) {
-                console.log("⏰ Günlük program eksik. 4 günlük ana fikstür çekiliyor... (4 İstek Harcanacak)");
+                console.log(`⏰ Günlük program eksik. 4 günlük ana fikstür çekiliyor... (4 İstek Harcanacak)`);
                 await updateFootball([getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)]);
             }
 
