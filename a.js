@@ -524,8 +524,10 @@ const translateTeam = (name) => {
     return name;
 };
 
-const ELITE_FOOT_IDS = [39, 140, 78, 135, 61, 203, 2, 3, 848, 1, 4, 9, 15, 66, 137, 71]; 
-const REGULAR_FOOT_IDS = [204, 205, 206, 40, 41, 141, 136, 62, 79, 72, 119, 144, 253, 283];
+//const ELITE_FOOT_IDS = [39, 140, 78, 135, 61, 203, 2, 3, 848, 1, 4, 9, 15, 66, 137, 71]; 
+const ELITE_FOOT_IDS = [1]; 
+//const REGULAR_FOOT_IDS = [204, 205, 206, 40, 41, 141, 136, 62, 79, 72, 119, 144, 253, 283];
+const REGULAR_FOOT_IDS = [];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
 const footballLeagues = {
@@ -692,7 +694,7 @@ async function updateFootball(targetDates) {
 // =========================================================================
 // 🏀 BASKETBOL GÜNCELLEME (API-SPORTS)
 // =========================================================================
-const TARGET_BASKET_LEAGUES = [12, 120]; 
+const TARGET_BASKET_LEAGUES = [12, 120, 116, 119, 117, 138];
 
 async function updateBasketball(targetDates) {
     console.log(`🏀 Basketbol verisi çekiliyor... (Gün: ${targetDates.length})`);
@@ -725,7 +727,7 @@ async function updateBasketball(targetDates) {
     let basketbolMatchesLog = [];
 
     for (const g of allGames) {
-        // if (!TARGET_BASKET_LEAGUES.includes(g.league.id)) continue;
+        if (!TARGET_BASKET_LEAGUES.includes(g.league.id)) continue;
 
         const dateTR = new Date(g.timestamp * 1000);
         const dayStr = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
