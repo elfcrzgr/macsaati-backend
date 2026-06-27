@@ -819,6 +819,35 @@ async function updateTennis(targetDates) {
 // =========================================================================
 // 🏎️ FORMULA 1 GÜNCELLEME (ERGAST)
 // =========================================================================
+const F1_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/tournament_logos/`;
+const F1_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/f1/logos/`;
+const CIRCUIT_DETAILS = {
+    "bahrain": { laps: "57", length: "5.412 km", record: "1:31.447 - Pedro de la Rosa" },
+    "jeddah": { laps: "50", length: "6.174 km", record: "1:30.734 - Lewis Hamilton" },
+    "albert_park": { laps: "58", length: "5.278 km", record: "1:19.813 - Charles Leclerc" },
+    "suzuka": { laps: "53", length: "5.807 km", record: "1:30.983 - Lewis Hamilton" },
+    "shanghai": { laps: "56", length: "5.451 km", record: "1:32.238 - Michael Schumacher" },
+    "miami": { laps: "57", length: "5.412 km", record: "1:29.708 - Max Verstappen" },
+    "imola": { laps: "63", length: "4.909 km", record: "1:15.484 - Lewis Hamilton" },
+    "monaco": { laps: "78", length: "3.337 km", record: "1:12.909 - Lewis Hamilton" },
+    "villeneuve": { laps: "70", length: "4.361 km", record: "1:13.078 - Valtteri Bottas" },
+    "catalunya": { laps: "66", length: "4.675 km", record: "1:18.149 - Max Verstappen" },
+    "red_bull_ring": { laps: "71", length: "4.318 km", record: "1:05.619 - Carlos Sainz" },
+    "silverstone": { laps: "52", length: "5.891 km", record: "1:27.097 - Max Verstappen" },
+    "hungaroring": { laps: "70", length: "4.381 km", record: "1:16.627 - Lewis Hamilton" },
+    "spa": { laps: "44", length: "7.004 km", record: "1:46.286 - Valtteri Bottas" },
+    "zandvoort": { laps: "72", length: "4.259 km", record: "1:11.097 - Lewis Hamilton" },
+    "monza": { laps: "53", length: "5.793 km", record: "1:21.046 - Rubens Barrichello" },
+    "baku": { laps: "51", length: "6.003 km", record: "1:43.009 - Charles Leclerc" },
+    "marina_bay": { laps: "62", length: "4.940 km", record: "1:35.867 - Lewis Hamilton" },
+    "americas": { laps: "56", length: "5.513 km", record: "1:36.169 - Charles Leclerc" },
+    "rodriguez": { laps: "71", length: "4.304 km", record: "1:17.774 - Valtteri Bottas" },
+    "interlagos": { laps: "71", length: "4.309 km", record: "1:10.540 - Valtteri Bottas" },
+    "vegas": { laps: "50", length: "6.201 km", record: "1:35.490 - Oscar Piastri" },
+    "losail": { laps: "57", length: "5.419 km", record: "1:24.319 - Max Verstappen" },
+    "yas_marina": { laps: "58", length: "5.281 km", record: "1:26.103 - Max Verstappen" }
+};
+
 async function updateF1() {
     console.log(`🏎️ Formula 1 güncelleniyor...`);
     try {
@@ -827,18 +856,40 @@ async function updateF1() {
         const races = response.MRData?.RaceTable?.Races || [];
         const finalEvents = [];
 
+        const countryToCode = {
+            "Bahrain": "bh", "Saudi Arabia": "sa", "Australia": "au", "Japan": "jp",
+            "China": "cn", "USA": "us", "United States": "us", "Italy": "it",
+            "Monaco": "mc", "Canada": "ca", "Spain": "es", "Austria": "at",
+            "UK": "gb", "Hungary": "hu", "Belgium": "be", "Netherlands": "nl",
+            "Azerbaijan": "az", "Singapore": "sg", "Mexico": "mx", "Brazil": "br",
+            "Qatar": "qa", "UAE": "ae"
+        };
+
         races.forEach(race => {
+            const circuitId = race.Circuit.circuitId;
+            const countryName = race.Circuit.Location.country;
+            const stats = CIRCUIT_DETAILS[circuitId] || { laps: "-", length: "-", record: "-" };
+            let flagCode = countryToCode[countryName] || countryName.toLowerCase().substring(0, 2);
+            if (countryName.toLowerCase().includes("usa")) flagCode = "us";
+
             const addSession = (sessionName, dateStr, timeStr) => {
                 if (!dateStr || !timeStr) return;
                 const dateObj = new Date(`${dateStr}T${timeStr}`);
+                const dayName = dateObj.toLocaleDateString('tr-TR', { weekday: 'long' });
+                const dayAndMonth = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' });
+                
                 finalEvents.push({
                     id: `${race.round}_${sessionName.replace(/\s/g, '')}`,
-                    fixedDate: dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }),
+                    fixedDate: `${dayAndMonth} ${dayName}`,
                     fixedTime: dateObj.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
                     timestamp: dateObj.getTime(),
                     broadcaster: "beIN Sports / F1 TV",
                     grandPrix: race.raceName,
-                    sessionName: sessionName
+                    sessionName: sessionName,
+                    trackName: race.Circuit.circuitName,
+                    circuitStats: { laps: stats.laps, length: stats.length, record: stats.record },
+                    countryLogo: F1_LOGO_BASE + flagCode + ".png",
+                    tournamentLogo: F1_TOURNAMENT_BASE + circuitId + ".png"
                 });
             };
 
@@ -851,14 +902,16 @@ async function updateF1() {
         });
 
         finalEvents.sort((a, b) => a.timestamp - b.timestamp);
-        await uploadToFirebase("f1", { success: true, events: finalEvents });
+        await uploadToFirebase("f1", { success: true, lastUpdated: new Date().toISOString(), totalSessions: finalEvents.length, events: finalEvents });
         console.log(`  ✅ F1 güncellemesi tamamlandı.`);
     } catch (error) { console.error(`   ⚠️ F1 hatası: ${error.message}`); }
 }
 
 // =========================================================================
-// 🆕 AKILLI DÖNGÜ (SMART POLLING)
+// 🆕 AKILLI DÖNGÜ (SÜPER KOTA KORUYUCU - SEÇENEK 1)
 // =========================================================================
+const HOUR_MS = 60 * 60000; // 1 Saat
+
 async function main() {
     if (!apnProvider) {
         console.error("⚠️ KRİTİK HATA: APNs Sağlayıcı başlatılamadı!");
@@ -867,7 +920,7 @@ async function main() {
 
     loadState();
     console.log("============================================================");
-    console.log("🟢 J7 AKILLI SUNUCU BAŞLADI (TÜM SPORLAR HATASIZ ENTEGRE)");
+    console.log("🟢 J7 AKILLI SUNUCU BAŞLADI (MAX KOTA TASARRUFU AKTİF)");
     console.log("============================================================");
 
     let iteration = 1;
@@ -902,6 +955,7 @@ async function main() {
             const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)]; 
             const todayOnly = [getTRDate(0)]; 
 
+            // 1. GÜNDE 4 KERE TAM LİSTE ÇEKİMİ
             if (lastPeriodicUpdate < activeTarget) {
                 console.log("🔄 [PERİYODİK GÜNCELLEME] Ana Saat Dilimi Tetiklendi!");
 
@@ -921,57 +975,68 @@ async function main() {
                 lastPeriodicUpdate = now;
             }
 
-            // FUTBOL
-            if (sportUpdateStatus.football.hasLiveMatch) {
-                if (now - sportUpdateStatus.football.lastQuickUpdate >= MINUTE_MS) {
-                    const footResult = await updateFootball(todayOnly); 
-                    sportUpdateStatus.football.lastQuickUpdate = now;
-                    sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
-                    sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
-                }
-            } else if (sportUpdateStatus.football.nextMatchTime && now >= (sportUpdateStatus.football.nextMatchTime - MINUTE_MS * 1.1)) {
-                if (now - sportUpdateStatus.football.lastQuickUpdate >= MINUTE_MS) {
-                    const footResult = await updateFootball(quickScanDates); 
+            // 2. FUTBOL: CANLI VEYA YAKLAŞAN VARSA 10 DAKİKADA BİR (KOTA DOSTU MOD)
+            const isFootballActive = sportUpdateStatus.football.hasLiveMatch || (sportUpdateStatus.football.nextMatchTime && now >= (sportUpdateStatus.football.nextMatchTime - TEN_MIN_MS * 2));
+            
+            if (isFootballActive) {
+                if (now - sportUpdateStatus.football.lastQuickUpdate >= TEN_MIN_MS) {
+                    console.log("⚽ [HIZLI DÖNGÜ] Futbol maçları takip ediliyor (10 Dk. Modu)...");
+                    const footResult = await updateFootball(sportUpdateStatus.football.hasLiveMatch ? todayOnly : quickScanDates); 
                     sportUpdateStatus.football.lastQuickUpdate = now;
                     sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch;
                     sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
                 }
             }
 
-            // BASKETBOL
-            const hasUpcomingBasketball = sportUpdateStatus.basketball.nextMatchTime && now >= (sportUpdateStatus.basketball.nextMatchTime - MINUTE_MS * 11);
-            if ((sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball) && now - sportUpdateStatus.basketball.lastQuickUpdate >= TEN_MIN_MS) {
-                const basketResult = await updateBasketball(quickScanDates);
+            // 3. BASKETBOL: MAÇ VARSA SADECE SAATTE 1 KERE
+            const isBasketballActiveToday = sportUpdateStatus.basketball.hasLiveMatch || (sportUpdateStatus.basketball.nextMatchTime && sportUpdateStatus.basketball.nextMatchTime < now + 24 * HOUR_MS);
+            
+            if (isBasketballActiveToday && now - sportUpdateStatus.basketball.lastQuickUpdate >= HOUR_MS) {
+                console.log("🏀 [SAATLİK DÖNGÜ] Basketbol verileri güncelleniyor...");
+                const basketResult = await updateBasketball(todayOnly);
                 sportUpdateStatus.basketball.lastQuickUpdate = now;
                 sportUpdateStatus.basketball.nextMatchTime = basketResult.nextMatchTimestamp;
                 sportUpdateStatus.basketball.hasLiveMatch = basketResult.hasLiveMatch;
             }
 
-            // TENİS
-            const hasUpcomingTennis = sportUpdateStatus.tennis.nextMatchTime && now >= (sportUpdateStatus.tennis.nextMatchTime - MINUTE_MS * 11);
-            if ((sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) && now - sportUpdateStatus.tennis.lastQuickUpdate >= TEN_MIN_MS) {
-                const tennisResult = await updateTennis(quickScanDates);
+            // 4. TENİS: MAÇ VARSA SADECE SAATTE 1 KERE
+            const isTennisActiveToday = sportUpdateStatus.tennis.hasLiveMatch || (sportUpdateStatus.tennis.nextMatchTime && sportUpdateStatus.tennis.nextMatchTime < now + 24 * HOUR_MS);
+            
+            if (isTennisActiveToday && now - sportUpdateStatus.tennis.lastQuickUpdate >= HOUR_MS) {
+                console.log("🎾 [SAATLİK DÖNGÜ] Tenis verileri güncelleniyor...");
+                const tennisResult = await updateTennis(todayOnly);
                 sportUpdateStatus.tennis.lastQuickUpdate = now;
                 sportUpdateStatus.tennis.nextMatchTime = tennisResult.nextMatchTimestamp;
                 sportUpdateStatus.tennis.hasLiveMatch = tennisResult.hasLiveMatch;
             }
 
-            // UYKU
-            let sleepTime = TEN_MIN_MS;
-            const isFootballActive = sportUpdateStatus.football.hasLiveMatch || (sportUpdateStatus.football.nextMatchTime && now >= (sportUpdateStatus.football.nextMatchTime - MINUTE_MS * 12));
+            // 5. AKILLI UYKU HESAPLAMASI
+            let sleepTime = HOUR_MS; 
 
             if (isFootballActive) {
-                sleepTime = MINUTE_MS;
-                console.log("⚡ Aktif futbol takibi, 1 dakika sonra kontrol...");
-            } else if (sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball || sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) {
-                let timeToNextBask = sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball ? TEN_MIN_MS - (now - sportUpdateStatus.basketball.lastQuickUpdate) : TEN_MIN_MS;
-                let timeToNextTen = sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis ? TEN_MIN_MS - (now - sportUpdateStatus.tennis.lastQuickUpdate) : TEN_MIN_MS;
+                // KOTAYI KORUMAK İÇİN BURAYI DA 10 DAKİKA YAPTIK
+                sleepTime = TEN_MIN_MS;
+                console.log("⚡ Futbol canlı/yaklaşan maç var, kota koruması için 10 dakika sonra kontrol...");
+            } else if (sportUpdateStatus.football.nextMatchTime) {
+                let timeToNextFoot = sportUpdateStatus.football.nextMatchTime - now - TEN_MIN_MS;
+                if (timeToNextFoot > 0 && timeToNextFoot < HOUR_MS) {
+                    sleepTime = timeToNextFoot;
+                }
                 
-                sleepTime = Math.min(timeToNextBask, timeToNextTen);
-                if (sleepTime < MINUTE_MS) sleepTime = MINUTE_MS;
-                console.log(`⏱️ Basketbol/Tenis takibi: Sonraki uyandırma ${Math.ceil(sleepTime / 60000)} dakika sonra...`);
+                if (isBasketballActiveToday) {
+                    let timeToNextBask = HOUR_MS - (now - sportUpdateStatus.basketball.lastQuickUpdate);
+                    if (timeToNextBask > 0 && timeToNextBask < sleepTime) sleepTime = timeToNextBask;
+                }
+                if (isTennisActiveToday) {
+                    let timeToNextTen = HOUR_MS - (now - sportUpdateStatus.tennis.lastQuickUpdate);
+                    if (timeToNextTen > 0 && timeToNextTen < sleepTime) sleepTime = timeToNextTen;
+                }
+
+                if (sleepTime < TEN_MIN_MS) sleepTime = TEN_MIN_MS;
+                console.log(`⏱️ Dinlenme modu: Sonraki uyandırma ${Math.ceil(sleepTime / 60000)} dakika sonra...`);
             } else {
-                console.log("💤 Hiç maç yok, 10 dakika derin uyku modu...");
+                console.log("🌙 Bugün için hiçbir maç kalmadı. Saatlik rutin bekleniyor...");
+                sleepTime = HOUR_MS;
             }
 
             await new Promise(r => setTimeout(r, sleepTime));
@@ -979,7 +1044,7 @@ async function main() {
 
         } catch (e) {
             console.error("🚨 Hata:", e.message);
-            await new Promise(r => setTimeout(r, MINUTE_MS));
+            await new Promise(r => setTimeout(r, TEN_MIN_MS));
         }
     }
 }
