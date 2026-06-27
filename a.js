@@ -6,7 +6,7 @@ const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
 const triggeredMatches = new Set();
-const { gotScraping } = require('got-scraping');
+
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
 // =========================================================================
@@ -217,6 +217,9 @@ async function fetchData(url) {
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+
+        // 🚀 ÇÖZÜM BURADA: ESM paketini CommonJS içinde dinamik olarak yüklüyoruz
+        const { gotScraping } = await import('got-scraping');
 
         // Cloudflare ve bot korumasını aşan özel istek yapısı
         const response = await gotScraping({
