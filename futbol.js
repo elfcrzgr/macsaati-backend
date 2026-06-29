@@ -446,14 +446,28 @@ async function main() {
                 sportUpdateStatus.lastQuickUpdate = now; 
             }
 
-            const isFootballActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - TEN_MIN_MS * 2));
+                        const isFootballActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - TEN_MIN_MS * 2));
             if (isFootballActive && (now - sportUpdateStatus.lastQuickUpdate >= TEN_MIN_MS)) {
                 console.log("⚽ [HIZLI DÖNGÜ] Futbol maçları takip ediliyor (4 Dk. Modu)...");
-                const footResult = await updateFootball(sportUpdateStatus.hasLiveMatch ? todayOnly : quickScanDates); 
+                
+                // Hangi günün maçını çekeceğimizi akıllıca belirliyoruz
+                let targetDatesForLive = quickScanDates; 
+                if (sportUpdateStatus.hasLiveMatch) {
+                    let activeDates = new Set();
+                    // Önbellekteki HANGİ GÜNÜN maçları canlıysa sadece o günleri listeye ekle
+                    for (const match of globalFootballCache.values()) {
+                        if (match.status === 'inprogress') activeDates.add(match.fixedDate);
+                    }
+                    if (activeDates.size === 0) activeDates.add(getTRDate(0));
+                    targetDatesForLive = Array.from(activeDates);
+                }
+
+                const footResult = await updateFootball(targetDatesForLive); 
                 sportUpdateStatus.lastQuickUpdate = now;
                 sportUpdateStatus.hasLiveMatch = footResult.hasLiveMatch;
                 sportUpdateStatus.nextMatchTime = footResult.nextMatchTimestamp;
             }
+
 
             let sleepTime = HOUR_MS; 
             if (isFootballActive) {
