@@ -188,7 +188,7 @@ async function main() {
             const d = new Date(now); const startOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
             const msSinceMidnight = now - startOfDay;
             // Sadece Gece 01:00'de 4 günlük veriyi çeker
-            const TARGET_TIMES = [ 1 * 60 * 60 * 1000 ]; 
+            const TARGET_TIMES = [ 4 * 60 * 60 * 1000 ]; 
             let activeTarget = startOfDay - (23 * 60 * 60 * 1000);
             for (let i = TARGET_TIMES.length - 1; i >= 0; i--) if (msSinceMidnight >= TARGET_TIMES[i]) { activeTarget = startOfDay + TARGET_TIMES[i]; break; }
 
