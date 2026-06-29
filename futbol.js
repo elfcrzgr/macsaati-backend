@@ -56,7 +56,7 @@ function loadState() {
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000;
-const TEN_MIN_MS = 10 * 60000;
+const TEN_MIN_MS = 4 * 60000;
 const HOUR_MS = 60 * 60000;
 
 function logMatchesBySport(matchGroups) {
@@ -448,7 +448,7 @@ async function main() {
 
             const isFootballActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - TEN_MIN_MS * 2));
             if (isFootballActive && (now - sportUpdateStatus.lastQuickUpdate >= TEN_MIN_MS)) {
-                console.log("⚽ [HIZLI DÖNGÜ] Futbol maçları takip ediliyor (10 Dk. Modu)...");
+                console.log("⚽ [HIZLI DÖNGÜ] Futbol maçları takip ediliyor (4 Dk. Modu)...");
                 const footResult = await updateFootball(sportUpdateStatus.hasLiveMatch ? todayOnly : quickScanDates); 
                 sportUpdateStatus.lastQuickUpdate = now;
                 sportUpdateStatus.hasLiveMatch = footResult.hasLiveMatch;
@@ -458,7 +458,7 @@ async function main() {
             let sleepTime = HOUR_MS; 
             if (isFootballActive) {
                 sleepTime = TEN_MIN_MS;
-                console.log("⚡ Futbol canlı maç var, kota koruması için 10 dakika sonra kontrol...");
+                console.log("⚡ Futbol canlı maç var, kota koruması için 4 dakika sonra kontrol...");
             } else if (sportUpdateStatus.nextMatchTime) {
                 let timeToNextFoot = sportUpdateStatus.nextMatchTime - now - TEN_MIN_MS;
                 if (timeToNextFoot > 0 && timeToNextFoot < HOUR_MS) sleepTime = timeToNextFoot;
