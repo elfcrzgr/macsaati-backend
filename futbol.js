@@ -73,16 +73,33 @@ function loadExternalBroadcasters() {
     try {
         if (fs.existsSync('yayinci_bilgisi.json')) {
             externalBroadcasters = JSON.parse(fs.readFileSync('yayinci_bilgisi.json', 'utf8'));
-        } else { externalBroadcasters = {}; }
-    } catch (e) { externalBroadcasters = {}; }
+        } else { 
+            externalBroadcasters = {}; 
+            console.log("⚠️ yayinci_bilgisi.json dosyası bulunamadı!");
+        }
+    } catch (e) { 
+        // JSON dosyasında virgül veya parantez unutulduğunda anında terminalde göreceksin
+        console.error("❌ JSON SÖZDİZİMİ (SYNTAX) HATASI! Dosya formatı bozuk:", e.message);
+        externalBroadcasters = {}; 
+    }
 }
 
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
-    const toTR = (str) => str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/ı/g, 'i').toLowerCase().trim();
     
-    const hName = toTR(homeName || ""); const aName = toTR(awayName || "");
+    // 🚀 KRİTİK DÜZELTME: Hem JSON maç adını hem API takım adını aynı filtreden geçiriyoruz
+    const normalizeStr = (str) => {
+        if (!str) return "";
+        return str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+                  .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
+                  .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
+                  .replace(/ı/g, 'i').toLowerCase().replace(/[^a-z0-9]/g, ' ');
+    };
+
+    const homeWords = normalizeStr(homeName).split(' ').filter(w => w.length >= 3);
+    const awayWords = normalizeStr(awayName).split(' ').filter(w => w.length >= 3);
+
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
         return [0, 1].map(offset => {
@@ -94,15 +111,17 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
         if (!dayData || !dayData.matches) continue;
+        
         for (const m of dayData.matches) {
-            if (m.spor && toTR(m.spor) === toTR(sportCategory)) {
+            if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
                 const mTime = (m.saat || "").replace('.', ':').trim();
                 const [mH, mM] = mTime.split(':').map(Number);
-                const mTitle = toTR(m.mac || "");
-                const getCleanWords = (str) => str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g').replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's').replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c').replace(/ı/g, 'i').toLowerCase().replace(/[^a-z0-9]/g, ' ').split(' ').map(w => w.trim()).filter(w => w.length >= 3);
+                
+                // JSON'dan gelen isim de tamamen ascii karaktere (isvicre cezayir) dönüştürülüyor
+                const mTitleClean = normalizeStr(m.mac); 
 
-                const matchHome = getCleanWords(hName).length === 0 || getCleanWords(hName).some(w => mTitle.includes(w));
-                const matchAway = getCleanWords(aName).length === 0 || getCleanWords(aName).some(w => mTitle.includes(w));
+                const matchHome = homeWords.length === 0 || homeWords.some(w => mTitleClean.includes(w));
+                const matchAway = awayWords.length === 0 || awayWords.some(w => mTitleClean.includes(w));
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
 
                 let diff = 9999;
@@ -119,6 +138,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     }
     return { kanal: fallback, source: "fallback" };
 }
+
 
 async function uploadToFirebase(sportName, data) {
     try {
