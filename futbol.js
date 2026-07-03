@@ -102,7 +102,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
-        return [0, 1].map(offset => {
+        return [-1, 0, 1].map(offset => {
             const dateObj = new Date(y, m - 1, d + offset);
             return `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
         });
