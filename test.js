@@ -1,7 +1,7 @@
 async function testSofascore() {
     // Bugünün tarihini alalım (YYYY-MM-DD formatında)
     const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-    const url = `https://api.sofascore.com/api/v1/sport/football/scheduled-events/${today}`;
+    const url = `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${today}`;
     
     console.log(`📡 İstek atılıyor: ${url}\n`);
     
