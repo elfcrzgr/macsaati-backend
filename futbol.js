@@ -391,7 +391,9 @@ async function updateFootball(targetDates) {
         const leagueId = e.league.id; const hName = translateTeam(e.teams.home.name); const aName = translateTeam(e.teams.away.name);
         const cleanTournamentName = footballLeagues[leagueId] || e.league.name;
         const dateTR = new Date(e.fixture.timestamp * 1000); const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+       // YENİ: Türkiye saatine zorlandı
+        const timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+
         const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName);
         const result = getBroadcasterWithFallback("futbol", dayTR, timeString, hName, aName, fallbackBroadcaster);
         
