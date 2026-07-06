@@ -1,41 +1,46 @@
 async function testSofascore() {
-    // Bugünün tarihini alalım (YYYY-MM-DD formatında)
     const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-    const url = `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${today}`;
     
-    console.log(`📡 İstek atılıyor: ${url}\n`);
-    
-    try {
-        const response = await fetch(url, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com",
-                "Connection": "keep-alive",
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-site"
+    // Test edilecek olası yeni Sofascore API rotaları
+    const endpoints = [
+        `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${today}`,
+        `https://api.sofascore.com/api/v1/sport/football/scheduled-events/${today}`,
+        `https://api.sofascore.app/api/v1/sport/football/scheduled-events/${today}`,
+        `https://api.sofascore.com/mobile/v4/sport/football/scheduled-events/${today}`,
+        `https://www.sofascore.com/api/v1/sport/football/events/schedule/${today}`,
+        `https://api.sofascore.com/api/v1/sport/football/events/date/${today}`
+    ];
+
+    console.log("🔍 Olası Sofascore API Rotaları Taranıyor...\n");
+
+    for (let url of endpoints) {
+        console.log(`📡 Deneniyor: ${url}`);
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    // Mobil yerine standart tarayıcı taklidi yapıyoruz
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    "Accept": "*/*",
+                    "Referer": "https://www.sofascore.com/",
+                    "Origin": "https://www.sofascore.com"
+                }
+            });
+
+            console.log(`➡️ Durum: ${response.status} ${response.statusText}`);
+
+            if (response.ok) {
+                console.log(`\n✅ BİNGO! Çalışan adres bulundu:\n${url}\n`);
+                return; // Doğruyu bulduğumuzda döngüyü durduruyoruz
             }
-        });
-
-        console.log(`🔄 HTTP Durum Kodu: ${response.status} ${response.statusText}`);
-
-        if (!response.ok) {
-            console.log("❌ SORGUDAN RED GELDİ!");
-            // Red geldiyse sitenin bize ne döndürdüğüne (örn: Cloudflare bot koruması HTML'i) bakalım
-            const errorText = await response.text();
-            console.log("📄 Gelen Hata Yanıtı (İlk 300 karakter):\n", errorText.substring(0, 300));
-        } else {
-            console.log("✅ BAĞLANTI BAŞARILI!");
-            const data = await response.json();
-            console.log(`📊 Toplam ${data.events ? data.events.length : 0} maç verisi başarıyla çekildi.`);
+        } catch (e) {
+            console.log(`❌ Ağ hatası: ${e.message}`);
         }
-    } catch (error) {
-        console.error("🚨 Sunucuya hiç ulaşılamadı (Ağ/Fetch Hatası):", error.message);
+        console.log("-----------------------------------");
+        // IP ban yememek için araya ufak bir bekleme koyuyoruz
+        await new Promise(r => setTimeout(r, 1000));
     }
+    
+    console.log("🚨 Tüm denemeler başarısız oldu. API yapısı tamamen değişmiş olabilir.");
 }
 
 testSofascore();
