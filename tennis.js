@@ -11,6 +11,9 @@ const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000;
 const TEN_MIN_MS = 10 * 60000;
 
+// O gün maçı KESİN OLMAYAN tenis ligleri (Akıllı Tarama Kara Listesi)
+const emptyLeaguesCache = new Map();
+
 // =========================================================================
 // 🔥 FIREBASE BAŞLATMA
 // =========================================================================
@@ -107,7 +110,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 }
 
 // =========================================================================
-// 🛠️ YARDIMCI FONKSİYONLAR
+// 🛠️ YARDIMCI FONKSİYONLAR VE FETCH
 // =========================================================================
 async function uploadToFirebase(data) {
     try {
@@ -124,9 +127,12 @@ async function fetchData(url) {
         const headers = { "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X)", "Accept": "*/*", "Accept-Language": "tr-TR,tr;q=0.9", "Connection": "keep-alive" };
         if (url.includes('sofascore.com')) { headers["Referer"] = "https://www.sofascore.com/"; headers["Origin"] = "https://www.sofascore.com"; headers["X-Requested-With"] = "93a9a4"; headers["Cache-Control"] = "max-age=0"; }
         const response = await fetch(url, { headers });
+        
         if (!response.ok) { 
-            if (response.status === 404) return { is404: true };
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`); return null; 
+            // 🚀 GELİŞMİŞ 404 KONTROLÜ
+            if (response.status === 404) return { is404: true }; // Maç KESİN yok!
+            console.log(`⚠️ API Reddi veya Ağ Hatası (HTTP ${response.status}) -> URL: ${url}`); 
+            return null; 
         }
         return await response.json();
     } catch (e) { return null; }
@@ -148,27 +154,24 @@ function findNextMatchTime(cache, now = Date.now()) {
 }
 
 // =========================================================================
-// 🎾 TENİS YAPILANDIRMASI VE GÜNCELLEME 
+// 🎾 TENİS YAPILANDIRMASI (HEDEF TURNUVALAR)
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
+
+// 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
+const targetTennisIds = [
+    11,  // Wimbledon (Erkekler)
+    24,  // Wimbledon (Kadınlar Tahmini)
+    12,  // Roland Garros (Erkekler)
+    14,  // Australian Open (Erkekler)
+    // 💡 Diğer turnuvaları Sofascore'dan bularak URL sonundaki ID'leri buraya ekleyebilirsin.
+];
 
 const isGarbage = (tourName, catName) => {
     const t = (tourName || "").toUpperCase(); const c = (catName || "").toUpperCase();
     const garbageWords = ["ITF", "CHALLENGER", "UTR", "QUALIFYING", "QUALIFIERS", "LEGENDS"];
     return garbageWords.some(word => t.includes(word) || c.includes(word));
-};
-
-const ELITE_KEYWORDS = [
-    "WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", "FRENCH OPEN", "OLYMPIC", "ATP FINALS", "WTA FINALS", "ATP MASTERS 1000", "WTA 1000", "MONTE CARLO MASTERS",
-    "INDIAN WELLS MASTERS", "MIAMI MASTERS", "MADRID MASTERS", "ROME MASTERS", "CINCINNATI MASTERS", "MONTREAL MASTERS", "TORONTO MASTERS", "SHANGHAI MASTERS", "PARIS MASTERS"
-];
-
-const checkIsEliteMatch = (tournamentName) => {
-    if (!tournamentName) return false;
-    const nameUpper = tournamentName.toUpperCase();
-    if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
-    return ELITE_KEYWORDS.some(keyword => nameUpper.includes(keyword));
 };
 
 const checkIsValidTournament = (tournamentName) => {
@@ -178,8 +181,11 @@ const checkIsValidTournament = (tournamentName) => {
     return true;
 };
 
-async function updateTennis(targetDates = [getTRDate(0)]) {
-    console.log(`🎾 Tenis: API'den veriler çekiliyor...`);
+// =========================================================================
+// 🎾 TENİS GÜNCELLEME (GERÇEK AKILLI TARAMA)
+// =========================================================================
+async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
+    console.log(`🎾 Tenis: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'})`);
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
 
     for (const [id, state] of previousMatchStates.entries()) {
@@ -187,16 +193,46 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
     }
     saveState();
 
+    // 🧹 HAFIZA TEMİZLİĞİ
+    for (const dateKey of emptyLeaguesCache.keys()) {
+        if (!validDates.includes(dateKey)) emptyLeaguesCache.delete(dateKey);
+    }
+
     let rawEvents = [];
     let successfulDates = [];
     const seenEventIds = new Set();
     let tenisMatchesLog = [];
 
     for (const date of targetDates) {
-        try {
-            console.log(`🔍 [${date}] tarihi taranıyor...`);
-            const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
-            if (data?.events) {
+        let dateHasMatches = false;
+        
+        if (!emptyLeaguesCache.has(date)) emptyLeaguesCache.set(date, new Set());
+        const knownEmptyLeagues = emptyLeaguesCache.get(date);
+
+        let leaguesToFetch = [];
+
+        if (isQuickScan) {
+            const activeLeagues = new Set();
+            for (const match of globalTennisCache.values()) {
+                if (match.fixedDate === date) {
+                    const lId = match.tournamentLogo.split('/').pop().replace('.png', '');
+                    activeLeagues.add(Number(lId));
+                }
+            }
+            leaguesToFetch = Array.from(activeLeagues);
+        } else {
+            leaguesToFetch = targetTennisIds.filter(id => !knownEmptyLeagues.has(id));
+        }
+
+        if (leaguesToFetch.length > 0 && !isQuickScan) {
+            console.log(`🔍 [${date}] için sorgulanacak tenis turnuvası sayısı: ${leaguesToFetch.length}`);
+        }
+
+        for (const leagueId of leaguesToFetch) {
+            const url = `https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/scheduled-events/${date}`;
+            const data = await fetchData(url);
+            
+            if (data?.events && data.events.length > 0) {
                 const filtered = data.events.filter(e => {
                     const tourName = e.tournament?.name; const catName = e.tournament?.category?.name;
                     if (isGarbage(tourName, catName)) return false;
@@ -205,17 +241,20 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                     seenEventIds.add(e.id);
                     return true;
                 });
-                rawEvents.push(...filtered);
-                successfulDates.push(date);
-                console.log(`  └─ Bu tarihte ${filtered.length} geçerli maç bulundu.`);
+                
+                if (filtered.length > 0) {
+                    rawEvents.push(...filtered);
+                    dateHasMatches = true;
+                }
             } else if (data?.is404) {
-                console.log(`  └─ Bu tarihte maç yok.`);
+                knownEmptyLeagues.add(leagueId); // Maç yoksa kara listeye eklendi!
             }
-        } catch (error) { }
+        }
+        if (dateHasMatches) successfulDates.push(date);
     }
 
     if (successfulDates.length === 0 || rawEvents.length === 0) {
-        console.log("⚠️ [TENİS] Geçerli hiçbir maç bulunamadı. İşlem bitti.");
+        console.log("⚠️ [TENİS] Yeni maç bulunamadı veya takip edilen turnuvalarda maç yok.");
         return { hasLiveMatch: sportUpdateStatus.hasLiveMatch, nextMatchTimestamp: sportUpdateStatus.nextMatchTime, hasAnyMatches: globalTennisCache.size > 0 };
     }
 
@@ -223,8 +262,8 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
         if (!validDates.includes(match.fixedDate)) globalTennisCache.delete(id);
     }
 
-    // 🔥 ANTI-BAN SİSTEMİ: Tüm detayları aynı anda çekmek yerine sıralı ve yavaşça çeker
-    console.log(`⏳ ${rawEvents.length} maçın detayları (sıralama, ülke vb.) tek tek çekiliyor... (Anti-Ban Aktif)`);
+    // 🔥 ANTI-BAN SİSTEMİ: Tüm detayları yavaşça çeker
+    console.log(`⏳ ${rawEvents.length} maçın detayları (sıralama, ülke vb.) sıralı olarak çekiliyor...`);
     const detailsMap = {};
     for (let i = 0; i < rawEvents.length; i++) {
         const e = rawEvents[i];
@@ -274,10 +313,10 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
             const fallbackBroadcaster = "S Sport / beIN Sports";
             const result = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
 
-            tenisMatchesLog.push({ home: e.homeTeam.name, away: e.awayTeam.name, kanal: result.kanal, source: result.source });
+            if (!isQuickScan) tenisMatchesLog.push({ home: e.homeTeam.name, away: e.awayTeam.name, kanal: result.kanal, source: result.source });
 
             globalTennisCache.set(e.id, {
-                id: e.id, isElite: checkIsEliteMatch(tourName), status: statusType, fixedDate: fixedDate, fixedTime: timeString, timestamp: startTimestamp, broadcaster: result.kanal,
+                id: e.id, isElite: true, status: statusType, fixedDate: fixedDate, fixedTime: timeString, timestamp: startTimestamp, broadcaster: result.kanal,
                 homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos }, awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
                 tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
                 homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"), awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"), setScores: sets, tournament: tourName
@@ -290,8 +329,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
     const finalMatches = Array.from(globalTennisCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase({ success: true, matches: finalMatches });
     
-    // Terminali yormamak için çok maç varsa loglamayı es geçiyoruz
-    if (finalMatches.length < 20) logMatchesBySport({ tenis: tenisMatchesLog });
+    if (!isQuickScan && finalMatches.length < 30) logMatchesBySport({ tenis: tenisMatchesLog });
 
     const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
@@ -326,7 +364,7 @@ async function main() {
             if (lastPeriodicUpdate < activeTarget) {
                 console.log("\n🔄 [PERİYODİK] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
-                const result = await updateTennis(days4);
+                const result = await updateTennis(days4, false);
                 sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
                 lastPeriodicUpdate = now;
             }
@@ -336,7 +374,7 @@ async function main() {
 
             if ((sportUpdateStatus.hasLiveMatch || hasUpcoming) && now - sportUpdateStatus.lastQuickUpdate >= TEN_MIN_MS) {
                 console.log("\n⚡ [HIZLI DÖNGÜ] Maç vakti yaklaştı/oynanıyor...");
-                const result = await updateTennis(quickScanDates);
+                const result = await updateTennis(quickScanDates, true);
                 sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
             }
 
