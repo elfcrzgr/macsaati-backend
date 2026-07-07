@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
-const emptyLeaguesCache = new Map(); // O gün maçı KESİN OLMAYAN basketbol ligleri
-
 
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
@@ -12,6 +10,9 @@ const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000;
 const TEN_MIN_MS = 10 * 60000;
+
+// O gün maçı KESİN OLMAYAN basketbol ligleri (Akıllı Tarama Kara Listesi)
+const emptyLeaguesCache = new Map(); 
 
 // =========================================================================
 // 🔥 FIREBASE BAŞLATMA
@@ -126,7 +127,14 @@ async function fetchData(url) {
         const headers = { "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X)", "Accept": "*/*", "Accept-Language": "tr-TR,tr;q=0.9", "Connection": "keep-alive" };
         if (url.includes('sofascore.com')) { headers["Referer"] = "https://www.sofascore.com/"; headers["Origin"] = "https://www.sofascore.com"; headers["X-Requested-With"] = "93a9a4"; headers["Cache-Control"] = "max-age=0"; }
         const response = await fetch(url, { headers });
-        if (!response.ok) { if (response.status !== 404) console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`); return null; }
+        
+        if (!response.ok) { 
+            // 🚀 GELİŞMİŞ 404 KONTROLÜ
+            if (response.status === 404) return { is404: true }; // Maç KESİN yok!
+            
+            console.log(`⚠️ API Reddi veya Ağ Hatası (HTTP ${response.status}) -> URL: ${url}`); 
+            return null; // Ağ hatasıysa null dön ki kara listeye girmesin!
+        }
         return await response.json();
     } catch (e) { return null; }
 }
@@ -147,20 +155,22 @@ function findNextMatchTime(cache, now = Date.now()) {
 }
 
 // =========================================================================
-// 🏀 BASKETBOL YAPILANDIRMASI
+// 🏀 BASKETBOL YAPILANDIRMASI (NBA YAZ LİGİ EKLENDİ)
 // =========================================================================
-const ELITE_LEAGUE_IDS = [132, 138, 141, 9357, 519, 264, 285];
+const ELITE_LEAGUE_IDS = [132, 138, 141, 9357, 519, 264, 285, 10415];
 const leagueConfigs = {
     132: "S Sport / NBA TV", 138: "S Sport / S Sport Plus", 141: "TRT Spor / S Sport", 9357: "Tivibu Spor",
     285: "S Sport / TRT Spor", 519: "beIN Sports", 1179: "TRT Spor / beIN Sports", 19844: "TBF TV (YouTube)",
     264: "S Sport Plus", 304: "S Sport Plus", 227: "S Sport Plus", 156: "beIN Sports",
-    1524: "S Sport Plus", 235: "S Sport Plus", 1438: "TRT Spor / beIN Sports"
+    1524: "S Sport Plus", 235: "S Sport Plus", 1438: "TRT Spor / beIN Sports",
+    10415: "NBA TV / S Sport Plus"
 };
 const basketballLeagues = {
     132: "NBA", 138: "EuroLeague", 141: "EuroCup", 9357: "Basketbol Şampiyonlar Ligi (BCL)",
     519: "Basketbol Süper Ligi (BSL)", 1179: "Türkiye Erkekler Basketbol Kupası", 19844: "Türkiye Basketbol 2. Ligi (TB2L)",
     264: "İspanya Liga ACB", 304: "Yunanistan Basketbol Ligi", 227: "Almanya BBL", 156: "Fransa LNB Pro A",
-    1524: "Avustralya NBL", 235: "Adriyatik Ligi (ABA)", 1438: "VTB Birleşik Ligi", 285: "FIBA EuroBasket"
+    1524: "Avustralya NBL", 235: "Adriyatik Ligi (ABA)", 1438: "VTB Birleşik Ligi", 285: "FIBA EuroBasket",
+    10415: "NBA Yaz Ligi"
 };
 const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 
@@ -175,6 +185,11 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         if (state.date && !validDates.includes(state.date) && state.status !== 'inprogress') previousMatchStates.delete(id);
     }
     saveState();
+
+    // 🧹 HAFIZA TEMİZLİĞİ (RAM Şişmesini Önler)
+    for (const dateKey of emptyLeaguesCache.keys()) {
+        if (!validDates.includes(dateKey)) emptyLeaguesCache.delete(dateKey);
+    }
 
     let allEvents = [];
     let successfulDates = [];
@@ -200,8 +215,8 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             leaguesToFetch = targetBaskIds.filter(id => !knownEmptyLeagues.has(id));
         }
 
-        if (leaguesToFetch.length > 0) {
-            console.log(`🔍 [${date}] için sorgulanacak lig sayısı: ${leaguesToFetch.length}`);
+        if (leaguesToFetch.length > 0 && !isQuickScan) {
+            console.log(`🔍 [${date}] için sorgulanacak basketbol ligi sayısı: ${leaguesToFetch.length}`);
         }
 
         for (const leagueId of leaguesToFetch) {
@@ -211,14 +226,18 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             if (data?.events && data.events.length > 0) {
                 allEvents.push(...data.events);
                 dateHasMatches = true;
-            } else {
-                knownEmptyLeagues.add(leagueId); // Maç yoksa kara listeye eklendi!
+            } else if (data?.is404) {
+                // SADECE 404 yanıtı (is404: true) aldıysak o ligi o gün için kara listeye alıyoruz!
+                knownEmptyLeagues.add(leagueId); 
             }
         }
         if (dateHasMatches) successfulDates.push(date);
     }
 
-    if (successfulDates.length === 0) return { nextMatchTimestamp: sportUpdateStatus.nextMatchTime, hasAnyMatches: globalBasketballCache.size > 0 };
+    if (successfulDates.length === 0) {
+        console.log("⚠️ [BASKETBOL] Yeni maç bulunamadı (Sezon dışı veya maç yok). İşlem bitti.");
+        return { nextMatchTimestamp: sportUpdateStatus.nextMatchTime, hasAnyMatches: globalBasketballCache.size > 0 };
+    }
 
     for (const [id, match] of globalBasketballCache.entries()) {
         if (!validDates.includes(match.fixedDate)) globalBasketballCache.delete(id);
@@ -316,10 +335,16 @@ async function main() {
             if (sportUpdateStatus.hasLiveMatch || hasUpcoming) {
                 sleepTime = TEN_MIN_MS - (now - sportUpdateStatus.lastQuickUpdate);
                 if (sleepTime < MINUTE_MS) sleepTime = MINUTE_MS;
+                console.log(`⚡ [BASKETBOL] Aktif/Yaklaşan maç var. Terminal ${Math.ceil(sleepTime / 60000)} dakika uykuya yatıyor...`);
+            } else {
+                console.log("💤 [BASKETBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
             }
 
             await new Promise(r => setTimeout(r, sleepTime));
-        } catch (e) { console.error("🚨 Hata:", e.message); await new Promise(r => setTimeout(r, MINUTE_MS)); }
+        } catch (e) { 
+            console.error("🚨 Hata:", e.message); 
+            await new Promise(r => setTimeout(r, MINUTE_MS)); 
+        }
     }
 }
 main();
