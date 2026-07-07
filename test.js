@@ -1,46 +1,36 @@
 async function testSofascore() {
-    const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+    // Senin yakaladığın spesifik lig (7: Şampiyonlar Ligi) ve tarih
+    const url = "https://www.sofascore.com/api/v1/unique-tournament/7/scheduled-events/2026-07-08";
     
-    // Test edilecek olası yeni Sofascore API rotaları
-    const endpoints = [
-        `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${today}`,
-        `https://api.sofascore.com/api/v1/sport/football/scheduled-events/${today}`,
-        `https://api.sofascore.app/api/v1/sport/football/scheduled-events/${today}`,
-        `https://api.sofascore.com/mobile/v4/sport/football/scheduled-events/${today}`,
-        `https://www.sofascore.com/api/v1/sport/football/events/schedule/${today}`,
-        `https://api.sofascore.com/api/v1/sport/football/events/date/${today}`
-    ];
-
-    console.log("🔍 Olası Sofascore API Rotaları Taranıyor...\n");
-
-    for (let url of endpoints) {
-        console.log(`📡 Deneniyor: ${url}`);
-        try {
-            const response = await fetch(url, {
-                headers: {
-                    // Mobil yerine standart tarayıcı taklidi yapıyoruz
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    "Accept": "*/*",
-                    "Referer": "https://www.sofascore.com/",
-                    "Origin": "https://www.sofascore.com"
-                }
-            });
-
-            console.log(`➡️ Durum: ${response.status} ${response.statusText}`);
-
-            if (response.ok) {
-                console.log(`\n✅ BİNGO! Çalışan adres bulundu:\n${url}\n`);
-                return; // Doğruyu bulduğumuzda döngüyü durduruyoruz
+    console.log(`📡 İstek atılıyor: ${url}\n`);
+    
+    try {
+        const response = await fetch(url, {
+            headers: {
+                // Standart bir mobil cihaz gibi görünüyoruz
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Mobile/15E148 Safari/604.1",
+                "Accept": "*/*",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Referer": "https://www.sofascore.com/football/2026-07-08",
+                
+                // 🔑 İŞTE KAPIYI AÇAN O GİZLİ ANAHTAR!
+                "X-Requested-With": "93a9a4",
+                "Cache-Control": "max-age=0"
             }
-        } catch (e) {
-            console.log(`❌ Ağ hatası: ${e.message}`);
+        });
+
+        console.log(`🔄 HTTP Durum Kodu: ${response.status} ${response.statusText}`);
+
+        if (!response.ok) {
+            console.log("❌ SORGUDAN RED GELDİ! (Muhtemelen hash kodu günlük değişiyor)");
+        } else {
+            console.log("✅ BİNGO! BAĞLANTI BAŞARILI!");
+            const data = await response.json();
+            console.log(`📊 Gelen Veri Başarıyla Okundu. Toplam ${data.events ? data.events.length : 0} maç var.`);
         }
-        console.log("-----------------------------------");
-        // IP ban yememek için araya ufak bir bekleme koyuyoruz
-        await new Promise(r => setTimeout(r, 1000));
+    } catch (error) {
+        console.error("🚨 Ağ veya Fetch Hatası:", error.message);
     }
-    
-    console.log("🚨 Tüm denemeler başarısız oldu. API yapısı tamamen değişmiş olabilir.");
 }
 
 testSofascore();
