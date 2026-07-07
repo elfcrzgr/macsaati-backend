@@ -124,7 +124,10 @@ async function fetchData(url) {
         const headers = { "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X)", "Accept": "*/*", "Accept-Language": "tr-TR,tr;q=0.9", "Connection": "keep-alive" };
         if (url.includes('sofascore.com')) { headers["Referer"] = "https://www.sofascore.com/"; headers["Origin"] = "https://www.sofascore.com"; headers["X-Requested-With"] = "93a9a4"; headers["Cache-Control"] = "max-age=0"; }
         const response = await fetch(url, { headers });
-        if (!response.ok) { if (response.status !== 404) console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`); return null; }
+        if (!response.ok) { 
+            if (response.status === 404) return { is404: true };
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`); return null; 
+        }
         return await response.json();
     } catch (e) { return null; }
 }
@@ -176,7 +179,7 @@ const checkIsValidTournament = (tournamentName) => {
 };
 
 async function updateTennis(targetDates = [getTRDate(0)]) {
-    console.log(`🎾 Tenis: Taranıyor...`);
+    console.log(`🎾 Tenis: API'den veriler çekiliyor...`);
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
 
     for (const [id, state] of previousMatchStates.entries()) {
@@ -191,7 +194,7 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
 
     for (const date of targetDates) {
         try {
-            // Yeni yapıda X-Requested-With var, genel endpoint çalışma ihtimali yüksek.
+            console.log(`🔍 [${date}] tarihi taranıyor...`);
             const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
             if (data?.events) {
                 const filtered = data.events.filter(e => {
@@ -204,11 +207,15 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 });
                 rawEvents.push(...filtered);
                 successfulDates.push(date);
+                console.log(`  └─ Bu tarihte ${filtered.length} geçerli maç bulundu.`);
+            } else if (data?.is404) {
+                console.log(`  └─ Bu tarihte maç yok.`);
             }
         } catch (error) { }
     }
 
-    if (successfulDates.length === 0) {
+    if (successfulDates.length === 0 || rawEvents.length === 0) {
+        console.log("⚠️ [TENİS] Geçerli hiçbir maç bulunamadı. İşlem bitti.");
         return { hasLiveMatch: sportUpdateStatus.hasLiveMatch, nextMatchTimestamp: sportUpdateStatus.nextMatchTime, hasAnyMatches: globalTennisCache.size > 0 };
     }
 
@@ -216,14 +223,16 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
         if (!validDates.includes(match.fixedDate)) globalTennisCache.delete(id);
     }
 
-    const detailPromises = rawEvents.map(e =>
-        fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`).then(data => ({ eventId: e.id, data })).catch(err => {
-            return { eventId: e.id, data: null };
-        })
-    );
-    const detailsResults = await Promise.all(detailPromises);
+    // 🔥 ANTI-BAN SİSTEMİ: Tüm detayları aynı anda çekmek yerine sıralı ve yavaşça çeker
+    console.log(`⏳ ${rawEvents.length} maçın detayları (sıralama, ülke vb.) tek tek çekiliyor... (Anti-Ban Aktif)`);
     const detailsMap = {};
-    detailsResults.forEach(result => { detailsMap[result.eventId] = result.data; });
+    for (let i = 0; i < rawEvents.length; i++) {
+        const e = rawEvents[i];
+        process.stdout.write(`\r  🎾 İşleniyor: %${Math.round(((i + 1) / rawEvents.length) * 100)} (${i + 1}/${rawEvents.length})`);
+        const detailData = await fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`);
+        detailsMap[e.id] = detailData;
+    }
+    console.log(`\n✅ Tüm detaylar başarıyla alındı!`);
 
     for (let idx = 0; idx < rawEvents.length; idx++) {
         const e = rawEvents[idx];
@@ -281,7 +290,8 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
     const finalMatches = Array.from(globalTennisCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase({ success: true, matches: finalMatches });
     
-    logMatchesBySport({ tenis: tenisMatchesLog });
+    // Terminali yormamak için çok maç varsa loglamayı es geçiyoruz
+    if (finalMatches.length < 20) logMatchesBySport({ tenis: tenisMatchesLog });
 
     const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
@@ -314,7 +324,7 @@ async function main() {
             }
 
             if (lastPeriodicUpdate < activeTarget) {
-                console.log("🔄 [PERİYODİK] Detaylı Tarama");
+                console.log("\n🔄 [PERİYODİK] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
                 const result = await updateTennis(days4);
                 sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
@@ -325,6 +335,7 @@ async function main() {
             const hasUpcoming = sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 11);
 
             if ((sportUpdateStatus.hasLiveMatch || hasUpcoming) && now - sportUpdateStatus.lastQuickUpdate >= TEN_MIN_MS) {
+                console.log("\n⚡ [HIZLI DÖNGÜ] Maç vakti yaklaştı/oynanıyor...");
                 const result = await updateTennis(quickScanDates);
                 sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
             }
@@ -333,10 +344,16 @@ async function main() {
             if (sportUpdateStatus.hasLiveMatch || hasUpcoming) {
                 sleepTime = TEN_MIN_MS - (now - sportUpdateStatus.lastQuickUpdate);
                 if (sleepTime < MINUTE_MS) sleepTime = MINUTE_MS;
+                console.log(`\n⚡ [TENİS] Aktif/Yaklaşan maç var. Terminal ${Math.ceil(sleepTime / 60000)} dakika uykuya yatıyor...`);
+            } else {
+                console.log("\n💤 [TENİS] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
             }
 
             await new Promise(r => setTimeout(r, sleepTime));
-        } catch (e) { console.error("🚨 Hata:", e.message); await new Promise(r => setTimeout(r, MINUTE_MS)); }
+        } catch (e) { 
+            console.error("🚨 Hata:", e.message); 
+            await new Promise(r => setTimeout(r, MINUTE_MS)); 
+        }
     }
 }
 main();
