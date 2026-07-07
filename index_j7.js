@@ -93,7 +93,6 @@ function loadState() {
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000;
-const FIREBASE_BASE_URL = "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 // =========================================================================
 // 🌉 HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
@@ -109,7 +108,6 @@ function loadExternalBroadcasters() {
             externalBroadcasters = {};
         }
     } catch (e) {
-        console.log("⚠️ yayinci_bilgisi.json okunamadı, kendi yayıncı ayarlarımız kullanılacak.");
         externalBroadcasters = {};
     }
 }
@@ -182,7 +180,6 @@ async function uploadToFirebase(sportName, data) {
         const db = admin.database();
         const ref = db.ref(`matches_${sportName}`);
         await ref.set(data);
-        console.log(`✅ [FIREBASE] ${sportName.toUpperCase()} başarıyla güncellendi!`);
     } catch (error) {
         console.error(`❌ [FIREBASE] ${sportName} Hata:`, error.message);
     }
@@ -190,7 +187,8 @@ async function uploadToFirebase(sportName, data) {
 
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1500) + 500;
+        // HIZLANDIRILDI: Tarama hızını artırmak için bekleme süresini 200-800ms'ye indirdik
+        const delay = Math.floor(Math.random() * 600) + 200;
         await new Promise(r => setTimeout(r, delay));
 
         const isSofascore = url.includes('sofascore.com');
@@ -213,7 +211,6 @@ async function fetchData(url) {
 
         if (!response.ok) {
             // SADECE 404 (Maç Yok) DEĞİLSE EKRANA YAZ!
-            // 404 ise ekranı kirletmeden sessizce null dönüyoruz.
             if (response.status !== 404) {
                 console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
             }
@@ -226,14 +223,12 @@ async function fetchData(url) {
     }
 }
 
-
+// EKSİK OLAN TARİH FONKSİYONU GERİ EKLENDİ
 const getTRDate = (offset = 0) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
     return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 };
-
-
 
 // =========================================================================
 // ⚽ FUTBOL YAPILANDIRMASI
@@ -465,7 +460,6 @@ async function checkAndSendNotifications(newMatches) {
         let currentMinNum = tObj.currentMinute || 0;
 
         if (match.status === 'inprogress' && currentMinNum > 0 && prev.lastMinute > 0 && currentMinNum < prev.lastMinute) {
-            console.log(`🛡️ CDN HATASI ENGELLENDİ: ${match.homeTeam.name} dakikası geriye gitti. Eski veri reddedildi.`);
             currH = prev.homeScore; currA = prev.awayScore; match.homeScore = String(currH); match.awayScore = String(currA); currentMinNum = prev.lastMinute;
         }
 
@@ -498,21 +492,15 @@ async function checkAndSendNotifications(newMatches) {
                         if (result.failed.length > 0) {
                             const err = result.failed[0];
                             const errorReason = err.response ? err.response.reason : err.error;
-                            console.error(`❌ [APNs REDDEDİLDİ] Sebep: ${errorReason} | Token: ${deviceToken.substring(0,10)}...`);
                             if (errorReason === 'BadDeviceToken' || errorReason === 'Unregistered') {
                                 await admin.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
-                                console.log(`🗑️ Geçersiz kilit ekranı token'ı temizlendi.`);
                             }
-                        } else {
-                            console.log(`✅ [APNs İLETİLDİ] Apple cihazı arka planda uyandırıldı!`);
                         }
                     } catch (e) {
                         console.error("APNs Bağlantı Hatası:", e);
                     }
                 });
-
                 await Promise.all(promises);
-                console.log(`📲 [LIVE ACTIVITY APPLE APNS] ${match.homeTeam?.name} | Dk: ${liveMin} | ${tokenList.length} aktif kilit ekranı işlem gördü.`);
             }
         }
 
@@ -640,8 +628,6 @@ async function triggerPushToStart(matchId) {
     const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
     const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
 
-    console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name} maçı (${cleanMinute}) ${tokensToAlert.length} cihaza başlatılıyor...`);
-
     for (const token of tokensToAlert) {
         let notification = new apn.Notification();
         notification.rawPayload = {
@@ -660,23 +646,15 @@ async function triggerPushToStart(matchId) {
             notification.headers = function() { let h = originalHeadersFn(); h["apns-push-type"] = "liveactivity"; return h; };
         }
 
-        try {
-            const result = await apnProvider.send(notification, token);
-            if (result.failed.length > 0) {
-                const err = result.failed[0]; const errorReason = err.response ? err.response.reason : err.error;
-                console.error(`❌ [START REDDEDİLDİ] Sebep: ${errorReason} | Token: ${token.substring(0,10)}...`);
-            } else {
-                console.log(`✅ [START BAŞARILI] Sinyal Apple'a ulaştı!`);
-            }
-        } catch (e) { console.error("❌ İletim Hatası:", e); }
+        try { await apnProvider.send(notification, token); } catch (e) {}
     }
 }
 
 // =========================================================================
-// ⚽ FUTBOL GÜNCELLEME (YENİ GÜVENLİ API YAPISI)
+// ⚽ FUTBOL GÜNCELLEME (AKILLI TARAMA)
 // =========================================================================
-async function updateFootball(targetDates = [getTRDate(0)]) {
-    console.log(`⚽ Futbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
+async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false) {
+    console.log(`⚽ Futbol: (Mod: ${isQuickScan ? '🚀 HIZLI (Akıllı Tarama)' : '🐢 DETAYLI'})`);
 
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
 
@@ -689,12 +667,27 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
 
     let allEvents = [];
     let successfulDates = [];
+    let leaguesToFetch = ALL_FOOT_TARGETS;
+
+    // 🔥 AKILLI TARAMA: Sadece cache'de o gün maçı olduğu bilinen ligleri seç
+    if (isQuickScan && globalFootballCache.size > 0) {
+        const activeLeagues = new Set();
+        for (const match of globalFootballCache.values()) {
+            if (targetDates.includes(match.fixedDate)) {
+                const lId = match.tournamentLogo.split('/').pop().replace('.png', '');
+                activeLeagues.add(Number(lId));
+            }
+        }
+        if (activeLeagues.size > 0) {
+            leaguesToFetch = Array.from(activeLeagues);
+            console.log(`⚡ [AKILLI TARAMA] Boş ligler atlanıyor. Sadece aktif ${leaguesToFetch.length} lig sorgulanacak.`);
+        }
+    }
 
     for (const date of targetDates) {
         let dateHasMatches = false;
         
-        // 🚀 KÜRESEL 404 YERİNE, TAKİP EDİLEN LİGLERİ TEK TEK DÖNÜYORUZ
-        for (const leagueId of ALL_FOOT_TARGETS) {
+        for (const leagueId of leaguesToFetch) {
             const url = `https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/scheduled-events/${date}`;
             const data = await fetchData(url);
             
@@ -703,14 +696,11 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
                 dateHasMatches = true;
             }
         }
-        
-        if (dateHasMatches) {
-            successfulDates.push(date);
-        }
+        if (dateHasMatches) successfulDates.push(date);
     }
 
     if (successfulDates.length === 0) {
-        console.log("⚠️ API yanıt vermedi. Mevcut futbol önbelleği korunuyor.");
+        console.log("⚠️ Yeni veri bulunamadı. Mevcut futbol önbelleği korunuyor.");
         return { hasLiveMatch: sportUpdateStatus.football.hasLiveMatch, nextMatchTimestamp: sportUpdateStatus.football.nextMatchTime, hasAnyMatches: globalFootballCache.size > 0 };
     }
 
@@ -785,23 +775,22 @@ async function updateFootball(targetDates = [getTRDate(0)]) {
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalFootballCache);
 
-    logMatchesBySport({ futbol: futbolMatchesLog });
+    if(!isQuickScan) logMatchesBySport({ futbol: futbolMatchesLog });
     const forcedSnapshot = await admin.database().ref('forced_matches').once('value');
     const forcedMatches = forcedSnapshot.val() || {};
 
     for (const [id, match] of globalFootballCache.entries()) {
         if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
-            console.log(`🌟 [KRİTİK MAÇ] ${match.homeTeam.name} tetikleniyor...`);
             await triggerPushToStart(id); triggeredMatches.add(String(id));
         }
     }
 
-    console.log(`  ✅ Toplam ${matches.length} futbol maçı ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
+    console.log(`  ✅ İşlem bitti. ${hasLiveMatch ? '(🟢 CANLI MAÇ VAR)' : '(⚪ Canlı maç yok)'}`);
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
 }
 
 // =========================================================================
-// 🏀 BASKETBOL GÜNCELLEME (YENİ GÜVENLİ API YAPISI)
+// 🏀 BASKETBOL GÜNCELLEME (AKILLI TARAMA)
 // =========================================================================
 const ELITE_LEAGUE_IDS = [132, 138, 141, 9357, 519, 264, 285];
 const leagueConfigs = {
@@ -818,18 +807,31 @@ const basketballLeagues = {
 };
 const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 
-async function updateBasketball(targetDates = [getTRDate(0)]) {
-    console.log(`🏀 Basketbol güncelleniyor... (Taranan gün: ${targetDates.length})`);
+async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false) {
+    console.log(`🏀 Basketbol: (Mod: ${isQuickScan ? '🚀 HIZLI (Akıllı Tarama)' : '🐢 DETAYLI'})`);
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
 
     let allEvents = [];
     let successfulDates = [];
+    let leaguesToFetch = targetBaskIds;
+
+    // 🔥 AKILLI TARAMA
+    if (isQuickScan && globalBasketballCache.size > 0) {
+        const activeLeagues = new Set();
+        for (const match of globalBasketballCache.values()) {
+            if (targetDates.includes(match.fixedDate)) {
+                const lId = match.tournamentLogo.split('/').pop().replace('.png', '');
+                activeLeagues.add(Number(lId));
+            }
+        }
+        if (activeLeagues.size > 0) {
+            leaguesToFetch = Array.from(activeLeagues);
+        }
+    }
 
     for (const date of targetDates) {
         let dateHasMatches = false;
-        
-        // 🚀 KÜRESEL 404 YERİNE, TAKİP EDİLEN LİGLERİ TEK TEK DÖNÜYORUZ
-        for (const leagueId of targetBaskIds) {
+        for (const leagueId of leaguesToFetch) {
             const url = `https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/scheduled-events/${date}`;
             const data = await fetchData(url);
             
@@ -838,12 +840,10 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
                 dateHasMatches = true;
             }
         }
-        
         if (dateHasMatches) successfulDates.push(date);
     }
 
     if (successfulDates.length === 0) {
-        console.log("⚠️ API yanıt vermedi. Mevcut basketbol önbelleği korunuyor.");
         return { nextMatchTimestamp: sportUpdateStatus.basketball.nextMatchTime, hasAnyMatches: globalBasketballCache.size > 0 };
     }
 
@@ -876,7 +876,7 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
         const result = getBroadcasterWithFallback("basketbol", dayStr, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
         const finalBroadcaster = result.kanal;
 
-        basketbolMatchesLog.push({ home: e.homeTeam.name, away: e.awayTeam.name, kanal: finalBroadcaster, source: result.source });
+        if(!isQuickScan) basketbolMatchesLog.push({ home: e.homeTeam.name, away: e.awayTeam.name, kanal: finalBroadcaster, source: result.source });
 
         globalBasketballCache.set(e.id, {
             id: e.id, isElite: ELITE_LEAGUE_IDS.includes(utId), status: statusType, fixedDate: dayStr, fixedTime: timeString, timestamp: dateTR.getTime(), broadcaster: finalBroadcaster,
@@ -889,9 +889,8 @@ async function updateBasketball(targetDates = [getTRDate(0)]) {
 
     const finalMatches = Array.from(globalBasketballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase("basketball", { success: true, matches: finalMatches });
-    logMatchesBySport({ basketbol: basketbolMatchesLog });
+    if(!isQuickScan) logMatchesBySport({ basketbol: basketbolMatchesLog });
     const nextMatchTimestamp = findNextMatchTime(globalBasketballCache);
-    console.log(`  ✅ Toplam ${finalMatches.length} basketbol maçı kaydedildi.`);
     return { nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
 
@@ -927,7 +926,6 @@ const checkIsValidTournament = (tournamentName) => {
 };
 
 async function updateTennis(targetDates = [getTRDate(0)]) {
-    console.log(`🎾 Tenis güncelleniyor (Paralel Optimizasyon - Taranan gün: ${targetDates.length})...`);
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
 
     let rawEvents = [];
@@ -937,8 +935,6 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
 
     for (const date of targetDates) {
         try {
-            // Tenis için belirli bir liste olmadığından kendi endpoint'ini denemeye devam ediyoruz.
-            // Yeni eklenen X-Requested-With başlığı ile bu adresin çalışması muhtemel.
             const data = await fetchData(`https://www.sofascore.com/api/v1/sport/tennis/scheduled-events/${date}`);
             if (data?.events) {
                 const filtered = data.events.filter(e => {
@@ -952,13 +948,10 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 rawEvents.push(...filtered);
                 successfulDates.push(date);
             }
-        } catch (error) {
-            console.error(`⚠️ Tarih ${date} için veriler çekilemedi:`, error.message);
-        }
+        } catch (error) { }
     }
 
     if (successfulDates.length === 0) {
-        console.log("⚠️ API yanıt vermedi. Mevcut tenis önbelleği korunuyor.");
         return { hasLiveMatch: sportUpdateStatus.tennis.hasLiveMatch, nextMatchTimestamp: sportUpdateStatus.tennis.nextMatchTime, hasAnyMatches: globalTennisCache.size > 0 };
     }
 
@@ -966,18 +959,15 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
         if (!validDates.includes(match.fixedDate)) globalTennisCache.delete(id);
     }
 
-    console.log(`  📋 ${rawEvents.length} tekil maç bulundu (Tekrarlar temizlendi)`);
-
     const detailPromises = rawEvents.map(e =>
         fetchData(`https://www.sofascore.com/api/v1/event/${e.id}`).then(data => ({ eventId: e.id, data })).catch(err => {
-            console.warn(`⚠️ Event ${e.id} detayı çekilemedi`); return { eventId: e.id, data: null };
+            return { eventId: e.id, data: null };
         })
     );
 
     const detailsResults = await Promise.all(detailPromises);
     const detailsMap = {};
     detailsResults.forEach(result => { detailsMap[result.eventId] = result.data; });
-    console.log(`  ✅ Tüm detaylar çekildi`);
 
     for (let idx = 0; idx < rawEvents.length; idx++) {
         const e = rawEvents[idx];
@@ -1026,20 +1016,11 @@ async function updateTennis(targetDates = [getTRDate(0)]) {
                 homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"), awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"), setScores: sets, tournament: tourName
             });
             tournamentCount[tourName] = (tournamentCount[tourName] || 0) + 1;
-            const progress = Math.round(((idx + 1) / rawEvents.length) * 100);
-            process.stdout.write(`\r  ⏳ İşleniyor... %${progress} (${idx + 1}/${rawEvents.length})`);
-        } catch (error) {
-            console.error(`\n⚠️ Maç ${e.id} işlenirken hata:`, error.message); continue;
-        }
+        } catch (error) { continue; }
     }
 
     const finalMatches = Array.from(globalTennisCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase("tennis", { success: true, matches: finalMatches });
-
-    console.log(`\n  ✅ Toplam ${finalMatches.length} tenis maçı kaydedildi`);
-    console.log(`  📊 Turnuvalar: ${Object.keys(tournamentCount).length}`);
-    const withRanking = finalMatches.filter(m => m.homeTeam.ranking || m.awayTeam.ranking).length;
-    console.log(`  🏆 Sıralama verisi olan maçlar: ${withRanking}/${finalMatches.length}`);
 
     const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
@@ -1067,7 +1048,6 @@ const CIRCUIT_DETAILS = {
 };
 
 async function updateF1() {
-    console.log(`🏎️ Formula 1 güncelleniyor...`);
     try {
         const response = await fetchData('https://api.jolpi.ca/ergast/f1/current.json');
         if (!response) return;
@@ -1108,8 +1088,7 @@ async function updateF1() {
 
         finalEvents.sort((a, b) => a.timestamp - b.timestamp);
         await uploadToFirebase("f1", { success: true, lastUpdated: new Date().toISOString(), totalSessions: finalEvents.length, events: finalEvents });
-        console.log(`  ✅ F1 güncellemesi tamamlandı.`);
-    } catch (error) { console.error(`   ⚠️ F1 hatası: ${error.message}`); }
+    } catch (error) { }
 }
 
 // =========================================================================
@@ -1146,11 +1125,12 @@ async function main() {
             }
 
             if (lastPeriodicUpdate < activeTarget) {
-                console.log("🔄 [PERİYODİK GÜNCELLEME] Ana Saat Dilimi Tetiklendi!");
+                console.log("🔄 [PERİYODİK GÜNCELLEME] Ana Saat Dilimi Tetiklendi! (Detaylı Tarama)");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
 
-                const footballResult = await updateFootball(days4);
-                const basketballResult = await updateBasketball(days4);
+                // 🔥 "false" parametresi = Detaylı tarama (Tüm ligleri gezer)
+                const footballResult = await updateFootball(days4, false);
+                const basketballResult = await updateBasketball(days4, false);
                 const tennisResult = await updateTennis(days4);
                 await updateF1();
 
@@ -1164,14 +1144,15 @@ async function main() {
 
             if (sportUpdateStatus.football.hasLiveMatch) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
-                    console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var - Sadece bugün güncelleniyor...");
-                    const footResult = await updateFootball(todayOnly); 
+                    console.log("⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var!");
+                    // 🔥 "true" parametresi = Akıllı tarama (Sadece aktif ligler)
+                    const footResult = await updateFootball(todayOnly, true); 
                     sportUpdateStatus.football.lastQuickUpdate = now; sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch; sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
                 }
             } else if (sportUpdateStatus.football.nextMatchTime && now >= (sportUpdateStatus.football.nextMatchTime - ONE_MIN_MS * 1.1)) {
                 if (now - sportUpdateStatus.football.lastQuickUpdate >= ONE_MIN_MS) {
-                    console.log("⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç saati yaklaştı - 3 günlük kontrol yapılıyor...");
-                    const footResult = await updateFootball(quickScanDates); 
+                    console.log("⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç saati yaklaştı!");
+                    const footResult = await updateFootball(quickScanDates, true); 
                     sportUpdateStatus.football.lastQuickUpdate = now; sportUpdateStatus.football.hasLiveMatch = footResult.hasLiveMatch; sportUpdateStatus.football.nextMatchTime = footResult.nextMatchTimestamp;
                 }
             }
@@ -1179,7 +1160,7 @@ async function main() {
             const hasUpcomingBasketball = sportUpdateStatus.basketball.nextMatchTime && now >= (sportUpdateStatus.basketball.nextMatchTime - ONE_MIN_MS * 11);
             if ((sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball) && now - sportUpdateStatus.basketball.lastQuickUpdate >= TEN_MIN_MS) {
                 console.log("🏀 [HIZLI DÖNGÜ] Basketbol verileri güncelleniyor...");
-                const basketResult = await updateBasketball(quickScanDates);
+                const basketResult = await updateBasketball(quickScanDates, true);
                 sportUpdateStatus.basketball.lastQuickUpdate = now; sportUpdateStatus.basketball.nextMatchTime = basketResult.nextMatchTimestamp;
             }
 
@@ -1195,7 +1176,7 @@ async function main() {
 
             if (isFootballActive) {
                 sleepTime = ONE_MIN_MS;
-                console.log("⚡ Aktif futbol takibi, 1 dakika sonra kontrol...");
+                console.log("⚡ Aktif maç takibi, 1 dakika sonra kontrol...");
             } else if (sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball || sportUpdateStatus.tennis.hasLiveMatch || hasUpcomingTennis) {
                 let timeToNextBask = TEN_MIN_MS; let timeToNextTen = TEN_MIN_MS;
                 if (sportUpdateStatus.basketball.hasLiveMatch || hasUpcomingBasketball) timeToNextBask = TEN_MIN_MS - (now - sportUpdateStatus.basketball.lastQuickUpdate);
