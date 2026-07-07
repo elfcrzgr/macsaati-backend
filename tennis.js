@@ -162,7 +162,7 @@ const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}
 // 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
 const targetTennisIds = [
     2361, // 🎾 Wimbledon ATP (Erkekler - Senin yakaladığın gerçek ID!)
-    2362, // 🎾 Wimbledon WTA (Kadınlar - Genelde ardışık olur, bunu da ekleyelim)
+    2600, // 🎾 Wimbledon WTA (Kadınlar - Genelde ardışık olur, bunu da ekleyelim)
     
     // 💡 İleride oynanacak diğer turnuvaları Sofascore'dan açıp URL'deki 
     // sayıyı (örn: 2361) tam buraya virgülle ekleyebilirsin.
