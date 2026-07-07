@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
+const emptyLeaguesCache = new Map(); // O gün maçı KESİN OLMAYAN liglerin kara listesi
 
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
@@ -624,8 +625,11 @@ async function triggerPushToStart(matchId) {
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME (AKILLI TARAMA)
 // =========================================================================
+// =========================================================================
+// ⚽ FUTBOL GÜNCELLEME (GERÇEK AKILLI TARAMA)
+// =========================================================================
 async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false) {
-    console.log(`⚽ Futbol: (Mod: ${isQuickScan ? '🚀 HIZLI (Akıllı Tarama)' : '🐢 DETAYLI'})`);
+    console.log(`⚽ Futbol: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'})`);
 
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
     for (const [id, state] of previousMatchStates.entries()) {
@@ -635,25 +639,48 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
     let allEvents = [];
     let successfulDates = [];
-    let leaguesToFetch = ALL_FOOT_TARGETS;
-
-    if (isQuickScan && globalFootballCache.size > 0) {
-        const activeLeagues = new Set();
-        for (const match of globalFootballCache.values()) {
-            if (targetDates.includes(match.fixedDate)) {
-                const lId = match.tournamentLogo.split('/').pop().replace('.png', '');
-                activeLeagues.add(Number(lId));
-            }
-        }
-        if (activeLeagues.size > 0) leaguesToFetch = Array.from(activeLeagues);
-    }
 
     for (const date of targetDates) {
         let dateHasMatches = false;
+        
+        // O tarih için boş ligler listesini bul veya oluştur
+        if (!emptyLeaguesCache.has(date)) emptyLeaguesCache.set(date, new Set());
+        const knownEmptyLeagues = emptyLeaguesCache.get(date);
+        
+        let leaguesToFetch = [];
+
+        if (isQuickScan) {
+            // HIZLI TARAMA: Sadece o gün maçı olduğunu önceden bildiğimiz ligler taranır
+            const activeLeagues = new Set();
+            for (const match of globalFootballCache.values()) {
+                if (match.fixedDate === date) {
+                    const lId = match.tournamentLogo.split('/').pop().replace('.png', '');
+                    activeLeagues.add(Number(lId));
+                }
+            }
+            leaguesToFetch = Array.from(activeLeagues);
+        } else {
+            // DETAYLI TARAMA: Kara listedeki (boş olduğu kesinleşen) ligleri FİLTRELE!
+            // Böylece 40 lige tekrar tekrar boşuna sorgu atılmaz.
+            leaguesToFetch = ALL_FOOT_TARGETS.filter(id => !knownEmptyLeagues.has(id));
+        }
+
+        if (leaguesToFetch.length > 0) {
+            console.log(`🔍 [${date}] için sorgulanacak lig sayısı: ${leaguesToFetch.length}`);
+        }
+
         for (const leagueId of leaguesToFetch) {
             const url = `https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/scheduled-events/${date}`;
             const data = await fetchData(url);
-            if (data?.events && data.events.length > 0) { allEvents.push(...data.events); dateHasMatches = true; }
+            
+            if (data?.events && data.events.length > 0) {
+                allEvents.push(...data.events);
+                dateHasMatches = true;
+            } else {
+                // 🎯 SİHİR BURADA: Maç yoksa, bu ligi o gün için "BOŞ" olarak kara listeye al.
+                // Sistem o gün bitene kadar bir daha bu lige asla istek atmayacak!
+                knownEmptyLeagues.add(leagueId);
+            }
         }
         if (dateHasMatches) successfulDates.push(date);
     }
@@ -695,7 +722,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
         const result = getBroadcasterWithFallback("futbol", dayTR, timeString, translatedHome, translatedAway, fallbackBroadcaster);
         const finalBroadcaster = result.kanal;
 
-        futbolMatchesLog.push({ home: translatedHome, away: translatedAway, kanal: finalBroadcaster, source: result.source });
+        if(!isQuickScan) futbolMatchesLog.push({ home: translatedHome, away: translatedAway, kanal: finalBroadcaster, source: result.source });
 
         let finalHomeScore = (isLive || status === 'finished' || isSuspended) ? String(e.homeScore?.display ?? "0") : "-";
         let finalAwayScore = (isLive || status === 'finished' || isSuspended) ? String(e.awayScore?.display ?? "0") : "-";
@@ -738,6 +765,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     }
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
 }
+
 
 // =========================================================================
 // 🆕 ANA DÖNGÜ (SADECE FUTBOL)
