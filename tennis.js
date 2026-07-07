@@ -161,25 +161,13 @@ const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}
 
 // 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
 const targetTennisIds = [
-    11,  // Wimbledon (Erkekler)
-    24,  // Wimbledon (Kadınlar Tahmini)
-    12,  // Roland Garros (Erkekler)
-    14,  // Australian Open (Erkekler)
-    // 💡 Diğer turnuvaları Sofascore'dan bularak URL sonundaki ID'leri buraya ekleyebilirsin.
+    2361, // 🎾 Wimbledon ATP (Erkekler - Senin yakaladığın gerçek ID!)
+    2362, // 🎾 Wimbledon WTA (Kadınlar - Genelde ardışık olur, bunu da ekleyelim)
+    
+    // 💡 İleride oynanacak diğer turnuvaları Sofascore'dan açıp URL'deki 
+    // sayıyı (örn: 2361) tam buraya virgülle ekleyebilirsin.
 ];
 
-const isGarbage = (tourName, catName) => {
-    const t = (tourName || "").toUpperCase(); const c = (catName || "").toUpperCase();
-    const garbageWords = ["ITF", "CHALLENGER", "UTR", "QUALIFYING", "QUALIFIERS", "LEGENDS"];
-    return garbageWords.some(word => t.includes(word) || c.includes(word));
-};
-
-const checkIsValidTournament = (tournamentName) => {
-    if (!tournamentName) return false;
-    const nameUpper = tournamentName.toUpperCase();
-    if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
-    return true;
-};
 
 // =========================================================================
 // 🎾 TENİS GÜNCELLEME (GERÇEK AKILLI TARAMA)
