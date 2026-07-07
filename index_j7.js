@@ -202,18 +202,21 @@ async function fetchData(url) {
             "Connection": "keep-alive"
         };
 
-        // Sofascore'un yeni güvenlik duvarı kuralları (Sadece Sofascore isteklerine eklenir)
         if (isSofascore) {
             headers["Referer"] = "https://www.sofascore.com/";
             headers["Origin"] = "https://www.sofascore.com";
-            headers["X-Requested-With"] = "93a9a4"; // 🔥 KİLİDİ AÇAN ANAHTAR
+            headers["X-Requested-With"] = "93a9a4"; 
             headers["Cache-Control"] = "max-age=0";
         }
 
         const response = await fetch(url, { headers });
 
         if (!response.ok) {
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
+            // SADECE 404 (Maç Yok) DEĞİLSE EKRANA YAZ!
+            // 404 ise ekranı kirletmeden sessizce null dönüyoruz.
+            if (response.status !== 404) {
+                console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
+            }
             return null;
         }
 
@@ -223,11 +226,6 @@ async function fetchData(url) {
     }
 }
 
-const getTRDate = (offset = 0) => {
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-};
 
 // =========================================================================
 // ⚽ FUTBOL YAPILANDIRMASI
