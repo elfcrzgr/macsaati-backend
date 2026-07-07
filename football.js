@@ -2,22 +2,23 @@ const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
-const emptyLeaguesCache = new Map(); // O gün maçı KESİN OLMAYAN liglerin kara listesi
 
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
 // =========================================================================
 const IS_PRODUCTION = false; 
-const STATE_FILE = 'football_states.json'; // ⚠️ BAĞIMSIZ HAFIZA
+const STATE_FILE = 'futbol_states.json'; // ⚠️ BAĞIMSIZ HAFIZA
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000;
+
+// O gün maçı KESİN OLMAYAN futbol ligleri (Akıllı Tarama Kara Listesi)
+const emptyLeaguesCache = new Map();
 
 // =========================================================================
 // 🔥 FIREBASE & APNs BAŞLATMA
 // =========================================================================
 const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf8'));
-// Birden fazla instance çalışacağı için name ataması yapıyoruz
 const firebaseApp = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -32,7 +33,7 @@ const apnProvider = new apn.Provider({
     },
     production: IS_PRODUCTION
 });
-console.log(`🍏 [FUTBOL] Apple APNs hazır. (Mod: ${IS_PRODUCTION ? "CANLI / TESTFLIGHT" : "GELİŞTİRİCİ"})`);
+console.log(`🍏 [FUTBOL] Apple APNs hazır. (Mod: ${IS_PRODUCTION ? "CANLI" : "GELİŞTİRİCİ"})`);
 
 // =========================================================================
 // 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
@@ -85,12 +86,10 @@ function loadState() {
 // 🌉 HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
 // =========================================================================
 let externalBroadcasters = {};
-
 function loadExternalBroadcasters() {
     try {
         if (fs.existsSync('yayinci_bilgisi.json')) {
-            const data = fs.readFileSync('yayinci_bilgisi.json', 'utf8');
-            externalBroadcasters = JSON.parse(data);
+            externalBroadcasters = JSON.parse(fs.readFileSync('yayinci_bilgisi.json', 'utf8'));
         } else {
             externalBroadcasters = {};
         }
@@ -103,9 +102,16 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
 
-    const toTR = (str) => str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/ı/g, 'i').toLowerCase().trim();
-    const hName = toTR(homeName || "");
-    const aName = toTR(awayName || "");
+    const normalizeStr = (str) => {
+        if (!str) return "";
+        return str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+                  .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
+                  .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
+                  .replace(/ı/g, 'i').toLowerCase().replace(/[^a-z0-9]/g, ' ');
+    };
+
+    const homeWords = normalizeStr(homeName).split(' ').filter(w => w.length >= 3);
+    const awayWords = normalizeStr(awayName).split(' ').filter(w => w.length >= 3);
 
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
@@ -117,42 +123,35 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
         });
     };
 
-    const safeDates = getSafeDates(dateStr);
-
-    for (const dateKey of safeDates) {
+    for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
         if (!dayData || !dayData.matches) continue;
 
         for (const m of dayData.matches) {
-            if (m.spor && toTR(m.spor) === toTR(sportCategory)) {
+            if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
                 const mTime = (m.saat || "").replace('.', ':').trim();
                 const [mH, mM] = mTime.split(':').map(Number);
-                const mTitle = toTR(m.mac || "");
+                const mTitleClean = normalizeStr(m.mac);
 
-                const getCleanWords = (str) => {
-                    return str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
-                        .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
-                        .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
-                        .replace(/ı/g, 'i').toLowerCase().replace(/[^a-z0-9]/g, ' ')
-                        .split(' ').map(w => w.trim()).filter(w => w.length >= 3);
-                };
+                // 🚀 HATA ÇÖZÜMÜ: FC, SV gibi kısa kelimeler sıfırlandıysa eşleşme sayma
+                const matchHome = homeWords.length > 0 && homeWords.some(w => mTitleClean.includes(w));
+                const matchAway = awayWords.length > 0 && awayWords.some(w => mTitleClean.includes(w));
 
-                const hWords = getCleanWords(hName);
-                const aWords = getCleanWords(aName);
-
-                const matchHome = hWords.length === 0 || hWords.some(w => mTitle.includes(w));
-                const matchAway = aWords.length === 0 || aWords.some(w => mTitle.includes(w));
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
 
                 let diff = 9999;
-                if (mTime === cleanTime) { diff = 0; } 
-                else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) {
+                if (mTime === cleanTime) {
+                    diff = 0;
+                } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) {
                     diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM));
                     if (diff > 1000) diff = Math.abs(diff - 1440);
                 }
 
-                if (matchScore === 2 && diff <= 120) { return { kanal: m.yayin, source: "sporekrani" }; } 
-                else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) { return { kanal: m.yayin, source: "sporekrani" }; }
+                if (matchScore === 2 && diff <= 120) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                }
             }
         }
     }
@@ -174,31 +173,27 @@ async function uploadToFirebase(data) {
 
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 600) + 200;
+        const delay = Math.floor(Math.random() * 1000) + 300;
         await new Promise(r => setTimeout(r, delay));
 
-        const isSofascore = url.includes('sofascore.com');
-        
-        const headers = {
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Mobile/15E148 Safari/604.1",
-            "Accept": "*/*",
-            "Accept-Language": "tr-TR,tr;q=0.9",
-            "Connection": "keep-alive"
-        };
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        if (isSofascore) {
-            headers["Referer"] = "https://www.sofascore.com/";
-            headers["Origin"] = "https://www.sofascore.com";
-            headers["X-Requested-With"] = "93a9a4"; 
-            headers["Cache-Control"] = "max-age=0";
-        }
-
-        const response = await fetch(url, { headers });
+        const response = await fetch(mobileUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Referer": "https://www.sofascore.com/",
+                "Origin": "https://www.sofascore.com",
+                "Connection": "keep-alive"
+            }
+        });
 
         if (!response.ok) {
-            if (response.status !== 404) {
-                console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
-            }
+            // 🚀 GELİŞMİŞ 404 KONTROLÜ (Kara liste için)
+            if (response.status === 404) return { is404: true }; 
+            
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
             return null;
         }
 
@@ -213,6 +208,17 @@ const getTRDate = (offset = 0) => {
     d.setDate(d.getDate() + offset);
     return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 };
+
+function findNextMatchTime(cache, now = Date.now()) {
+    let nextTime = null;
+    for (const match of cache.values()) {
+        if (match.status === 'notstarted' || match.status === 'delayed') {
+            if (match.timestamp <= now) return now;
+            if (!nextTime || match.timestamp < nextTime) nextTime = match.timestamp;
+        }
+    }
+    return nextTime;
+}
 
 // =========================================================================
 // ⚽ FUTBOL YAPILANDIRMASI
@@ -268,6 +274,7 @@ const translateTeam = (name) => {
     return name;
 };
 
+// 🚀 HATA ÇÖZÜMÜ: Şampiyonlar Ligi TRT'den Çıkarıldı
 const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     const hn = (hName || "").toLowerCase();
     const an = (aName || "").toLowerCase();
@@ -284,7 +291,8 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
 
     const staticConfigs = {
         34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii",
-        96: "TRT 1 / Tabii", 17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 7: "TRT 1 / Tabii",
+        96: "TRT 1 / Tabii", 17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 
+        // 7 numaralı Şampiyonlar Ligi çıkarıldı!
         351: "S Sport Plus", 37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii",
         155: "Spor Smart / Exxen", 10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor",
         97: "TFF YouTube", 11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube",
@@ -297,6 +305,8 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
     if (utn.includes("baller league")) return "Twitch / YouTube (Global)";
     if (utn.includes("primera a") || utn.includes("primera división")) return "TV Yayını Yok (Yerel)";
     if (utn.includes("mls next pro")) return "Apple TV / OneFootball";
+    
+    // YENİ VARSAYILAN:
     return "Resmi Yayıncı / Canlı Skor";
 };
 
@@ -454,6 +464,7 @@ async function checkAndSendNotifications(newMatches) {
         const scoreChanged = currH !== prev.homeScore || currA !== prev.awayScore;
         const statusChanged = statusType !== prev.status;
 
+        // 🚀 LIVE ACTIVITY SESSİZ PUSH (Seni sen yapan o hile buraya eklendi!)
         if ((isLive || isFinished) && (minuteChanged || scoreChanged || statusChanged)) {
             const tokensRef = firebaseApp.database().ref(`live_activity_tokens/${matchIdStr}`);
             const snapshot = await tokensRef.once('value');
@@ -463,9 +474,22 @@ async function checkAndSendNotifications(newMatches) {
                 const tokenList = Object.keys(tokensObj);
                 const promises = tokenList.map(async (deviceToken) => {
                     let notification = new apn.Notification();
-                    notification.rawPayload = { aps: { timestamp: Math.floor(Date.now() / 1000), event: isFinished ? 'end' : 'update', "content-state": { homeScore: currH, awayScore: currA, matchMinute: isFinished ? "MS" : String(liveMin) } } };
-                    notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity"; notification.pushType = "liveactivity"; notification.priority = 10;
+                    notification.rawPayload = { 
+                        aps: { 
+                            timestamp: Math.floor(Date.now() / 1000), 
+                            event: isFinished ? 'end' : 'update', 
+                            "content-state": { 
+                                homeScore: currH, 
+                                awayScore: currA, 
+                                matchMinute: isFinished ? "MS" : String(liveMin) 
+                            } 
+                        } 
+                    };
+                    notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity"; 
+                    notification.pushType = "liveactivity"; 
+                    notification.priority = 10;
 
+                    // Apple Headers Hilesi
                     if (typeof notification.headers === 'function') {
                         const originalHeadersFn = notification.headers.bind(notification);
                         notification.headers = function() { let h = originalHeadersFn(); h["apns-push-type"] = "liveactivity"; return h; };
@@ -575,17 +599,6 @@ async function checkAndSendNotifications(newMatches) {
     saveState();
 }
 
-function findNextMatchTime(cache, now = Date.now()) {
-    let nextTime = null;
-    for (const match of cache.values()) {
-        if (match.status === 'notstarted' || match.status === 'delayed') {
-            if (match.timestamp <= now) return now;
-            if (!nextTime || match.timestamp < nextTime) nextTime = match.timestamp;
-        }
-    }
-    return nextTime;
-}
-
 async function triggerPushToStart(matchId) {
     const match = globalFootballCache.get(matchId);
     if (!match) return;
@@ -618,13 +631,11 @@ async function triggerPushToStart(matchId) {
             const originalHeadersFn = notification.headers.bind(notification);
             notification.headers = function() { let h = originalHeadersFn(); h["apns-push-type"] = "liveactivity"; return h; };
         }
+
         try { await apnProvider.send(notification, token); } catch (e) {}
     }
 }
 
-// =========================================================================
-// ⚽ FUTBOL GÜNCELLEME (AKILLI TARAMA)
-// =========================================================================
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME (GERÇEK AKILLI TARAMA)
 // =========================================================================
@@ -643,14 +654,12 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     for (const date of targetDates) {
         let dateHasMatches = false;
         
-        // O tarih için boş ligler listesini bul veya oluştur
         if (!emptyLeaguesCache.has(date)) emptyLeaguesCache.set(date, new Set());
         const knownEmptyLeagues = emptyLeaguesCache.get(date);
         
         let leaguesToFetch = [];
 
         if (isQuickScan) {
-            // HIZLI TARAMA: Sadece o gün maçı olduğunu önceden bildiğimiz ligler taranır
             const activeLeagues = new Set();
             for (const match of globalFootballCache.values()) {
                 if (match.fixedDate === date) {
@@ -660,12 +669,10 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             }
             leaguesToFetch = Array.from(activeLeagues);
         } else {
-            // DETAYLI TARAMA: Kara listedeki (boş olduğu kesinleşen) ligleri FİLTRELE!
-            // Böylece 40 lige tekrar tekrar boşuna sorgu atılmaz.
             leaguesToFetch = ALL_FOOT_TARGETS.filter(id => !knownEmptyLeagues.has(id));
         }
 
-        if (leaguesToFetch.length > 0) {
+        if (leaguesToFetch.length > 0 && !isQuickScan) {
             console.log(`🔍 [${date}] için sorgulanacak lig sayısı: ${leaguesToFetch.length}`);
         }
 
@@ -676,9 +683,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             if (data?.events && data.events.length > 0) {
                 allEvents.push(...data.events);
                 dateHasMatches = true;
-            } else {
-                // 🎯 SİHİR BURADA: Maç yoksa, bu ligi o gün için "BOŞ" olarak kara listeye al.
-                // Sistem o gün bitene kadar bir daha bu lige asla istek atmayacak!
+            } else if (data?.is404) {
                 knownEmptyLeagues.add(leagueId);
             }
         }
@@ -755,7 +760,8 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalFootballCache);
 
-    if(!isQuickScan) logMatchesBySport({ futbol: futbolMatchesLog });
+    if(!isQuickScan && futbolMatchesLog.length < 30) logMatchesBySport({ futbol: futbolMatchesLog });
+    
     const forcedSnapshot = await firebaseApp.database().ref('forced_matches').once('value');
     const forcedMatches = forcedSnapshot.val() || {};
     for (const [id, match] of globalFootballCache.entries()) {
@@ -793,7 +799,7 @@ async function main() {
             }
 
             if (lastPeriodicUpdate < activeTarget) {
-                console.log("🔄 [PERİYODİK] Detaylı Tarama");
+                console.log("\n🔄 [PERİYODİK] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
                 const result = await updateFootball(days4, false);
                 sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
@@ -805,11 +811,13 @@ async function main() {
 
             if (sportUpdateStatus.hasLiveMatch) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
+                    console.log("\n⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var!");
                     const result = await updateFootball(todayOnly, true); 
                     sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
                 }
             } else if (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1)) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
+                    console.log("\n⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç vakti!");
                     const result = await updateFootball(quickScanDates, true); 
                     sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
                 }
@@ -820,14 +828,12 @@ async function main() {
             
             if (isActive) {
                 sleepTime = MINUTE_MS;
-                console.log("⚡ [FUTBOL] Aktif/Yaklaşan maç var. Terminal 1 dakika uykuya yatıyor...");
+                console.log(`\n⚡ [FUTBOL] Aktif/Yaklaşan maç var. Terminal ${Math.ceil(sleepTime / 60000)} dakika uykuya yatıyor...`);
             } else {
-                console.log("💤 [FUTBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
+                console.log("\n💤 [FUTBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
             }
 
             await new Promise(r => setTimeout(r, sleepTime));
-
-
             
         } catch (e) { console.error("🚨 Hata:", e.message); await new Promise(r => setTimeout(r, MINUTE_MS)); }
     }
