@@ -333,11 +333,41 @@ const footballLeagues = { 39: "İngiltere Premier Lig", 140: "İspanya La Liga",
 const tournamentLogoMapper = { 39: 17, 140: 8, 78: 35, 135: 23, 61: 34, 203: 52, 204: 98, 205: 97, 206: 938, 2: 7, 3: 679, 848: 17015, 1: 16, 4: 1, 9: 133 };
 const teamIdMapper = { 777: 4700, 2380: 4789 };
 
-const getFootBroadcaster = (leagueId, hName, aName) => {
-    const staticConfigs = { 39: "beIN Sports", 140: "S Sport Plus", 78: "Tivibu Spor", 135: "S Sport Plus", 61: "beIN Sports", 203: "beIN Sports", 204: "TRT Spor / beIN Sports", 205: "TFF YouTube", 206: "A Spor / ATV", 2: "Tabii / TRT", 3: "Tabii / TRT", 848: "Tabii / TRT" };
-    if (staticConfigs[leagueId]) return staticConfigs[leagueId];
-    return "Resmi Yayıncı / Canlı Skor";
+const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
+    const hn = (hName || "").toLowerCase();
+    const an = (aName || "").toLowerCase();
+    const tn = (tName || "").toLowerCase();
+    const utn = (utName || "").toLowerCase();
+    const isTurkey = hn.includes("turkey") || an.includes("turkey") || hn.includes("türkiye") || an.includes("türkiye");
+    const isPlayoff = tn.includes("play-off") || tn.includes("playoff") || utn.includes("play-off") || utn.includes("playoff");
+
+    if (utId === 748 || utId === 750) return isTurkey ? "TRT Spor / Tabii" : "Exxen";
+    if (utId === 11 || utn.includes("world cup qual") || utn.includes("dünya kupası eleme")) {
+        if (isTurkey) return isPlayoff ? "TV8" : "TRT 1 / Tabii";
+        return isPlayoff ? "Exxen" : "S Sport Plus";
+    }
+
+    const staticConfigs = {
+        34: "beIN Sports", 52: "beIN Sports", 238: "TRT Spor / Tabii", 242: "TRT Spor / Tabii", 938: "TRT 1 / Tabii",
+        96: "TRT 1 / Tabii", 17: "S Sport Plus", 8: "beIN Sports", 23: "S Sport Plus", 
+        // 7 numaralı Şampiyonlar Ligi sabitlerden çıkarıldı!
+        351: "S Sport Plus", 37: "beIN Sports", 10: "Exxen / S Sport+", 13: "TRT 1 / Tabii", 393: "TRT 1 / Tabii",
+        155: "Spor Smart / Exxen", 10618: "Exxen / FIFA+", 4664: "S Sport+ / TV+", 98: "beIN Sports / TRT Spor",
+        97: "TFF YouTube", 11417: "TFF YouTube", 11416: "TFF YouTube", 11415: "TFF YouTube", 15938: "TFF YouTube",
+        13363: "USL YouTube", 696: "DAZN / YouTube", 10783: "A Spor", 232: "S Sport Plus / DAZN",
+        1: "S Sport Plus", 19: "Exxen", 53: "S Sport Plus", 38: "beIN Sports", 36: "beIN Sports",
+        335: "beIN Sports", 955: "S Sport Plus / TV+", 18: "beIN Sports", 325: "Spor Smart / S Sport+", 16: "TRT 1"
+    };
+    if (staticConfigs[utId]) return staticConfigs[utId];
+    if (utn.includes("j1 league")) return "YouTube (J.League Int.)";
+    if (utn.includes("baller league")) return "Twitch / YouTube (Global)";
+    if (utn.includes("primera a") || utn.includes("primera división")) return "TV Yayını Yok (Yerel)";
+    if (utn.includes("mls next pro")) return "Apple TV / OneFootball";
+    
+    // JSON'da ve üstteki sabitlerde yoksa basılacak varsayılan metin:
+    return "Resmi Yayıncı / Canlı Skor"; 
 };
+
 
 async function updateFootball(targetDates) {
     console.log(`⚽ Futbol verisi çekiliyor... (Gün: ${targetDates.length})`);
