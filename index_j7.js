@@ -227,6 +227,14 @@ async function fetchData(url) {
 }
 
 
+const getTRDate = (offset = 0) => {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+};
+
+
+
 // =========================================================================
 // ⚽ FUTBOL YAPILANDIRMASI
 // =========================================================================
