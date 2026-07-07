@@ -817,9 +817,18 @@ async function main() {
 
             let sleepTime = 10 * MINUTE_MS;
             const isActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 12));
-            if (isActive) sleepTime = MINUTE_MS;
+            
+            if (isActive) {
+                sleepTime = MINUTE_MS;
+                console.log("⚡ [FUTBOL] Aktif/Yaklaşan maç var. Terminal 1 dakika uykuya yatıyor...");
+            } else {
+                console.log("💤 [FUTBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
+            }
 
             await new Promise(r => setTimeout(r, sleepTime));
+
+
+            
         } catch (e) { console.error("🚨 Hata:", e.message); await new Promise(r => setTimeout(r, MINUTE_MS)); }
     }
 }
