@@ -163,7 +163,13 @@ const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}
 const targetTennisIds = [
     2361, // 🎾 Wimbledon ATP (Erkekler - Senin yakaladığın gerçek ID!)
     2600, // 🎾 Wimbledon WTA (Kadınlar - Genelde ardışık olur, bunu da ekleyelim)
-    
+    2375,// wimbledon ciftler 
+    2364,// winbeldon karisik ciftler 
+    2449,// us open 
+    2601,// us open kadinlar
+    2508, // us open ciftler 
+    2551,// us open kadinlar ciftler 
+    2402, //us open karisik ciftler 
     // 💡 İleride oynanacak diğer turnuvaları Sofascore'dan açıp URL'deki 
     // sayıyı (örn: 2361) tam buraya virgülle ekleyebilirsin.
 ];
