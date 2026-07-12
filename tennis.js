@@ -169,7 +169,11 @@ const targetTennisIds = [
     2601,// us open kadinlar
     2508, // us open ciftler 
     2551,// us open kadinlar ciftler 
-    2402, //us open karisik ciftler 
+    2402, //us open karisik ciftler
+    2390, // montreal erkekler
+    2624, // montreal kadinlar 
+    2373, // cincinnati
+    2381, // cincinnati ciftler 
     // 💡 İleride oynanacak diğer turnuvaları Sofascore'dan açıp URL'deki 
     // sayıyı (örn: 2361) tam buraya virgülle ekleyebilirsin.
 ];
