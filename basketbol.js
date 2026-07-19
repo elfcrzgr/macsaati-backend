@@ -44,11 +44,20 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
             if (m.spor && toTR(m.spor) === toTR(sportCategory)) {
                 const mTime = (m.saat || "").replace('.', ':').trim();
                 const [mH, mM] = mTime.split(':').map(Number);
-                const mTitle = toTR(m.mac || "");
+                const mTitleWords = getCleanWords(m.mac || "").join(' ');
+                
+
+
+
+
+                
+                
+                
                 const getCleanWords = (str) => str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g').replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's').replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c').replace(/ı/g, 'i').toLowerCase().replace(/[^a-z0-9]/g, ' ').split(' ').map(w => w.trim()).filter(w => w.length >= 3);
                 
-                const matchHome = getCleanWords(homeName).length === 0 || getCleanWords(homeName).some(w => mTitle.includes(w));
-                const matchAway = getCleanWords(awayName).length === 0 || getCleanWords(awayName).some(w => mTitle.includes(w));
+                const matchHome = getCleanWords(homeName).length === 0 || getCleanWords(homeName).some(w => mTitleWords.includes(w));
+                 const matchAway = getCleanWords(awayName).length === 0 || getCleanWords(awayName).some(w => mTitleWords.includes(w));
+
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
 
                 let diff = 9999;
@@ -104,7 +113,17 @@ function findNextMatchTime(cache, now = Date.now()) {
     return nextTime;
 }
 
-const teamTranslations = { "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", "england": "İngiltere", "spain": "İspanya", "italy": "İtalya", "usa": "ABD", "united states": "ABD" };
+const teamTranslations = { 
+    "turkey": "Türkiye", "germany": "Almanya", "france": "Fransa", 
+    "england": "İngiltere", "spain": "İspanya", "italy": "İtalya", 
+    "usa": "ABD", "united states": "ABD",
+    "greece": "Yunanistan", "lithuania": "Litvanya", "belgium": "Belçika", 
+    "romania": "Romanya", "czech republic": "Çekya", "poland": "Polonya", 
+    "latvia": "Letonya", "croatia": "Hırvatistan", "israel": "İsrail", 
+    "mexico": "Meksika", "puerto rico": "Porto Riko", 
+    "dominican republic": "Dominik Cumhuriyeti", "virgin islands": "Virjin Adaları"
+};
+
 const translateTeam = (name) => {
     if (!name) return name; const lowerName = name.toLowerCase().trim();
     if (teamTranslations[lowerName]) return teamTranslations[lowerName];
