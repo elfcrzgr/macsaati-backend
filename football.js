@@ -3,6 +3,8 @@ const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
 
+require('events').EventEmitter.defaultMaxListeners = 100;
+
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
 // =========================================================================
