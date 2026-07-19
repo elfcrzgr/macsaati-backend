@@ -482,7 +482,12 @@ async function checkAndSendNotifications(newMatches) {
                                 homeScore: currH, 
                                 awayScore: currA, 
                                 matchMinute: isFinished ? "MS" : String(liveMin) 
-                            } 
+                            },
+                            // 🚀 APPLE'IN ARKA PLANDA GÜNCELLEMEYİ REDDETMEMESİ İÇİN ŞART:
+                            "alert": {
+                                "title": "Skor Güncellendi",
+                                "body": `Dakika: ${liveMin}`
+                                }
                         } 
                     };
                     notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity"; 
