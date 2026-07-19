@@ -157,7 +157,7 @@ async function getBroadcasterData() {
                     "d-smart", "euroleague tv", "nba tv", "nba league pass", "prime video", "youtube", 
                     "exxen", "tv8", "a spor", "eurosport", "içtimai", "cbc sport", "idman", "az tv", 
                     "fb tv", "gs tv", "bjk tv", "kanal d", "star tv", "show tv", "atv", "ntv", "tabii", 
-                    "red bull", "wta tv", "atp tv", "fiba tv", "tbf tv", "yayın yok"
+                    "red bull", "wta tv", "atp tv", "fiba tv", "tbf tv", "tv100", "yayın yok"
                 ];
 
                 let filteredChannels = rawChannels.filter(line => {
