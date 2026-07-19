@@ -349,6 +349,9 @@ const nationalTeamCodes = {
     "slovenia": "si", "iceland": "is", "finland": "fi", "bosnia & herzegovina": "ba",
     "bosnia and herzegovina": "ba", "new zealand": "nz"
 };
+
+
+
 function calculateLiveMinute(eventData) {
     if (!eventData) return "";
     const status = eventData.status;
@@ -362,13 +365,7 @@ function calculateLiveMinute(eventData) {
     if (code === 50 || code === 60 || desc.includes("penalt")) return "PEN";
     if (code === 34 || desc.includes("awaiting extra time")) return "MS Bekleniyor"; 
 
-    // 🚀 TAVAN LİMİTLERİ KALDIRILDI!
-    // Sofascore'dan direkt dakika bilgisi geliyorsa, hiçbir müdahale yapmadan aynen ekrana bas (91, 92, 108 vb.)
-    if (time?.currentMinute !== undefined && time.currentMinute !== null) {
-        return String(time.currentMinute) + "'";
-    }
-
-    // Dakika gelmeyip manuel zaman damgasıyla hesaplamaya kalırsak (Buranın da sınırları kaldırıldı)
+    // 1. ÖNCELİK: Zaman damgası ile manuel hesaplama (Gerçek zamanlı artış sağlar)
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
@@ -392,8 +389,14 @@ function calculateLiveMinute(eventData) {
         return String(calcMinute) + "'";
     }
 
+    // 2. YEDEK: Eğer zaman damgası yoksa Sofascore'un statik dakikasını kullan
+    if (time?.currentMinute !== undefined && time.currentMinute !== null) {
+        return String(time.currentMinute) + "'";
+    }
+
     return "Canlı";
 }
+
 
 
 
