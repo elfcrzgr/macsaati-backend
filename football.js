@@ -311,7 +311,7 @@ const getFootBroadcaster = (utId, hName, aName, tName, utName) => {
 };
 
 const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 7, 679, 17015, 16, 1, 133, 270, 53, 335, 13363];
-const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851];
+const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851, 853];
 const NATIONAL_LEAGUES = [16, 1, 133, 270, 299, 851];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
 
@@ -328,7 +328,7 @@ const footballLeagues = {
     6516: "Kulüp Hazırlık Maçları", 325: "Brezilya Serie A",
     155: "Arjantin Liga Profesional", 242: "MLS", 13363: "USL Championship",
     335: "Fransa Kupası", 955: "Suudi Arabistan Pro Lig", 18: "İngiltere Championship",
-    851: "Uluslararası Hazırlık Maçları"
+    851: "Uluslararası Hazırlık Maçları", 853: "Kulüp Hazırlık Maçları"
 };
 
 const nationalTeamCodes = {
@@ -496,9 +496,14 @@ async function checkAndSendNotifications(newMatches) {
 
                     // Apple Headers Hilesi
                     if (typeof notification.headers === 'function') {
-                        const originalHeadersFn = notification.headers.bind(notification);
-                        notification.headers = function() { let h = originalHeadersFn(); h["apns-push-type"] = "liveactivity"; return h; };
-                    }
+            const originalHeadersFn = notification.headers.bind(notification);
+            notification.headers = function() { 
+                let h = originalHeadersFn(); 
+                h["apns-push-type"] = "liveactivity"; 
+                h["apns-priority"] = "10"; // 🚀 İŞTE EKSİK OLAN VE APPLE'I UYANDIRACAK SİHİRLİ SATIR
+                return h; 
+            };
+        }
             
                     try {
                         const result = await apnProvider.send(notification, deviceToken);
@@ -632,9 +637,14 @@ async function triggerPushToStart(matchId) {
 
         notification.topic = "com.elfcrzgr.macsaati.push-type.liveactivity"; notification.priority = 10; notification.pushType = "liveactivity";
 
-        if (typeof notification.headers === 'function') {
+       if (typeof notification.headers === 'function') {
             const originalHeadersFn = notification.headers.bind(notification);
-            notification.headers = function() { let h = originalHeadersFn(); h["apns-push-type"] = "liveactivity"; return h; };
+            notification.headers = function() { 
+                let h = originalHeadersFn(); 
+                h["apns-push-type"] = "liveactivity"; 
+                h["apns-priority"] = "10"; // 🚀 İŞTE EKSİK OLAN VE APPLE'I UYANDIRACAK SİHİRLİ SATIR
+                return h; 
+            };
         }
 
         try { await apnProvider.send(notification, token); } catch (e) {}
