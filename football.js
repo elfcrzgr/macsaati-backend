@@ -349,7 +349,6 @@ const nationalTeamCodes = {
     "slovenia": "si", "iceland": "is", "finland": "fi", "bosnia & herzegovina": "ba",
     "bosnia and herzegovina": "ba", "new zealand": "nz"
 };
-
 function calculateLiveMinute(eventData) {
     if (!eventData) return "";
     const status = eventData.status;
@@ -357,26 +356,19 @@ function calculateLiveMinute(eventData) {
     const code = status?.code;
     const desc = (status?.description || "").toLowerCase();
 
+    // Devre arası ve özel durumlar
     if (code === 31 || desc === "halftime") return "İY";
     if (desc.includes("extra time halftime")) return "UZ İY";
     if (code === 50 || code === 60 || desc.includes("penalt")) return "PEN";
-    if (code === 34 || desc.includes("awaiting extra time")) return "90+";
+    if (code === 34 || desc.includes("awaiting extra time")) return "MS Bekleniyor"; 
 
+    // 🚀 TAVAN LİMİTLERİ KALDIRILDI!
+    // Sofascore'dan direkt dakika bilgisi geliyorsa, hiçbir müdahale yapmadan aynen ekrana bas (91, 92, 108 vb.)
     if (time?.currentMinute !== undefined && time.currentMinute !== null) {
-        let min = time.currentMinute;
-        if (time.addedTime && min === 90) return "90+";
-        if (time.addedTime && min === 45) return "45+";
-        if (time.addedTime && min === 105) return "105+";
-        if (time.addedTime && min === 120) return "120+";
-
-        if (code === 6 && min > 45) return "45+";
-        if (code === 7 && min > 90) return "90+";
-        if ((code === 10 || code === 13 || desc.includes("1st extra")) && min > 105) return "105+";
-        if ((code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) && min > 120) return "120+";
-
-        return String(min) + "'";
+        return String(time.currentMinute) + "'";
     }
 
+    // Dakika gelmeyip manuel zaman damgasıyla hesaplamaya kalırsak (Buranın da sınırları kaldırıldı)
     if (time?.currentPeriodStartTimestamp) {
         const now = Math.floor(Date.now() / 1000);
         const elapsed = now - time.currentPeriodStartTimestamp;
@@ -384,16 +376,26 @@ function calculateLiveMinute(eventData) {
 
         if (calcMinute < 0) calcMinute = 0;
 
-        if (code === 6) { return calcMinute > 45 ? "45+" : String(calcMinute) + "'"; } 
-        else if (code === 7) { calcMinute += 45; return calcMinute > 90 ? "90+" : String(calcMinute) + "'"; } 
-        else if (code === 10 || code === 13 || desc.includes("1st extra")) { calcMinute += 90; return calcMinute > 105 ? "105+" : String(calcMinute) + "'"; } 
-        else if (code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) { calcMinute += 105; return calcMinute > 120 ? "120+" : String(calcMinute) + "'"; }
+        if (code === 6) { 
+            return String(calcMinute) + "'"; 
+        } else if (code === 7) { 
+            calcMinute += 45; 
+            return String(calcMinute) + "'"; 
+        } else if (code === 10 || code === 13 || desc.includes("1st extra")) { 
+            calcMinute += 90; 
+            return String(calcMinute) + "'"; 
+        } else if (code === 11 || code === 12 || code === 14 || desc.includes("2nd extra")) { 
+            calcMinute += 105; 
+            return String(calcMinute) + "'"; 
+        }
 
         return String(calcMinute) + "'";
     }
 
     return "Canlı";
 }
+
+
 
 // =========================================================================
 // 🔔 BİLDİRİM KONTROLÜ VE GÖNDERME
