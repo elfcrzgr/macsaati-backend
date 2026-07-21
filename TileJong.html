@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TileJong Prototip</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background-color: #2c3e50; 
+            color: white; 
+            margin-top: 50px; 
+        }
+        .telefon-ekrani {
+            background-color: #34495e;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 70px); 
+            gap: 10px; 
+            margin-top: 20px; 
+        }
+        .tile { 
+            width: 70px; 
+            height: 70px; 
+            background-color: #ecf0f1; 
+            border-radius: 12px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 40px; 
+            cursor: pointer; 
+            user-select: none; 
+            transition: all 0.2s; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); 
+        }
+        .tile.selected { 
+            background-color: #bdc3c7; 
+            transform: scale(0.95);
+            border: 3px solid #e74c3c; 
+        }
+        .tile.hidden { 
+            visibility: hidden; 
+        }
+        button { 
+            margin-top: 30px; 
+            padding: 12px 24px; 
+            font-size: 16px; 
+            font-weight: bold;
+            cursor: pointer; 
+            border: none; 
+            border-radius: 8px; 
+            background-color: #e74c3c; 
+            color: white; 
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #c0392b; }
+    </style>
+</head>
+<body>
+
+    <div class="telefon-ekrani">
+        <h2>TileJong (Prototip)</h2>
+        <p style="margin-top:-10px; color:#bdc3c7;">Aynı taşları bul ve tahtayı temizle!</p>
+        
+        <!-- Unity'deki 4x4 Izgaramızın Karşılığı -->
+        <div class="grid" id="grid"></div>
+        
+        <button onclick="initGame()">Yeniden Dağıt</button>
+    </div>
+
+    <script>
+        // İleride ScriptableObject ile yapacağımız görsel listesi
+        const symbols = ['🎋', '🀄', '🐉', '🌸', '🏮', '🐼', '☯️', '🍵'];
+        let tiles = [];
+        let firstSelected = null;
+        let secondSelected = null;
+        let gridElement = document.getElementById('grid');
+
+        // Unity'deki BoardManager.cs -> GenerateBoard() mantığı
+        function initGame() {
+            gridElement.innerHTML = '';
+            tiles = [...symbols, ...symbols]; // Çiftler oluşturuluyor
+            tiles.sort(() => Math.random() - 0.5); // Rastgele karıştırılıyor
+            
+            firstSelected = null;
+            secondSelected = null;
+
+            tiles.forEach((symbol, index) => {
+                let tile = document.createElement('div');
+                tile.classList.add('tile');
+                tile.dataset.symbol = symbol;
+                tile.innerText = symbol; // Taşlar yüzü açık geliyor
+                
+                // Unity'deki Tile.cs içindeki OnMouseDown() mantığı
+                tile.onclick = () => handleTileClick(tile);
+                gridElement.appendChild(tile);
+            });
+        }
+
+        function handleTileClick(tile) {
+            // Gizlenmiş taşa, aynı taşa veya zaten iki taş seçiliyken tıklanmasını engelle
+            if (tile.classList.contains('hidden') || tile === firstSelected || secondSelected !== null) return;
+
+            tile.classList.add('selected'); // Unity'deki renk karartma efekti
+
+            if (firstSelected === null) {
+                firstSelected = tile;
+            } else {
+                secondSelected = tile;
+                setTimeout(checkMatch, 400); // 0.4 saniye bekleyip eşleşmeyi kontrol et
+            }
+        }
+
+        // Unity'de GameManager.cs içine yazacağımız kontrol algoritması
+        function checkMatch() {
+            if (firstSelected.dataset.symbol === secondSelected.dataset.symbol) {
+                // Eşleştiyse yok et
+                firstSelected.classList.add('hidden');
+                secondSelected.classList.add('hidden');
+            } else {
+                // Eşleşmediyse eski haline getir
+                firstSelected.classList.remove('selected');
+                secondSelected.classList.remove('selected');
+            }
+            // Seçimleri sıfırla
+            firstSelected = null;
+            secondSelected = null;
+        }
+
+        initGame();
+    </script>
+</body>
+</html>
