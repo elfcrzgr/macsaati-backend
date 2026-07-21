@@ -825,37 +825,15 @@ async function main() {
                 lastPeriodicUpdate = now;
             }
 
-
-
-
-
-
-            
-           // 🚀 DİNAMİK TARİH LİSTESİ OLUŞTURMA (Gece yarısı sarkmalarını yakalamak için)
-            const dynamicScanSet = new Set([getTRDate(0)]); // Bugünü her zaman ekle
-            
-            // Hafızada canlı (inprogress) maç varsa, maç dünden kalma bile olsa tarama listesine ekle
-            for (const match of globalFootballCache.values()) {
-                if (match.status === 'inprogress' && match.fixedDate) {
-                    dynamicScanSet.add(match.fixedDate);
-                }
-            }
-            
-            const dynamicScanDates = Array.from(dynamicScanSet);
+            const todayOnly = [getTRDate(0)]; 
             const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)]; 
 
             if (sportUpdateStatus.hasLiveMatch) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
-                    console.log(`\n⚽ [HIZLI DÖNGÜ] Canlı maç var! Taranan tarihler: ${dynamicScanDates.join(', ')}`);
-                    // 🚀 Sorguyu statik "todayOnly" yerine dinamik listeyle atıyoruz
-                    const result = await updateFootball(dynamicScanDates, true); 
+                    console.log("\n⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var!");
+                    const result = await updateFootball(todayOnly, true); 
                     sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
                 }
-
-
-
-
-                
             } else if (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1)) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
                     console.log("\n⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç vakti!");
