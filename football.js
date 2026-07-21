@@ -8,7 +8,7 @@ require('events').EventEmitter.defaultMaxListeners = 100;
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
 // =========================================================================
-const IS_PRODUCTION = false; 
+const IS_PRODUCTION = true; 
 const STATE_FILE = 'futbol_states.json'; // ⚠️ BAĞIMSIZ HAFIZA
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
