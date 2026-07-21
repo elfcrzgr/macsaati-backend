@@ -514,11 +514,18 @@ async function checkAndSendNotifications(newMatches) {
                         if (result.failed.length > 0) {
                             const err = result.failed[0];
                             const errorReason = err.response ? err.response.reason : err.error;
+
+                            // 🚀 HATA LOGLAMASI: Terminalde neyin ters gittiğini görmek için
+                            console.log(`❌ APNs Hata (${matchIdStr}): Token reddedildi. Sebep: ${errorReason}`);
+                            
                             if (errorReason === 'BadDeviceToken' || errorReason === 'Unregistered') {
                                 await firebaseApp.database().ref(`live_activity_tokens/${matchIdStr}/${deviceToken}`).remove();
+                                console.log(`🗑️ Geçersiz token Firebase'den silindi.`);
                             }
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error(`❌ APNs Sunucu Bağlantı Hatası:`, e.message);
+                    }
                 });
                 await Promise.all(promises);
             }
