@@ -183,15 +183,12 @@ function findNextMatchTime(cache, now = Date.now()) {
     return nextTime;
 }
 
-
-// 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
 // =========================================================================
-// 🎾 TENİS YAPILANDIRMASI (HEDEF TURNUVALAR)
+// 🎾 TENİS YAPILANDIRMASI (HEDEF TURNUVALAR - ATP 250 HARİÇ)
 // =========================================================================
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
-// 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
 // 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
 const targetTennisIds = [
     // 🏆 GRAND SLAM
@@ -231,7 +228,6 @@ const targetTennisIds = [
     2411, // Basel
     2412  // Viyana (Vienna)
 ];
-
 
 const isGarbage = (tourName, catName) => {
     const t = (tourName || "").toUpperCase(); const c = (catName || "").toUpperCase();
@@ -363,9 +359,25 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                 awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
             }
 
-            const statusType = e.status?.type; let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
-            const hasScore = statusType === 'inprogress' || statusType === 'finished';
-            if (statusType === 'inprogress') timeString += "\nCANLI"; else if (statusType === 'finished') timeString += "\nMS";
+            // 🚀 WALKOVER VE RETIRED (ÇEKİLME) KONTROLÜ
+            const statusType = e.status?.type; 
+            const statusDesc = (e.status?.description || "").toLowerCase();
+            let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+            
+            const isWalkover = statusType === 'walkover' || statusDesc.includes('walkover');
+            const isRetired = statusType === 'retired' || statusDesc.includes('retired');
+            const isCanceled = statusType === 'canceled' || statusDesc.includes('canceled');
+            const isPostponed = statusType === 'postponed' || statusDesc.includes('postponed');
+
+            const hasScore = statusType === 'inprogress' || statusType === 'finished' || isRetired;
+
+            // Zaman damgasını duruma göre biçimlendirme
+            if (statusType === 'inprogress') timeString += "\nCANLI"; 
+            else if (statusType === 'finished') timeString += "\nMS";
+            else if (isWalkover) timeString += "\nW/O";       // Oynamadan kazandı (Hükmen)
+            else if (isRetired) timeString += "\nÇekildi";   // Maç sırasında sakatlanıp bıraktı
+            else if (isCanceled) timeString += "\nİptal";
+            else if (isPostponed) timeString += "\nErt.";
 
             let sets = [];
             if (hasScore && e.homeScore && e.awayScore) {
@@ -374,6 +386,28 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                     if (hScore !== undefined && aScore !== undefined) sets.push(`${hScore}-${aScore}`);
                 }
             }
+
+            // Skorları ve W/O Kazananını belirleme
+            let finalHomeScore = hasScore ? String(e.homeScore?.display ?? "0") : "-";
+            let finalAwayScore = hasScore ? String(e.awayScore?.display ?? "0") : "-";
+
+            if (isWalkover) {
+                if (e.winnerCode === 1) {
+                    finalHomeScore = "W/O"; // Ev sahibi tur atladı
+                    finalAwayScore = "-";
+                } else if (e.winnerCode === 2) {
+                    finalHomeScore = "-";
+                    finalAwayScore = "W/O"; // Deplasman tur atladı
+                } else {
+                    finalHomeScore = "-";
+                    finalAwayScore = "-";
+                }
+            } else if (isCanceled || isPostponed) {
+                finalHomeScore = "-";
+                finalAwayScore = "-";
+            }
+            
+            const matchWinnerCode = e.winnerCode || null;
 
             const fallbackBroadcaster = "S Sport / beIN Sports";
             const result = getBroadcasterWithFallback("tenis", fixedDate, timeString, e.homeTeam.name, e.awayTeam.name, fallbackBroadcaster);
@@ -384,7 +418,8 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                 id: e.id, isElite: true, status: statusType, fixedDate: fixedDate, fixedTime: timeString, timestamp: startTimestamp, broadcaster: result.kanal,
                 homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos }, awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
                 tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
-                homeScore: !hasScore ? "-" : String(e.homeScore?.display ?? "0"), awayScore: !hasScore ? "-" : String(e.awayScore?.display ?? "0"), setScores: sets, tournament: tourName
+                homeScore: finalHomeScore, awayScore: finalAwayScore, setScores: sets, tournament: tourName,
+                winnerCode: matchWinnerCode
             });
             
             previousMatchStates.set(String(e.id), { status: statusType, date: fixedDate });
@@ -401,7 +436,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
 
-/// =========================================================================
+// =========================================================================
 // 🆕 ANA DÖNGÜ (SADECE TENİS)
 // =========================================================================
 async function main() {
