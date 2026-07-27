@@ -183,11 +183,6 @@ function findNextMatchTime(cache, now = Date.now()) {
     return nextTime;
 }
 
-// =========================================================================
-// 🎾 TENİS YAPILANDIRMASI (HEDEF TURNUVALAR)
-// =========================================================================
-const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
-const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
 // 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
 // =========================================================================
