@@ -197,6 +197,7 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REP
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
 // 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
+// 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
 const targetTennisIds = [
     // 🏆 GRAND SLAM
     2424, 2594, // Australian Open (ATP / WTA)
@@ -233,17 +234,7 @@ const targetTennisIds = [
     2415, // Pekin (Beijing)
     2418, // Tokyo
     2411, // Basel
-    2412, // Viyana (Vienna)
-
-    // ⚡ ATP 250 (Fikstür hacmi ve düzenli akış için gerekli)
-    2420, // Brisbane
-    2378, // Doha
-    2387, // Marsilya (Marseille)
-    2401, // Buenos Aires
-    2409, // Delray Beach
-    2434, // Stuttgart
-    2366, // Mallorca / Eastbourne (Çim Kort)
-    2374  // Bastad / Gstaad (Toprak Kort)
+    2412  // Viyana (Vienna)
 ];
 
 
