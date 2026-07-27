@@ -164,7 +164,8 @@ const leagueConfigs = {
     264: "S Sport Plus", 304: "S Sport Plus", 227: "S Sport Plus", 156: "beIN Sports",
     1524: "S Sport Plus", 235: "S Sport Plus", 1438: "TRT Spor / beIN Sports",
     10415: "NBA TV / S Sport Plus",
-    10437: "S Sport / TRT Spor" // 🏀 FIBA DÜNYA KUPASI ELEMELERİ EKLENDİ
+    10437: "S Sport / TRT Spor", // 🏀 FIBA DÜNYA KUPASI ELEMELERİ EKLENDİ
+    486: "NBA TV"
 };
 const basketballLeagues = {
     132: "NBA", 138: "EuroLeague", 141: "EuroCup", 9357: "Basketbol Şampiyonlar Ligi (BCL)",
@@ -172,7 +173,8 @@ const basketballLeagues = {
     264: "İspanya Liga ACB", 304: "Yunanistan Basketbol Ligi", 227: "Almanya BBL", 156: "Fransa LNB Pro A",
     1524: "Avustralya NBL", 235: "Adriyatik Ligi (ABA)", 1438: "VTB Birleşik Ligi", 285: "FIBA EuroBasket",
     10415: "NBA Yaz Ligi",
-    10437: "FIBA Dünya Kupası Elemeleri" // 🏀 FIBA EKLENDİ
+    10437: "FIBA Dünya Kupası Elemeleri", // 🏀 FIBA EKLENDİ
+    486: "WNBA"
 };
 const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 
@@ -294,7 +296,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
 
-
 // =========================================================================
 // 🆕 ANA DÖNGÜ (SADECE BASKETBOL)
 // =========================================================================
@@ -305,27 +306,56 @@ async function main() {
     console.log("============================================================");
 
     let lastPeriodicUpdate = 0;
+    let lastBroadcastersString = ""; // 🚀 YENİ: Yayıncı verisinin son halini tutacak
 
     while (true) {
         try {
             const now = Date.now();
+            
+            // 1. Dosyayı oku
             loadExternalBroadcasters();
+            
+            // 2. 🚀 YENİ: Yayıncı bilgisi değişti mi kontrol et
+            const currentBroadcastersString = JSON.stringify(externalBroadcasters);
+            let forceUpdateDueToBroadcasters = false;
+            
+            if (lastBroadcastersString !== "" && currentBroadcastersString !== lastBroadcastersString) {
+                console.log("📺 [YAYINCI] Yeni yayıncı bilgileri tespit edildi! Firebase anında güncelleniyor...");
+                forceUpdateDueToBroadcasters = true;
+            }
+            lastBroadcastersString = currentBroadcastersString; // Hafızayı güncelle
 
+            // 3. Zaman hesaplamaları
             const d = new Date(now);
             const startOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
             const msSinceMidnight = now - startOfDay;
-            const TARGET_TIMES = [ 10 * 60 * 1000, (6 * 60 + 10) * 60 * 1000, (12 * 60 + 10) * 60 * 1000, (18 * 60 + 10) * 60 * 1000 ];
+            
+            // 🚀 Eşitlenmiş Periyodik Saatler (Futbol ile aynı)
+            const TARGET_TIMES = [ 
+                10 * 60 * 1000,              // 00:10 (Yeni günün fikstürü için ilk can suyu)
+                (1 * 60 + 15) * 60 * 1000,   // 01:15
+                (6 * 60 + 15) * 60 * 1000,   // 06:15 
+                (9 * 60 + 15) * 60 * 1000,   // 09:15
+                (12 * 60 + 15) * 60 * 1000,  // 12:15
+                (15 * 60 + 15) * 60 * 1000   // 15:15
+            ];
+            
             let activeTarget = startOfDay - (5 * 60 + 50) * 60 * 1000;
             for (let i = TARGET_TIMES.length - 1; i >= 0; i--) {
                 if (msSinceMidnight >= TARGET_TIMES[i]) { activeTarget = startOfDay + TARGET_TIMES[i]; break; }
             }
 
-            if (lastPeriodicUpdate < activeTarget) {
-                console.log("🔄 [PERİYODİK] Detaylı Tarama");
+            // 4. 🚀 YENİ: Periyodik saat geldiyse VEYA yayıncı dosyası değiştiyse zorla
+            if (lastPeriodicUpdate < activeTarget || forceUpdateDueToBroadcasters) {
+                console.log("\n🔄 [PERİYODİK / ZORUNLU] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
                 const result = await updateBasketball(days4, false);
-                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
-                lastPeriodicUpdate = now;
+                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; 
+                sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+                
+                if (!forceUpdateDueToBroadcasters) {
+                    lastPeriodicUpdate = now;
+                }
             }
 
             const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)]; 
@@ -333,16 +363,18 @@ async function main() {
 
             if ((sportUpdateStatus.hasLiveMatch || hasUpcoming) && now - sportUpdateStatus.lastQuickUpdate >= TEN_MIN_MS) {
                 const result = await updateBasketball(quickScanDates, true);
-                sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+                sportUpdateStatus.lastQuickUpdate = now; 
+                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; 
+                sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
             }
 
             let sleepTime = TEN_MIN_MS;
             if (sportUpdateStatus.hasLiveMatch || hasUpcoming) {
                 sleepTime = TEN_MIN_MS - (now - sportUpdateStatus.lastQuickUpdate);
                 if (sleepTime < MINUTE_MS) sleepTime = MINUTE_MS;
-                console.log(`⚡ [BASKETBOL] Aktif/Yaklaşan maç var. Terminal ${Math.ceil(sleepTime / 60000)} dakika uykuya yatıyor...`);
+                console.log(`\n⚡ [BASKETBOL] Aktif/Yaklaşan maç var. Terminal ${Math.ceil(sleepTime / 60000)} dakika uykuya yatıyor...`);
             } else {
-                console.log("💤 [BASKETBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
+                console.log("\n💤 [BASKETBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
             }
 
             await new Promise(r => setTimeout(r, sleepTime));
@@ -353,3 +385,5 @@ async function main() {
     }
 }
 main();
+
+
