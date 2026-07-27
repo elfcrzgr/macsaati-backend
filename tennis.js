@@ -79,30 +79,60 @@ function loadExternalBroadcasters() {
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
-    const toTR = (str) => str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/ı/g, 'i').toLowerCase().trim();
-    const hName = toTR(homeName || ""); const aName = toTR(awayName || "");
+
+    const normalizeStr = (str) => {
+        if (!str) return "";
+        let s = str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+                   .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
+                   .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
+                   .replace(/ı/g, 'i');
+        // NFD ile Avrupai aksanları (é, á, ñ vb.) temizle
+        s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
+    };
+
+    const homeWords = normalizeStr(homeName).split(' ').filter(w => w.length >= 3);
+    const awayWords = normalizeStr(awayName).split(' ').filter(w => w.length >= 3);
+
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
-        return [0, 1].map(offset => {
+        return [-1, 0, 1].map(offset => {
             const dateObj = new Date(y, m - 1, d + offset);
-            const month = String(dateObj.getMonth() + 1).padStart(2, '0'); const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
             return `${dateObj.getFullYear()}-${month}-${day}`;
         });
     };
-    const safeDates = getSafeDates(dateStr);
-    for (const dateKey of safeDates) {
+
+    for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
         if (!dayData || !dayData.matches) continue;
+
         for (const m of dayData.matches) {
-            if (m.spor && toTR(m.spor) === toTR(sportCategory)) {
-                const mTime = (m.saat || "").replace('.', ':').trim(); const [mH, mM] = mTime.split(':').map(Number); const mTitle = toTR(m.mac || "");
-                const getCleanWords = (str) => { return str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g').replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's').replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c').replace(/ı/g, 'i').toLowerCase().replace(/[^a-z0-9]/g, ' ').split(' ').map(w => w.trim()).filter(w => w.length >= 3); };
-                const hWords = getCleanWords(hName); const aWords = getCleanWords(aName);
-                const matchHome = hWords.length === 0 || hWords.some(w => mTitle.includes(w)); const matchAway = aWords.length === 0 || aWords.some(w => mTitle.includes(w));
+            if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
+                const mTime = (m.saat || "").replace('.', ':').trim();
+                const [mH, mM] = mTime.split(':').map(Number);
+                const mTitleClean = normalizeStr(m.mac);
+
+                const matchHome = homeWords.length > 0 && homeWords.some(w => mTitleClean.includes(w));
+                const matchAway = awayWords.length > 0 && awayWords.some(w => mTitleClean.includes(w));
+
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
+
                 let diff = 9999;
-                if (mTime === cleanTime) { diff = 0; } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) { diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM)); if (diff > 1000) diff = Math.abs(diff - 1440); }
-                if (matchScore === 2 && diff <= 120) { return { kanal: m.yayin, source: "sporekrani" }; } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) { return { kanal: m.yayin, source: "sporekrani" }; }
+                if (mTime === cleanTime) {
+                    diff = 0;
+                } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) {
+                    diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM));
+                    if (diff > 1000) diff = Math.abs(diff - 1440);
+                }
+
+                // Teniste maçlar uzayabildiği veya sarktığı için tolerans 300 dakika (5 saat)
+                if (matchScore === 2 && diff <= 300) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                }
             }
         }
     }
@@ -160,24 +190,60 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REP
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
 // 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
+// =========================================================================
+// 🎾 TENİS YAPILANDIRMASI (HEDEF TURNUVALAR)
+// =========================================================================
+const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
+const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
+
+// 🔥 YENİ SİSTEM: Sofascore genel aramayı kapattığı için ID bazlı arıyoruz
 const targetTennisIds = [
-    2361, // 🎾 Wimbledon ATP (Erkekler - Senin yakaladığın gerçek ID!)
-    2600, // 🎾 Wimbledon WTA (Kadınlar - Genelde ardışık olur, bunu da ekleyelim)
-    2375,// wimbledon ciftler 
-    2364,// winbeldon karisik ciftler 
-    2449,// us open 
-    2601,// us open kadinlar
-    2508, // us open ciftler 
-    2551,// us open kadinlar ciftler 
-    2402, //us open karisik ciftler
-    2390, // montreal erkekler
-    2624, // montreal kadinlar 
-    2373, // cincinnati
-    2381, // cincinnati ciftler 
-    2368, // Washington
-    2468, // Washington Doubles
-    // 💡 İleride oynanacak diğer turnuvaları Sofascore'dan açıp URL'deki 
-    // sayıyı (örn: 2361) tam buraya virgülle ekleyebilirsin.
+    // 🏆 GRAND SLAM
+    2424, 2594, // Australian Open (ATP / WTA)
+    2436, 2598, // Roland Garros (ATP / WTA)
+    2361, 2600, // Wimbledon (ATP / WTA)
+    2375, 2364, // Wimbledon Çiftler & Karışık Çiftler
+    2449, 2601, // US Open (ATP / WTA)
+    2508, 2551, // US Open Çiftler (ATP / WTA)
+    2402,       // US Open Karışık Çiftler
+    
+    // 👑 MASTERS 1000
+    2398, // Indian Wells 
+    2414, // Miami Open 
+    2394, // Monte Carlo
+    2396, // Madrid Open
+    2397, // Roma (Rome)
+    2390, // Montreal/Toronto (Erkekler)
+    2624, // Montreal/Toronto (Kadınlar)
+    2373, // Cincinnati (Tekler)
+    2381, // Cincinnati (Çiftler)
+    2416, // Şanghay (Shanghai)
+    2413, // Paris Masters
+
+    // 🌟 ATP 500 / WTA 500 
+    2368, // Washington (Tekler)
+    2468, // Washington (Çiftler)
+    2377, // Rotterdam
+    2384, // Dubai
+    2407, // Acapulco
+    2428, // Barselona (Barcelona)
+    2360, // Queen's Club (Londra)
+    2365, // Halle
+    2382, // Hamburg
+    2415, // Pekin (Beijing)
+    2418, // Tokyo
+    2411, // Basel
+    2412, // Viyana (Vienna)
+
+    // ⚡ ATP 250 (Fikstür hacmi ve düzenli akış için gerekli)
+    2420, // Brisbane
+    2378, // Doha
+    2387, // Marsilya (Marseille)
+    2401, // Buenos Aires
+    2409, // Delray Beach
+    2434, // Stuttgart
+    2366, // Mallorca / Eastbourne (Çim Kort)
+    2374  // Bastad / Gstaad (Toprak Kort)
 ];
 
 
@@ -349,7 +415,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
 
-// =========================================================================
+/// =========================================================================
 // 🆕 ANA DÖNGÜ (SADECE TENİS)
 // =========================================================================
 async function main() {
@@ -359,27 +425,56 @@ async function main() {
     console.log("============================================================");
 
     let lastPeriodicUpdate = 0;
+    let lastBroadcastersString = ""; // 🚀 YENİ: Yayıncı verisinin son halini tutacak
 
     while (true) {
         try {
             const now = Date.now();
+            
+            // 1. Dosyayı oku
             loadExternalBroadcasters();
+            
+            // 2. 🚀 YENİ: Yayıncı bilgisi değişti mi kontrol et
+            const currentBroadcastersString = JSON.stringify(externalBroadcasters);
+            let forceUpdateDueToBroadcasters = false;
+            
+            if (lastBroadcastersString !== "" && currentBroadcastersString !== lastBroadcastersString) {
+                console.log("📺 [YAYINCI] Yeni yayıncı bilgileri tespit edildi! Firebase anında güncelleniyor...");
+                forceUpdateDueToBroadcasters = true;
+            }
+            lastBroadcastersString = currentBroadcastersString; // Hafızayı güncelle
 
+            // 3. Zaman hesaplamaları
             const d = new Date(now);
             const startOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
             const msSinceMidnight = now - startOfDay;
-            const TARGET_TIMES = [ 10 * 60 * 1000, (6 * 60 + 10) * 60 * 1000, (12 * 60 + 10) * 60 * 1000, (18 * 60 + 10) * 60 * 1000 ];
+            
+            // 🚀 Eşitlenmiş Periyodik Saatler
+            const TARGET_TIMES = [ 
+                10 * 60 * 1000,              // 00:10 (Yeni günün fikstürü için ilk can suyu)
+                (1 * 60 + 15) * 60 * 1000,   // 01:15
+                (6 * 60 + 15) * 60 * 1000,   // 06:15 
+                (9 * 60 + 15) * 60 * 1000,   // 09:15
+                (12 * 60 + 15) * 60 * 1000,  // 12:15
+                (15 * 60 + 15) * 60 * 1000   // 15:15
+            ];
+            
             let activeTarget = startOfDay - (5 * 60 + 50) * 60 * 1000;
             for (let i = TARGET_TIMES.length - 1; i >= 0; i--) {
                 if (msSinceMidnight >= TARGET_TIMES[i]) { activeTarget = startOfDay + TARGET_TIMES[i]; break; }
             }
 
-            if (lastPeriodicUpdate < activeTarget) {
-                console.log("\n🔄 [PERİYODİK] Detaylı Tarama Başlıyor...");
+            // 4. 🚀 YENİ: Periyodik saat geldiyse VEYA yayıncı dosyası değiştiyse zorla
+            if (lastPeriodicUpdate < activeTarget || forceUpdateDueToBroadcasters) {
+                console.log("\n🔄 [PERİYODİK / ZORUNLU] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
                 const result = await updateTennis(days4, false);
-                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
-                lastPeriodicUpdate = now;
+                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; 
+                sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+                
+                if (!forceUpdateDueToBroadcasters) {
+                    lastPeriodicUpdate = now;
+                }
             }
 
             const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)]; 
@@ -388,7 +483,9 @@ async function main() {
             if ((sportUpdateStatus.hasLiveMatch || hasUpcoming) && now - sportUpdateStatus.lastQuickUpdate >= TEN_MIN_MS) {
                 console.log("\n⚡ [HIZLI DÖNGÜ] Maç vakti yaklaştı/oynanıyor...");
                 const result = await updateTennis(quickScanDates, true);
-                sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+                sportUpdateStatus.lastQuickUpdate = now; 
+                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; 
+                sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
             }
 
             let sleepTime = TEN_MIN_MS;
