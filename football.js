@@ -818,27 +818,58 @@ async function main() {
     console.log("============================================================");
 
     let lastPeriodicUpdate = 0;
+    let lastBroadcastersString = ""; // 🚀 YENİ: Yayıncı verisinin son halini tutacak
 
     while (true) {
         try {
             const now = Date.now();
+            
+            // 1. Dosyayı oku
             loadExternalBroadcasters();
+            
+            // 2. 🚀 YENİ: Yayıncı bilgisi değişti mi kontrol et
+            const currentBroadcastersString = JSON.stringify(externalBroadcasters);
+            let forceUpdateDueToBroadcasters = false;
+            
+            // Eğer ilk okuma değilse ve veri değişmişse (GitHub Action yeni dosya indirdiyse)
+            if (lastBroadcastersString !== "" && currentBroadcastersString !== lastBroadcastersString) {
+                console.log("📺 [YAYINCI] Yeni yayıncı bilgileri tespit edildi! Firebase anında güncelleniyor...");
+                forceUpdateDueToBroadcasters = true;
+            }
+            lastBroadcastersString = currentBroadcastersString; // Hafızayı güncelle
 
+            // 3. Zaman hesaplamaları
             const d = new Date(now);
             const startOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
             const msSinceMidnight = now - startOfDay;
-            const TARGET_TIMES = [ 10 * 60 * 1000, (6 * 60 + 10) * 60 * 1000, (12 * 60 + 10) * 60 * 1000, (18 * 60 + 10) * 60 * 1000 ];
+            
+            // 🚀 Eşitlenmiş Periyodik Saatler: Gece yarısı 00:10 eklendi!
+            const TARGET_TIMES = [ 
+                10 * 60 * 1000,              // 00:10 (Yeni günün fikstürü için ilk can suyu)
+                (1 * 60 + 15) * 60 * 1000,   // 01:15
+                (6 * 60 + 15) * 60 * 1000,   // 06:15 
+                (9 * 60 + 15) * 60 * 1000,   // 09:15
+                (12 * 60 + 15) * 60 * 1000,  // 12:15
+                (15 * 60 + 15) * 60 * 1000   // 15:15
+            ];
+            
             let activeTarget = startOfDay - (5 * 60 + 50) * 60 * 1000;
             for (let i = TARGET_TIMES.length - 1; i >= 0; i--) {
                 if (msSinceMidnight >= TARGET_TIMES[i]) { activeTarget = startOfDay + TARGET_TIMES[i]; break; }
             }
 
-            if (lastPeriodicUpdate < activeTarget) {
-                console.log("\n🔄 [PERİYODİK] Detaylı Tarama Başlıyor...");
+            // 4. 🚀 YENİ: Eğer periyodik saat geldiyse VEYA yayıncı dosyası değiştiyse güncellemeyi zorla
+            if (lastPeriodicUpdate < activeTarget || forceUpdateDueToBroadcasters) {
+                console.log("\n🔄 [PERİYODİK / ZORUNLU] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
                 const result = await updateFootball(days4, false);
-                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
-                lastPeriodicUpdate = now;
+                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; 
+                sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+                
+                // Eğer güncelleme yayıncı dosyasından dolayı olduysa, periyodik sayacı bozma
+                if (!forceUpdateDueToBroadcasters) {
+                    lastPeriodicUpdate = now;
+                }
             }
 
             const todayOnly = [getTRDate(0)]; 
@@ -874,3 +905,4 @@ async function main() {
     }
 }
 main();
+
