@@ -174,6 +174,8 @@ const targetTennisIds = [
     2624, // montreal kadinlar 
     2373, // cincinnati
     2381, // cincinnati ciftler 
+    2368, // Washington
+    2468, // Washington Doubles
     // 💡 İleride oynanacak diğer turnuvaları Sofascore'dan açıp URL'deki 
     // sayıyı (örn: 2361) tam buraya virgülle ekleyebilirsin.
 ];
