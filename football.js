@@ -103,17 +103,15 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
 
+    console.log(`\n🔍 [BROADCAST SEARCH] ${homeName} vs ${awayName} | ${dateStr} ${timeStr}`);
+
     const normalizeStr = (str) => {
         if (!str) return "";
-        // 1. Türkçe karakterleri hallet
         let s = str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
                    .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
                    .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
                    .replace(/ı/g, 'i');
-                   
-        // 2. Górnik (ó) gibi Avrupa aksanlarını bozmadan temizle (NFD formülü)
         s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        
         return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
     };
 
@@ -122,7 +120,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
-        // 3. Gece yarısı saat farklarından dolayı -1 (dün) de aranmalı
         return [-1, 0, 1].map(offset => {
             const dateObj = new Date(y, m - 1, d + offset);
             const month = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -154,16 +151,22 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                     if (diff > 1000) diff = Math.abs(diff - 1440);
                 }
 
-                // 4. İki takım da tam eşleşiyorsa toleransı 120'den 300 dakikaya (5 saat) çıkardık.
-                // Hazırlık maçlarında platformlar arası saat tutarsızlığı çok fazladır.
+                // Debug: Potansiyel eşleşmeleri göster
+                if (matchScore >= 1) {
+                    console.log(`   ✓ Candidate: "${m.mac}" @ ${mTime} [Score: ${matchScore}, TimeDiff: ${diff}min] → ${m.yayin}`);
+                }
+
                 if (matchScore === 2 && diff <= 300) {
+                    console.log(`   ✅ FULL MATCH FOUND: ${m.yayin}`);
                     return { kanal: m.yayin, source: "sporekrani" };
                 } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
+                    console.log(`   ✅ PARTIAL MATCH FOUND: ${m.yayin}`);
                     return { kanal: m.yayin, source: "sporekrani" };
                 }
             }
         }
     }
+    console.log(`   ❌ NO MATCH FOUND → FALLBACK: ${fallback}`);
     return { kanal: fallback, source: "fallback" };
 }
 
