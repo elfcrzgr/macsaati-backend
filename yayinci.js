@@ -359,7 +359,7 @@ const teamNameMapping = {
     "GRIMSBY": "Grimsby Town",
     "GRIMSBY TOWN": "Grimsby Town",
     "CHELTENHAM": "Cheltenham Town",
-    "CHELTENHAM TOWN": "Cheltenham Town"
+    "CHELTENHAM TOWN": "Cheltenham Town",
 
 
     // 🏀 BASKETBOL TAKIMLARI - YENİ EKLENEN
