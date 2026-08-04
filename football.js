@@ -756,7 +756,8 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
         const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
         if (!targetDates.includes(dayTR)) return;
 
-        const timeString = dateTR.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+               
+        const timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
         const fallbackBroadcaster = getFootBroadcaster(leagueId, hName, aName, tName, utName);
         const translatedHome = translateTeam(hName); const translatedAway = translateTeam(aName);
         const result = getBroadcasterWithFallback("futbol", dayTR, timeString, translatedHome, translatedAway, fallbackBroadcaster);
