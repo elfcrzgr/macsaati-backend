@@ -103,8 +103,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
 
-    console.log(`\n🔍 [BROADCAST SEARCH] ${homeName} vs ${awayName} | ${dateStr} ${timeStr}`);
-
     const normalizeStr = (str) => {
         if (!str) return "";
         let s = str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
@@ -151,22 +149,16 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                     if (diff > 1000) diff = Math.abs(diff - 1440);
                 }
 
-                // Debug: Potansiyel eşleşmeleri göster
-                if (matchScore >= 1) {
-                    console.log(`   ✓ Candidate: "${m.mac}" @ ${mTime} [Score: ${matchScore}, TimeDiff: ${diff}min] → ${m.yayin}`);
-                }
-
                 if (matchScore === 2 && diff <= 300) {
-                    console.log(`   ✅ FULL MATCH FOUND: ${m.yayin}`);
+                    console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
                     return { kanal: m.yayin, source: "sporekrani" };
                 } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
-                    console.log(`   ✅ PARTIAL MATCH FOUND: ${m.yayin}`);
+                    console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
                     return { kanal: m.yayin, source: "sporekrani" };
                 }
             }
         }
     }
-    console.log(`   ❌ NO MATCH FOUND → FALLBACK: ${fallback}`);
     return { kanal: fallback, source: "fallback" };
 }
 
