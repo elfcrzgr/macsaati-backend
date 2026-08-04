@@ -79,36 +79,61 @@ function loadExternalBroadcasters() {
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
-    const toTR = (str) => str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/ı/g, 'i').toLowerCase().trim();
-    const hName = toTR(homeName || ""); const aName = toTR(awayName || "");
-    
+
+    const normalizeStr = (str) => {
+        if (!str) return "";
+        // Türkçe karakterleri hallet
+        let s = str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+                   .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
+                   .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
+                   .replace(/ı/g, 'i');
+        // NFD ile aksanları temizle
+        s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
+    };
+
+    const homeWords = normalizeStr(homeName).split(' ').filter(w => w.length >= 3);
+    const awayWords = normalizeStr(awayName).split(' ').filter(w => w.length >= 3);
+
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
         return [0, 1].map(offset => {
             const dateObj = new Date(y, m - 1, d + offset);
-            const month = String(dateObj.getMonth() + 1).padStart(2, '0'); const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
             return `${dateObj.getFullYear()}-${month}-${day}`;
         });
     };
-    const safeDates = getSafeDates(dateStr);
-    for (const dateKey of safeDates) {
+
+    for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
         if (!dayData || !dayData.matches) continue;
+
         for (const m of dayData.matches) {
-            if (m.spor && toTR(m.spor) === toTR(sportCategory)) {
-                const mTime = (m.saat || "").replace('.', ':').trim(); const [mH, mM] = mTime.split(':').map(Number); const mTitle = toTR(m.mac || "");
-                const getCleanWords = (str) => { return str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g').replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's').replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c').replace(/ı/g, 'i').toLowerCase().replace(/[^a-z0-9]/g, ' ').split(' ').map(w => w.trim()).filter(w => w.length >= 3); };
-                const hWords = getCleanWords(hName); const aWords = getCleanWords(aName);
-                const matchHome = hWords.length === 0 || hWords.some(w => mTitle.includes(w)); const matchAway = aWords.length === 0 || aWords.some(w => mTitle.includes(w));
+            if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
+                const mTime = (m.saat || "").replace('.', ':').trim();
+                const [mH, mM] = mTime.split(':').map(Number);
+                const mTitleClean = normalizeStr(m.mac);
+
+                const matchHome = homeWords.length > 0 && homeWords.some(w => mTitleClean.includes(w));
+                const matchAway = awayWords.length > 0 && awayWords.some(w => mTitleClean.includes(w));
+
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
+
                 let diff = 9999;
-                if (mTime === cleanTime) { diff = 0; } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) { diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM)); if (diff > 1000) diff = Math.abs(diff - 1440); }
-                if (matchScore === 2 && diff <= 120) { 
+                if (mTime === cleanTime) {
+                    diff = 0;
+                } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) {
+                    diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM));
+                    if (diff > 1000) diff = Math.abs(diff - 1440);
+                }
+
+                if (matchScore === 2 && diff <= 120) {
                     console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
-                    return { kanal: m.yayin, source: "sporekrani" }; 
-                } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) { 
+                    return { kanal: m.yayin, source: "sporekrani" };
+                } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
                     console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
-                    return { kanal: m.yayin, source: "sporekrani" }; 
+                    return { kanal: m.yayin, source: "sporekrani" };
                 }
             }
         }
