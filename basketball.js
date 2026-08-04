@@ -81,6 +81,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const [cH, cM] = cleanTime.split(':').map(Number);
     const toTR = (str) => str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/ı/g, 'i').toLowerCase().trim();
     const hName = toTR(homeName || ""); const aName = toTR(awayName || "");
+    
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
         return [0, 1].map(offset => {
@@ -102,7 +103,13 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                 const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
                 let diff = 9999;
                 if (mTime === cleanTime) { diff = 0; } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) { diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM)); if (diff > 1000) diff = Math.abs(diff - 1440); }
-                if (matchScore === 2 && diff <= 120) { return { kanal: m.yayin, source: "sporekrani" }; } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) { return { kanal: m.yayin, source: "sporekrani" }; }
+                if (matchScore === 2 && diff <= 120) { 
+                    console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
+                    return { kanal: m.yayin, source: "sporekrani" }; 
+                } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) { 
+                    console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
+                    return { kanal: m.yayin, source: "sporekrani" }; 
+                }
             }
         }
     }
@@ -266,7 +273,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         seenKeys.add(matchKey);
 
         const statusType = e.status?.type; const isFinished = statusType === 'finished'; const isInProgress = statusType === 'inprogress';
-        let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+        let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
         if (isInProgress) timeString = `${timeString}\nCANLI`;
         const hasScore = isFinished || isInProgress;
         const cleanTournamentName = basketballLeagues[utId] || (isNBA ? "NBA" : utName);
