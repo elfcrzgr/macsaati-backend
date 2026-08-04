@@ -86,7 +86,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                    .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
                    .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
                    .replace(/ı/g, 'i');
-        // NFD ile Avrupai aksanları (é, á, ñ vb.) temizle
         s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
     };
@@ -127,10 +126,11 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                     if (diff > 1000) diff = Math.abs(diff - 1440);
                 }
 
-                // Teniste maçlar uzayabildiği veya sarktığı için tolerans 300 dakika (5 saat)
                 if (matchScore === 2 && diff <= 300) {
+                    console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
                     return { kanal: m.yayin, source: "sporekrani" };
                 } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
+                    console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
                     return { kanal: m.yayin, source: "sporekrani" };
                 }
             }
@@ -362,7 +362,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             // 🚀 WALKOVER VE RETIRED (ÇEKİLME) KONTROLÜ
             const statusType = e.status?.type; 
             const statusDesc = (e.status?.description || "").toLowerCase();
-            let timeString = dateTR.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+           let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
             
             const isWalkover = statusType === 'walkover' || statusDesc.includes('walkover');
             const isRetired = statusType === 'retired' || statusDesc.includes('retired');
