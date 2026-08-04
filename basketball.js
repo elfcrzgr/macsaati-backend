@@ -80,20 +80,23 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
 
+    console.log(`\n🔍 [BASKET] ${homeName} vs ${awayName}`);
+    console.log(`   Tarih: ${dateStr}, Saat: ${timeStr} → Temizlenmiş: ${cleanTime}`);
+
     const normalizeStr = (str) => {
         if (!str) return "";
-        // Türkçe karakterleri hallet
         let s = str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
                    .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
                    .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
                    .replace(/ı/g, 'i');
-        // NFD ile aksanları temizle
         s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
     };
 
     const homeWords = normalizeStr(homeName).split(' ').filter(w => w.length >= 3);
     const awayWords = normalizeStr(awayName).split(' ').filter(w => w.length >= 3);
+    
+    console.log(`   Home words: [${homeWords.join(', ')}], Away words: [${awayWords.join(', ')}]`);
 
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
@@ -107,7 +110,12 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 
     for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
-        if (!dayData || !dayData.matches) continue;
+        if (!dayData || !dayData.matches) {
+            console.log(`   ✗ ${dateKey}: Yayıncı verisi yok`);
+            continue;
+        }
+
+        console.log(`   ✓ ${dateKey}: ${dayData.matches.length} maç var`);
 
         for (const m of dayData.matches) {
             if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
@@ -128,16 +136,21 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                     if (diff > 1000) diff = Math.abs(diff - 1440);
                 }
 
+                if (matchScore >= 1) {
+                    console.log(`     • "${m.mac}" @ ${mTime} [Score: ${matchScore}, TimeDiff: ${diff}] → ${m.yayin}`);
+                }
+
                 if (matchScore === 2 && diff <= 120) {
-                    console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
+                    console.log(`     ✅ FULL MATCH: ${m.yayin}`);
                     return { kanal: m.yayin, source: "sporekrani" };
                 } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
-                    console.log(`✅ ${homeName} vs ${awayName} → ${m.yayin}`);
+                    console.log(`     ✅ PARTIAL MATCH: ${m.yayin}`);
                     return { kanal: m.yayin, source: "sporekrani" };
                 }
             }
         }
     }
+    console.log(`   ❌ FALLBACK: ${fallback}`);
     return { kanal: fallback, source: "fallback" };
 }
 
