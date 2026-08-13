@@ -69,11 +69,32 @@ function loadState() {
 // 🌉 HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
 // =========================================================================
 let externalBroadcasters = {};
-function loadExternalBroadcasters() {
+
+// 🚀 YENİ: Yerel disk yerine doğrudan GitHub'daki güncel dosyayı çeker
+async function loadExternalBroadcasters() {
     try {
-        if (fs.existsSync('yayinci_bilgisi.json')) externalBroadcasters = JSON.parse(fs.readFileSync('yayinci_bilgisi.json', 'utf8'));
-        else externalBroadcasters = {};
-    } catch (e) { externalBroadcasters = {}; }
+        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
+        const response = await fetch(url);
+        
+        if (response.ok) {
+            externalBroadcasters = await response.json();
+            // Yedek olması için diske de kaydedelim
+            fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
+        } else {
+            throw new Error(`HTTP ${response.status}`);
+        }
+    } catch (e) {
+        console.log(`⚠️ GitHub'dan yayıncı bilgisi çekilemedi (${e.message}), yerel dosyaya dönülüyor...`);
+        if (fs.existsSync('yayinci_bilgisi.json')) {
+            try {
+                externalBroadcasters = JSON.parse(fs.readFileSync('yayinci_bilgisi.json', 'utf8'));
+            } catch (err) {
+                externalBroadcasters = {};
+            }
+        } else {
+            externalBroadcasters = {};
+        }
+    }
 }
 
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
@@ -105,9 +126,13 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 
     for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
-        if (!dayData || !dayData.matches) continue;
+        
+        // 🚀 DÜZELTME: JSON yapısındaki dizi (array) durumunu garantile
+        const matchesArray = Array.isArray(dayData) ? dayData : dayData?.matches;
 
-        for (const m of dayData.matches) {
+        if (!matchesArray || !Array.isArray(matchesArray)) continue;
+
+        for (const m of matchesArray) {
             if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
                 const mTime = (m.saat || "").replace('.', ':').trim();
                 const [mH, mM] = mTime.split(':').map(Number);
@@ -138,6 +163,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     }
     return { kanal: fallback, source: "fallback" };
 }
+
 
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR VE FETCH
@@ -453,7 +479,7 @@ async function main() {
             const now = Date.now();
             
             // 1. Dosyayı oku
-            loadExternalBroadcasters();
+            await loadExternalBroadcasters();
             
             // 2. 🚀 YENİ: Yayıncı bilgisi değişti mi kontrol et
             const currentBroadcastersString = JSON.stringify(externalBroadcasters);
