@@ -83,22 +83,40 @@ function loadState() {
         }
     }
 }
-
 // =========================================================================
 // 🌉 HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
 // =========================================================================
 let externalBroadcasters = {};
-function loadExternalBroadcasters() {
+
+// 🚀 YENİ: Yerel disk yerine doğrudan GitHub'daki güncel dosyayı çeker
+async function loadExternalBroadcasters() {
     try {
+        // Önbelleğe (cache) takılmamak için sonuna timestamp ekliyoruz
+        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
+        const response = await fetch(url);
+        
+        if (response.ok) {
+            externalBroadcasters = await response.json();
+            // Yedek olması için diske de kaydedelim
+            fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
+        } else {
+            throw new Error(`HTTP ${response.status}`);
+        }
+    } catch (e) {
+        console.log(`⚠️ GitHub'dan yayıncı bilgisi çekilemedi (${e.message}), yerel dosyaya dönülüyor...`);
+        // Eğer GitHub'dan çekemezse (örn. internet koparsa) yereldeki son kopyayı okusun
         if (fs.existsSync('yayinci_bilgisi.json')) {
             externalBroadcasters = JSON.parse(fs.readFileSync('yayinci_bilgisi.json', 'utf8'));
         } else {
             externalBroadcasters = {};
         }
-    } catch (e) {
-        externalBroadcasters = {};
     }
 }
+
+
+
+
+
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
@@ -814,14 +832,15 @@ async function main() {
     console.log("============================================================");
 
     let lastPeriodicUpdate = 0;
-    let lastBroadcastersString = ""; // 🚀 YENİ: Yayıncı verisinin son halini tutacak
+    let lastBroadcastersString = ""; // 🚀 YENİ: Yayıncı verisinin son halini 
+
 
     while (true) {
         try {
             const now = Date.now();
             
             // 1. Dosyayı oku
-            loadExternalBroadcasters();
+            await loadExternalBroadcasters();
             
             // 2. 🚀 YENİ: Yayıncı bilgisi değişti mi kontrol et
             const currentBroadcastersString = JSON.stringify(externalBroadcasters);
