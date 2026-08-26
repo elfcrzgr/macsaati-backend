@@ -703,9 +703,19 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     console.log(`⚽ Futbol: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'})`);
 
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
-    for (const [id, state] of previousMatchStates.entries()) {
-        if (state.date && !validDates.includes(state.date) && state.status !== 'inprogress') previousMatchStates.delete(id);
+
+// 🚀 Eski günlerin kara listesini temizle (memory leak önleme)
+for (const dateKey of emptyLeaguesCache.keys()) {
+    if (!validDates.includes(dateKey)) {
+        emptyLeaguesCache.delete(dateKey);
     }
+}
+
+for (const [id, state] of previousMatchStates.entries()) {
+    if (state.date && !validDates.includes(state.date) && state.status !== 'inprogress') previousMatchStates.delete(id);
+}
+
+
     saveState();
 
     let allEvents = [];
@@ -789,8 +799,10 @@ if (successfulDates.length === 0) {
         }
 
         const dateTR = new Date(e.startTimestamp * 1000);
-        const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-        if (!targetDates.includes(dayTR)) return;
+const dayTR = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+
+// 🚀 Canlı maç gün filtresine takılıp atlanmasın
+if (!targetDates.includes(dayTR) && !isLive) return;
 
                
         const timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
@@ -876,10 +888,11 @@ async function main() {
             }
             lastBroadcastersString = currentBroadcastersString; // Hafızayı güncelle
 
-            // 3. Zaman hesaplamaları (🚀 İSTANBUL SAATİNE GÖRE - sunucu saat dilimine bağımlı değil)
-            const ist = getIstanbulNow();
-            const startOfDay = new Date(ist.getFullYear(), ist.getMonth(), ist.getDate()).getTime();
-            const msSinceMidnight = ist.getTime() - startOfDay;
+            // 3. Zaman hesaplamaları (🚀 İSTANBUL SAATİNE GÖRE - %100 sunucu bağımsız)
+const ist = getIstanbulNow();
+const msSinceMidnight = (ist.getHours() * 3600000) + (ist.getMinutes() * 60000) + (ist.getSeconds() * 1000);
+const startOfDay = now - msSinceMidnight;
+
             
             // 🚀 Eşitlenmiş Periyodik Saatler: Gece yarısı 00:10 eklendi!
             const TARGET_TIMES = [ 
