@@ -497,14 +497,18 @@ async function main() {
             const msSinceMidnight = now - startOfDay;
             
             // 🚀 Eşitlenmiş Periyodik Saatler
+                        // 🚀 Eşitlenmiş Periyodik Saatler
             const TARGET_TIMES = [ 
                 10 * 60 * 1000,              // 00:10 (Yeni günün fikstürü için ilk can suyu)
                 (1 * 60 + 15) * 60 * 1000,   // 01:15
                 (6 * 60 + 15) * 60 * 1000,   // 06:15 
                 (9 * 60 + 15) * 60 * 1000,   // 09:15
                 (12 * 60 + 15) * 60 * 1000,  // 12:15
-                (15 * 60 + 15) * 60 * 1000   // 15:15
+                (15 * 60 + 15) * 60 * 1000,  // 15:15
+                (18 * 60 + 15) * 60 * 1000,  // 18:15 (US Open gündüz seansı öncesi)
+                (21 * 60 + 15) * 60 * 1000   // 21:15 (US Open akşam seansı öncesi)
             ];
+
             
             let activeTarget = startOfDay - (5 * 60 + 50) * 60 * 1000;
             for (let i = TARGET_TIMES.length - 1; i >= 0; i--) {
