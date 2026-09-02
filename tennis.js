@@ -385,20 +385,24 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                 awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
             }
 
-            // 🚀 WALKOVER VE RETIRED (ÇEKİLME) KONTROLÜ
+                        // 🚀 WALKOVER, RETIRED VE SUSPENDED (ARA VERİLDİ) KONTROLÜ
             const statusType = e.status?.type; 
             const statusDesc = (e.status?.description || "").toLowerCase();
-           let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
+            let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
             
             const isWalkover = statusType === 'walkover' || statusDesc.includes('walkover');
             const isRetired = statusType === 'retired' || statusDesc.includes('retired');
             const isCanceled = statusType === 'canceled' || statusDesc.includes('canceled');
             const isPostponed = statusType === 'postponed' || statusDesc.includes('postponed');
+            // YENİ: Yağmur veya başka sebeple ara verilme durumu
+            const isSuspended = statusType === 'interrupted' || statusDesc.includes('interrupted') || statusDesc.includes('suspended');
 
-            const hasScore = statusType === 'inprogress' || statusType === 'finished' || isRetired;
+            // YENİ: "isSuspended" eklendi ki o ana kadar oynanan skorlar (örn: 6-2, 6-1) silinmesin, ekranda kalsın.
+            const hasScore = statusType === 'inprogress' || statusType === 'finished' || isRetired || isSuspended;
 
             // Zaman damgasını duruma göre biçimlendirme
             if (statusType === 'inprogress') timeString += "\nCANLI"; 
+            else if (isSuspended) timeString += "\nAra Verildi"; // Ekrana sığmazsa "\nAra" veya "\nDurdu" yapabilirsin
             else if (statusType === 'finished') timeString += "\nMS";
             else if (isWalkover) timeString += "\nW/O";       // Oynamadan kazandı (Hükmen)
             else if (isRetired) timeString += "\nÇekildi";   // Maç sırasında sakatlanıp bıraktı
@@ -457,7 +461,8 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     
     if (!isQuickScan && finalMatches.length < 30) logMatchesBySport({ tenis: tenisMatchesLog });
 
-    const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress');
+    const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress' || m.status === 'interrupted');
+
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
