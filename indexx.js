@@ -9,7 +9,7 @@ const teams = [
     "Alvechurch FC", "AFC Wolverhampton City", "Avro FC", "Witton Albion"
 ];
 
-const FOLDER_NAME = 'logos';
+const FOLDER_NAME = 'logoss'; // Klasör adı logoss olarak güncellendi
 
 // Logoların kaydedileceği klasörü oluştur
 if (!fs.existsSync(FOLDER_NAME)) {
@@ -58,7 +58,7 @@ const downloadLogos = async () => {
             console.error(`Hata (${teamName}):`, error.message);
         }
     }
-    console.log("🎉 Tüm işlemler tamamlandı! Logolar 'logos' klasöründe.");
+    console.log("🎉 Tüm işlemler tamamlandı! Logolar 'logoss' klasöründe.");
 };
 
 downloadLogos();
