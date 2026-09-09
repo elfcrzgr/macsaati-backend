@@ -942,19 +942,32 @@ const startOfDay = now - msSinceMidnight;
                 }
             }
 
+            
+            // ... (main fonksiyonundaki diğer kodlarınız)
+
+            // Döngünün ne kadar sürdüğünü hesapla
+            const processDuration = Date.now() - now; 
+
             let sleepTime = 10 * MINUTE_MS;
             const isActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 12));
             
             if (isActive) {
-                sleepTime = MINUTE_MS;
-                console.log(`\n⚡ [FUTBOL] Aktif/Yaklaşan maç var. Terminal ${Math.ceil(sleepTime / 60000)} dakika uykuya yatıyor...`);
+                // HEDEF: Tam 60 saniyede bir dönmek (60000 ms)
+                // 60 saniyeden, Firebase/APNs işlemlerinin sürdüğü zamanı çıkarıyoruz.
+                // Math.max ile de her ihtimale karşı "en az 15 saniye uyumasını" garanti altına alıyoruz.
+                sleepTime = Math.max(15000, 60000 - processDuration);
+                
+                console.log(`\n⚡ [FUTBOL] Aktif maç var. (İşlemler ${Math.round(processDuration/1000)}sn sürdü). Terminal tam 1 dakikaya tamamlamak için ${Math.round(sleepTime/1000)} saniye uyuyor...`);
             } else {
                 console.log("\n💤 [FUTBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
             }
 
             await new Promise(r => setTimeout(r, sleepTime));
             
-        } catch (e) { console.error("🚨 Hata:", e.message); await new Promise(r => setTimeout(r, MINUTE_MS)); }
+        } catch (e) { 
+            console.error("🚨 Hata:", e.message); 
+            await new Promise(r => setTimeout(r, MINUTE_MS)); 
+        }
     }
 }
 main();
