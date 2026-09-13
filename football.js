@@ -14,12 +14,9 @@ const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000;
 
-
 // 🚨 TELEGRAM AYARLARI 
 const TELEGRAM_BOT_TOKEN = "8401956459:AAEFkkO8Z0mj3BV73m8FQiYTz2oLeqGrCTY";
 const TELEGRAM_CHAT_ID = "1168053894";
-
-
 
 // O gün maçı KESİN OLMAYAN futbol ligleri (Akıllı Tarama Kara Listesi)
 const emptyLeaguesCache = new Map();
@@ -888,13 +885,10 @@ async function main() {
             const msSinceMidnight = (ist.getHours() * 3600000) + (ist.getMinutes() * 60000) + (ist.getSeconds() * 1000);
             const startOfDay = now - msSinceMidnight;
 
+            // 🚀 SADELEŞTİRİLMİŞ BÜYÜK TARAMA SAATLERİ
             const TARGET_TIMES = [ 
-                10 * 60 * 1000,              
-                (1 * 60 + 15) * 60 * 1000,   
-                (6 * 60 + 15) * 60 * 1000,   
-                (9 * 60 + 15) * 60 * 1000,   
-                (12 * 60 + 15) * 60 * 1000,  
-                (15 * 60 + 15) * 60 * 1000   
+                10 * 60 * 1000,              // 00:10
+                12 * 60 * 60 * 1000          // 12:00
             ];
             
             let activeTarget = startOfDay - (5 * 60 + 50) * 60 * 1000;
@@ -914,8 +908,14 @@ async function main() {
                 }
             }
 
-            const todayOnly = [getTRDate(0)]; 
-            const quickScanDates = [getTRDate(-1), getTRDate(0), getTRDate(1)]; 
+            // 🚀 AKILLI TARAMA GÜNLERİ (Zamana Duyarlı - Gece Nöbeti)
+            const currentHour = getIstanbulNow().getHours();
+            let quickScanDates = [getTRDate(0)]; // Varsayılan olarak sadece bugünü tara
+
+            // Gece 00:00 ile 04:00 arasındaysak (geceye sarkan maçları kaçırmamak için dünü ekle)
+            if (currentHour >= 0 && currentHour <= 4) {
+                quickScanDates = [getTRDate(-1), getTRDate(0)];
+            }
 
             if (sportUpdateStatus.hasLiveMatch) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
