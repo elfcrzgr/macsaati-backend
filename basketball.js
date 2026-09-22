@@ -225,17 +225,18 @@ function findNextMatchTime(cache, now = Date.now()) {
 }
 
 // =========================================================================
-// 🏀 BASKETBOL YAPILANDIRMASI (NBA YAZ LİGİ VE FIBA ELEMELERİ EKLENDİ)
+// 🏀 BASKETBOL YAPILANDIRMASI (NBA YAZ LİGİ, FIBA ELEMELERİ VE SÜPER KUPA EKLENDİ)
 // =========================================================================
-const ELITE_LEAGUE_IDS = [132, 138, 141, 9357, 519, 264, 285, 10415, 10437]; // 10437 eklendi
+const ELITE_LEAGUE_IDS = [132, 138, 141, 9357, 519, 264, 285, 10415, 10437, 1500]; // 1500 eklendi
 const leagueConfigs = {
     132: "S Sport / NBA TV", 138: "S Sport / S Sport Plus", 141: "TRT Spor / S Sport", 9357: "Tivibu Spor",
     285: "S Sport / TRT Spor", 519: "beIN Sports", 1179: "TRT Spor / beIN Sports", 19844: "TBF TV (YouTube)",
     264: "S Sport Plus", 304: "S Sport Plus", 227: "S Sport Plus", 156: "beIN Sports",
     1524: "S Sport Plus", 235: "S Sport Plus", 1438: "TRT Spor / beIN Sports",
     10415: "NBA TV / S Sport Plus",
-    10437: "S Sport / TRT Spor", // 🏀 FIBA DÜNYA KUPASI ELEMELERİ EKLENDİ
-    486: "NBA TV"
+    10437: "S Sport / TRT Spor", 
+    486: "NBA TV",
+    1500: "TRT Spor / beIN Sports" // 🏀 TÜRKİYE SÜPER KUPASI EKLENDİ
 };
 const basketballLeagues = {
     132: "NBA", 138: "EuroLeague", 141: "EuroCup", 9357: "Basketbol Şampiyonlar Ligi (BCL)",
@@ -243,8 +244,9 @@ const basketballLeagues = {
     264: "İspanya Liga ACB", 304: "Yunanistan Basketbol Ligi", 227: "Almanya BBL", 156: "Fransa LNB Pro A",
     1524: "Avustralya NBL", 235: "Adriyatik Ligi (ABA)", 1438: "VTB Birleşik Ligi", 285: "FIBA EuroBasket",
     10415: "NBA Yaz Ligi",
-    10437: "FIBA Dünya Kupası Elemeleri", // 🏀 FIBA EKLENDİ
-    486: "WNBA"
+    10437: "FIBA Dünya Kupası Elemeleri", 
+    486: "WNBA",
+    1500: "Basketbol Süper Kupası" // 🏀 TÜRKİYE SÜPER KUPASI EKLENDİ
 };
 const targetBaskIds = Object.keys(leagueConfigs).map(Number);
 
