@@ -386,7 +386,6 @@ const footballLeagues = {
     10783: "UEFA Uluslar Ligi"
 };
 
-};
 
 const nationalTeamCodes = {
     "turkey": "tr", "türkiye": "tr", "germany": "de", "france": "fr", "england": "en",
