@@ -215,18 +215,16 @@ async function uploadToFirebase(data) {
 
 async function fetchData(url) {
     try {
-        // Taramayı patlatmamak için yine 2-3 saniye bekletiyoruz
         const delay = Math.floor(Math.random() * 2000) + 1500;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        // KRİTİK NOKTA: Web tarayıcısı değil, doğrudan Android Resmi Uygulaması (Dalvik) kimliğine bürünüyoruz.
-        // Cloudflare bu User-Agent'a JS Testi uygulayamaz.
+        // Android Uygulaması Kimliği
         const ua = "Dalvik/2.1.0 (Linux; U; Android 13; SM-S918B Build/TP1A.220624.014) Sofascore/14.2.0";
 
-        // Tarayıcılara ait olan tüm gereksiz Sec-Fetch başlıklarını sildik, sadece uygulamanın attığı saf başlıkları ekledik.
-        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Host: api.sofascore.com" -H "Connection: Keep-Alive" -H "Accept-Encoding: gzip" --compressed "${mobileUrl}"`;
+        // URL'i shell patlamalarına karşı tek tırnak ('') içine aldık
+        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Host: api.sofascore.com" -H "Connection: Keep-Alive" --compressed '${mobileUrl}'`;
 
         const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
 
@@ -248,9 +246,12 @@ async function fetchData(url) {
 
         return JSON.parse(responseBody);
     } catch (e) {
+        // HATAYI GİZLEME, EKRANA BAS!
+        console.log(`❌ SİSTEM HATASI -> ${e.message}`);
         return null;
     }
 }
+
 
 
 
