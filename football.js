@@ -213,21 +213,38 @@ async function uploadToFirebase(data) {
     }
 }
 
+// Rastgele seçilecek güncel User-Agent listesi
+const userAgents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36"
+];
+
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1000) + 300;
+        // Taramayı yavaşlatmak için süreyi biraz daha uzun tuttuk (2 ile 4 saniye arası)
+        const delay = Math.floor(Math.random() * 2000) + 2000;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        const randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
 
         const response = await fetch(mobileUrl, {
             headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9",
+                "User-Agent": randomUA,
+                "Accept": "*/*",
+                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
                 "Referer": "https://www.sofascore.com/",
                 "Origin": "https://www.sofascore.com",
-                "Connection": "keep-alive"
+                "Connection": "keep-alive",
+                "Cache-Control": "max-age=0",
+                // Cloudflare ve WAF'ları aşmak için tarayıcı davranışını taklit eden başlıklar:
+                "Sec-Fetch-Dest": "empty",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Site": "same-site",
+                "Sec-Ch-Ua-Mobile": "?1",
+                "Sec-Ch-Ua-Platform": '"Android"'
             }
         });
 
@@ -236,7 +253,6 @@ async function fetchData(url) {
             
             console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
             
-            // 🔥 Telegram Ban Bildirimi Tetikleyicisi
             if (response.status === 403 || response.status === 429) {
                 notifyAdminForBan(response.status);
             }
