@@ -21,12 +21,6 @@ const TELEGRAM_CHAT_ID = "1168053894";
 // O gün maçı KESİN OLMAYAN futbol ligleri (Akıllı Tarama Kara Listesi)
 const emptyLeaguesCache = new Map();
 
-// 🚦 403/429 alan ligleri geçici olarak soğutmak için (backoff kara listesi)
-const rateLimitedLeaguesCache = new Map(); // leagueId -> soğuma bitiş zamanı (ms)
-const COOLDOWN_MS = 10 * MINUTE_MS; // 403/429 sonrası 10 dk bekle
-let consecutive403Count = 0;
-const MAX_CONSECUTIVE_403 = 5; // üst üste bu kadar 403 gelirse taramayı tamamen durdur
-
 // =========================================================================
 // 🔥 FIREBASE & APNs BAŞLATMA
 // =========================================================================
@@ -245,7 +239,6 @@ async function fetchData(url) {
             // 🔥 Telegram Ban Bildirimi Tetikleyicisi
             if (response.status === 403 || response.status === 429) {
                 notifyAdminForBan(response.status);
-                return { isRateLimited: true, statusCode: response.status };
             }
             
             return null;
@@ -732,9 +725,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
     let allEvents = [];
     let successfulDates = [];
-    consecutive403Count = 0; // her tarama başında sıfırla
 
-    outerLoop:
     for (const date of targetDates) {
         let dateHasMatches = false;
         
@@ -756,15 +747,6 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             leaguesToFetch = ALL_FOOT_TARGETS.filter(id => !knownEmptyLeagues.has(id));
         }
 
-        // 🚦 Soğuma süresi dolmamış ligleri bu taramadan çıkar
-        const nowTs = Date.now();
-        leaguesToFetch = leaguesToFetch.filter(id => {
-            const cooldownUntil = rateLimitedLeaguesCache.get(id);
-            if (cooldownUntil && cooldownUntil > nowTs) return false;
-            if (cooldownUntil && cooldownUntil <= nowTs) rateLimitedLeaguesCache.delete(id);
-            return true;
-        });
-
         if (leaguesToFetch.length > 0 && !isQuickScan) {
             console.log(`🔍 [${date}] için sorgulanacak lig sayısı: ${leaguesToFetch.length}`);
         }
@@ -776,21 +758,8 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             if (data?.events && data.events.length > 0) {
                 allEvents.push(...data.events);
                 dateHasMatches = true;
-                consecutive403Count = 0; // başarılı istek geldiyse sayaç sıfırlanır
             } else if (data?.is404) {
                 knownEmptyLeagues.add(leagueId);
-            } else if (data?.isRateLimited) {
-                // Bu ligi soğumaya al, üst üste 403 sayacını artır
-                rateLimitedLeaguesCache.set(leagueId, Date.now() + COOLDOWN_MS);
-                consecutive403Count++;
-
-                if (consecutive403Count >= MAX_CONSECUTIVE_403) {
-                    console.log(`🛑 [FUTBOL] Üst üste ${MAX_CONSECUTIVE_403} adet 403/429 alındı. IP muhtemelen banlandı, tarama bu döngü için tamamen durduruluyor.`);
-                    break outerLoop;
-                }
-
-                // Sıradaki isteğe geçmeden önce fazladan bekleme (ban paternini yavaşlatmak için)
-                await new Promise(r => setTimeout(r, 3000));
             }
         }
         if (dateHasMatches) successfulDates.push(date);
