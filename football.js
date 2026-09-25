@@ -212,47 +212,49 @@ async function uploadToFirebase(data) {
         console.error(`❌ [FIREBASE-FUTBOL] Hata:`, error.message);
     }
 }
+
 async function fetchData(url) {
     try {
-        // Proxy sunucusunu boğmamak için bekleme süresini 2 ile 5 saniye arasına çıkarıyoruz
-        const delay = Math.floor(Math.random() * 3000) + 2000;
+        // Taramayı patlatmamak için yine 2-3 saniye bekletiyoruz
+        const delay = Math.floor(Math.random() * 2000) + 1500;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-        
-        // Önbelleği (Cache) kırmak için zaman damgası ekliyoruz
-        const separator = mobileUrl.includes('?') ? '&' : '?';
-        const noCacheUrl = `${mobileUrl}${separator}_t=${Date.now()}`;
 
-        // Daha stabil çalışan Codetabs public proxy servisini kullanıyoruz
-        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(noCacheUrl)}`;
+        // KRİTİK NOKTA: Web tarayıcısı değil, doğrudan Android Resmi Uygulaması (Dalvik) kimliğine bürünüyoruz.
+        // Cloudflare bu User-Agent'a JS Testi uygulayamaz.
+        const ua = "Dalvik/2.1.0 (Linux; U; Android 13; SM-S918B Build/TP1A.220624.014) Sofascore/14.2.0";
 
-        const response = await fetch(proxyUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-                "Accept": "application/json"
-            }
-        });
+        // Tarayıcılara ait olan tüm gereksiz Sec-Fetch başlıklarını sildik, sadece uygulamanın attığı saf başlıkları ekledik.
+        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Host: api.sofascore.com" -H "Connection: Keep-Alive" -H "Accept-Encoding: gzip" --compressed "${mobileUrl}"`;
 
-        if (!response.ok) {
-            if (response.status === 404) return { is404: true }; 
+        const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
+
+        const lines = stdout.trim().split('\n');
+        const statusCode = parseInt(lines.pop(), 10);
+        const responseBody = lines.join('\n').trim();
+
+        if (statusCode !== 200) {
+            if (statusCode === 404) return { is404: true }; 
             
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
+            console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
             
-            if (response.status === 403 || response.status === 429) {
-                notifyAdminForBan(response.status);
+            if (statusCode === 403 || statusCode === 429) {
+                notifyAdminForBan(statusCode);
             }
             
             return null;
         }
 
-        return await response.json();
-
+        return JSON.parse(responseBody);
     } catch (e) {
-        console.log(`❌ Ağ/Proxy Hatası -> URL: ${url} | Detay: ${e.message}`);
         return null;
     }
 }
+
+
+
+
 const getTRDate = (offset = 0) => {
     const now = new Date();
     const istStr = now.toLocaleString('en-US', { timeZone: 'Europe/Istanbul' });
