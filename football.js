@@ -936,11 +936,15 @@ async function main() {
 
             const processDuration = Date.now() - now; 
 
-            let sleepTime = 10 * MINUTE_MS;
-            const isActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 12));
-            
-            if (isActive) {
-                sleepTime = Math.max(15000, 60000 - processDuration);
+           let sleepTime = 10 * MINUTE_MS;
+const isActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 12));
+
+if (isActive) {
+    // 60 saniyeye rastgele 2 ile 12 saniye arası "insani" bir gecikme ekliyoruz
+    const randomJitter = Math.floor(Math.random() * 10000) + 2000;
+    sleepTime = Math.max(15000, 60000 - processDuration) + randomJitter;
+
+                
                 console.log(`\n⚡ [FUTBOL] Aktif maç var. (İşlemler ${Math.round(processDuration/1000)}sn sürdü). Terminal tam 1 dakikaya tamamlamak için ${Math.round(sleepTime/1000)} saniye uyuyor...`);
             } else {
                 console.log("\n💤 [FUTBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
