@@ -212,22 +212,26 @@ async function uploadToFirebase(data) {
         console.error(`❌ [FIREBASE-FUTBOL] Hata:`, error.message);
     }
 }
-
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1000) + 300;
+        const delay = Math.floor(Math.random() * 2000) + 1500;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        
+        // 1. Önbelleği (Cache) kırmak için URL sonuna benzersiz bir zaman damgası ekliyoruz
+        const separator = mobileUrl.includes('?') ? '&' : '?';
+        const noCacheUrl = `${mobileUrl}${separator}_t=${Date.now()}`;
 
-        const response = await fetch(mobileUrl, {
+        // 2. İstekleri AllOrigins isimli ücretsiz public proxy üzerinden geçiriyoruz.
+        // Sofascore, isteğin J7'den değil, AllOrigins'in temiz sunucularından geldiğini görecek.
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(noCacheUrl)}`;
+
+        const response = await fetch(proxyUrl, {
             headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9",
-                "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com",
-                "Connection": "keep-alive"
+                // AllOrigins'e sıradan bir tarayıcı gibi görünüyoruz
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+                "Accept": "application/json"
             }
         });
 
@@ -236,7 +240,6 @@ async function fetchData(url) {
             
             console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
             
-            // 🔥 Telegram Ban Bildirimi Tetikleyicisi
             if (response.status === 403 || response.status === 429) {
                 notifyAdminForBan(response.status);
             }
@@ -245,7 +248,9 @@ async function fetchData(url) {
         }
 
         return await response.json();
+
     } catch (e) {
+        console.log(`❌ Ağ/Proxy Hatası -> URL: ${url} | Detay: ${e.message}`);
         return null;
     }
 }
