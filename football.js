@@ -214,22 +214,21 @@ async function uploadToFirebase(data) {
 }
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 2000) + 1500;
+        // Proxy sunucusunu boğmamak için bekleme süresini 2 ile 5 saniye arasına çıkarıyoruz
+        const delay = Math.floor(Math.random() * 3000) + 2000;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
         
-        // 1. Önbelleği (Cache) kırmak için URL sonuna benzersiz bir zaman damgası ekliyoruz
+        // Önbelleği (Cache) kırmak için zaman damgası ekliyoruz
         const separator = mobileUrl.includes('?') ? '&' : '?';
         const noCacheUrl = `${mobileUrl}${separator}_t=${Date.now()}`;
 
-        // 2. İstekleri AllOrigins isimli ücretsiz public proxy üzerinden geçiriyoruz.
-        // Sofascore, isteğin J7'den değil, AllOrigins'in temiz sunucularından geldiğini görecek.
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(noCacheUrl)}`;
+        // Daha stabil çalışan Codetabs public proxy servisini kullanıyoruz
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(noCacheUrl)}`;
 
         const response = await fetch(proxyUrl, {
             headers: {
-                // AllOrigins'e sıradan bir tarayıcı gibi görünüyoruz
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
                 "Accept": "application/json"
             }
@@ -254,7 +253,6 @@ async function fetchData(url) {
         return null;
     }
 }
-
 const getTRDate = (offset = 0) => {
     const now = new Date();
     const istStr = now.toLocaleString('en-US', { timeZone: 'Europe/Istanbul' });
