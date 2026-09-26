@@ -212,10 +212,10 @@ async function fetchData(url) {
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        // Android Uygulaması Kimliği
-        const ua = "Dalvik/2.1.0 (Linux; U; Android 13; SM-S918B Build/TP1A.220624.014) Sofascore/14.2.0";
+        // Tek bir istek attığımız için standart güncel iPhone Safari kimliğine geri döndük (API'den doğru JSON alabilmek için)
+        const ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
 
-        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Host: api.sofascore.com" -H "Connection: Keep-Alive" --compressed '${mobileUrl}'`;
+        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" --compressed '${mobileUrl}'`;
 
         const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
 
@@ -224,9 +224,12 @@ async function fetchData(url) {
         const responseBody = lines.join('\n').trim();
 
         if (statusCode !== 200) {
-            if (statusCode === 404 || statusCode === 204) return { events: [] }; 
+            if (statusCode === 404 || statusCode === 204) {
+                console.log(`⚠️ [HTTP ${statusCode}] Sofascore bu tarih için veri olmadığını söyledi.`);
+                return { events: [] }; 
+            }
             
-            console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
+            console.log(`❌ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
             
             if (statusCode === 403 || statusCode === 429) {
                 notifyAdminForBan(statusCode);
@@ -376,23 +379,6 @@ const footballLeagues = {
     335: "Fransa Kupası", 955: "Suudi Arabistan Pro Lig", 18: "İngiltere Championship",
     851: "Uluslararası Hazırlık Maçları",
     10783: "UEFA Uluslar Ligi"
-};
-
-const nationalTeamCodes = {
-    "turkey": "tr", "türkiye": "tr", "germany": "de", "france": "fr", "england": "en",
-    "spain": "es", "italy": "it", "portugal": "pt", "netherlands": "nl", "belgium": "be",
-    "switzerland": "ch", "austria": "at", "croatia": "hr", "brazil": "br", "argentina": "ar",
-    "usa": "us", "mexico": "mx", "ecuador": "ec", "south korea": "kr", "japan": "jp",
-    "uruguay": "uy", "colombia": "co", "chile": "cl", "peru": "pe", "venezuela": "ve",
-    "paraguay": "py", "bolivia": "bo", "canada": "ca", "costa rica": "cr", "jamaica": "jm",
-    "senegal": "sn", "morocco": "ma", "egypt": "eg", "tunisia": "tn", "nigeria": "ng",
-    "cameroon": "cm", "ghana": "gh", "ivory coast": "ci", "algeria": "dz", "australia": "au",
-    "iran": "ir", "saudi arabia": "sa", "qatar": "qa", "denmark": "dk", "sweden": "se",
-    "norway": "no", "poland": "pl", "ukraine": "ua", "czech republic": "cz", "serbia": "rs",
-    "hungary": "hu", "romania": "ro", "greece": "gr", "slovakia": "sk", "wales": "wa",
-    "scotland": "sc", "ireland": "ie", "albania": "al", "north macedonia": "mk", "georgia": "ge",
-    "slovenia": "si", "iceland": "is", "finland": "fi", "bosnia & herzegovina": "ba",
-    "bosnia and herzegovina": "ba", "new zealand": "nz"
 };
 
 function calculateLiveMinute(eventData) {
@@ -704,27 +690,33 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     let allEvents = [];
     let successfulDates = [];
 
-    // 🔥 BURASI DEĞİŞTİ: 37 kez ligleri dönmek yerine tek seferde tüm dünya fikstürünü çekiyoruz.
+    // Fikstürü tek linkten çekiyoruz
     for (const date of targetDates) {
         console.log(`🔍 [${date}] Fikstürü tek parça halinde çekiliyor...`);
         const url = `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`;
         
         const data = await fetchData(url);
         
-        if (data?.events && data.events.length > 0) {
-            // Binlerce maçın içinden sadece senin uygulamanın 37 ligini filtreliyoruz
-            const filteredEvents = data.events.filter(e => {
-                const leagueId = e.tournament?.uniqueTournament?.id;
-                return ALL_FOOT_TARGETS.includes(leagueId);
-            });
+        if (data && data.events) {
+            if (data.events.length > 0) {
+                // Binlerce maçın içinden sadece senin uygulamanın 37 ligini filtreliyoruz
+                const filteredEvents = data.events.filter(e => {
+                    const leagueId = e.tournament?.uniqueTournament?.id;
+                    return ALL_FOOT_TARGETS.includes(leagueId);
+                });
 
-            if (filteredEvents.length > 0) {
-                allEvents.push(...filteredEvents);
-                successfulDates.push(date);
-                console.log(`✅ [${date}] Toplam Maç: ${data.events.length} | Bizim Liglerde: ${filteredEvents.length}`);
+                if (filteredEvents.length > 0) {
+                    allEvents.push(...filteredEvents);
+                    successfulDates.push(date);
+                    console.log(`✅ [${date}] Başarılı! Toplam Maç: ${data.events.length} | Bizim Liglerde: ${filteredEvents.length}`);
+                } else {
+                    console.log(`ℹ️ [${date}] Fikstürde bizim 37 ligde hiç maç yok. (Dünyada Toplam ${data.events.length} maç var)`);
+                }
             } else {
-                console.log(`ℹ️ [${date}] Fikstürde bizim 37 ligde hiç maç yok.`);
+                console.log(`⚠️ [${date}] Sofascore bu tarih için BOŞ liste (0 maç) gönderdi.`);
             }
+        } else {
+             console.log(`❌ [${date}] Veri çekilemedi veya JSON hatalı.`);
         }
     }
     
