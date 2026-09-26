@@ -816,14 +816,29 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             if (hCode) homeLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${hCode}.png`;
             if (aCode) awayLogoUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${aCode}.png`;
         }
-
+        
+        
         globalFootballCache.set(e.id, {
-            id: e.id, isElite: ELITE_FOOT_IDS.includes(leagueId), status: status, statusCode: e.status?.code, liveMinute: isLive ? calculateLiveMinute(e) : (isSuspended ? "Durduruldu" : ""),
-            fixedDate: dayTR, fixedTime: timeString, timestamp: e.startTimestamp * 1000, broadcaster: finalBroadcaster,
-            homeTeam: { name: translatedHome, logo: homeLogoUrl, id: e.homeTeam.id }, awayTeam: { name: translatedAway, logo: awayLogoUrl, id: e.awayTeam.id },
-            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`, homeScore: finalHomeScore, awayScore: finalAwayScore,
-            setScores: matchSets, tournament: cleanTournamentName, timeObj: e.time
+            id: e.id, 
+            isElite: ELITE_FOOT_IDS.includes(leagueId), 
+            status: statusType, // 🚀 DÜZELTME: API'den gelen ham 'inprogress', 'finished' stringi.
+            statusCode: e.status?.code, 
+            liveMinute: isLive ? calculateLiveMinute(e) : (isSuspended ? "Durduruldu" : ""),
+            fixedDate: dayTR, 
+            fixedTime: timeString, 
+            timestamp: e.startTimestamp * 1000, 
+            broadcaster: finalBroadcaster,
+            homeTeam: { name: translatedHome, logo: homeLogoUrl, id: e.homeTeam.id }, 
+            awayTeam: { name: translatedAway, logo: awayLogoUrl, id: e.awayTeam.id },
+            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/football/tournament_logos/${leagueId}.png`, 
+            homeScore: finalHomeScore, 
+            awayScore: finalAwayScore,
+            setScores: matchSets, 
+            tournament: cleanTournamentName, 
+            timeObj: e.time
         });
+
+      
     });
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
