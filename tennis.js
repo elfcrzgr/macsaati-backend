@@ -453,13 +453,25 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
 
             if (!isQuickScan) tenisMatchesLog.push({ home: e.homeTeam.name, away: e.awayTeam.name, kanal: result.kanal, source: result.source });
 
-            globalTennisCache.set(e.id, {
-                id: e.id, isElite: true, status: statusType, fixedDate: fixedDate, fixedTime: timeString, timestamp: startTimestamp, broadcaster: result.kanal,
-                homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos }, awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
-                tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
-                homeScore: finalHomeScore, awayScore: finalAwayScore, setScores: sets, tournament: tourName,
-                winnerCode: matchWinnerCode
-            });
+                  // tennis.js içindeki blok
+        globalTennisCache.set(e.id, {
+            id: e.id, 
+            isElite: true, 
+            status: statusType, // 🚀 DÜZELTME: API'den gelen ham 'inprogress', 'finished' stringi.
+            fixedDate: fixedDate, 
+            fixedTime: timeString, 
+            timestamp: startTimestamp, 
+            broadcaster: result.kanal,
+            homeTeam: { name: e.homeTeam.name || "Belli Değil", ranking: hRank, logos: homeLogos }, 
+            awayTeam: { name: e.awayTeam.name || "Belli Değil", ranking: aRank, logos: awayLogos },
+            tournamentLogo: TENNIS_TOURNAMENT_BASE + (e.tournament?.uniqueTournament?.id || e.tournament?.category?.id) + ".png",
+            homeScore: finalHomeScore, 
+            awayScore: finalAwayScore, 
+            setScores: sets, 
+            tournament: tourName,
+            winnerCode: matchWinnerCode
+        });
+
             
             previousMatchStates.set(String(e.id), { status: statusType, date: fixedDate });
         } catch (error) { continue; }
