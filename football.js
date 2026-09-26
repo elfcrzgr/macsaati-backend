@@ -207,12 +207,13 @@ async function uploadToFirebase(data) {
 
 async function fetchData(url) {
     try {
+        // Rastgele 1.5 - 3.5 saniye bekleme süresi (Seri taramada ban yememek için)
         const delay = Math.floor(Math.random() * 2000) + 1500;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        // Tek bir istek attığımız için standart güncel iPhone Safari kimliğine geri döndük (API'den doğru JSON alabilmek için)
+        // Standart, güncel ve temiz bir iPhone Safari kimliği
         const ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
 
         const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" --compressed '${mobileUrl}'`;
@@ -224,12 +225,10 @@ async function fetchData(url) {
         const responseBody = lines.join('\n').trim();
 
         if (statusCode !== 200) {
-            if (statusCode === 404 || statusCode === 204) {
-                console.log(`⚠️ [HTTP ${statusCode}] Sofascore bu tarih için veri olmadığını söyledi.`);
-                return { events: [] }; 
-            }
+            // Eğer o gün o ligde hiç maç yoksa API 404 (veya 204) döner. Bunu hata olarak algılamayıp boş dizi döndürüyoruz.
+            if (statusCode === 404 || statusCode === 204) return { events: [] }; 
             
-            console.log(`❌ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
+            console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
             
             if (statusCode === 403 || statusCode === 429) {
                 notifyAdminForBan(statusCode);
@@ -240,7 +239,8 @@ async function fetchData(url) {
 
         return JSON.parse(responseBody);
     } catch (e) {
-        console.log(`❌ SİSTEM HATASI -> ${e.message}`);
+        // Sadece kritik patlamalarda logla
+        console.log(`❌ HATA -> ${e.message}`);
         return null;
     }
 }
@@ -379,6 +379,23 @@ const footballLeagues = {
     335: "Fransa Kupası", 955: "Suudi Arabistan Pro Lig", 18: "İngiltere Championship",
     851: "Uluslararası Hazırlık Maçları",
     10783: "UEFA Uluslar Ligi"
+};
+
+const nationalTeamCodes = {
+    "turkey": "tr", "türkiye": "tr", "germany": "de", "france": "fr", "england": "en",
+    "spain": "es", "italy": "it", "portugal": "pt", "netherlands": "nl", "belgium": "be",
+    "switzerland": "ch", "austria": "at", "croatia": "hr", "brazil": "br", "argentina": "ar",
+    "usa": "us", "mexico": "mx", "ecuador": "ec", "south korea": "kr", "japan": "jp",
+    "uruguay": "uy", "colombia": "co", "chile": "cl", "peru": "pe", "venezuela": "ve",
+    "paraguay": "py", "bolivia": "bo", "canada": "ca", "costa rica": "cr", "jamaica": "jm",
+    "senegal": "sn", "morocco": "ma", "egypt": "eg", "tunisia": "tn", "nigeria": "ng",
+    "cameroon": "cm", "ghana": "gh", "ivory coast": "ci", "algeria": "dz", "australia": "au",
+    "iran": "ir", "saudi arabia": "sa", "qatar": "qa", "denmark": "dk", "sweden": "se",
+    "norway": "no", "poland": "pl", "ukraine": "ua", "czech republic": "cz", "serbia": "rs",
+    "hungary": "hu", "romania": "ro", "greece": "gr", "slovakia": "sk", "wales": "wa",
+    "scotland": "sc", "ireland": "ie", "albania": "al", "north macedonia": "mk", "georgia": "ge",
+    "slovenia": "si", "iceland": "is", "finland": "fi", "bosnia & herzegovina": "ba",
+    "bosnia and herzegovina": "ba", "new zealand": "nz"
 };
 
 function calculateLiveMinute(eventData) {
@@ -682,45 +699,62 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
 
+    for (const dateKey of emptyLeaguesCache.keys()) {
+        if (!validDates.includes(dateKey)) {
+            emptyLeaguesCache.delete(dateKey);
+        }
+    }
+
     for (const [id, state] of previousMatchStates.entries()) {
         if (state.date && !validDates.includes(state.date) && state.status !== 'inprogress') previousMatchStates.delete(id);
     }
+
     saveState();
 
     let allEvents = [];
     let successfulDates = [];
 
-    // Fikstürü tek linkten çekiyoruz
+    // Orijinal Mimarine (Lig Lig Tarama) Geri Döndük!
     for (const date of targetDates) {
-        console.log(`🔍 [${date}] Fikstürü tek parça halinde çekiliyor...`);
-        const url = `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`;
+        let dateHasMatches = false;
         
-        const data = await fetchData(url);
+        if (!emptyLeaguesCache.has(date)) emptyLeaguesCache.set(date, new Set());
+        const knownEmptyLeagues = emptyLeaguesCache.get(date);
         
-        if (data && data.events) {
-            if (data.events.length > 0) {
-                // Binlerce maçın içinden sadece senin uygulamanın 37 ligini filtreliyoruz
-                const filteredEvents = data.events.filter(e => {
-                    const leagueId = e.tournament?.uniqueTournament?.id;
-                    return ALL_FOOT_TARGETS.includes(leagueId);
-                });
+        let leaguesToFetch = [];
 
-                if (filteredEvents.length > 0) {
-                    allEvents.push(...filteredEvents);
-                    successfulDates.push(date);
-                    console.log(`✅ [${date}] Başarılı! Toplam Maç: ${data.events.length} | Bizim Liglerde: ${filteredEvents.length}`);
-                } else {
-                    console.log(`ℹ️ [${date}] Fikstürde bizim 37 ligde hiç maç yok. (Dünyada Toplam ${data.events.length} maç var)`);
+        if (isQuickScan) {
+            const activeLeagues = new Set();
+            for (const match of globalFootballCache.values()) {
+                if (['inprogress', 'notstarted', 'delayed', 'suspended', 'interrupted'].includes(match.status)) {
+                    const lId = match.tournamentLogo.split('/').pop().replace('.png', '');
+                    activeLeagues.add(Number(lId));
                 }
-            } else {
-                console.log(`⚠️ [${date}] Sofascore bu tarih için BOŞ liste (0 maç) gönderdi.`);
             }
+            leaguesToFetch = Array.from(activeLeagues);
         } else {
-             console.log(`❌ [${date}] Veri çekilemedi veya JSON hatalı.`);
+            leaguesToFetch = ALL_FOOT_TARGETS.filter(id => !knownEmptyLeagues.has(id));
         }
+
+        if (leaguesToFetch.length > 0 && !isQuickScan) {
+            console.log(`🔍 [${date}] için sorgulanacak lig sayısı: ${leaguesToFetch.length}`);
+        }
+
+        for (const leagueId of leaguesToFetch) {
+            const url = `https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/scheduled-events/${date}`;
+            const data = await fetchData(url);
+            
+            if (data?.events && data.events.length > 0) {
+                allEvents.push(...data.events);
+                dateHasMatches = true;
+            } else if (data?.events && data.events.length === 0) {
+                knownEmptyLeagues.add(leagueId);
+            }
+        }
+        if (dateHasMatches) successfulDates.push(date);
     }
     
-    if (successfulDates.length === 0 && allEvents.length === 0) {
+    if (successfulDates.length === 0) {
         const stillLive = Array.from(globalFootballCache.values())
             .some(m => m.status === 'inprogress');
         return {
