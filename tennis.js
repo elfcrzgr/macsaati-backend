@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
+const util = require('util');
+const { exec } = require('child_process');
+const execAsync = util.promisify(exec);
 
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
@@ -70,19 +73,14 @@ function loadState() {
 // =========================================================================
 let externalBroadcasters = {};
 
-// 🚀 YENİ: Yerel disk yerine doğrudan GitHub'daki güncel dosyayı çeker
 async function loadExternalBroadcasters() {
     try {
         const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
-        const response = await fetch(url);
+        const command = `curl -s -L "${url}"`;
+        const { stdout } = await execAsync(command);
         
-        if (response.ok) {
-            externalBroadcasters = await response.json();
-            // Yedek olması için diske de kaydedelim
-            fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
-        } else {
-            throw new Error(`HTTP ${response.status}`);
-        }
+        externalBroadcasters = JSON.parse(stdout);
+        fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
     } catch (e) {
         console.log(`⚠️ GitHub'dan yayıncı bilgisi çekilemedi (${e.message}), yerel dosyaya dönülüyor...`);
         if (fs.existsSync('yayinci_bilgisi.json')) {
@@ -127,7 +125,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
         
-        // 🚀 DÜZELTME: JSON yapısındaki dizi (array) durumunu garantile
         const matchesArray = Array.isArray(dayData) ? dayData : dayData?.matches;
 
         if (!matchesArray || !Array.isArray(matchesArray)) continue;
@@ -178,20 +175,32 @@ async function uploadToFirebase(data) {
 
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 600) + 200;
+        const delay = Math.floor(Math.random() * 2000) + 1500;
         await new Promise(r => setTimeout(r, delay));
-        const headers = { "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X)", "Accept": "*/*", "Accept-Language": "tr-TR,tr;q=0.9", "Connection": "keep-alive" };
-        if (url.includes('sofascore.com')) { headers["Referer"] = "https://www.sofascore.com/"; headers["Origin"] = "https://www.sofascore.com"; headers["X-Requested-With"] = "93a9a4"; headers["Cache-Control"] = "max-age=0"; }
-        const response = await fetch(url, { headers });
-        
-        if (!response.ok) { 
-            // 🚀 GELİŞMİŞ 404 KONTROLÜ
-            if (response.status === 404) return { is404: true }; // Maç KESİN yok!
-            console.log(`⚠️ API Reddi veya Ağ Hatası (HTTP ${response.status}) -> URL: ${url}`); 
-            return null; 
+
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        const ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
+        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" --compressed '${mobileUrl}'`;
+
+        const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
+
+        const lines = stdout.trim().split('\n');
+        const statusCode = parseInt(lines.pop(), 10);
+        const responseBody = lines.join('\n').trim();
+
+        if (statusCode !== 200) {
+            // Eğer o gün hiç maç yoksa API 404 döner. Bunu hata olarak algılamayıp özel flag dönüyoruz.
+            if (statusCode === 404 || statusCode === 204) return { is404: true, events: [] }; 
+            
+            console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
+            return null;
         }
-        return await response.json();
-    } catch (e) { return null; }
+
+        return JSON.parse(responseBody);
+    } catch (e) {
+        console.log(`❌ SİSTEM HATASI -> ${e.message}`);
+        return null;
+    }
 }
 
 const getTRDate = (offset = 0) => {
@@ -385,7 +394,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                 awayLogos = [e.awayTeam?.country?.alpha2 ? `${TENNIS_LOGO_BASE}${e.awayTeam.country.alpha2.toLowerCase()}.png` : `${TENNIS_LOGO_BASE}mc.png`];
             }
 
-                        // 🚀 WALKOVER, RETIRED VE SUSPENDED (ARA VERİLDİ) KONTROLÜ
+            // 🚀 WALKOVER, RETIRED VE SUSPENDED (ARA VERİLDİ) KONTROLÜ
             const statusType = e.status?.type; 
             const statusDesc = (e.status?.description || "").toLowerCase();
             let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
@@ -477,7 +486,7 @@ async function main() {
     console.log("============================================================");
 
     let lastPeriodicUpdate = 0;
-    let lastBroadcastersString = ""; // 🚀 YENİ: Yayıncı verisinin son halini tutacak
+    let lastBroadcastersString = ""; 
 
     while (true) {
         try {
@@ -486,7 +495,7 @@ async function main() {
             // 1. Dosyayı oku
             await loadExternalBroadcasters();
             
-            // 2. 🚀 YENİ: Yayıncı bilgisi değişti mi kontrol et
+            // 2. Yayıncı bilgisi değişti mi kontrol et
             const currentBroadcastersString = JSON.stringify(externalBroadcasters);
             let forceUpdateDueToBroadcasters = false;
             
@@ -494,24 +503,22 @@ async function main() {
                 console.log("📺 [YAYINCI] Yeni yayıncı bilgileri tespit edildi! Firebase anında güncelleniyor...");
                 forceUpdateDueToBroadcasters = true;
             }
-            lastBroadcastersString = currentBroadcastersString; // Hafızayı güncelle
+            lastBroadcastersString = currentBroadcastersString; 
 
             // 3. Zaman hesaplamaları
             const d = new Date(now);
             const startOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
             const msSinceMidnight = now - startOfDay;
             
-            // 🚀 Eşitlenmiş Periyodik Saatler
-                        // 🚀 Eşitlenmiş Periyodik Saatler
             const TARGET_TIMES = [ 
-                10 * 60 * 1000,              // 00:10 (Yeni günün fikstürü için ilk can suyu)
-                (1 * 60 + 15) * 60 * 1000,   // 01:15
-                (6 * 60 + 15) * 60 * 1000,   // 06:15 
-                (9 * 60 + 15) * 60 * 1000,   // 09:15
-                (12 * 60 + 15) * 60 * 1000,  // 12:15
-                (15 * 60 + 15) * 60 * 1000,  // 15:15
-                (18 * 60 + 15) * 60 * 1000,  // 18:15 (US Open gündüz seansı öncesi)
-                (21 * 60 + 15) * 60 * 1000   // 21:15 (US Open akşam seansı öncesi)
+                10 * 60 * 1000,              
+                (1 * 60 + 15) * 60 * 1000,   
+                (6 * 60 + 15) * 60 * 1000,   
+                (9 * 60 + 15) * 60 * 1000,   
+                (12 * 60 + 15) * 60 * 1000,  
+                (15 * 60 + 15) * 60 * 1000,  
+                (18 * 60 + 15) * 60 * 1000,  
+                (21 * 60 + 15) * 60 * 1000   
             ];
 
             
@@ -520,7 +527,7 @@ async function main() {
                 if (msSinceMidnight >= TARGET_TIMES[i]) { activeTarget = startOfDay + TARGET_TIMES[i]; break; }
             }
 
-            // 4. 🚀 YENİ: Periyodik saat geldiyse VEYA yayıncı dosyası değiştiyse zorla
+            // 4. Periyodik saat geldiyse VEYA yayıncı dosyası değiştiyse zorla
             if (lastPeriodicUpdate < activeTarget || forceUpdateDueToBroadcasters) {
                 console.log("\n🔄 [PERİYODİK / ZORUNLU] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
