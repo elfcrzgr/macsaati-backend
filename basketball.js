@@ -345,13 +345,22 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 
         if(!isQuickScan) basketbolMatchesLog.push({ home: e.homeTeam.name, away: e.awayTeam.name, kanal: finalBroadcaster, source: result.source });
 
-        globalBasketballCache.set(e.id, {
-            id: e.id, isElite: ELITE_LEAGUE_IDS.includes(utId), status: statusType, fixedDate: dayStr, fixedTime: timeString, timestamp: dateTR.getTime(), broadcaster: finalBroadcaster,
+              globalBasketballCache.set(e.id, {
+            id: e.id, 
+            isElite: ELITE_LEAGUE_IDS.includes(utId), 
+            status: statusType, // 🚀 DÜZELTME: API'den gelen ham 'inprogress', 'finished' stringi.
+            fixedDate: dayStr, 
+            fixedTime: timeString, 
+            timestamp: dateTR.getTime(), 
+            broadcaster: finalBroadcaster,
             homeTeam: { name: e.homeTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.homeTeam.id}.png` },
             awayTeam: { name: e.awayTeam.name, logo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/logos/${isNBA ? "NBA/" : ""}${e.awayTeam.id}.png` },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${isNBA ? "3547" : utId}.png`,
-            homeScore: hasScore ? String(e.homeScore?.display ?? "0") : "-", awayScore: hasScore ? String(e.awayScore?.display ?? "0") : "-", tournament: cleanTournamentName
+            homeScore: hasScore ? String(e.homeScore?.display ?? "0") : "-", 
+            awayScore: hasScore ? String(e.awayScore?.display ?? "0") : "-", 
+            tournament: cleanTournamentName
         });
+
         
         previousMatchStates.set(String(e.id), { status: statusType, date: dayStr });
     }
