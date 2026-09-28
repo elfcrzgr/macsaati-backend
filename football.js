@@ -215,11 +215,11 @@ async function fetchData(url) {
         const delay = Math.floor(Math.random() * 2000) + 1500;
         await new Promise(r => setTimeout(r, delay));
 
-        // 🚀 DÜZELTME: Doğrudan çalışan 'api' subdomainine dönüyoruz
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
         const ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
         
-        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" --compressed '${mobileUrl}'`;
+        // 🔥 SİHİRLİ HEADER EKLENDİ: -H "X-Requested-With: 93a9a4"
+        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" -H "X-Requested-With: 93a9a4" --compressed '${mobileUrl}'`;
 
         const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
 
@@ -230,22 +230,28 @@ async function fetchData(url) {
         if (statusCode !== 200) {
             if (statusCode === 404 || statusCode === 204) return { is404: true }; 
             console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${mobileUrl}`);
+            
+            if (statusCode === 403 || statusCode === 429) {
+                if (typeof notifyAdminForBan === 'function') {
+                    notifyAdminForBan(statusCode);
+                }
+            }
             return null;
         }
 
-        // 🚀 DÜZELTME: Cloudflare HTML sayfası atarsa sessizce çökmemesi için eklendi
         try {
             return JSON.parse(responseBody);
         } catch (parseError) {
-            console.log(`❌ HATA: Sofascore JSON yerine güvenlik duvarı (HTML) gönderdi. Sistem pas geçiyor.`);
+            console.log(`❌ HATA: JSON formatı alınamadı, sistem pas geçiyor.`);
             return null;
         }
 
     } catch (e) {
-        console.log(`❌ SİSTEM HATASI -> ${e.message}`);
+        // Bağlantı koptuğunda (Command failed) uygulamanın çökmesini engeller
         return null;
     }
 }
+
 
 
 const getTRDate = (offset = 0) => {
