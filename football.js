@@ -210,8 +210,14 @@ async function uploadToFirebase(data) {
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR VE FETCH (CURL + APİ.SOFASCORE.COM)
 // =========================================================================
+let blockedUntil = 0;
+
+
 async function fetchData(url) {
     try {
+        
+        if (Date.now() < blockedUntil) return null;
+
         // Ardışık isteklerde ban yememek için dinamik bekleme süresi
         const delay = Math.floor(Math.random() * 1500) + 1000;
         await new Promise(r => setTimeout(r, delay));
@@ -233,6 +239,8 @@ async function fetchData(url) {
             console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileUrl}`);
             
             if (response.status === 403 || response.status === 429) {
+                blockedUntil = Date.now() + 15 * 60 * 1000;
+
                 if (typeof notifyAdminForBan === 'function') {
                     notifyAdminForBan(response.status);
                 }
@@ -745,7 +753,19 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             console.log(`🔍 [${date}] için sorgulanacak lig sayısı: ${leaguesToFetch.length}`);
         }
 
-        for (const leagueId of leaguesToFetch) {
+        let bulkOk = false;
+if (!isQuickScan) {
+    const bulk = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`);
+    if (bulk?.events) {
+        allEvents.push(...bulk.events.filter(e =>
+            ALL_FOOT_TARGETS.includes(e.tournament?.uniqueTournament?.id)));
+        if (bulk.events.length > 0) dateHasMatches = true;
+        bulkOk = true;
+    }
+}
+
+for (const leagueId of (bulkOk ? [] : leaguesToFetch)) {
+
             const url = `https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/scheduled-events/${date}`;
             const data = await fetchData(url);
             
