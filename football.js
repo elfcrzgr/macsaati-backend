@@ -214,46 +214,35 @@ let blockedUntil = 0;
 
 
 async function fetchData(url) {
+    if (Date.now() < blockedUntil) return null;
     try {
-        
-        if (Date.now() < blockedUntil) return null;
-
-        // Ardışık isteklerde ban yememek için dinamik bekleme süresi
         const delay = Math.floor(Math.random() * 1500) + 1000;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        const cmd = `curl -s --compressed -w "\\n%{http_code}" -A "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/124.0.0.0 Mobile Safari/537.36" -H "Referer: https://www.sofascore.com/" -H "Accept-Language: tr-TR,tr;q=0.9" "${mobileUrl}"`;
+        const { stdout } = await execAsync(cmd, { maxBuffer: 50 * 1024 * 1024 });
 
-        // 🔥 ÇÖZÜM: Tarayıcı değil, doğrudan Sofascore mobil uygulamasının kimliği kullanılıyor
-        const response = await fetch(mobileUrl, {
-            headers: {
-                "User-Agent": "Sofascore/14.4.0 (Android; 10)", 
-                "Accept": "application/json",
-                "Connection": "keep-alive"
-            }
-        });
+        const idx = stdout.lastIndexOf('\n');
+        const status = parseInt(stdout.slice(idx + 1));
+        const body = stdout.slice(0, idx);
 
-        if (!response.ok) {
-            if (response.status === 404 || response.status === 204) return { is404: true }; 
-            
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileUrl}`);
-            
-            if (response.status === 403 || response.status === 429) {
+        if (status === 404 || status === 204) return { is404: true };
+        if (status !== 200) {
+            console.log(`⚠️ API Reddi (HTTP ${status}) -> URL: ${mobileUrl}`);
+            if (status === 403 || status === 429) {
                 blockedUntil = Date.now() + 15 * 60 * 1000;
-
-                if (typeof notifyAdminForBan === 'function') {
-                    notifyAdminForBan(response.status);
-                }
+                notifyAdminForBan(status);
             }
             return null;
         }
-
-        return await response.json();
+        return JSON.parse(body);
     } catch (e) {
         console.log(`❌ FETCH HATASI -> ${e.message}`);
         return null;
     }
 }
+
 
 
 
