@@ -3,8 +3,6 @@ const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const util = require('util');
-const { exec } = require('child_process');
-const execAsync = util.promisify(exec);
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -205,42 +203,41 @@ async function uploadToFirebase(data) {
     }
 }
 
+// 🔥 STANDART VE ÇALIŞAN FETCH MOTORUNA DÖNÜLDÜ 🔥
 async function fetchData(url) {
     try {
-        // Rastgele 1.5 - 3.5 saniye bekleme süresi (Seri taramada ban yememek için)
-        const delay = Math.floor(Math.random() * 2000) + 1500;
+        const delay = Math.floor(Math.random() * 1500) + 500; // Ban riskini düşürmek için gecikme biraz artırıldı
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        // Standart, güncel ve temiz bir iPhone Safari kimliği
-        const ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
+        const response = await fetch(mobileUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Referer": "https://www.sofascore.com/",
+                "Origin": "https://www.sofascore.com",
+                "Connection": "keep-alive"
+            }
+        });
 
-        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" --compressed '${mobileUrl}'`;
-
-        const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
-
-        const lines = stdout.trim().split('\n');
-        const statusCode = parseInt(lines.pop(), 10);
-        const responseBody = lines.join('\n').trim();
-
-        if (statusCode !== 200) {
-            // Eğer o gün o ligde hiç maç yoksa API 404 (veya 204) döner. Bunu hata olarak algılamayıp boş dizi döndürüyoruz.
-            if (statusCode === 404 || statusCode === 204) return { events: [] }; 
+        if (!response.ok) {
+            if (response.status === 404 || response.status === 204) return { is404: true }; 
             
-            console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
             
-            if (statusCode === 403 || statusCode === 429) {
-                notifyAdminForBan(statusCode);
+            if (response.status === 403 || response.status === 429) {
+                if (typeof notifyAdminForBan === 'function') {
+                    notifyAdminForBan(response.status);
+                }
             }
             
             return null;
         }
 
-        return JSON.parse(responseBody);
+        return await response.json();
     } catch (e) {
-        // Sadece kritik patlamalarda logla
-        console.log(`❌ HATA -> ${e.message}`);
         return null;
     }
 }
