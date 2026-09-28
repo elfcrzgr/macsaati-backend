@@ -3,6 +3,8 @@ const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const util = require('util');
+const { exec } = require('child_process');
+const execAsync = util.promisify(exec);
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
