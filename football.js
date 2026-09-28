@@ -207,40 +207,35 @@ async function uploadToFirebase(data) {
 
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1000) + 500;
+        const delay = Math.floor(Math.random() * 1500) + 700;
         await new Promise(r => setTimeout(r, delay));
 
-        const headers = { 
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X)", 
-            "Accept": "*/*", 
-            "Accept-Language": "tr-TR,tr;q=0.9", 
-            "Connection": "keep-alive" 
-        };
+        // DİKKAT: api.sofascore.com olarak değiştirmiyoruz, www kalıyor. 
+        // Sihirli X-Requested-With header'ını curl içine gömüyoruz.
+        const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
         
-        if (url.includes('sofascore.com')) { 
-            headers["Referer"] = "https://www.sofascore.com/"; 
-            headers["Origin"] = "https://www.sofascore.com"; 
-            headers["X-Requested-With"] = "93a9a4"; // 🔥 CLOUDFLARE'İ AŞAN SİHİRLİ HEADER
-            headers["Cache-Control"] = "max-age=0"; 
-        }
+        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" -H "X-Requested-With: 93a9a4" --compressed '${url}'`;
 
-        // DİKKAT: api.sofascore.com olarak DEĞİŞTİRMİYORUZ. Doğrudan www üzerinden gidiyoruz.
-        const response = await fetch(url, { headers });
+        const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
 
-        if (!response.ok) {
-            if (response.status === 404 || response.status === 204) return { is404: true }; 
+        const lines = stdout.trim().split('\n');
+        const statusCode = parseInt(lines.pop(), 10);
+        const responseBody = lines.join('\n').trim();
+
+        if (statusCode !== 200) {
+            if (statusCode === 404 || statusCode === 204) return { is404: true }; 
             
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
+            console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
             
-            if (response.status === 403 || response.status === 429) {
+            if (statusCode === 403 || statusCode === 429) {
                 if (typeof notifyAdminForBan === 'function') {
-                    notifyAdminForBan(response.status);
+                    notifyAdminForBan(statusCode);
                 }
             }
             return null;
         }
 
-        return await response.json();
+        return JSON.parse(responseBody);
     } catch (e) {
         return null;
     }
