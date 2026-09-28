@@ -212,45 +212,41 @@ async function uploadToFirebase(data) {
 // =========================================================================
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 2000) + 1500;
+        // Ardışık isteklerde ban yememek için dinamik bekleme süresi
+        const delay = Math.floor(Math.random() * 1500) + 1000;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-        const ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
-        
-        // 🔥 SİHİRLİ HEADER EKLENDİ: -H "X-Requested-With: 93a9a4"
-        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" -H "X-Requested-With: 93a9a4" --compressed '${mobileUrl}'`;
 
-        const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
+        // 🔥 ÇÖZÜM: Tarayıcı değil, doğrudan Sofascore mobil uygulamasının kimliği kullanılıyor
+        const response = await fetch(mobileUrl, {
+            headers: {
+                "User-Agent": "Sofascore/14.4.0 (Android; 10)", 
+                "Accept": "application/json",
+                "Connection": "keep-alive"
+            }
+        });
 
-        const lines = stdout.trim().split('\n');
-        const statusCode = parseInt(lines.pop(), 10);
-        const responseBody = lines.join('\n').trim();
-
-        if (statusCode !== 200) {
-            if (statusCode === 404 || statusCode === 204) return { is404: true }; 
-            console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${mobileUrl}`);
+        if (!response.ok) {
+            if (response.status === 404 || response.status === 204) return { is404: true }; 
             
-            if (statusCode === 403 || statusCode === 429) {
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileUrl}`);
+            
+            if (response.status === 403 || response.status === 429) {
                 if (typeof notifyAdminForBan === 'function') {
-                    notifyAdminForBan(statusCode);
+                    notifyAdminForBan(response.status);
                 }
             }
             return null;
         }
 
-        try {
-            return JSON.parse(responseBody);
-        } catch (parseError) {
-            console.log(`❌ HATA: JSON formatı alınamadı, sistem pas geçiyor.`);
-            return null;
-        }
-
+        return await response.json();
     } catch (e) {
-        // Bağlantı koptuğunda (Command failed) uygulamanın çökmesini engeller
+        console.log(`❌ FETCH HATASI -> ${e.message}`);
         return null;
     }
 }
+
 
 
 
