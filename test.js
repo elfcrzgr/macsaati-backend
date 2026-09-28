@@ -1,4 +1,3 @@
-cat > test.js << 'EOF'
 const { gotScraping } = require('got-scraping');
 const urls = [
   'https://api.sofascore.com/api/v1/sport/football/events/live',
@@ -17,5 +16,3 @@ const urls = [
     } catch (e) { console.log('HATA', e.message, u); }
   }
 })();
-EOF
-node test.js
