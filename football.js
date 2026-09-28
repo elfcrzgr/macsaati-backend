@@ -204,23 +204,28 @@ async function uploadToFirebase(data) {
 }
 
 // 🔥 STANDART VE ÇALIŞAN FETCH MOTORUNA DÖNÜLDÜ 🔥
+
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1500) + 500; // Ban riskini düşürmek için gecikme biraz artırıldı
+        const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        const headers = { 
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X)", 
+            "Accept": "*/*", 
+            "Accept-Language": "tr-TR,tr;q=0.9", 
+            "Connection": "keep-alive" 
+        };
+        
+        if (url.includes('sofascore.com')) { 
+            headers["Referer"] = "https://www.sofascore.com/"; 
+            headers["Origin"] = "https://www.sofascore.com"; 
+            headers["X-Requested-With"] = "93a9a4"; // 🔥 CLOUDFLARE'İ AŞAN SİHİRLİ HEADER
+            headers["Cache-Control"] = "max-age=0"; 
+        }
 
-        const response = await fetch(mobileUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9",
-                "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com",
-                "Connection": "keep-alive"
-            }
-        });
+        // DİKKAT: api.sofascore.com olarak DEĞİŞTİRMİYORUZ. Doğrudan www üzerinden gidiyoruz.
+        const response = await fetch(url, { headers });
 
         if (!response.ok) {
             if (response.status === 404 || response.status === 204) return { is404: true }; 
@@ -232,7 +237,6 @@ async function fetchData(url) {
                     notifyAdminForBan(response.status);
                 }
             }
-            
             return null;
         }
 
