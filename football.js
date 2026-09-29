@@ -2,9 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
-const util = require('util');
-const { exec } = require('child_process');
-const execAsync = util.promisify(exec);
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -21,6 +18,7 @@ const MINUTE_MS = 60000;
 const TELEGRAM_BOT_TOKEN = "8401956459:AAEFkkO8Z0mj3BV73m8FQiYTz2oLeqGrCTY";
 const TELEGRAM_CHAT_ID = "1168053894";
 
+// O gün maçı KESİN OLMAYAN futbol ligleri (Akıllı Tarama Kara Listesi)
 const emptyLeaguesCache = new Map();
 
 // =========================================================================
@@ -79,6 +77,8 @@ function saveState() {
 function loadState() {
     if (fs.existsSync(STATE_FILE)) {
         try {
+            const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+            for (const [key, val] of Object.entries(data)) {
             const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
             for (const [key, val] of Object.entries(data)) {
                 previousMatchStates.set(key, val);
@@ -213,35 +213,56 @@ async function uploadToFirebase(data) {
 let blockedUntil = 0;
 
 
+// 🔧 ŞU FONKSİYONU KOPYALA VE MEVCUT fetchData'yı DEĞİŞTİR
+
 async function fetchData(url) {
-    if (Date.now() < blockedUntil) return null;
     try {
-        const delay = Math.floor(Math.random() * 1500) + 1000;
+        const delay = Math.floor(Math.random() * 1000) + 300;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-        const cmd = `curl -s --compressed -w "\\n%{http_code}" -A "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/124.0.0.0 Mobile Safari/537.36" -H "Referer: https://www.sofascore.com/" -H "Accept-Language: tr-TR,tr;q=0.9" "${mobileUrl}"`;
-        const { stdout } = await execAsync(cmd, { maxBuffer: 50 * 1024 * 1024 });
-
-        const idx = stdout.lastIndexOf('\n');
-        const status = parseInt(stdout.slice(idx + 1));
-        const body = stdout.slice(0, idx);
-
-        if (status === 404 || status === 204) return { is404: true };
-        if (status !== 200) {
-            console.log(`⚠️ API Reddi (HTTP ${status}) -> URL: ${mobileUrl}`);
-            if (status === 403 || status === 429) {
-                blockedUntil = Date.now() + 15 * 60 * 1000;
-                notifyAdminForBan(status);
+        // 🔴 KALDIRDIK: const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        // URL'yi OLDUĞU GİBİ kullan
+        
+        const response = await fetch(url, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Referer": "https://www.sofascore.com/",
+                "Origin": "https://www.sofascore.com",
+                "Connection": "keep-alive"
             }
+        });
+
+        console.log(`🌐 [SOFASCORE] ${response.status} <- ${url}`);
+
+        if (!response.ok) {
+            if (response.status === 404) {
+                console.log(`⚠️ [404] Bu lig/tarihte maç yok: ${url}`);
+                return { is404: true }; 
+            }
+            
+            console.log(`❌ [HTTP ${response.status}] API Hata -> ${url}`);
+            
+            // Ban uyarısı
+            if (response.status === 403 || response.status === 429) {
+                console.log(`🚫 ${response.status === 403 ? "403 Forbidden" : "429 Rate Limit"} -> Admin bilgilendirilecek`);
+                notifyAdminForBan(response.status);
+            }
+            
             return null;
         }
-        return JSON.parse(body);
+
+        const data = await response.json();
+        console.log(`✅ [SOFASCORE] Başarılı: ${data.events?.length || 0} maç alındı`);
+        return data;
+        
     } catch (e) {
-        console.log(`❌ FETCH HATASI -> ${e.message}`);
+        console.error(`❌ [FETCH] Bağlantı hatası: ${e.message}`);
         return null;
     }
 }
+
 
 
 
