@@ -79,9 +79,7 @@ function loadState() {
         try {
             const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
             for (const [key, val] of Object.entries(data)) {
-            const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
-            for (const [key, val] of Object.entries(data)) {
-                previousMatchStates.set(key, val);
+           
             }
             console.log(`📂 [HAFIZA-FUTBOL] ${previousMatchStates.size} maç durumu dosyadan yüklendi.`);
         } catch (e) {
