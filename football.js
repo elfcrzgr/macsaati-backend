@@ -6,8 +6,6 @@ const util = require('util');
 const { exec } = require('child_process');
 const execAsync = util.promisify(exec);
 
-
-
 require('events').EventEmitter.defaultMaxListeners = 100;
 
 // =========================================================================
@@ -215,52 +213,36 @@ async function uploadToFirebase(data) {
 let blockedUntil = 0;
 
 
-let browser = null;
-let page = null;
-let pageOpenedAt = 0;
-
-async function ensurePage() {
-    if (page && !page.isClosed() && Date.now() - pageOpenedAt < 3 * 3600 * 1000) return page;
-    if (browser) await browser.close().catch(() => {});
-    browser = await chromium.launch();
-    const ctx = await browser.newContext({ locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
-    page = await ctx.newPage();
-    await page.goto('https://www.sofascore.com/football', { waitUntil: 'domcontentloaded', timeout: 60000 });
-    await page.waitForTimeout(4000);
-    pageOpenedAt = Date.now();
-    console.log("🌐 [TARAYICI] Sofascore oturumu açıldı.");
-    return page;
-}
-
 async function fetchData(url) {
     if (Date.now() < blockedUntil) return null;
     try {
-        await new Promise(r => setTimeout(r, Math.floor(Math.random() * 700) + 400));
+        const delay = Math.floor(Math.random() * 1500) + 1000;
+        await new Promise(r => setTimeout(r, delay));
 
-        const apiUrl = url.replace('api.sofascore.com', 'www.sofascore.com');
-        const p = await ensurePage();
-        const r = await p.evaluate(async (u) => {
-            const x = await fetch(u, { credentials: 'include' });
-            return { s: x.status, t: await x.text() };
-        }, apiUrl);
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        const cmd = `curl -s --compressed -w "\\n%{http_code}" -A "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/124.0.0.0 Mobile Safari/537.36" -H "Referer: https://www.sofascore.com/" -H "Accept-Language: tr-TR,tr;q=0.9" "${mobileUrl}"`;
+        const { stdout } = await execAsync(cmd, { maxBuffer: 50 * 1024 * 1024 });
 
-        if (r.s === 404 || r.s === 204) return { is404: true };
-        if (r.s !== 200) {
-            console.log(`⚠️ API Reddi (HTTP ${r.s}) -> URL: ${apiUrl}`);
-            if (r.s === 403 || r.s === 429) {
+        const idx = stdout.lastIndexOf('\n');
+        const status = parseInt(stdout.slice(idx + 1));
+        const body = stdout.slice(0, idx);
+
+        if (status === 404 || status === 204) return { is404: true };
+        if (status !== 200) {
+            console.log(`⚠️ API Reddi (HTTP ${status}) -> URL: ${mobileUrl}`);
+            if (status === 403 || status === 429) {
                 blockedUntil = Date.now() + 15 * 60 * 1000;
-                notifyAdminForBan(r.s);
-                page = null;
+                notifyAdminForBan(status);
             }
             return null;
         }
-        return JSON.parse(r.t);
+        return JSON.parse(body);
     } catch (e) {
         console.log(`❌ FETCH HATASI -> ${e.message}`);
-        page = null;
         return null;
     }
 }
+
 
 
 
