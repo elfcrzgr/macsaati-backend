@@ -216,35 +216,57 @@ async function uploadToFirebase(data) {
 // 🔥 CLOUDFLARE WORKER DESTEKLİ FETCH MOTORU 🔥
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1500) + 1000;
+        const delay = Math.floor(Math.random() * 1000) + 500;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
         
-        // 🔥 SENİN CLOUDFLARE WORKER ADRESİN (PROXY)
-        const WORKER_URL = "https://silent-moon-0662.ferhat-coker.workers.dev";
+        // Önbellekteki eski veriyi almamak için URL sonuna milisaniye ekliyoruz
+        const targetUrl = mobileUrl + (mobileUrl.includes('?') ? '&' : '?') + `nocache=${Date.now()}`;
         
-        // İsteği doğrudan Sofascore'a değil, Cloudflare köprümüze gönderiyoruz
-        const proxyUrl = `${WORKER_URL}/?url=${encodeURIComponent(mobileUrl)}`;
+        // 🔥 3 FARKLI ANONİM BYPASS SUNUCUSU (Biri ban yerse diğeri devreye girer)
+        const proxies = [
+            `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+            `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`,
+            `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
+        ];
 
-        const response = await fetch(proxyUrl);
+        let lastStatus = 0;
 
-        if (!response.ok) {
-            if (response.status === 404 || response.status === 204) return { is404: true }; 
-            
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileUrl}`);
-            
-            // Telegram Ban Bildirimi Tetikleyicisi
-            if (response.status === 403 || response.status === 429) {
-                if (typeof notifyAdminForBan === 'function') {
-                    notifyAdminForBan(response.status);
+        for (const proxyUrl of proxies) {
+            try {
+                const response = await fetch(proxyUrl, {
+                    headers: { 
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" 
+                    }
+                });
+
+                if (response.ok) {
+                    // Eğer Sofascore JSON yerine Cloudflare güvenlik HTML'i atarsa burası patlar 
+                    // ve catch bloğuna düşüp otomatik olarak bir sonraki proxy'ye geçer!
+                    const data = await response.json();
+                    return data; 
+                } else if (response.status === 404 || response.status === 204) {
+                    return { is404: true }; // O gün maç yoksa sorunsuzca boş döner
                 }
+                
+                lastStatus = response.status;
+            } catch (proxyError) {
+                // Bu proxy Cloudflare'e takıldı veya JSON veremedi, sessizce bir sonrakine geçiyor...
+                continue;
             }
-            
-            return null;
         }
 
-        return await response.json();
+        console.log(`⚠️ Tüm Proxy'ler Reddedildi (Son HTTP ${lastStatus}) -> URL: ${mobileUrl}`);
+        
+        if (lastStatus === 403 || lastStatus === 429) {
+            if (typeof notifyAdminForBan === 'function') {
+                notifyAdminForBan(lastStatus);
+            }
+        }
+        
+        return null;
+
     } catch (e) {
         console.log(`❌ FETCH HATASI -> ${e.message}`);
         return null;
