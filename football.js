@@ -216,59 +216,35 @@ async function uploadToFirebase(data) {
 // 🔥 CLOUDFLARE WORKER DESTEKLİ FETCH MOTORU 🔥
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1000) + 500;
+        const delay = Math.floor(Math.random() * 1500) + 1000;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
         
-        // Önbellekteki eski veriyi almamak için URL sonuna milisaniye ekliyoruz
-        const targetUrl = mobileUrl + (mobileUrl.includes('?') ? '&' : '?') + `nocache=${Date.now()}`;
+        // 🔥 BURAYA KOPYALADIĞIN GOOGLE SCRIPT ADRESİNİ YAPIŞTIR
+        const GOOGLE_PROXY_URL = "https://script.google.com/macros/s/AKfycbzl_zf3yG4dIeIveG3hOOEFeyxk86emRaNd68i0X_aQem9tBOBV9XLrNBigaoKo5mSQ/exec"; 
         
-        // 🔥 3 FARKLI ANONİM BYPASS SUNUCUSU (Biri ban yerse diğeri devreye girer)
-        const proxies = [
-            `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-            `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`,
-            `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
-        ];
+        // İsteği Google'ın devasa sunucuları üzerinden yolluyoruz
+        const proxyUrl = `${GOOGLE_PROXY_URL}?url=${encodeURIComponent(mobileUrl)}`;
 
-        let lastStatus = 0;
+        const response = await fetch(proxyUrl);
 
-        for (const proxyUrl of proxies) {
-            try {
-                const response = await fetch(proxyUrl, {
-                    headers: { 
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" 
-                    }
-                });
-
-                if (response.ok) {
-                    // Eğer Sofascore JSON yerine Cloudflare güvenlik HTML'i atarsa burası patlar 
-                    // ve catch bloğuna düşüp otomatik olarak bir sonraki proxy'ye geçer!
-                    const data = await response.json();
-                    return data; 
-                } else if (response.status === 404 || response.status === 204) {
-                    return { is404: true }; // O gün maç yoksa sorunsuzca boş döner
-                }
-                
-                lastStatus = response.status;
-            } catch (proxyError) {
-                // Bu proxy Cloudflare'e takıldı veya JSON veremedi, sessizce bir sonrakine geçiyor...
-                continue;
-            }
+        if (!response.ok) {
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileUrl}`);
+            return null;
         }
 
-        console.log(`⚠️ Tüm Proxy'ler Reddedildi (Son HTTP ${lastStatus}) -> URL: ${mobileUrl}`);
+        const data = await response.json();
         
-        if (lastStatus === 403 || lastStatus === 429) {
-            if (typeof notifyAdminForBan === 'function') {
-                notifyAdminForBan(lastStatus);
-            }
+        // Sofascore'un maç olmayan günler için döndürdüğü boş veri kontrolü
+        if (Object.keys(data).length === 0 || (data.events && data.events.length === 0)) {
+             return { is404: true };
         }
         
-        return null;
+        return data;
 
     } catch (e) {
-        console.log(`❌ FETCH HATASI -> ${e.message}`);
+        // Sessizce geç, sistemi çökertme
         return null;
     }
 }
