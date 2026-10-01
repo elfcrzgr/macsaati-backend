@@ -216,38 +216,26 @@ async function uploadToFirebase(data) {
 // 🔥 CLOUDFLARE WORKER DESTEKLİ FETCH MOTORU 🔥
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1000) + 500;
+        const delay = Math.floor(Math.random() * 800) + 300;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
         
-        // 🔥 Cloudflare'in JavaScript bulmacalarını çözen profesyonel ve ücretsiz bypass köprüsü
-        const bypassProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(mobileUrl)}`;
+        // Kendi Cloudflare Worker adresin
+        const WORKER_URL = "https://silent-moon-0662.ferhat-coker.workers.dev";
+        const proxyUrl = `${WORKER_URL}/?url=${encodeURIComponent(mobileUrl)}`;
 
-        const response = await fetch(bypassProxy, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15"
-            }
-        });
+        const response = await fetch(proxyUrl);
 
         if (!response.ok) {
-            if (response.status === 404 || response.status === 204) return { is404: true };
+            if (response.status === 404 || response.status === 204) return { is404: true }; 
             return null;
         }
 
-        const textData = await response.text();
-
-        try {
-            const data = JSON.parse(textData);
-            if (Object.keys(data).length === 0 || (data.events && data.events.length === 0)) {
-                 return { is404: true };
-            }
-            return data;
-        } catch (parseError) {
-            // Eğer yine HTML gelirse sessizce atlar, sistemi asla çökertmez
-            return null;
-        }
-
+        const data = await response.json();
+        if (Object.keys(data).length === 0) return { is404: true };
+        
+        return data;
     } catch (e) {
         return null;
     }
