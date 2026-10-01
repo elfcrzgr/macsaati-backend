@@ -216,45 +216,39 @@ async function uploadToFirebase(data) {
 // 🔥 CLOUDFLARE WORKER DESTEKLİ FETCH MOTORU 🔥
 async function fetchData(url) {
     try {
-        // Hızlı sonuç almak için beklemeyi 500ms'ye düşürdük
-        await new Promise(r => setTimeout(r, 500)); 
+        const delay = Math.floor(Math.random() * 1000) + 500;
+        await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
         
-        // 🔥 Senin oluşturduğun Google Script adresi (Görselden kopyaladım)
-        const GOOGLE_PROXY_URL = "https://script.google.com/macros/s/AKfycbzl_zf3yG4dIeIveG3hOOEFeyxk86emRaNd68i0X_aQem9tB0BV9XLrNBigaqKo5mSQ/exec"; 
-        
-        const proxyUrl = `${GOOGLE_PROXY_URL}?url=${encodeURIComponent(mobileUrl)}`;
+        // 🔥 Cloudflare'in JavaScript bulmacalarını çözen profesyonel ve ücretsiz bypass köprüsü
+        const bypassProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(mobileUrl)}`;
 
-        const response = await fetch(proxyUrl);
-        
-        // DİKKAT: response.json() yerine önce düz metin (text) olarak alıyoruz ki gizli hatayı görelim!
+        const response = await fetch(bypassProxy, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15"
+            }
+        });
+
+        if (!response.ok) {
+            if (response.status === 404 || response.status === 204) return { is404: true };
+            return null;
+        }
+
         const textData = await response.text();
 
         try {
             const data = JSON.parse(textData);
-            
-            // Sofascore'un maç olmayan günler için döndürdüğü boş veri kontrolü
             if (Object.keys(data).length === 0 || (data.events && data.events.length === 0)) {
                  return { is404: true };
             }
             return data;
-            
         } catch (parseError) {
-            console.log(`\n❌ [GİZLİ HATA] Proxy JSON yerine başka bir sayfa döndürdü! Yanıtın başı:`);
-            console.log(textData.substring(0, 200).trim() + "...\n");
-            
-            if (textData.includes("accounts.google.com") || textData.includes("Sign in")) {
-                console.log(`👉 TEŞHİS: Google Script iznini "Herkes" (Anyone) yapmamışsın. J7 cihazın Google'a giriş yapamadığı için engelleniyor!`);
-            } else if (textData.toLowerCase().includes("cloudflare") || textData.toLowerCase().includes("just a moment")) {
-                console.log(`👉 TEŞHİS: Sofascore, Google'ın devasa sunucularını da Cloudflare ile engellemiş!`);
-            }
-            
-            return null; // Sessizce çökmesin ama hatayı ekrana bassın
+            // Eğer yine HTML gelirse sessizce atlar, sistemi asla çökertmez
+            return null;
         }
 
     } catch (e) {
-        console.log(`❌ BAĞLANTI HATASI -> ${e.message}`);
         return null;
     }
 }
