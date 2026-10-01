@@ -216,39 +216,48 @@ async function uploadToFirebase(data) {
 // 🔥 CLOUDFLARE WORKER DESTEKLİ FETCH MOTORU 🔥
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1500) + 1000;
-        await new Promise(r => setTimeout(r, delay));
+        // Hızlı sonuç almak için beklemeyi 500ms'ye düşürdük
+        await new Promise(r => setTimeout(r, 500)); 
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
         
-        // 🔥 BURAYA KOPYALADIĞIN GOOGLE SCRIPT ADRESİNİ YAPIŞTIR
-        const GOOGLE_PROXY_URL = "https://script.google.com/macros/s/AKfycbzl_zf3yG4dIeIveG3hOOEFeyxk86emRaNd68i0X_aQem9tBOBV9XLrNBigaoKo5mSQ/exec"; 
+        // 🔥 Senin oluşturduğun Google Script adresi (Görselden kopyaladım)
+        const GOOGLE_PROXY_URL = "https://script.google.com/macros/s/AKfycbzl_zf3yG4dIeIveG3hOOEFeyxk86emRaNd68i0X_aQem9tB0BV9XLrNBigaqKo5mSQ/exec"; 
         
-        // İsteği Google'ın devasa sunucuları üzerinden yolluyoruz
         const proxyUrl = `${GOOGLE_PROXY_URL}?url=${encodeURIComponent(mobileUrl)}`;
 
         const response = await fetch(proxyUrl);
-
-        if (!response.ok) {
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileUrl}`);
-            return null;
-        }
-
-        const data = await response.json();
         
-        // Sofascore'un maç olmayan günler için döndürdüğü boş veri kontrolü
-        if (Object.keys(data).length === 0 || (data.events && data.events.length === 0)) {
-             return { is404: true };
+        // DİKKAT: response.json() yerine önce düz metin (text) olarak alıyoruz ki gizli hatayı görelim!
+        const textData = await response.text();
+
+        try {
+            const data = JSON.parse(textData);
+            
+            // Sofascore'un maç olmayan günler için döndürdüğü boş veri kontrolü
+            if (Object.keys(data).length === 0 || (data.events && data.events.length === 0)) {
+                 return { is404: true };
+            }
+            return data;
+            
+        } catch (parseError) {
+            console.log(`\n❌ [GİZLİ HATA] Proxy JSON yerine başka bir sayfa döndürdü! Yanıtın başı:`);
+            console.log(textData.substring(0, 200).trim() + "...\n");
+            
+            if (textData.includes("accounts.google.com") || textData.includes("Sign in")) {
+                console.log(`👉 TEŞHİS: Google Script iznini "Herkes" (Anyone) yapmamışsın. J7 cihazın Google'a giriş yapamadığı için engelleniyor!`);
+            } else if (textData.toLowerCase().includes("cloudflare") || textData.toLowerCase().includes("just a moment")) {
+                console.log(`👉 TEŞHİS: Sofascore, Google'ın devasa sunucularını da Cloudflare ile engellemiş!`);
+            }
+            
+            return null; // Sessizce çökmesin ama hatayı ekrana bassın
         }
-        
-        return data;
 
     } catch (e) {
-        // Sessizce geç, sistemi çökertme
+        console.log(`❌ BAĞLANTI HATASI -> ${e.message}`);
         return null;
     }
 }
-
 const getTRDate = (offset = 0) => {
     const now = new Date();
     const istStr = now.toLocaleString('en-US', { timeZone: 'Europe/Istanbul' });
