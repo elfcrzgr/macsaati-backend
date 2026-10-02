@@ -3,12 +3,8 @@ const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const fetch = require('node-fetch');
-global.fetch = fetch;
 
-// BUNU EKLE:
-if (!global.fetch) {
-    global.fetch = fetch;
-}
+global.fetch = fetch;
 
 const { fetchDataWithBypass } = require('./football_bypass_403.js');
 
@@ -105,7 +101,7 @@ async function loadExternalBroadcasters() {
     try {
         const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
         const response = await fetch(url);
-        
+
         if (response.ok) {
             externalBroadcasters = await response.json();
             fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
