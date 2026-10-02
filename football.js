@@ -213,40 +213,50 @@ async function uploadToFirebase(data) {
     }
 }
 
+
+
+
+
+
+
+
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 800) + 300;
-        await new Promise(r => setTimeout(r, delay));
-
-        // J7'nin fişlenmiş IP'sini gizlemek için Worker'ı devreye sokuyoruz
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-        const WORKER_URL = "https://silent-moon-0662.ferhat-coker.workers.dev";
-        const proxyUrl = `${WORKER_URL}/?url=${encodeURIComponent(mobileUrl)}`;
-
-        const leagueId = url.split('/unique-tournament/')[1]?.split('/')[0] || "?";
-        console.log(`📡 Lig ${leagueId} -> Worker üzerinden Sofascore'a tünelleniyor...`);
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 7000);
-
-        const response = await fetch(proxyUrl, { signal: controller.signal });
-        clearTimeout(timeoutId);
+        console.log(`🌐 FotMob'a istek atılıyor: ${url}`);
+        
+        const response = await fetch(url, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Referer": "https://www.fotmob.com/",
+                "Cache-Control": "no-cache"
+            }
+        });
 
         if (!response.ok) {
-            if (response.status === 404 || response.status === 204) return { is404: true }; 
-            console.log(`⚠️ Worker API Reddi (HTTP ${response.status}) -> Lig ${leagueId}`);
+            console.log(`⚠️️ FotMob API Reddi (HTTP ${response.status}) -> ${url}`);
             return null;
         }
-
-        const data = await response.json();
-        if (!data || Object.keys(data).length === 0 || (data.events && data.events.length === 0)) return { is404: true };
         
-        return data;
+        return await response.json();
     } catch (e) {
-        console.log(`❌ ZAMAN AŞIMI -> Lig atlandı (${e.message})`);
+        console.log(`❌ FETCH BAĞLANTI HATASI -> ${e.message}`);
         return null;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 const getTRDate = (offset = 0) => {
     const now = new Date();
     const istStr = now.toLocaleString('en-US', { timeZone: 'Europe/Istanbul' });
