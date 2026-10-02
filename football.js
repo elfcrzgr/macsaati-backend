@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
-const { fetchDataWithPuppeteer } = require('./football_puppeteer_bypass.js');
+const { fetchDataWithBypass } = require('./football_bypass_403.js');
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -215,7 +215,7 @@ async function uploadToFirebase(data) {
 }
 
 async function fetchData(url) {
-    return await fetchDataWithPuppeteer(url);
+    return await fetchDataWithBypass(url);
 }
 
 const getTRDate = (offset = 0) => {
