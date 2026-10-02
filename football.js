@@ -154,18 +154,26 @@ async function uploadToFirebase(data) {
 }
 
 // 🔥 FOTMOB DOĞRUDAN FETCH MOTORU 🔥
+// 🔥 FOTMOB DOĞRUDAN FETCH MOTORU (HATA GÖSTERGELİ) 🔥
 async function fetchData(url) {
     try {
+        console.log(`🌐 FotMob'a istek atılıyor: ${url}`);
+        
         const response = await fetch(url, {
             headers: {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                "Accept": "application/json"
+                "Accept": "application/json, text/plain, */*"
             }
         });
 
-        if (!response.ok) return null;
+        if (!response.ok) {
+            console.log(`⚠️ FotMob API Reddi (HTTP ${response.status})`);
+            return null;
+        }
+        
         return await response.json();
     } catch (e) {
+        console.log(`❌ FETCH BAĞLANTI HATASI -> ${e.message}`);
         return null;
     }
 }
