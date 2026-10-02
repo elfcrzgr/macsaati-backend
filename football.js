@@ -2,11 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
-const fetch = require('node-fetch');
-
-global.fetch = fetch;
-
-const { fetchDataWithBypass } = require('./football_bypass_403.js');
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -25,6 +20,8 @@ const TELEGRAM_CHAT_ID = "1168053894";
 
 // O gün maçı KESİN OLMAYAN futbol ligleri (Akıllı Tarama Kara Listesi)
 const emptyLeaguesCache = new Map();
+
+let lastDayFetch = 0;
 
 // =========================================================================
 // 🔥 FIREBASE & APNs BAŞLATMA
@@ -101,7 +98,7 @@ async function loadExternalBroadcasters() {
     try {
         const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
         const response = await fetch(url);
-
+        
         if (response.ok) {
             externalBroadcasters = await response.json();
             fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
@@ -218,9 +215,62 @@ async function uploadToFirebase(data) {
     }
 }
 
+let blockedUntil = 0;
+
+
 async function fetchData(url) {
-    return await fetchDataWithBypass(url);
+
+    if (Date.now() < blockedUntil) return null;   // <-- EKLE
+    try {
+        const delay = Math.floor(Math.random() * 1000) + 300;
+        await new Promise(r => setTimeout(r, delay));
+
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+
+        const response = await fetch(mobileUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Referer": "https://www.sofascore.com/",
+                "Origin": "https://www.sofascore.com",
+                "Connection": "keep-alive"
+            }
+        });
+
+        if (!response.ok) {
+            if (response.status === 404) return { is404: true };
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
+            if (response.status === 403 || response.status === 429) {
+                blockedUntil = Date.now() + 15 * 60 * 1000;  // <-- EKLE (15 dk sus)
+                notifyAdminForBan(response.status);
+            }
+            return null;
+        }
+
+        return await response.json();
+    } catch (e) {
+        return null;
+    }
 }
+
+
+
+
+
+async function fetchDayEvents(date) {
+    const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/scheduled-events/${date}`);
+    if (!data?.events) return [];
+    return data.events.filter(e => FOOT_SET.has(e.tournament?.uniqueTournament?.id));
+}
+
+async function fetchLiveEvents() {
+    const data = await fetchData(`https://www.sofascore.com/api/v1/sport/football/events/live`);
+    if (!data?.events) return [];
+    return data.events.filter(e => FOOT_SET.has(e.tournament?.uniqueTournament?.id));
+}
+
+
 
 const getTRDate = (offset = 0) => {
     const now = new Date();
@@ -340,6 +390,7 @@ const ELITE_FOOT_IDS = [17, 8, 35, 23, 34, 52, 37, 38, 238, 36, 19, 96, 97, 98, 
 const REGULAR_FOOT_IDS = [299, 155, 325, 955, 18, 6516, 242, 11415, 11416, 11417, 15938, 851];
 const NATIONAL_LEAGUES = [16, 1, 133, 270, 299, 851, 1083];
 const ALL_FOOT_TARGETS = [...ELITE_FOOT_IDS, ...REGULAR_FOOT_IDS];
+const FOOT_SET = new Set(ALL_FOOT_TARGETS);
 
 const footballLeagues = {
     17: "İngiltere Premier Lig", 8: "İspanya La Liga", 35: "Almanya Bundesliga",
@@ -683,12 +734,6 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
     const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2), getTRDate(3)];
 
-    for (const dateKey of emptyLeaguesCache.keys()) {
-        if (!validDates.includes(dateKey)) {
-            emptyLeaguesCache.delete(dateKey);
-        }
-    }
-
     for (const [id, state] of previousMatchStates.entries()) {
         if (state.date && !validDates.includes(state.date) && state.status !== 'inprogress') previousMatchStates.delete(id);
     }
@@ -698,48 +743,28 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     let allEvents = [];
     let successfulDates = [];
 
-    for (const date of targetDates) {
-        let dateHasMatches = false;
-        
-        if (!emptyLeaguesCache.has(date)) emptyLeaguesCache.set(date, new Set());
-        const knownEmptyLeagues = emptyLeaguesCache.get(date);
-        
-        let leaguesToFetch = [];
-
-        if (isQuickScan) {
-            const activeLeagues = new Set();
-            for (const match of globalFootballCache.values()) {
-                if (['inprogress', 'notstarted', 'delayed', 'suspended', 'interrupted'].includes(match.status)) {
-                    const lId = match.tournamentLogo.split('/').pop().replace('.png', '');
-                    activeLeagues.add(Number(lId));
-                }
-            }
-            leaguesToFetch = Array.from(activeLeagues);
-        } else {
-            leaguesToFetch = ALL_FOOT_TARGETS.filter(id => !knownEmptyLeagues.has(id));
-        }
-
-        if (leaguesToFetch.length > 0 && !isQuickScan) {
-            console.log(`🔍 [${date}] için sorgulanacak lig sayısı: ${leaguesToFetch.length}`);
-        }
-
-        for (const leagueId of leaguesToFetch) {
-            const url = `https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/scheduled-events/${date}`;
-            const data = await fetchData(url);
-            
-            if (data?.events && data.events.length > 0) {
-                allEvents.push(...data.events);
-                dateHasMatches = true;
-            } else if (data?.is404) {
-                knownEmptyLeagues.add(leagueId);
+    // Gün endpoint'i: detaylı taramada her zaman, hızlı taramada 5 dakikada bir
+    const needDay = !isQuickScan || (Date.now() - lastDayFetch > 5 * MINUTE_MS);
+    if (needDay) {
+        for (const date of targetDates) {
+            const events = await fetchDayEvents(date);
+            if (events.length > 0) {
+                allEvents.push(...events);
+                successfulDates.push(date);
             }
         }
-        if (dateHasMatches) successfulDates.push(date);
+        lastDayFetch = Date.now();
     }
-    
-    if (successfulDates.length === 0) {
-        const stillLive = Array.from(globalFootballCache.values())
-            .some(m => m.status === 'inprogress');
+
+    // Hızlı taramada canlı maçlar
+    if (isQuickScan) {
+        const liveEvents = await fetchLiveEvents();
+        const seen = new Set(allEvents.map(e => e.id));
+        for (const e of liveEvents) if (!seen.has(e.id)) allEvents.push(e);
+    }
+
+    if (successfulDates.length === 0 && allEvents.length === 0) {
+        const stillLive = Array.from(globalFootballCache.values()).some(m => m.status === 'inprogress');
         return {
             hasLiveMatch: stillLive || sportUpdateStatus.hasLiveMatch,
             nextMatchTimestamp: sportUpdateStatus.nextMatchTime,
@@ -912,7 +937,7 @@ async function main() {
             const isActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 12));
             
             if (isActive) {
-                sleepTime = Math.max(15000, 60000 - processDuration);
+               sleepTime = Math.max(15000, 60000 - processDuration) + Math.floor(Math.random() * 10000);
                 console.log(`\n⚡ [FUTBOL] Aktif maç var. (İşlemler ${Math.round(processDuration/1000)}sn sürdü). Terminal tam 1 dakikaya tamamlamak için ${Math.round(sleepTime/1000)} saniye uyuyor...`);
             } else {
                 console.log("\n💤 [FUTBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
