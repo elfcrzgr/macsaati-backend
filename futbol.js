@@ -6,6 +6,7 @@ const execPromise = util.promisify(exec);
 const admin = require('firebase-admin');
 const apn = require('apn');
 const axios = require('axios');
+const { fetchDataWithBypass } = require('./football_bypass_403.js');
 
 const triggeredMatches = new Set();
 const IS_PRODUCTION = false; 
@@ -148,23 +149,12 @@ async function uploadToFirebase(sportName, data) {
 }
 
 async function fetchData(url) {
-    try {
-        const directUrl = url.replace('api-football-v1.p.rapidapi.com/v3', 'v3.football.api-sports.io');
-        const API_SPORTS_KEY = '870e5a7510c80ee4e84491d6c891bfe7'; 
-        const response = await axios.get(directUrl, { headers: { 'x-apisports-key': API_SPORTS_KEY }, timeout: 10000 });
-        
-        // Gizli API Hatalarını Yakalama
-        if (response.data && response.data.errors && Object.keys(response.data.errors).length > 0) {
-            console.log(`⚠️ API-SPORTS İZİN HATASI:`, response.data.errors);
-        }
-
-        if (response.data && response.data.response) return response.data.response;
-        return [];
-    } catch (e) { 
-        console.error(`❌ BAĞLANTI HATASI:`, e.message);
-        return null; 
-    }
+    return await fetchDataWithBypass(url);
 }
+
+
+
+
 
 const getTRDate = (offset = 0) => {
     const d = new Date(); d.setDate(d.getDate() + offset);
