@@ -2,7 +2,7 @@
 // 🔓 SOFASCORE 403 BYPASS - AGRESIF ÇÖZÜM
 // =========================================================================
 
-const fetch = require('node-fetch');
+const fetch = global.fetch || require('node-fetch');
 
 
 // 1️⃣ ROTATING USER-AGENTS
