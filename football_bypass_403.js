@@ -3,8 +3,7 @@
 // =========================================================================
 
 const fetch = require('node-fetch');
-const HttpProxyAgent = require('http-proxy-agent');
-const HttpsProxyAgent = require('https-proxy-agent');
+
 
 // 1️⃣ ROTATING USER-AGENTS
 const USER_AGENTS = [
