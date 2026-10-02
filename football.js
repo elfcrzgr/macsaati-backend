@@ -153,27 +153,40 @@ async function uploadToFirebase(data) {
     }
 }
 
-// 🔥 FOTMOB DOĞRUDAN FETCH MOTORU 🔥
-// 🔥 FOTMOB DOĞRUDAN FETCH MOTORU (HATA GÖSTERGELİ) 🔥
+
 async function fetchData(url) {
     try {
-        console.log(`🌐 FotMob'a istek atılıyor: ${url}`);
+        const delay = Math.floor(Math.random() * 800) + 300;
+        await new Promise(r => setTimeout(r, delay));
+
+        // 🔥 ARACI YOK, PROXY YOK! Doğrudan korumasız .io kapısına gidiyoruz
+        const ioUrl = url.replace('www.sofascore.com', 'api.sofascore.io');
         
-        const response = await fetch(url, {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+        const response = await fetch(ioUrl, { 
+            signal: controller.signal,
             headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                "Accept": "application/json, text/plain, */*"
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15",
+                "Accept": "application/json"
             }
         });
+        
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
-            console.log(`⚠️ FotMob API Reddi (HTTP ${response.status})`);
+            if (response.status === 404 || response.status === 204) return { is404: true }; 
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> ${ioUrl}`);
             return null;
         }
+
+        const data = await response.json();
+        if (!data || Object.keys(data).length === 0) return { is404: true };
         
-        return await response.json();
+        return data;
     } catch (e) {
-        console.log(`❌ FETCH BAĞLANTI HATASI -> ${e.message}`);
+        console.log(`❌ BAĞLANTI HATASI -> ${e.message}`);
         return null;
     }
 }
