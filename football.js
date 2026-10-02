@@ -213,45 +213,37 @@ async function checkAndSendNotifications(newMatches) {
 async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`⚽ Maçkolik Tarama: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'})`);
 
-    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
-    
-    for (const [id, state] of previousMatchStates.entries()) {
-        if (state.date && !validDates.includes(state.date) && state.status !== 'inprogress') previousMatchStates.delete(id);
-    }
-    for (const [id, match] of globalFootballCache.entries()) {
-        if (!validDates.includes(match.fixedDate)) globalFootballCache.delete(id);
-    }
-
     for (const date of targetDates) {
-        // Maçkolik günlük maç listesi uç noktası
         const url = `https://atif.mackolik.com/api/live/scores?date=${date}`;
+        console.log(`🌐 Maçkolik'e istenen URL: ${url}`);
+        
         const data = await fetchData(url);
         
-        if (data && data.matches) {
+        if (!data) {
+            console.log(`⚠️ Maçkolik'ten veri dönmedi (Boş veya Hata) -> Tarih: ${date}`);
+            continue;
+        }
+
+        console.log(`📦 Maçkolik'ten veri geldi! İçerik anahtarları:`, Object.keys(data));
+        
+        if (data.matches) {
+            console.log(`✅ Toplam ${data.matches.length} maç bulundu.`);
             data.matches.forEach(m => {
-                let parsedStatus = 'notstarted';
-                let homeSc = String(m.homeScore ?? "-");
-                let awaySc = String(m.awayScore ?? "-");
-                let liveMin = m.minute || "";
-
-                if (m.isFinished) {
-                    parsedStatus = 'finished';
-                } else if (m.isLive) {
-                    parsedStatus = 'inprogress';
-                }
-
+                let parsedStatus = m.isFinished ? 'finished' : (m.isLive ? 'inprogress' : 'notstarted');
                 const matchTimestamp = new Date(`${date}T${m.time || "00:00"}:00+03:00`).getTime();
 
                 globalFootballCache.set(m.id, {
-                    id: m.id, isElite: true, status: parsedStatus, statusCode: 0, liveMinute: liveMin,
+                    id: m.id, isElite: true, status: parsedStatus, statusCode: 0, liveMinute: m.minute || "",
                     fixedDate: date, fixedTime: m.time || "00:00", timestamp: matchTimestamp, broadcaster: m.broadcaster || "Maçkolik",
                     homeTeam: { name: m.homeTeam, logo: m.homeLogo || "", id: m.homeId }, 
                     awayTeam: { name: m.awayTeam, logo: m.awayLogo || "", id: m.awayId },
                     tournamentLogo: "", 
-                    homeScore: homeSc, awayScore: awaySc,
+                    homeScore: String(m.homeScore ?? "-"), awayScore: String(m.awayScore ?? "-"),
                     setScores: [], tournament: m.tournament || "Futbol", timeObj: {}
                 });
             });
+        } else {
+            console.log(`⚠️ Gelen JSON içinde 'matches' alanı bulunamadı. Gelen veri:`, JSON.stringify(data).substring(0, 150));
         }
     }
 
@@ -261,10 +253,6 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalFootballCache);
-
-    if(!isQuickScan && matches.length > 0) {
-        console.log(`✅ ${matches.length} maç Maçkolik üzerinden başarıyla Firebase'e yazıldı!`);
-    }
 
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
 }
