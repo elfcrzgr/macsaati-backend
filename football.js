@@ -5,6 +5,11 @@ const apn = require('apn');
 const fetch = require('node-fetch');
 global.fetch = fetch;
 
+// BUNU EKLE:
+if (!global.fetch) {
+    global.fetch = fetch;
+}
+
 const { fetchDataWithBypass } = require('./football_bypass_403.js');
 
 require('events').EventEmitter.defaultMaxListeners = 100;
