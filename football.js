@@ -215,56 +215,38 @@ async function uploadToFirebase(data) {
 
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 1000) + 300;
+        const delay = Math.floor(Math.random() * 800) + 300;
         await new Promise(r => setTimeout(r, delay));
 
-        // 🔥 SOFASCORE'UN GİZLİ VE KORUMASIZ ARKA KAPISI (.io)
-        const ioUrl = url.replace('www.sofascore.com', 'api.sofascore.io');
+        // J7'nin fişlenmiş IP'sini gizlemek için Worker'ı devreye sokuyoruz
+        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        const WORKER_URL = "https://silent-moon-0662.ferhat-coker.workers.dev";
+        const proxyUrl = `${WORKER_URL}/?url=${encodeURIComponent(mobileUrl)}`;
+
+        const leagueId = url.split('/unique-tournament/')[1]?.split('/')[0] || "?";
+        console.log(`📡 Lig ${leagueId} -> Worker üzerinden Sofascore'a tünelleniyor...`);
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 7000); // 7 Saniye Kuralı
+        const timeoutId = setTimeout(() => controller.abort(), 7000);
 
-        const response = await fetch(ioUrl, {
-            signal: controller.signal,
-            headers: {
-                // J7'den gitsek bile bizi en yeni nesil bir iPhone olarak görecek
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15",
-                "Accept": "application/json",
-                "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com",
-                "Connection": "keep-alive"
-            }
-        });
-        
+        const response = await fetch(proxyUrl, { signal: controller.signal });
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-            if (response.status === 404) return { is404: true }; 
-            
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${ioUrl}`);
-            
-            // 🔥 Telegram Ban Bildirimi Tetikleyicisi
-            if (response.status === 403 || response.status === 429) {
-                notifyAdminForBan(response.status);
-            }
-            
+            if (response.status === 404 || response.status === 204) return { is404: true }; 
+            console.log(`⚠️ Worker API Reddi (HTTP ${response.status}) -> Lig ${leagueId}`);
             return null;
         }
 
         const data = await response.json();
-        
-        // Boş veri kontrolü
-        if (!data || Object.keys(data).length === 0 || (data.events && data.events.length === 0)) {
-            return { is404: true };
-        }
+        if (!data || Object.keys(data).length === 0 || (data.events && data.events.length === 0)) return { is404: true };
         
         return data;
     } catch (e) {
-        // Sessizce atla, donmayı önle
+        console.log(`❌ ZAMAN AŞIMI -> Lig atlandı (${e.message})`);
         return null;
     }
 }
-
 const getTRDate = (offset = 0) => {
     const now = new Date();
     const istStr = now.toLocaleString('en-US', { timeZone: 'Europe/Istanbul' });
