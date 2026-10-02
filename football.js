@@ -215,40 +215,7 @@ async function uploadToFirebase(data) {
 }
 
 async function fetchData(url) {
-    try {
-        const delay = Math.floor(Math.random() * 1000) + 300;
-        await new Promise(r => setTimeout(r, delay));
-
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-
-        const response = await fetch(mobileUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9",
-                "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com",
-                "Connection": "keep-alive"
-            }
-        });
-
-        if (!response.ok) {
-            if (response.status === 404) return { is404: true }; 
-            
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
-            
-            // 🔥 Telegram Ban Bildirimi Tetikleyicisi
-            if (response.status === 403 || response.status === 429) {
-                notifyAdminForBan(response.status);
-            }
-            
-            return null;
-        }
-
-        return await response.json();
-    } catch (e) {
-        return null;
-    }
+    return await fetchDataWithPuppeteer(url);
 }
 
 const getTRDate = (offset = 0) => {
