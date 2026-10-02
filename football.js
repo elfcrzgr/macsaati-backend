@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
 const apn = require('apn');
+const { fetchDataWithBypass } = require('./football_bypass_403.js');
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
