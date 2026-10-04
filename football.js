@@ -704,20 +704,28 @@ async function fetchGoalScorerOnce(matchId, totalGoals) {
     goals.sort((a, b) => ((a.time || 0) + (a.overloadTime || 0) / 100) - ((b.time || 0) + (b.overloadTime || 0) / 100));
     const last = goals[goals.length - 1];
     let name = last.player?.name || last.nameStr || last.fullName || null;
-    if (!name) goalWarn(`Gol olayında oyuncu adı bulunamadı: ${JSON.stringify(last).slice(0, 300)}`);
-    if (name && (last.ownGoal || last.isOwnGoal)) name += " (K.K.)";
+    // FotMob bazen oyuncu belli olana kadar "<TBD>" gibi yer tutucu verir: bunu isim sayma, tekrar dene
+    if (name && (/[<>]/.test(name) || /^\s*(tbd|unknown|n\/a|\?)\s*$/i.test(name))) {
+        goalWarn(`Gol atan henüz belli değil (yer tutucu: ${name}), tekrar denenecek`);
+        name = null;
+    }
+    if (!name) return { name: null, complete: false };
+    if (last.ownGoal || last.isOwnGoal) name += " (K.K.)";
     return { name, complete: goals.length >= totalGoals };
 }
 
 async function fetchGoalScorer(matchId, totalGoals) {
     try {
-        let r = await fetchGoalScorerOnce(matchId, totalGoals);
-        if (!r.complete) { // gol henüz yayınlanmamış olabilir, 6 sn sonra bir kez daha dene
-            await new Promise(res => setTimeout(res, 6000));
+        let r = { name: null, complete: false };
+        // Gol hemen yayınlanmayabilir ya da oyuncu henüz atanmamış olabilir: en fazla 3 deneme (0, +7, +14 sn)
+        for (let attempt = 0; attempt < 3; attempt++) {
+            if (attempt > 0) await new Promise(res => setTimeout(res, 7000));
             r = await fetchGoalScorerOnce(matchId, totalGoals);
+            if (r.name) { console.log(`🧑 [GOL-DETAY] Gol atan: ${r.name}${attempt > 0 ? ` (${attempt + 1}. denemede)` : ''}`); return r.name; }
+            if (r.complete) break; // istek hatası vb.: tekrar denemenin anlamı yok
         }
-        if (r.name) console.log(`🧑 [GOL-DETAY] Gol atan: ${r.name}`);
-        return r.name;
+        console.log("🧑 [GOL-DETAY] Gol atan alınamadı, takım adı kullanılacak");
+        return null;
     } catch (e) {
         console.log(`⚠️ [GOL-DETAY] Alınamadı: ${e.message}`);
         return null;
@@ -846,7 +854,7 @@ async function checkAndSendNotifications(newMatches) {
                     // Gol atan oyuncu maç detayından aranır, bulunamazsa golü atan takımın adı yazılır
                     const homeScored = currH > prev.homeScore;
                     const scoringTeam = homeScored ? match.homeTeam : match.awayTeam;
-                    const scorerName = (await withTimeout(fetchGoalScorer(match.id, currH + currA), 30000, 'Gol detayı').catch(() => null)) || scoringTeam.name;
+                    const scorerName = (await withTimeout(fetchGoalScorer(match.id, currH + currA), 40000, 'Gol detayı').catch(() => null)) || scoringTeam.name;
                     await sendPush(matchIdStr, appTitle, `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`, scoringTeam.logo, match);
                     pendingGoalCancel.delete(matchIdStr);
                 } else {
@@ -992,7 +1000,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     try {
-        await withTimeout(checkAndSendNotifications(matches), 45000, 'Bildirim kontrolü');
+        await withTimeout(checkAndSendNotifications(matches), 60000, 'Bildirim kontrolü');
     } catch (e) {
         console.error("❌ Bildirim kontrolü atlandı:", e.message);
     }
