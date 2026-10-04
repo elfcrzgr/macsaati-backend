@@ -697,6 +697,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
 }
 
+
 // =========================================================================
 // 🆕 ANA DÖNGÜ
 // =========================================================================
