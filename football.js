@@ -24,6 +24,11 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
 // Bir gün FotMob düzelirse bunu 0 yapın.
 const FOTMOB_TIME_OFFSET_MS = 60 * 60 * 1000;
 
+// 🚫 FotMob iptal edilen bazı maçlara "bitti" (F) statüsü ve 0-0 skor veriyor.
+// true: bitti görünüp başlama kaydı (gs) olmayan 0-0 maçlar iptal sayılır ve listeye girmez.
+// Gerçek bir 0-0 maç yanlışlıkla kaybolursa bunu false yapın.
+const HIDE_FINISHED_WITHOUT_START = true;
+
 // 🔎 Hata ayıklama: true iken bilinmeyen statü değerlerini ve gelen yeni ligleri loglar
 const DEBUG_UNKNOWN = true;
 
@@ -58,6 +63,7 @@ const triggeredMatches = new Set();
 const seenUnknownStatuses = new Set();
 const seenUnknownLeagues = new Set();
 let lastLiveRawLog = 0;
+const suspectLogged = new Set();
 let fotmobBlockedUntil = 0; // 403/429 sonrası geçici bekleme
 
 const sportUpdateStatus = {
@@ -427,8 +433,27 @@ function normalizeStatus(attr, startMs) {
     // Dakika hesabı planlanan saatten değil, maçın gerçek başlama zamanından (gs) yapılır
     const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
-    if (['F', 'FT', 'AET', 'PEN', 'AP'].includes(raw)) return { status: 'finished', code: 100, label: 'MS', min: 90 };
-    if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'A', 'ABD'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
+    const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN', 'P', 'PP', 'POSTP', 'POSTPONED'];
+    if (DEBUG_UNKNOWN && !KNOWN_STATUSES.includes(raw) && !seenUnknownStatuses.has(`x/${raw}`)) {
+        seenUnknownStatuses.add(`x/${raw}`);
+        console.log(`🔎 [STATÜ] Bilinmeyen Status "${raw}" | attrs: ${JSON.stringify(attr)}`);
+    }
+
+    if (['F', 'FT', 'AET', 'PEN', 'AP'].includes(raw)) {
+        // İptal edilen maç "bitti" olarak gelebilir: oynanmışsa başlama zamanı (gs) olur.
+        const zeroZero = String(attr.hScore) === '0' && String(attr.aScore) === '0';
+        const finishedBeforeKickoff = !gsMs && sinceScheduled < -5;      // planlanan saatten önce "bitti" olamaz
+        const noStartRecorded = !gsMs && zeroZero;                         // hiç başlamamış 0-0
+        if (finishedBeforeKickoff || (HIDE_FINISHED_WITHOUT_START && noStartRecorded)) {
+            if (!suspectLogged.has(attr.id)) {
+                suspectLogged.add(attr.id);
+                console.log(`🚫 [İPTAL?] ${attr.hTeam} - ${attr.aTeam} "bitti" görünüyor ama başlama kaydı yok, listeden çıkarıldı | attrs: ${JSON.stringify(attr)}`);
+            }
+            return { status: 'canceled', code: 0, label: '', min: 0 };
+        }
+        return { status: 'finished', code: 100, label: 'MS', min: 90 };
+    }
+    if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
     if (['P', 'PP', 'POSTP', 'POSTPONED'].includes(raw)) return { status: 'postponed', code: 0, label: '', min: 0 };
 
     if (raw === 'HT') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
