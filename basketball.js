@@ -1,14 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
-const util = require('util');
-const { exec } = require('child_process');
-const execAsync = util.promisify(exec);
+
+require('events').EventEmitter.defaultMaxListeners = 100;
 
 // =========================================================================
 // 🔥 AYARLAR VE ÇALIŞMA ORTAMI
 // =========================================================================
-const STATE_FILE = 'basketball_states.json'; // ⚠️ BAĞIMSIZ HAFIZA
+const STATE_FILE = 'basketball_states.json'; // ⚠️️ BAĞIMSIZ HAFIZA
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 60000;
@@ -63,7 +62,7 @@ function loadState() {
             const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
             for (const [key, val] of Object.entries(data)) previousMatchStates.set(key, val);
             console.log(`📂 [HAFIZA-BASKETBOL] ${previousMatchStates.size} maç durumu yüklendi.`);
-        } catch (e) { console.error("❌ Hafıza dosyası okunamadı."); }
+        } catch (e) { console.error("❌ Hafıza dosyası okunamadı, yeni başlatılıyor."); }
     }
 }
 
@@ -72,16 +71,34 @@ function loadState() {
 // =========================================================================
 let externalBroadcasters = {};
 
+// ⏱️ Zaman aşımı yardımcıları (Futbol scriptindeki gibi)
+function timeoutSignal(ms) {
+    if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) return AbortSignal.timeout(ms);
+    const c = new AbortController();
+    const t = setTimeout(() => c.abort(), ms);
+    if (t.unref) t.unref();
+    return c.signal;
+}
+
+function withTimeout(promise, ms, label) {
+    let timer;
+    const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`${label} ${Math.round(ms / 1000)} sn içinde yanıt vermedi`)), ms);
+    });
+    return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
 async function loadExternalBroadcasters() {
     try {
         const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
-        const command = `curl -s -L "${url}"`;
-        const { stdout } = await execAsync(command);
-        
-        externalBroadcasters = JSON.parse(stdout);
-        fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
+        const response = await fetch(url, { signal: timeoutSignal(10000) });
+        if (response.ok) {
+            externalBroadcasters = await response.json();
+            fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
+        } else {
+            throw new Error(`HTTP ${response.status}`);
+        }
     } catch (e) {
-        console.log(`⚠️ GitHub'dan yayıncı bilgisi çekilemedi (${e.message}), yerel dosyaya dönülüyor...`);
         if (fs.existsSync('yayinci_bilgisi.json')) {
             try {
                 externalBroadcasters = JSON.parse(fs.readFileSync('yayinci_bilgisi.json', 'utf8'));
@@ -158,46 +175,50 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 }
 
 // =========================================================================
-// 🛠️ YARDIMCI FONKSİYONLAR
+// 🛠️ YARDIMCI FONKSİYONLAR VE FETCH
 // =========================================================================
 async function uploadToFirebase(data) {
     try {
-        const db = firebaseApp.database();
-        const ref = db.ref(`matches_basketball`);
-        await ref.set(data);
+        await withTimeout(firebaseApp.database().ref(`matches_basketball`).set(data), 15000, 'Firebase yazma');
     } catch (error) { console.error(`❌ [FIREBASE-BASKETBOL] Hata:`, error.message); }
 }
 
+// 🔥 Eski curl/child_process yerine Native Fetch
 async function fetchData(url) {
     try {
-        const delay = Math.floor(Math.random() * 2000) + 1500;
+        const delay = Math.floor(Math.random() * 2000) + 1000;
         await new Promise(r => setTimeout(r, delay));
 
         const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
-        const ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
-        const command = `curl -s -L -w "\\n%{http_code}" -H "User-Agent: ${ua}" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: tr-TR,tr;q=0.9" -H "Referer: https://www.sofascore.com/" -H "Origin: https://www.sofascore.com" --compressed '${mobileUrl}'`;
+        
+        const response = await fetch(mobileUrl, {
+            signal: timeoutSignal(15000),
+            headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "tr-TR,tr;q=0.9",
+                "Referer": "https://www.sofascore.com/",
+                "Origin": "https://www.sofascore.com",
+                "Connection": "keep-alive"
+            }
+        });
 
-        const { stdout } = await execAsync(command, { maxBuffer: 1024 * 1024 * 5 });
-
-        const lines = stdout.trim().split('\n');
-        const statusCode = parseInt(lines.pop(), 10);
-        const responseBody = lines.join('\n').trim();
-
-        if (statusCode !== 200) {
-            if (statusCode === 404 || statusCode === 204) return { events: [] }; 
-            console.log(`⚠️ API Reddi (HTTP ${statusCode}) -> URL: ${url}`);
+        if (!response.ok) {
+            if (response.status === 404 || response.status === 204) return { events: [] }; 
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileUrl}`);
             return null;
         }
 
-        return JSON.parse(responseBody);
+        return await response.json();
     } catch (e) {
-        console.log(`❌ SİSTEM HATASI -> ${e.message}`);
+        console.error(`❌ SİSTEM HATASI -> ${e.message}`);
         return null;
     }
 }
 
 const getTRDate = (offset = 0) => {
-    const d = new Date(); d.setDate(d.getDate() + offset); return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+    const d = new Date(); d.setDate(d.getDate() + offset); 
+    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 };
 
 function getIstanbulNow() {
@@ -217,7 +238,7 @@ function findNextMatchTime(cache, now = Date.now()) {
 }
 
 // =========================================================================
-// 🏀 BASKETBOL YAPILANDIRMASI
+// 🏀 BASKETBOL YAPILANDIRMASI (Sabit Korundu)
 // =========================================================================
 const ELITE_LEAGUE_IDS = [132, 138, 141, 9357, 519, 264, 285, 10415, 10437, 1500]; 
 const leagueConfigs = {
@@ -260,6 +281,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 
     let allEvents = [];
     let successfulDates = [];
+    let anySuccess = false;
 
     // Orijinal Lig Lig Tarama Döngüsü
     for (const date of targetDates) {
@@ -291,6 +313,8 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             const url = `https://www.sofascore.com/api/v1/unique-tournament/${leagueId}/scheduled-events/${date}`;
             const data = await fetchData(url);
             
+            if (data !== null) anySuccess = true;
+
             if (data?.events && data.events.length > 0) {
                 allEvents.push(...data.events);
                 dateHasMatches = true;
@@ -301,7 +325,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         if (dateHasMatches) successfulDates.push(date);
     }
 
-    if (successfulDates.length === 0) {
+    if (!anySuccess) {
         const stillLive = Array.from(globalBasketballCache.values())
             .some(m => m.status === 'inprogress');
         return {
@@ -345,10 +369,10 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 
         if(!isQuickScan) basketbolMatchesLog.push({ home: e.homeTeam.name, away: e.awayTeam.name, kanal: finalBroadcaster, source: result.source });
 
-              globalBasketballCache.set(e.id, {
+        globalBasketballCache.set(e.id, {
             id: e.id, 
             isElite: ELITE_LEAGUE_IDS.includes(utId), 
-            status: statusType, // 🚀 DÜZELTME: API'den gelen ham 'inprogress', 'finished' stringi.
+            status: statusType, 
             fixedDate: dayStr, 
             fixedTime: timeString, 
             timestamp: dateTR.getTime(), 
@@ -361,7 +385,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             tournament: cleanTournamentName
         });
 
-        
         previousMatchStates.set(String(e.id), { status: statusType, date: dayStr });
     }
 
@@ -385,10 +408,20 @@ async function main() {
 
     let lastPeriodicUpdate = 0;
     let lastBroadcastersString = "";
+    let expectedWake = 0;
+
+    const applyResult = (result) => {
+        sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+        sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
+    };
 
     while (true) {
         try {
             const now = Date.now();
+
+            if (expectedWake && now - expectedWake > 30000) {
+                console.log(`⚠️ Döngü ${Math.round((now - expectedWake) / 1000)} sn geç uyandı: cihaz uykuya geçmiş olabilir.`);
+            }
             
             await loadExternalBroadcasters();
             
@@ -396,13 +429,14 @@ async function main() {
             let forceUpdateDueToBroadcasters = false;
             
             if (lastBroadcastersString !== "" && currentBroadcastersString !== lastBroadcastersString) {
+                console.log("📺 [YAYINCI] Yeni yayıncı bilgileri tespit edildi! Firebase güncelleniyor...");
                 forceUpdateDueToBroadcasters = true;
             }
             lastBroadcastersString = currentBroadcastersString;
 
-            const d = new Date(now);
-            const startOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-            const msSinceMidnight = now - startOfDay;
+            const ist = getIstanbulNow();
+            const msSinceMidnight = (ist.getHours() * 3600000) + (ist.getMinutes() * 60000) + (ist.getSeconds() * 1000);
+            const startOfDay = now - msSinceMidnight;
             
             const TARGET_TIMES = [ 
                 10 * 60 * 1000,              
@@ -421,9 +455,8 @@ async function main() {
             if (lastPeriodicUpdate < activeTarget || forceUpdateDueToBroadcasters) {
                 console.log("\n🔄 [PERİYODİK / ZORUNLU] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
-                const result = await updateBasketball(days4, false);
-                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp; 
-                sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+                const result = await withTimeout(updateBasketball(days4, false), 120000, 'Detaylı tarama');
+                applyResult(result);
                 
                 if (!forceUpdateDueToBroadcasters) {
                     lastPeriodicUpdate = now;
@@ -437,36 +470,43 @@ async function main() {
                 quickScanDates = [getTRDate(-1), getTRDate(0)];
             }
 
+            const isUpcoming = () => sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1);
+
             if (sportUpdateStatus.hasLiveMatch) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
                     console.log("\n🏀 [HIZLI DÖNGÜ] Canlı basketbol maçı var!");
-                    const result = await updateBasketball(quickScanDates, true);  
-                    sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
+                    const result = await withTimeout(updateBasketball(quickScanDates, true), 60000, 'Hızlı tarama');  
+                    sportUpdateStatus.lastQuickUpdate = Date.now();
+                    applyResult(result);
                 }
             }
-            else if (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1)) {
+            else if (isUpcoming()) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
                     console.log("\n⏰ [BASKETBOL YAKLAŞAN] Yaklaşan maç vakti!");
-                    const result = await updateBasketball(quickScanDates, true); 
-                    sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
+                    const result = await withTimeout(updateBasketball(quickScanDates, true), 60000, 'Hızlı tarama'); 
+                    sportUpdateStatus.lastQuickUpdate = Date.now();
+                    applyResult(result);
                 }
             }
 
-            const processDuration = Date.now() - now; 
-
-            let sleepTime = TEN_MIN_MS;
-            const isActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 12));
-            
-            if (isActive) {
-                sleepTime = Math.max(15000, 60000 - processDuration);
-                console.log(`\n⚡ [BASKETBOL] Aktif/Yaklaşan maç var. (İşlemler ${Math.round(processDuration/1000)}sn sürdü). Uyuyor...`);
+            let sleepTime;
+            if (sportUpdateStatus.hasLiveMatch || isUpcoming()) {
+                sleepTime = Math.max(10000, MINUTE_MS - (Date.now() - sportUpdateStatus.lastQuickUpdate));
+                console.log(`\n⚡ [BASKETBOL] Aktif/Yaklaşan maç var. ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
+            } else if (sportUpdateStatus.nextMatchTime && Date.now() >= sportUpdateStatus.nextMatchTime - MINUTE_MS * 12) {
+                sleepTime = Math.min(30000, Math.max(10000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1 - Date.now()));
+                console.log(`\n⏳ [BASKETBOL] Maça az kaldı, ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
             } else {
-                console.log("\n💤 [BASKETBOL] Şu an hareket yok. Terminal 10 dakika derin uyku modunda...");
+                sleepTime = TEN_MIN_MS;
+                console.log("\n💤 [BASKETBOL] Şu an hareket yok. 10 dakika derin uyku...");
             }
 
+            expectedWake = Date.now() + sleepTime;
             await new Promise(r => setTimeout(r, sleepTime));
+
         } catch (e) { 
             console.error("🚨 Hata:", e.message); 
+            expectedWake = Date.now() + MINUTE_MS;
             await new Promise(r => setTimeout(r, MINUTE_MS)); 
         }
     }
