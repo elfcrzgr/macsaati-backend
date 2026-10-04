@@ -1,52 +1,54 @@
+const xml2js = require('xml2js');
+
 async function fetchFotMobData(dateStr) { 
     try {
-        const delay = Math.floor(Math.random() * 1000) + 300;
-        await new Promise(r => setTimeout(r, delay));
-
         const url = `https://api3.fotmob.com/matches?date=${dateStr}&tz=10800000&tzone=Europe%2FIstanbul`;
 
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 7000);
-
         const response = await fetch(url, {
-            signal: controller.signal,
             headers: {
                 "Host": "api3.fotmob.com",
                 "fotmob-version": "1243.0",
-                "Accept": "application/json, */*", // JSON istediğimizi özellikle belirtiyoruz
+                "Accept": "application/xml, text/xml, */*",
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 FotMob",
                 "Accept-Language": "tr-TR,tr;q=0.9",
                 "Connection": "keep-alive"
             }
         });
 
-        clearTimeout(timeoutId);
-
-        // JSON yerine önce ham metni alıyoruz ki ne döndüğünü görelim
-        const textData = await response.text();
+        const xmlText = await response.text();
 
         if (!response.ok) {
-            console.log(`⚠ FotMob API Reddi (HTTP ${response.status}) -> URL: ${url}`);
-            console.log("Gelen Hata Metni (İlk 500 Karakter):\n", textData.substring(0, 500));
+            console.log(`⚠ API Reddi (HTTP ${response.status})`);
             return null;
         }
 
-        try {
-            // Ham metni JSON'a dönüştürmeyi deniyoruz
-            const data = JSON.parse(textData);
-            console.log("✅ FOTMOB VERİSİ BAŞARIYLA ÇEKİLDİ!");
-            if(data && data.leagues) {
-                 console.log(`Toplam ${data.leagues.length} lig verisi geldi.`);
+        // XML metnini JavaScript objesine dönüştürüyoruz
+        xml2js.parseString(xmlText, { explicitArray: false }, (err, result) => {
+            if (err) {
+                console.error("❌ XML Çözümleme Hatası:", err.message);
+                return;
             }
-            return data;
-        } catch (parseError) {
-            console.log("❌ JSON Çevirme Hatası! Gelen Yanıt (İlk 500 Karakter):\n", textData.substring(0, 500));
-            return null;
-        }
+
+            console.log("✅ FOTMOB XML VERİSİ BAŞARIYLA ÇÖZÜLDÜ!");
+            
+            // Gelen verideki ligleri ve maçları güvenli bir şekilde okuyalım
+            try {
+                const leagues = result.live.exmatches.league;
+                console.log(`🏆 Toplam Lig Sayısı: ${Array.isArray(leagues) ? leagues.length : 1}`);
+                
+                // İlk ligin ilk maçını örnek olarak yazdıralım
+                const firstLeague = Array.isArray(leagues) ? leagues[0] : leagues;
+                if (firstLeague && firstLeague.match) {
+                    const firstMatch = Array.isArray(firstLeague.match) ? firstLeague.match[0] : firstLeague.match;
+                    console.log(`⚽ Örnek Maç: ${firstMatch.$.hTeam} vs ${firstMatch.$.aTeam} | Skor: ${firstMatch.$.hScore}-${firstMatch.$.aScore}`);
+                }
+            } catch (e) {
+                console.log("Veri yapısı taranırken detay uyarısı:", e.message);
+            }
+        });
 
     } catch (e) {
-        console.error("FotMob Fetch Hatası:", e.message);
-        return null;
+        console.error("Bağlantı Hatası:", e.message);
     }
 }
 
