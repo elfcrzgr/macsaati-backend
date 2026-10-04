@@ -237,8 +237,29 @@ const ELITE_FOOT_IDS = new Set([47, 87, 54, 55, 53, 71, 57, 61, 40, 42, 73, 1021
 // Milli takım ligleri: bayraklar repodaki tennis/logos/<kod>.png'den gelir
 const NATIONAL_LEAGUES = new Set([77, 50, 44, 289, 9806, 114]);
 
-function isAllowedLeague(leagueId, ccode) {
+// FotMob grup/aşama bazlı ayrı ID'ler kullanır (ör. Uluslar Ligi A Grup 3 = 920743).
+// Bu yüzden milli takım turnuvalarını ID yerine isimden yakalıyoruz.
+const LEAGUE_NAME_RULES = [
+    { re: /uefa nations league/i,            tr: "UEFA Uluslar Ligi",             logoId: 9806, national: true, elite: true },
+    { re: /world cup/i,                      tr: "FIFA Dünya Kupası",             logoId: 77,   national: true, elite: true },
+    { re: /^(uefa )?euro(pean championship)?\b/i, tr: "UEFA EURO",              logoId: 50,   national: true, elite: true },
+    { re: /africa cup of nations/i,          tr: "Afrika Uluslar Kupası",         logoId: 289,  national: true, elite: true },
+    { re: /copa america/i,                   tr: "Copa America",                  logoId: 44,   national: true, elite: true },
+    { re: /^friendlies$/i,                   tr: "Uluslararası Hazırlık Maçları", logoId: 114,  national: true, elite: false, intOnly: true }
+];
+
+function matchLeagueRule(name, ccode) {
+    const isInt = String(ccode || "").toUpperCase() === 'INT';
+    for (const r of LEAGUE_NAME_RULES) {
+        if (r.intOnly && !isInt) continue;
+        if (r.re.test(String(name || "").trim())) return r;
+    }
+    return null;
+}
+
+function isAllowedLeague(leagueId, ccode, leagueName) {
     if (ALLOWED_LEAGUES.size === 0) return true;
+    if (matchLeagueRule(leagueName, ccode)) return true;
     if (ALLOWED_LEAGUES.has(leagueId)) return true;
     if (ccode && ALLOWED_COUNTRY_CODES.has(String(ccode).toUpperCase())) return true;
     return false;
@@ -448,7 +469,8 @@ async function fetchFotMobMatches(dateStr) {
                     if (!matches) return;
                     if (!Array.isArray(matches)) matches = [matches];
 
-                    if (!isAllowedLeague(leagueId, ccode)) {
+                    const rule = matchLeagueRule(lAttr.name, ccode);
+                    if (!isAllowedLeague(leagueId, ccode, lAttr.name)) {
                         if (DEBUG_UNKNOWN && !seenUnknownLeagues.has(leagueId)) {
                             seenUnknownLeagues.add(leagueId);
                             console.log(`🔎 [LİG] Filtrelendi: id=${leagueId} | ${lAttr.name} | ccode=${ccode}`);
@@ -468,6 +490,7 @@ async function fetchFotMobMatches(dateStr) {
                         parsed.push({
                             id: Number(attr.id),
                             leagueId,
+                            rule,
                             leagueName: lAttr.name || "Futbol",
                             ccode,
                             home: { id: Number(attr.hId), name: attr.hTeam || "" },
@@ -480,6 +503,7 @@ async function fetchFotMobMatches(dateStr) {
                     });
                 });
 
+                console.log(`📊 [${dateStr}] FotMob: ${leagues.length} lig geldi, ${parsed.length} maç kabul edildi.`);
                 resolve(parsed);
             });
         });
@@ -742,7 +766,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             let awayLogoUrl = fotmobTeamLogo(e.away.id);
 
             // Milli maçlarda repodaki bayraklar (tennis/logos/<kod>.png)
-            const isNationalLeague = NATIONAL_LEAGUES.has(e.leagueId) || String(e.ccode).toUpperCase() === 'INT';
+            const isNationalLeague = !!(e.rule && e.rule.national) || NATIONAL_LEAGUES.has(e.leagueId) || String(e.ccode).toUpperCase() === 'INT';
             if (isNationalLeague) {
                 const hCode = nationalTeamCodes[hNameRaw.toLowerCase().trim()];
                 const aCode = nationalTeamCodes[aNameRaw.toLowerCase().trim()];
@@ -752,7 +776,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
             globalFootballCache.set(e.id, {
                 id: e.id,
-                isElite: ELITE_FOOT_IDS.has(e.leagueId),
+                isElite: ELITE_FOOT_IDS.has(e.leagueId) || !!(e.rule && e.rule.elite),
                 status: st.status,
                 statusCode: st.code,
                 liveMinute: isLive ? st.label : "",
@@ -762,11 +786,11 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 broadcaster: bc.kanal,
                 homeTeam: { name: hName, logo: homeLogoUrl, id: e.home.id },
                 awayTeam: { name: aName, logo: awayLogoUrl, id: e.away.id },
-                tournamentLogo: fotmobLeagueLogo(e.leagueId),
+                tournamentLogo: fotmobLeagueLogo(e.rule ? e.rule.logoId : e.leagueId),
                 homeScore: finalHomeScore,
                 awayScore: finalAwayScore,
                 setScores: [],
-                tournament: footballLeagues[e.leagueId] || e.leagueName,
+                tournament: (e.rule && e.rule.tr) || footballLeagues[e.leagueId] || e.leagueName,
                 timeObj: { currentMinute: st.min }
             });
             idSet.add(e.id);
