@@ -223,21 +223,23 @@ async function fetchData(url) {
         const delay = Math.floor(Math.random() * 1000) + 300;
         await new Promise(r => setTimeout(r, delay));
 
-        // İstekleri www adresinden asıl mobil API olan api.sofascore.com adresine yönlendiriyoruz
+        // www adresini asıl mobil API olan api.sofascore.com adresine yönlendiriyoruz
         const mobileApiUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 7000);
 
+        // O anki Unix zaman damgasını dinamik olarak oluşturuyoruz
+        const currentTimestamp = Math.floor(Date.now() / 1000).toString();
+
         const response = await fetch(mobileApiUrl, {
             signal: controller.signal,
             headers: {
-                // Proxyman'den yakaladığımız SAF MOBİL UYGULAMA KİMLİĞİ!
                 "User-Agent": "com.sofascore.ios/260914/ff7a17",
                 "Accept": "*/*",
                 "Accept-Language": "tr-TR;q=1.0, en-GB;q=0.9",
+                "X-Timestamp": currentTimestamp, // Uygulamanın kullandığı canlı zaman damgası
                 "Connection": "keep-alive"
-                // DİKKAT: Cloudflare'in bot yakaladığı Referer, Origin, Sec-Fetch gibi web başlıkları tamamen kaldırıldı.
             }
         });
 
@@ -245,18 +247,11 @@ async function fetchData(url) {
 
         if (!response.ok) {
             if (response.status === 404) return { is404: true }; 
-            
             console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileApiUrl}`);
-            
-            if (response.status === 403 || response.status === 429) {
-                notifyAdminForBan(response.status);
-            }
-            
             return null;
         }
 
-        const data = await response.json();
-        return data;
+        return await response.json();
     } catch (e) {
         return null;
     }
