@@ -251,7 +251,7 @@ async function fetchFotMobMatches(dateStr) {
                             },
                             liveMinute: attr.time || "",
                             fixedDate: dateStr,
-                            startTimestamp: Math.floor(new Date(`${dateStr}T${attr.time || '00:00'}:00`).getTime() / 1000)
+                            startTimestamp: !isNaN(new Date(`${dateStr}T${attr.time || '00:00'}:00`).getTime()) ? Math.floor(new Date(`${dateStr}T${attr.time || '00:00'}:00`).getTime() / 1000) : Math.floor(Date.now() / 1000)
                         });
                     });
                 });
