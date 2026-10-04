@@ -402,7 +402,7 @@ function parseFotMobTime(rawTime, fallbackDate) {
 // Eski Sofascore'daki statusCode değerleri: 6 = 1. yarı, 7 = 2. yarı, 31 = devre arası
 function estimateMinute(elapsedMin) {
     const e = Math.max(0, elapsedMin);
-    if (e <= 50) return { code: 6, min: e, label: `${e}'` };
+    if (e <= 50) return { code: 6, min: e + 1, label: `${e + 1}'` };
     if (e <= 63) return { code: 31, min: 45, label: "İY" };
     const m = Math.max(46, e - 17);
     if (m <= 90) return { code: 7, min: m, label: `${m}'` };
@@ -465,7 +465,8 @@ function normalizeStatus(attr, startMs) {
     const inj1 = ijtParts[0] || 0;
     const inj2 = ijtParts[1] || 0;
     if (shsMs) {
-        const m = 45 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
+        // Devam eden dakika gösterilir: 2. yarının ilk dakikası 46'
+        const m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
         return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
     // sId: 2 = ilk yarı, 10 = devre arası, 3 = ikinci yarı (Kosova-Avusturya ve Azerbaycan-Litvanya maçlarında gözlendi)
@@ -473,7 +474,8 @@ function normalizeStatus(attr, startMs) {
 
     if (gsMs) {
         const e = Math.max(0, elapsedMin);
-        if (e <= 55) return { status: 'inprogress', code: 6, label: `${e}'`, min: e, inj1 };
+        // Devam eden dakika gösterilir: 0:00-0:59 -> 1', 47:15 -> 48'
+        if (e <= 55) return { status: 'inprogress', code: 6, label: `${e + 1}'`, min: e + 1, inj1 };
         // sId gelmemiş ve 55 dk geçmişse yine de devre arasıdır
         return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
     }
