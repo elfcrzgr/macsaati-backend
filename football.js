@@ -346,9 +346,7 @@ const teamTranslations = {
     "guam": "Guam", "bangladesh": "Bangladeş", "pakistan": "Pakistan", "cambodia": "Kamboçya",
     "bhutan": "Butan", "indonesia": "Endonezya", "oman": "Umman", "tajikistan": "Tacikistan",
     "syria": "Suriye", "bahrain": "Bahreyn", "hong kong": "Hong Kong", "mongolia": "Moğolistan",
-    "thailand": "Tayland", "kuwait": "Kuveyt", "myanmar": "Myanmar", "lithuania": "Litvanya", "Comoros": "Komor Adaları", "Kyrgyztan": "Kırgızistan", "Lebanon": "Lübnan",
-    "Andorro": "Andora", "Rwanda": "Ruanda"
-    
+    "thailand": "Tayland", "kuwait": "Kuveyt", "myanmar": "Myanmar", "lithuania": "Litvanya"
 };
 
 const translateTeam = (name) => {
@@ -462,14 +460,21 @@ function normalizeStatus(attr, startMs) {
 
     // 🎯 FotMob'un verdiği yarı başlangıçları: shs = 2. yarı başlangıcı, gs = maç başlangıcı
     const shsMs = parseGameStart(attr.shs);
+    // 'ijt' = "ilkYarıİlave,ikinciYarıİlave" (ör. "1" -> sadece ilk yarı, "1,4" -> ikinci yarı +4)
+    const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
+    const inj1 = ijtParts[0] || 0;
+    const inj2 = ijtParts[1] || 0;
     if (shsMs) {
         const m = 45 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
-        return { status: 'inprogress', code: 7, label: `${m}'`, min: m };
+        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
+    // sId: 2 = ilk yarı, 10 = devre arası, 3 = ikinci yarı (Kosova-Avusturya ve Azerbaycan-Litvanya maçlarında gözlendi)
+    if (String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
+
     if (gsMs) {
         const e = Math.max(0, elapsedMin);
-        if (e <= 48) return { status: 'inprogress', code: 6, label: `${e}'`, min: e };
-        // 48. dakikadan sonra shs gelmediyse devre arasıdır
+        if (e <= 55) return { status: 'inprogress', code: 6, label: `${e}'`, min: e, inj1 };
+        // sId gelmemiş ve 55 dk geçmişse yine de devre arasıdır
         return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
     }
 
@@ -717,6 +722,7 @@ async function checkAndSendNotifications(newMatches) {
         // ---- Normal push bildirimleri ----
         const appTitle = "Maç Saati";
         const whistleIconUrl = "https://img.icons8.com/color/96/whistle.png";
+        const substitutionBoardUrl = "https://img.icons8.com/color/96/stopwatch--v1.png";
 
         if (match.status === 'inprogress' && !prev.hasNotifiedStart) {
             // Sunucu yeniden başlayıp maçı ortadan yakalarsa "Maç Başladı" atma
@@ -724,12 +730,18 @@ async function checkAndSendNotifications(newMatches) {
                 await sendPush(matchIdStr, appTitle, `⚽ Maç Başladı!\n${match.homeTeam.name} - ${match.awayTeam.name}`, null, match);
             }
             prev.hasNotifiedStart = true;
+        } else if (match.status === 'inprogress' && match.statusCode === 6 && tObj.injuryTime1 && !prev.hasNotifiedInjuryTime1) {
+            await sendPush(matchIdStr, `İlk yarı ilave süre: +${tObj.injuryTime1}'`, `${match.homeTeam.name} - ${match.awayTeam.name}`, substitutionBoardUrl, match);
+            prev.hasNotifiedInjuryTime1 = true;
         } else if (match.status === 'inprogress' && (liveMin === "İY" || match.statusCode === 31) && !prev.hasNotifiedHT) {
             await sendPush(matchIdStr, appTitle, `⏱️ İlk Yarı Sonucu\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`, whistleIconUrl, match);
             prev.hasNotifiedHT = true;
         } else if (match.status === 'inprogress' && prev.hasNotifiedHT && liveMin !== "İY" && match.statusCode !== 31 && !prev.hasNotifiedSH && match.statusCode === 7) {
             await sendPush(matchIdStr, appTitle, `▶️ İkinci Yarı Başladı\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`, whistleIconUrl, match);
             prev.hasNotifiedSH = true;
+        } else if (match.status === 'inprogress' && match.statusCode === 7 && tObj.injuryTime2 && !prev.hasNotifiedInjuryTime2 && liveMin !== "İY") {
+            await sendPush(matchIdStr, `İkinci yarı ilave süre: +${tObj.injuryTime2}'`, `${match.homeTeam.name} - ${match.awayTeam.name}`, substitutionBoardUrl, match);
+            prev.hasNotifiedInjuryTime2 = true;
         } else if (isFinished && !prev.hasNotifiedFinished) {
             if (prev.status === 'inprogress') {
                 await sendPush(matchIdStr, appTitle, `🏁 Maç Bitti\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`, null, match);
@@ -868,7 +880,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 awayScore: finalAwayScore,
                 setScores: [],
                 tournament: (e.rule && e.rule.tr) || footballLeagues[e.leagueId] || e.leagueName,
-                timeObj: { currentMinute: st.min }
+                timeObj: Object.assign({ currentMinute: st.min }, st.inj1 ? { injuryTime1: st.inj1 } : {}, st.inj2 ? { injuryTime2: st.inj2 } : {})
             });
             if (e.actualStartMs) actualStartById.set(e.id, e.actualStartMs);
             idSet.add(e.id);
