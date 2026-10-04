@@ -53,6 +53,7 @@ const triggeredMatches = new Set();
 const seenUnknownStatuses = new Set();
 const seenUnknownLeagues = new Set();
 let lastLiveRawLog = 0;
+let fotmobBlockedUntil = 0; // 403/429 sonrası geçici bekleme
 
 const sportUpdateStatus = {
     lastQuickUpdate: 0,
@@ -83,7 +84,7 @@ let externalBroadcasters = {};
 async function loadExternalBroadcasters() {
     try {
         const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
-        const response = await fetch(url);
+        const response = await fetch(url, { signal: timeoutSignal(10000) });
         if (response.ok) {
             externalBroadcasters = await response.json();
             fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
@@ -159,6 +160,23 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 // =========================================================================
 let lastBanAlertTime = 0;
 
+// ⏱️ Zaman aşımı yardımcıları: tek bir takılan ağ isteği tüm döngüyü dondurmasın
+function timeoutSignal(ms) {
+    if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) return AbortSignal.timeout(ms);
+    const c = new AbortController();
+    const t = setTimeout(() => c.abort(), ms);
+    if (t.unref) t.unref();
+    return c.signal;
+}
+
+function withTimeout(promise, ms, label) {
+    let timer;
+    const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`${label} ${Math.round(ms / 1000)} sn içinde yanıt vermedi`)), ms);
+    });
+    return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
 async function notifyAdminForBan(statusCode) {
     const now = Date.now();
     if (now - lastBanAlertTime < 1800000) return;
@@ -167,14 +185,14 @@ async function notifyAdminForBan(statusCode) {
     const message = `🚨 Maç Saati Sunucu Uyarısı\nFotMob API hata döndürdü (HTTP ${statusCode}).`;
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, { signal: timeoutSignal(10000) });
         if (response.ok) lastBanAlertTime = now;
     } catch (e) {}
 }
 
 async function uploadToFirebase(data) {
     try {
-        await firebaseApp.database().ref(`matches_football`).set(data);
+        await withTimeout(firebaseApp.database().ref(`matches_football`).set(data), 15000, 'Firebase yazma');
     } catch (error) {
         console.error(`❌ [FIREBASE-FUTBOL] Hata:`, error.message);
     }
@@ -386,10 +404,23 @@ function estimateMinute(elapsedMin) {
     return { code: 7, min: 90, label: "90+'" };
 }
 
+// "04.10.2026 15:01:29" (İstanbul saati) -> ms. FotMob'un 'gs' alanı maçın GERÇEK başlama zamanıdır.
+function parseGameStart(gs) {
+    const m = String(gs || "").match(/(\d{2})\.(\d{2})\.(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+    if (!m) return null;
+    const ms = new Date(`${m[3]}-${m[2]}-${m[1]}T${m[4].padStart(2, '0')}:${m[5]}:${m[6] || '00'}+03:00`).getTime();
+    return isNaN(ms) ? null : ms;
+}
+
+const actualStartById = new Map(); // maç id -> gerçek başlama zamanı (ms)
+
 function normalizeStatus(attr, startMs) {
     const raw = String(attr.Status ?? attr.status ?? '').trim().toUpperCase();
     const hasScore = attr.hScore !== undefined && attr.hScore !== '' && attr.aScore !== undefined && attr.aScore !== '';
-    const elapsedMin = Math.floor((Date.now() - startMs) / 60000);
+    const gsMs = parseGameStart(attr.gs);
+    const sinceScheduled = Math.floor((Date.now() - startMs) / 60000);
+    // Dakika hesabı planlanan saatten değil, maçın gerçek başlama zamanından (gs) yapılır
+    const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
     if (['F', 'FT', 'AET', 'PEN', 'AP'].includes(raw)) return { status: 'finished', code: 100, label: 'MS', min: 90 };
     if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'A', 'ABD'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
@@ -398,16 +429,19 @@ function normalizeStatus(attr, startMs) {
     if (raw === 'HT') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
     // Başlamamış maç
-    if (raw === 'NS' || raw === '' && !hasScore || !hasScore || elapsedMin < -2) {
+    if (raw === 'NS' || raw === '' && !hasScore || !hasScore || (!gsMs && sinceScheduled < -2)) {
         return { status: 'notstarted', code: 0, label: '', min: 0 };
     }
 
     // Güvenlik: 4 saatten uzun "canlı" görünen maç aslında bitmiştir
     if (elapsedMin > 240) return { status: 'finished', code: 100, label: 'MS', min: 90 };
 
-    if (DEBUG_UNKNOWN && raw && !seenUnknownStatuses.has(raw)) {
-        seenUnknownStatuses.add(raw);
-        console.log(`🔎 [STATÜ] Yeni FotMob Status değeri: "${raw}" | attrs: ${JSON.stringify(attr)}`);
+    if (DEBUG_UNKNOWN) {
+        const key = `${raw}/${attr.stage ?? ''}`;
+        if (!seenUnknownStatuses.has(key)) {
+            seenUnknownStatuses.add(key);
+            console.log(`🔎 [STATÜ] Yeni Status/stage: "${key}" | geçen: ${elapsedMin} dk | attrs: ${JSON.stringify(attr)}`);
+        }
     }
 
     // FotMob dakikayı doğrudan veriyorsa onu kullan (alan adı bilinmiyor, olası adayları dene)
@@ -425,6 +459,7 @@ function normalizeStatus(attr, startMs) {
 
 // 🔥 FOTMOB XML VERİ ÇEKME. Hata olursa null, gerçekten boşsa [] döner.
 async function fetchFotMobMatches(dateStr) {
+    if (Date.now() < fotmobBlockedUntil) return null;
     try {
         await new Promise(r => setTimeout(r, Math.floor(Math.random() * 500) + 200));
 
@@ -432,6 +467,7 @@ async function fetchFotMobMatches(dateStr) {
         const url = `https://api3.fotmob.com/matches?date=${formattedDate}&tz=10800000&tzone=Europe%2FIstanbul`;
 
         const response = await fetch(url, {
+            signal: timeoutSignal(15000),
             headers: {
                 "Host": "api3.fotmob.com",
                 "fotmob-version": "1243.0",
@@ -445,7 +481,11 @@ async function fetchFotMobMatches(dateStr) {
         if (!response.ok) {
             if (response.status === 404) return [];
             console.log(`⚠️ FotMob reddi (HTTP ${response.status}) -> ${dateStr}`);
-            if (response.status === 403 || response.status === 429) notifyAdminForBan(response.status);
+            if (response.status === 403 || response.status === 429) {
+                fotmobBlockedUntil = Date.now() + 10 * MINUTE_MS;
+                console.log("⛔ FotMob istekleri 10 dakika durduruldu.");
+                notifyAdminForBan(response.status);
+            }
             return null;
         }
 
@@ -504,6 +544,7 @@ async function fetchFotMobMatches(dateStr) {
                             hScoreRaw: attr.hScore,
                             aScoreRaw: attr.aScore,
                             st,
+                            actualStartMs: parseGameStart(attr.gs),
                             date, time, startMs
                         });
                     });
@@ -556,7 +597,7 @@ async function sendPush(id, title, body, imageUrl = null, matchData = null) {
             payload.android = { notification: { imageUrl: imageUrl } };
         }
 
-        await firebaseApp.messaging().send(payload);
+        await withTimeout(firebaseApp.messaging().send(payload), 10000, 'FCM gönderimi');
         lastNotificationTime.set(id, now);
         console.log(`✅ [BİLDİRİM] ${title}: ${body}`);
     } catch (e) {
@@ -612,8 +653,13 @@ async function checkAndSendNotifications(newMatches) {
 
         // ---- Live Activity güncellemeleri ----
         if ((isLive || isFinished) && (minuteChanged || scoreChanged || statusChanged)) {
-            const snapshot = await firebaseApp.database().ref(`live_activity_tokens/${matchIdStr}`).once('value');
-            const tokensObj = snapshot.val();
+            let tokensObj = null;
+            try {
+                const snapshot = await withTimeout(firebaseApp.database().ref(`live_activity_tokens/${matchIdStr}`).once('value'), 8000, 'Token okuma');
+                tokensObj = snapshot.val();
+            } catch (e) {
+                console.error(`❌ Live Activity token okunamadı (${matchIdStr}):`, e.message);
+            }
 
             if (tokensObj) {
                 const promises = Object.keys(tokensObj).map(async (deviceToken) => {
@@ -626,7 +672,7 @@ async function checkAndSendNotifications(newMatches) {
                     });
 
                     try {
-                        const result = await apnProvider.send(notification, deviceToken);
+                        const result = await withTimeout(apnProvider.send(notification, deviceToken), 8000, 'APNs');
                         if (result.failed.length > 0) {
                             const err = result.failed[0];
                             const errorReason = err.response ? err.response.reason : err.error;
@@ -707,7 +753,7 @@ async function triggerPushToStart(matchId) {
     const match = globalFootballCache.get(matchId);
     if (!match) return;
 
-    const normalTokens = (await firebaseApp.database().ref(`push_to_start_tokens/${matchId}`).once('value')).val();
+    const normalTokens = (await withTimeout(firebaseApp.database().ref(`push_to_start_tokens/${matchId}`).once('value'), 8000, 'Push-to-start token okuma')).val();
     const tokensToAlert = normalTokens ? [...new Set(Object.keys(normalTokens))] : [];
     if (tokensToAlert.length === 0) return;
 
@@ -724,7 +770,7 @@ async function triggerPushToStart(matchId) {
                 "alert": { "title": "Maç Saati", "body": `${match.homeTeam.name} - ${match.awayTeam.name} canlı takibi başladı!` }
             }
         });
-        try { await apnProvider.send(notification, token); } catch (e) {}
+        try { await withTimeout(apnProvider.send(notification, token), 8000, 'APNs'); } catch (e) {}
     }
 }
 
@@ -799,6 +845,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 tournament: (e.rule && e.rule.tr) || footballLeagues[e.leagueId] || e.leagueName,
                 timeObj: { currentMinute: st.min }
             });
+            if (e.actualStartMs) actualStartById.set(e.id, e.actualStartMs);
             idSet.add(e.id);
         }
     }
@@ -817,27 +864,52 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     }
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
-    await checkAndSendNotifications(matches);
+    try {
+        await withTimeout(checkAndSendNotifications(matches), 30000, 'Bildirim kontrolü');
+    } catch (e) {
+        console.error("❌ Bildirim kontrolü atlandı:", e.message);
+    }
     await uploadToFirebase({ success: true, lastUpdate: new Date().toLocaleTimeString('tr-TR'), matches });
 
     const hasLiveMatch = matches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalFootballCache);
 
-    const forcedSnapshot = await firebaseApp.database().ref('forced_matches').once('value');
-    const forcedMatches = forcedSnapshot.val() || {};
-    for (const [id] of globalFootballCache.entries()) {
-        if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
-            await triggerPushToStart(id);
-            triggeredMatches.add(String(id));
+    try {
+        const forcedSnapshot = await withTimeout(firebaseApp.database().ref('forced_matches').once('value'), 8000, 'forced_matches okuma');
+        const forcedMatches = forcedSnapshot.val() || {};
+        for (const [id] of globalFootballCache.entries()) {
+            if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
+                await triggerPushToStart(id);
+                triggeredMatches.add(String(id));
+            }
         }
+    } catch (e) {
+        console.error("❌ Zorunlu maç kontrolü atlandı:", e.message);
     }
 
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: matches.length > 0 };
 }
 
 // =========================================================================
-// 🆕 ANA DÖNGÜ (eski akıllı tarama mantığı geri getirildi)
+// 🆕 ANA DÖNGÜ: dakikada 1 sorgu, dakika sınırına hizalı
 // =========================================================================
+// Sorgu, canlı maçın dakika sınırından hemen sonra (PHASE) atılır. Önceki sorgu kaç sn sürerse sürsün,
+// bir sonraki sorgu hep aynı saniyeye denk gelir: kayma yok, dakika atlama/tekrar yok.
+const LIVE_SCAN_PHASE_MS = 5000;
+
+function computeNextLiveScanAt(scanStart) {
+    const liveStarts = Array.from(globalFootballCache.values())
+        .filter(m => m.status === 'inprogress')
+        .map(m => actualStartById.get(m.id) || m.timestamp);
+    if (liveStarts.length === 0) return scanStart + MINUTE_MS;
+
+    const ref = Math.min(...liveStarts);
+    let next = scanStart + 30000; // en erken 30 sn sonra
+    const offset = (((next - ref) % MINUTE_MS) + MINUTE_MS) % MINUTE_MS;
+    next += (LIVE_SCAN_PHASE_MS - offset + MINUTE_MS) % MINUTE_MS;
+    return next; // scanStart + 30..90 sn (normalde tam 60 sn)
+}
+
 async function main() {
     loadState();
     console.log("============================================================");
@@ -846,10 +918,20 @@ async function main() {
 
     let lastPeriodicUpdate = 0;
     let lastBroadcastersString = "";
+    let expectedWake = 0;
+    let nextLiveScanAt = 0;
+
+    const applyResult = (result) => {
+        sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+        sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
+    };
 
     while (true) {
         try {
             const now = Date.now();
+            if (expectedWake && now - expectedWake > 30000) {
+                console.log(`⚠️ Döngü ${Math.round((now - expectedWake) / 1000)} sn geç uyandı: cihaz uykuya geçmiş olabilir (Doze / pil kısıtı / Wi-Fi).`);
+            }
 
             await loadExternalBroadcasters();
 
@@ -875,9 +957,8 @@ async function main() {
             if (lastPeriodicUpdate < activeTarget || forceUpdateDueToBroadcasters) {
                 console.log("\n🔄 [PERİYODİK / ZORUNLU] Detaylı Tarama Başlıyor...");
                 const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
-                const result = await updateFootball(days4, false);
-                sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
-                sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+                const result = await withTimeout(updateFootball(days4, false), 120000, 'Detaylı tarama');
+                applyResult(result);
                 if (!forceUpdateDueToBroadcasters) lastPeriodicUpdate = now;
             }
 
@@ -886,36 +967,35 @@ async function main() {
             let quickScanDates = [getTRDate(0)];
             if (currentHour >= 0 && currentHour <= 4) quickScanDates = [getTRDate(-1), getTRDate(0)];
 
-            if (sportUpdateStatus.hasLiveMatch) {
-                if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
-                    console.log("\n⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var!");
-                    const result = await updateFootball(quickScanDates, true);
-                    sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
-                }
-            } else if (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1)) {
-                if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
-                    console.log("\n⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç vakti!");
-                    const result = await updateFootball(quickScanDates, true);
-                    sportUpdateStatus.lastQuickUpdate = now; sportUpdateStatus.hasLiveMatch = result.hasLiveMatch; sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
-                }
+            const isUpcoming = () => sportUpdateStatus.nextMatchTime && Date.now() >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1);
+
+            if ((sportUpdateStatus.hasLiveMatch || isUpcoming()) && Date.now() >= nextLiveScanAt - 1500) {
+                console.log(sportUpdateStatus.hasLiveMatch ? "\n⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var!" : "\n⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç vakti!");
+                const scanStart = Date.now();
+                const result = await withTimeout(updateFootball(quickScanDates, true), 60000, 'Hızlı tarama');
+                sportUpdateStatus.lastQuickUpdate = scanStart;
+                applyResult(result);
+                nextLiveScanAt = computeNextLiveScanAt(scanStart);
             }
 
-            const processDuration = Date.now() - now;
-
-            let sleepTime = 10 * MINUTE_MS;
-            const isActive = sportUpdateStatus.hasLiveMatch || (sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 12));
-
-            if (isActive) {
-                sleepTime = Math.max(15000, 60000 - processDuration);
-                console.log(`\n⚡ [FUTBOL] Aktif maç var. ${Math.round(sleepTime / 1000)} sn uyuyor...`);
+            let sleepTime;
+            if (sportUpdateStatus.hasLiveMatch || isUpcoming()) {
+                sleepTime = Math.max(1000, nextLiveScanAt - Date.now());
+                console.log(`\n⚡ [FUTBOL] Aktif maç var. Sonraki sorgu ${Math.round(sleepTime / 1000)} sn sonra (dakika sınırına hizalı).`);
+            } else if (sportUpdateStatus.nextMatchTime && Date.now() >= sportUpdateStatus.nextMatchTime - MINUTE_MS * 12) {
+                sleepTime = Math.min(30000, Math.max(1000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1 - Date.now()));
+                console.log(`\n⏳ [FUTBOL] Maça az kaldı, ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
             } else {
+                sleepTime = 10 * MINUTE_MS;
                 console.log("\n💤 [FUTBOL] Şu an hareket yok. 10 dakika derin uyku...");
             }
 
+            expectedWake = Date.now() + sleepTime;
             await new Promise(r => setTimeout(r, sleepTime));
 
         } catch (e) {
             console.error("🚨 Hata:", e.message);
+            expectedWake = Date.now() + MINUTE_MS;
             await new Promise(r => setTimeout(r, MINUTE_MS));
         }
     }
