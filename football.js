@@ -442,7 +442,7 @@ function normalizeStatus(attr, startMs) {
     if (elapsedMin > 240) return { status: 'finished', code: 100, label: 'MS', min: 90 };
 
     if (DEBUG_UNKNOWN) {
-        const key = `${raw}/${attr.stage ?? ''}`;
+        const key = `${raw}/${attr.stage ?? ''}/${attr.sId ?? ''}${attr.shs ? '/shs' : ''}`;
         if (!seenUnknownStatuses.has(key)) {
             seenUnknownStatuses.add(key);
             console.log(`🔎 [STATÜ] Yeni Status/stage: "${key}" | geçen: ${elapsedMin} dk | attrs: ${JSON.stringify(attr)}`);
@@ -456,6 +456,19 @@ function normalizeStatus(attr, startMs) {
             const n = parseInt(v, 10);
             return { status: 'inprogress', code: n > 45 ? 7 : 6, label: `${String(v).trim()}'`, min: n };
         }
+    }
+
+    // 🎯 FotMob'un verdiği yarı başlangıçları: shs = 2. yarı başlangıcı, gs = maç başlangıcı
+    const shsMs = parseGameStart(attr.shs);
+    if (shsMs) {
+        const m = 45 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
+        return { status: 'inprogress', code: 7, label: `${m}'`, min: m };
+    }
+    if (gsMs) {
+        const e = Math.max(0, elapsedMin);
+        if (e <= 48) return { status: 'inprogress', code: 6, label: `${e}'`, min: e };
+        // 48. dakikadan sonra shs gelmediyse devre arasıdır
+        return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
     }
 
     const est = estimateMinute(elapsedMin);
@@ -554,7 +567,7 @@ async function fetchFotMobMatches(dateStr) {
                             hScoreRaw: attr.hScore,
                             aScoreRaw: attr.aScore,
                             st,
-                            actualStartMs: parseGameStart(attr.gs),
+                            actualStartMs: parseGameStart(attr.shs) || parseGameStart(attr.gs),
                             date, time, startMs
                         });
                     });
