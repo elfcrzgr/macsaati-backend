@@ -52,6 +52,7 @@ const dateIndex = new Map(); // tarih -> o tarihte taranan maç id'leri
 const triggeredMatches = new Set();
 const seenUnknownStatuses = new Set();
 const seenUnknownLeagues = new Set();
+let lastLiveRawLog = 0;
 
 const sportUpdateStatus = {
     lastQuickUpdate: 0,
@@ -486,6 +487,11 @@ async function fetchFotMobMatches(dateStr) {
 
                         const st = normalizeStatus(attr, startMs);
                         if (st.status === 'canceled' || st.status === 'postponed') return;
+
+                        if (DEBUG_UNKNOWN && st.status === 'inprogress' && Date.now() - lastLiveRawLog > 55000) {
+                            lastLiveRawLog = Date.now();
+                            console.log(`🔎 [CANLI-HAM] ${attr.hTeam} - ${attr.aTeam} | ${JSON.stringify(attr)} | hesaplanan: ${st.label}`);
+                        }
 
                         parsed.push({
                             id: Number(attr.id),
