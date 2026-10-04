@@ -219,36 +219,44 @@ let blockedUntil = 0;
 
 
 async function fetchData(url) {
-
-    if (Date.now() < blockedUntil) return null;   // <-- EKLE
     try {
         const delay = Math.floor(Math.random() * 1000) + 300;
         await new Promise(r => setTimeout(r, delay));
 
-        const mobileUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
+        // İstekleri www adresinden asıl mobil API olan api.sofascore.com adresine yönlendiriyoruz
+        const mobileApiUrl = url.replace('www.sofascore.com', 'api.sofascore.com');
 
-        const response = await fetch(mobileUrl, {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+        const response = await fetch(mobileApiUrl, {
+            signal: controller.signal,
             headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "tr-TR,tr;q=0.9",
-                "Referer": "https://www.sofascore.com/",
-                "Origin": "https://www.sofascore.com",
+                // Proxyman'den yakaladığımız SAF MOBİL UYGULAMA KİMLİĞİ!
+                "User-Agent": "com.sofascore.ios/260914/ff7a17",
+                "Accept": "*/*",
+                "Accept-Language": "tr-TR;q=1.0, en-GB;q=0.9",
                 "Connection": "keep-alive"
+                // DİKKAT: Cloudflare'in bot yakaladığı Referer, Origin, Sec-Fetch gibi web başlıkları tamamen kaldırıldı.
             }
         });
 
+        clearTimeout(timeoutId);
+
         if (!response.ok) {
-            if (response.status === 404) return { is404: true };
-            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${url}`);
+            if (response.status === 404) return { is404: true }; 
+            
+            console.log(`⚠️ API Reddi (HTTP ${response.status}) -> URL: ${mobileApiUrl}`);
+            
             if (response.status === 403 || response.status === 429) {
-                blockedUntil = Date.now() + 15 * 60 * 1000;  // <-- EKLE (15 dk sus)
                 notifyAdminForBan(response.status);
             }
+            
             return null;
         }
 
-        return await response.json();
+        const data = await response.json();
+        return data;
     } catch (e) {
         return null;
     }
