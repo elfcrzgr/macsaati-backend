@@ -19,6 +19,11 @@ const MINUTE_MS = 60000;
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "";
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
 
+// 🕐 FotMob XML'indeki saatler (time ve gs) TR saatinden 1 saat geride geliyor.
+// Azerbaycan-Litvanya maçıyla doğrulandı: XML 15:00 / gs 15:01:29 dedi, gerçek başlangıç 16:01 (TR).
+// Bir gün FotMob düzelirse bunu 0 yapın.
+const FOTMOB_TIME_OFFSET_MS = 60 * 60 * 1000;
+
 // 🔎 Hata ayıklama: true iken bilinmeyen statü değerlerini ve gelen yeni ligleri loglar
 const DEBUG_UNKNOWN = true;
 
@@ -409,7 +414,7 @@ function parseGameStart(gs) {
     const m = String(gs || "").match(/(\d{2})\.(\d{2})\.(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
     if (!m) return null;
     const ms = new Date(`${m[3]}-${m[2]}-${m[1]}T${m[4].padStart(2, '0')}:${m[5]}:${m[6] || '00'}+03:00`).getTime();
-    return isNaN(ms) ? null : ms;
+    return isNaN(ms) ? null : ms + FOTMOB_TIME_OFFSET_MS;
 }
 
 const actualStartById = new Map(); // maç id -> gerçek başlama zamanı (ms)
@@ -521,9 +526,14 @@ async function fetchFotMobMatches(dateStr) {
 
                     matches.forEach(m => {
                         const attr = m.$ || {};
-                        const { date, time } = parseFotMobTime(attr.time, dateStr);
-                        const startMs = new Date(`${date}T${time}:00+03:00`).getTime();
-                        if (isNaN(startMs)) return;
+                        const parsedT = parseFotMobTime(attr.time, dateStr);
+                        const rawStartMs = new Date(`${parsedT.date}T${parsedT.time}:00+03:00`).getTime();
+                        if (isNaN(rawStartMs)) return;
+                        const startMs = rawStartMs + FOTMOB_TIME_OFFSET_MS;
+                        // Uygulamada ve yayıncı eşleştirmesinde görünen tarih/saat düzeltilmiş (TR) saattir
+                        const sd = new Date(startMs);
+                        const date = sd.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                        const time = sd.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 
                         const st = normalizeStatus(attr, startMs);
                         if (st.status === 'canceled' || st.status === 'postponed') return;
