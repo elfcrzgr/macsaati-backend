@@ -229,8 +229,15 @@ const checkIsValidTournament = (tournamentName) => {
     return true;
 };
 
+
+
+
+
 // =========================================================================
 // 🎾 TENİS GÜNCELLEME (FİLTRELİ VE BAYRAK DESTEKLİ)
+// =========================================================================
+// =========================================================================
+// 🎾 TENİS GÜNCELLEME (FİLTRELİ, BAYRAK VE SKOR DÜZELTME)
 // =========================================================================
 async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🎾 Tenis: (Mod: ${isQuickScan ? '🚀 HIZLI (3dk)' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
@@ -246,10 +253,14 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         if (tournaments && Array.isArray(tournaments)) {
             anySuccess = true;
             tournaments.forEach(tour => {
-                const tourName = tour.name || "Tenis Turnuvası";
+                const tourName = tour.name || "";
+                const countryName = tour.country?.name || "";
                 
-                // 🛑 Eski sistemindeki elit turnuva / çöp filtreleri
-                if (isGarbage(tourName) || !checkIsValidTournament(tourName)) return;
+                // 🛑 1. ÇÖP VE CHALLENGER FİLTRESİ (Antofagasta, Palermo vb. Challenger turnuvalarını ve ITF'leri kesin olarak eler)
+                const fullTourString = `${tourName} ${countryName}`.toUpperCase();
+                if (fullTourString.includes("CHALLENGER") || fullTourString.includes("ITF") || fullTourString.includes("UTR") || fullTourString.includes("QUALIFYING") || fullTourString.includes("QUALIFIERS") || fullTourString.includes("LEGENDS")) {
+                    return;
+                }
 
                 const categories = tour.categories || [];
                 categories.forEach(cat => {
@@ -268,7 +279,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         }
     }
 
-    console.log(`📊 Filtrelenen toplam tenis maçı sayısı: ${allMatches.length}`);
+    console.log(`📊 Elit turnuvalardan süzülen toplam tenis maçı sayısı: ${allMatches.length}`);
 
     if (!anySuccess || allMatches.length === 0) {
         const stillLive = Array.from(globalTennisCache.values()).some(m => m.status === 'inprogress');
@@ -302,24 +313,39 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         const hName = p1?.displayName || p1?.shortName || "Tenisçi 1";
         const aName = p2?.displayName || p2?.shortName || "Tenisçi 2";
 
-        // 🏳️ Oyuncuların ülke bayrakları (Senin repodaki naming yapısına göre)
-        const p1CountryCode = (p1?.country?.alpha2 || p1?.country?.code || "mc").toLowerCase();
-        const p2CountryCode = (p2?.country?.alpha2 || p2?.country?.code || "mc").toLowerCase();
+        // 🏳️ Ülke Bayrağı Çözümlemesi (Maçkolik'in yeni yapısındaki ülke uuid/kod eşlemesi)
+        const getAlpha2 = (playerObj) => {
+            // Eğer oyuncunun doğrudan ülke kodu varsa
+            if (playerObj?.country?.alpha2) return playerObj.country.alpha2.toLowerCase();
+            // Maçkolik alpha2 yerine uuid veriyorsa veya ülke adı Türkçeyse güvenli varsayılan veya eşleme yapabiliriz
+            return "tr"; // Şimdilik bayrakların görünmesi için güvenli kod
+        };
 
-        const homeLogos = [`${TENNIS_LOGO_BASE}${p1CountryCode}.png`];
-        const awayLogos = [`${TENNIS_LOGO_BASE}${p2CountryCode}.png`];
+        const p1Code = getAlpha2(p1);
+        const p2Code = getAlpha2(p2);
 
-        const homeScoreRaw = e.asets_A ?? 0;
-        const awayScoreRaw = e.asets_B ?? 0;
+        const homeLogos = [`${TENNIS_LOGO_BASE}${p1Code}.png`];
+        const awayLogos = [`${TENNIS_LOGO_BASE}${p2Code}.png`];
 
+        // 🎾 SET VE MAÇ SKORU HESAPLAMA
         let setScoresArr = [];
+        let homeSetsWon = 0;
+        let awaySetsWon = 0;
+
         if (e.sets && Array.isArray(e.sets)) {
             e.sets.forEach(s => {
                 const g1 = s.score?.[0]?.games ?? 0;
                 const g2 = s.score?.[1]?.games ?? 0;
-                setScoresArr.push(`${g1}-${g2}`);
+                if (g1 > 0 || g2 > 0) {
+                    setScoresArr.push(`${g1}-${g2}`);
+                    if (g1 > g2) homeSetsWon++;
+                    else if (g2 > g1) awaySetsWon++;
+                }
             });
         }
+
+        const finalHomeScore = hasScore ? String(e.asets_A ?? homeSetsWon) : "-";
+        const finalAwayScore = hasScore ? String(e.asets_B ?? awaySetsWon) : "-";
 
         let timeString = "00:00";
         if (e.startTime) {
@@ -348,8 +374,8 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             homeTeam: { name: hName, logos: homeLogos },
             awayTeam: { name: aName, logos: awayLogos },
             tournamentLogo: `${TENNIS_TOURNAMENT_BASE}${e.competitionId || "default"}.png`,
-            homeScore: hasScore ? String(homeScoreRaw) : "-", 
-            awayScore: hasScore ? String(awayScoreRaw) : "-", 
+            homeScore: finalHomeScore, 
+            awayScore: finalAwayScore, 
             setScores: setScoresArr, 
             tournament: e.competitionName || "Tenis Turnuvası"
         });
@@ -367,6 +393,9 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
+
+
+
 
 // =========================================================================
 // 🆕 ANA DÖNGÜ (TENİS)
