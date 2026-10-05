@@ -220,7 +220,7 @@ const getFallbackBroadcaster = (compName) => {
 };
 
 // =========================================================================
-// 🏀 BASKETBOL GÜNCELLEME (YENİ SİSTEM)
+// 🏀 BASKETBOL GÜNCELLEME (GÜNCELLENMİŞ MAÇKOLİK PARSER)
 // =========================================================================
 async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🏀 Basketbol: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
@@ -229,18 +229,21 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     let basketbolMatchesLog = [];
     let anySuccess = false;
 
-    // Hedeflenen tarihlerdeki tüm maçları tek seferde çekiyoruz
     for (const date of targetDates) {
         const responseData = await fetchMackolikBasketball(date);
-        if (responseData && responseData.data) {
+        
+        // Gelen verinin yapısını güvenli bir şekilde kontrol ediyoruz (areas dizisi kontrolü)
+        const rootData = responseData?.data;
+        const areasArray = Array.isArray(rootData) ? rootData : rootData?.areas;
+
+        if (rootData && areasArray && Array.isArray(areasArray)) {
             anySuccess = true;
-            // Maçkolik hiyerarşisini (Areas -> Competitions -> Matches) düz bir listeye çeviriyoruz
-            responseData.data.forEach(area => {
-                if (area.competitions) {
+            areasArray.forEach(area => {
+                if (area.competitions && Array.isArray(area.competitions)) {
                     area.competitions.forEach(comp => {
-                        if (comp.matches) {
+                        if (comp.matches && Array.isArray(comp.matches)) {
                             comp.matches.forEach(match => {
-                                match.competitionName = comp.name; // Ligi maça ekle
+                                match.competitionName = comp.name; 
                                 match.competitionId = comp.uuid;
                                 match.fixedDate = date;
                                 allMatches.push(match);
@@ -267,32 +270,30 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     }
 
     for (const e of allMatches) {
-        // Maçkolik statü haritalaması
         const rawStatus = String(e.status || "").toLowerCase();
         let statusType = 'notstarted';
         if (rawStatus === 'played' || rawStatus === 'finished') statusType = 'finished';
-        else if (rawStatus === 'playing' || rawStatus === 'live') statusType = 'inprogress';
-        else if (rawStatus === 'cancelled' || rawStatus === 'canceled') statusType = 'canceled';
-        else if (rawStatus === 'postponed') statusType = 'postponed';
+        else if (rawStatus === 'playing' || rawStatus === 'live' || rawStatus === 'fixture') {
+            // Eğer maç saati gelmiş veya canlıdaysa
+            statusType = (rawStatus === 'fixture') ? 'notstarted' : 'inprogress';
+        }
 
         const isFinished = statusType === 'finished'; 
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        // Maçkolik skor alanı güvenli okuma (Farklı objelerden gelebilir)
         const homeScoreRaw = e.fs_A ?? e.score_A ?? e.team_A_score ?? (e.score ? e.score.team_A : "0");
         const awayScoreRaw = e.fs_B ?? e.score_B ?? e.team_B_score ?? (e.score ? e.score.team_B : "0");
 
-        // Zamanı ayarlama (date_time_utc -> Türkiye Saati ve Timestamp)
-        const dateTR = new Date(e.date_time_utc + "Z"); // UTC olduğunu belirtiyoruz
+        const dateTR = new Date(e.date_time_utc + "Z"); 
         let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
         if (isInProgress) {
             const minStr = e.minute ? `${e.minute}'` : "CANLI";
             timeString = `${timeString}\n${minStr}`;
         }
 
-        const hName = e.team_A.display_name || e.team_A.name;
-        const aName = e.team_B.display_name || e.team_B.name;
+        const hName = e.team_A?.display_name || e.team_A?.name || "Ev Sahibi";
+        const aName = e.team_B?.display_name || e.team_B?.name || "Deplasman";
         const fallbackBroadcaster = getFallbackBroadcaster(e.competitionName);
         const result = getBroadcasterWithFallback("basketbol", e.fixedDate, timeString, hName, aName, fallbackBroadcaster);
 
@@ -300,19 +301,18 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 
         globalBasketballCache.set(e.uuid, {
             id: e.uuid, 
-            isElite: true, // Maçkolik maçları filtrelemediğimiz için hepsi geçerli
+            isElite: true, 
             status: statusType, 
             fixedDate: e.fixedDate, 
             fixedTime: timeString, 
             timestamp: dateTR.getTime(), 
             broadcaster: result.kanal,
-            // DOĞRUDAN MAÇKOLİK LOGO SUNUCUSU:
-            homeTeam: { name: hName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_A.uuid}.png` },
-            awayTeam: { name: aName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_B.uuid}.png` },
+            homeTeam: { name: hName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_A?.uuid}.png` },
+            awayTeam: { name: aName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_B?.uuid}.png` },
             tournamentLogo: `https://api.mackolikfeeds.com/basket/images/tournaments/150x150/${e.competitionId}.png`,
             homeScore: hasScore ? String(homeScoreRaw) : "-", 
             awayScore: hasScore ? String(awayScoreRaw) : "-", 
-            tournament: e.competitionName
+            tournament: e.competitionName || "Basketbol Ligi"
         });
 
         previousMatchStates.set(e.uuid, { status: statusType, date: e.fixedDate });
