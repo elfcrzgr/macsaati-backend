@@ -1,33 +1,39 @@
-async function testAlternativeBasketball() {
+async function testGlobalBasketball() {
     try {
-        // Alternatif mobil skor servisinin günlük basketbol maçları uç noktası
-        const todayStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-        const url = `https://api.allorigins.win/raw?url=` + encodeURIComponent(`https://api.sofascore.com/api/v1/sport/basketball/scheduled-events/${todayStr}`);
-        
-        // Veya doğrudan alternatif bir public skor API'si deneyelim:
-        const directUrl = `https://livetv.sx/enx/scoreboard/`; // Örnek alternatif
+        // Livescore / Alternatif mobil skor servisinin genel basketbol uç noktası
+        const url = `https://prod-public-api.livescore.com/v1/api/app/scoreboard/basketball/0/an?tz=3`;
 
-        console.log("Bağlantı deneniyor...");
-        
-        // Önce doğrudan public bir alternatif API deneyelim:
-        const response = await fetch("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard", {
+        const response = await fetch(url, {
             headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15"
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
+                "Accept": "application/json, text/plain, */*",
+                "Origin": "https://www.livescore.com",
+                "Referer": "https://www.livescore.com/"
             }
         });
 
         if (!response.ok) {
-            console.log(`❌ Alternatif API Reddi: HTTP ${response.status}`);
+            console.log(`❌ Livescore API Reddi: HTTP ${response.status}`);
             return;
         }
 
         const data = await response.json();
-        console.log("✅ BASKETBOL VERİSİ BAŞARIYLA ÇEKİLDİ!");
-        console.log("Gelen Lig/Etkinlik Sayısı:", data.events ? data.events.length : "Veri alındı");
+        console.log("✅ KÜRESEL BASKETBOL VERİSİ BAŞARIYLA ÇEKİLDİ!");
+        
+        // Gelen aşamaları/ligleri kontrol edelim
+        if (data.Stages) {
+            console.log("🏆 Toplam Lig/Stage Sayısı:", data.Stages.length);
+            // İlk ligin adını yazdıralım
+            if (data.Stages.length > 0) {
+                console.log("Örnek Lig:", data.Stages[0].SnName);
+            }
+        } else {
+            console.log("Veri yapısı:", Object.keys(data));
+        }
 
     } catch (e) {
         console.error("Test Hatası:", e.message);
     }
 }
 
-testAlternativeBasketball();
+testGlobalBasketball();
