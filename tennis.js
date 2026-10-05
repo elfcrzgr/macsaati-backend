@@ -189,7 +189,8 @@ function findNextMatchTime(cache, now = Date.now()) {
 // 🔥 MAÇKOLİK TENİS FETCH MOTORU
 async function fetchMackolikTennis(dateStr) {
     try {
-        const url = `https://api.mackolikfeeds.com/tennis/api/v1/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=${dateStr}&extended_period=1&language=tr&migration_status=perform&tz=3`;
+        // Tarih parametresini URL'den çıkarıp Maçkolik'in o anki güncel/canlı maç havuzunu doğrudan isteyelim:
+        const url = `https://api.mackolikfeeds.com/tennis/api/v1/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&extended_period=1&language=tr&migration_status=perform&tz=3`;
         const response = await fetch(url, {
             signal: timeoutSignal(15000),
             headers: {
@@ -203,7 +204,7 @@ async function fetchMackolikTennis(dateStr) {
 
         if (!response.ok) return null;
         return await response.json();
-    } catch (e) { return null; }
+    } (e) { return null; }
 }
 
 function isEliteTennisTournament(tourName) {
