@@ -328,6 +328,12 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     }
 
     for (const e of allMatches) {
+
+        // updateTennis döngüsünün içinde "for (const e of allMatches)" kısmının hemen altına şunu ekle:
+const p1 = e.contestants?.[0]?.players?.[0];
+console.log("🔍 OYUNCU HAM VERİSİ:", JSON.stringify(p1, null, 2));
+
+        
         // 1. Önce oyuncuları ve statüyü güvenli çekiyoruz
         const p1 = e.contestants?.[0]?.players?.[0];
         const p2 = e.contestants?.[1]?.players?.[0];
