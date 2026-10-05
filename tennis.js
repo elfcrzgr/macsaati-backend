@@ -522,4 +522,45 @@ async function main() {
         }
     }
 }
+async function debugTennisFields() {
+    const data = await fetchMackolikTennis(getTRDate(0));
+    const tournaments = data?.data?.tournaments || [];
+
+    // İlk maçı bul
+    let firstMatch = null;
+    for (const t of tournaments) {
+        for (const c of t.categories || []) {
+            for (const r of c.rounds || []) {
+                if (r.matches?.length) { firstMatch = r.matches[0]; break; }
+            }
+            if (firstMatch) break;
+        }
+        if (firstMatch) break;
+    }
+
+    if (!firstMatch) return console.log("Maç bulunamadı");
+
+    // 1) Tüm contestants yapısını yazdır
+    console.log("CONTESTANTS:", JSON.stringify(firstMatch.contestants, null, 2));
+
+    // 2) Tüm maç objesinde ülkeyle ilgili anahtarları ara
+    const hits = [];
+    const walk = (obj, path = "") => {
+        if (obj && typeof obj === "object") {
+            for (const [k, v] of Object.entries(obj)) {
+                const p = path ? `${path}.${k}` : k;
+                if (/country|nation|flag|ulke|iso|code|region/i.test(k)) hits.push(`${p} = ${JSON.stringify(v)}`);
+                walk(v, p);
+            }
+        }
+    };
+    walk(firstMatch);
+    console.log("ÜLKE ADAYLARI:\n" + hits.join("\n"));
+
+    // 3) Turnuva seviyesinde de bak
+    console.log("TURNUVA KEYS:", Object.keys(tournaments[0] || {}));
+}
+debugTennisFields();
+
+
 main();
