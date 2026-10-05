@@ -623,4 +623,25 @@ async function debugTennisFields() {
 debugTennisFields();
 
 
-main();
+async function collectCountries() {
+    const seen = new Map();
+    for (let off = -30; off <= 14; off++) {
+        const data = await fetchMackolikTennis(getTRDate(off));
+        for (const t of data?.data?.tournaments || [])
+            for (const c of t.categories || [])
+                for (const r of c.rounds || [])
+                    for (const m of r.matches || [])
+                        for (const ct of m.contestants || []) {
+                            const p = ct.players?.[0];
+                            const u = p?.country?.uuid;
+                            if (u && !COUNTRY_MAP[u] && !seen.has(u)) seen.set(u, p.displayName);
+                        }
+    }
+    console.log([...seen].map(([u, n]) => `"${u}": "??", // ${n}`).join("\n"));
+}
+
+//main();
+collectCountries();
+
+
+
