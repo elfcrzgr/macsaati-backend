@@ -49,6 +49,33 @@ function logMatchesBySport(matchGroups) {
     }
 }
 
+
+// =========================================================================
+// 🏆 LİG İSİMLERİNİ GITHUB REPO ID'LERİNE BAĞLAYAN SÖZLÜK
+// =========================================================================
+function getTournamentRepoId(compName) {
+    if (!compName) return "519"; // Varsayılan bir lig ID'si
+    const name = String(compName).toUpperCase();
+
+    if (name.includes("NBA")) return "3547";
+    if (name.includes("EUROLEAGUE")) return "138";
+    if (name.includes("EUROCUP")) return "141";
+    if (name.includes("TÜRKİYE SİGORTA BSL") || name.includes("BASKETBOL SÜPER LİGİ")) return "519";
+    if (name.includes("ŞAMPiyonlar LİGİ") || name.includes("BCL") || name.includes("CHAMPIONS LEAGUE")) return "9357";
+    if (name.includes("İSPANYA") || name.includes("ACB")) return "264";
+    if (name.includes("YUNANİSTAN")) return "304";
+    if (name.includes("ALMANYA") || name.includes("BBL")) return "227";
+    if (name.includes("FRANSA") || name.includes("PRO A")) return "156";
+    if (name.includes("ADRIYATIK") || name.includes("ABA")) return "235";
+    if (name.includes("VTB")) return "1438";
+    if (name.includes("WNBA")) return "486";
+    if (name.includes("YAZ LİGİ")) return "10415";
+    if (name.includes("DÜNYA KUPASI")) return "10437";
+    if (name.includes("TÜRKİYE BASKETBOL LİGİ") || name.includes("TBL") || name.includes("2. LİG")) return "1179";
+
+    return "519"; // Bulunamazsa varsayılan lig logosu
+}
+
 function saveState() {
     const obj = Object.fromEntries(previousMatchStates);
     fs.writeFileSync(STATE_FILE, JSON.stringify(obj));
@@ -342,7 +369,8 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             homeTeam: { name: hName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_A?.uuid}.png` },
             awayTeam: { name: aName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_B?.uuid}.png` },
             // TURNUVA LOGOLARI ARTIK BOŞ KALMAYACAK (Maçkolik Turnuva CDN):
-            tournamentLogo: `https://api.mackolikfeeds.com/basket/images/tournaments/150x150/${e.competitionId}.png`,
+            // Turnuva logosu senin GitHub repodaki ID'lerden çekilecek:
+            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(e.competitionName)}.png`,
             homeScore: hasScore ? String(homeScoreRaw) : "-", 
             awayScore: hasScore ? String(awayScoreRaw) : "-", 
             tournament: e.competitionName || "Basketbol Ligi"
