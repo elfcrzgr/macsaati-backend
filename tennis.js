@@ -257,6 +257,26 @@ const COUNTRY_MAP = {
     "c7e57f0d-24d8-4640-d1b4-1ea0a034dbdc": "dk", // H. Rune
     "f62e199c-62fe-df12-b2fc-0aeb812e2d85": "pt", // N. Borges
     "cb43b48d-4904-c1e5-a044-c484f8ba5b91": "hu", // F. Marozsan
+    "df9f507d-9501-b90b-df51-f30ab1777d0a": "ph", // A. Eala
+    "a27c2174-2865-3cf9-ee26-05581e82b131": "cl", // A. Tabilo
+    "0d70b5fc-21df-e66f-c1f2-2ca54d561072": "bo", // H. Dellien
+    "822cd481-23d3-dc0b-0eb4-77ed1a908696": "in", // Y. Bhambri
+    "e863220f-c7b5-0f9a-b2b2-6fae25f883fa": "sv", // M. Arevalo-Gonzalez
+    "851f242e-74db-31c8-d564-6b6d47bd3ced": "sk", // T. Mihalikova
+    "d16f0b87-e792-3a30-2592-1237ec9485f0": "pe", // J. Varillas
+    "4d6da64d-bd11-ea9b-cd7c-fe38e9fad057": "th", // K. Samrej
+    "dd4d0f50-33f4-28c3-e507-b4c073ae7ee7": "ro", // S. Cirstea
+    "0fd76b9c-3f31-c3b5-b55a-40fc02aba104": "fi", // H. Heliovaara
+    "ee7b470e-6a6a-7547-a659-c4e2071702b9": "at", // L. Miedler, S. Kraus
+    "6726bf92-e107-6489-9b11-2cc1eb92f0cf": "si", // D. Jakupovic
+    "37cddb29-1b8c-a1ec-9685-6098abbc239e": "md", // R. Albot
+    "ef6071ec-86b2-f2c8-2505-0547d397501a": "lt", // E. Butvilas
+    "c52340e9-b928-a524-cc1f-78ebca6bb174": "zw", // B. Lock
+    "9b9432da-ffaf-ab9f-2c5f-f7a77872e8fe": "uy", // A. Behar
+    "03eb3ba0-a6ec-ae26-ea02-3409721933b4": "id", // J. Tjen
+    "29bbeeff-f74b-5fe3-8162-772f7266d048": "jo", // A. Shelbayh
+    "df598250-6bba-48cb-eeaf-5e49dd985b9f": "am", // E. Avanesyan
+    "0af744fc-7ad2-865d-d41a-dc4f091d949f": "ba", // D. Dzumhur
 };
 
 const unknownCountries = new Set();
@@ -582,66 +602,13 @@ async function main() {
         }
     }
 }
-async function debugTennisFields() {
-    const data = await fetchMackolikTennis(getTRDate(0));
-    const tournaments = data?.data?.tournaments || [];
-
-    // İlk maçı bul
-    let firstMatch = null;
-    for (const t of tournaments) {
-        for (const c of t.categories || []) {
-            for (const r of c.rounds || []) {
-                if (r.matches?.length) { firstMatch = r.matches[0]; break; }
-            }
-            if (firstMatch) break;
-        }
-        if (firstMatch) break;
-    }
-
-    if (!firstMatch) return console.log("Maç bulunamadı");
-
-    // 1) Tüm contestants yapısını yazdır
-    console.log("CONTESTANTS:", JSON.stringify(firstMatch.contestants, null, 2));
-
-    // 2) Tüm maç objesinde ülkeyle ilgili anahtarları ara
-    const hits = [];
-    const walk = (obj, path = "") => {
-        if (obj && typeof obj === "object") {
-            for (const [k, v] of Object.entries(obj)) {
-                const p = path ? `${path}.${k}` : k;
-                if (/country|nation|flag|ulke|iso|code|region/i.test(k)) hits.push(`${p} = ${JSON.stringify(v)}`);
-                walk(v, p);
-            }
-        }
-    };
-    walk(firstMatch);
-    console.log("ÜLKE ADAYLARI:\n" + hits.join("\n"));
-
-    // 3) Turnuva seviyesinde de bak
-    console.log("TURNUVA KEYS:", Object.keys(tournaments[0] || {}));
-}
-debugTennisFields();
 
 
-async function collectCountries() {
-    const seen = new Map();
-    for (let off = -30; off <= 14; off++) {
-        const data = await fetchMackolikTennis(getTRDate(off));
-        for (const t of data?.data?.tournaments || [])
-            for (const c of t.categories || [])
-                for (const r of c.rounds || [])
-                    for (const m of r.matches || [])
-                        for (const ct of m.contestants || []) {
-                            const p = ct.players?.[0];
-                            const u = p?.country?.uuid;
-                            if (u && !COUNTRY_MAP[u] && !seen.has(u)) seen.set(u, p.displayName);
-                        }
-    }
-    console.log([...seen].map(([u, n]) => `"${u}": "??", // ${n}`).join("\n"));
-}
 
-//main();
-collectCountries();
+
+
+main();
+
 
 
 
