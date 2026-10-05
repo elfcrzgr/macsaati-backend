@@ -223,7 +223,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     let tenisMatchesLog = [];
     let anySuccess = false;
 
-    for (const date of targetDates) {
+ for (const date of targetDates) {
         const responseData = await fetchMackolikTennis(date);
         const tournaments = responseData?.data?.tournaments;
 
@@ -231,11 +231,28 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             anySuccess = true;
             tournaments.forEach(tour => {
                 const tourName = tour.name || "";
-                const countryName = tour.country?.name || "";
+                const nameUpper = tourName.toUpperCase();
                 const compId = tour.competition?.id;
 
-                // 🔍 Şimdilik hiçbir şey elemeden ham turnuva adlarını ve ID'lerini konsola dökelim
-                console.log(`🏆 Gelen Turnuva: "${tourName}" | Ülke: "${countryName}" | ID: ${compId}`);
+                // 🛑 KATI BEYAZ LİSTE (Whitelist): Sadece bu listedeki kelimeleri içeren turnuvalar içeri günden gelebilir!
+                const allowedTournaments = [
+                    "TOKYO", "BEIJING", "PEKİN", "SHANGHAI", "ŞANGHAY", 
+                    "WIMBLEDON", "US OPEN", "AUSTRALIAN OPEN", "ROLAND GARROS", 
+                    "FRENCH OPEN", "INDIAN WELLS", "MIAMI", "MONTE CARLO", 
+                    "MADRID", "ROME", "ROMA", "CINCINNATI", "CANADA", "MONTREAL", 
+                    "TORONTO", "PARIS", "PARİS", "BASEL", "VIENNA", "VİYANA", 
+                    "HAMBURG", "ACAPULCO", "DUBAI", "DUBAİ", "ROTTERDAM", 
+                    "BARCELONA", "BARSELONA", "QUEEN", "HALLE"
+                ];
+
+                const isAllowed = allowedTournaments.some(item => nameUpper.includes(item));
+                
+                // Eğer gelen turnuva yukarıdaki listede yoksa (Adana, Samsun, Wuning, Suzhou vb. hepsi) DİREKT REDDEDİLİR!
+                if (!isAllowed) {
+                    return; 
+                }
+
+                console.log(`✅ Onaylanan Elit Turnuva: "${tourName}" | ID: ${compId}`);
 
                 const categories = tour.categories || [];
                 categories.forEach(cat => {
