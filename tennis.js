@@ -199,17 +199,23 @@ async function fetchMackolikTennis(dateStr) {
         const response = await fetch(url, {
             signal: timeoutSignal(15000),
             headers: {
+                "Host": "api.mackolikfeeds.com",
+                "X-RequestToken": "exp=1791200933~acl=/tennis/api/v1/matches/*~hmac=2C553390367DF475320D1BBD952E654DE5F47FBF03AF663DB9107BD5AD0668D0",
+                "Connection": "keep-alive",
+                "Accept": "*/*",
                 "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
                 "X-Authorization": "token true",
-                "X-RequestToken": "exp=1791196814~acl=/tennis/api/v1/matches/*~hmac=D08290EF6031AAA741AF61DA5B238E8E78DD32A632A6D9A5291BF9A48603C667",
-                "Accept-Language": "tr-TR;q=1, en-GB;q=0.9",
-                "Connection": "keep-alive"
+                "Accept-Language": "tr-TR;q=1, en-GB;q=0.9"
             }
         });
 
-        if (!response.ok) return null;
+        if (!response.ok) {
+            console.log(`⚠️ Tenis API HTTP Hata Kodu: ${response.status}`);
+            return null;
+        }
         return await response.json();
     } catch (e) { 
+        console.log(`❌ Tenis Fetch Hatası: ${e.message}`);
         return null; 
     }
 }
