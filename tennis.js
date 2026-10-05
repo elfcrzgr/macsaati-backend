@@ -205,7 +205,10 @@ async function fetchMackolikTennis(dateStr) {
             }
         });
 
-        if (!response.ok) return null;
+      if (!response.ok) {
+    console.error(`❌ Mackolik ${response.status} döndü (token süresi dolmuş olabilir)`);
+    return null;
+}
         return await response.json();
     } catch (e) { return null; }
 }
