@@ -196,17 +196,32 @@ function withTimeout(promise, ms, label) {
     return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
-async function notifyAdminForBan(statusCode) {
-    const now = Date.now();
-    if (now - lastBanAlertTime < 1800000) return;
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
-
-    const message = `🚨 Maç Saati Sunucu Uyarısı\nFotMob API hata döndürdü (HTTP ${statusCode}).`;
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
+async function sendTelegram(text) {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+        console.log("⚠️ [TELEGRAM] Token veya Chat ID boş. start.sh ile çalıştırın.");
+        return false;
+    }
     try {
-        const response = await fetch(url, { signal: timeoutSignal(10000) });
-        if (response.ok) lastBanAlertTime = now;
-    } catch (e) {}
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
+            signal: timeoutSignal(10000)
+        });
+        const data = await res.json().catch(() => null);
+        if (data && data.ok) return true;
+        console.error("❌ [TELEGRAM] Hata:", data ? data.description : `HTTP ${res.status}`);
+    } catch (e) {
+        console.error("❌ [TELEGRAM] Bağlantı hatası:", e.message);
+    }
+    return false;
+}
+
+async function notifyAdminForBan(reason) {
+    const now = Date.now();
+    if (now - lastBanAlertTime < 1800000) return; // en fazla 30 dakikada bir mesaj
+    const ok = await sendTelegram(`🚨 Maç Saati Sunucu Uyarısı\nFotMob sorunu: ${reason}`);
+    if (ok) lastBanAlertTime = now;
 }
 
 async function uploadToFirebase(data) {
@@ -546,14 +561,14 @@ async function fetchFotMobMatches(dateStr) {
             }
         });
 
-        if (!response.ok) {
+                if (!response.ok) {
             if (response.status === 404) return [];
             console.log(`⚠️ FotMob reddi (HTTP ${response.status}) -> ${dateStr}`);
             if (response.status === 403 || response.status === 429) {
                 fotmobBlockedUntil = Date.now() + 10 * MINUTE_MS;
                 console.log("⛔ FotMob istekleri 10 dakika durduruldu.");
-                notifyAdminForBan(response.status);
             }
+            notifyAdminForBan(`HTTP ${response.status}`);
             return null;
         }
 
@@ -633,8 +648,9 @@ async function fetchFotMobMatches(dateStr) {
                 resolve(parsed);
             });
         });
-    } catch (e) {
+        } catch (e) {
         console.error("❌ FotMob çekme hatası:", e.message);
+        notifyAdminForBan(`Bağlantı hatası: ${e.message}`);
         return null;
     }
 }
@@ -1096,6 +1112,7 @@ function computeNextLiveScanAt(scanStart) {
 
 async function main() {
     loadState();
+    sendTelegram("🟢 Maç Saati futbol servisi başlatıldı.");
     console.log("============================================================");
     console.log("🟢 [FUTBOL - FOTMOB] BAĞIMSIZ SERVİS BAŞLADI");
     console.log("============================================================");
