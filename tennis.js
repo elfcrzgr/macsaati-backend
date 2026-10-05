@@ -218,6 +218,9 @@ function isEliteTennisTournament(tourName) {
 // =========================================================================
 // 🎾 TENİS GÜNCELLEME
 // =========================================================================
+// =========================================================================
+// 🎾 TENİS GÜNCELLEME (GÜVENLİ VE LOGLU)
+// =========================================================================
 async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🎾 Tenis: (Mod: ${isQuickScan ? '🚀 HIZLI (3dk)' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
     
@@ -227,6 +230,10 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
 
     for (const date of targetDates) {
         const responseData = await fetchMackolikTennis(date);
+        
+        // HAM VERİYİ GÖrelim: Maçkolik gerçekten maç yolluyor mu kontrol edelim
+        console.log(`📥 [TENİS API ${date}] Gelen Yanıt Yapısı:`, responseData ? "Veri Geldi" : "Boş/Hata");
+
         const rootData = responseData?.data;
         const areasArray = Array.isArray(rootData) ? rootData : rootData?.areas;
 
@@ -235,15 +242,16 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             areasArray.forEach(area => {
                 if (area.competitions && Array.isArray(area.competitions)) {
                     area.competitions.forEach(comp => {
-                        if (isEliteTennisTournament(comp.name)) {
-                            if (comp.matches && Array.isArray(comp.matches)) {
-                                comp.matches.forEach(match => {
-                                    match.competitionName = comp.name; 
-                                    match.competitionId = comp.uuid;
-                                    match.fixedDate = date;
-                                    allMatches.push(match);
-                                });
-                            }
+                        console.log(`🏆 Bulunan Tenis Turnuvası: ${comp.name} (Maç sayısı: ${comp.matches?.length || 0})`);
+                        
+                        // Şimdilik filtreyi esnetip gelen tüm maçları alalım ki maçları görebilelim
+                        if (comp.matches && Array.isArray(comp.matches)) {
+                            comp.matches.forEach(match => {
+                                match.competitionName = comp.name; 
+                                match.competitionId = comp.uuid;
+                                match.fixedDate = date;
+                                allMatches.push(match);
+                            });
                         }
                     });
                 }
@@ -251,7 +259,9 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         }
     }
 
-    if (!anySuccess) {
+    console.log(`📊 Toplam işlenecek tenis maçı sayısı: ${allMatches.length}`);
+
+    if (!anySuccess || allMatches.length === 0) {
         const stillLive = Array.from(globalTennisCache.values()).some(m => m.status === 'inprogress');
         return {
             hasLiveMatch: stillLive || sportUpdateStatus.hasLiveMatch,
@@ -324,7 +334,6 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
-
 // =========================================================================
 // 🆕 ANA DÖNGÜ (TENİS)
 // =========================================================================
