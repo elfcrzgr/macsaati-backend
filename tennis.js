@@ -13,6 +13,8 @@ const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 180000; // Canlı maç varken 3 dakika
 const TEN_MIN_MS = 10 * 60000;
 
+const emptyLeaguesCache = new Map();
+
 // =========================================================================
 // 🔥 FIREBASE BAŞLATMA
 // =========================================================================
@@ -186,13 +188,7 @@ function findNextMatchTime(cache, now = Date.now()) {
     return nextTime;
 }
 
-
-
-
-
-
-
-// 🔥 MAÇKOLİK TENİS FETCH MOTORU
+// 🔥 MAÇKOLİK TENİS FETCH MOTORU (GÜNCEL cURL HEADER'LARI İLE)
 async function fetchMackolikTennis(dateStr) {
     try {
         const url = `https://api.mackolikfeeds.com/tennis/api/v1/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=${dateStr}&extended_period=1&language=tr&migration_status=perform&tz=3`;
@@ -209,72 +205,70 @@ async function fetchMackolikTennis(dateStr) {
             }
         });
 
-        if (!response.ok) {
-            console.log(`⚠️ Tenis API HTTP Hata Kodu: ${response.status}`);
-            return null;
-        }
+        if (!response.ok) return null;
         return await response.json();
-    } catch (e) { 
-        console.log(`❌ Tenis Fetch Hatası: ${e.message}`);
-        return null; 
-    }
+    } catch (e) { return null; }
 }
-
-
-
-
-
-
-
-
-function isEliteTennisTournament(tourName) {
-    if (!tourName) return false;
-    const name = String(tourName).toUpperCase();
-    if (name.includes("ITF") || name.includes("CHALLENGER") || name.includes("UTR") || name.includes("QUALIFYING") || name.includes("LEGENDS")) {
-        return false;
-    }
-    return true; 
-}
-
 
 // =========================================================================
-// 🎾 TENİS GÜNCELLEME (YENİ MAÇKOLİK TENİS AĞACI)
+// 🎾 TENİS TURNUVA VE ÇÖP FİLTRELERİ
+// =========================================================================
+const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
+const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
+
+const isGarbage = (tourName) => {
+    const t = (tourName || "").toUpperCase();
+    const garbageWords = ["ITF", "CHALLENGER", "UTR", "QUALIFYING", "QUALIFIERS", "LEGENDS"];
+    return garbageWords.some(word => t.includes(word));
+};
+
+const checkIsValidTournament = (tournamentName) => {
+    if (!tournamentName) return false;
+    const nameUpper = tournamentName.toUpperCase();
+    if (nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS")) return false;
+    return true;
+};
+
+// =========================================================================
+// 🎾 TENİS GÜNCELLEME (FİLTRELİ VE BAYRAK DESTEKLİ)
 // =========================================================================
 async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
-    console.log(`🎾 Tenis: (Mod: ${isQuickScan ? '🚀 HIZLI (3dk)' : '🐢 DETAYLI'})`);
+    console.log(`🎾 Tenis: (Mod: ${isQuickScan ? '🚀 HIZLI (3dk)' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
     
     let allMatches = [];
     let tenisMatchesLog = [];
     let anySuccess = false;
 
-    // Bugünün tarihiyle istek atıyoruz:
-    const todayStr = getTRDate(0);
-    const responseData = await fetchMackolikTennis(todayStr);
-    const tournaments = responseData?.data?.tournaments;
+    for (const date of targetDates) {
+        const responseData = await fetchMackolikTennis(date);
+        const tournaments = responseData?.data?.tournaments;
 
-    if (tournaments && Array.isArray(tournaments)) {
-        anySuccess = true;
-        tournaments.forEach(tour => {
-            const tourName = tour.name || "Tenis Turnuvası";
-            const categories = tour.categories || [];
-            
-            categories.forEach(cat => {
-                const rounds = cat.rounds || [];
-                rounds.forEach(round => {
-                    const matches = round.matches || [];
-                    matches.forEach(match => {
-                        match.competitionName = tourName;
-                        match.categoryName = cat.name;
-                        match.roundName = round.name;
-                        allMatches.push(match);
+        if (tournaments && Array.isArray(tournaments)) {
+            anySuccess = true;
+            tournaments.forEach(tour => {
+                const tourName = tour.name || "Tenis Turnuvası";
+                
+                // 🛑 Eski sistemindeki elit turnuva / çöp filtreleri
+                if (isGarbage(tourName) || !checkIsValidTournament(tourName)) return;
+
+                const categories = tour.categories || [];
+                categories.forEach(cat => {
+                    const rounds = cat.rounds || [];
+                    rounds.forEach(round => {
+                        const matches = round.matches || [];
+                        matches.forEach(match => {
+                            match.competitionName = tourName;
+                            match.competitionId = tour.competition?.id;
+                            match.fixedDate = date;
+                            allMatches.push(match);
+                        });
                     });
                 });
             });
-        });
+        }
     }
 
-    console.log(`📊 Toplam işlenecek tenis maçı sayısı: ${allMatches.length}`);
-    // (Devamı aynı mantıkla devam ediyor...)
+    console.log(`📊 Filtrelenen toplam tenis maçı sayısı: ${allMatches.length}`);
 
     if (!anySuccess || allMatches.length === 0) {
         const stillLive = Array.from(globalTennisCache.values()).some(m => m.status === 'inprogress');
@@ -285,9 +279,14 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         };
     }
 
+    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
+    for (const [id, match] of globalTennisCache.entries()) {
+        if (!validDates.includes(match.fixedDate)) globalTennisCache.delete(id);
+    }
+
     for (const e of allMatches) {
         const rawStatus = String(e.status || "").toLowerCase();
-        let statusType = 'notstated';
+        let statusType = 'notstarted';
         if (rawStatus === 'played' || rawStatus === 'finished' || rawStatus === 'ft') statusType = 'finished';
         else if (rawStatus === 'playing' || rawStatus === 'live' || rawStatus.includes('set')) {
             statusType = 'inprogress';
@@ -303,6 +302,13 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         const hName = p1?.displayName || p1?.shortName || "Tenisçi 1";
         const aName = p2?.displayName || p2?.shortName || "Tenisçi 2";
 
+        // 🏳️ Oyuncuların ülke bayrakları (Senin repodaki naming yapısına göre)
+        const p1CountryCode = (p1?.country?.alpha2 || p1?.country?.code || "mc").toLowerCase();
+        const p2CountryCode = (p2?.country?.alpha2 || p2?.country?.code || "mc").toLowerCase();
+
+        const homeLogos = [`${TENNIS_LOGO_BASE}${p1CountryCode}.png`];
+        const awayLogos = [`${TENNIS_LOGO_BASE}${p2CountryCode}.png`];
+
         const homeScoreRaw = e.asets_A ?? 0;
         const awayScoreRaw = e.asets_B ?? 0;
 
@@ -315,12 +321,10 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             });
         }
 
-        let matchDateStr = getTRDate(0);
         let timeString = "00:00";
         if (e.startTime) {
-            const [dPart, tPart] = e.startTime.split(' ');
-            if (dPart) matchDateStr = dPart;
-            if (tPart) timeString = tPart.substring(0, 5);
+            const timePart = e.startTime.split(' ')[1];
+            if (timePart) timeString = timePart.substring(0, 5);
         }
 
         if (isInProgress) {
@@ -329,7 +333,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         }
 
         const fallbackBroadcaster = "S Sport / S Sport Plus";
-        const result = getBroadcasterWithFallback("tenis", matchDateStr, timeString, hName, aName, fallbackBroadcaster);
+        const result = getBroadcasterWithFallback("tenis", e.fixedDate, timeString, hName, aName, fallbackBroadcaster);
 
         if (!isQuickScan) tenisMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
 
@@ -337,20 +341,20 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             id: e.id, 
             isElite: true, 
             status: statusType, 
-            fixedDate: matchDateStr, 
+            fixedDate: e.fixedDate, 
             fixedTime: timeString, 
             timestamp: new Date(e.startTime || Date.now()).getTime(), 
             broadcaster: result.kanal,
-            homeTeam: { name: hName, logos: [`https://api.mackolikfeeds.com/tennis/images/players/150x150/${p1?.id}.png`] },
-            awayTeam: { name: aName, logos: [`https://api.mackolikfeeds.com/tennis/images/players/150x150/${p2?.id}.png`] },
-            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/default.png`,
+            homeTeam: { name: hName, logos: homeLogos },
+            awayTeam: { name: aName, logos: awayLogos },
+            tournamentLogo: `${TENNIS_TOURNAMENT_BASE}${e.competitionId || "default"}.png`,
             homeScore: hasScore ? String(homeScoreRaw) : "-", 
             awayScore: hasScore ? String(awayScoreRaw) : "-", 
             setScores: setScoresArr, 
             tournament: e.competitionName || "Tenis Turnuvası"
         });
 
-        previousMatchStates.set(String(e.id), { status: statusType, date: matchDateStr });
+        previousMatchStates.set(String(e.id), { status: statusType, date: e.fixedDate });
     }
 
     const finalMatches = Array.from(globalTennisCache.values()).sort((a, b) => a.timestamp - b.timestamp);
@@ -363,7 +367,6 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
-
 
 // =========================================================================
 // 🆕 ANA DÖNGÜ (TENİS)
@@ -441,7 +444,7 @@ async function main() {
                 }
             }
             else if (isUpcoming()) {
-                if (now - sportValueStatus.lastQuickUpdate >= MINUTE_MS) {
+                if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
                     console.log("\n⏰ [TENİS YAKLAŞAN] Yaklaşan tenis maçı vakti!");
                     const result = await withTimeout(updateTennis(quickScanDates, true), 60000, 'Hızlı tarama'); 
                     sportUpdateStatus.lastQuickUpdate = Date.now();
