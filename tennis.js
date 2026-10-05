@@ -365,22 +365,22 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         const homeLogos = [`${TENNIS_LOGO_BASE}${p1Code}.png`];
         const awayLogos = [`${TENNIS_LOGO_BASE}${p2Code}.png`];
 
-        // 🏆 Turnuva Logosu Eşleştirme (Repodaki Sofascore ID'lerine göre)
+       // 🏆 Turnuva Adını Konsola Yazdırarak Doğru Eşleştirelim
+        console.log(`🏆 Maçkolik Turnuva Adı: "${e.competitionName}" | ID: ${e.competitionId}`);
+
         const getRepoLogoByTournamentName = (name) => {
             if (!name) return "default.png";
             const n = name.toUpperCase();
+            
+            // Burayı terminalde göreceğin gerçek turnuva adlarına göre nokta atışı düzenleyeceğiz
+            if (n.includes("TOKYO")) return "2418.png"; // Tokyo ATP/WTA 500
+            if (n.includes("BEIJING") || n.includes("PEKİN")) return "2415.png";
+            if (n.includes("SHANGHAI")) return "2416.png";
             if (n.includes("WIMBLEDON")) return "2361.png";
             if (n.includes("US OPEN")) return "2449.png";
             if (n.includes("AUSTRALIAN OPEN")) return "2424.png";
             if (n.includes("ROLAND GARROS") || n.includes("FRENCH OPEN")) return "2436.png";
-            if (n.includes("INDIAN WELLS")) return "2398.png";
-            if (n.includes("MIAMI")) return "2414.png";
-            if (n.includes("MADRID")) return "2396.png";
-            if (n.includes("ROME") || n.includes("ROMA")) return "2397.png";
-            if (n.includes("MONTE CARLO")) return "2394.png";
-            if (n.includes("SHANGHAI") || n.includes("ŞANGHAY")) return "2416.png";
-            if (n.includes("PARIS") || n.includes("PARİS")) return "2413.png";
-            if (n.includes("TOKYO")) return "2418.png";
+            
             return "default.png";
         };
 
