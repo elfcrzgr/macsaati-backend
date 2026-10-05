@@ -309,8 +309,45 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         const homeLogos = [`${TENNIS_LOGO_BASE}mc.png`];
         const awayLogos = [`${TENNIS_LOGO_BASE}mc.png`];
 
-        // Geçici varsayılan turnuva logosu
-        const tournamentLogoUrl = `${TENNIS_TOURNAMENT_BASE}default.png`;
+        // 🏆 Güncel Sofascore ID'lerine Göre Turnuva Logosu Eşleme Fonksiyonu
+        const getRepoLogoByTournamentName = (tourName) => {
+            if (!tourName) return "default.png";
+            const n = tourName.toUpperCase();
+
+            // 🏆 GRAND SLAM
+            if (n.includes("AUSTRALIAN OPEN")) return "2363.png";
+            if (n.includes("ROLAND GARROS") || n.includes("FRENCH OPEN")) return "2480.png";
+            if (n.includes("WIMBLEDON")) return "2361.png";
+            if (n.includes("US OPEN")) return "2449.png";
+
+            // 👑 MASTERS 1000
+            if (n.includes("INDIAN WELLS")) return "2487.png";
+            if (n.includes("MIAMI")) return "2430.png";
+            if (n.includes("MONTE CARLO")) return "2391.png";
+            if (n.includes("MADRID")) return "2374.png";
+            if (n.includes("ROME") || n.includes("ROMA")) return "2488.png";
+            if (n.includes("MONTREAL") || n.includes("TORONTO") || n.includes("CANADA")) return "2390.png";
+            if (n.includes("CINCINNATI")) return "2373.png";
+            if (n.includes("SHANGHAI") || n.includes("ŞANGHAY")) return "2519.png";
+            if (n.includes("PARIS") || n.includes("PARİS")) return "2404.png";
+
+            // 🌟 ATP 500 / WTA 500
+            if (n.includes("TOKYO")) return "2435.png";
+            if (n.includes("BEIJING") || n.includes("PEKİN")) return "2436.png";
+            if (n.includes("WASHINGTON")) return "2368.png";
+            if (n.includes("ROTTERDAM")) return "2444.png";
+            if (n.includes("DUBAI") || n.includes("DUBAİ")) return "2389.png";
+            if (n.includes("BARCELONA") || n.includes("BARSELONA")) return "2407.png";
+            if (n.includes("HALLE")) return "2493.png";
+            if (n.includes("HAMBURG")) return "2405.png";
+            if (n.includes("VIENNA") || n.includes("VİYANA")) return "2428.png";
+
+            return "default.png";
+        };
+
+        const tournamentLogoUrl = `${TENNIS_TOURNAMENT_BASE}${getRepoLogoByTournamentName(e.competitionName)}`;
+       
+    
 
         // Set ve Maç Skoru Hesaplama
         let setScoresArr = [];
