@@ -214,7 +214,49 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REP
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
 const COUNTRY_MAP = {
-    "910661dd-2d4f-c036-3979-8b5bc4bbb9e3": "es",
+    "910661dd-2d4f-c036-3979-8b5bc4bbb9e3": "es", // Alcaraz, Munar
+    "6235235d-c0b9-e432-f0fc-ebe4db00fc92": "fr", // K. Jacquet
+    "c7a13592-8281-736f-2dba-f6fa53248df1": "ca", // D. Shapovalov
+    "eec70fe8-49a2-be7f-aa41-da639f6c307c": "mc", // V. Vacherot (Monako)
+    "f187256d-846e-0e87-f70a-51c459d38442": "cz", // J. Lehecka
+    "a5b78ac7-bcae-84e0-8f98-68e90db12830": "py", // A. Vallejo
+    "18acc5a7-13dd-43cf-a27a-969b547bf9d4": "au", // R. Hijikata
+    "8c767174-4aa2-d72f-0193-2446a79ef5c5": "ua", // D. Yastremska
+    "3763d9b2-3ef8-ef9a-d97e-14cfdd429958": "by", // A. Sabalenka
+    "8956c473-914f-1a5e-6be3-a666b5ce4b0b": "ru", // P. Kudermetova
+    "2cff13de-1bf1-e2bc-82a0-5f160b78c8b5": "ch", // V. Golubic
+    "af56e826-daa0-e506-891e-2a2ffa544bb9": "jp", // N. Osaka
+    "5b5ff3d7-c131-cc39-6470-be9b63fbf6f4": "hr", // D. Vekic
+    "b1843503-12f3-ea19-2838-8d93118c7a7e": "pl", // I. Swiatek
+    "501dc4bd-8129-8c1b-9873-704cb5165dee": "ar", // F. Cerundolo
+    "a8298c84-81df-81cb-8c42-4fcf9b450ddb": "de", // A. Zverev
+    "2af84eab-4ede-7445-355d-46bbfb95b0de": "rs", // N. Djokovic
+    "ace18d13-1089-7298-3fd4-b790c66cf9ea": "nl", // S. Arends
+    "424e06d0-4938-a642-e355-c91ad6bb7111": "kz", // A. Bublik
+    "1bf74acb-d76d-f7e7-cb1d-d9409981d57b": "br", // M. Melo
+    "b49feb9d-fa10-6942-b54a-22f1060fbb80": "gb", // J. Cash
+    "b2c4ea35-a25c-f038-bb55-f826912c4f64": "cn", // Q. Tang
+    "b5f65d72-ec19-43d8-5ddb-a6ff45957d02": "ru", // M. Kozyreva
+    "1145958c-1496-eef8-913e-822f6302f738": "tr", // Zeynep Sönmez
+    "4dbb5d9a-85df-3799-39d6-b18ea5e5745c": "us", // C. McNally
+    "a1f4a627-5510-54f7-0f17-98ee028b06bc": "be", // E. Mertens
+    "a3166fd4-a4e1-5b74-2d51-855032595b44": "no", // U. Eikeri
+    "8e69dfd6-38ee-7738-3d1c-2028011930f8": "it", // F. Cina
+    "8ffcdc14-e8fd-8fb1-c258-1c65b112d966": "ge", // N. Basilashvili
+    "a3135470-a9af-3e81-7e13-738cc89d0547": "se", // E. Ymer
+    "b8de80d5-4a75-c7c1-4705-527636636ea2": "za", // L. Harris
+    "664dd4d0-f4fd-ae17-662d-77ec03a74609": "lv", // J. Ostapenko
+    "6a260292-b79a-0601-9379-98d1c9508796": "gr", // M. Sakkari
+    "e8540a1d-8c99-395d-5a1b-f0b0f2029659": "nz", // E. Routliffe
+    "3c0f896c-16d1-bc06-deb9-66b830254895": "ee", // I. Neel
+    "f996c22a-eb47-71e5-9826-02ea6e367247": "tn", // A. Dougaz
+    "e9b82686-0f02-577d-9ace-8673dbaedc80": "tw", // C. Tseng
+    "0a7272ab-507f-1c51-8fef-aa1d98bec32b": "co", // N. Mejia
+    "3f75fe44-5eae-0ef6-5bb2-11ef3cbad4ce": "kr", // S. Hong
+    "e53868d9-8464-3d1c-20e7-184f67f70491": "hk", // C. Wong
+    "c7e57f0d-24d8-4640-d1b4-1ea0a034dbdc": "dk", // H. Rune
+    "f62e199c-62fe-df12-b2fc-0aeb812e2d85": "pt", // N. Borges
+    "cb43b48d-4904-c1e5-a044-c484f8ba5b91": "hu", // F. Marozsan
 };
 
 const unknownCountries = new Set();
