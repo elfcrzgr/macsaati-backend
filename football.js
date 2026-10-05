@@ -24,10 +24,18 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
 // Bir gün FotMob düzelirse bunu 0 yapın.
 const FOTMOB_TIME_OFFSET_MS = 60 * 60 * 1000;
 
+// 👶 U21 milli takım/lig maçları listeye alınmaz (takım adı veya lig adında "U21" / "Under 21" geçenler)
+const EXCLUDE_U21 = true;
+const U21_RE = /\bU[-\s]?21\b|\bunder[-\s]?21\b/i;
+
 // 🚫 FotMob iptal edilen bazı maçlara "bitti" (F) statüsü ve 0-0 skor veriyor.
 // true: bitti görünüp başlama kaydı (gs) olmayan 0-0 maçlar iptal sayılır ve listeye girmez.
 // Gerçek bir 0-0 maç yanlışlıkla kaybolursa bunu false yapın.
 const HIDE_FINISHED_WITHOUT_START = true;
+
+// 👶 Genç takım maçları listeye alınmaz (lig adında ya da takım adında geçerse).
+// Başka yaş grupları da çıksın isterseniz örneğin (U19|U20|U21|U23) yazın.
+const EXCLUDE_YOUTH_REGEX = /\b(U[-\s]?21|under[-\s]?21)\b/i;
 
 // 🔎 Hata ayıklama: true iken bilinmeyen statü değerlerini ve gelen yeni ligleri loglar
 const DEBUG_UNKNOWN = true;
@@ -278,6 +286,14 @@ const LEAGUE_NAME_RULES = [
     { re: /^friendlies$/i,                   tr: "Uluslararası Hazırlık Maçları", logoId: 114,  national: true, elite: false, intOnly: true }
 ];
 
+// 🚫 Listelenmeyecek maçlar: (1) "U" + sayı içeren her takım/lig (U17, U19, U21, U23, Under-20...), (2) tüm kadın maçları
+const YOUTH_RE = /\bU[- ]?\d{2}\b|\bunder[- ]?\d{2}\b/i;
+const WOMEN_RE = /\(W\)|\bwomen'?s?\b|\bfemin|\bfemen|\bfemmin|\bkvinner\b|\bfrauen\b|\bdamen\b|\bladies\b|\bvrouwen\b|\bkad[ıi]nlar?\b|\bNWSL\b|\bWSL\b|toppserien|damallsvenskan|\bliga f\b/i;
+function isExcludedMatch(homeName, awayName, leagueName) {
+    const names = [homeName, awayName, leagueName].map(n => String(n || ''));
+    return names.some(n => YOUTH_RE.test(n) || WOMEN_RE.test(n));
+}
+
 function matchLeagueRule(name, ccode) {
     const isInt = String(ccode || "").toUpperCase() === 'INT';
     for (const r of LEAGUE_NAME_RULES) {
@@ -352,8 +368,7 @@ const teamTranslations = {
     "guam": "Guam", "bangladesh": "Bangladeş", "pakistan": "Pakistan", "cambodia": "Kamboçya",
     "bhutan": "Butan", "indonesia": "Endonezya", "oman": "Umman", "tajikistan": "Tacikistan",
     "syria": "Suriye", "bahrain": "Bahreyn", "hong kong": "Hong Kong", "mongolia": "Moğolistan",
-    "thailand": "Tayland", "kuwait": "Kuveyt", "myanmar": "Myanmar", "lithuania": "Litvanya", "Comoros": "Komoro Adaları", 
-    "Kyrgyzstan": "Kırgızistan", "Lebanon": "Lübnan", "Andorra": "Andora"
+    "thailand": "Tayland", "kuwait": "Kuveyt", "myanmar": "Myanmar", "lithuania": "Litvanya"
 };
 
 const translateTeam = (name) => {
@@ -563,6 +578,7 @@ async function fetchFotMobMatches(dateStr) {
                     if (!matches) return;
                     if (!Array.isArray(matches)) matches = [matches];
 
+                    if (EXCLUDE_U21 && U21_RE.test(String(lAttr.name || ''))) return;
                     const rule = matchLeagueRule(lAttr.name, ccode);
                     if (!isAllowedLeague(leagueId, ccode, lAttr.name)) {
                         if (DEBUG_UNKNOWN && !seenUnknownLeagues.has(leagueId)) {
@@ -572,8 +588,13 @@ async function fetchFotMobMatches(dateStr) {
                         return;
                     }
 
+                    if (EXCLUDE_YOUTH_REGEX.test(String(lAttr.name || ''))) return;
+
                     matches.forEach(m => {
                         const attr = m.$ || {};
+                        if (isExcludedMatch(attr.hTeam, attr.aTeam, lAttr.name)) return;
+                        if (EXCLUDE_YOUTH_REGEX.test(String(attr.hTeam || '')) || EXCLUDE_YOUTH_REGEX.test(String(attr.aTeam || ''))) return;
+                        if (EXCLUDE_U21 && (U21_RE.test(String(attr.hTeam || '')) || U21_RE.test(String(attr.aTeam || '')))) return;
                         const parsedT = parseFotMobTime(attr.time, dateStr);
                         const rawStartMs = new Date(`${parsedT.date}T${parsedT.time}:00+03:00`).getTime();
                         if (isNaN(rawStartMs)) return;
