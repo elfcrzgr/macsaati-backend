@@ -214,7 +214,7 @@ const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REP
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
 // =========================================================================
-// 🎾 TENİS GÜNCELLEME (FİLTRELİ, UUID BAYRAK VE REPO LOGOLARI)
+// 🎾 TENİS GÜNCELLEME (ARINDIRILMIŞ SAF YAPI)
 // =========================================================================
 async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🎾 Tenis: (Mod: ${isQuickScan ? '🚀 HIZLI (3dk)' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
@@ -234,27 +234,8 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                 const countryName = tour.country?.name || "";
                 const compId = tour.competition?.id;
 
-                // 🛑 Çöp ve Challenger / ITF Turnuvalarını Eleme Filtresi
-                const fullTourString = `${tourName} ${countryName}`.toUpperCase();
-                if (
-                    fullTourString.includes("CHALLENGER") || 
-                    fullTourString.includes("ITF") || 
-                    fullTourString.includes("UTR") || 
-                    fullTourString.includes("QUALIFYING") || 
-                    fullTourString.includes("QUALIFIERS") || 
-                    fullTourString.includes("LEGENDS") ||
-                    fullTourString.includes("ADANA") ||
-                    fullTourString.includes("SAMSUN") ||
-                    fullTourString.includes("WUNING") ||
-                    fullTourString.includes("SUZHOU") ||
-                    fullTourString.includes("ANTOFAGASTA") ||
-                    fullTourString.includes("BRAGA") ||
-                    fullTourString.includes("PALERMO") ||
-                    fullTourString.includes("VILLENA") ||
-                    fullTourString.includes("JINGSHAN")
-                ) {
-                    return;
-                }
+                // 🔍 Şimdilik hiçbir şey elemeden ham turnuva adlarını ve ID'lerini konsola dökelim
+                console.log(`🏆 Gelen Turnuva: "${tourName}" | Ülke: "${countryName}" | ID: ${compId}`);
 
                 const categories = tour.categories || [];
                 categories.forEach(cat => {
@@ -273,7 +254,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         }
     }
 
-    console.log(`📊 Elit turnuvalardan süzülen toplam tenis maçı sayısı: ${allMatches.length}`);
+    console.log(`📊 Toplam çekilen tenis maçı sayısı: ${allMatches.length}`);
 
     if (!anySuccess || allMatches.length === 0) {
         const stillLive = Array.from(globalTennisCache.values()).some(m => m.status === 'inprogress');
@@ -307,37 +288,14 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        // 🏳️ Proxyman'de Yakalanan Maçkolik Resmi UUID Bayrak URL'si
-        const getPlayerFlagUrl = (player) => {
-            const uuid = player?.country?.uuid;
-            if (!uuid) return `${TENNIS_LOGO_BASE}mc.png`;
-            return `https://api.mackolikfeeds.com/betting-service/tennis/flags/75/${uuid}.png`;
-        };
+        // Geçici güvenli bayrak (varsayılan)
+        const homeLogos = [`${TENNIS_LOGO_BASE}mc.png`];
+        const awayLogos = [`${TENNIS_LOGO_BASE}mc.png`];
 
-        const homeLogos = [getPlayerFlagUrl(p1)];
-        const awayLogos = [getPlayerFlagUrl(p2)];
+        // Geçici varsayılan turnuva logosu
+        const tournamentLogoUrl = `${TENNIS_TOURNAMENT_BASE}default.png`;
 
-        // 🏆 Repodaki Sofascore ID'lerine Göre Turnuva Logosu Eşleme
-        const getRepoLogoByTournament = (name) => {
-            const n = (name || "").toUpperCase();
-            if (n.includes("TOKYO")) return "2418.png";
-            if (n.includes("BEIJING") || n.includes("PEKİN")) return "2415.png";
-            if (n.includes("SHANGHAI") || n.includes("ŞANGHAY")) return "2416.png";
-            if (n.includes("WIMBLEDON")) return "2361.png";
-            if (n.includes("US OPEN")) return "2449.png";
-            if (n.includes("AUSTRALIAN OPEN")) return "2424.png";
-            if (n.includes("ROLAND GARROS") || n.includes("FRENCH OPEN")) return "2436.png";
-            if (n.includes("INDIAN WELLS")) return "2398.png";
-            if (n.includes("MIAMI")) return "2414.png";
-            if (n.includes("MADRID")) return "2396.png";
-            if (n.includes("ROME") || n.includes("ROMA")) return "2397.png";
-            if (n.includes("MONTE CARLO")) return "2394.png";
-            return "default.png";
-        };
-
-        const tournamentLogoUrl = `${TENNIS_TOURNAMENT_BASE}${getRepoLogoByTournament(e.competitionName)}`;
-
-        // 🎾 Set ve Maç Skoru Hesaplama
+        // Set ve Maç Skoru Hesaplama
         let setScoresArr = [];
         let homeSetsWon = 0;
         let awaySetsWon = 0;
