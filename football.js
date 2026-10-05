@@ -1038,6 +1038,8 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 broadcaster: bc.kanal,
                 homeTeam: { name: hName, logo: homeLogoUrl, id: e.home.id },
                 awayTeam: { name: aName, logo: awayLogoUrl, id: e.away.id },
+                homeNameRaw: hNameRaw,
+                awayNameRaw: aNameRaw,
                 tournamentLogo: fotmobLeagueLogo(e.rule ? e.rule.logoId : e.leagueId),
                 homeScore: finalHomeScore,
                 awayScore: finalAwayScore,
