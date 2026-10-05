@@ -222,7 +222,10 @@ async function fetchMackolikBasketball(dateStr) {
             headers: {
                 "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
                 "X-Authorization": "token true",
-                "X-RequestToken": "exp=1791196814~acl=/basket/api/matches/*~hmac=D08290EF6031AAA741AF61DA5B238E8E78DD32A632A6D9A5291BF9A48603C667",
+
+              
+                
+                "X-RequestToken": "exp=1791213715~acl=/basket/api/matches/*~hmac=8AF150624C2A0E2616ADD3E02467F8A2FFD4CA1F89202A6BFE0192F981734D7E",
                 "Accept-Language": "tr-TR;q=1, en-GB;q=0.9",
                 "Connection": "keep-alive"
             }
