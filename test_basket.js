@@ -1,39 +1,35 @@
-async function testGlobalBasketball() {
+async function testMackolikBasket() {
     try {
-        // Livescore / Alternatif mobil skor servisinin genel basketbol uç noktası
-        const url = `https://prod-public-api.livescore.com/v1/api/app/scoreboard/basketball/0/an?tz=3`;
+        // Proxyman'deki 7246 numaralı basketbol isteğinin URL'si
+        const url = "https://api.mackolikfeeds.com/basket/api/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=2026-10-05&extended_period=1&language=tr&migration_status=perform&tz=3";
 
         const response = await fetch(url, {
             headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
-                "Accept": "application/json, text/plain, */*",
-                "Origin": "https://www.livescore.com",
-                "Referer": "https://www.livescore.com/"
+                "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
+                "X-Authorization": "token true",
+                // Şimdilik ekrandaki futbol token'ını deniyoruz, çalışmazsa basketbolunkini alacağız
+                "X-RequestToken": "exp=1791196812~acl=/api/matches/*~hmac=0AFB9A50F7BFAD8CD889598D8B1315106FFA1E3264423018559955C016FC3287", 
+                "Accept-Language": "tr-TR;q=1, en-GB;q=0.9",
+                "Connection": "keep-alive"
             }
         });
 
         if (!response.ok) {
-            console.log(`❌ Livescore API Reddi: HTTP ${response.status}`);
+            console.log(`❌ Hata: HTTP ${response.status}`);
+            const text = await response.text();
+            console.log("Sunucu yanıtı:", text);
             return;
         }
 
         const data = await response.json();
-        console.log("✅ KÜRESEL BASKETBOL VERİSİ BAŞARIYLA ÇEKİLDİ!");
+        console.log("✅ MAÇKOLİK BASKETBOL VERİSİ GELDİ!");
         
-        // Gelen aşamaları/ligleri kontrol edelim
-        if (data.Stages) {
-            console.log("🏆 Toplam Lig/Stage Sayısı:", data.Stages.length);
-            // İlk ligin adını yazdıralım
-            if (data.Stages.length > 0) {
-                console.log("Örnek Lig:", data.Stages[0].SnName);
-            }
-        } else {
-            console.log("Veri yapısı:", Object.keys(data));
-        }
-
+        // Gelen verinin anahtarlarına bakalım (Maçlar hangi dizide geliyor görelim)
+        console.log("Veri yapısı:", Object.keys(data));
+        
     } catch (e) {
         console.error("Test Hatası:", e.message);
     }
 }
 
-testGlobalBasketball();
+testMackolikBasket();
