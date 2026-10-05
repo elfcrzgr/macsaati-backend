@@ -10,7 +10,7 @@ require('events').EventEmitter.defaultMaxListeners = 100;
 const STATE_FILE = 'basketball_states.json'; 
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
-const MINUTE_MS = 60000;
+const MINUTE_MS = 180000;
 const TEN_MIN_MS = 10 * 60000;
 
 // =========================================================================
