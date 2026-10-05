@@ -222,6 +222,34 @@ const getFallbackBroadcaster = (compName) => {
 // =========================================================================
 // 🏀 BASKETBOL GÜNCELLEME (GÜNCELLENMİŞ MAÇKOLİK PARSER)
 // =========================================================================
+// =========================================================================
+// 🏀 ELİT LİG FİLTRELEME VE SEÇİM KURALLARI
+// =========================================================================
+function isEliteCompetition(compName) {
+    if (!compName) return false;
+    const name = String(compName).toLowerCase();
+
+    // ❌ Kadınlar liglerini ele (Sadece WNBA hariç)
+    if ((name.includes('kadın') || name.includes('women') || name.includes('kbsl')) && !name.includes('wnba')) {
+        return false;
+    }
+
+    // ✅ İzin verilen ana ve elit lig anahtar kelimeleri
+    const allowedKeywords = [
+        'nba', 'wnba',
+        'euroleague', 'eurocup',
+        'şampiyonlar ligi', 'champions league',
+        'türkiye sigorta bsl', 'türkiye basketbol ligi', 'tbl', 'basketbol süper ligi',
+        'acb', 'lig a', 'basket league', 'bbl', 'pro a', 'aba league', 'vtb',
+        'italya', 'ispanya', 'yunanistan', 'almanya', 'fransa'
+    ];
+
+    return allowedKeywords.some(keyword => name.includes(keyword));
+}
+
+// =========================================================================
+// 🏀 BASKETBOL GÜNCELLEME (FİLTRELENMİŞ & LOGOSU DÜZELTİLMİŞ)
+// =========================================================================
 async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🏀 Basketbol: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
     
@@ -231,8 +259,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 
     for (const date of targetDates) {
         const responseData = await fetchMackolikBasketball(date);
-        
-        // Gelen verinin yapısını güvenli bir şekilde kontrol ediyoruz (areas dizisi kontrolü)
         const rootData = responseData?.data;
         const areasArray = Array.isArray(rootData) ? rootData : rootData?.areas;
 
@@ -241,13 +267,16 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             areasArray.forEach(area => {
                 if (area.competitions && Array.isArray(area.competitions)) {
                     area.competitions.forEach(comp => {
-                        if (comp.matches && Array.isArray(comp.matches)) {
-                            comp.matches.forEach(match => {
-                                match.competitionName = comp.name; 
-                                match.competitionId = comp.uuid;
-                                match.fixedDate = date;
-                                allMatches.push(match);
-                            });
+                        // Sadece bizim seçtiğimiz elit ligleri içeri alıyoruz!
+                        if (isEliteCompetition(comp.name)) {
+                            if (comp.matches && Array.isArray(comp.matches)) {
+                                comp.matches.forEach(match => {
+                                    match.competitionName = comp.name; 
+                                    match.competitionId = comp.uuid;
+                                    match.fixedDate = date;
+                                    allMatches.push(match);
+                                });
+                            }
                         }
                     });
                 }
@@ -274,7 +303,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         let statusType = 'notstarted';
         if (rawStatus === 'played' || rawStatus === 'finished') statusType = 'finished';
         else if (rawStatus === 'playing' || rawStatus === 'live' || rawStatus === 'fixture') {
-            // Eğer maç saati gelmiş veya canlıdaysa
             statusType = (rawStatus === 'fixture') ? 'notstarted' : 'inprogress';
         }
 
@@ -307,8 +335,10 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             fixedTime: timeString, 
             timestamp: dateTR.getTime(), 
             broadcaster: result.kanal,
+            // Takım Logoları Maçkolik CDN:
             homeTeam: { name: hName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_A?.uuid}.png` },
             awayTeam: { name: aName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_B?.uuid}.png` },
+            // TURNUVA LOGOLARI ARTIK BOŞ KALMAYACAK (Maçkolik Turnuva CDN):
             tournamentLogo: `https://api.mackolikfeeds.com/basket/images/tournaments/150x150/${e.competitionId}.png`,
             homeScore: hasScore ? String(homeScoreRaw) : "-", 
             awayScore: hasScore ? String(awayScoreRaw) : "-", 
