@@ -213,6 +213,25 @@ async function fetchMackolikTennis(dateStr) {
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
 
+const COUNTRY_MAP = {
+    "910661dd-2d4f-c036-3979-8b5bc4bbb9e3": "es",
+};
+
+const unknownCountries = new Set();
+function getFlagUrl(player) {
+    const uuid = player?.country?.uuid;
+    if (!uuid) return null;
+    const code = COUNTRY_MAP[uuid];
+    if (!code) {
+        if (!unknownCountries.has(uuid)) {
+            unknownCountries.add(uuid);
+            console.log(`❓ "${uuid}": "??", // ${player.displayName}`);
+        }
+        return null;
+    }
+    return `${TENNIS_LOGO_BASE}${code}.png`;
+}
+
 // =========================================================================
 // 🎾 TENİS GÜNCELLEME (ARINDIRILMIŞ SAF YAPI)
 // =========================================================================
@@ -305,9 +324,8 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        // Geçici güvenli bayrak (varsayılan)
-        const homeLogos = [`${TENNIS_LOGO_BASE}mc.png`];
-        const awayLogos = [`${TENNIS_LOGO_BASE}mc.png`];
+       const homeLogos = [getFlagUrl(p1) || `${TENNIS_LOGO_BASE}mc.png`];
+       const awayLogos = [getFlagUrl(p2) || `${TENNIS_LOGO_BASE}mc.png`];
 
         // 🏆 Güncel Sofascore ID'lerine Göre Turnuva Logosu Eşleme Fonksiyonu
         const getRepoLogoByTournamentName = (tourName) => {
