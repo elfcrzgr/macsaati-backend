@@ -267,10 +267,13 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             areasArray.forEach(area => {
                 if (area.competitions && Array.isArray(area.competitions)) {
                     area.competitions.forEach(comp => {
+
+                        console.log("Turnuva Kontrol:", comp.name, "ID:", comp.uuid, "Keys:", Object.keys(comp));
                         // Sadece bizim seçtiğimiz elit ligleri içeri alıyoruz!
                         if (isEliteCompetition(comp.name)) {
                             if (comp.matches && Array.isArray(comp.matches)) {
                                 comp.matches.forEach(match => {
+                                    
                                     match.competitionName = comp.name; 
                                     match.competitionId = comp.uuid;
                                     match.fixedDate = date;
