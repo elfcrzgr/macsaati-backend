@@ -215,11 +215,9 @@ function isEliteTennisTournament(tourName) {
     return true; 
 }
 
+
 // =========================================================================
-// 🎾 TENİS GÜNCELLEME
-// =========================================================================
-// =========================================================================
-// 🎾 TENİS GÜNCELLEME (GÜVENLİ VE LOGLU)
+// 🎾 TENİS GÜNCELLEME (YENİ MAÇKOLİK TENİS AĞACI)
 // =========================================================================
 async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🎾 Tenis: (Mod: ${isQuickScan ? '🚀 HIZLI (3dk)' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
@@ -230,31 +228,27 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
 
     for (const date of targetDates) {
         const responseData = await fetchMackolikTennis(date);
-        
-        // HAM VERİYİ GÖrelim: Maçkolik gerçekten maç yolluyor mu kontrol edelim
-        console.log(`📥 [TENİS API ${date}] Gelen Yanıt Yapısı:`, responseData ? "Veri Geldi" : "Boş/Hata");
+        const tournaments = responseData?.data?.tournaments;
 
-        const rootData = responseData?.data;
-        const areasArray = Array.isArray(rootData) ? rootData : rootData?.areas;
-
-        if (rootData && areasArray && Array.isArray(areasArray)) {
+        if (tournaments && Array.isArray(tournaments)) {
             anySuccess = true;
-            areasArray.forEach(area => {
-                if (area.competitions && Array.isArray(area.competitions)) {
-                    area.competitions.forEach(comp => {
-                        console.log(`🏆 Bulunan Tenis Turnuvası: ${comp.name} (Maç sayısı: ${comp.matches?.length || 0})`);
-                        
-                        // Şimdilik filtreyi esnetip gelen tüm maçları alalım ki maçları görebilelim
-                        if (comp.matches && Array.isArray(comp.matches)) {
-                            comp.matches.forEach(match => {
-                                match.competitionName = comp.name; 
-                                match.competitionId = comp.uuid;
-                                match.fixedDate = date;
-                                allMatches.push(match);
-                            });
-                        }
+            tournaments.forEach(tour => {
+                const tourName = tour.name || "Tenis Turnuvası";
+                const categories = tour.categories || [];
+                
+                categories.forEach(cat => {
+                    const rounds = cat.rounds || [];
+                    rounds.forEach(round => {
+                        const matches = round.matches || [];
+                        matches.forEach(match => {
+                            match.competitionName = tourName;
+                            match.categoryName = cat.name;
+                            match.roundName = round.name;
+                            match.fixedDate = date;
+                            allMatches.push(match);
+                        });
                     });
-                }
+                });
             });
         }
     }
@@ -278,50 +272,69 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     for (const e of allMatches) {
         const rawStatus = String(e.status || "").toLowerCase();
         let statusType = 'notstarted';
-        if (rawStatus === 'played' || rawStatus === 'finished') statusType = 'finished';
-        else if (rawStatus === 'playing' || rawStatus === 'live' || rawStatus === 'fixture') {
-            statusType = (rawStatus === 'fixture') ? 'notstarted' : 'inprogress';
+        if (rawStatus === 'played' || rawStatus === 'finished' || rawStatus === 'ft') statusType = 'finished';
+        else if (rawStatus === 'playing' || rawStatus === 'live' || rawStatus === 'second set' || rawStatus === 'first set' || rawStatus === 'third set') {
+            statusType = 'inprogress';
         }
 
         const isFinished = statusType === 'finished'; 
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        const homeScoreRaw = e.fs_A ?? e.score_A ?? e.team_A_score ?? (e.score ? e.score.team_A : "0");
-        const awayScoreRaw = e.fs_B ?? e.score_B ?? e.team_B_score ?? (e.score ? e.score.team_B : "0");
+        // Oyuncuları contestants dizisinden güvenli çekme
+        const p1 = e.contestants?.[0]?.players?.[0];
+        const p2 = e.contestants?.[1]?.players?.[0];
 
-        const dateTR = new Date(e.date_time_utc + "Z"); 
-        let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
-        if (isInProgress) {
-            const minStr = e.minute ? `${e.minute}'` : "CANLI";
-            timeString = `${timeString}\n${minStr}`;
+        const hName = p1?.displayName || p1?.shortName || "Tenisçi 1";
+        const aName = p2?.displayName || p2?.shortName || "Tenisçi 2";
+
+        const homeScoreRaw = e.asets_A ?? (e.sets ? e.sets.reduce((acc, s) => acc + (s.score?.[0]?.games > s.score?.[1]?.games ? 1 : 0), 0) : 0);
+        const awayScoreRaw = e.asets_B ?? (e.sets ? e.sets.reduce((acc, s) => acc + (s.score?.[1]?.games > s.score?.[0]?.games ? 1 : 0), 0) : 0);
+
+        // Set skorlarını formatlama (Örn: ["5-7", "2-1"])
+        let setScoresArr = [];
+        if (e.sets && Array.isArray(e.sets)) {
+            e.sets.forEach(s => {
+                const g1 = s.score?.[0]?.games ?? 0;
+                const g2 = s.score?.[1]?.games ?? 0;
+                setScoresArr.push(`${g1}-${g2}`);
+            });
         }
 
-        const hName = e.team_A?.display_name || e.team_A?.name || "Tenisçi 1";
-        const aName = e.team_B?.display_name || e.team_B?.name || "Tenisçi 2";
+        let timeString = "00:00";
+        if (e.startTime) {
+            const timePart = e.startTime.split(' ')[1];
+            if (timePart) timeString = timePart.substring(0, 5);
+        }
+
+        if (isInProgress) {
+            const periodStr = e.period || "CANLI";
+            timeString = `${timeString}\n${periodStr}`;
+        }
+
         const fallbackBroadcaster = "S Sport / S Sport Plus";
         const result = getBroadcasterWithFallback("tenis", e.fixedDate, timeString, hName, aName, fallbackBroadcaster);
 
         if (!isQuickScan) tenisMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
 
-        globalTennisCache.set(e.uuid, {
-            id: e.uuid, 
+        globalTennisCache.set(e.id, {
+            id: e.id, 
             isElite: true, 
             status: statusType, 
             fixedDate: e.fixedDate, 
             fixedTime: timeString, 
-            timestamp: dateTR.getTime(), 
+            timestamp: new Date(e.startTime || Date.now()).getTime(), 
             broadcaster: result.kanal,
-            homeTeam: { name: hName, logos: [`https://api.mackolikfeeds.com/tennis/images/players/150x150/${e.team_A?.uuid}.png`] },
-            awayTeam: { name: aName, logos: [`https://api.mackolikfeeds.com/tennis/images/players/150x150/${e.team_B?.uuid}.png`] },
+            homeTeam: { name: hName, logos: [`https://api.mackolikfeeds.com/tennis/images/players/150x150/${p1?.id}.png`] },
+            awayTeam: { name: aName, logos: [`https://api.mackolikfeeds.com/tennis/images/players/150x150/${p2?.id}.png`] },
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/default.png`,
             homeScore: hasScore ? String(homeScoreRaw) : "-", 
             awayScore: hasScore ? String(awayScoreRaw) : "-", 
-            setScores: [], 
+            setScores: setScoresArr, 
             tournament: e.competitionName || "Tenis Turnuvası"
         });
 
-        previousMatchStates.set(e.uuid, { status: statusType, date: e.fixedDate });
+        previousMatchStates.set(String(e.id), { status: statusType, date: e.fixedDate });
     }
 
     const finalMatches = Array.from(globalTennisCache.values()).sort((a, b) => a.timestamp - b.timestamp);
@@ -334,6 +347,10 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
+
+
+
+
 // =========================================================================
 // 🆕 ANA DÖNGÜ (TENİS)
 // =========================================================================
