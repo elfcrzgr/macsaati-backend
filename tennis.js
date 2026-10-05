@@ -434,37 +434,20 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         let homeSetsWon = 0;
         let awaySetsWon = 0;
 
-        // Bir set bitti mi? (6+ gem ve 2 fark, ya da 7 gem)
-        const isSetComplete = (g1, g2) => {
-            const hi = Math.max(g1, g2);
-            const lo = Math.min(g1, g2);
-            return (hi >= 6 && hi - lo >= 2) || hi === 7;
-        };
-
         if (e.sets && Array.isArray(e.sets)) {
             e.sets.forEach(s => {
                 const g1 = s.score?.[0]?.games ?? 0;
                 const g2 = s.score?.[1]?.games ?? 0;
                 if (g1 > 0 || g2 > 0) {
                     setScoresArr.push(`${g1}-${g2}`);
-                    if (isSetComplete(g1, g2)) {
-                        if (g1 > g2) homeSetsWon++;
-                        else if (g2 > g1) awaySetsWon++;
-                    }
+                    if (g1 > g2) homeSetsWon++;
+                    else if (g2 > g1) awaySetsWon++;
                 }
             });
         }
 
-        let finalHomeScore = "-";
-        let finalAwayScore = "-";
-        if (isFinished && e.fts_A != null && e.fts_B != null) {
-            // Biten maçlarda Mackolik'in kendi final set skoru
-            finalHomeScore = String(e.fts_A);
-            finalAwayScore = String(e.fts_B);
-        } else if (hasScore) {
-            finalHomeScore = String(homeSetsWon);
-            finalAwayScore = String(awaySetsWon);
-        }
+        const finalHomeScore = hasScore ? String(e.asets_A ?? homeSetsWon) : "-";
+        const finalAwayScore = hasScore ? String(e.asets_B ?? awaySetsWon) : "-";
 
         let timeString = "00:00";
         if (e.startTime) {
