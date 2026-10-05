@@ -1112,7 +1112,7 @@ function computeNextLiveScanAt(scanStart) {
 
 async function main() {
     loadState();
-    sendTelegram("🟢 Maç Saati futbol servisi başlatıldı.");
+    
     console.log("============================================================");
     console.log("🟢 [FUTBOL - FOTMOB] BAĞIMSIZ SERVİS BAŞLADI");
     console.log("============================================================");
