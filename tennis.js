@@ -290,12 +290,15 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             anySuccess = true;
             tournaments.forEach(tour => {
                 const tourName = tour.name || "";
-                const tourId = tour.competition?.id;
+                const countryName = tour.country?.name || "";
+                const compId = tour.competition?.id;
 
-                // 🛑 1. FİLTRE: Sadece senin listendeki veya Grand Slam / Masters / 500 seviyesindeki elit turnuvalar alınacak
-                // Çöp, Challenger ve ITF turnuvaları kesinlikle içeri sızamayacak.
-                const nameUpper = tourName.toUpperCase();
-                if (nameUpper.includes("CHALLENGER") || nameUpper.includes("ITF") || nameUpper.includes("UTR") || nameUpper.includes("QUALIFYING") || nameUpper.includes("QUALIFIERS") || nameUpper.includes("LEGENDS")) {
+                // 🔍 SİSTEMDEKİ TÜM TURNUVA ADLARINI VE UUID'LERİNİ GÖrelim
+                console.log(`🏆 Turnuva: "${tourName}" | Ülke: "${countryName}" | UUID: ${compId}`);
+
+                // Çöp turnuvaları eleme filtresi
+                const fullTourString = `${tourName} ${countryName}`.toUpperCase();
+                if (fullTourString.includes("ADANA") || fullTourString.includes("CHALLENGER") || fullTourString.includes("ITF") || fullTourString.includes("UTR") || fullTourString.includes("QUALIFYING") || fullTourString.includes("QUALIFIERS") || fullTourString.includes("LEGENDS")) {
                     return;
                 }
 
@@ -306,7 +309,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                         const matches = round.matches || [];
                         matches.forEach(match => {
                             match.competitionName = tourName;
-                            match.competitionId = tourId;
+                            match.competitionId = compId;
                             match.fixedDate = date;
                             allMatches.push(match);
                         });
