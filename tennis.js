@@ -234,10 +234,42 @@ const checkIsValidTournament = (tournamentName) => {
 
 
 // =========================================================================
+// 🏆 TURNUVA İSİMLERİNİ GITHUB REPO LOGOLARINA BAĞLAYAN SÖZLÜK
+// =========================================================================
+function getTennisTournamentLogoFilename(tourName) {
+    if (!tourName) return "default.png";
+    const name = String(tourName).toUpperCase();
+
+    // Önemli turnuvaları repodaki ID veya isimlerine göre eşleştiriyoruz
+    if (name.includes("WIMBLEDON")) return "2361.png";
+    if (name.includes("US OPEN")) return "2449.png";
+    if (name.includes("AUSTRALIAN OPEN")) return "2424.png";
+    if (name.includes("ROLAND GARROS") || name.includes("FRENCH OPEN")) return "2436.png";
+    if (name.includes("INDIAN WELLS")) return "2398.png";
+    if (name.includes("MIAMI")) return "2414.png";
+    if (name.includes("MADRID")) return "2396.png";
+    if (name.includes("ROME") || name.includes("ROMA")) return "2397.png";
+    if (name.includes("MONTE CARLO")) return "2394.png";
+    if (name.includes("SHANGHAI") || name.includes("ŞANGHAY")) return "2416.png";
+    if (name.includes("PARİS") || name.includes("PARIS")) return "2413.png";
+    if (name.includes("TOKYO")) return "2418.png";
+    if (name.includes("BEİJİNG") || name.includes("PEKİN")) return "2415.png";
+    if (name.includes("BASEL")) return "2411.png";
+    if (name.includes("VIENNA") || name.includes("VİYANA")) return "2412.png";
+    if (name.includes("HALLE")) return "2365.png";
+    if (name.includes("QUEEN")) return "2360.png";
+    if (name.includes("DUBAI") || name.includes("DUBAİ")) return "2384.png";
+    if (name.includes("ROTTERDAM")) return "2377.png";
+    if (name.includes("BARCELONA") || name.includes("BARSELONA")) return "2428.png";
+
+    return "default.png"; // Listede olmayanlar için varsayılan logo
+}
+
+// =========================================================================
 // 🎾 TENİS GÜNCELLEME (FİLTRELİ VE BAYRAK DESTEKLİ)
 // =========================================================================
 // =========================================================================
-// 🎾 TENİS GÜNCELLEME (FİLTRELİ, BAYRAK VE SKOR DÜZELTME)
+// 🎾 TENİS GÜNCELLEME (HATASIZ FİLTRE, BAYRAK VE SKOR)
 // =========================================================================
 async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🎾 Tenis: (Mod: ${isQuickScan ? '🚀 HIZLI (3dk)' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
@@ -256,7 +288,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                 const tourName = tour.name || "";
                 const countryName = tour.country?.name || "";
                 
-                // 🛑 1. ÇÖP VE CHALLENGER FİLTRESİ (Antofagasta, Palermo vb. Challenger turnuvalarını ve ITF'leri kesin olarak eler)
+                // 🛑 Çöp ve Challenger Filtresi
                 const fullTourString = `${tourName} ${countryName}`.toUpperCase();
                 if (fullTourString.includes("CHALLENGER") || fullTourString.includes("ITF") || fullTourString.includes("UTR") || fullTourString.includes("QUALIFYING") || fullTourString.includes("QUALIFIERS") || fullTourString.includes("LEGENDS")) {
                     return;
@@ -296,6 +328,13 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     }
 
     for (const e of allMatches) {
+        // 1. Önce oyuncuları ve statüyü güvenli çekiyoruz
+        const p1 = e.contestants?.[0]?.players?.[0];
+        const p2 = e.contestants?.[1]?.players?.[0];
+
+        const hName = p1?.displayName || p1?.shortName || "Tenisçi 1";
+        const aName = p2?.displayName || p2?.shortName || "Tenisçi 2";
+
         const rawStatus = String(e.status || "").toLowerCase();
         let statusType = 'notstarted';
         if (rawStatus === 'played' || rawStatus === 'finished' || rawStatus === 'ft') statusType = 'finished';
@@ -307,27 +346,24 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        const p1 = e.contestants?.[0]?.players?.[0];
-        const p2 = e.contestants?.[1]?.players?.[0];
-
-        const hName = p1?.displayName || p1?.shortName || "Tenisçi 1";
-        const aName = p2?.displayName || p2?.shortName || "Tenisçi 2";
-
-        // 🏳️ Ülke Bayrağı Çözümlemesi (Maçkolik'in yeni yapısındaki ülke uuid/kod eşlemesi)
-        const getAlpha2 = (playerObj) => {
-            // Eğer oyuncunun doğrudan ülke kodu varsa
-            if (playerObj?.country?.alpha2) return playerObj.country.alpha2.toLowerCase();
-            // Maçkolik alpha2 yerine uuid veriyorsa veya ülke adı Türkçeyse güvenli varsayılan veya eşleme yapabiliriz
-            return "tr"; // Şimdilik bayrakların görünmesi için güvenli kod
+        // 2. Ülke kodunu güvenli okuma (Eğer veri yoksa varsayılan 'mc' veya başka bir kod döner)
+        const getPlayerCode = (player) => {
+            if (!player) return "mc";
+            if (player.country?.alpha2) return player.country.alpha2.toLowerCase();
+            return "mc";
         };
 
-        const p1Code = getAlpha2(p1);
-        const p2Code = getAlpha2(p2);
+        const p1Code = getPlayerCode(p1);
+        const p2Code = getPlayerCode(p2);
 
         const homeLogos = [`${TENNIS_LOGO_BASE}${p1Code}.png`];
         const awayLogos = [`${TENNIS_LOGO_BASE}${p2Code}.png`];
 
-        // 🎾 SET VE MAÇ SKORU HESAPLAMA
+        // 3. Turnuva Logosunu Sözlükten Çekme
+        const logoFileName = getTennisTournamentLogoFilename(e.competitionName);
+        const tournamentLogoUrl = `${TENNIS_TOURNAMENT_BASE}${logoFileName}`;
+
+        // 4. Set ve Maç Skoru Hesaplama
         let setScoresArr = [];
         let homeSetsWon = 0;
         let awaySetsWon = 0;
@@ -373,7 +409,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             broadcaster: result.kanal,
             homeTeam: { name: hName, logos: homeLogos },
             awayTeam: { name: aName, logos: awayLogos },
-            tournamentLogo: `${TENNIS_TOURNAMENT_BASE}${e.competitionId || "default"}.png`,
+            tournamentLogo: tournamentLogoUrl,
             homeScore: finalHomeScore, 
             awayScore: finalAwayScore, 
             setScores: setScoresArr, 
@@ -391,7 +427,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     
     const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress');
     const nextMatchTimestamp = findNextMatchTime(globalTennisCache);
-    return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
+    return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: globalTennisCache.size > 0 };
 }
 
 
