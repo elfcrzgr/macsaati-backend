@@ -395,7 +395,12 @@ const teamTranslations = {
     "bhutan": "Butan", "indonesia": "Endonezya", "oman": "Umman", "tajikistan": "Tacikistan",
     "syria": "Suriye", "bahrain": "Bahreyn", "hong kong": "Hong Kong", "mongolia": "Moğolistan",
     "thailand": "Tayland", "kuwait": "Kuveyt", "myanmar": "Myanmar", "lithuania": "Litvanya" , "Latvia": "Letonya", 
-    "Rwanda": "Ruanda"
+    "Rwanda": "Ruanda", "Faroe Islands": "Forea Adaları", "Estonia": "Estonya", "san marino": "San Marino",
+    "moldova": "Moldova","kosovo": "Kosova", "republic of ireland": "İrlanda", "trinidad and tobago": "Trinidad ve Tobago",
+    "guatemala": "Guatemala", "cuba": "Küba", "suriname": "Sürinam", "burkina faso": "Burkina Faso", "equatorial guinea": "Ekvator Ginesi", "gambia": "Gambiya",
+    "mauritania": "Moritanya", "guinea-bissau": "Gine-Bissau", "angola": "Angola", "tanzania": "Tanzanya", "uganda": "Uganda", "zambia": "Zambiya",
+    "singapore": "Singapur", "malaysia": "Malezya", "vietnam": "Vietnam", "turkmenistan": "Türkmenistan", "kyrgyzstan": "Kırgızistan",
+    "palestine": "Filistin", "lebanon": "Lübnan"
 };
 
 const translateTeam = (name) => {
