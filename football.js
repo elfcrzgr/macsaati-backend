@@ -278,7 +278,11 @@ const footballLeagues = {
     44: "Copa America",
     289: "Afrika Uluslar Kupası",
     9806: "UEFA Uluslar Ligi",
-    114: "Uluslararası Hazırlık Maçları" // (?)
+    114: "Uluslararası Hazırlık Maçları", // (?)
+    130: "MLS",
+    538: "Pro League",
+    268: "Série A",
+    112: "Liga Profesional"
 };
 
 // Hangi ligler listede gösterilsin? Boş bırakırsanız (ALLOWED_LEAGUES.size === 0) TÜM ligler gelir.
