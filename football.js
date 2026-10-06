@@ -303,6 +303,14 @@ const LEAGUE_NAME_RULES = [
     { re: /africa cup of nations/i,          tr: "Afrika Uluslar Kupası",         logoId: 289,  national: true, elite: true },
     { re: /copa america/i,                   tr: "Copa America",                  logoId: 44,   national: true, elite: true },
     { re: /^friendlies$/i,                   tr: "Uluslararası Hazırlık Maçları", logoId: 114,  national: true, elite: false, intOnly: true }
+    ⁠{ re: /^série a$/i, tr: "Brezilya Série A", logoId: 268, elite: true }⁠
+    // Brezilya, MLS, Arjantin ve Arabistan için isimden yakalama kuralı (Regex)
+{ re: /^série a$/i, tr: "Brezilya Série A", logoId: 268, elite: true },
+{ re: /\bmls\b|major league soccer/i, tr: "MLS", logoId: 130, elite: true },
+{ re: /liga profesional/i, tr: "Arjantin Liga Profesional", logoId: 112, elite: true },
+{ re: /saudi.*league|roshn.*league/i, tr: "Suudi Arabistan Pro Lig", logoId: 538, elite: true }
+
+
 ];
 
 // 🚫 Listelenmeyecek maçlar: (1) "U" + sayı içeren her takım/lig (U17, U19, U21, U23, Under-20...), (2) tüm kadın maçları
