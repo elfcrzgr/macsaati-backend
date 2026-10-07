@@ -13,6 +13,10 @@ const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 180000;
 const TEN_MIN_MS = 10 * 60000;
 
+// Telegram Bilgileri
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "";
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
+
 // =========================================================================
 // 🔥 FIREBASE BAŞLATMA
 // =========================================================================
@@ -233,11 +237,40 @@ async function getMackolikToken() {
 
 
 
+//TELEGRAM
+async function sendTelegram(text) {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return false;
+    try {
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
+            signal: timeoutSignal(10000)
+        });
+        const data = await res.json().catch(() => null);
+        if (data && data.ok) return true;
+    } catch (e) {
+        console.error("❌ [TELEGRAM] Bağlantı hatası:", e.message);
+    }
+    return false;
+}
+
+let lastTokenAlertTime = 0;
+async function notifyAdminForTokenIssue(reason) {
+    const now = Date.now();
+    // Aynı hatadan dolayı spama düşmemek için 30 dakikada bir mesaj atar
+    if (now - lastTokenAlertTime < 1800000) return; 
+    
+    const message = `🚨 Maç Saati (BASKETBOL) Uyarısı\nMaçkolik Token Sorunu: ${reason}\n\nLütfen telefondan yeni token alıp GitHub'daki token_basketball.txt dosyasını güncelleyin.`;
+    const ok = await sendTelegram(message);
+    if (ok) lastTokenAlertTime = now;
+}
+
 
 // 🔥 YENİ MAÇKOLİK FETCH MOTORU
 async function fetchMackolikBasketball(dateStr) {
     try {
-        const currentToken = await getMackolikToken(); // GitHub'dan token'ı al
+        const currentToken = await getMackolikToken(); 
 
         const url = `https://api.mackolikfeeds.com/basket/api/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=${dateStr}&extended_period=1&language=tr&migration_status=perform&tz=3`;
         const response = await fetch(url, {
@@ -245,7 +278,7 @@ async function fetchMackolikBasketball(dateStr) {
             headers: {
                 "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
                 "X-Authorization": "token true",
-                "X-RequestToken": currentToken, // DİNAMİK TOKEN BURADAN GELECEK
+                "X-RequestToken": currentToken, 
                 "Accept-Language": "tr-TR;q=1, en-GB;q=0.9",
                 "Connection": "keep-alive"
             }
@@ -253,10 +286,14 @@ async function fetchMackolikBasketball(dateStr) {
 
         if (!response.ok) {
             console.error(`❌ Mackolik ${response.status} döndü (Token süresi dolmuş veya yanlış ACL olabilir)`);
+            // TELEGRAM BİLDİRİMİ BURADA TETİKLENİYOR
+            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`); 
             return null;
         }
         return await response.json();
-    } catch (e) { return null; }
+    } catch (e) { 
+        return null; 
+    }
 }
 
 // Mackolik lig isimlerine göre varsayılan yayıncılar
