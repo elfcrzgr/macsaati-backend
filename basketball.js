@@ -213,26 +213,48 @@ function findNextMatchTime(cache, now = Date.now()) {
     return nextTime;
 }
 
+
+//TOKEN
+
+async function getMackolikToken() {
+    try {
+        // Belirlediğiniz token_basketball.txt dosyasından okuyacak
+        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/token_basketball.txt?t=${Date.now()}`;
+        const response = await fetch(url);
+        if (response.ok) {
+            const token = await response.text();
+            return token.trim(); 
+        }
+    } catch (e) {
+        console.log("⚠️ GitHub'dan token çekilemedi.");
+    }
+    return null;
+}
+
+
+
+
 // 🔥 YENİ MAÇKOLİK FETCH MOTORU
 async function fetchMackolikBasketball(dateStr) {
     try {
+        const currentToken = await getMackolikToken(); // GitHub'dan token'ı al
+
         const url = `https://api.mackolikfeeds.com/basket/api/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=${dateStr}&extended_period=1&language=tr&migration_status=perform&tz=3`;
         const response = await fetch(url, {
             signal: timeoutSignal(15000),
             headers: {
                 "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
                 "X-Authorization": "token true",
-
-                
-              
-                
-                "X-RequestToken": "exp=1791363825~acl=/basket/api/matches/*~hmac=56DDA0620026D6E0CDD54E6C49EC4B9D31607FA0E02967FC4AAF921BA05739D7",
+                "X-RequestToken": currentToken, // DİNAMİK TOKEN BURADAN GELECEK
                 "Accept-Language": "tr-TR;q=1, en-GB;q=0.9",
                 "Connection": "keep-alive"
             }
         });
 
-        if (!response.ok) return null;
+        if (!response.ok) {
+            console.error(`❌ Mackolik ${response.status} döndü (Token süresi dolmuş veya yanlış ACL olabilir)`);
+            return null;
+        }
         return await response.json();
     } catch (e) { return null; }
 }
