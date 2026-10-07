@@ -337,7 +337,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         
         let debugCount = 0; // Döngünün DIŞINA (for öncesine) koyabilirsiniz veya içine sadece 1 kez çalışacak bir kilit koyalım
 
-    for (const e of allMatches) {
+   for (const e of allMatches) {
         const rawStatus = String(e.status || "").toLowerCase();
         let statusType = 'notstarted';
         if (rawStatus === 'played' || rawStatus === 'finished') statusType = 'finished';
@@ -347,22 +347,22 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 
         const isFinished = statusType === 'finished'; 
         const isInProgress = statusType === 'inprogress';
+        const hasScore = isFinished || isInProgress;
 
-        // 👇👇👇 HATA AYIKLAMA KODU BAŞLANGICI 👇👇👇
-        // Sadece bitmiş veya devam eden İLK maçı konsola detaylıca yazdırır.
-        if (typeof global.debugKereYazildi === 'undefined' && (isFinished || isInProgress)) {
+        // 👇 HATA AYIKLAMA KODU 👇
+        if (typeof global.debugKereYazildi === 'undefined' && hasScore) {
             console.log("\n=======================================================");
             console.log("🔍 MACKOLİK JSON YAPISI (SKOR NEREDE SAKLI OLABİLİR?)");
             console.log("Maç ID:", e.uuid, " | Durum:", rawStatus);
-            console.log(JSON.stringify(e, null, 2)); // Tüm objeyi ekrana basar
+            console.log(JSON.stringify(e, null, 2)); 
             console.log("=======================================================\n");
-            global.debugKereYazildi = true; // Sadece 1 kere yazdırması için
+            global.debugKereYazildi = true; 
         }
-        const hasScore = isFinished || isInProgress;
+        // 👆 HATA AYIKLAMA KODU BİTİŞİ 👆
 
-     // Maçkolik API'sinin tüm olası skor anahtarlarını (Özellikle rs_A ve rs_B) kapsayan yeni mantık
-const homeScoreRaw = e.rs_A ?? e.rs_a ?? e.fs_A ?? e.fs_a ?? e.score_A ?? e.score_a ?? (e.team_A && e.team_A.score) ?? "0";
-const awayScoreRaw = e.rs_B ?? e.rs_b ?? e.fs_B ?? e.fs_b ?? e.score_B ?? e.score_b ?? (e.team_B && e.team_B.score) ?? "0";
+        // YENİ SKOR OKUMA MANTIĞI
+        const homeScoreRaw = e.rs_A ?? e.rs_a ?? e.fs_A ?? e.fs_a ?? e.score_A ?? e.score_a ?? (e.team_A && e.team_A.score) ?? "0";
+        const awayScoreRaw = e.rs_B ?? e.rs_b ?? e.fs_B ?? e.fs_b ?? e.score_B ?? e.score_b ?? (e.team_B && e.team_B.score) ?? "0";
 
         const dateTR = new Date(e.date_time_utc + "Z"); 
         let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
@@ -386,11 +386,8 @@ const awayScoreRaw = e.rs_B ?? e.rs_b ?? e.fs_B ?? e.fs_b ?? e.score_B ?? e.scor
             fixedTime: timeString, 
             timestamp: dateTR.getTime(), 
             broadcaster: result.kanal,
-            // Takım Logoları Maçkolik CDN:
             homeTeam: { name: hName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_A?.uuid}.png` },
             awayTeam: { name: aName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_B?.uuid}.png` },
-            // TURNUVA LOGOLARI ARTIK BOŞ KALMAYACAK (Maçkolik Turnuva CDN):
-            // Turnuva logosu senin GitHub repodaki ID'lerden çekilecek:
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(e.competitionName)}.png`,
             homeScore: hasScore ? String(homeScoreRaw) : "-", 
             awayScore: hasScore ? String(awayScoreRaw) : "-", 
