@@ -1222,7 +1222,9 @@ async function main() {
 }
 
 
-// ===== GEÇİCİ: maç detay yapısını görmek için =====
+// ===== MAÇ DETAYI (kullanıcı maça tıklayınca) =====
+const detailLastFetch = new Map();
+
 async function fetchMatchDetailsRaw(matchId) {
     const res = await fetch(`https://www.fotmob.com/match/${matchId}`, {
         signal: timeoutSignal(10000),
@@ -1241,33 +1243,164 @@ async function fetchMatchDetailsRaw(matchId) {
     return pageProps;
 }
 
-function dumpDetail(d) {
-    const j = (label, v) => console.log(`FM ${label}:`, v === undefined ? 'yok' : JSON.stringify(v).slice(0, 1200));
-    const content = d.content || {};
-    const events = content.matchFacts?.events?.events || [];
+const fmInt = (v) => { const n = parseInt(v, 10); return isNaN(n) ? null : n; };
+
+// Starters sırası formasyona göre: kaleci, sonra her sıra soldan sağa
+function orderStarters(starters, formation) {
+    const counts = String(formation || '').split('-').map(Number).filter(n => n > 0);
+    const total = 1 + counts.reduce((a, b) => a + b, 0);
+    if (starters.length !== total || !starters.every(p => p.verticalLayout)) return starters;
+    const sorted = starters.slice().sort((a, b) => a.verticalLayout.y - b.verticalLayout.y);
+    const out = [sorted[0]];
+    let idx = 1;
+    for (const c of counts) {
+        const row = sorted.slice(idx, idx + c).sort((a, b) => a.verticalLayout.x - b.verticalLayout.x);
+        out.push(...row);
+        idx += c;
+    }
+    return out;
+}
+
+function convertDetail(pp) {
+    const content = pp.content || {};
+    const header = pp.header || {};
+    const teams = header.teams || [];
+    const st = header.status || {};
+    const halfs = st.halfs || {};
+    const type = st.finished ? 'finished' : (st.started ? 'inprogress' : 'notstarted');
+
+    // Canlı dakika
+    let liveLabel = '', currentMinute = 0;
+    if (type === 'inprogress') {
+        const now = Date.now();
+        const min = (from, base) => base + Math.max(0, Math.floor((now - from) / 60000));
+        const e2 = parseGameStart(halfs.secondExtraHalfStarted);
+        const e1 = parseGameStart(halfs.firstExtraHalfStarted);
+        const sh = parseGameStart(halfs.secondHalfStarted);
+        const fh = parseGameStart(halfs.firstHalfStarted);
+        if (e2) { currentMinute = min(e2, 106); liveLabel = `${currentMinute}'`; }
+        else if (e1) { currentMinute = min(e1, 91); liveLabel = `${currentMinute}'`; }
+        else if (sh) { currentMinute = min(sh, 46); liveLabel = currentMinute > 90 ? "90+'" : `${currentMinute}'`; }
+        else if (halfs.firstHalfEnded) { currentMinute = 45; liveLabel = 'İY'; }
+        else if (fh) { currentMinute = min(fh, 1); liveLabel = currentMinute > 45 ? "45+'" : `${currentMinute}'`; }
+        else { liveLabel = 'Canlı'; }
+    }
+
+    const event = {
+        homeTeam: { name: teams[0]?.name || '', id: teams[0]?.id || 0 },
+        awayTeam: { name: teams[1]?.name || '', id: teams[1]?.id || 0 },
+        homeScore: { current: teams[0]?.score ?? 0 },
+        awayScore: { current: teams[1]?.score ?? 0 },
+        status: { type },
+        time: { currentMinute },
+        liveLabel
+    };
+
+    // Kadrolar
     const lu = content.lineup || {};
-    j('root', Object.keys(d));
-    j('content', Object.keys(content));
-    j('lineup', Object.keys(lu));
-    j('header', d.header);
-    j('event0', events[0]);
-    for (const t of ['Goal', 'Card', 'Substitution', 'Half']) j(t, events.find(e => e.type === t));
-    const h = lu.homeTeam || {};
-    j('home üst', Object.fromEntries(Object.entries(h).filter(([k]) => !['starters', 'subs', 'unavailable'].includes(k))));
-    j('starter0', h.starters?.[0]);
-    j('sub0', h.subs?.[0]);
+    const subInIds = new Set();
+    for (const key of ['homeTeam', 'awayTeam']) {
+        for (const p of [...(lu[key]?.starters || []), ...(lu[key]?.subs || [])]) {
+            const evs = p.performance?.substitutionEvents || [];
+            if (evs.some(x => x.type === 'subIn')) subInIds.add(fmInt(p.id));
+        }
+    }
+
+    const convPlayer = (p, sub) => {
+        const r = p.performance?.rating;
+        const rating = typeof r === 'number' ? r : (parseFloat(r) || null);
+        return {
+            player: { id: fmInt(p.id), name: p.name || '' },
+            shirtNumber: fmInt(p.shirtNumber) || 0,
+            substitute: sub,
+            statistics: { rating }
+        };
+    };
+
+    const convTeam = (t) => {
+        if (!t) return null;
+        const starters = orderStarters(t.starters || [], t.formation);
+        return {
+            players: [...starters.map(p => convPlayer(p, false)), ...(t.subs || []).map(p => convPlayer(p, true))],
+            formation: t.formation || null,
+            coach: t.coach ? { id: fmInt(t.coach.id), name: t.coach.name || '' } : null
+        };
+    };
+
+    const hasLineup = (lu.homeTeam?.starters || []).length > 0 || (lu.awayTeam?.starters || []).length > 0;
+    const lineups = hasLineup ? { confirmed: true, home: convTeam(lu.homeTeam), away: convTeam(lu.awayTeam) } : null;
+
+    // Olaylar
+    const rawEvents = content.matchFacts?.events?.events || [];
+    const incidents = [];
+    for (const e of rawEvents) {
+        const t = String(e.type || '');
+        const time = e.time ?? null;
+        const base = { id: e.eventId ?? null, time, isHome: e.isHome ?? null };
+        const player = e.player?.id ? { id: fmInt(e.player.id), name: e.player.name || e.nameStr || '' } : null;
+
+        if (t === 'Goal') {
+            if (e.isPenaltyShootoutEvent) continue;
+            let p = player;
+            if (p && e.ownGoal) p = { ...p, name: p.name + ' (K.K.)' };
+            incidents.push({ ...base, incidentType: 'goal', player: p, homeScore: e.newScore?.[0] ?? null, awayScore: e.newScore?.[1] ?? null });
+        } else if (t === 'Card') {
+            if (e.cardDescription?.localizedKey === 'coach') continue; // teknik direktör kartı
+            const cls = String(e.card || '').toLowerCase().includes('red') ? 'red' : 'yellow';
+            incidents.push({ ...base, incidentType: 'card', incidentClass: cls, player });
+        } else if (t === 'Substitution') {
+            const sw = e.swap || [];
+            if (sw.length < 2) continue;
+            // Giren/çıkan sırası kadrodaki subIn bilgisine göre belirlenir
+            let pin = sw[0], pout = sw[1];
+            if (subInIds.has(fmInt(sw[1].id)) && !subInIds.has(fmInt(sw[0].id))) { pin = sw[1]; pout = sw[0]; }
+            incidents.push({
+                ...base, incidentType: 'substitution',
+                playerIn: { id: fmInt(pin.id), name: pin.name },
+                playerOut: { id: fmInt(pout.id), name: pout.name }
+            });
+        } else if (t === 'Half') {
+            const s = e.halfStrShort;
+            if (s === 'HT') incidents.push({ id: null, time: 45, incidentType: 'period', text: 'HT' });
+            else if (s === 'FT') incidents.push({ id: null, time: 90, incidentType: 'period', text: 'FT' });
+        }
+    }
+    incidents.sort((a, b) => (b.time || 0) - (a.time || 0));
+
+    return { updatedAt: Date.now(), event, incidents, lineups };
 }
 
 firebaseApp.database().ref('detail_requests').on('child_added', async (snap) => {
     const matchId = snap.key;
-    console.log(`📥 [DETAY-İSTEK] ${matchId}`);
+    const token = String(snap.val());
     try {
-        dumpDetail(await fetchMatchDetailsRaw(matchId));
+        const resRef = firebaseApp.database().ref(`match_details/${matchId}`);
+        if (Date.now() - (detailLastFetch.get(matchId) || 0) < 10000) {
+            await resRef.child('token').set(token); // 10 sn içinde zaten çekildi, tekrar çekme
+        } else {
+            detailLastFetch.set(matchId, Date.now());
+            const out = convertDetail(await fetchMatchDetailsRaw(matchId));
+            out.token = token;
+            await resRef.set(JSON.parse(JSON.stringify(out)));
+            console.log(`📤 [DETAY] ${matchId} yazıldı (${out.incidents.length} olay)`);
+        }
     } catch (e) {
-        console.log('FM detay hatası:', e.message);
+        console.log(`❌ [DETAY] ${matchId}: ${e.message}`);
     } finally {
         snap.ref.remove().catch(() => {});
     }
 });
-// ===== /GEÇİCİ =====
+
+// 6 saatten eski detay kayıtlarını temizle
+setInterval(async () => {
+    try {
+        const v = (await firebaseApp.database().ref('match_details').once('value')).val() || {};
+        for (const [id, d] of Object.entries(v)) {
+            if (!d || !d.updatedAt || Date.now() - d.updatedAt > 6 * 3600 * 1000) {
+                await firebaseApp.database().ref(`match_details/${id}`).remove();
+            }
+        }
+    } catch (e) {}
+}, 30 * 60 * 1000);
+// ===== /MAÇ DETAYI =====
 main();
