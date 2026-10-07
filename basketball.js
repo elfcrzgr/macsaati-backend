@@ -218,17 +218,8 @@ function findNextMatchTime(cache, now = Date.now()) {
 }
 
 
-//TOKEN
 
-async function getMackolikToken() {
-    return "exp=1791370604~acl=/basket/api/matches/*~hmac=8027FFE354B6C49A6C99BB6C352FDB8A66908B660F02D14E4CB4A60FBB8B2366";
-
-   
-}
-
-
-
-//TELEGRAM
+//TELEFRAM
 async function sendTelegram(text) {
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return false;
     try {
@@ -258,6 +249,31 @@ async function notifyAdminForTokenIssue(reason) {
 }
 
 
+
+
+//TOKEN
+
+async function getMackolikToken() {
+    try {
+        // Belirlediğiniz token_basketball.txt dosyasından okuyacak
+        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/token_basketball.txt?t=${Date.now()}`;
+        const response = await fetch(url);
+        if (response.ok) {
+            const token = await response.text();
+            return token.trim(); 
+        }
+    } catch (e) {
+        console.log("⚠️ GitHub'dan token çekilemedi.");
+    }
+    return null;
+}
+
+
+
+
+
+
+
 // 🔥 YENİ MAÇKOLİK FETCH MOTORU
 async function fetchMackolikBasketball(dateStr) {
     try {
@@ -277,11 +293,14 @@ async function fetchMackolikBasketball(dateStr) {
 
         if (!response.ok) {
             console.error(`❌ Mackolik ${response.status} döndü (Token süresi dolmuş veya yanlış ACL olabilir)`);
-            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`);
+            // TELEGRAM BİLDİRİMİ BURADA TETİKLENİYOR
+            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`); 
             return null;
         }
         return await response.json();
-    } catch (e) { return null; }
+    } catch (e) { 
+        return null; 
+    }
 }
 
 // Mackolik lig isimlerine göre varsayılan yayıncılar
