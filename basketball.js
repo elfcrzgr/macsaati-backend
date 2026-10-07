@@ -429,8 +429,12 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         const awayScoreRaw = e.fts_B ?? e.fs_B ?? e.rs_B ?? e.score_B ?? (e.team_B && e.team_B.score) ?? "0";
 
         const dateTR = new Date(e.date_time_utc + "Z"); 
-        let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
-        if (isInProgress) {
+        let timeString = dateTR.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+        const matchDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+
+        
+            
+                      if (isInProgress) {
             const minStr = e.minute ? `${e.minute}'` : "CANLI";
             timeString = `${timeString}\n${minStr}`;
         }
@@ -438,7 +442,8 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         const hName = e.team_A?.display_name || e.team_A?.name || "Ev Sahibi";
         const aName = e.team_B?.display_name || e.team_B?.name || "Deplasman";
         const fallbackBroadcaster = getFallbackBroadcaster(e.competitionName);
-        const result = getBroadcasterWithFallback("basketbol", e.fixedDate, timeString, hName, aName, fallbackBroadcaster);
+        const result = getBroadcasterWithFallback("basketbol", matchDate, timeString, hName, aName, fallbackBroadcaster);
+
 
         if (!isQuickScan) basketbolMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
 
@@ -446,7 +451,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             id: e.uuid, 
             isElite: true, 
             status: statusType, 
-            fixedDate: e.fixedDate, 
+            fixedDate: matchDate, 
             fixedTime: timeString, 
             timestamp: dateTR.getTime(), 
             broadcaster: result.kanal,
@@ -458,7 +463,8 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             tournament: e.competitionName || "Basketbol Ligi"
         });
 
-        previousMatchStates.set(e.uuid, { status: statusType, date: e.fixedDate });
+       previousMatchStates.set(e.uuid, { status: statusType, date: matchDate });
+
     }
 
     const finalMatches = Array.from(globalBasketballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
