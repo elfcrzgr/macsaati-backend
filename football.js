@@ -1220,4 +1220,51 @@ async function main() {
         }
     }
 }
+
+
+// ===== GEÇİCİ: maç detay yapısını görmek için =====
+async function fetchMatchDetailsRaw(matchId) {
+    const res = await fetch(`https://api3.fotmob.com/matchDetails?matchId=${matchId}`, {
+        signal: timeoutSignal(8000),
+        headers: {
+            "Host": "api3.fotmob.com",
+            "fotmob-version": "1243.0",
+            "Accept": "application/json, */*",
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 FotMob",
+            "Accept-Language": "tr-TR,tr;q=0.9"
+        }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+}
+
+function dumpDetail(d) {
+    const j = (label, v) => console.log(`FM ${label}:`, v === undefined ? 'yok' : JSON.stringify(v).slice(0, 1200));
+    const content = d.content || {};
+    const events = content.matchFacts?.events?.events || [];
+    const lu = content.lineup || {};
+    j('root', Object.keys(d));
+    j('content', Object.keys(content));
+    j('lineup', Object.keys(lu));
+    j('header', d.header);
+    j('event0', events[0]);
+    for (const t of ['Goal', 'Card', 'Substitution', 'Half']) j(t, events.find(e => e.type === t));
+    const h = lu.homeTeam || {};
+    j('home üst', Object.fromEntries(Object.entries(h).filter(([k]) => !['starters', 'subs', 'unavailable'].includes(k))));
+    j('starter0', h.starters?.[0]);
+    j('sub0', h.subs?.[0]);
+}
+
+firebaseApp.database().ref('detail_requests').on('child_added', async (snap) => {
+    const matchId = snap.key;
+    console.log(`📥 [DETAY-İSTEK] ${matchId}`);
+    try {
+        dumpDetail(await fetchMatchDetailsRaw(matchId));
+    } catch (e) {
+        console.log('FM detay hatası:', e.message);
+    } finally {
+        snap.ref.remove().catch(() => {});
+    }
+});
+// ===== /GEÇİCİ =====
 main();
