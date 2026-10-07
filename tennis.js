@@ -615,7 +615,6 @@ const awayLogos = buildLogos(awayPlayers);
 // =========================================================================
 async function main() {
     loadState();
-    sendTelegram("✅ Tenis servisi başladı (Telegram testi)");
     console.log("============================================================");
     console.log("🟢 [TENİS] BAĞIMSIZ MAÇKOLİK SERVİSİ BAŞLADI");
     console.log("============================================================");
