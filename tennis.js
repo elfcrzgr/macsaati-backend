@@ -196,7 +196,9 @@ async function fetchMackolikTennis(dateStr) {
             signal: timeoutSignal(15000),
             headers: {
                 "Host": "api.mackolikfeeds.com",
-                "X-RequestToken": "exp=1791212464~acl=/tennis/api/v1/matches/*~hmac=0F88551AC31757854E22343CE35EF1E1778EAE728CD9D0CCE8F7A6989144D33C",
+
+                
+                "X-RequestToken": "exp=1791365170~acl=/tennis/api/v1/matches/*~hmac=45FB266FCFA88CB5998260CE6F39C7888853653BEE443ADC34430D317974075F",
                 "Connection": "keep-alive",
                 "Accept": "*/*",
                 "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
