@@ -221,7 +221,9 @@ function findNextMatchTime(cache, now = Date.now()) {
 //TOKEN
 
 async function getMackolikToken() {
-    return "exp=1791369717~acl=/api/matches/*~hmac=20B3B0136746E8C39914DECA610412B7D8A8A801F7A1244D113AA14D7F97F68B";
+    return "exp=1791370312~acl=/config/*~hmac=6E83DE90EF0A7F49865825B9419FA4BCCE0691D49D190C7DD9B84AC13DA72D4E";
+
+   
 }
 
 
