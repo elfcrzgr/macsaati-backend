@@ -221,18 +221,7 @@ function findNextMatchTime(cache, now = Date.now()) {
 //TOKEN
 
 async function getMackolikToken() {
-    try {
-        // Belirlediğiniz token_basketball.txt dosyasından okuyacak
-        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/token_basketball.txt?t=${Date.now()}`;
-        const response = await fetch(url);
-        if (response.ok) {
-            const token = await response.text();
-            return token.trim(); 
-        }
-    } catch (e) {
-        console.log("⚠️ GitHub'dan token çekilemedi.");
-    }
-    return null;
+    return "exp=1791369717~acl=/api/matches/*~hmac=20B3B0136746E8C39914DECA610412B7D8A8A801F7A1244D113AA14D7F97F68B";
 }
 
 
@@ -286,14 +275,11 @@ async function fetchMackolikBasketball(dateStr) {
 
         if (!response.ok) {
             console.error(`❌ Mackolik ${response.status} döndü (Token süresi dolmuş veya yanlış ACL olabilir)`);
-            // TELEGRAM BİLDİRİMİ BURADA TETİKLENİYOR
-            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`); 
+            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`);
             return null;
         }
         return await response.json();
-    } catch (e) { 
-        return null; 
-    }
+    } catch (e) { return null; }
 }
 
 // Mackolik lig isimlerine göre varsayılan yayıncılar
