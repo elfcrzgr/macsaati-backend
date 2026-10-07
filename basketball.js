@@ -298,13 +298,9 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             areasArray.forEach(area => {
                 if (area.competitions && Array.isArray(area.competitions)) {
                     area.competitions.forEach(comp => {
-
-                        
-                        // Sadece bizim seçtiğimiz elit ligleri içeri alıyoruz!
                         if (isEliteCompetition(comp.name)) {
                             if (comp.matches && Array.isArray(comp.matches)) {
                                 comp.matches.forEach(match => {
-                                    
                                     match.competitionName = comp.name; 
                                     match.competitionId = comp.uuid;
                                     match.fixedDate = date;
@@ -333,11 +329,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     }
 
     for (const e of allMatches) {
-
-        
-        let debugCount = 0; // Döngünün DIŞINA (for öncesine) koyabilirsiniz veya içine sadece 1 kez çalışacak bir kilit koyalım
-
-   for (const e of allMatches) {
         const rawStatus = String(e.status || "").toLowerCase();
         let statusType = 'notstarted';
         if (rawStatus === 'played' || rawStatus === 'finished') statusType = 'finished';
@@ -349,7 +340,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        // 👇 HATA AYIKLAMA KODU 👇
+        // HATA AYIKLAMA (DEBUG) BÖLÜMÜ
         if (typeof global.debugKereYazildi === 'undefined' && hasScore) {
             console.log("\n=======================================================");
             console.log("🔍 MACKOLİK JSON YAPISI (SKOR NEREDE SAKLI OLABİLİR?)");
@@ -358,7 +349,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             console.log("=======================================================\n");
             global.debugKereYazildi = true; 
         }
-        // 👆 HATA AYIKLAMA KODU BİTİŞİ 👆
 
         // YENİ SKOR OKUMA MANTIĞI
         const homeScoreRaw = e.rs_A ?? e.rs_a ?? e.fs_A ?? e.fs_a ?? e.score_A ?? e.score_a ?? (e.team_A && e.team_A.score) ?? "0";
