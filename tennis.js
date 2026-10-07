@@ -195,7 +195,10 @@ function findNextMatchTime(cache, now = Date.now()) {
 
 //TELEGRAM
 async function sendTelegram(text) {
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return false;
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+        console.error("❌ [TELEGRAM] BOT_TOKEN veya CHAT_ID boş (ortam değişkeni tanımlı değil)");
+        return false;
+    }
     try {
         const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
@@ -205,11 +208,13 @@ async function sendTelegram(text) {
         });
         const data = await res.json().catch(() => null);
         if (data && data.ok) return true;
+        console.error("❌ [TELEGRAM] Gönderilemedi:", JSON.stringify(data));
     } catch (e) {
         console.error("❌ [TELEGRAM] Bağlantı hatası:", e.message);
     }
     return false;
 }
+
 
 let lastTokenAlertTime = 0;
 async function notifyAdminForTokenIssue(reason) {
