@@ -340,19 +340,9 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        // HATA AYIKLAMA (DEBUG) BÖLÜMÜ
-        if (typeof global.debugKereYazildi === 'undefined' && hasScore) {
-            console.log("\n=======================================================");
-            console.log("🔍 MACKOLİK JSON YAPISI (SKOR NEREDE SAKLI OLABİLİR?)");
-            console.log("Maç ID:", e.uuid, " | Durum:", rawStatus);
-            console.log(JSON.stringify(e, null, 2)); 
-            console.log("=======================================================\n");
-            global.debugKereYazildi = true; 
-        }
-
-        // YENİ SKOR OKUMA MANTIĞI
-        const homeScoreRaw = e.rs_A ?? e.rs_a ?? e.fs_A ?? e.fs_a ?? e.score_A ?? e.score_a ?? (e.team_A && e.team_A.score) ?? "0";
-        const awayScoreRaw = e.rs_B ?? e.rs_b ?? e.fs_B ?? e.fs_b ?? e.score_B ?? e.score_b ?? (e.team_B && e.team_B.score) ?? "0";
+        // YENİ SKOR OKUMA MANTIĞI (Hata ayıklama logları silindi, fts_A ve fts_B eklendi)
+        const homeScoreRaw = e.fts_A ?? e.fs_A ?? e.rs_A ?? e.score_A ?? (e.team_A && e.team_A.score) ?? "0";
+        const awayScoreRaw = e.fts_B ?? e.fs_B ?? e.rs_B ?? e.score_B ?? (e.team_B && e.team_B.score) ?? "0";
 
         const dateTR = new Date(e.date_time_utc + "Z"); 
         let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
