@@ -477,9 +477,9 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             if (timePart) timeString = timePart.substring(0, 5);
         }
 
-        if (isInProgress) {
-            const periodStr = e.period || "CANLI";
-            timeString = `${timeString}\n${periodStr}`;
+       if (isInProgress) {
+            // İngilizce "Second Set" vb. ifadeleri yoksayarak doğrudan CANLI yazdırır.
+            timeString = `${timeString}\nCANLI`;
         }
 
         const fallbackBroadcaster = "S Sport / S Sport Plus";
