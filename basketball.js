@@ -1,4 +1,4 @@
-const fs = require('fs');
+3const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
 
@@ -333,6 +333,11 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     }
 
     for (const e of allMatches) {
+
+        
+        let debugCount = 0; // Döngünün DIŞINA (for öncesine) koyabilirsiniz veya içine sadece 1 kez çalışacak bir kilit koyalım
+
+    for (const e of allMatches) {
         const rawStatus = String(e.status || "").toLowerCase();
         let statusType = 'notstarted';
         if (rawStatus === 'played' || rawStatus === 'finished') statusType = 'finished';
@@ -342,6 +347,17 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 
         const isFinished = statusType === 'finished'; 
         const isInProgress = statusType === 'inprogress';
+
+        // 👇👇👇 HATA AYIKLAMA KODU BAŞLANGICI 👇👇👇
+        // Sadece bitmiş veya devam eden İLK maçı konsola detaylıca yazdırır.
+        if (typeof global.debugKereYazildi === 'undefined' && (isFinished || isInProgress)) {
+            console.log("\n=======================================================");
+            console.log("🔍 MACKOLİK JSON YAPISI (SKOR NEREDE SAKLI OLABİLİR?)");
+            console.log("Maç ID:", e.uuid, " | Durum:", rawStatus);
+            console.log(JSON.stringify(e, null, 2)); // Tüm objeyi ekrana basar
+            console.log("=======================================================\n");
+            global.debugKereYazildi = true; // Sadece 1 kere yazdırması için
+        }
         const hasScore = isFinished || isInProgress;
 
      // Maçkolik API'sinin tüm olası skor anahtarlarını (Özellikle rs_A ve rs_B) kapsayan yeni mantık
