@@ -242,7 +242,13 @@ async function getMackolikToken() {
 
 async function fetchMackolikTennis(dateStr) {
     try {
-        const currentToken = await getMackolikToken(); // GitHub'dan çeker
+        const currentToken = await getMackolikToken();
+        if (!currentToken) {
+            console.error("❌ Token okunamadı veya boş");
+            notifyAdminForTokenIssue("Token GitHub'dan okunamadı veya boş");
+            return null;
+        }
+
         const url = `https://api.mackolikfeeds.com/tennis/api/v1/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=${dateStr}&extended_period=1&language=tr&migration_status=perform&tz=3`;
         const response = await fetch(url, {
             signal: timeoutSignal(15000),
@@ -259,14 +265,23 @@ async function fetchMackolikTennis(dateStr) {
 
         if (!response.ok) {
             console.error(`❌ Mackolik ${response.status} döndü (token süresi dolmuş olabilir)`);
-            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`); // Telegram uyarısı
+            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`);
             return null;
         }
-        return await response.json();
-    } catch (e) { 
-        return null; 
+
+        const json = await response.json();
+        if (!json || !json.data) {
+            console.error("❌ Mackolik 200 döndü ama veri yok:", JSON.stringify(json).slice(0, 200));
+            notifyAdminForTokenIssue("Cevapta veri yok (token geçersiz olabilir)");
+            return null;
+        }
+        return json;
+    } catch (e) {
+        console.error("❌ Mackolik istek hatası:", e.message);
+        return null;
     }
 }
+
 
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
 const TENNIS_TOURNAMENT_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/tournament_logos/`;
