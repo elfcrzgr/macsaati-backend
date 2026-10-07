@@ -424,11 +424,21 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     }
 
     for (const e of allMatches) {
-        const p1 = e.contestants?.[0]?.players?.[0];
-        const p2 = e.contestants?.[1]?.players?.[0];
+     
+    
+    const homePlayers = e.contestants?.[0]?.players || [];
+const awayPlayers = e.contestants?.[1]?.players || [];
 
-        const hName = p1?.displayName || p1?.shortName || "Tenisçi 1";
-        const aName = p2?.displayName || p2?.shortName || "Tenisçi 2";
+const joinNames = (players, fallback) => {
+    if (players.length === 0) return fallback;
+    return players.map(p => p?.displayName || p?.shortName || fallback).join(' / ');
+};
+
+const hName = joinNames(homePlayers, "Tenisçi 1");
+const aName = joinNames(awayPlayers, "Tenisçi 2");
+
+    
+    
 
         const rawStatus = String(e.status || "").toLowerCase();
         let statusType = 'notstarted';
@@ -441,8 +451,14 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-       const homeLogos = [getFlagUrl(p1) || `${TENNIS_LOGO_BASE}mc.png`];
-       const awayLogos = [getFlagUrl(p2) || `${TENNIS_LOGO_BASE}mc.png`];
+      const buildLogos = (players) => {
+    if (players.length === 0) return [`${TENNIS_LOGO_BASE}mc.png`];
+    return players.map(p => getFlagUrl(p) || `${TENNIS_LOGO_BASE}mc.png`);
+};
+
+const homeLogos = buildLogos(homePlayers);
+const awayLogos = buildLogos(awayPlayers);
+
 
         // 🏆 Güncel Sofascore ID'lerine Göre Turnuva Logosu Eşleme Fonksiyonu
         const getRepoLogoByTournamentName = (tourName) => {
