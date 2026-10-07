@@ -344,8 +344,9 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        const homeScoreRaw = e.fs_A ?? e.score_A ?? e.team_A_score ?? (e.score ? e.score.team_A : "0");
-        const awayScoreRaw = e.fs_B ?? e.score_B ?? e.team_B_score ?? (e.score ? e.score.team_B : "0");
+     // Maçkolik API'sinin tüm olası skor anahtarlarını (Özellikle rs_A ve rs_B) kapsayan yeni mantık
+const homeScoreRaw = e.rs_A ?? e.rs_a ?? e.fs_A ?? e.fs_a ?? e.score_A ?? e.score_a ?? (e.team_A && e.team_A.score) ?? "0";
+const awayScoreRaw = e.rs_B ?? e.rs_b ?? e.fs_B ?? e.fs_b ?? e.score_B ?? e.score_b ?? (e.team_B && e.team_B.score) ?? "0";
 
         const dateTR = new Date(e.date_time_utc + "Z"); 
         let timeString = `${String(dateTR.getHours()).padStart(2, '0')}:${String(dateTR.getMinutes()).padStart(2, '0')}`;
