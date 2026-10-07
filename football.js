@@ -1224,18 +1224,21 @@ async function main() {
 
 // ===== GEÇİCİ: maç detay yapısını görmek için =====
 async function fetchMatchDetailsRaw(matchId) {
-    const res = await fetch(`https://api3.fotmob.com/matchDetails?matchId=${matchId}`, {
-        signal: timeoutSignal(8000),
+    const res = await fetch(`https://www.fotmob.com/match/${matchId}`, {
+        signal: timeoutSignal(10000),
         headers: {
-            "Host": "api3.fotmob.com",
-            "fotmob-version": "1243.0",
-            "Accept": "application/json, */*",
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 FotMob",
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+            "Accept": "text/html,application/xhtml+xml",
             "Accept-Language": "tr-TR,tr;q=0.9"
         }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    const html = await res.text();
+    const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    if (!m) throw new Error('__NEXT_DATA__ bulunamadı');
+    const pageProps = JSON.parse(m[1])?.props?.pageProps;
+    if (!pageProps) throw new Error('pageProps yok');
+    return pageProps;
 }
 
 function dumpDetail(d) {
