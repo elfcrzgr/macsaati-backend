@@ -221,7 +221,10 @@ function findNextMatchTime(cache, now = Date.now()) {
 
 //TELEFRAM
 async function sendTelegram(text) {
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return false;
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+        console.error("❌ [TELEGRAM] BOT_TOKEN veya CHAT_ID boş (ortam değişkeni tanımlı değil)");
+        return false;
+    }
     try {
         const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
@@ -231,11 +234,13 @@ async function sendTelegram(text) {
         });
         const data = await res.json().catch(() => null);
         if (data && data.ok) return true;
+        console.error("❌ [TELEGRAM] Gönderilemedi:", JSON.stringify(data));
     } catch (e) {
         console.error("❌ [TELEGRAM] Bağlantı hatası:", e.message);
     }
     return false;
 }
+
 
 let lastTokenAlertTime = 0;
 async function notifyAdminForTokenIssue(reason) {
@@ -277,7 +282,12 @@ async function getMackolikToken() {
 // 🔥 YENİ MAÇKOLİK FETCH MOTORU
 async function fetchMackolikBasketball(dateStr) {
     try {
-        const currentToken = await getMackolikToken(); 
+        const currentToken = await getMackolikToken();
+        if (!currentToken) {
+            console.error("❌ Token okunamadı veya boş");
+            notifyAdminForTokenIssue("Token GitHub'dan okunamadı veya boş");
+            return null;
+        }
 
         const url = `https://api.mackolikfeeds.com/basket/api/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=${dateStr}&extended_period=1&language=tr&migration_status=perform&tz=3`;
         const response = await fetch(url, {
@@ -285,23 +295,31 @@ async function fetchMackolikBasketball(dateStr) {
             headers: {
                 "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
                 "X-Authorization": "token true",
-                "X-RequestToken": currentToken, 
+                "X-RequestToken": currentToken,
                 "Accept-Language": "tr-TR;q=1, en-GB;q=0.9",
                 "Connection": "keep-alive"
             }
         });
 
         if (!response.ok) {
-            console.error(`❌ Mackolik ${response.status} döndü (Token süresi dolmuş veya yanlış ACL olabilir)`);
-            // TELEGRAM BİLDİRİMİ BURADA TETİKLENİYOR
-            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`); 
+            console.error(`❌ Mackolik ${response.status} döndü (Token süresi dolmuş olabilir)`);
+            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`);
             return null;
         }
-        return await response.json();
-    } catch (e) { 
-        return null; 
+
+        const json = await response.json();
+        if (!json || !json.data) {
+            console.error("❌ Mackolik 200 döndü ama veri yok:", JSON.stringify(json).slice(0, 200));
+            notifyAdminForTokenIssue("Cevapta veri yok (token geçersiz olabilir)");
+            return null;
+        }
+        return json;
+    } catch (e) {
+        console.error("❌ Mackolik istek hatası:", e.message);
+        return null;
     }
 }
+
 
 // Mackolik lig isimlerine göre varsayılan yayıncılar
 const getFallbackBroadcaster = (compName) => {
@@ -459,6 +477,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 // =========================================================================
 async function main() {
     loadState();
+    sendTelegram("✅ Basketbol servisi başladı (Telegram testi)");
     console.log("============================================================");
     console.log("🟢 [BASKETBOL] BAĞIMSIZ MAÇKOLİK SERVİSİ BAŞLADI");
     console.log("============================================================");
