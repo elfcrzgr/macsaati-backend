@@ -15,6 +15,10 @@ const TEN_MIN_MS = 10 * 60000;
 
 const emptyLeaguesCache = new Map();
 
+// Telegram Bilgileri (Basketboldaki gibi)
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "";
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
+
 // =========================================================================
 // 🔥 FIREBASE BAŞLATMA
 // =========================================================================
@@ -188,17 +192,58 @@ function findNextMatchTime(cache, now = Date.now()) {
     return nextTime;
 }
 
-// 🔥 MAÇKOLİK TENİS FETCH MOTORU
+
+//TELEGRAM
+async function sendTelegram(text) {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return false;
+    try {
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
+            signal: timeoutSignal(10000)
+        });
+        const data = await res.json().catch(() => null);
+        if (data && data.ok) return true;
+    } catch (e) {
+        console.error("❌ [TELEGRAM] Bağlantı hatası:", e.message);
+    }
+    return false;
+}
+
+let lastTokenAlertTime = 0;
+async function notifyAdminForTokenIssue(reason) {
+    const now = Date.now();
+    if (now - lastTokenAlertTime < 1800000) return; 
+    const message = `🚨 Maç Saati (TENİS) Uyarısı\nMaçkolik Token Sorunu: ${reason}\n\nLütfen token'ı güncelleyin.`;
+    const ok = await sendTelegram(message);
+    if (ok) lastTokenAlertTime = now;
+}
+
+
+async function getMackolikToken() {
+    try {
+        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/token_tennis.txt?t=${Date.now()}`;
+        const response = await fetch(url);
+        if (response.ok) {
+            const token = await response.text();
+            return token.trim(); 
+        }
+    } catch (e) {
+        console.log("⚠️ GitHub'dan token çekilemedi.");
+    }
+    return null;
+}
+
 async function fetchMackolikTennis(dateStr) {
     try {
+        const currentToken = await getMackolikToken(); // GitHub'dan çeker
         const url = `https://api.mackolikfeeds.com/tennis/api/v1/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=${dateStr}&extended_period=1&language=tr&migration_status=perform&tz=3`;
         const response = await fetch(url, {
             signal: timeoutSignal(15000),
             headers: {
                 "Host": "api.mackolikfeeds.com",
-
-                
-                "X-RequestToken": "exp=1791365170~acl=/tennis/api/v1/matches/*~hmac=45FB266FCFA88CB5998260CE6F39C7888853653BEE443ADC34430D317974075F",
+                "X-RequestToken": currentToken,
                 "Connection": "keep-alive",
                 "Accept": "*/*",
                 "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
@@ -207,12 +252,15 @@ async function fetchMackolikTennis(dateStr) {
             }
         });
 
-      if (!response.ok) {
-    console.error(`❌ Mackolik ${response.status} döndü (token süresi dolmuş olabilir)`);
-    return null;
-}
+        if (!response.ok) {
+            console.error(`❌ Mackolik ${response.status} döndü (token süresi dolmuş olabilir)`);
+            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`); // Telegram uyarısı
+            return null;
+        }
         return await response.json();
-    } catch (e) { return null; }
+    } catch (e) { 
+        return null; 
+    }
 }
 
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
@@ -298,6 +346,8 @@ function getFlagUrl(player) {
     }
     return `${TENNIS_LOGO_BASE}${code}.png`;
 }
+
+
 
 // =========================================================================
 // 🎾 TENİS GÜNCELLEME (ARINDIRILMIŞ SAF YAPI)
