@@ -521,11 +521,17 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             finalAwayScore = String(awaySetsWon);
         }
 
-        let timeString = "00:00";
+                // Mackolik tenis startTime'ı UTC veriyor: UTC olarak okuyup İstanbul saatine çeviriyoruz
+        let startMs = Date.now();
         if (e.startTime) {
-            const timePart = e.startTime.split(' ')[1];
-            if (timePart) timeString = timePart.substring(0, 5);
+            const iso = String(e.startTime).trim().replace(' ', 'T');
+            const hasZone = /(Z|[+-]\d{2}:?\d{2})$/.test(iso);
+            const ms = new Date(hasZone ? iso : iso + 'Z').getTime();
+            if (!isNaN(ms)) startMs = ms;
         }
+        const startDate = new Date(startMs);
+        let timeString = startDate.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+        const matchDate = startDate.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
 
        if (isInProgress) {
             // İngilizce "Second Set" vb. ifadeleri yoksayarak doğrudan CANLI yazdırır.
@@ -533,7 +539,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
         }
 
         const fallbackBroadcaster = "S Sport / S Sport Plus";
-        const result = getBroadcasterWithFallback("tenis", e.fixedDate, timeString, hName, aName, fallbackBroadcaster);
+       const result = getBroadcasterWithFallback("tenis", matchDate, timeString, hName, aName, fallbackBroadcaster);
 
         if (!isQuickScan) tenisMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
 
@@ -541,9 +547,9 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             id: e.id, 
             isElite: true, 
             status: statusType, 
-            fixedDate: e.fixedDate, 
+            fixedDate: matchDate, 
             fixedTime: timeString, 
-            timestamp: new Date(e.startTime || Date.now()).getTime(), 
+            timestamp: startMs,
             broadcaster: result.kanal,
             homeTeam: { name: hName, logos: homeLogos },
             awayTeam: { name: aName, logos: awayLogos },
@@ -554,7 +560,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
             tournament: e.competitionName || "Tenis Turnuvası"
         });
 
-        previousMatchStates.set(String(e.id), { status: statusType, date: e.fixedDate });
+                previousMatchStates.set(String(e.id), { status: statusType, date: matchDate });
     }
 
     const finalMatches = Array.from(globalTennisCache.values()).sort((a, b) => a.timestamp - b.timestamp);
