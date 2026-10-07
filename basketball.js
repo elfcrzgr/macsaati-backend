@@ -477,7 +477,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 // =========================================================================
 async function main() {
     loadState();
-    sendTelegram("✅ Basketbol servisi başladı (Telegram testi)");
     console.log("============================================================");
     console.log("🟢 [BASKETBOL] BAĞIMSIZ MAÇKOLİK SERVİSİ BAŞLADI");
     console.log("============================================================");
