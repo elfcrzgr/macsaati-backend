@@ -448,6 +448,12 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
     
     const homePlayers = e.contestants?.[0]?.players || [];
 const awayPlayers = e.contestants?.[1]?.players || [];
+if (!global.__rankLogged && homePlayers.length === 1) {
+    global.__rankLogged = true;
+    console.log("🔎 CONTESTANT:", JSON.stringify(e.contestants?.[0]));
+}
+
+
 
 const joinNames = (players, fallback) => {
     if (players.length === 0) return fallback;
