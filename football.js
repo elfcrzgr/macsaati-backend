@@ -195,9 +195,6 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     const homeWords = normalizeStr(homeName).split(' ').filter(w => w.length >= 3);
     const awayWords = normalizeStr(awayName).split(' ').filter(w => w.length >= 3);
 
-    // 🚀 DEDEKTİF KONTROLÜ: Ev sahibi veya deplasman Fenerbahçe ise alarmı kur
-    const isFener = (homeName || "").includes("Fenerbah") || (awayName || "").includes("Fenerbah");
-
     const getSafeDates = (baseStr) => {
         const [y, m, d] = baseStr.split('-').map(Number);
         return [-1, 0, 1].map(offset => {
@@ -208,17 +205,15 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
         });
     };
 
+    let minDiff = 9999;
+    let foundBroadcaster = fallback;
+    let foundSource = "fallback";
+
     for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
         const matchesArray = Array.isArray(dayData) ? dayData : dayData?.matches;
 
-        if (!matchesArray || !Array.isArray(matchesArray)) {
-            // Eğer JSON dosyası Node.js'e güncel gelmemişse burada uyaracak
-            if (isFener && dateKey === dateStr) {
-                console.log(`⚠️ [FENERBAHÇE ARAMASI] ${dateKey} tarihi için JSON verisi BOŞ veya çekilememiş!`);
-            }
-            continue;
-        }
+        if (!matchesArray || !Array.isArray(matchesArray)) continue;
 
         for (const m of matchesArray) {
             if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
@@ -238,24 +233,24 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                     if (diff > 1000) diff = Math.abs(diff - 1440);
                 }
 
-                // 🚀 DEDEKTİF RAPORU: JSON içindeki her bir Fener maçını nasıl değerlendirdiğini ekrana basacak
-                if (isFener && mTitleClean.includes("fenerbahce")) {
-                    console.log(`🔍 [FENERBAHÇE TESTİ]`);
-                    console.log(`   ├─ API Maçı: ${homeName} vs ${awayName} (Tarih: ${dateStr}, Saat: ${cleanTime})`);
-                    console.log(`   ├─ JSON Maçı: ${m.mac} (Tarih: ${dateKey}, Saat: ${m.saat})`);
-                    console.log(`   ├─ Eşleşme Puanı: ${matchScore}/2 (Home: ${matchHome}, Away: ${matchAway})`);
-                    console.log(`   └─ Saat Farkı: ${diff} dakika`);
-                }
-
-                if (matchScore === 2 && diff <= 300) {
-                    return { kanal: m.yayin, source: "sporekrani" };
-                } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
-                    return { kanal: m.yayin, source: "sporekrani" };
+                // 🚀 ÇÖZÜM: Gördüğün ilk maça atlama, saat farkı en düşük olan (En Yakın) maçı hafızaya al!
+                if (matchScore === 2) {
+                    if (diff < minDiff && diff <= 300) {
+                        minDiff = diff;
+                        foundBroadcaster = (m.yayin && m.yayin.trim() !== "") ? m.yayin : fallback;
+                        foundSource = "sporekrani";
+                    }
+                } 
+                else if (matchScore === 1 && diff <= 15 && dateKey === dateStr && minDiff > 15) {
+                    minDiff = diff;
+                    foundBroadcaster = (m.yayin && m.yayin.trim() !== "") ? m.yayin : fallback;
+                    foundSource = "sporekrani";
                 }
             }
         }
     }
-    return { kanal: fallback, source: "fallback" };
+    
+    return { kanal: foundBroadcaster, source: foundSource };
 }
 
 
