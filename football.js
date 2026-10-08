@@ -119,6 +119,8 @@ async function loadExternalBroadcasters() {
     }
 }
 
+/*
+
 function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
     const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
     const [cH, cM] = cleanTime.split(':').map(Number);
@@ -173,6 +175,89 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     }
     return { kanal: fallback, source: "fallback" };
 }
+
+*/
+
+function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
+    const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
+    const [cH, cM] = cleanTime.split(':').map(Number);
+
+    const normalizeStr = (str) => {
+        if (!str) return "";
+        let s = str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+                   .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
+                   .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
+                   .replace(/ı/g, 'i');
+        s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
+    };
+
+    const homeWords = normalizeStr(homeName).split(' ').filter(w => w.length >= 3);
+    const awayWords = normalizeStr(awayName).split(' ').filter(w => w.length >= 3);
+
+    // 🚀 DEDEKTİF KONTROLÜ: Ev sahibi veya deplasman Fenerbahçe ise alarmı kur
+    const isFener = (homeName || "").includes("Fenerbah") || (awayName || "").includes("Fenerbah");
+
+    const getSafeDates = (baseStr) => {
+        const [y, m, d] = baseStr.split('-').map(Number);
+        return [-1, 0, 1].map(offset => {
+            const dateObj = new Date(y, m - 1, d + offset);
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${month}-${day}`;
+        });
+    };
+
+    for (const dateKey of getSafeDates(dateStr)) {
+        const dayData = externalBroadcasters[dateKey];
+        const matchesArray = Array.isArray(dayData) ? dayData : dayData?.matches;
+
+        if (!matchesArray || !Array.isArray(matchesArray)) {
+            // Eğer JSON dosyası Node.js'e güncel gelmemişse burada uyaracak
+            if (isFener && dateKey === dateStr) {
+                console.log(`⚠️ [FENERBAHÇE ARAMASI] ${dateKey} tarihi için JSON verisi BOŞ veya çekilememiş!`);
+            }
+            continue;
+        }
+
+        for (const m of matchesArray) {
+            if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
+                const mTime = (m.saat || "").replace('.', ':').trim();
+                const [mH, mM] = mTime.split(':').map(Number);
+                const mTitleClean = normalizeStr(m.mac);
+
+                const matchHome = homeWords.length > 0 && homeWords.some(w => mTitleClean.includes(w));
+                const matchAway = awayWords.length > 0 && awayWords.some(w => mTitleClean.includes(w));
+                const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
+
+                let diff = 9999;
+                if (mTime === cleanTime) {
+                    diff = 0;
+                } else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) {
+                    diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM));
+                    if (diff > 1000) diff = Math.abs(diff - 1440);
+                }
+
+                // 🚀 DEDEKTİF RAPORU: JSON içindeki her bir Fener maçını nasıl değerlendirdiğini ekrana basacak
+                if (isFener && mTitleClean.includes("fenerbahce")) {
+                    console.log(`🔍 [FENERBAHÇE TESTİ]`);
+                    console.log(`   ├─ API Maçı: ${homeName} vs ${awayName} (Tarih: ${dateStr}, Saat: ${cleanTime})`);
+                    console.log(`   ├─ JSON Maçı: ${m.mac} (Tarih: ${dateKey}, Saat: ${m.saat})`);
+                    console.log(`   ├─ Eşleşme Puanı: ${matchScore}/2 (Home: ${matchHome}, Away: ${matchAway})`);
+                    console.log(`   └─ Saat Farkı: ${diff} dakika`);
+                }
+
+                if (matchScore === 2 && diff <= 300) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                } else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) {
+                    return { kanal: m.yayin, source: "sporekrani" };
+                }
+            }
+        }
+    }
+    return { kanal: fallback, source: "fallback" };
+}
+
 
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR
