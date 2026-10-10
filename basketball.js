@@ -342,31 +342,58 @@ const getFallbackBroadcaster = (compName) => {
 // =========================================================================
 
 // Mackolik'te kullanılan tam lig isimleri. Sadece BİREBİR eşleşenler alınır.
-// NOT: Konsolda elenen ligler arasında eklemek istediğiniz olursa tam adını buraya yazın.
 const ELITE_LEAGUES = [
+    // Amerika
     "nba",
     "wnba",
+
+    // Uluslararası & Avrupa Kupaları
     "euroleague",
     "eurocup",
     "basketbol şampiyonlar ligi",
     "fiba europe cup",
+    "fiba dünya kupası",
+    "eurobasket",
+    "olimpiyat oyunları",
+
+    // Türkiye
     "türkiye sigorta bsl",
     "basketbol süper ligi",
     "türkiye basketbol ligi",
+    "türkiye sigorta tbl", // Görselden eklendi
+    "tbl",                 // Görselden eklendi
+
+    // İspanya
     "ispanya liga endesa",
     "ispanya acb",
+    "acb ligi",            // Görselden eklendi
+
+    // İtalya
     "italya serie a",
     "italya lega basket",
-    "almanya bbl",
-    "yunanistan basketbol ligi",
+    "serie a",             // Görselden eklendi
+
+    // Fransa
     "fransa pro a",
+    "lnb pro a",           // Görselden eklendi
+    "pro a",               // Görselden eklendi
+
+    // Almanya
+    "almanya bbl",
+    "bbl",                 // Görselden eklendi
+
+    // Yunanistan
+    "yunanistan basketbol ligi",
+    "basket ligi",         // Görselden eklendi
+
+    // Bölgesel Ligler (Adriyatik & Rusya)
     "adriyatik ligi",
     "aba league",
+    "aba ligi",            // Görselden eklendi
     "vtb birleşik ligi",
-    "fiba dünya kupası",
-    "eurobasket",
-    "olimpiyat oyunları"
+    "vtb ligi"             // Görselden eklendi
 ];
+
 
 function isEliteCompetition(compName) {
     if (!compName) return false;
