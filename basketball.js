@@ -360,39 +360,39 @@ const ELITE_LEAGUES = [
     "türkiye sigorta bsl",
     "basketbol süper ligi",
     "türkiye basketbol ligi",
-    "türkiye sigorta tbl", // Görselden eklendi
-    "tbl",                 // Görselden eklendi
+    "türkiye sigorta tbl", // Türkiye 2. Ligi sponsorlu tam adı
 
     // İspanya
     "ispanya liga endesa",
     "ispanya acb",
-    "acb ligi",            // Görselden eklendi
+    "acb ligi",            
 
     // İtalya
     "italya serie a",
     "italya lega basket",
-    "serie a",             // Görselden eklendi
+    "serie a",             
 
     // Fransa
     "fransa pro a",
-    "lnb pro a",           // Görselden eklendi
-    "pro a",               // Görselden eklendi
+    "lnb pro a",           
+    "pro a",               
 
     // Almanya
     "almanya bbl",
-    "bbl",                 // Görselden eklendi
+    "bbl",                 
 
     // Yunanistan
     "yunanistan basketbol ligi",
-    "basket ligi",         // Görselden eklendi
+    "basket ligi",         
 
     // Bölgesel Ligler (Adriyatik & Rusya)
     "adriyatik ligi",
     "aba league",
-    "aba ligi",            // Görselden eklendi
+    "aba ligi",            
     "vtb birleşik ligi",
-    "vtb ligi"             // Görselden eklendi
+    "vtb ligi"             
 ];
+
 
 
 function isEliteCompetition(compName) {
