@@ -338,28 +338,44 @@ const getFallbackBroadcaster = (compName) => {
 // 🏀 BASKETBOL GÜNCELLEME (GÜNCELLENMİŞ MAÇKOLİK PARSER)
 // =========================================================================
 // =========================================================================
-// 🏀 ELİT LİG FİLTRELEME VE SEÇİM KURALLARI
+// 🏀 ELİT LİG FİLTRELEME (TAM İSİM / WHITELIST YÖNTEMİ)
 // =========================================================================
+
+// Mackolik'te kullanılan tam lig isimleri. Sadece BİREBİR eşleşenler alınır.
+// NOT: Konsolda elenen ligler arasında eklemek istediğiniz olursa tam adını buraya yazın.
+const ELITE_LEAGUES = [
+    "nba",
+    "wnba",
+    "euroleague",
+    "eurocup",
+    "basketbol şampiyonlar ligi",
+    "fiba europe cup",
+    "türkiye sigorta bsl",
+    "basketbol süper ligi",
+    "türkiye basketbol ligi",
+    "ispanya liga endesa",
+    "ispanya acb",
+    "italya serie a",
+    "italya lega basket",
+    "almanya bbl",
+    "yunanistan basketbol ligi",
+    "fransa pro a",
+    "adriyatik ligi",
+    "aba league",
+    "vtb birleşik ligi",
+    "fiba dünya kupası",
+    "eurobasket",
+    "olimpiyat oyunları"
+];
+
 function isEliteCompetition(compName) {
     if (!compName) return false;
-    const name = String(compName).toLowerCase();
+    
+    // Gelen lig adını küçük harfe çevir ve baştaki/sondaki boşlukları sil
+    const name = String(compName).toLocaleLowerCase('tr-TR').trim();
 
-    // ❌ Kadınlar liglerini ele (Sadece WNBA hariç)
-    if ((name.includes('kadın') || name.includes('women') || name.includes('kbsl')) && !name.includes('wnba')) {
-        return false;
-    }
-
-    // ✅ İzin verilen ana ve elit lig anahtar kelimeleri
-    const allowedKeywords = [
-        'nba', 'wnba',
-        'euroleague', 'eurocup',
-        'şampiyonlar ligi', 'champions league',
-        'türkiye sigorta bsl', 'türkiye basketbol ligi', 'tbl', 'basketbol süper ligi',
-        'acb', 'lig a', 'basket league', 'bbl', 'pro a', 'aba league', 'vtb',
-        'italya', 'ispanya', 'yunanistan', 'almanya', 'fransa'
-    ];
-
-    return allowedKeywords.some(keyword => name.includes(keyword));
+    // Sadece dizideki tam isimlerden biriyle eşleşiyorsa true döner
+    return ELITE_LEAGUES.includes(name);
 }
 
 // =========================================================================
@@ -371,6 +387,10 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     let allMatches = [];
     let basketbolMatchesLog = [];
     let anySuccess = false;
+    
+    // YENİ: Filtreye takılan (elenen) ligleri takip etmek için bir Küme (Set) oluşturuyoruz.
+    // Set kullanıyoruz ki aynı lig birden fazla kez yazılmasın.
+    let rejectedLeagues = new Set();
 
     for (const date of targetDates) {
         const responseData = await fetchMackolikBasketball(date);
@@ -382,6 +402,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             areasArray.forEach(area => {
                 if (area.competitions && Array.isArray(area.competitions)) {
                     area.competitions.forEach(comp => {
+                        // Eğer lig elit listemizde varsa maçları alıyoruz
                         if (isEliteCompetition(comp.name)) {
                             if (comp.matches && Array.isArray(comp.matches)) {
                                 comp.matches.forEach(match => {
@@ -391,11 +412,19 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
                                     allMatches.push(match);
                                 });
                             }
+                        } else {
+                            // YENİ: Eğer lig elit değilse, reddedilenler listesine ismini ekliyoruz
+                            rejectedLeagues.add(comp.name);
                         }
                     });
                 }
             });
         }
+    }
+
+    // YENİ: Hızlı tarama (QuickScan) değilse, elenen ligleri terminale tek seferde yazdırıyoruz.
+    if (!isQuickScan && rejectedLeagues.size > 0) {
+        console.log(`\n🗑️ [FİLTRE] Elenen Ligler: ${Array.from(rejectedLeagues).join(', ')}`);
     }
 
     if (!anySuccess) {
@@ -424,17 +453,14 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         const isInProgress = statusType === 'inprogress';
         const hasScore = isFinished || isInProgress;
 
-        // YENİ SKOR OKUMA MANTIĞI (Hata ayıklama logları silindi, fts_A ve fts_B eklendi)
         const homeScoreRaw = e.fts_A ?? e.fs_A ?? e.rs_A ?? e.score_A ?? (e.team_A && e.team_A.score) ?? "0";
         const awayScoreRaw = e.fts_B ?? e.fs_B ?? e.rs_B ?? e.score_B ?? (e.team_B && e.team_B.score) ?? "0";
 
         const dateTR = new Date(e.date_time_utc + "Z"); 
         let timeString = dateTR.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
         const matchDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-
-        
             
-                      if (isInProgress) {
+        if (isInProgress) {
             const minStr = e.minute ? `${e.minute}'` : "CANLI";
             timeString = `${timeString}\n${minStr}`;
         }
@@ -443,7 +469,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         const aName = e.team_B?.display_name || e.team_B?.name || "Deplasman";
         const fallbackBroadcaster = getFallbackBroadcaster(e.competitionName);
         const result = getBroadcasterWithFallback("basketbol", matchDate, timeString, hName, aName, fallbackBroadcaster);
-
 
         if (!isQuickScan) basketbolMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
 
@@ -464,7 +489,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         });
 
        previousMatchStates.set(e.uuid, { status: statusType, date: matchDate });
-
     }
 
     const finalMatches = Array.from(globalBasketballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
@@ -477,6 +501,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     const nextMatchTimestamp = findNextMatchTime(globalBasketballCache);
     return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
 }
+
 
 // =========================================================================
 // 🆕 ANA DÖNGÜ
