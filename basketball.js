@@ -394,6 +394,28 @@ const ELITE_LEAGUES = [
 ];
 
 
+// =========================================================================
+// 🏀 LİG İSİMLERİNİ KULLANICI DOSTU HALE GETİRME (MAPPING)
+// =========================================================================
+const LEAGUE_DISPLAY_NAMES = {
+    "basket ligi": "Yunanistan Basket Ligi",
+    "yunanistan basketbol ligi": "Yunanistan Basket Ligi",
+    "bbl": "Almanya BBL",
+    "almanya bbl": "Almanya BBL",
+    "acb ligi": "İspanya Liga Endesa",
+    "ispanya acb": "İspanya Liga Endesa",
+    "serie a": "İtalya Serie A",
+    "italya lega basket": "İtalya Serie A",
+    "lnb pro a": "Fransa Pro A",
+    "pro a": "Fransa Pro A",
+    "aba ligi": "Adriyatik Ligi (ABA)",
+    "aba league": "Adriyatik Ligi (ABA)",
+    "vtb ligi": "VTB Birleşik Ligi",
+    "tbl": "Türkiye 2. Ligi (TBL)",
+    "türkiye sigorta tbl": "Türkiye 2. Ligi (TBL)"
+};
+
+
 
 function isEliteCompetition(compName) {
     if (!compName) return false;
@@ -512,7 +534,8 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(e.competitionName)}.png`,
             homeScore: hasScore ? String(homeScoreRaw) : "-", 
             awayScore: hasScore ? String(awayScoreRaw) : "-", 
-            tournament: e.competitionName || "Basketbol Ligi"
+            tournament: LEAGUE_DISPLAY_NAMES[String(e.competitionName).toLocaleLowerCase('tr-TR').trim()] || e.competitionName || "Basketbol Ligi"
+
         });
 
        previousMatchStates.set(e.uuid, { status: statusType, date: matchDate });
