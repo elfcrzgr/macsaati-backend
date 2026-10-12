@@ -378,7 +378,16 @@ const NATIONAL_LEAGUES = new Set([77, 50, 44, 289, 9806, 114]);
 // Bu yüzden milli takım turnuvalarını ID yerine isimden yakalıyoruz.
 
 
+     
+
 const LEAGUE_NAME_RULES = [
+    // 🏆 Avrupa Kupaları (Sadece UEFA olanları almak için ^ işareti ile baştan eşleşme yapıyoruz)
+    { re: /^(uefa )?champions league/i,               tr: "UEFA Şampiyonlar Ligi",         logoId: 42,   elite: true },
+    { re: /^(uefa )?europa league/i,                  tr: "UEFA Avrupa Ligi",              logoId: 73,   elite: true },
+    { re: /^(uefa )?conference league/i,              tr: "UEFA Konferans Ligi",           logoId: 10216, elite: true },
+    { re: /^(uefa )?super cup|^süper kupa/i,          tr: "UEFA Süper Kupa",               logoId: 549,  elite: true },
+
+    // 🌍 Uluslararası Turnuvalar ve Diğer Ligler
     { re: /uefa nations league/i,            tr: "UEFA Uluslar Ligi",             logoId: 9806, national: true, elite: true },
     { re: /world cup/i,                      tr: "FIFA Dünya Kupası",             logoId: 77,   national: true, elite: true },
     { re: /^(uefa )?euro(pean championship)?\b/i, tr: "UEFA EURO",              logoId: 50,   national: true, elite: true },
@@ -390,6 +399,7 @@ const LEAGUE_NAME_RULES = [
     { re: /liga profesional/i,               tr: "Arjantin Liga Profesional",     logoId: 112,  elite: true },
     { re: /saudi.*league|roshn.*league/i,    tr: "Suudi Arabistan Pro Lig",       logoId: 538,  elite: true }
 ];
+
 
 
 // 🚫 Listelenmeyecek maçlar: (1) "U" + sayı içeren her takım/lig (U17, U19, U21, U23, Under-20...), (2) tüm kadın maçları
