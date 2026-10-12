@@ -618,8 +618,12 @@ async function main() {
             let quickScanDates = [getTRDate(0)];
             if (currentHour >= 0 && currentHour <= 4) quickScanDates = [getTRDate(-1), getTRDate(0)];
 
-            const isUpcoming = () => sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1);
+         
+        // Maça 30 dakikadan (30 * 60000 ms) az kaldıysa hızlı moda gir
+const isUpcoming = () => sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - (30 * 60000));
 
+        
+        
             if (sportUpdateStatus.hasLiveMatch) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
                     console.log("\n🏀 [HIZLI DÖNGÜ] Canlı basketbol maçı var!");
