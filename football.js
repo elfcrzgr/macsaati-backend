@@ -571,7 +571,10 @@ function normalizeStatus(attr, startMs) {
     // Dakika hesabı planlanan saatten değil, maçın gerçek başlama zamanından (gs) yapılır
     const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
-    const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN', 'P', 'PP', 'POSTP', 'POSTPONED'];
+
+const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN', 'P', 'PP', 'POSTP', 'POSTPONED', 'SUSP', 'INT', 'PAUS'];
+
+
     if (DEBUG_UNKNOWN && !KNOWN_STATUSES.includes(raw) && !seenUnknownStatuses.has(`x/${raw}`)) {
         seenUnknownStatuses.add(`x/${raw}`);
         console.log(`🔎 [STATÜ] Bilinmeyen Status "${raw}" | attrs: ${JSON.stringify(attr)}`);
@@ -591,8 +594,9 @@ function normalizeStatus(attr, startMs) {
         }
         return { status: 'finished', code: 100, label: 'MS', min: 90 };
     }
-    if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
-    if (['P', 'PP', 'POSTP', 'POSTPONED'].includes(raw)) return { status: 'postponed', code: 0, label: '', min: 0 };
+       if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: 'İPTAL', min: 0 };
+       if (['P', 'PP', 'POSTP', 'POSTPONED', 'SUSP', 'INT', 'PAUS'].includes(raw)) return { status: 'postponed', code: 0, label: 'ERT', min: 0 };
+
 
     if (raw === 'HT') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
@@ -727,7 +731,7 @@ async function fetchFotMobMatches(dateStr) {
                         const time = sd.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 
                         const st = normalizeStatus(attr, startMs);
-                        if (st.status === 'canceled' || st.status === 'postponed') return;
+                        //if (st.status === 'canceled' || st.status === 'postponed') return;
 
                         if (DEBUG_UNKNOWN && st.status === 'inprogress' && Date.now() - lastLiveRawLog > 55000) {
                             lastLiveRawLog = Date.now();
@@ -1138,7 +1142,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 isElite: ELITE_FOOT_IDS.has(e.leagueId) || !!(e.rule && e.rule.elite),
                 status: st.status,
                 statusCode: st.code,
-                liveMinute: isLive ? st.label : "",
+                liveMinute: (isLive || st.status === 'postponed' || st.status === 'canceled') ? st.label : "",
                 fixedDate: e.date,
                 fixedTime: e.time,
                 timestamp: e.startMs,
