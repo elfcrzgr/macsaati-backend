@@ -1,4 +1,4 @@
-const fs = require('fs');
+Const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
@@ -571,10 +571,7 @@ function normalizeStatus(attr, startMs) {
     // Dakika hesabı planlanan saatten değil, maçın gerçek başlama zamanından (gs) yapılır
     const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
-
-const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN', 'P', 'PP', 'POSTP', 'POSTPONED', 'SUSP', 'INT', 'PAUS'];
-
-
+    const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN', 'P', 'PP', 'POSTP', 'POSTPONED'];
     if (DEBUG_UNKNOWN && !KNOWN_STATUSES.includes(raw) && !seenUnknownStatuses.has(`x/${raw}`)) {
         seenUnknownStatuses.add(`x/${raw}`);
         console.log(`🔎 [STATÜ] Bilinmeyen Status "${raw}" | attrs: ${JSON.stringify(attr)}`);
@@ -594,9 +591,8 @@ const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C',
         }
         return { status: 'finished', code: 100, label: 'MS', min: 90 };
     }
-       if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: 'İPTAL', min: 0 };
-       if (['P', 'PP', 'POSTP', 'POSTPONED', 'SUSP', 'INT', 'PAUS'].includes(raw)) return { status: 'postponed', code: 0, label: 'ERT', min: 0 };
-
+    if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
+    if (['P', 'PP', 'POSTP', 'POSTPONED'].includes(raw)) return { status: 'postponed', code: 0, label: '', min: 0 };
 
     if (raw === 'HT') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
@@ -631,18 +627,11 @@ const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C',
     const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
     const inj1 = ijtParts[0] || 0;
     const inj2 = ijtParts[1] || 0;
-      if (shsMs) {
+    if (shsMs) {
+        // Devam eden dakika gösterilir: 2. yarının ilk dakikası 46'
         const m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
-        
-        // 🚀 KESİN ÇÖZÜM: Eğer hesaplanan dakika 120'yi aşıyorsa maç anormal bir şekilde durmuştur.
-        if (m > 150) {
-            return { status: 'postponed', code: 0, label: 'ERT', min: 0 };
-        }
-        
         return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
-    
-    
     // sId: 2 = ilk yarı, 10 = devre arası, 3 = ikinci yarı (Kosova-Avusturya ve Azerbaycan-Litvanya maçlarında gözlendi)
     if (String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
@@ -738,7 +727,7 @@ async function fetchFotMobMatches(dateStr) {
                         const time = sd.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 
                         const st = normalizeStatus(attr, startMs);
-                        //if (st.status === 'canceled' || st.status === 'postponed') return;
+                        if (st.status === 'canceled' || st.status === 'postponed') return;
 
                         if (DEBUG_UNKNOWN && st.status === 'inprogress' && Date.now() - lastLiveRawLog > 55000) {
                             lastLiveRawLog = Date.now();
@@ -1128,9 +1117,8 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             const fallbackBroadcaster = getFootBroadcaster(e.leagueId, hNameRaw, aNameRaw, e.leagueName);
             const bc = getBroadcasterWithFallback("futbol", e.date, e.time, hName, aName, fallbackBroadcaster);
 
-            const finalHomeScore = (isLive || isFinished || st.status === 'postponed' || st.status === 'canceled') ? String(e.hScoreRaw ?? "0") : "-";
-             const finalAwayScore = (isLive || isFinished || st.status === 'postponed' || st.status === 'canceled') ? String(e.aScoreRaw ?? "0") : "-";
- 
+            const finalHomeScore = (isLive || isFinished) ? String(e.hScoreRaw ?? "0") : "-";
+            const finalAwayScore = (isLive || isFinished) ? String(e.aScoreRaw ?? "0") : "-";
 
             // Logolar: FotMob ID'leri Sofascore ID'lerinden farklı olduğu için FotMob CDN kullanılır.
             let homeLogoUrl = fotmobTeamLogo(e.home.id);
@@ -1150,7 +1138,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 isElite: ELITE_FOOT_IDS.has(e.leagueId) || !!(e.rule && e.rule.elite),
                 status: st.status,
                 statusCode: st.code,
-                liveMinute: (isLive || st.status === 'postponed' || st.status === 'canceled') ? st.label : "",
+                liveMinute: isLive ? st.label : "",
                 fixedDate: e.date,
                 fixedTime: e.time,
                 timestamp: e.startMs,
