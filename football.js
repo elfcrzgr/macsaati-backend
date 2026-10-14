@@ -631,11 +631,18 @@ const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C',
     const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
     const inj1 = ijtParts[0] || 0;
     const inj2 = ijtParts[1] || 0;
-    if (shsMs) {
-        // Devam eden dakika gösterilir: 2. yarının ilk dakikası 46'
+      if (shsMs) {
         const m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
+        
+        // 🚀 KESİN ÇÖZÜM: Eğer hesaplanan dakika 120'yi aşıyorsa maç anormal bir şekilde durmuştur.
+        if (m > 120) {
+            return { status: 'postponed', code: 0, label: 'ERT', min: 0 };
+        }
+        
         return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
+    
+    
     // sId: 2 = ilk yarı, 10 = devre arası, 3 = ikinci yarı (Kosova-Avusturya ve Azerbaycan-Litvanya maçlarında gözlendi)
     if (String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
