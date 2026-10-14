@@ -635,7 +635,7 @@ const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C',
         const m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
         
         // 🚀 KESİN ÇÖZÜM: Eğer hesaplanan dakika 120'yi aşıyorsa maç anormal bir şekilde durmuştur.
-        if (m > 120) {
+        if (m > 150) {
             return { status: 'postponed', code: 0, label: 'ERT', min: 0 };
         }
         
@@ -1128,8 +1128,9 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
             const fallbackBroadcaster = getFootBroadcaster(e.leagueId, hNameRaw, aNameRaw, e.leagueName);
             const bc = getBroadcasterWithFallback("futbol", e.date, e.time, hName, aName, fallbackBroadcaster);
 
-            const finalHomeScore = (isLive || isFinished) ? String(e.hScoreRaw ?? "0") : "-";
-            const finalAwayScore = (isLive || isFinished) ? String(e.aScoreRaw ?? "0") : "-";
+            const finalHomeScore = (isLive || isFinished || st.status === 'postponed' || st.status === 'canceled') ? String(e.hScoreRaw ?? "0") : "-";
+             const finalAwayScore = (isLive || isFinished || st.status === 'postponed' || st.status === 'canceled') ? String(e.aScoreRaw ?? "0") : "-";
+ 
 
             // Logolar: FotMob ID'leri Sofascore ID'lerinden farklı olduğu için FotMob CDN kullanılır.
             let homeLogoUrl = fotmobTeamLogo(e.home.id);
