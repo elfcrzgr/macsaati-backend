@@ -596,10 +596,11 @@ function normalizeStatus(attr, startMs) {
 
     if (raw === 'HT') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
-    // Başlamamış maç
-    if (raw === 'NS' || raw === '' && !hasScore || !hasScore || (!gsMs && sinceScheduled < -2)) {
+       // Başlamamış maç (Saat kontrolü tamamen kaldırıldı, sadece net verilere bakılır)
+    if (raw === 'NS' || (raw === '' && !hasScore) || !hasScore) {
         return { status: 'notstarted', code: 0, label: '', min: 0 };
     }
+
 
     // Güvenlik: 4 saatten uzun "canlı" görünen maç aslında bitmiştir
     if (elapsedMin > 240) return { status: 'finished', code: 100, label: 'MS', min: 90 };
@@ -635,7 +636,7 @@ function normalizeStatus(attr, startMs) {
     // sId: 2 = ilk yarı, 10 = devre arası, 3 = ikinci yarı (Kosova-Avusturya ve Azerbaycan-Litvanya maçlarında gözlendi)
     if (String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
-    if (gsMs) {
+       if (gsMs) {
         const e = Math.max(0, elapsedMin);
         // Devam eden dakika gösterilir: 0:00-0:59 -> 1', 47:15 -> 48'
         if (e <= 55) return { status: 'inprogress', code: 6, label: `${e + 1}'`, min: e + 1, inj1 };
@@ -643,9 +644,12 @@ function normalizeStatus(attr, startMs) {
         return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
     }
 
-    const est = estimateMinute(elapsedMin);
-    return { status: 'inprogress', code: est.code, label: est.label, min: est.min };
+    // 🔥 DEĞİŞİKLİK BURADA: Artık `estimateMinute` ile saate göre varsayım yapmıyoruz.
+    // FotMob maçın başladığına dair net bir 'gs' (gerçek saat) veya canlı dakika yollamadıysa,
+    // bizim saatimiz maç saatini geçmiş olsa bile maçı başlatma!
+    return { status: 'notstarted', code: 0, label: '', min: 0 };
 }
+
 
 // 🔥 FOTMOB XML VERİ ÇEKME. Hata olursa null, gerçekten boşsa [] döner.
 async function fetchFotMobMatches(dateStr) {
