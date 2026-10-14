@@ -1,4 +1,4 @@
-Const fs = require('fs');
+const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
