@@ -2,3 +2,9 @@
 node_modules
 serviceAccountKey.json
 *.p8
+# Android ve IDEA önbellekleri
+.idea/
+.gradle/
+**/caches/
+**/build/
+*.iml
