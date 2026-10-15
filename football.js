@@ -614,13 +614,22 @@ function normalizeStatus(attr, startMs) {
     }
 
     // FotMob dakikayı doğrudan veriyorsa onu kullan (alan adı bilinmiyor, olası adayları dene)
+        // FotMob dakikayı doğrudan veriyorsa onu kullan
     for (const key of ['min', 'minute', 'liveTime', 'timeStr']) {
-        const v = attr[key];
-        if (v !== undefined && /^\d{1,3}(\+\d+)?$/.test(String(v).trim())) {
-            const n = parseInt(v, 10);
-            return { status: 'inprogress', code: n > 45 ? 7 : 6, label: `${String(v).trim()}'`, min: n };
+        const v = String(attr[key] || "").trim();
+        if (v && /^\d{1,3}(\+\d+)?$/.test(v)) {
+            let exactMin = 0;
+            // Eğer Fotmob "90+4" gönderirse bunu toplayıp 94 yapıyoruz
+            if (v.includes('+')) {
+                const parts = v.split('+').map(Number);
+                exactMin = parts[0] + parts[1];
+            } else {
+                exactMin = parseInt(v, 10);
+            }
+            return { status: 'inprogress', code: exactMin > 45 ? 7 : 6, label: `${exactMin}'`, min: exactMin };
         }
     }
+
 
     // 🎯 FotMob'un verdiği yarı başlangıçları: shs = 2. yarı başlangıcı, gs = maç başlangıcı
     const shsMs = parseGameStart(attr.shs);
@@ -628,11 +637,22 @@ function normalizeStatus(attr, startMs) {
     const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
     const inj1 = ijtParts[0] || 0;
     const inj2 = ijtParts[1] || 0;
-    if (shsMs) {
-        // Devam eden dakika gösterilir: 2. yarının ilk dakikası 46'
-        const m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
+    
+        if (shsMs) {
+        let m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
+        
+        // GÜVENLİK SINIRI: Uzatma dakikası biliniyorsa onu kullan, bilinmiyorsa maksimum +15 dakika (105) sınır koy.
+        // Böylece maç 108. dakikalara kadar çıkamaz, sınırda takılır.
+        const maxLimit = 90 + (inj2 > 0 ? inj2 : 15);
+        if (m > maxLimit) {
+            m = maxLimit; 
+        }
+
         return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
+
+    
+    
     // sId: 2 = ilk yarı, 10 = devre arası, 3 = ikinci yarı (Kosova-Avusturya ve Azerbaycan-Litvanya maçlarında gözlendi)
     if (String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
