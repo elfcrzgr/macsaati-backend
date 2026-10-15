@@ -568,58 +568,34 @@ function normalizeStatus(attr, startMs) {
     const hasScore = attr.hScore !== undefined && attr.hScore !== '' && attr.aScore !== undefined && attr.aScore !== '';
     const gsMs = parseGameStart(attr.gs);
     const sinceScheduled = Math.floor((Date.now() - startMs) / 60000);
-    // Dakika hesabı planlanan saatten değil, maçın gerçek başlama zamanından (gs) yapılır
-    const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
-    const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN', 'P', 'PP', 'POSTP', 'POSTPONED'];
-    if (DEBUG_UNKNOWN && !KNOWN_STATUSES.includes(raw) && !seenUnknownStatuses.has(`x/${raw}`)) {
-        seenUnknownStatuses.add(`x/${raw}`);
-        console.log(`🔎 [STATÜ] Bilinmeyen Status "${raw}" | attrs: ${JSON.stringify(attr)}`);
-    }
-
+    // 1. Maç Bitti, İptal, Ertelendi veya Devre Arası Durumları
     if (['F', 'FT', 'AET', 'PEN', 'AP'].includes(raw)) {
-        // İptal edilen maç "bitti" olarak gelebilir: oynanmışsa başlama zamanı (gs) olur.
         const zeroZero = String(attr.hScore) === '0' && String(attr.aScore) === '0';
-        const finishedBeforeKickoff = !gsMs && sinceScheduled < -5;      // planlanan saatten önce "bitti" olamaz
-        const noStartRecorded = !gsMs && zeroZero;                         // hiç başlamamış 0-0
-        if (finishedBeforeKickoff || (HIDE_FINISHED_WITHOUT_START && noStartRecorded)) {
-            if (!suspectLogged.has(attr.id)) {
-                suspectLogged.add(attr.id);
-                console.log(`🚫 [İPTAL?] ${attr.hTeam} - ${attr.aTeam} "bitti" görünüyor ama başlama kaydı yok, listeden çıkarıldı | attrs: ${JSON.stringify(attr)}`);
-            }
+        const finishedBeforeKickoff = !gsMs && sinceScheduled < -5;
+        if (finishedBeforeKickoff || (HIDE_FINISHED_WITHOUT_START && !gsMs && zeroZero)) {
             return { status: 'canceled', code: 0, label: '', min: 0 };
         }
         return { status: 'finished', code: 100, label: 'MS', min: 90 };
     }
     if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
     if (['P', 'PP', 'POSTP', 'POSTPONED'].includes(raw)) return { status: 'postponed', code: 0, label: '', min: 0 };
+    if (raw === 'HT' || String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
-    if (raw === 'HT') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
-
-       // Başlamamış maç (Saat kontrolü tamamen kaldırıldı, sadece net verilere bakılır)
+    // 2. Başlamamış Maçlar
     if (raw === 'NS' || (raw === '' && !hasScore) || !hasScore) {
         return { status: 'notstarted', code: 0, label: '', min: 0 };
     }
 
-
-    // Güvenlik: 4 saatten uzun "canlı" görünen maç aslında bitmiştir
-    if (elapsedMin > 240) return { status: 'finished', code: 100, label: 'MS', min: 90 };
-
-    if (DEBUG_UNKNOWN) {
-        const key = `${raw}/${attr.stage ?? ''}/${attr.sId ?? ''}${attr.shs ? '/shs' : ''}`;
-        if (!seenUnknownStatuses.has(key)) {
-            seenUnknownStatuses.add(key);
-            console.log(`🔎 [STATÜ] Yeni Status/stage: "${key}" | geçen: ${elapsedMin} dk | attrs: ${JSON.stringify(attr)}`);
-        }
-    }
-
-    // FotMob dakikayı doğrudan veriyorsa onu kullan (alan adı bilinmiyor, olası adayları dene)
-        // FotMob dakikayı doğrudan veriyorsa onu kullan
-    for (const key of ['min', 'minute', 'liveTime', 'timeStr']) {
+    // 3. CANLI DAKİKA - Sadece FotMob verisini okuyoruz (Saat uydurmak yok)
+    // DİKKAT: 'time' eklendi, FotMob dakikayı buradan gönderiyor.
+    for (const key of ['time', 'min', 'minute', 'liveTime', 'timeStr']) {
         const v = String(attr[key] || "").trim();
-        if (v && /^\d{1,3}(\+\d+)?$/.test(v)) {
+        
+        // Eğer gelen veri "58", "90+4", "112" gibi bir formattaysa FotMob dakika veriyor demektir
+        if (/^\d{1,3}(\+\d+)?$/.test(v)) {
             let exactMin = 0;
-            // Eğer Fotmob "90+4" gönderirse bunu toplayıp 94 yapıyoruz
+            // "90+4" gelirse matematiksel olarak toplayıp 94 yapıyoruz
             if (v.includes('+')) {
                 const parts = v.split('+').map(Number);
                 exactMin = parts[0] + parts[1];
@@ -630,45 +606,10 @@ function normalizeStatus(attr, startMs) {
         }
     }
 
-
-    // 🎯 FotMob'un verdiği yarı başlangıçları: shs = 2. yarı başlangıcı, gs = maç başlangıcı
-    const shsMs = parseGameStart(attr.shs);
-    // 'ijt' = "ilkYarıİlave,ikinciYarıİlave" (ör. "1" -> sadece ilk yarı, "1,4" -> ikinci yarı +4)
-    const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
-    const inj1 = ijtParts[0] || 0;
-    const inj2 = ijtParts[1] || 0;
-    
-        if (shsMs) {
-        let m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
-        
-        // GÜVENLİK SINIRI: Uzatma dakikası biliniyorsa onu kullan, bilinmiyorsa maksimum +15 dakika (105) sınır koy.
-        // Böylece maç 108. dakikalara kadar çıkamaz, sınırda takılır.
-        const maxLimit = 90 + (inj2 > 0 ? inj2 : 15);
-        if (m > maxLimit) {
-            m = maxLimit; 
-        }
-
-        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
-    }
-
-    
-    
-    // sId: 2 = ilk yarı, 10 = devre arası, 3 = ikinci yarı (Kosova-Avusturya ve Azerbaycan-Litvanya maçlarında gözlendi)
-    if (String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
-
-       if (gsMs) {
-        const e = Math.max(0, elapsedMin);
-        // Devam eden dakika gösterilir: 0:00-0:59 -> 1', 47:15 -> 48'
-        if (e <= 55) return { status: 'inprogress', code: 6, label: `${e + 1}'`, min: e + 1, inj1 };
-        // sId gelmemiş ve 55 dk geçmişse yine de devre arasıdır
-        return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
-    }
-
-    // 🔥 DEĞİŞİKLİK BURADA: Artık `estimateMinute` ile saate göre varsayım yapmıyoruz.
-    // FotMob maçın başladığına dair net bir 'gs' (gerçek saat) veya canlı dakika yollamadıysa,
-    // bizim saatimiz maç saatini geçmiş olsa bile maçı başlatma!
-    return { status: 'notstarted', code: 0, label: '', min: 0 };
+    // 4. Acil Durum Yedeği: FotMob dakikayı göndermeyi anlık keserse saat uydurma, sadece "Canlı" yaz.
+    return { status: 'inprogress', code: 7, label: 'Canlı', min: 45 };
 }
+
 
 
 // 🔥 FOTMOB XML VERİ ÇEKME. Hata olursa null, gerçekten boşsa [] döner.
