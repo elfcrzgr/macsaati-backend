@@ -568,8 +568,10 @@ function normalizeStatus(attr, startMs) {
     const hasScore = attr.hScore !== undefined && attr.hScore !== '' && attr.aScore !== undefined && attr.aScore !== '';
     const gsMs = parseGameStart(attr.gs);
     const sinceScheduled = Math.floor((Date.now() - startMs) / 60000);
+    // SAAT HESABI GERİ GELDİ (Çünkü FotMob canlı dakikayı listede değil, sadece detaylarda veriyor)
+    const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
-    // 1. Maç Bitti, İptal, Ertelendi veya Devre Arası Durumları
+    // 1. Maç Bitti, İptal, Ertelendi
     if (['F', 'FT', 'AET', 'PEN', 'AP'].includes(raw)) {
         const zeroZero = String(attr.hScore) === '0' && String(attr.aScore) === '0';
         const finishedBeforeKickoff = !gsMs && sinceScheduled < -5;
@@ -580,35 +582,50 @@ function normalizeStatus(attr, startMs) {
     }
     if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
     if (['P', 'PP', 'POSTP', 'POSTPONED'].includes(raw)) return { status: 'postponed', code: 0, label: '', min: 0 };
+
+    // 2. Devre Arası
     if (raw === 'HT' || String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
 
-    // 2. Başlamamış Maçlar
-    if (raw === 'NS' || (raw === '' && !hasScore) || !hasScore) {
+    // 3. BAŞLAMAMIŞ MAÇLAR - (KALKAN: Bildirim yağmurunu kesen şart. Gerçek saati gelmeyen maçı Asla başlatmaz)
+    if (raw === 'NS' || (raw === '' && !hasScore) || !hasScore || elapsedMin < -5) {
         return { status: 'notstarted', code: 0, label: '', min: 0 };
     }
 
-    // 3. CANLI DAKİKA - Sadece FotMob verisini okuyoruz (Saat uydurmak yok)
-    // DİKKAT: 'time' eklendi, FotMob dakikayı buradan gönderiyor.
-    for (const key of ['time', 'min', 'minute', 'liveTime', 'timeStr']) {
-        const v = String(attr[key] || "").trim();
+    // Güvenlik: 4 saatten uzun süren maç bitmiştir
+    if (elapsedMin > 240) return { status: 'finished', code: 100, label: 'MS', min: 90 };
+
+    // 4. KRONOMETRE HESABI VE "108" SINIRI (Matematik senin istediğin gibi "94'" şeklinde hesaplanacak)
+    const shsMs = parseGameStart(attr.shs);
+    const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
+    const inj1 = ijtParts[0] || 0; // İlk yarı verilen uzatma
+    const inj2 = ijtParts[1] || 0; // İkinci yarı verilen uzatma
+
+    if (shsMs) {
+        // İKİNCİ YARI: Kronometre FotMob'un 2. yarıyı başlattığı anki saate göre işler
+        let m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
         
-        // Eğer gelen veri "58", "90+4", "112" gibi bir formattaysa FotMob dakika veriyor demektir
-        if (/^\d{1,3}(\+\d+)?$/.test(v)) {
-            let exactMin = 0;
-            // "90+4" gelirse matematiksel olarak toplayıp 94 yapıyoruz
-            if (v.includes('+')) {
-                const parts = v.split('+').map(Number);
-                exactMin = parts[0] + parts[1];
-            } else {
-                exactMin = parseInt(v, 10);
-            }
-            return { status: 'inprogress', code: exactMin > 45 ? 7 : 6, label: `${exactMin}'`, min: exactMin };
-        }
+        // SINIRLAMA: FotMob maçı bitirmeyi unutursa 108'e çıkmasını engeller
+        const maxLimit = 90 + (inj2 > 0 ? inj2 : 12); // Hakemin verdiği uzatma kadar, yoksa max +12 dk
+        if (m > maxLimit) m = maxLimit; 
+        
+        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
 
-    // 4. Acil Durum Yedeği: FotMob dakikayı göndermeyi anlık keserse saat uydurma, sadece "Canlı" yaz.
-    return { status: 'inprogress', code: 7, label: 'Canlı', min: 45 };
+    if (gsMs) {
+        // İLK YARI: Kronometre FotMob'un maç başlangıç saatine göre işler
+        let m = 1 + Math.max(0, Math.floor((Date.now() - gsMs) / 60000));
+        
+        // SINIRLAMA: İlk yarının 55'lere çıkmasını engeller
+        const maxLimit = 45 + (inj1 > 0 ? inj1 : 10); 
+        if (m > maxLimit) m = maxLimit;
+        
+        return { status: 'inprogress', code: 6, label: `${m}'`, min: m, inj1, inj2 };
+    }
+
+    // Hiçbir zaman damgası yoksa güvenlik yedeği
+    return { status: 'inprogress', code: 6, label: '1\'', min: 1 };
 }
+
 
 
 
