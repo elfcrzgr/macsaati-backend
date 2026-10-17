@@ -568,7 +568,7 @@ function normalizeStatus(attr, startMs) {
     const hasScore = attr.hScore !== undefined && attr.hScore !== '' && attr.aScore !== undefined && attr.aScore !== '';
     const gsMs = parseGameStart(attr.gs);
     const sinceScheduled = Math.floor((Date.now() - startMs) / 60000);
-    // SAAT HESABI GERİ GELDİ (Çünkü FotMob canlı dakikayı listede değil, sadece detaylarda veriyor)
+    // SAAT HESABI
     const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
     // 1. Maç Bitti, İptal, Ertelendi
@@ -583,42 +583,57 @@ function normalizeStatus(attr, startMs) {
     if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
     if (['P', 'PP', 'POSTP', 'POSTPONED'].includes(raw)) return { status: 'postponed', code: 0, label: '', min: 0 };
 
-    // 2. Devre Arası
+    // 2. Devre Arası ve Uzatma Statüleri
     if (raw === 'HT' || String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
+    if (raw === 'ET') return { status: 'inprogress', code: 7, label: 'UZ', min: 120 };
+    if (raw === 'PEN' && attr.hScore !== undefined) return { status: 'inprogress', code: 7, label: 'PEN', min: 120 };
 
-    // 3. BAŞLAMAMIŞ MAÇLAR - (KALKAN: Bildirim yağmurunu kesen şart. Gerçek saati gelmeyen maçı Asla başlatmaz)
-    if (raw === 'NS' || (raw === '' && !hasScore) || !hasScore || elapsedMin < -5) {
+    // 3. BAŞLAMAMIŞ MAÇLAR VE DÜDÜK BEKLEME KALKANI (Erken başlama sorununu çözer)
+    if (raw === 'NS' || (raw === '' && !hasScore) || !hasScore || elapsedMin < -5 || (raw === 'S' && !gsMs && sinceScheduled < 4)) {
         return { status: 'notstarted', code: 0, label: '', min: 0 };
     }
 
     // Güvenlik: 4 saatten uzun süren maç bitmiştir
     if (elapsedMin > 240) return { status: 'finished', code: 100, label: 'MS', min: 90 };
 
-    // 4. KRONOMETRE HESABI VE "108" SINIRI (Matematik senin istediğin gibi "94'" şeklinde hesaplanacak)
+    // 4. KRONOMETRE HESABI VE SINIRLAR
     const shsMs = parseGameStart(attr.shs);
+    const eh1Ms = parseGameStart(attr.eh1); // 1. Uzatma başlama
+    const eh2Ms = parseGameStart(attr.eh2); // 2. Uzatma başlama
+    
     const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
-    const inj1 = ijtParts[0] || 0; // İlk yarı verilen uzatma
-    const inj2 = ijtParts[1] || 0; // İkinci yarı verilen uzatma
+    const inj1 = ijtParts[0] || 0; // İlk yarı ilave süre
+    const inj2 = ijtParts[1] || 0; // İkinci yarı ilave süre
+
+    if (eh2Ms) {
+        // 2. Uzatma Devresi (106 - 120)
+        let m = 106 + Math.max(0, Math.floor((Date.now() - eh2Ms) / 60000));
+        const maxLimit = 120 + (inj2 > 0 ? inj2 : 5);
+        if (m > maxLimit) m = maxLimit;
+        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
+    }
+
+    if (eh1Ms) {
+        // 1. Uzatma Devresi (91 - 105)
+        let m = 91 + Math.max(0, Math.floor((Date.now() - eh1Ms) / 60000));
+        const maxLimit = 105 + (inj1 > 0 ? inj1 : 5);
+        if (m > maxLimit) m = maxLimit;
+        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
+    }
 
     if (shsMs) {
-        // İKİNCİ YARI: Kronometre FotMob'un 2. yarıyı başlattığı anki saate göre işler
+        // İKİNCİ YARI (46 - 90)
         let m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
-        
-        // SINIRLAMA: FotMob maçı bitirmeyi unutursa 108'e çıkmasını engeller
-        const maxLimit = 90 + (inj2 > 0 ? inj2 : 12); // Hakemin verdiği uzatma kadar, yoksa max +12 dk
+        const maxLimit = 90 + (inj2 > 0 ? inj2 : 12); 
         if (m > maxLimit) m = maxLimit; 
-        
         return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
 
     if (gsMs) {
-        // İLK YARI: Kronometre FotMob'un maç başlangıç saatine göre işler
+        // İLK YARI (1 - 45)
         let m = 1 + Math.max(0, Math.floor((Date.now() - gsMs) / 60000));
-        
-        // SINIRLAMA: İlk yarının 55'lere çıkmasını engeller
         const maxLimit = 45 + (inj1 > 0 ? inj1 : 10); 
         if (m > maxLimit) m = maxLimit;
-        
         return { status: 'inprogress', code: 6, label: `${m}'`, min: m, inj1, inj2 };
     }
 
