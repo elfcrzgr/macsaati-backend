@@ -565,82 +565,72 @@ const actualStartById = new Map(); // maç id -> gerçek başlama zamanı (ms)
 
 function normalizeStatus(attr, startMs) {
     const raw = String(attr.Status ?? attr.status ?? '').trim().toUpperCase();
-    const hasScore = attr.hScore !== undefined && attr.hScore !== '' && attr.aScore !== undefined && attr.aScore !== '';
-    const gsMs = parseGameStart(attr.gs);
-    const sinceScheduled = Math.floor((Date.now() - startMs) / 60000);
-    // SAAT HESABI
-    const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
-    // 1. Maç Bitti, İptal, Ertelendi
-    if (['F', 'FT', 'AET', 'PEN', 'AP'].includes(raw)) {
-        const zeroZero = String(attr.hScore) === '0' && String(attr.aScore) === '0';
-        const finishedBeforeKickoff = !gsMs && sinceScheduled < -5;
-        if (finishedBeforeKickoff || (HIDE_FINISHED_WITHOUT_START && !gsMs && zeroZero)) {
-            return { status: 'canceled', code: 0, label: '', min: 0 };
-        }
-        return { status: 'finished', code: 100, label: 'MS', min: 90 };
-    }
+    // 1. İPTAL / ERTELENME (Sadece FotMob "İptal/Ertelenmiş" dediyse)
     if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
     if (['P', 'PP', 'POSTP', 'POSTPONED'].includes(raw)) return { status: 'postponed', code: 0, label: '', min: 0 };
 
-    // 2. Devre Arası ve Uzatma Statüleri
-    if (raw === 'HT' || String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
-    if (raw === 'ET') return { status: 'inprogress', code: 7, label: 'UZ', min: 120 };
-    if (raw === 'PEN' && attr.hScore !== undefined) return { status: 'inprogress', code: 7, label: 'PEN', min: 120 };
+    // 2. MAÇ BİTTİ (Sadece FotMob "Maç Bitti" (FT, F, AET) statüsü yolladıysa)
+    if (['F', 'FT', 'AET', 'PEN_RES', 'AP'].includes(raw)) {
+        return { status: 'finished', code: 100, label: 'MS', min: 90 };
+    }
 
-    // 3. BAŞLAMAMIŞ MAÇLAR VE DÜDÜK BEKLEME KALKANI (Erken başlama sorununu çözer)
-    if (raw === 'NS' || (raw === '' && !hasScore) || !hasScore || elapsedMin < -5 || (raw === 'S' && !gsMs && sinceScheduled < 4)) {
+    // 3. DEVRE ARASI (Sadece FotMob "HT" statüsü yolladıysa)
+    if (raw === 'HT' || String(attr.sId) === '10') {
+        return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
+    }
+
+    // 4. PENALTILAR (Sadece FotMob "PEN" statüsü yolladıysa)
+    if (raw === 'PEN') {
+        return { status: 'inprogress', code: 7, label: 'PEN', min: 120 };
+    }
+
+    // 5. BAŞLAMAMIŞ MAÇLAR (FotMob "NS" diyorsa maç başlamamıştır)
+    if (raw === 'NS' || raw === '') {
         return { status: 'notstarted', code: 0, label: '', min: 0 };
     }
 
-    // Güvenlik: 4 saatten uzun süren maç bitmiştir
-    if (elapsedMin > 240) return { status: 'finished', code: 100, label: 'MS', min: 90 };
-
-    // 4. KRONOMETRE HESABI VE SINIRLAR
-    const shsMs = parseGameStart(attr.shs);
-    const eh1Ms = parseGameStart(attr.eh1); // 1. Uzatma başlama
-    const eh2Ms = parseGameStart(attr.eh2); // 2. Uzatma başlama
+    // --- BURADAN İTİBAREN CANLI KRONOMETRE (Sıfır tahmin, sıfır sınır) ---
+    const gsMs = parseGameStart(attr.gs);   // 1. Yarı Başlama Damgası
+    const shsMs = parseGameStart(attr.shs); // 2. Yarı Başlama Damgası
+    const eh1Ms = parseGameStart(attr.eh1); // 1. Uzatma Başlama Damgası
+    const eh2Ms = parseGameStart(attr.eh2); // 2. Uzatma Başlama Damgası
     
+    // FotMob'un yolladığı resmi ilave süreler
     const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
-    const inj1 = ijtParts[0] || 0; // İlk yarı ilave süre
-    const inj2 = ijtParts[1] || 0; // İkinci yarı ilave süre
+    const inj1 = ijtParts[0] || 0; 
+    const inj2 = ijtParts[1] || 0; 
 
+    // 2. Uzatma Devresi
     if (eh2Ms) {
-        // 2. Uzatma Devresi (106 - 120)
         let m = 106 + Math.max(0, Math.floor((Date.now() - eh2Ms) / 60000));
-        const maxLimit = 120 + (inj2 > 0 ? inj2 : 5);
-        if (m > maxLimit) m = maxLimit;
         return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
 
-    if (eh1Ms) {
-        // 1. Uzatma Devresi (91 - 105)
+    // 1. Uzatma Devresi
+    if (eh1Ms || raw === 'ET') {
+        // Eğer FotMob damga yollamayıp sadece "ET" statüsü yolladıysa 'UZ' yaz, yolladıysa saydır
+        if (!eh1Ms) return { status: 'inprogress', code: 7, label: 'UZ', min: 120 };
         let m = 91 + Math.max(0, Math.floor((Date.now() - eh1Ms) / 60000));
-        const maxLimit = 105 + (inj1 > 0 ? inj1 : 5);
-        if (m > maxLimit) m = maxLimit;
         return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
 
+    // İkinci Yarı
     if (shsMs) {
-        // İKİNCİ YARI (46 - 90)
         let m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
-        const maxLimit = 90 + (inj2 > 0 ? inj2 : 12); 
-        if (m > maxLimit) m = maxLimit; 
         return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
     }
 
+    // İlk Yarı
     if (gsMs) {
-        // İLK YARI (1 - 45)
         let m = 1 + Math.max(0, Math.floor((Date.now() - gsMs) / 60000));
-        const maxLimit = 45 + (inj1 > 0 ? inj1 : 10); 
-        if (m > maxLimit) m = maxLimit;
         return { status: 'inprogress', code: 6, label: `${m}'`, min: m, inj1, inj2 };
     }
 
-    // Hiçbir zaman damgası yoksa güvenlik yedeği
-    return { status: 'inprogress', code: 6, label: '1\'', min: 1 };
+    // FotMob maça "Canlı" (S) statüsü vermiş ama hiçbir başlama damgası (gs) yollamamışsa
+    // KAFAMIZA GÖRE 1' YAZIP BAŞLATMIYORUZ! FotMob düdük çaldığını kanıtlayana kadar başlamadı sayıyoruz.
+    return { status: 'notstarted', code: 0, label: '', min: 0 };
 }
-
 
 
 
