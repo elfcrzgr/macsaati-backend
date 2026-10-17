@@ -849,6 +849,8 @@ async function fetchEventsFromWebPage(matchId) {
     return ev;
 }
 
+/*
+
 async function fetchGoalScorerOnce(matchId, totalGoals) {
     let events = null;
     try { events = await fetchEventsFromMobileApi(matchId); } catch (e) { goalWarn(`mobil API hatası: ${e.message}`); }
@@ -890,6 +892,58 @@ async function fetchGoalScorer(matchId, totalGoals) {
         return null;
     }
 }
+*/
+
+// 1. GOL ATAN VE GERÇEK DAKİKAYI GETİREN FONKSİYONLAR
+async function fetchGoalScorerOnce(matchId, totalGoals) {
+    let events = null;
+    try { events = await fetchEventsFromMobileApi(matchId); } catch (e) { goalWarn(`mobil API hatası: ${e.message}`); }
+    if (!events) {
+        try { events = await fetchEventsFromWebPage(matchId); } catch (e) { goalWarn(`web sayfası hatası: ${e.message}`); }
+    }
+    if (!events) return { name: null, min: null, complete: true };
+
+    const goals = events.filter(e => e && String(e.type).toLowerCase() === 'goal');
+    if (goals.length === 0) return { name: null, min: null, complete: false };
+
+    goals.sort((a, b) => ((a.time || 0) + (a.overloadTime || 0) / 100) - ((b.time || 0) + (b.overloadTime || 0) / 100));
+    const last = goals[goals.length - 1];
+    
+    let name = last.player?.name || last.nameStr || last.fullName || null;
+    let min = last.time || null; // 🔥 İŞTE BURASI: Gerçek gol dakikası!
+
+    // FotMob bazen oyuncu belli olana kadar "<TBD>" gibi yer tutucu verir
+    if (name && (/[<>]/.test(name) || /^\s*(tbd|unknown|n\/a|\?)\s*$/i.test(name))) {
+        goalWarn(`Gol atan henüz belli değil (yer tutucu: ${name}), tekrar denenecek`);
+        name = null;
+    }
+    if (!name) return { name: null, min: null, complete: false };
+    if (last.ownGoal || last.isOwnGoal) name += " (K.K.)";
+    
+    return { name, min, complete: goals.length >= totalGoals };
+}
+
+async function fetchGoalScorer(matchId, totalGoals) {
+    try {
+        let r = { name: null, min: null, complete: false };
+        for (let attempt = 0; attempt < 3; attempt++) {
+            if (attempt > 0) await new Promise(res => setTimeout(res, 7000));
+            r = await fetchGoalScorerOnce(matchId, totalGoals);
+            if (r.name) { 
+                console.log(`🧑 [GOL-DETAY] Gol: ${r.name} (${r.min}')`); 
+                // 🔥 Sadece isim değil, dakika ile birlikte obje dönüyoruz
+                return { name: r.name, min: r.min }; 
+            }
+            if (r.complete) break; 
+        }
+        console.log("🧑 [GOL-DETAY] Gol atan alınamadı, takım adı kullanılacak");
+        return { name: null, min: null };
+    } catch (e) {
+        console.log(`⚠️ [GOL-DETAY] Alınamadı: ${e.message}`);
+        return { name: null, min: null };
+    }
+}
+
 
 function buildLiveActivityNotification(rawPayload) {
     const notification = new apn.Notification();
@@ -1009,14 +1063,23 @@ async function checkAndSendNotifications(newMatches) {
         if (match.status === 'inprogress' && prev.status !== null) {
             if (prev.homeScore !== currH || prev.awayScore !== currA) {
                 const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
-                if (isGoal) {
-                    // Gol atan oyuncu maç detayından aranır, bulunamazsa golü atan takımın adı yazılır
+            if (isGoal) {
                     const homeScored = currH > prev.homeScore;
                     const scoringTeam = homeScored ? match.homeTeam : match.awayTeam;
-                    const scorerName = (await withTimeout(fetchGoalScorer(match.id, currH + currA), 40000, 'Gol detayı').catch(() => null)) || scoringTeam.name;
-                    await sendPush(matchIdStr, appTitle, `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`, scoringTeam.logo, match);
+                    
+                    // Gol datası artık bir obje dönüyor: { name: "Lukaku", min: 40 }
+                    const goalData = (await withTimeout(fetchGoalScorer(match.id, currH + currA), 40000, 'Gol detayı').catch(() => null)) || {};
+                    
+                    const scorerName = goalData.name || scoringTeam.name;
+                    
+                    // Eğer FotMob golün GERÇEK dakikasını verdiyse onu (örn: 40') kullan, veremediyse o anki süreyi (liveMin) yedek kullan.
+                    const exactGoalMinute = goalData.min ? `${goalData.min}'` : liveMin;
+
+                    await sendPush(matchIdStr, appTitle, `⚽ Gol - ${scorerName} (${exactGoalMinute})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`, scoringTeam.logo, match);
                     pendingGoalCancel.delete(matchIdStr);
-                } else {
+                }
+
+                else {
                     const pending = pendingGoalCancel.get(matchIdStr);
                     if (!pending) {
                         pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA, firstSeen: Date.now() });
