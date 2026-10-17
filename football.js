@@ -929,20 +929,25 @@ async function fetchGoalScorer(matchId, totalGoals) {
         for (let attempt = 0; attempt < 3; attempt++) {
             if (attempt > 0) await new Promise(res => setTimeout(res, 7000));
             r = await fetchGoalScorerOnce(matchId, totalGoals);
-            if (r.name) { 
+            
+            // DÜZELTME BURADA: Sadece isim gelmesi yetmez, 
+            // listedeki gol sayısı güncel skora ulaşmışsa (complete: true) ismi kabul et.
+            if (r.complete && r.name) { 
                 console.log(`🧑 [GOL-DETAY] Gol: ${r.name} (${r.min}')`); 
-                // 🔥 Sadece isim değil, dakika ile birlikte obje dönüyoruz
                 return { name: r.name, min: r.min }; 
             }
-            if (r.complete) break; 
         }
-        console.log("🧑 [GOL-DETAY] Gol atan alınamadı, takım adı kullanılacak");
+        
+        // 3 deneme sonunda API hala yeni golü listeye eklemediyse, 
+        // eski golcüyü (Lukaku) yollamak yerine takım adını (Fenerbahçe) kullandır.
+        console.log("🧑 [GOL-DETAY] Yeni gol atan listeye zamanında düşmedi, takım adı kullanılacak");
         return { name: null, min: null };
     } catch (e) {
         console.log(`⚠️ [GOL-DETAY] Alınamadı: ${e.message}`);
         return { name: null, min: null };
     }
 }
+
 
 
 function buildLiveActivityNotification(rawPayload) {
