@@ -743,10 +743,10 @@ async function fetchFotMobMatches(dateStr) {
             });
         });
         } catch (e) {
-        console.error("❌ FotMob çekme hatası:", e.message);
-        notifyAdminForBan(`Bağlantı hatası: ${e.message}`);
-        return null;
-    }
+    console.error("❌ FotMob çekme hatası:", e.message, "| sebep:", e.cause ? (e.cause.code || e.cause.message) : "yok");
+    notifyAdminForBan(`Bağlantı hatası: ${e.message}`);
+    return null;
+}
 }
 
 // =========================================================================
