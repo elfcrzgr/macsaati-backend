@@ -209,6 +209,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     let minDiff = 9999;
     let foundBroadcaster = fallback;
     let foundSource = "fallback";
+    let bestScore = 0; // 🔥 YENİ KORUMA: Eşleşmenin gücünü (1 veya 2) hafızada tutar
 
     for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
@@ -234,18 +235,25 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                     if (diff > 1000) diff = Math.abs(diff - 1440);
                 }
 
-                // 🚀 ÇÖZÜM: Gördüğün ilk maça atlama, saat farkı en düşük olan (En Yakın) maçı hafızaya al!
+                // 1. KURAL: Her iki takımı da eşleştiren (2 puanlık) mükemmel eşleşmeler
                 if (matchScore === 2) {
-                    if (diff < minDiff && diff <= 300) {
+                    // Eski eşleşme sadece 1 puanlıksa VEYA saat farkı daha küçükse doğrudan ez!
+                    if ((bestScore < 2 || diff < minDiff) && diff <= 300) {
                         minDiff = diff;
+                        bestScore = 2;
                         foundBroadcaster = (m.yayin && m.yayin.trim() !== "") ? m.yayin : fallback;
                         foundSource = "sporekrani";
                     }
                 } 
-                else if (matchScore === 1 && diff <= 15 && dateKey === dateStr && minDiff > 15) {
-                    minDiff = diff;
-                    foundBroadcaster = (m.yayin && m.yayin.trim() !== "") ? m.yayin : fallback;
-                    foundSource = "sporekrani";
+                // 2. KURAL: Sadece 1 takımı eşleştiren (1 puanlık) riskli/kısmi eşleşmeler
+                else if (matchScore === 1 && bestScore < 2 && diff <= 15 && dateKey === dateStr) {
+                    // Eğer henüz 2 puanlık mükemmel bir maç bulamadıysak ve saat farkı daha iyiyse kabul et
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        bestScore = 1;
+                        foundBroadcaster = (m.yayin && m.yayin.trim() !== "") ? m.yayin : fallback;
+                        foundSource = "sporekrani";
+                    }
                 }
             }
         }
@@ -253,6 +261,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     
     return { kanal: foundBroadcaster, source: foundSource };
 }
+
 
 
 // =========================================================================
