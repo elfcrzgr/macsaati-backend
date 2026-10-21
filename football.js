@@ -39,6 +39,7 @@ const EXCLUDE_YOUTH_REGEX = /\b(U[-\s]?21|under[-\s]?21)\b/i;
 
 // 🔎 Hata ayıklama: true iken bilinmeyen statü değerlerini ve gelen yeni ligleri loglar
 const DEBUG_UNKNOWN = true;
+const LOG_FILTERED_LEAGUES = false;   // true yaparsan filtrelenen ligler loga yazılır
 
 // =========================================================================
 // 🔥 FIREBASE & APNs
@@ -690,7 +691,7 @@ async function fetchFotMobMatches(dateStr) {
                     if (EXCLUDE_U21 && U21_RE.test(String(lAttr.name || ''))) return;
                     const rule = matchLeagueRule(lAttr.name, ccode);
                     if (!isAllowedLeague(leagueId, ccode, lAttr.name)) {
-                        if (DEBUG_UNKNOWN && !seenUnknownLeagues.has(leagueId)) {
+                        if (LOG_FILTERED_LEAGUES && !seenUnknownLeagues.has(leagueId)) {
                             seenUnknownLeagues.add(leagueId);
                             console.log(`🔎 [LİG] Filtrelendi: id=${leagueId} | ${lAttr.name} | ccode=${ccode}`);
                         }
