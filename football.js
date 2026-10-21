@@ -1370,7 +1370,7 @@ async function main() {
 // ===== MAÇ DETAYI (kullanıcı maça tıklayınca) =====
 const detailLastFetch = new Map();
 
-async function fetchMatchDetailsRaw(matchId) {
+/*async function fetchMatchDetailsRaw(matchId) {
     const res = await fetch(`https://www.fotmob.com/match/${matchId}`, {
         signal: timeoutSignal(10000),
         headers: {
@@ -1380,6 +1380,30 @@ async function fetchMatchDetailsRaw(matchId) {
         }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const html = await res.text();
+    const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    if (!m) throw new Error('__NEXT_DATA__ bulunamadı');
+    const pageProps = JSON.parse(m[1])?.props?.pageProps;
+    if (!pageProps) throw new Error('pageProps yok');
+    return pageProps;
+}*/
+
+
+async function fetchMatchDetailsRaw(matchId) {
+    const bust = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
+    const res = await fetch(`https://www.fotmob.com/match/${matchId}?nocache=${bust}`, {
+        signal: timeoutSignal(10000),
+        headers: {
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+            "Accept": "text/html,application/xhtml+xml",
+            "Accept-Language": "tr-TR,tr;q=0.9",
+            "Cache-Control": "no-cache, no-store, max-age=0",
+            "Pragma": "no-cache"
+        }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const age = res.headers.get('age');
+    if (age && parseInt(age, 10) > 60) console.log(`🕰️ [DETAY] ${matchId} sayfa cache'ten geldi, age=${age} sn`);
     const html = await res.text();
     const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
     if (!m) throw new Error('__NEXT_DATA__ bulunamadı');
@@ -1515,26 +1539,102 @@ function convertDetail(pp) {
     return { updatedAt: Date.now(), event, incidents, lineups };
 }
 
-firebaseApp.database().ref('detail_requests').on('child_added', async (snap) => {
+
+// Başlığı (skor/durum/dakika) ana ekranı besleyen canlı cache'ten ez: iki ekran asla farklı görünmez
+function overlayLiveHeader(out, matchId) {
+    const c = globalFootballCache.get(Number(matchId));
+    if (!c) return;
+    if (c.status === 'inprogress' || c.status === 'finished') {
+        out.event.homeScore.current = parseInt(c.homeScore) || 0;
+        out.event.awayScore.current = parseInt(c.awayScore) || 0;
+        out.event.status.type = c.status;
+        out.event.liveLabel = c.status === 'inprogress' ? c.liveMinute : '';
+        out.event.time.currentMinute = c.timeObj?.currentMinute || 0;
+    }
+}
+
+// Sayfadaki gol sayısı canlı skor toplamından azsa olay listesi bayattır
+function isDetailStale(out, matchId) {
+    const c = globalFootballCache.get(Number(matchId));
+    if (!c || (c.status !== 'inprogress' && c.status !== 'finished')) return false;
+    const liveTotal = (parseInt(c.homeScore) || 0) + (parseInt(c.awayScore) || 0);
+    const goalCount = out.incidents.filter(i => i.incidentType === 'goal').length;
+    return goalCount < liveTotal;
+}
+
+async function buildFreshDetail(matchId) {
+    let out = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+        if (attempt > 0) await new Promise(r => setTimeout(r, 4000));
+        out = convertDetail(await fetchMatchDetailsRaw(matchId));
+        const c = globalFootballCache.get(Number(matchId));
+        const goalCount = out.incidents.filter(i => i.incidentType === 'goal').length;
+        console.log(`🔬 [DETAY-TEST] ${matchId} | sayfa: ${out.event.homeScore.current}-${out.event.awayScore.current}, ${goalCount} gol | canlı cache: ${c?.homeScore}-${c?.awayScore}`);
+        if (!isDetailStale(out, matchId)) break;
+    }
+    overlayLiveHeader(out, matchId);
+    out.stale = isDetailStale(out, matchId);
+    return out;
+}
+
+async function handleDetailRequest(snap) {
     const matchId = snap.key;
-    const token = String(snap.val());
+    const reqRef = snap.ref;
+    const resRef = firebaseApp.database().ref(`match_details/${matchId}`);
+    const myToken = String(snap.val());
+
+    // İşlem sürerken yeni istek (yeni token) gelmiş olabilir: yanıta en yeni token yazılır
+    const latestToken = async () => {
+        try { const v = (await reqRef.once('value')).val(); return v ? String(v) : myToken; }
+        catch (e) { return myToken; }
+    };
+
     try {
-        const resRef = firebaseApp.database().ref(`match_details/${matchId}`);
-        if (Date.now() - (detailLastFetch.get(matchId) || 0) < 10000) {
-            await resRef.child('token').set(token); // 10 sn içinde zaten çekildi, tekrar çekme
+        if (Date.now() - (detailLastFetch.get(matchId) || 0) < 5000) {
+            await resRef.child('token').set(await latestToken());
         } else {
             detailLastFetch.set(matchId, Date.now());
-            const out = convertDetail(await fetchMatchDetailsRaw(matchId));
-            out.token = token;
+            const out = await buildFreshDetail(matchId);
+            out.token = await latestToken();
             await resRef.set(JSON.parse(JSON.stringify(out)));
-            console.log(`📤 [DETAY] ${matchId} yazıldı (${out.incidents.length} olay)`);
+            console.log(`📤 [DETAY] ${matchId} yazıldı (${out.incidents.length} olay, stale=${out.stale})`);
         }
     } catch (e) {
         console.log(`❌ [DETAY] ${matchId}: ${e.message}`);
+        try {
+            const c = globalFootballCache.get(Number(matchId));
+            if (c) {
+                const old = (await resRef.once('value')).val() || {};
+                const fresh = {
+                    updatedAt: Date.now(),
+                    event: {
+                        homeTeam: { name: c.homeNameRaw, id: c.homeTeam.id },
+                        awayTeam: { name: c.awayNameRaw, id: c.awayTeam.id },
+                        homeScore: { current: parseInt(c.homeScore) || 0 },
+                        awayScore: { current: parseInt(c.awayScore) || 0 },
+                        status: { type: c.status },
+                        time: { currentMinute: c.timeObj?.currentMinute || 0 },
+                        liveLabel: c.status === 'inprogress' ? c.liveMinute : ''
+                    },
+                    incidents: old.incidents || [],
+                    lineups: old.lineups || null,
+                    stale: true,
+                    token: await latestToken()
+                };
+                await resRef.set(JSON.parse(JSON.stringify(fresh)));
+            }
+        } catch (e2) {}
     } finally {
-        snap.ref.remove().catch(() => {});
+        // Arada yeni istek geldiyse (token değiştiyse) silme
+        try {
+            const cur = (await reqRef.once('value')).val();
+            if (cur !== null && String(cur) === myToken) await reqRef.remove();
+        } catch (e) {}
     }
-});
+}
+
+firebaseApp.database().ref('detail_requests').on('child_added', handleDetailRequest);
+firebaseApp.database().ref('detail_requests').on('child_changed', handleDetailRequest);
 
 // 6 saatten eski detay kayıtlarını temizle
 setInterval(async () => {
