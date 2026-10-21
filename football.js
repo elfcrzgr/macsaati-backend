@@ -1111,7 +1111,7 @@ async function checkAndSendNotifications(newMatches) {
     saveState();
 }
 
-async function triggerPushToStart(matchId) {
+/*async function triggerPushToStart(matchId) {
     const match = globalFootballCache.get(matchId);
     if (!match) return;
 
@@ -1134,6 +1134,72 @@ async function triggerPushToStart(matchId) {
         });
         try { await withTimeout(apnProvider.send(notification, token), 8000, 'APNs'); } catch (e) {}
     }
+}*/
+
+
+async function triggerPushToStart(matchId) {
+    const match = globalFootballCache.get(matchId);
+    if (!match) return;
+
+    const db = firebaseApp.database();
+    const [perMatchSnap, globalSnap] = await Promise.all([
+        withTimeout(db.ref(`push_to_start_tokens/${matchId}`).once('value'), 8000, 'Push-to-start token okuma'),
+        withTimeout(db.ref('global_push_tokens').once('value'), 15000, 'Global token okuma')
+    ]);
+
+    // token -> deviceId (global olanlar), maça özel olanlar deviceId'siz
+    const targets = new Map();
+    for (const t of Object.keys(perMatchSnap.val() || {})) targets.set(t, null);
+    for (const [deviceId, t] of Object.entries(globalSnap.val() || {})) {
+        if (typeof t === 'string' && t.length > 0) targets.set(t, deviceId);
+    }
+    if (targets.size === 0) return;
+    console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name}: ${targets.size} cihaza gönderiliyor`);
+
+    const cleanHomeScore = match.homeScore && match.homeScore !== "-" ? Number(match.homeScore) : 0;
+    const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
+    const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
+
+    const makeNotification = () => buildLiveActivityNotification({
+        aps: {
+            timestamp: Math.floor(Date.now() / 1000),
+            event: 'start',
+            "attributes-type": "MacSaatiWidgetAttributes",
+            "attributes": {
+                matchId: String(match.id),
+                homeTeamName: String(match.homeTeam.name),
+                awayTeamName: String(match.awayTeam.name),
+                leagueName: String(match.tournament || "Futbol"),
+                homeTeamId: match.homeTeam.id ? Number(match.homeTeam.id) : 0,
+                awayTeamId: match.awayTeam.id ? Number(match.awayTeam.id) : 0,
+                homeLogoFile: `logo_home_${match.id}.png`,
+                awayLogoFile: `logo_away_${match.id}.png`,
+                homeLogoURL: String(match.homeTeam.logo || ""),
+                awayLogoURL: String(match.awayTeam.logo || "")
+            },
+            "content-state": { homeScore: cleanHomeScore, awayScore: cleanAwayScore, matchMinute: String(cleanMinute) },
+            "alert": { title: "Maç Saati", body: `${match.homeTeam.name} - ${match.awayTeam.name} canlı takibi başladı!` }
+        }
+    });
+
+    const entries = Array.from(targets.entries());
+    let ok = 0, failed = 0;
+    for (let i = 0; i < entries.length; i += 50) {
+        await Promise.all(entries.slice(i, i + 50).map(async ([token, deviceId]) => {
+            try {
+                const result = await withTimeout(apnProvider.send(makeNotification(), token), 8000, 'APNs');
+                if (result.failed.length > 0) {
+                    failed++;
+                    const err = result.failed[0];
+                    const reason = err.response ? err.response.reason : err.error;
+                    if ((reason === 'BadDeviceToken' || reason === 'Unregistered') && deviceId) {
+                        await db.ref(`global_push_tokens/${deviceId}`).remove();
+                    }
+                } else ok++;
+            } catch (e) { failed++; }
+        }));
+    }
+    console.log(`🚀 [PUSH-TO-START] Bitti: ${ok} başarılı, ${failed} başarısız`);
 }
 
 // =========================================================================
@@ -1241,12 +1307,21 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     try {
         const forcedSnapshot = await withTimeout(firebaseApp.database().ref('forced_matches').once('value'), 8000, 'forced_matches okuma');
         const forcedMatches = forcedSnapshot.val() || {};
-        for (const [id] of globalFootballCache.entries()) {
-            if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
-                await triggerPushToStart(id);
-                triggeredMatches.add(String(id));
-            }
-        }
+       
+        
+        const now = Date.now();
+for (const [id, m] of globalFootballCache.entries()) {
+    if (forcedMatches[String(id)] !== true) continue;      // 'sent' olanlar tekrar gitmez
+    if (triggeredMatches.has(String(id)) || m.status === 'finished') continue;
+
+    // Sadece maça ~2 dk kala (veya maç zaten canlıysa) başlat
+    const startsSoon = m.status === 'inprogress' || (m.timestamp - now) <= 2 * MINUTE_MS;
+    if (!startsSoon) continue;
+
+    triggeredMatches.add(String(id));
+    await firebaseApp.database().ref(`forced_matches/${id}`).set('sent'); // sunucu yeniden başlasa da tekrar gitmesin
+    triggerPushToStart(id).catch(e => console.error("❌ Push-to-start hatası:", e.message));
+}
     } catch (e) {
         console.error("❌ Zorunlu maç kontrolü atlandı:", e.message);
     }
