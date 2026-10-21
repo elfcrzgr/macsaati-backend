@@ -1,18 +1,15 @@
-const { gotScraping } = require('got-scraping');
-const urls = [
-  'https://api.sofascore.com/api/v1/sport/football/events/live',
-  'https://www.sofascore.com/api/v1/sport/football/events/live',
-  'https://www.sofascore.com/api/v1/unique-tournament/17/scheduled-events/2026-09-28'
-];
-(async () => {
-  for (const u of urls) {
-    try {
-      const r = await gotScraping({
-        url: u,
-        throwHttpErrors: false,
-        headerGeneratorOptions: { browsers: [{ name: 'chrome', minVersion: 110 }], devices: ['mobile'], operatingSystems: ['android'] }
-      });
-      console.log(r.statusCode, u);
-    } catch (e) { console.log('HATA', e.message, u); }
-  }
-})();
+const admin = require('firebase-admin');
+const sa = require('./serviceAccountKey.json');
+
+const app = admin.initializeApp({
+    credential: admin.credential.cert(sa),
+    databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
+}, 'test');
+
+app.database().ref('.info/connected').on('value', s => console.log('bağlı mı:', s.val()));
+
+app.database().ref('forced_matches').once('value')
+    .then(s => { console.log('✅ okundu:', JSON.stringify(s.val())); process.exit(); })
+    .catch(e => { console.log('❌ hata:', e.message); process.exit(); });
+
+setTimeout(() => { console.log('⏰ 20 sn doldu, yanıt yok'); process.exit(); }, 20000);
