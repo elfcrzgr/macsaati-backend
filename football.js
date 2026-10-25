@@ -22,7 +22,9 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
 // 🕐 FotMob XML'indeki saatler (time ve gs) TR saatinden 1 saat geride geliyor.
 // Azerbaycan-Litvanya maçıyla doğrulandı: XML 15:00 / gs 15:01:29 dedi, gerçek başlangıç 16:01 (TR).
 // Bir gün FotMob düzelirse bunu 0 yapın.
-const FOTMOB_TIME_OFFSET_MS = 60 * 60 * 1000;
+// Avrupa'da kış saatine geçildiği için aradaki fark 2 saate çıktı.
+const FOTMOB_TIME_OFFSET_MS = 2 * 60 * 60 * 1000; // 2 saatlik milisaniye
+
 
 // 👶 U21 milli takım/lig maçları listeye alınmaz (takım adı veya lig adında "U21" / "Under 21" geçenler)
 const EXCLUDE_U21 = true;
