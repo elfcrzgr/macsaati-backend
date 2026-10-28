@@ -374,7 +374,6 @@ const footballLeagues = {
     130: "MLS",
     538: "Pro League",
     268: "Série A",
-    151: "Ziraat Türkiye Kupası",
     112: "Liga Profesional"
 };
 
@@ -1285,7 +1284,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 homeScore: finalHomeScore,
                 awayScore: finalAwayScore,
                 setScores: [],
-                tournament: (e.rule && e.rule.tr) || (e.leagueId === 10628 && String(e.ccode).toUpperCase() === 'TUR' ? "Ziraat Türkiye Kupası" : footballLeagues[e.leagueId]) || e.leagueName,
+                tournament: (e.rule && e.rule.tr) || footballLeagues[e.leagueId] || e.leagueName,
                 timeObj: Object.assign({ currentMinute: st.min }, st.inj1 ? { injuryTime1: st.inj1 } : {}, st.inj2 ? { injuryTime2: st.inj2 } : {})
             });
             if (e.actualStartMs) actualStartById.set(e.id, e.actualStartMs);
