@@ -374,6 +374,7 @@ const footballLeagues = {
     130: "MLS",
     538: "Pro League",
     268: "Série A",
+    151: "Ziraat Türkiye Kupası",
     112: "Liga Profesional"
 };
 
