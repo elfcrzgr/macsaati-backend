@@ -1,56 +1,38 @@
-const util = require('util');
-const { execFile } = require('child_process');
-const execFileAsync = util.promisify(execFile);
-
-async function testAiScore() {
-    // AiScore tarih formatı: YYYYMMDD
-    const dateObj = new Date();
-    const dateStr = dateObj.getFullYear().toString() +
-                    (dateObj.getMonth() + 1).toString().padStart(2, '0') +
-                    dateObj.getDate().toString().padStart(2, '0');
-
-    // AiScore basketbol uç noktası (Versiyon 1)
-    const url = `https://api.aiscore.com/v1/basketball/match/list?date=${dateStr}`;
-
-    console.log(`\n============================================================`);
-    console.log(`🚀 AiScore SSL-Bypass ile Deneniyor...`);
-    console.log(`URL: ${url}`);
+async function checkEuroleagueDates() {
+    // E2026 sezonu API adresi
+    const url = "https://api-live.euroleague.net/v2/competitions/E/seasons/E2026/games";
+    console.log(`🔍 EuroLeague API kontrol ediliyor: ${url}`);
     
     try {
-        // -k (--insecure) parametresi SSL/Sertifika hatalarını yok sayar!
-        const { stdout } = await execFileAsync('curl', [
-            '-s', '-k', '--max-time', '15',
-            url,
-            '-H', 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        ]);
-
-        try {
-            const json = JSON.parse(stdout);
-            console.log(`✅ [BAŞARILI] JSON formatı alındı!`);
-            
-            // AiScore verisi genelde json.data veya json.match içinde döner
-            let matches = [];
-            if (json.data && Array.isArray(json.data.match)) matches = json.data.match;
-            else if (json.data && Array.isArray(json.data)) matches = json.data;
-            else matches = json;
-
-            if (Array.isArray(matches) && matches.length > 0) {
-                console.log(`Toplam ${matches.length} maç bulundu.`);
-                console.log(`\n📋 İlk maç örneği:`);
-                console.log(JSON.stringify(matches[0], null, 2));
-            } else {
-                console.log(`⚠️ JSON geldi ama maç listesi boş veya farklı bir yapıda.`);
-                console.log("Gelen yapının üst anahtarları:", Object.keys(json));
-            }
-        } catch (e) {
-            console.log(`❌ JSON Parse Hatası. HTML veya farklı bir hata mesajı dönmüş olabilir.`);
-            console.log(`Dönen metnin ilk 500 karakteri:\n`, stdout.substring(0, 500));
+        const response = await fetch(url, {
+            headers: { "User-Agent": "Mozilla/5.0", "Accept": "application/json" }
+        });
+        const games = await response.json();
+        console.log(`Toplam çekilen maç sayısı: ${games.length}`);
+        
+        if (games.length === 0) {
+            console.log("⚠️ API bağlandı ama içi BOMBOŞ! Sorun kodda değil, EuroLeague'in kendi API'sinde.");
+            return;
         }
-    } catch (e) {
-        console.log(`❌ CURL İstek hatası: ${e.message}`);
+
+        // Kasım (-11-) ayına ait maçları filtreleyelim
+        const novGames = games.filter(g => g.utcDate && g.utcDate.includes("-11-"));
+        console.log(`Kasım ayına ait toplam maç: ${novGames.length}`);
+        
+        if (novGames.length > 0) {
+            console.log("🗓️ API'deki Kasım ayına ait ilk 5 maçın tarihleri:");
+            novGames.slice(0, 5).forEach(g => {
+                console.log(`- Maç: ${g.local.club.abbreviatedName} vs ${g.road.club.abbreviatedName} | Tarih: ${g.utcDate}`);
+            });
+        } else {
+            console.log("⚠️ Kasım ayında HİÇ maç bulunamadı. Fikstürde tarih sorunu var. API'deki ilk 3 maç:");
+            games.slice(0, 3).forEach(g => {
+                console.log(`- Maç: ${g.local.club.abbreviatedName} vs ${g.road.club.abbreviatedName} | Tarih: ${g.utcDate}`);
+            });
+        }
+    } catch(e) {
+        console.log("❌ Hata:", e.message);
     }
-    
-    console.log(`\n🛑 Test bitti. Lütfen terminal çıktısını paylaş.`);
 }
 
-testAiScore();
+checkEuroleagueDates();
