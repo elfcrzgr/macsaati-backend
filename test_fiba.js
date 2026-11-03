@@ -2,76 +2,55 @@ const util = require('util');
 const { execFile } = require('child_process');
 const execFileAsync = util.promisify(execFile);
 
-async function testEndpoint(name, url) {
+async function testAiScore() {
+    // AiScore tarih formatı: YYYYMMDD
+    const dateObj = new Date();
+    const dateStr = dateObj.getFullYear().toString() +
+                    (dateObj.getMonth() + 1).toString().padStart(2, '0') +
+                    dateObj.getDate().toString().padStart(2, '0');
+
+    // AiScore basketbol uç noktası (Versiyon 1)
+    const url = `https://api.aiscore.com/v1/basketball/match/list?date=${dateStr}`;
+
     console.log(`\n============================================================`);
-    console.log(`🔍 [${name}] Deneniyor: ${url}`);
+    console.log(`🚀 AiScore SSL-Bypass ile Deneniyor...`);
+    console.log(`URL: ${url}`);
     
     try {
-        // 1. Önce standart fetch ile deneyelim
-        const response = await fetch(url, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                "Accept": "application/json"
-            },
-            signal: AbortSignal.timeout(8000)
-        });
-
-        if (response.ok) {
-            const text = await response.text();
-            try {
-                const json = JSON.parse(text);
-                console.log(`✅ [FETCH BAŞARILI] JSON formatı alındı!`);
-                console.log(`Veri örneği:`, JSON.stringify(json).substring(0, 200) + '...');
-                return true;
-            } catch (e) {
-                console.log(`⚠️ Fetch başarılı ama gelen veri JSON değil (HTML döndü).`);
-            }
-        } else {
-            console.log(`⚠️ Fetch başarısız: HTTP ${response.status}`);
-        }
-    } catch (e) {
-        console.log(`⚠️ Fetch hatası: ${e.message}`);
-    }
-
-    console.log(`🚀 [${name}] CURL ile zorlanıyor...`);
-    try {
-        // 2. Fetch patlarsa CURL ile deneyelim
+        // -k (--insecure) parametresi SSL/Sertifika hatalarını yok sayar!
         const { stdout } = await execFileAsync('curl', [
-            '-s', '--max-time', '10',
+            '-s', '-k', '--max-time', '15',
             url,
-            '-H', 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            '-H', 'Accept: application/json'
+            '-H', 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         ]);
 
         try {
             const json = JSON.parse(stdout);
-            console.log(`✅ [CURL BAŞARILI] JSON formatı alındı!`);
-            console.log(`Veri örneği:`, JSON.stringify(json).substring(0, 200) + '...');
-            return true;
+            console.log(`✅ [BAŞARILI] JSON formatı alındı!`);
+            
+            // AiScore verisi genelde json.data veya json.match içinde döner
+            let matches = [];
+            if (json.data && Array.isArray(json.data.match)) matches = json.data.match;
+            else if (json.data && Array.isArray(json.data)) matches = json.data;
+            else matches = json;
+
+            if (Array.isArray(matches) && matches.length > 0) {
+                console.log(`Toplam ${matches.length} maç bulundu.`);
+                console.log(`\n📋 İlk maç örneği:`);
+                console.log(JSON.stringify(matches[0], null, 2));
+            } else {
+                console.log(`⚠️ JSON geldi ama maç listesi boş veya farklı bir yapıda.`);
+                console.log("Gelen yapının üst anahtarları:", Object.keys(json));
+            }
         } catch (e) {
-            console.log(`❌ CURL de başarısız (Gelen veri JSON değil).`);
+            console.log(`❌ JSON Parse Hatası. HTML veya farklı bir hata mesajı dönmüş olabilir.`);
+            console.log(`Dönen metnin ilk 500 karakteri:\n`, stdout.substring(0, 500));
         }
     } catch (e) {
-        console.log(`❌ CURL hatası: ${e.message}`);
+        console.log(`❌ CURL İstek hatası: ${e.message}`);
     }
     
-    return false;
+    console.log(`\n🛑 Test bitti. Lütfen terminal çıktısını paylaş.`);
 }
 
-async function runTests() {
-    // ACB (İspanya) ve LBA (İtalya) için en yaygın kullanılan canlı veri uç noktaları
-    const endpoints = [
-        { name: "İSPANYA ACB (Alternatif 1)", url: "https://live.acb.com/api/matches" },
-        { name: "İSPANYA ACB (Alternatif 2)", url: "https://api.acb.com/api/v1/matches/today" },
-        { name: "İTALYA LBA (Alternatif 1)", url: "https://www.legabasket.it/api/match/today" },
-        { name: "İTALYA LBA (Alternatif 2)", url: "https://www.legabasket.it/api/matches" }
-    ];
-
-    for (const ep of endpoints) {
-        await testEndpoint(ep.name, ep.url);
-    }
-    
-    console.log("\n🛑 Test bitti. Lütfen terminal ekranının fotoğrafını veya çıktısını paylaş.");
-}
-
-runTests();
+testAiScore();
