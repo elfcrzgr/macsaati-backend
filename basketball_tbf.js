@@ -340,9 +340,6 @@ const getFallbackBroadcaster = (compName) => {
 // =========================================================================
 // 🏀 TBF (TÜRKİYE BASKETBOL FEDERASYONU) ENTEGRASYONU — BSL & TBL
 // =========================================================================
-// NOT: TBF'nin kendi web sitesinin kullandığı herkese açık, token gerektirmeyen
-// bir API'dir (tbf.org.tr/api/...). Node'un yerleşik fetch'i bu sunucudan 403
-// aldığı için (TLS parmak izi farkı), istekler curl alt işlemi üzerinden atılır.
 const TBF_LEAGUES = {
     bsl: { id: 22214, displayName: "Türkiye Sigorta Basketbol Süper Ligi" },
     tbl: { id: 22215, displayName: "Türkiye Sigorta Türkiye Basketbol Ligi" }
@@ -375,9 +372,6 @@ function extractWeekNumber(matches) {
     return m ? parseInt(m[0]) : null;
 }
 
-// matchStatusId eşlemesi (gözlemle doğrulandı): 1 = bitti, 4 = başlamadı.
-// Aradaki değerler (2/3 vb.) canlı veya ertelenmiş maç için kullanılıyor olabilir;
-// canlı bir maçla karşılaşıldığında bu fonksiyon netleştirilmeli.
 function mapTBFStatus(matchStatusId) {
     if (matchStatusId === 1) return 'finished';
     if (matchStatusId === 4) return 'notstarted';
@@ -399,7 +393,6 @@ async function fetchTBFLeagueMatches(activityId, targetDates) {
         if (nextWeekMatches) allMatches.push(...nextWeekMatches);
     }
 
-    // Tekrar edenleri (hafta aralıkları çakışabilir) matchId'ye göre temizle
     const uniqueMap = new Map();
     for (const m of allMatches) uniqueMap.set(m.matchId, m);
     allMatches = Array.from(uniqueMap.values());
@@ -419,9 +412,8 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
             const hasScore = statusType !== 'notstarted';
 
             const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00`;
-            const matchDateObj = new Date(dateTimeStr); // TBF saatleri zaten TR saati ile geliyor
+            const matchDateObj = new Date(dateTimeStr); 
 
-            // Önce sporekrani (yayinci_bilgisi.json), yoksa TBF'nin kendi bildirdiği kanal
             const tbfFallback = m.broadcastChannel || "Resmi Yayıncı Yok";
             const result = getBroadcasterWithFallback("basketbol", m.matchDateOnly, m.matchTime, m.homeTeam.name, m.awayTeam.name, tbfFallback);
 
@@ -455,9 +447,6 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
 // =========================================================================
 // 🏀 ESPN ENTEGRASYONU — NBA & WNBA
 // =========================================================================
-// NOT: ESPN'in herkese açık, token gerektirmeyen "hidden" API'si. Node'un
-// fetch'i ile doğrudan çalışıyor (curl'e gerek yok). Tarih YYYYMMDD formatında
-// istenir ve tek günlük sorgu yapılır (aralık desteği güvenilir değil).
 const ESPN_LEAGUES = {
     nba: { slug: 'nba', displayName: 'NBA' },
     wnba: { slug: 'wnba', displayName: 'WNBA' }
@@ -493,7 +482,6 @@ async function fetchESPNDay(leagueSlug, dateStr) {
     }
 }
 
-// ESPN status.type.state: "pre" | "in" | "post"
 function mapESPNStatus(state) {
     if (state === 'post') return 'finished';
     if (state === 'in') return 'inprogress';
@@ -520,14 +508,13 @@ async function updateESPN(targetDates = [getTRDate(0)]) {
                 const statusType = mapESPNStatus(state);
                 const hasScore = statusType !== 'notstarted';
 
-                const eventDate = new Date(event.date); // ESPN UTC ISO döndürüyor
+                const eventDate = new Date(event.date); 
                 const fixedDate = eventDate.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
                 const fixedTime = eventDate.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 
                 const espnBroadcasts = comp.broadcasts?.flatMap(b => b.names || []) || [];
                 const espnFallback = espnBroadcasts.length > 0 ? espnBroadcasts.join(' / ') : getFallbackBroadcaster(league.displayName);
 
-                // Önce sporekrani (yayinci_bilgisi.json), yoksa ESPN'in kendi bildirdiği kanal
                 const result = getBroadcasterWithFallback("basketbol", fixedDate, fixedTime, homeC.team.displayName, awayC.team.displayName, espnFallback);
 
                 const uniqueId = `espn_${event.id}`;
@@ -558,25 +545,109 @@ async function updateESPN(targetDates = [getTRDate(0)]) {
     return totalAdded;
 }
 
+
+// =========================================================================
+// 🏀 EUROLEAGUE & EUROCUP ENTEGRASYONU (RESMİ API)
+// =========================================================================
+function getEuroleagueSeasonYear() {
+    const now = new Date();
+    return now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+}
+
+function mapEuroleagueStatus(game) {
+    if (game.played) return 'finished';
+    const matchTime = new Date(game.utcDate).getTime();
+    if (matchTime <= Date.now()) return 'inprogress';
+    return 'notstarted';
+}
+
+async function updateEuroleague(targetDates = [getTRDate(0)]) {
+    const seasonYear = getEuroleagueSeasonYear();
+    const leagues = [
+        { code: 'euroleague', repoId: '138', displayName: 'EuroLeague', url: `https://api-live.euroleague.net/v2/competitions/E/seasons/E${seasonYear}/games` },
+        { code: 'eurocup', repoId: '141', displayName: 'EuroCup', url: `https://api-live.euroleague.net/v2/competitions/U/seasons/U${seasonYear}/games` }
+    ];
+
+    let totalAdded = 0;
+
+    for (const league of leagues) {
+        try {
+            const response = await fetch(league.url, {
+                signal: timeoutSignal(15000),
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15",
+                    "Accept": "application/json"
+                }
+            });
+
+            if (!response.ok) throw new Error(`HTTP Hata: ${response.status}`);
+            
+            const games = await response.json();
+            if (!Array.isArray(games)) continue;
+
+            for (const game of games) {
+                const matchDateObj = new Date(game.utcDate);
+                const fixedDate = matchDateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                
+                if (!targetDates.includes(fixedDate)) continue;
+
+                const statusType = mapEuroleagueStatus(game);
+                const hasScore = statusType !== 'notstarted';
+                const fixedTime = matchDateObj.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+                
+                const defaultKanal = league.code === 'euroleague' ? "S Sport / S Sport Plus" : "TRT Spor / S Sport";
+                const result = getBroadcasterWithFallback("basketbol", fixedDate, fixedTime, game.local.club.name, game.road.club.name, defaultKanal);
+
+                const uniqueId = `euro_${game.identifier || game.gameCode}`;
+
+                globalBasketballCache.set(uniqueId, {
+                    id: uniqueId,
+                    isElite: true,
+                    source: "EuroLeagueAPI",
+                    rawMatchStatusId: game.gameStatus,
+                    status: statusType,
+                    fixedDate: fixedDate,
+                    fixedTime: fixedTime,
+                    timestamp: matchDateObj.getTime(),
+                    broadcaster: result.kanal,
+                    homeTeam: { 
+                        name: game.local.club.name, 
+                        logo: game.local.club.images?.crest || '' 
+                    },
+                    awayTeam: { 
+                        name: game.road.club.name, 
+                        logo: game.road.club.images?.crest || '' 
+                    },
+                    tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${league.repoId}.png`,
+                    homeScore: hasScore ? String(game.local.score || "0") : "-",
+                    awayScore: hasScore ? String(game.road.score || "0") : "-",
+                    tournament: league.displayName
+                });
+
+                previousMatchStates.set(uniqueId, { status: statusType, date: fixedDate });
+                totalAdded++;
+            }
+        } catch (error) {
+            console.error(`❌ EuroLeague istek hatası (${league.displayName}):`, error.message);
+        }
+    }
+
+    console.log(`🏀 [EUROLEAGUE] ${totalAdded} maç işlendi (EuroLeague + EuroCup).`);
+    return totalAdded;
+}
+
+
 // =========================================================================
 // 🏀 BASKETBOL GÜNCELLEME (GÜNCELLENMİŞ MAÇKOLİK PARSER)
 // =========================================================================
-// =========================================================================
-// 🏀 ELİT LİG FİLTRELEME (TAM İSİM / WHITELIST YÖNTEMİ)
-// =========================================================================
-
-// Mackolik'te kullanılan tam lig isimleri. Sadece BİREBİR eşleşenler alınır.
-// NOT: BSL ve TBL artık TBF'den (updateTBF), NBA ve WNBA artık ESPN'den
-// (updateESPN) çekiliyor, bu yüzden Mackolik tarafında mükerrer veri
-// oluşmaması için listeden çıkarıldı.
 const ELITE_LEAGUES = [
     // Amerika
     // "nba",                         // ARTIK ESPN'DEN ÇEKİLİYOR
     // "wnba",                        // ARTIK ESPN'DEN ÇEKİLİYOR
 
     // Uluslararası & Avrupa Kupaları
-    "euroleague",
-    "eurocup",
+    // "euroleague",                  // ARTIK EUROLEAGUE API'DEN ÇEKİLİYOR
+    // "eurocup",                     // ARTIK EUROLEAGUE API'DEN ÇEKİLİYOR
     "basketbol şampiyonlar ligi",
     "fiba europe cup",
     "fiba dünya kupası",
@@ -621,9 +692,6 @@ const ELITE_LEAGUES = [
 ];
 
 
-// =========================================================================
-// 🏀 LİG İSİMLERİNİ KULLANICI DOSTU HALE GETİRME (MAPPING)
-// =========================================================================
 const LEAGUE_DISPLAY_NAMES = {
     "basket ligi": "Yunanistan Basket Ligi",
     "yunanistan basketbol ligi": "Yunanistan Basket Ligi",
@@ -642,30 +710,19 @@ const LEAGUE_DISPLAY_NAMES = {
     "türkiye sigorta tbl": "Türkiye 2. Ligi (TBL)"
 };
 
-
-
 function isEliteCompetition(compName) {
     if (!compName) return false;
-    
-    // Gelen lig adını küçük harfe çevir ve baştaki/sondaki boşlukları sil
     const name = String(compName).toLocaleLowerCase('tr-TR').trim();
-
-    // Sadece dizideki tam isimlerden biriyle eşleşiyorsa true döner
     return ELITE_LEAGUES.includes(name);
 }
 
-// =========================================================================
-// 🏀 BASKETBOL GÜNCELLEME (FİLTRELENMİŞ & LOGOSU DÜZELTİLMİŞ)
-// =========================================================================
+
 async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🏀 Basketbol: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
     
     let allMatches = [];
     let basketbolMatchesLog = [];
     let anySuccess = false;
-    
-    // YENİ: Filtreye takılan (elenen) ligleri takip etmek için bir Küme (Set) oluşturuyoruz.
-    // Set kullanıyoruz ki aynı lig birden fazla kez yazılmasın.
     let rejectedLeagues = new Set();
 
     for (const date of targetDates) {
@@ -678,7 +735,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
             areasArray.forEach(area => {
                 if (area.competitions && Array.isArray(area.competitions)) {
                     area.competitions.forEach(comp => {
-                        // Eğer lig elit listemizde varsa maçları alıyoruz
                         if (isEliteCompetition(comp.name)) {
                             if (comp.matches && Array.isArray(comp.matches)) {
                                 comp.matches.forEach(match => {
@@ -689,7 +745,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
                                 });
                             }
                         } else {
-                            // YENİ: Eğer lig elit değilse, reddedilenler listesine ismini ekliyoruz
                             rejectedLeagues.add(comp.name);
                         }
                     });
@@ -698,14 +753,11 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         }
     }
 
-    // YENİ: Hızlı tarama (QuickScan) değilse, elenen ligleri terminale tek seferde yazdırıyoruz.
     if (!isQuickScan && rejectedLeagues.size > 0) {
         console.log(`\n🗑️ [FİLTRE] Elenen Ligler: ${Array.from(rejectedLeagues).join(', ')}`);
     }
 
-    // TBF'den BSL ve TBL, ESPN'den NBA ve WNBA verilerini çekiyoruz.
-    // Her ikisi de Mackolik'ten bağımsız çalışır: Mackolik'in token'ı o an
-    // geçersiz olsa bile bu ligler akmaya devam eder.
+    // TBF'den BSL ve TBL
     let tbfSuccess = false;
     try {
         const tbfCount = await withTimeout(updateTBF(targetDates), 30000, 'TBF taraması');
@@ -714,6 +766,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         console.error("❌ TBF güncelleme hatası:", e.message);
     }
 
+    // ESPN'den NBA ve WNBA
     let espnSuccess = false;
     try {
         const espnCount = await withTimeout(updateESPN(targetDates), 30000, 'ESPN taraması');
@@ -722,7 +775,16 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         console.error("❌ ESPN güncelleme hatası:", e.message);
     }
 
-    if (!anySuccess && !tbfSuccess && !espnSuccess) {
+    // EuroLeague'den Euroleague ve Eurocup
+    let euroSuccess = false;
+    try {
+        const euroCount = await withTimeout(updateEuroleague(targetDates), 30000, 'EuroLeague taraması');
+        euroSuccess = euroCount > 0;
+    } catch (e) {
+        console.error("❌ EuroLeague güncelleme hatası:", e.message);
+    }
+
+    if (!anySuccess && !tbfSuccess && !espnSuccess && !euroSuccess) {
         const stillLive = Array.from(globalBasketballCache.values()).some(m => m.status === 'inprogress');
         return {
             hasLiveMatch: stillLive || sportUpdateStatus.hasLiveMatch,
@@ -805,7 +867,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 async function main() {
     loadState();
     console.log("============================================================");
-    console.log("🟢 [BASKETBOL] BAĞIMSIZ MAÇKOLİK + TBF + ESPN SERVİSİ BAŞLADI");
+    console.log("🟢 [BASKETBOL] BAĞIMSIZ MAÇKOLİK + TBF + ESPN + EUROLEAGUE SERVİSİ BAŞLADI");
     console.log("============================================================");
 
     let lastPeriodicUpdate = 0;
@@ -865,10 +927,7 @@ async function main() {
             if (currentHour >= 0 && currentHour <= 4) quickScanDates = [getTRDate(-1), getTRDate(0)];
 
          
-        // Maça 30 dakikadan (30 * 60000 ms) az kaldıysa hızlı moda gir
-const isUpcoming = () => sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - (30 * 60000));
-
-        
+        const isUpcoming = () => sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - (30 * 60000));
         
             if (sportUpdateStatus.hasLiveMatch) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
