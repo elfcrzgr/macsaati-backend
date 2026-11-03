@@ -421,7 +421,10 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
             const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00`;
             const matchDateObj = new Date(dateTimeStr); // TBF saatleri zaten TR saati ile geliyor
 
-            const broadcaster = m.broadcastChannel || "Resmi Yayıncı Yok";
+            // Önce sporekrani (yayinci_bilgisi.json), yoksa TBF'nin kendi bildirdiği kanal
+            const tbfFallback = m.broadcastChannel || "Resmi Yayıncı Yok";
+            const result = getBroadcasterWithFallback("basketbol", m.matchDateOnly, m.matchTime, m.homeTeam.name, m.awayTeam.name, tbfFallback);
+
             const uniqueId = `tbf_${m.matchId}`;
 
             globalBasketballCache.set(uniqueId, {
@@ -431,7 +434,7 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
                 fixedDate: m.matchDateOnly,
                 fixedTime: m.matchTime,
                 timestamp: matchDateObj.getTime(),
-                broadcaster: broadcaster,
+                broadcaster: result.kanal,
                 homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
                 awayTeam: { name: m.awayTeam.name, logo: m.awayTeam.logoUrl },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
@@ -450,6 +453,112 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
 }
 
 // =========================================================================
+// 🏀 ESPN ENTEGRASYONU — NBA & WNBA
+// =========================================================================
+// NOT: ESPN'in herkese açık, token gerektirmeyen "hidden" API'si. Node'un
+// fetch'i ile doğrudan çalışıyor (curl'e gerek yok). Tarih YYYYMMDD formatında
+// istenir ve tek günlük sorgu yapılır (aralık desteği güvenilir değil).
+const ESPN_LEAGUES = {
+    nba: { slug: 'nba', displayName: 'NBA' },
+    wnba: { slug: 'wnba', displayName: 'WNBA' }
+};
+
+function toESPNDateFormat(trDateStr) {
+    return trDateStr.replace(/-/g, '');
+}
+
+async function fetchESPNDay(leagueSlug, dateStr) {
+    try {
+        const espnDate = toESPNDateFormat(dateStr);
+        const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/${leagueSlug}/scoreboard?dates=${espnDate}`;
+
+        const response = await fetch(url, {
+            signal: timeoutSignal(15000),
+            headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15",
+                "Accept": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            console.error(`❌ ESPN (${leagueSlug}) ${dateStr} -> HTTP ${response.status}`);
+            return null;
+        }
+
+        const json = await response.json();
+        return json?.events || [];
+    } catch (e) {
+        console.error(`❌ ESPN istek hatası (${leagueSlug}, ${dateStr}):`, e.message);
+        return null;
+    }
+}
+
+// ESPN status.type.state: "pre" | "in" | "post"
+function mapESPNStatus(state) {
+    if (state === 'post') return 'finished';
+    if (state === 'in') return 'inprogress';
+    return 'notstarted';
+}
+
+async function updateESPN(targetDates = [getTRDate(0)]) {
+    let totalAdded = 0;
+
+    for (const [code, league] of Object.entries(ESPN_LEAGUES)) {
+        for (const dateStr of targetDates) {
+            const events = await fetchESPNDay(league.slug, dateStr);
+            if (!events) continue;
+
+            for (const event of events) {
+                const comp = event.competitions?.[0];
+                if (!comp) continue;
+
+                const homeC = comp.competitors.find(c => c.homeAway === 'home');
+                const awayC = comp.competitors.find(c => c.homeAway === 'away');
+                if (!homeC || !awayC) continue;
+
+                const state = comp.status?.type?.state;
+                const statusType = mapESPNStatus(state);
+                const hasScore = statusType !== 'notstarted';
+
+                const eventDate = new Date(event.date); // ESPN UTC ISO döndürüyor
+                const fixedDate = eventDate.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+                const fixedTime = eventDate.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+
+                const espnBroadcasts = comp.broadcasts?.flatMap(b => b.names || []) || [];
+                const espnFallback = espnBroadcasts.length > 0 ? espnBroadcasts.join(' / ') : getFallbackBroadcaster(league.displayName);
+
+                // Önce sporekrani (yayinci_bilgisi.json), yoksa ESPN'in kendi bildirdiği kanal
+                const result = getBroadcasterWithFallback("basketbol", fixedDate, fixedTime, homeC.team.displayName, awayC.team.displayName, espnFallback);
+
+                const uniqueId = `espn_${event.id}`;
+
+                globalBasketballCache.set(uniqueId, {
+                    id: uniqueId,
+                    isElite: true,
+                    status: statusType,
+                    fixedDate: fixedDate,
+                    fixedTime: fixedTime,
+                    timestamp: eventDate.getTime(),
+                    broadcaster: result.kanal,
+                    homeTeam: { name: homeC.team.displayName, logo: homeC.team.logo },
+                    awayTeam: { name: awayC.team.displayName, logo: awayC.team.logo },
+                    tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
+                    homeScore: hasScore ? String(homeC.score ?? "0") : "-",
+                    awayScore: hasScore ? String(awayC.score ?? "0") : "-",
+                    tournament: league.displayName
+                });
+
+                previousMatchStates.set(uniqueId, { status: statusType, date: fixedDate });
+                totalAdded++;
+            }
+        }
+    }
+
+    console.log(`🏀 [ESPN] ${totalAdded} maç işlendi (NBA + WNBA).`);
+    return totalAdded;
+}
+
+// =========================================================================
 // 🏀 BASKETBOL GÜNCELLEME (GÜNCELLENMİŞ MAÇKOLİK PARSER)
 // =========================================================================
 // =========================================================================
@@ -457,12 +566,13 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
 // =========================================================================
 
 // Mackolik'te kullanılan tam lig isimleri. Sadece BİREBİR eşleşenler alınır.
-// NOT: BSL ve TBL artık TBF'den (updateTBF) çekiliyor, bu yüzden Mackolik
-// tarafında mükerrer veri olmaması için listeden çıkarıldı.
+// NOT: BSL ve TBL artık TBF'den (updateTBF), NBA ve WNBA artık ESPN'den
+// (updateESPN) çekiliyor, bu yüzden Mackolik tarafında mükerrer veri
+// oluşmaması için listeden çıkarıldı.
 const ELITE_LEAGUES = [
     // Amerika
-    "nba",
-    "wnba",
+    // "nba",                         // ARTIK ESPN'DEN ÇEKİLİYOR
+    // "wnba",                        // ARTIK ESPN'DEN ÇEKİLİYOR
 
     // Uluslararası & Avrupa Kupaları
     "euroleague",
@@ -593,7 +703,9 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         console.log(`\n🗑️ [FİLTRE] Elenen Ligler: ${Array.from(rejectedLeagues).join(', ')}`);
     }
 
-    // TBF'den BSL ve TBL verilerini çekiyoruz (Mackolik başarısız olsa bile bağımsız çalışır)
+    // TBF'den BSL ve TBL, ESPN'den NBA ve WNBA verilerini çekiyoruz.
+    // Her ikisi de Mackolik'ten bağımsız çalışır: Mackolik'in token'ı o an
+    // geçersiz olsa bile bu ligler akmaya devam eder.
     let tbfSuccess = false;
     try {
         const tbfCount = await withTimeout(updateTBF(targetDates), 30000, 'TBF taraması');
@@ -602,7 +714,15 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
         console.error("❌ TBF güncelleme hatası:", e.message);
     }
 
-    if (!anySuccess && !tbfSuccess) {
+    let espnSuccess = false;
+    try {
+        const espnCount = await withTimeout(updateESPN(targetDates), 30000, 'ESPN taraması');
+        espnSuccess = espnCount > 0;
+    } catch (e) {
+        console.error("❌ ESPN güncelleme hatası:", e.message);
+    }
+
+    if (!anySuccess && !tbfSuccess && !espnSuccess) {
         const stillLive = Array.from(globalBasketballCache.values()).some(m => m.status === 'inprogress');
         return {
             hasLiveMatch: stillLive || sportUpdateStatus.hasLiveMatch,
@@ -685,7 +805,7 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 async function main() {
     loadState();
     console.log("============================================================");
-    console.log("🟢 [BASKETBOL] BAĞIMSIZ MAÇKOLİK + TBF SERVİSİ BAŞLADI");
+    console.log("🟢 [BASKETBOL] BAĞIMSIZ MAÇKOLİK + TBF + ESPN SERVİSİ BAŞLADI");
     console.log("============================================================");
 
     let lastPeriodicUpdate = 0;
