@@ -1,0 +1,792 @@
+const fs = require('fs');
+const path = require('path');
+const admin = require('firebase-admin');
+const { execFile } = require('child_process');
+const util = require('util');
+const execFileAsync = util.promisify(execFile);
+
+require('events').EventEmitter.defaultMaxListeners = 100;
+
+// =========================================================================
+// 🔥 AYARLAR VE ÇALIŞMA ORTAMI
+// =========================================================================
+const STATE_FILE = 'basketball_states.json'; 
+const GITHUB_USER = "elfcrzgr";
+const REPO_NAME = "macsaati-backend";
+const MINUTE_MS = 180000;
+const TEN_MIN_MS = 10 * 60000;
+
+// Telegram Bilgileri
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "";
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
+
+// =========================================================================
+// 🔥 FIREBASE BAŞLATMA
+// =========================================================================
+const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf8'));
+const firebaseApp = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://macsaati-a743a-default-rtdb.europe-west1.firebasedatabase.app/"
+}, 'basketball_app');
+console.log("🔥 [BASKETBOL] Firebase Admin başlatıldı.");
+
+// =========================================================================
+// 🧠 GLOBAL HAFIZA (CACHE) VE DURUM YÖNETİMİ
+// =========================================================================
+const previousMatchStates = new Map();
+const globalBasketballCache = new Map();
+
+const sportUpdateStatus = {
+    lastFullUpdate: 0, 
+    lastQuickUpdate: 0, 
+    nextMatchTime: null, 
+    hasLiveMatch: false
+};
+
+function logMatchesBySport(matchGroups) {
+    for (const sportType of Object.keys(matchGroups)) {
+        const sporekraniMatches = matchGroups[sportType].filter(matchInfo => matchInfo.source === "sporekrani");
+        if (sporekraniMatches.length === 0) continue;
+        console.log(`\n--------- 🏀 BASKETBOL SPOREKRANI ---------`);
+        for (const matchInfo of sporekraniMatches) {
+            const { home, away, kanal } = matchInfo;
+            console.log(`🏀 ${home} vs ${away} | Kanal: ${kanal}`);
+        }
+        console.log('---------------------------------------------');
+    }
+}
+
+
+// =========================================================================
+// 🏆 LİG İSİMLERİNİ GITHUB REPO ID'LERİNE BAĞLAYAN SÖZLÜK
+// =========================================================================
+function getTournamentRepoId(compName) {
+    if (!compName) return "519"; // Varsayılan bir lig ID'si
+    const name = String(compName).toUpperCase();
+
+    if (name.includes("NBA")) return "3547";
+    if (name.includes("EUROLEAGUE")) return "138";
+    if (name.includes("EUROCUP")) return "141";
+    if (name.includes("TÜRKİYE SİGORTA BSL") || name.includes("BASKETBOL SÜPER LİGİ")) return "519";
+    if (name.includes("ŞAMPiyonlar LİGİ") || name.includes("BCL") || name.includes("CHAMPIONS LEAGUE")) return "9357";
+    if (name.includes("İSPANYA") || name.includes("ACB")) return "264";
+    if (name.includes("YUNANİSTAN")) return "304";
+    if (name.includes("ALMANYA") || name.includes("BBL")) return "227";
+    if (name.includes("FRANSA") || name.includes("PRO A")) return "156";
+    if (name.includes("ADRIYATIK") || name.includes("ABA")) return "235";
+    if (name.includes("VTB")) return "1438";
+    if (name.includes("WNBA")) return "486";
+    if (name.includes("YAZ LİGİ")) return "10415";
+    if (name.includes("DÜNYA KUPASI")) return "10437";
+    if (name.includes("TÜRKİYE BASKETBOL LİGİ") || name.includes("TBL") || name.includes("2. LİG")) return "1179";
+
+    return "519"; // Bulunamazsa varsayılan lig logosu
+}
+
+function saveState() {
+    const obj = Object.fromEntries(previousMatchStates);
+    fs.writeFileSync(STATE_FILE, JSON.stringify(obj));
+}
+
+function loadState() {
+    if (fs.existsSync(STATE_FILE)) {
+        try {
+            const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+            for (const [key, val] of Object.entries(data)) previousMatchStates.set(key, val);
+            console.log(`📂 [HAFIZA-BASKETBOL] ${previousMatchStates.size} maç durumu yüklendi.`);
+        } catch (e) { console.error("❌ Hafıza dosyası okunamadı, yeni başlatılıyor."); }
+    }
+}
+
+// =========================================================================
+// 🌉 HARİCİ YAYINCI DOSYASI (SPOREKRANI) ENTEGRASYONU
+// =========================================================================
+let externalBroadcasters = {};
+
+function timeoutSignal(ms) {
+    if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) return AbortSignal.timeout(ms);
+    const c = new AbortController();
+    const t = setTimeout(() => c.abort(), ms);
+    if (t.unref) t.unref();
+    return c.signal;
+}
+
+function withTimeout(promise, ms, label) {
+    let timer;
+    const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`${label} ${Math.round(ms / 1000)} sn içinde yanıt vermedi`)), ms);
+    });
+    return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
+async function loadExternalBroadcasters() {
+    try {
+        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
+        const response = await fetch(url, { signal: timeoutSignal(10000) });
+        if (response.ok) {
+            externalBroadcasters = await response.json();
+            fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
+        }
+    } catch (e) {
+        if (fs.existsSync('yayinci_bilgisi.json')) {
+            try { externalBroadcasters = JSON.parse(fs.readFileSync('yayinci_bilgisi.json', 'utf8')); } 
+            catch (err) { externalBroadcasters = {}; }
+        }
+    }
+}
+
+function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, awayName, fallback) {
+    const cleanTime = (timeStr || "").replace(/\n?CANLI/, "").replace(/\n?MS/, "").replace('.', ':').trim();
+    const [cH, cM] = cleanTime.split(':').map(Number);
+
+    const normalizeStr = (str) => {
+        if (!str) return "";
+        let s = str.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+                   .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ş/g, 's').replace(/ş/g, 's')
+                   .replace(/Ö/g, 'o').replace(/ö/g, 'o').replace(/Ç/g, 'c').replace(/ç/g, 'c')
+                   .replace(/ı/g, 'i');
+        s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
+    };
+
+    const homeWords = normalizeStr(homeName).split(' ').filter(w => w.length >= 3);
+    const awayWords = normalizeStr(awayName).split(' ').filter(w => w.length >= 3);
+
+    const getSafeDates = (baseStr) => {
+        const [y, m, d] = baseStr.split('-').map(Number);
+        return [0, 1].map(offset => {
+            const dateObj = new Date(y, m - 1, d + offset);
+            return `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+        });
+    };
+
+    for (const dateKey of getSafeDates(dateStr)) {
+        const dayData = externalBroadcasters[dateKey];
+        const matchesArray = Array.isArray(dayData) ? dayData : dayData?.matches;
+        if (!matchesArray || !Array.isArray(matchesArray)) continue;
+
+        for (const m of matchesArray) {
+            if (m.spor && normalizeStr(m.spor) === normalizeStr(sportCategory)) {
+                const mTime = (m.saat || "").replace('.', ':').trim();
+                const [mH, mM] = mTime.split(':').map(Number);
+                const mTitleClean = normalizeStr(m.mac);
+
+                const matchHome = homeWords.length > 0 && homeWords.some(w => mTitleClean.includes(w));
+                const matchAway = awayWords.length > 0 && awayWords.some(w => mTitleClean.includes(w));
+                const matchScore = (matchHome ? 1 : 0) + (matchAway ? 1 : 0);
+
+                let diff = 9999;
+                if (mTime === cleanTime) diff = 0;
+                else if (!isNaN(mH) && !isNaN(cH) && !isNaN(mM) && !isNaN(cM)) {
+                    diff = Math.abs((mH * 60 + mM) - (cH * 60 + cM));
+                    if (diff > 1000) diff = Math.abs(diff - 1440);
+                }
+
+                if (matchScore === 2 && diff <= 120) return { kanal: m.yayin, source: "sporekrani" };
+                else if (matchScore === 1 && diff <= 15 && dateKey === dateStr) return { kanal: m.yayin, source: "sporekrani" };
+            }
+        }
+    }
+    return { kanal: fallback, source: "fallback" };
+}
+
+// =========================================================================
+// 🛠️ YARDIMCI FONKSİYONLAR VE FETCH
+// =========================================================================
+async function uploadToFirebase(data) {
+    try {
+        await withTimeout(firebaseApp.database().ref(`matches_basketball`).set(data), 15000, 'Firebase yazma');
+    } catch (error) { console.error(`❌ [FIREBASE-BASKETBOL] Hata:`, error.message); }
+}
+
+const getTRDate = (offset = 0) => {
+    const d = new Date(); d.setDate(d.getDate() + offset); 
+    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+};
+
+function getIstanbulNow() {
+    const istStr = new Date().toLocaleString('en-US', { timeZone: 'Europe/Istanbul' });
+    return new Date(istStr);
+}
+
+function findNextMatchTime(cache, now = Date.now()) {
+    let nextTime = null;
+    for (const match of cache.values()) {
+        if (match.status === 'notstarted' || match.status === 'delayed') {
+            if (match.timestamp <= now) return now;
+            if (!nextTime || match.timestamp < nextTime) nextTime = match.timestamp;
+        }
+    }
+    return nextTime;
+}
+
+
+
+//TELEFRAM
+async function sendTelegram(text) {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+        console.error("❌ [TELEGRAM] BOT_TOKEN veya CHAT_ID boş (ortam değişkeni tanımlı değil)");
+        return false;
+    }
+    try {
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
+            signal: timeoutSignal(10000)
+        });
+        const data = await res.json().catch(() => null);
+        if (data && data.ok) return true;
+        console.error("❌ [TELEGRAM] Gönderilemedi:", JSON.stringify(data));
+    } catch (e) {
+        console.error("❌ [TELEGRAM] Bağlantı hatası:", e.message);
+    }
+    return false;
+}
+
+
+let lastTokenAlertTime = 0;
+async function notifyAdminForTokenIssue(reason) {
+    const now = Date.now();
+    // Aynı hatadan dolayı spama düşmemek için 30 dakikada bir mesaj atar
+    if (now - lastTokenAlertTime < 1800000) return; 
+    
+    const message = `🚨 Maç Saati (BASKETBOL) Uyarısı\nMaçkolik Token Sorunu: ${reason}\n\nLütfen telefondan yeni token alıp GitHub'daki token_basketball.txt dosyasını güncelleyin.`;
+    const ok = await sendTelegram(message);
+    if (ok) lastTokenAlertTime = now;
+}
+
+
+
+
+//TOKEN
+
+async function getMackolikToken() {
+    try {
+        // Belirlediğiniz token_basketball.txt dosyasından okuyacak
+        const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/token_basketball.txt?t=${Date.now()}`;
+        const response = await fetch(url);
+        if (response.ok) {
+            const token = await response.text();
+            return token.trim(); 
+        }
+    } catch (e) {
+        console.log("⚠️ GitHub'dan token çekilemedi.");
+    }
+    return null;
+}
+
+
+
+
+
+
+
+// 🔥 YENİ MAÇKOLİK FETCH MOTORU
+async function fetchMackolikBasketball(dateStr) {
+    try {
+        const currentToken = await getMackolikToken();
+        if (!currentToken) {
+            console.error("❌ Token okunamadı veya boş");
+            notifyAdminForTokenIssue("Token GitHub'dan okunamadı veya boş");
+            return null;
+        }
+
+        const url = `https://api.mackolikfeeds.com/basket/api/matches/?add_playing=1&application=com.domainname.mackolik&country=tr&date=${dateStr}&extended_period=1&language=tr&migration_status=perform&tz=3`;
+        const response = await fetch(url, {
+            signal: timeoutSignal(15000),
+            headers: {
+                "User-Agent": "Mackolik/5.8.7 (iPhone; iOS 27.0.1; Scale/3.00)",
+                "X-Authorization": "token true",
+                "X-RequestToken": currentToken,
+                "Accept-Language": "tr-TR;q=1, en-GB;q=0.9",
+                "Connection": "keep-alive"
+            }
+        });
+
+        if (!response.ok) {
+            console.error(`❌ Mackolik ${response.status} döndü (Token süresi dolmuş olabilir)`);
+            notifyAdminForTokenIssue(`HTTP ${response.status} Hatası`);
+            return null;
+        }
+
+        const json = await response.json();
+        if (!json || !json.data) {
+            console.error("❌ Mackolik 200 döndü ama veri yok:", JSON.stringify(json).slice(0, 200));
+            notifyAdminForTokenIssue("Cevapta veri yok (token geçersiz olabilir)");
+            return null;
+        }
+        return json;
+    } catch (e) {
+        console.error("❌ Mackolik istek hatası:", e.message);
+        return null;
+    }
+}
+
+
+// Mackolik lig isimlerine göre varsayılan yayıncılar
+const getFallbackBroadcaster = (compName) => {
+    const upper = String(compName).toUpperCase();
+    if (upper.includes("NBA")) return "S Sport / NBA TV";
+    if (upper.includes("EUROLEAGUE")) return "S Sport / S Sport Plus";
+    if (upper.includes("EUROCUP")) return "TRT Spor / S Sport";
+    if (upper.includes("TÜRKİYE SİGORTA BSL")) return "beIN Sports";
+    if (upper.includes("BASKETBOL ŞAMPİYONLAR LİGİ")) return "Tivibu Spor";
+    if (upper.includes("İSPANYA")) return "S Sport Plus";
+    if (upper.includes("İTALYA")) return "S Sport Plus";
+    return "Resmi Yayıncı";
+};
+
+// =========================================================================
+// 🏀 TBF (TÜRKİYE BASKETBOL FEDERASYONU) ENTEGRASYONU — BSL & TBL
+// =========================================================================
+// NOT: TBF'nin kendi web sitesinin kullandığı herkese açık, token gerektirmeyen
+// bir API'dir (tbf.org.tr/api/...). Node'un yerleşik fetch'i bu sunucudan 403
+// aldığı için (TLS parmak izi farkı), istekler curl alt işlemi üzerinden atılır.
+const TBF_LEAGUES = {
+    bsl: { id: 22214, displayName: "Türkiye Sigorta Basketbol Süper Ligi" },
+    tbl: { id: 22215, displayName: "Türkiye Sigorta Türkiye Basketbol Ligi" }
+};
+
+async function fetchTBFWeek(activityId, weekFilter = null) {
+    try {
+        let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1`;
+        if (weekFilter !== null) url += `&WeekFilter=${weekFilter}`;
+
+        const { stdout } = await execFileAsync('curl', [
+            '-s',
+            '--max-time', '15',
+            url,
+            '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
+            '-H', 'Referer: https://tbf.org.tr/'
+        ]);
+
+        const json = JSON.parse(stdout);
+        return json?.data || null;
+    } catch (e) {
+        console.error(`❌ TBF istek hatası (ActivityId=${activityId}, Week=${weekFilter}):`, e.message);
+        return null;
+    }
+}
+
+function extractWeekNumber(matches) {
+    if (!matches || matches.length === 0) return null;
+    const m = matches[0].week?.match(/\d+/);
+    return m ? parseInt(m[0]) : null;
+}
+
+// matchStatusId eşlemesi (gözlemle doğrulandı): 1 = bitti, 4 = başlamadı.
+// Aradaki değerler (2/3 vb.) canlı veya ertelenmiş maç için kullanılıyor olabilir;
+// canlı bir maçla karşılaşıldığında bu fonksiyon netleştirilmeli.
+function mapTBFStatus(matchStatusId) {
+    if (matchStatusId === 1) return 'finished';
+    if (matchStatusId === 4) return 'notstarted';
+    return 'inprogress';
+}
+
+async function fetchTBFLeagueMatches(activityId, targetDates) {
+    const currentWeekMatches = await fetchTBFWeek(activityId);
+    const currentWeek = extractWeekNumber(currentWeekMatches);
+
+    let allMatches = [...(currentWeekMatches || [])];
+
+    if (currentWeek !== null) {
+        const [prevWeekMatches, nextWeekMatches] = await Promise.all([
+            fetchTBFWeek(activityId, currentWeek - 1),
+            fetchTBFWeek(activityId, currentWeek + 1)
+        ]);
+        if (prevWeekMatches) allMatches.push(...prevWeekMatches);
+        if (nextWeekMatches) allMatches.push(...nextWeekMatches);
+    }
+
+    // Tekrar edenleri (hafta aralıkları çakışabilir) matchId'ye göre temizle
+    const uniqueMap = new Map();
+    for (const m of allMatches) uniqueMap.set(m.matchId, m);
+    allMatches = Array.from(uniqueMap.values());
+
+    return allMatches.filter(m => targetDates.includes(m.matchDateOnly));
+}
+
+async function updateTBF(targetDates = [getTRDate(0)]) {
+    let totalAdded = 0;
+
+    for (const [code, league] of Object.entries(TBF_LEAGUES)) {
+        const matches = await fetchTBFLeagueMatches(league.id, targetDates);
+        if (!matches) continue;
+
+        for (const m of matches) {
+            const statusType = mapTBFStatus(m.matchStatusId);
+            const hasScore = statusType !== 'notstarted';
+
+            const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00`;
+            const matchDateObj = new Date(dateTimeStr); // TBF saatleri zaten TR saati ile geliyor
+
+            const broadcaster = m.broadcastChannel || "Resmi Yayıncı Yok";
+            const uniqueId = `tbf_${m.matchId}`;
+
+            globalBasketballCache.set(uniqueId, {
+                id: uniqueId,
+                isElite: true,
+                status: statusType,
+                fixedDate: m.matchDateOnly,
+                fixedTime: m.matchTime,
+                timestamp: matchDateObj.getTime(),
+                broadcaster: broadcaster,
+                homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
+                awayTeam: { name: m.awayTeam.name, logo: m.awayTeam.logoUrl },
+                tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
+                homeScore: hasScore ? String(m.homeTeam.score || "0") : "-",
+                awayScore: hasScore ? String(m.awayTeam.score || "0") : "-",
+                tournament: league.displayName
+            });
+
+            previousMatchStates.set(uniqueId, { status: statusType, date: m.matchDateOnly });
+            totalAdded++;
+        }
+    }
+
+    console.log(`🏀 [TBF] ${totalAdded} maç işlendi (BSL + TBL).`);
+    return totalAdded;
+}
+
+// =========================================================================
+// 🏀 BASKETBOL GÜNCELLEME (GÜNCELLENMİŞ MAÇKOLİK PARSER)
+// =========================================================================
+// =========================================================================
+// 🏀 ELİT LİG FİLTRELEME (TAM İSİM / WHITELIST YÖNTEMİ)
+// =========================================================================
+
+// Mackolik'te kullanılan tam lig isimleri. Sadece BİREBİR eşleşenler alınır.
+// NOT: BSL ve TBL artık TBF'den (updateTBF) çekiliyor, bu yüzden Mackolik
+// tarafında mükerrer veri olmaması için listeden çıkarıldı.
+const ELITE_LEAGUES = [
+    // Amerika
+    "nba",
+    "wnba",
+
+    // Uluslararası & Avrupa Kupaları
+    "euroleague",
+    "eurocup",
+    "basketbol şampiyonlar ligi",
+    "fiba europe cup",
+    "fiba dünya kupası",
+    "eurobasket",
+    "olimpiyat oyunları",
+
+    // Türkiye
+    // "türkiye sigorta bsl",         // ARTIK TBF'DEN ÇEKİLİYOR
+    // "basketbol süper ligi",        // ARTIK TBF'DEN ÇEKİLİYOR
+    // "türkiye basketbol ligi",      // ARTIK TBF'DEN ÇEKİLİYOR
+    // "türkiye sigorta tbl",         // ARTIK TBF'DEN ÇEKİLİYOR
+
+    // İspanya
+    "ispanya liga endesa",
+    "ispanya acb",
+    "acb ligi",            
+
+    // İtalya
+    "italya serie a",
+    "italya lega basket",
+    "serie a",             
+
+    // Fransa
+    "fransa pro a",
+    "lnb pro a",           
+    "pro a",               
+
+    // Almanya
+    "almanya bbl",
+    "bbl",                 
+
+    // Yunanistan
+    "yunanistan basketbol ligi",
+    "basket ligi",         
+
+    // Bölgesel Ligler (Adriyatik & Rusya)
+    "adriyatik ligi",
+    "aba league",
+    "aba ligi",            
+    "vtb birleşik ligi",
+    "vtb ligi"             
+];
+
+
+// =========================================================================
+// 🏀 LİG İSİMLERİNİ KULLANICI DOSTU HALE GETİRME (MAPPING)
+// =========================================================================
+const LEAGUE_DISPLAY_NAMES = {
+    "basket ligi": "Yunanistan Basket Ligi",
+    "yunanistan basketbol ligi": "Yunanistan Basket Ligi",
+    "bbl": "Almanya BBL",
+    "almanya bbl": "Almanya BBL",
+    "acb ligi": "İspanya Liga Endesa",
+    "ispanya acb": "İspanya Liga Endesa",
+    "serie a": "İtalya Serie A",
+    "italya lega basket": "İtalya Serie A",
+    "lnb pro a": "Fransa Pro A",
+    "pro a": "Fransa Pro A",
+    "aba ligi": "Adriyatik Ligi (ABA)",
+    "aba league": "Adriyatik Ligi (ABA)",
+    "vtb ligi": "VTB Birleşik Ligi",
+    "tbl": "Türkiye 2. Ligi (TBL)",
+    "türkiye sigorta tbl": "Türkiye 2. Ligi (TBL)"
+};
+
+
+
+function isEliteCompetition(compName) {
+    if (!compName) return false;
+    
+    // Gelen lig adını küçük harfe çevir ve baştaki/sondaki boşlukları sil
+    const name = String(compName).toLocaleLowerCase('tr-TR').trim();
+
+    // Sadece dizideki tam isimlerden biriyle eşleşiyorsa true döner
+    return ELITE_LEAGUES.includes(name);
+}
+
+// =========================================================================
+// 🏀 BASKETBOL GÜNCELLEME (FİLTRELENMİŞ & LOGOSU DÜZELTİLMİŞ)
+// =========================================================================
+async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false) {
+    console.log(`🏀 Basketbol: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
+    
+    let allMatches = [];
+    let basketbolMatchesLog = [];
+    let anySuccess = false;
+    
+    // YENİ: Filtreye takılan (elenen) ligleri takip etmek için bir Küme (Set) oluşturuyoruz.
+    // Set kullanıyoruz ki aynı lig birden fazla kez yazılmasın.
+    let rejectedLeagues = new Set();
+
+    for (const date of targetDates) {
+        const responseData = await fetchMackolikBasketball(date);
+        const rootData = responseData?.data;
+        const areasArray = Array.isArray(rootData) ? rootData : rootData?.areas;
+
+        if (rootData && areasArray && Array.isArray(areasArray)) {
+            anySuccess = true;
+            areasArray.forEach(area => {
+                if (area.competitions && Array.isArray(area.competitions)) {
+                    area.competitions.forEach(comp => {
+                        // Eğer lig elit listemizde varsa maçları alıyoruz
+                        if (isEliteCompetition(comp.name)) {
+                            if (comp.matches && Array.isArray(comp.matches)) {
+                                comp.matches.forEach(match => {
+                                    match.competitionName = comp.name; 
+                                    match.competitionId = comp.uuid;
+                                    match.fixedDate = date;
+                                    allMatches.push(match);
+                                });
+                            }
+                        } else {
+                            // YENİ: Eğer lig elit değilse, reddedilenler listesine ismini ekliyoruz
+                            rejectedLeagues.add(comp.name);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    // YENİ: Hızlı tarama (QuickScan) değilse, elenen ligleri terminale tek seferde yazdırıyoruz.
+    if (!isQuickScan && rejectedLeagues.size > 0) {
+        console.log(`\n🗑️ [FİLTRE] Elenen Ligler: ${Array.from(rejectedLeagues).join(', ')}`);
+    }
+
+    // TBF'den BSL ve TBL verilerini çekiyoruz (Mackolik başarısız olsa bile bağımsız çalışır)
+    let tbfSuccess = false;
+    try {
+        const tbfCount = await withTimeout(updateTBF(targetDates), 30000, 'TBF taraması');
+        tbfSuccess = tbfCount > 0;
+    } catch (e) {
+        console.error("❌ TBF güncelleme hatası:", e.message);
+    }
+
+    if (!anySuccess && !tbfSuccess) {
+        const stillLive = Array.from(globalBasketballCache.values()).some(m => m.status === 'inprogress');
+        return {
+            hasLiveMatch: stillLive || sportUpdateStatus.hasLiveMatch,
+            nextMatchTimestamp: sportUpdateStatus.nextMatchTime,
+            hasAnyMatches: globalBasketballCache.size > 0
+        };
+    }
+
+    const validDates = [getTRDate(-2), getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
+    for (const [id, match] of globalBasketballCache.entries()) {
+        if (!validDates.includes(match.fixedDate)) globalBasketballCache.delete(id);
+    }
+
+    for (const e of allMatches) {
+        const rawStatus = String(e.status || "").toLowerCase();
+        let statusType = 'notstarted';
+        if (rawStatus === 'played' || rawStatus === 'finished') statusType = 'finished';
+        else if (rawStatus === 'playing' || rawStatus === 'live' || rawStatus === 'fixture') {
+            statusType = (rawStatus === 'fixture') ? 'notstarted' : 'inprogress';
+        }
+
+        const isFinished = statusType === 'finished'; 
+        const isInProgress = statusType === 'inprogress';
+        const hasScore = isFinished || isInProgress;
+
+        const homeScoreRaw = e.fts_A ?? e.fs_A ?? e.rs_A ?? e.score_A ?? (e.team_A && e.team_A.score) ?? "0";
+        const awayScoreRaw = e.fts_B ?? e.fs_B ?? e.rs_B ?? e.score_B ?? (e.team_B && e.team_B.score) ?? "0";
+
+        const dateTR = new Date(e.date_time_utc + "Z"); 
+        let timeString = dateTR.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+        const matchDate = dateTR.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+            
+        if (isInProgress) {
+            const minStr = e.minute ? `${e.minute}'` : "CANLI";
+            timeString = `${timeString}\n${minStr}`;
+        }
+
+        const hName = e.team_A?.display_name || e.team_A?.name || "Ev Sahibi";
+        const aName = e.team_B?.display_name || e.team_B?.name || "Deplasman";
+        const fallbackBroadcaster = getFallbackBroadcaster(e.competitionName);
+        const result = getBroadcasterWithFallback("basketbol", matchDate, timeString, hName, aName, fallbackBroadcaster);
+
+        if (!isQuickScan) basketbolMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
+
+        globalBasketballCache.set(e.uuid, {
+            id: e.uuid, 
+            isElite: true, 
+            status: statusType, 
+            fixedDate: matchDate, 
+            fixedTime: timeString, 
+            timestamp: dateTR.getTime(), 
+            broadcaster: result.kanal,
+            homeTeam: { name: hName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_A?.uuid}.png` },
+            awayTeam: { name: aName, logo: `https://api.mackolikfeeds.com/basket/images/teams/150x150/${e.team_B?.uuid}.png` },
+            tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(e.competitionName)}.png`,
+            homeScore: hasScore ? String(homeScoreRaw) : "-", 
+            awayScore: hasScore ? String(awayScoreRaw) : "-", 
+            tournament: LEAGUE_DISPLAY_NAMES[String(e.competitionName).toLocaleLowerCase('tr-TR').trim()] || e.competitionName || "Basketbol Ligi"
+
+        });
+
+       previousMatchStates.set(e.uuid, { status: statusType, date: matchDate });
+    }
+
+    const finalMatches = Array.from(globalBasketballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
+    await uploadToFirebase({ success: true, matches: finalMatches });
+    
+    if (!isQuickScan && basketbolMatchesLog.length < 30) logMatchesBySport({ basketbol: basketbolMatchesLog });
+    saveState();
+    
+    const hasLiveMatch = finalMatches.some(m => m.status === 'inprogress');
+    const nextMatchTimestamp = findNextMatchTime(globalBasketballCache);
+    return { hasLiveMatch, nextMatchTimestamp, hasAnyMatches: finalMatches.length > 0 };
+}
+
+
+// =========================================================================
+// 🆕 ANA DÖNGÜ
+// =========================================================================
+async function main() {
+    loadState();
+    console.log("============================================================");
+    console.log("🟢 [BASKETBOL] BAĞIMSIZ MAÇKOLİK + TBF SERVİSİ BAŞLADI");
+    console.log("============================================================");
+
+    let lastPeriodicUpdate = 0;
+    let lastBroadcastersString = "";
+    let expectedWake = 0;
+
+    const applyResult = (result) => {
+        sportUpdateStatus.hasLiveMatch = result.hasLiveMatch;
+        sportUpdateStatus.nextMatchTime = result.nextMatchTimestamp;
+    };
+
+    while (true) {
+        try {
+            const now = Date.now();
+            if (expectedWake && now - expectedWake > 30000) {
+                console.log(`⚠️ Döngü ${Math.round((now - expectedWake) / 1000)} sn geç uyandı: cihaz uykuya geçmiş olabilir.`);
+            }
+            
+            await loadExternalBroadcasters();
+            const currentBroadcastersString = JSON.stringify(externalBroadcasters);
+            let forceUpdateDueToBroadcasters = false;
+            
+            if (lastBroadcastersString !== "" && currentBroadcastersString !== lastBroadcastersString) {
+                console.log("📺 [YAYINCI] Yeni yayıncı bilgileri tespit edildi! Firebase güncelleniyor...");
+                forceUpdateDueToBroadcasters = true;
+            }
+            lastBroadcastersString = currentBroadcastersString;
+
+            const ist = getIstanbulNow();
+            const msSinceMidnight = (ist.getHours() * 3600000) + (ist.getMinutes() * 60000) + (ist.getSeconds() * 1000);
+            const startOfDay = now - msSinceMidnight;
+            
+            const TARGET_TIMES = [ 
+                10 * 60 * 1000,              
+                (1 * 60 + 15) * 60 * 1000,   
+                (6 * 60 + 15) * 60 * 1000,    
+                (9 * 60 + 15) * 60 * 1000,   
+                (12 * 60 + 15) * 60 * 1000,  
+                (15 * 60 + 15) * 60 * 1000   
+            ];
+            
+            let activeTarget = startOfDay - (5 * 60 + 50) * 60 * 1000;
+            for (let i = TARGET_TIMES.length - 1; i >= 0; i--) {
+                if (msSinceMidnight >= TARGET_TIMES[i]) { activeTarget = startOfDay + TARGET_TIMES[i]; break; }
+            }
+
+            if (lastPeriodicUpdate < activeTarget || forceUpdateDueToBroadcasters) {
+                console.log("\n🔄 [PERİYODİK / ZORUNLU] Detaylı Tarama Başlıyor...");
+                const days4 = [getTRDate(-1), getTRDate(0), getTRDate(1), getTRDate(2)];
+                const result = await withTimeout(updateBasketball(days4, false), 120000, 'Detaylı tarama');
+                applyResult(result);
+                if (!forceUpdateDueToBroadcasters) lastPeriodicUpdate = now;
+            }
+
+            const currentHour = getIstanbulNow().getHours();
+            let quickScanDates = [getTRDate(0)];
+            if (currentHour >= 0 && currentHour <= 4) quickScanDates = [getTRDate(-1), getTRDate(0)];
+
+         
+        // Maça 30 dakikadan (30 * 60000 ms) az kaldıysa hızlı moda gir
+const isUpcoming = () => sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - (30 * 60000));
+
+        
+        
+            if (sportUpdateStatus.hasLiveMatch) {
+                if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
+                    console.log("\n🏀 [HIZLI DÖNGÜ] Canlı basketbol maçı var!");
+                    const result = await withTimeout(updateBasketball(quickScanDates, true), 60000, 'Hızlı tarama');  
+                    sportUpdateStatus.lastQuickUpdate = Date.now();
+                    applyResult(result);
+                }
+            }
+            else if (isUpcoming()) {
+                if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
+                    console.log("\n⏰ [BASKETBOL YAKLAŞAN] Yaklaşan maç vakti!");
+                    const result = await withTimeout(updateBasketball(quickScanDates, true), 60000, 'Hızlı tarama'); 
+                    sportUpdateStatus.lastQuickUpdate = Date.now();
+                    applyResult(result);
+                }
+            }
+
+            let sleepTime;
+            if (sportUpdateStatus.hasLiveMatch || isUpcoming()) {
+                sleepTime = Math.max(10000, MINUTE_MS - (Date.now() - sportUpdateStatus.lastQuickUpdate));
+                console.log(`\n⚡ [BASKETBOL] Aktif/Yaklaşan maç var. ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
+            } else if (sportUpdateStatus.nextMatchTime && Date.now() >= sportUpdateStatus.nextMatchTime - MINUTE_MS * 12) {
+                sleepTime = Math.min(30000, Math.max(10000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1 - Date.now()));
+                console.log(`\n⏳ [BASKETBOL] Maça az kaldı, ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
+            } else {
+                sleepTime = TEN_MIN_MS;
+                console.log("\n💤 [BASKETBOL] Şu an hareket yok. 10 dakika derin uyku...");
+            }
+
+            expectedWake = Date.now() + sleepTime;
+            await new Promise(r => setTimeout(r, sleepTime));
+
+        } catch (e) { 
+            console.error("🚨 Hata:", e.message); 
+            expectedWake = Date.now() + MINUTE_MS;
+            await new Promise(r => setTimeout(r, MINUTE_MS)); 
+        }
+    }
+}
+main();
