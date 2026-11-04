@@ -504,37 +504,24 @@ async function getBroadcasterData() {
             });
 
 
-            const html = await page.evaluate(() => {
-  const el = [...document.querySelectorAll('*')]
-    .find(e => e.children.length > 0 && e.innerText?.includes('Washington Wizards - Atlanta Hawks')
-      && ![...e.children].some(c => c.innerText?.includes('Washington Wizards - Atlanta Hawks')));
-  return el ? el.parentElement.outerHTML : 'bulunamadı';
-});
-console.log(html);
+    
 
             await new Promise(resolve => setTimeout(resolve, 3000));
 
-          if (sport === 'basketbol') {
-    const rowHtml = await page.evaluate(() => {
-        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-        let node;
-        while ((node = walker.nextNode())) {
-            if (node.textContent.includes('Washington Wizards')) {
-                let el = node.parentElement;
-                for (let i = 0; i < 4 && el.parentElement; i++) el = el.parentElement;
-                return el.outerHTML;
-            }
-        }
-        return 'bulunamadı';
-    });
-    console.log('::group::DEBUG WIZARDS SATIRI');
-    console.log(rowHtml.slice(0, 6000));
-    console.log('::endgroup::');
-}
+ 
 
             // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR (Kesin Çözüm)
             const textFallback = await page.evaluate(() => {
+// Kanal logolarını alt/title'dan doğrudan oku
+document.querySelectorAll('.event-list__channels img').forEach(img => {
+    const name = (img.getAttribute('alt') || img.getAttribute('title') || '').trim();
+    if (!name) return;
+    img.setAttribute('data-scraped', 'true');
+    img.parentNode.insertBefore(document.createTextNode(`\n${name}\n`), img);
+});
                 
+
+
                 // 🚀 ADIM 1: Sayfadaki TÜM elementleri (Resim, Link, Kutu, İkon) tara!
                 document.querySelectorAll('img, a, span, div, svg').forEach(el => {
                     let alt = el.getAttribute('alt') || '';
@@ -669,16 +656,16 @@ console.log(html);
                     "red bull", "wta tv", "atp tv", "fiba tv", "tbf tv", "tv100", "yayın yok", "caaf", "caaf tv"
                 ];
 
-                let filteredChannels = rawChannels.filter(line => {
-                    if (!line || line.length < 2) return false;
-                    const l = line.toLowerCase();
-                    
-                    if (l.match(/canlı tv|yayın akışı|video|kupalar|oyun|futbolu|tenisin|aboneliği/i)) {
-                        return false;
-                    }
+              let filteredChannels = [...new Set(rawChannels.filter(line => {
+    if (!line || line.length < 2) return false;
+    const l = line.toLowerCase();
 
-                    return validChannels.some(channel => l.includes(channel));
-                });
+    if (l.match(/canlı tv|yayın akışı|kupalar|oyun|futbolu|tenisin|aboneliği/i)) {
+        return false;
+    }
+
+    return validChannels.some(channel => l.includes(channel));
+}))];
 
                 let cleanYayin = filteredChannels.join(' / ')
                     .replace(/chevron_right/gi, '')
