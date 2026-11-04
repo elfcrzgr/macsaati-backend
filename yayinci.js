@@ -503,6 +503,15 @@ async function getBroadcasterData() {
                 });
             });
 
+
+            const html = await page.evaluate(() => {
+  const el = [...document.querySelectorAll('*')]
+    .find(e => e.children.length > 0 && e.innerText?.includes('Washington Wizards - Atlanta Hawks')
+      && ![...e.children].some(c => c.innerText?.includes('Washington Wizards - Atlanta Hawks')));
+  return el ? el.parentElement.outerHTML : 'bulunamadı';
+});
+console.log(html);
+
             await new Promise(resolve => setTimeout(resolve, 3000));
 
             // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR (Kesin Çözüm)
