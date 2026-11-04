@@ -327,15 +327,12 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                     const aName = getPlayerName(awayC);
                     if (hName === "TBD" || aName === "TBD") continue;
 
-                    // YENİ BAYRAK BULUCU (ESPN'in Sakladığı roster.athletes İçin Düzenlendi)
                     const getLogos = (c) => {
                         let flags = new Set();
                         
-                        // 1. İhtimal: Tekler (Singles) Maçları
                         if (c.athlete?.flag?.href) flags.add(c.athlete.flag.href);
                         if (c.athlete?.country?.flag?.href) flags.add(c.athlete.country.flag.href);
 
-                        // 2. İhtimal: Çiftler (Doubles) Maçları - roster.athletes altından çıkarma
                         if (c.roster?.athletes && Array.isArray(c.roster.athletes)) {
                             c.roster.athletes.forEach(a => {
                                 if (a.flag?.href) flags.add(a.flag.href);
@@ -343,7 +340,6 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                             });
                         }
 
-                        // 3. İhtimal: Çiftler Maçları (Alternatif yapı)
                         if (c.athletes && Array.isArray(c.athletes)) {
                             c.athletes.forEach(a => {
                                 if (a.flag?.href) flags.add(a.flag.href);
@@ -370,7 +366,8 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                         fixedTime = `${fixedTime}\nCANLI`;
                     }
 
-                    const fallbackBroadcaster = "S Sport / S Sport Plus";
+                    // SADECE BURASI DEĞİŞTİ: Yayıncı bulunamazsa boş kalsın
+                    const fallbackBroadcaster = "";
                     const result = getBroadcasterWithFallback("tenis", fixedDate, fixedTime, hName, aName, fallbackBroadcaster);
                     if (!isQuickScan) tenisMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
 
