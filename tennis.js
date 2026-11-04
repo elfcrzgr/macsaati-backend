@@ -310,17 +310,26 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                     const awayC = comp.competitors?.find(c => c.homeAway === 'away');
                     if (!homeC || !awayC) continue;
 
+                    // 🔥 DÜNYA SIRALAMASI DESTEKLİ İSİM ÇEKİCİ
                     const getPlayerName = (c) => {
-                        if (c.athlete?.displayName) return c.athlete.displayName;
-                        if (c.roster?.displayName) return c.roster.displayName;
-                        if (c.team?.displayName) return c.team.displayName;
-                        if (c.roster?.athletes && Array.isArray(c.roster.athletes)) {
-                            return c.roster.athletes.map(a => a.displayName || a.shortName).join(' / ');
+                        let name = "Tenisçi";
+                        
+                        if (c.athlete?.displayName) name = c.athlete.displayName;
+                        else if (c.roster?.displayName) name = c.roster.displayName;
+                        else if (c.team?.displayName) name = c.team.displayName;
+                        else if (c.roster?.athletes && Array.isArray(c.roster.athletes)) {
+                            name = c.roster.athletes.map(a => a.displayName || a.shortName).join(' / ');
                         }
-                        if (c.athletes && Array.isArray(c.athletes)) {
-                            return c.athletes.map(a => a.athlete?.displayName || a.athlete?.shortName).join(' / ');
+                        else if (c.athletes && Array.isArray(c.athletes)) {
+                            name = c.athletes.map(a => a.athlete?.displayName || a.athlete?.shortName).join(' / ');
                         }
-                        return "Tenisçi";
+
+                        const rank = c.curatedRank?.current || c.curatedRank || c.athlete?.curatedRank?.current || c.seed;
+                        
+                        if (rank && rank !== 99 && rank !== "99" && rank !== 0 && rank !== "0") {
+                            return `(${rank}) ${name}`;
+                        }
+                        return name;
                     };
 
                     const hName = getPlayerName(homeC);
@@ -366,7 +375,6 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                         fixedTime = `${fixedTime}\nCANLI`;
                     }
 
-                    // SADECE BURASI DEĞİŞTİ: Yayıncı bulunamazsa boş kalsın
                     const fallbackBroadcaster = " ";
                     const result = getBroadcasterWithFallback("tenis", fixedDate, fixedTime, hName, aName, fallbackBroadcaster);
                     if (!isQuickScan) tenisMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
