@@ -356,7 +356,6 @@ const teamNameMapping = {
     "CHELTENHAM": "Cheltenham Town",
     "CHELTENHAM TOWN": "Cheltenham Town",
 
-
     // 🏀 BASKETBOL TAKIMLARI
     "TURKEY": "Türkiye",
     "TURKIYE": "Türkiye",
@@ -687,7 +686,7 @@ async function getBroadcasterData() {
         } catch (error) {
             console.error(`🚨 ${sport.toUpperCase()} hatası:`, error.message);
         } finally {
-            await page.close();
+            await page.close(); // BURASI KRİTİK, Sayfayı mutlaka kapatmalı
         }
     }
 
