@@ -512,12 +512,29 @@ async function getBroadcasterData() {
             await new Promise(resolve => setTimeout(resolve, 3000));
 
             // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
+            // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
             const textFallback = await page.evaluate(() => {
                 document.querySelectorAll('img').forEach(img => {
                     let alt = img.getAttribute('alt') || img.getAttribute('title') || '';
-                    let src = img.getAttribute('src') || '';
+                    let src = (img.getAttribute('src') || '').toLowerCase();
 
-                    // 🛑 REKLAM VE MOBİL BANNER ENGELİ: Alakasız görselleri kesinlikle es geç
+                    // 🚀 ÖZEL LOGO TANIYICI (Amazon Prime, NBA TV vb. için doğrudan geçiş izni)
+                    // Filtrelere takılmadan önce bu logoları tanıyıp adını yazıyoruz.
+                    let identifiedChannel = '';
+                    if (src.includes('prime') || alt.toLowerCase().includes('prime')) identifiedChannel = 'Prime Video';
+                    else if (src.includes('ssport')) identifiedChannel = 'S Sport';
+                    else if (src.includes('nbatv') || src.includes('nba-tv') || alt.toLowerCase().includes('nba tv')) identifiedChannel = 'NBA TV';
+                    else if (src.includes('beinsports')) identifiedChannel = 'BeIN Sports';
+                    else if (src.includes('euroleague')) identifiedChannel = 'Euroleague TV';
+
+                    // Eğer özel logo tanıdıysak, doğrudan o ismi kullanıp çık
+                    if (identifiedChannel) {
+                        const txt = document.createTextNode(`\n${identifiedChannel}\n`);
+                        img.parentNode.insertBefore(txt, img);
+                        return; // İşimiz bitti, reklam filtresine sokmadan bir sonrakine geç
+                    }
+
+                    // 🛑 REKLAM VE MOBİL BANNER ENGELİ (Özel kanallar hariç diğer logoları denetler)
                     if (
                         src.match(/google-play|app-store|mobil|banner|reklam|advertisement|logo-site|site-logo|header|footer|avatar/i) ||
                         alt.match(/indir|download|store|banner|reklam|logo|icon|chevron|arrow/i)
@@ -525,7 +542,7 @@ async function getBroadcasterData() {
                         return;
                     }
 
-                    // Alt etiketi boşsa görsel url'inden ismi kurtar
+                    // Alt etiketi boşsa görsel url'inden ismi kurtar (Varsayılan davranış)
                     if ((!alt || alt.length < 2) && src) {
                         let match = src.match(/\/([^\/?#]+)\.(png|jpe?g|webp|gif)/i);
                         if (match && match[1]) {
