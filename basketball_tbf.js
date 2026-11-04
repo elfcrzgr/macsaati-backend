@@ -494,6 +494,34 @@ function mapEuroLeagueStatus(game, matchTimestamp) {
     return 'notstarted';
 }
 
+async function fetchEuroLiveScore(seasonCode, gameCode) {
+    const headers = {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15",
+        "Accept": "application/json",
+        "Cache-Control": "no-cache"
+    };
+    try {
+        const url = `https://live.euroleague.net/api/Header?gamecode=${gameCode}&seasoncode=${seasonCode}&_=${Date.now()}`;
+        const r = await fetch(url, { signal: timeoutSignal(8000), cache: 'no-store', headers });
+        if (!r.ok) {
+            console.error(`⚠️ Canlı skor HTTP ${r.status} (${seasonCode}/${gameCode})`);
+            return null;
+        }
+        const h = await r.json();
+        if (h?.ScoreA === undefined || h?.ScoreB === undefined) {
+            console.error("⚠️ Canlı skor beklenmeyen şema:", Object.keys(h || {}));
+            return null;
+        }
+        return { homeScore: String(h.ScoreA), awayScore: String(h.ScoreB) };
+    } catch (e) {
+        console.error(`⚠️ Canlı skor hatası (${seasonCode}/${gameCode}):`, e.message);
+        return null;
+    }
+}
+
+
+
+
 async function updateEuroLeague(targetDates = [getTRDate(0)]) {
     let totalAdded = 0;
     const seasonYear = getCurrentEuroSeasonYear();
@@ -510,14 +538,25 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
             // Dönüştürülen TRT tarihi hedeflerimiz arasında yoksa bu maçı direkt atla
             if (!targetDates.includes(fixedDate)) continue;
 
-            const statusType = mapEuroLeagueStatus(g, timestamp);
+                        const statusType = mapEuroLeagueStatus(g, timestamp);
             const hasScore = statusType !== 'notstarted';
-
+            
             const homeTeam = g.local?.club;
             const awayTeam = g.road?.club;
             if (!homeTeam || !awayTeam) continue;
+            
+            let homeScore = hasScore ? String(g.local?.score ?? "0") : "-";
+            let awayScore = hasScore ? String(g.road?.score ?? "0") : "-";
+            
+            if (statusType === 'inprogress') {
+                const gameCode = g.gameCode ?? g.code ?? g.id;
+                console.log(`🔎 Canlı: ${homeTeam.name} gameCode=${gameCode} keys=${Object.keys(g).join(',')}`);
+                const live = await fetchEuroLiveScore(seasonCode, gameCode);
+                if (live) { homeScore = live.homeScore; awayScore = live.awayScore; }
+            }
 
             const compFallback = getFallbackBroadcaster(comp.displayName);
+
             const result = getBroadcasterWithFallback("basketbol", fixedDate, fixedTime, homeTeam.name, awayTeam.name, compFallback);
 
             const uniqueId = `euro_${g.id}`;
@@ -533,8 +572,8 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
                 homeTeam: { name: homeTeam.name, logo: homeTeam.images?.crest || "" },
                 awayTeam: { name: awayTeam.name, logo: awayTeam.images?.crest || "" },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(comp.displayName)}.png`,
-                homeScore: hasScore ? String(g.local?.score ?? "0") : "-",
-                awayScore: hasScore ? String(g.road?.score ?? "0") : "-",
+                homeScore: homeScore,
+                awayScore: awayScore,
                 tournament: comp.displayName
             });
 
