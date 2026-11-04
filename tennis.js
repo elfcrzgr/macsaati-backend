@@ -310,7 +310,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                     const awayC = comp.competitors?.find(c => c.homeAway === 'away');
                     if (!homeC || !awayC) continue;
 
-                    // 🔥 DÜNYA SIRALAMASI DESTEKLİ İSİM ÇEKİCİ
+                                   // 🔥 DÜNYA SIRALAMASI DESTEKLİ İSİM ÇEKİCİ (Sıralama Sonda)
                     const getPlayerName = (c) => {
                         let name = "Tenisçi";
                         
@@ -324,13 +324,17 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                             name = c.athletes.map(a => a.athlete?.displayName || a.athlete?.shortName).join(' / ');
                         }
 
+                        // Sıralama / Seribaşı bilgisini al
                         const rank = c.curatedRank?.current || c.curatedRank || c.athlete?.curatedRank?.current || c.seed;
                         
+                        // Eğer geçerli bir sıralama varsa ismin SONUNA ekle
                         if (rank && rank !== 99 && rank !== "99" && rank !== 0 && rank !== "0") {
-                            return `(${rank}) ${name}`;
+                            return `${name} (${rank})`;
                         }
+                        
                         return name;
                     };
+
 
                     const hName = getPlayerName(homeC);
                     const aName = getPlayerName(awayC);
