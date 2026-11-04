@@ -311,6 +311,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                     if (!homeC || !awayC) continue;
 
                                    // 🔥 DÜNYA SIRALAMASI DESTEKLİ İSİM ÇEKİCİ (Sıralama Sonda)
+                                        // 🔥 DÜNYA SIRALAMASI DESTEKLİ İSİM ÇEKİCİ (Çiftlerde Sıralama İptal)
                     const getPlayerName = (c) => {
                         let name = "Tenisçi";
                         
@@ -324,7 +325,12 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                             name = c.athletes.map(a => a.athlete?.displayName || a.athlete?.shortName).join(' / ');
                         }
 
-                        // Sıralama / Seribaşı bilgisini al
+                        // Eğer isimde "/" varsa, bu bir çiftler takımıdır. Sıralama eklemeden direkt ismi döndür.
+                        if (name.includes('/')) {
+                            return name;
+                        }
+
+                        // Sadece Tekler (Singles) maçıysa sıralama/seribaşı bilgisini al
                         const rank = c.curatedRank?.current || c.curatedRank || c.athlete?.curatedRank?.current || c.seed;
                         
                         // Eğer geçerli bir sıralama varsa ismin SONUNA ekle
@@ -334,6 +340,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                         
                         return name;
                     };
+
 
 
                     const hName = getPlayerName(homeC);
