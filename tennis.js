@@ -367,7 +367,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                     }
 
                     // SADECE BURASI DEĞİŞTİ: Yayıncı bulunamazsa boş kalsın
-                    const fallbackBroadcaster = "";
+                    const fallbackBroadcaster = " ";
                     const result = getBroadcasterWithFallback("tenis", fixedDate, fixedTime, hName, aName, fallbackBroadcaster);
                     if (!isQuickScan) tenisMatchesLog.push({ home: hName, away: aName, kanal: result.kanal, source: result.source });
 
