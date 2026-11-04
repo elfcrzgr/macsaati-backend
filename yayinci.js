@@ -23,7 +23,6 @@ const teamNameMapping = {
     "KAYSERISPOR": "Kayserispor",
     "RIZESPOR": "Rizespor",
     "KASIMPASA": "Kasımpaşa",
-    "KASIMPASA": "Kasımpaşa",
     "ISTANBULSPOR": "İstanbulspor",
     "GÖZTEPE": "Göztepe",
     "ALTAY": "Altay",
@@ -252,7 +251,6 @@ const teamNameMapping = {
     "RANGERS": "Rangers",
     "FC RANGERS": "Rangers",
     "PSFC CELTIC": "Celtic",
-    "BASEL": "FC Basel",
     "ZURICH": "Zurich",
     "FC ZURICH": "Zurich",
     "LAUSANNE": "Lausanne-Sport",
@@ -313,7 +311,6 @@ const teamNameMapping = {
     "AL RAYYAN": "Al Rayyan",
     "RAYYAN": "Al Rayyan",
     "AL AIN": "Al Ain",
-    "NEWCASTLE": "Newport County",
     "NEWPORT": "Newport County",
     "BRISTOL CITY": "Bristol City",
     "COLCHESTER": "Colchester United",
@@ -337,7 +334,6 @@ const teamNameMapping = {
     "MILLWALL": "Millwall",
     "QUEENS PARK RANGERS": "Queens Park Rangers",
     "QPR": "Queens Park Rangers",
-    "FULHAM": "Fulham",
     "SWANSEA": "Swansea City",
     "SWANSEA CITY": "Swansea City",
     "STOKE CITY": "Stoke City",
@@ -350,7 +346,6 @@ const teamNameMapping = {
     "ROTHERHAM UNITED": "Rotherham United",
     "HULL CITY": "Hull City",
     "HULL": "Hull City",
-    "BRENTFORD": "Brentford",
     "BARNSLEY": "Barnsley",
     "LINCOLN": "Lincoln City",
     "LINCOLN CITY": "Lincoln City",
@@ -362,7 +357,7 @@ const teamNameMapping = {
     "CHELTENHAM TOWN": "Cheltenham Town",
 
 
-    // 🏀 BASKETBOL TAKIMLARI - YENİ EKLENEN
+    // 🏀 BASKETBOL TAKIMLARI
     "TURKEY": "Türkiye",
     "TURKIYE": "Türkiye",
     "GERMANY": "Almanya",
@@ -490,7 +485,7 @@ async function getBroadcasterData() {
             Object.defineProperty(navigator, 'webdriver', { get: () => false });
         });
 
-      try {
+        try {
             const url = `https://www.sporekrani.com/home/sport/${sport}`;
             await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
             
@@ -694,6 +689,7 @@ async function getBroadcasterData() {
         } finally {
             await page.close();
         }
+    }
 
     await browser.close();
 
