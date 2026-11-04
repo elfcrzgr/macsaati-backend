@@ -173,15 +173,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 }
 
 const getFallbackBroadcaster = (compName) => {
-    const upper = String(compName).toUpperCase();
-    if (upper.includes("NBA")) return "S Sport / NBA TV";
-    if (upper.includes("EUROLEAGUE")) return "S Sport / S Sport Plus";
-    if (upper.includes("EUROCUP")) return "TRT Spor / S Sport";
-    if (upper.includes("TÜRKİYE SİGORTA BSL")) return "beIN Sports";
-    if (upper.includes("BASKETBOL ŞAMPİYONLAR LİGİ")) return "Tivibu Spor";
-    if (upper.includes("İSPANYA")) return "S Sport Plus";
-    if (upper.includes("İTALYA")) return "S Sport Plus";
-    return "Resmi Yayıncı";
+    return " "; // Görünmez boşluk, uygulamadaki 'Yerel Yayın' yazısını ezer.
 };
 
 // =========================================================================
@@ -288,10 +280,11 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
             const statusType = mapTBFStatus(m.matchStatusId);
             const hasScore = statusType !== 'notstarted';
 
-            const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00`;
+            // 🔥 DÜZELTME: TBF sunucusu Türkiye'de olmasına rağmen Timestamp'i kesinleştirmek için +03:00 eklendi.
+            const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00+03:00`;
             const matchDateObj = new Date(dateTimeStr); 
 
-            const tbfFallback = m.broadcastChannel || "Resmi Yayıncı Yok";
+            const tbfFallback = m.broadcastChannel || " ";
             const result = getBroadcasterWithFallback("basketbol", m.matchDateOnly, m.matchTime, m.homeTeam.name, m.awayTeam.name, tbfFallback);
 
             const uniqueId = `tbf_${m.matchId}`;
@@ -301,7 +294,7 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
                 isElite: true,
                 status: statusType,
                 fixedDate: m.matchDateOnly,
-                fixedTime: m.matchTime,
+                fixedTime: m.matchTime, // Zaten Türkiye saati
                 timestamp: matchDateObj.getTime(),
                 broadcaster: result.kanal,
                 homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
@@ -484,15 +477,16 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
             const statusType = mapEuroLeagueStatus(g);
             const hasScore = statusType !== 'notstarted';
 
+            // 🔥 DÜZELTME: EuroLeague saati g.date'ten Türkiye saatine güvenli şekilde dönüştürülüyor.
             const matchDateObj = new Date(g.date);
-            const fixedDate = g.date.slice(0, 10);
-            const fixedTime = g.date.slice(11, 16);
+            const fixedDate = matchDateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
+            const fixedTime = matchDateObj.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 
             const homeTeam = g.local?.club;
             const awayTeam = g.road?.club;
             if (!homeTeam || !awayTeam) continue;
 
-            const compFallback = comp.code === 'E' ? "S Sport / S Sport Plus" : "TRT Spor / S Sport";
+            const compFallback = getFallbackBroadcaster(comp.displayName);
             const result = getBroadcasterWithFallback("basketbol", fixedDate, fixedTime, homeTeam.name, awayTeam.name, compFallback);
 
             const uniqueId = `euro_${g.id}`;
