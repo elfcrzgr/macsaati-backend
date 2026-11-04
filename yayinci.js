@@ -514,6 +514,27 @@ console.log(html);
 
             await new Promise(resolve => setTimeout(resolve, 3000));
 
+            if (sport === 'basketbol') {
+    // 1) Sayfanın tamamını kaydet (yedek)
+    fs.writeFileSync('debug_page.html', await page.content());
+
+    // 2) Wizards satırını bul, 4 seviye yukarı çıkıp satırın HTML'ini al
+    const rowHtml = await page.evaluate(() => {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        let node;
+        while ((node = walker.nextNode())) {
+            if (node.textContent.includes('Washington Wizards')) {
+                let el = node.parentElement;
+                for (let i = 0; i < 4 && el.parentElement; i++) el = el.parentElement;
+                return el.outerHTML;
+            }
+        }
+        return 'bulunamadı';
+    });
+    fs.writeFileSync('debug_row.html', rowHtml);
+    console.log('DEBUG yazıldı, uzunluk:', rowHtml.length);
+}
+
             // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR (Kesin Çözüm)
             const textFallback = await page.evaluate(() => {
                 
