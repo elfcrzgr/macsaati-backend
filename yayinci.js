@@ -511,38 +511,49 @@ async function getBroadcasterData() {
 
             await new Promise(resolve => setTimeout(resolve, 3000));
 
-            // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
-            // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR
+            // 🎯 EKRANDAKİ LOGOLARI VE METİNLERİ OKUYAN ANA MOTOR (Kesin Çözüm)
             const textFallback = await page.evaluate(() => {
-                document.querySelectorAll('img').forEach(img => {
+                
+                // 🚀 ADIM 1: Sayfadaki TÜM elementleri (Resim, Link, Kutu, İkon) tara!
+                document.querySelectorAll('img, a, span, div, svg').forEach(el => {
+                    let alt = el.getAttribute('alt') || '';
+                    let title = el.getAttribute('title') || el.getAttribute('data-original-title') || el.getAttribute('data-title') || '';
+                    let src = (el.getAttribute('src') || '').toLowerCase();
+                    let href = (el.getAttribute('href') || '').toLowerCase();
+                    let className = (el.getAttribute('class') || '').toLowerCase();
+
+                    // Elementin sahip olduğu tüm kimlik bilgilerini tek satırda birleştir
+                    let combined = `${alt} ${title} ${src} ${href} ${className}`.toLowerCase();
+
+                    // Özel Kanalları Tespit Et
+                    let identifiedChannel = '';
+                    if (combined.includes('prime') || combined.includes('amazon')) identifiedChannel = 'Prime Video';
+                    else if (combined.includes('ssport') || combined.includes('s sport')) identifiedChannel = 'S Sport Plus';
+                    else if (combined.includes('nbatv') || combined.includes('nba tv') || combined.includes('nba-tv')) identifiedChannel = 'NBA TV';
+                    else if (combined.includes('beinsports') || combined.includes('bein')) identifiedChannel = 'BeIN Sports';
+
+                    // Eğer kanalı bulduysak ve henüz işaretlemediysek, yazıyı HTML'e çak!
+                    if (identifiedChannel && !el.hasAttribute('data-scraped')) {
+                        el.setAttribute('data-scraped', 'true'); // Çift yazmayı önle
+                        const txt = document.createTextNode(`\n${identifiedChannel}\n`);
+                        
+                        if (el.parentNode) {
+                            el.parentNode.insertBefore(txt, el);
+                        }
+                    }
+                });
+
+                // 🚀 ADIM 2: Geriye kalan ve özel olmayan standart logoları oku (Varsayılan davranış)
+                document.querySelectorAll('img:not([data-scraped="true"])').forEach(img => {
                     let alt = img.getAttribute('alt') || img.getAttribute('title') || '';
                     let src = (img.getAttribute('src') || '').toLowerCase();
 
-                    // 🚀 ÖZEL LOGO TANIYICI (Amazon Prime, NBA TV vb. için doğrudan geçiş izni)
-                    // Filtrelere takılmadan önce bu logoları tanıyıp adını yazıyoruz.
-                    let identifiedChannel = '';
-                    if (src.includes('prime') || alt.toLowerCase().includes('prime')) identifiedChannel = 'Prime Video';
-                    else if (src.includes('ssport')) identifiedChannel = 'S Sport';
-                    else if (src.includes('nbatv') || src.includes('nba-tv') || alt.toLowerCase().includes('nba tv')) identifiedChannel = 'NBA TV';
-                    else if (src.includes('beinsports')) identifiedChannel = 'BeIN Sports';
-                    else if (src.includes('euroleague')) identifiedChannel = 'Euroleague TV';
-
-                    // Eğer özel logo tanıdıysak, doğrudan o ismi kullanıp çık
-                    if (identifiedChannel) {
-                        const txt = document.createTextNode(`\n${identifiedChannel}\n`);
-                        img.parentNode.insertBefore(txt, img);
-                        return; // İşimiz bitti, reklam filtresine sokmadan bir sonrakine geç
-                    }
-
-                    // 🛑 REKLAM VE MOBİL BANNER ENGELİ (Özel kanallar hariç diğer logoları denetler)
-                    if (
-                        src.match(/google-play|app-store|mobil|banner|reklam|advertisement|logo-site|site-logo|header|footer|avatar/i) ||
-                        alt.match(/indir|download|store|banner|reklam|logo|icon|chevron|arrow/i)
-                    ) {
+                    // Reklamları engelle
+                    if (src.match(/google-play|app-store|mobil|banner|reklam|advertisement|logo-site|site-logo|header|footer|avatar/i) ||
+                        alt.match(/indir|download|store|banner|reklam|logo|icon|chevron|arrow/i)) {
                         return;
                     }
 
-                    // Alt etiketi boşsa görsel url'inden ismi kurtar (Varsayılan davranış)
                     if ((!alt || alt.length < 2) && src) {
                         let match = src.match(/\/([^\/?#]+)\.(png|jpe?g|webp|gif)/i);
                         if (match && match[1]) {
@@ -553,11 +564,40 @@ async function getBroadcasterData() {
                     if (alt && alt.length > 2) {
                         const cleanAlt = alt.replace(/logosu|logo|icon/gi, '').trim();
                         if (cleanAlt && !cleanAlt.match(/chevron|arrow|play|menu|search|user/i)) {
+                            img.setAttribute('data-scraped', 'true');
                             const txt = document.createTextNode(`\n${cleanAlt}\n`);
                             img.parentNode.insertBefore(txt, img);
                         }
                     }
                 });
+
+                // 🚀 ADIM 3: Parçalanan veriyi topla ve saatleriyle eşleştir
+                const lines = document.body.innerText.split('\n').map(l => l.trim()).filter(l => l);
+                const matches = [];
+                let currentDateStr = ''; 
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+
+                    if (line.match(/Bugün|Yarın|Pazartesi|Salı|Çarşamba|Perşembe|Cuma|Cumartesi|Pazar/i) && line.length < 25) {
+                        currentDateStr = line.toUpperCase();
+                    }
+
+                    if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(line)) {
+                        const chunk = [];
+                        for(let j = 1; j <= 8; j++) { 
+                            const nextLine = lines[i+j];
+                            if (!nextLine || /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(nextLine) || nextLine.match(/Bugün|Yarın/i)) break;
+                            chunk.push(nextLine);
+                        }
+
+                        if (currentDateStr && chunk.length >= 2) {
+                            matches.push({ saat: line, dateSection: currentDateStr, lines: chunk });
+                        }
+                    }
+                }
+                return matches;
+            });
 
                 const lines = document.body.innerText.split('\n').map(l => l.trim()).filter(l => l);
                 const matches = [];
