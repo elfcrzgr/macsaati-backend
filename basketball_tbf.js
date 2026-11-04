@@ -43,7 +43,7 @@ const sportUpdateStatus = {
 // 🏆 LİG İSİMLERİNİ GITHUB REPO ID'LERİNE BAĞLAYAN SÖZLÜK
 // =========================================================================
 function getTournamentRepoId(compName) {
-    if (!compName) return "519"; // Varsayılan bir lig ID'si
+    if (!compName) return "519"; 
     const name = String(compName).toUpperCase();
 
     if (name.includes("NBA")) return "3547";
@@ -62,7 +62,7 @@ function getTournamentRepoId(compName) {
     if (name.includes("DÜNYA KUPASI")) return "10437";
     if (name.includes("TÜRKİYE BASKETBOL LİGİ") || name.includes("TBL") || name.includes("2. LİG")) return "1179";
 
-    return "519"; // Bulunamazsa varsayılan lig logosu
+    return "519"; 
 }
 
 function saveState() {
@@ -173,7 +173,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
 }
 
 const getFallbackBroadcaster = (compName) => {
-    return " "; // Görünmez boşluk, uygulamadaki 'Yerel Yayın' yazısını ezer.
+    return " "; 
 };
 
 // =========================================================================
@@ -280,7 +280,6 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
             const statusType = mapTBFStatus(m.matchStatusId);
             const hasScore = statusType !== 'notstarted';
 
-            // 🔥 DÜZELTME: TBF sunucusu Türkiye'de olmasına rağmen Timestamp'i kesinleştirmek için +03:00 eklendi.
             const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00+03:00`;
             const matchDateObj = new Date(dateTimeStr); 
 
@@ -294,7 +293,7 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
                 isElite: true,
                 status: statusType,
                 fixedDate: m.matchDateOnly,
-                fixedTime: m.matchTime, // Zaten Türkiye saati
+                fixedTime: m.matchTime,
                 timestamp: matchDateObj.getTime(),
                 broadcaster: result.kanal,
                 homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
@@ -451,14 +450,47 @@ async function fetchEuroLeagueSeason(competitionCode, seasonCode) {
     }
 }
 
-function mapEuroLeagueStatus(game) {
+// 🔥 CET/CEST (Avrupa Merkezi Saati) -> TRT (Türkiye Saati) Dönüştürücü
+function convertEuroleagueDate(dateStr) {
+    if (!dateStr) return { fixedDate: "", fixedTime: "", timestamp: 0 };
+    
+    // Eğer string standart saat dilimi (Z veya +) barındırıyorsa direkt işle
+    if (dateStr.endsWith('Z') || dateStr.includes('+')) {
+        const matchDateObj = new Date(dateStr);
+        return {
+            fixedDate: matchDateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
+            fixedTime: matchDateObj.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }),
+            timestamp: matchDateObj.getTime()
+        };
+    }
+    
+    // Z veya offset yoksa (Örn: "2024-11-05T17:30:00"), EuroLeague bunu Berlin (CET/CEST) saatinde verir.
+    const baseDate = new Date(dateStr + 'Z'); 
+    const berlinFmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Berlin', timeZoneName: 'shortOffset' }).formatToParts(baseDate);
+    const tzPart = berlinFmt.find(p => p.type === 'timeZoneName')?.value || 'GMT+1';
+    
+    // Yazın GMT+2 (CEST), kışın GMT+1 (CET)
+    const offset = tzPart.includes('+2') ? 2 : 1;
+    
+    // Avrupa saatinden UTC zaman damgasına iniyoruz (Berlin saatinden ofseti çıkar)
+    const realUTC = baseDate.getTime() - (offset * 3600000);
+    const matchDateObj = new Date(realUTC);
+    
+    // UTC üzerinden her koşulda saniyesi saniyesine doğru TRT (UTC+3) hesabı yapılıyor
+    return {
+        fixedDate: matchDateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
+        fixedTime: matchDateObj.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }),
+        timestamp: matchDateObj.getTime()
+    };
+}
+
+function mapEuroLeagueStatus(game, matchTimestamp) {
     if (game.played === true) return 'finished';
 
-    const startTime = new Date(game.date).getTime();
     const now = Date.now();
     const THREE_HOURS = 3 * 60 * 60 * 1000;
 
-    if (now >= startTime && now <= startTime + THREE_HOURS) return 'inprogress';
+    if (now >= matchTimestamp && now <= matchTimestamp + THREE_HOURS) return 'inprogress';
     return 'notstarted';
 }
 
@@ -471,16 +503,15 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
         const games = await fetchEuroLeagueSeason(comp.code, seasonCode);
         if (!games) continue;
 
-        const relevantGames = games.filter(g => targetDates.includes((g.date || "").slice(0, 10)));
+        for (const g of games) {
+            // 🔥 DÜZELTME: EuroLeague CET saatleri Türkiye saatine kusursuz şekilde çevriliyor.
+            const { fixedDate, fixedTime, timestamp } = convertEuroleagueDate(g.date);
 
-        for (const g of relevantGames) {
-            const statusType = mapEuroLeagueStatus(g);
+            // Dönüştürülen TRT tarihi hedeflerimiz arasında yoksa bu maçı direkt atla
+            if (!targetDates.includes(fixedDate)) continue;
+
+            const statusType = mapEuroLeagueStatus(g, timestamp);
             const hasScore = statusType !== 'notstarted';
-
-            // 🔥 DÜZELTME: EuroLeague saati g.date'ten Türkiye saatine güvenli şekilde dönüştürülüyor.
-            const matchDateObj = new Date(g.date);
-            const fixedDate = matchDateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' });
-            const fixedTime = matchDateObj.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 
             const homeTeam = g.local?.club;
             const awayTeam = g.road?.club;
@@ -497,7 +528,7 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
                 status: statusType,
                 fixedDate: fixedDate,
                 fixedTime: fixedTime,
-                timestamp: matchDateObj.getTime(),
+                timestamp: timestamp,
                 broadcaster: result.kanal,
                 homeTeam: { name: homeTeam.name, logo: homeTeam.images?.crest || "" },
                 awayTeam: { name: awayTeam.name, logo: awayTeam.images?.crest || "" },
