@@ -11,6 +11,7 @@ const STATE_FILE = 'tennis_states.json';
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 180000; 
+const LIVE_FAST_MS = 180000; // 🔥 CANLI MAÇ İÇİN ÖZEL: 3 Dakika
 const TEN_MIN_MS = 10 * 60000;
 
 const TENNIS_LOGO_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/`;
@@ -91,7 +92,7 @@ function withTimeout(promise, ms, label) {
 async function loadExternalBroadcasters() {
     try {
         const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
-        const response = await fetch(url, { signal: timeoutSignal(10000) });
+        const response = await fetch(url, { signal: timeoutSignal(10000), cache: 'no-store' });
         if (response.ok) {
             externalBroadcasters = await response.json();
             fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
@@ -200,13 +201,17 @@ const ESPN_TENNIS_LEAGUES = {
 
 async function fetchESPNMatches(leagueSlug) {
     try {
-        const url = `https://site.api.espn.com/apis/site/v2/sports/tennis/${leagueSlug}/scoreboard`;
+        // 🔥 Cache-Busting Eklendi
+        const url = `https://site.api.espn.com/apis/site/v2/sports/tennis/${leagueSlug}/scoreboard?_=${Date.now()}`;
         
         const response = await fetch(url, {
             signal: timeoutSignal(15000),
+            cache: 'no-store',
             headers: {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache"
             }
         });
         
@@ -218,9 +223,28 @@ async function fetchESPNMatches(leagueSlug) {
     }
 }
 
-function mapESPNStatus(state) {
-    if (state === 'post') return 'finished';
-    if (state === 'in') return 'inprogress';
+// 🔥 AGRESİF CANLI MAÇ TESPİT EDİCİ
+function mapESPNStatus(statusObj, homeLinescores, awayLinescores) {
+    if (!statusObj) return 'notstarted';
+    
+    const state = (statusObj.state || '').toLowerCase();
+    const desc = (statusObj.description || '').toLowerCase();
+    const name = (statusObj.name || '').toLowerCase();
+    
+    if (state === 'post' || desc.includes('final') || name.includes('final') || desc.includes('completed')) {
+        return 'finished';
+    }
+    
+    if (state === 'in' || desc.includes('progress') || name.includes('progress') || desc.includes('play')) {
+        return 'inprogress';
+    }
+    
+    // ZORUNLU CANLI (Fail-Safe): Set skoru akıyorsa zorla CANLI yap
+    const hasActiveScore = (homeLinescores?.length > 0 || awayLinescores?.length > 0);
+    if (hasActiveScore && state !== 'post' && state !== 'canceled') {
+        return 'inprogress';
+    }
+    
     return 'notstarted';
 }
 
@@ -310,8 +334,6 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                     const awayC = comp.competitors?.find(c => c.homeAway === 'away');
                     if (!homeC || !awayC) continue;
 
-                                   // 🔥 DÜNYA SIRALAMASI DESTEKLİ İSİM ÇEKİCİ (Sıralama Sonda)
-                                        // 🔥 DÜNYA SIRALAMASI DESTEKLİ İSİM ÇEKİCİ (Çiftlerde Sıralama İptal)
                     const getPlayerName = (c) => {
                         let name = "Tenisçi";
                         
@@ -325,23 +347,18 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                             name = c.athletes.map(a => a.athlete?.displayName || a.athlete?.shortName).join(' / ');
                         }
 
-                        // Eğer isimde "/" varsa, bu bir çiftler takımıdır. Sıralama eklemeden direkt ismi döndür.
                         if (name.includes('/')) {
                             return name;
                         }
 
-                        // Sadece Tekler (Singles) maçıysa sıralama/seribaşı bilgisini al
                         const rank = c.curatedRank?.current || c.curatedRank || c.athlete?.curatedRank?.current || c.seed;
                         
-                        // Eğer geçerli bir sıralama varsa ismin SONUNA ekle
                         if (rank && rank !== 99 && rank !== "99" && rank !== 0 && rank !== "0") {
                             return `${name} (${rank})`;
                         }
                         
                         return name;
                     };
-
-
 
                     const hName = getPlayerName(homeC);
                     const aName = getPlayerName(awayC);
@@ -375,8 +392,9 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                     const homeLogos = getLogos(homeC);
                     const awayLogos = getLogos(awayC);
 
-                    const state = comp.status?.type?.state;
-                    const statusType = mapESPNStatus(state);
+                    // 🔥 YENİ SİSTEM: Agresif Canlı Maç Kontrolü
+                    const statusObj = comp.status?.type || event.status?.type; 
+                    const statusType = mapESPNStatus(statusObj, homeC.linescores, awayC.linescores);
                     const hasScore = statusType !== 'notstarted';
 
                     let fixedTime = eventDate.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
@@ -407,8 +425,8 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                         }
                     }
 
-                    const statusDetail = (comp.status?.type?.detail || "").toLowerCase();
-                    const statusDesc = (comp.status?.type?.description || "").toLowerCase();
+                    const statusDetail = (statusObj?.detail || "").toLowerCase();
+                    const statusDesc = (statusObj?.description || "").toLowerCase();
                     
                     const isRetired = statusDetail.includes('ret') || statusDesc.includes('ret');
                     const isWalkover = statusDetail.includes('walkover') || statusDesc.includes('walkover') || statusDesc.includes('wo');
@@ -554,9 +572,10 @@ async function main() {
 
             const isUpcoming = () => sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1);
 
+            // 🔥 CANLI İÇİN DE 3 DAKİKA
             if (sportUpdateStatus.hasLiveMatch) {
-                if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
-                    console.log("\n🎾 [HIZLI DÖNGÜ] Canlı tenis maçı var (3 dk aralıklı)!");
+                if (now - sportUpdateStatus.lastQuickUpdate >= LIVE_FAST_MS) {
+                    console.log("\n🎾 [HIZLI DÖNGÜ] Canlı tenis maçı var! (3 DK ARAYLA GÜNCELLENİYOR)");
                     const result = await withTimeout(updateTennis(quickScanDates, true), 60000, 'Hızlı tarama');  
                     sportUpdateStatus.lastQuickUpdate = Date.now();
                     applyResult(result);
@@ -564,7 +583,7 @@ async function main() {
             }
             else if (isUpcoming()) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
-                    console.log("\n⏰ [TENİS YAKLAŞAN] Yaklaşan tenis maçı vakti!");
+                    console.log("\n⏰ [TENİS YAKLAŞAN] Yaklaşan tenis maçı vakti! (3 DK ARAYLA GÜNCELLENİYOR)");
                     const result = await withTimeout(updateTennis(quickScanDates, true), 60000, 'Hızlı tarama'); 
                     sportUpdateStatus.lastQuickUpdate = Date.now();
                     applyResult(result);
@@ -572,9 +591,12 @@ async function main() {
             }
 
             let sleepTime;
-            if (sportUpdateStatus.hasLiveMatch || isUpcoming()) {
+            if (sportUpdateStatus.hasLiveMatch) {
+                sleepTime = Math.max(10000, LIVE_FAST_MS - (Date.now() - sportUpdateStatus.lastQuickUpdate));
+                console.log(`\n⚡ [TENİS] Canlı maç var. ${Math.round(sleepTime / 1000)} sn sonra anlık skor güncellenecek.`);
+            } else if (isUpcoming()) {
                 sleepTime = Math.max(10000, MINUTE_MS - (Date.now() - sportUpdateStatus.lastQuickUpdate));
-                console.log(`\n⚡ [TENİS] Aktif/Yaklaşan maç var. ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
+                console.log(`\n⚡ [TENİS] Yaklaşan maç var. ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
             } else if (sportUpdateStatus.nextMatchTime && Date.now() >= sportUpdateStatus.nextMatchTime - MINUTE_MS * 12) {
                 sleepTime = Math.min(30000, Math.max(10000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1 - Date.now()));
                 console.log(`\n⏳ [TENİS] Maça az kaldı, ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
