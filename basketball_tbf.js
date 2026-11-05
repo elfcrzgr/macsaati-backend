@@ -14,6 +14,7 @@ const STATE_FILE = 'basketball_states.json';
 const GITHUB_USER = "elfcrzgr";
 const REPO_NAME = "macsaati-backend";
 const MINUTE_MS = 180000;
+const LIVE_FAST_MS = 180000; // 🔥 CANLI MAÇ İÇİN: 3 Dakika
 const TEN_MIN_MS = 10 * 60000;
 
 // =========================================================================
@@ -104,7 +105,7 @@ function withTimeout(promise, ms, label) {
 async function loadExternalBroadcasters() {
     try {
         const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/yayinci_bilgisi.json?t=${Date.now()}`;
-        const response = await fetch(url, { signal: timeoutSignal(10000) });
+        const response = await fetch(url, { signal: timeoutSignal(10000), cache: 'no-store' });
         if (response.ok) {
             externalBroadcasters = await response.json();
             fs.writeFileSync('yayinci_bilgisi.json', JSON.stringify(externalBroadcasters, null, 2));
@@ -224,7 +225,9 @@ async function fetchTBFWeek(activityId, weekFilter = null) {
             '--max-time', '15',
             url,
             '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
-            '-H', 'Referer: https://tbf.org.tr/'
+            '-H', 'Referer: https://tbf.org.tr/',
+            '-H', 'Cache-Control: no-cache, no-store, must-revalidate',
+            '-H', 'Pragma: no-cache'
         ]);
 
         const json = JSON.parse(stdout);
@@ -328,13 +331,16 @@ function toESPNDateFormat(trDateStr) {
 async function fetchESPNDay(leagueSlug, dateStr) {
     try {
         const espnDate = toESPNDateFormat(dateStr);
-        const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/${leagueSlug}/scoreboard?dates=${espnDate}`;
+        const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/${leagueSlug}/scoreboard?dates=${espnDate}&_=${Date.now()}`;
 
         const response = await fetch(url, {
             signal: timeoutSignal(15000),
+            cache: 'no-store',
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache"
             }
         });
 
@@ -430,12 +436,15 @@ function getCurrentEuroSeasonYear() {
 
 async function fetchEuroLeagueSeason(competitionCode, seasonCode) {
     try {
-        const url = `https://api-live.euroleague.net/v2/competitions/${competitionCode}/seasons/${seasonCode}/games`;
+        const url = `https://api-live.euroleague.net/v2/competitions/${competitionCode}/seasons/${seasonCode}/games?_=${Date.now()}`;
         const response = await fetch(url, {
             signal: timeoutSignal(15000),
+            cache: 'no-store',
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache"
             }
         });
         if (!response.ok) {
@@ -450,11 +459,9 @@ async function fetchEuroLeagueSeason(competitionCode, seasonCode) {
     }
 }
 
-// 🔥 CET/CEST (Avrupa Merkezi Saati) -> TRT (Türkiye Saati) Dönüştürücü
 function convertEuroleagueDate(dateStr) {
     if (!dateStr) return { fixedDate: "", fixedTime: "", timestamp: 0 };
     
-    // Eğer string standart saat dilimi (Z veya +) barındırıyorsa direkt işle
     if (dateStr.endsWith('Z') || dateStr.includes('+')) {
         const matchDateObj = new Date(dateStr);
         return {
@@ -464,19 +471,15 @@ function convertEuroleagueDate(dateStr) {
         };
     }
     
-    // Z veya offset yoksa (Örn: "2024-11-05T17:30:00"), EuroLeague bunu Berlin (CET/CEST) saatinde verir.
     const baseDate = new Date(dateStr + 'Z'); 
     const berlinFmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Berlin', timeZoneName: 'shortOffset' }).formatToParts(baseDate);
     const tzPart = berlinFmt.find(p => p.type === 'timeZoneName')?.value || 'GMT+1';
     
-    // Yazın GMT+2 (CEST), kışın GMT+1 (CET)
     const offset = tzPart.includes('+2') ? 2 : 1;
     
-    // Avrupa saatinden UTC zaman damgasına iniyoruz (Berlin saatinden ofseti çıkar)
     const realUTC = baseDate.getTime() - (offset * 3600000);
     const matchDateObj = new Date(realUTC);
     
-    // UTC üzerinden her koşulda saniyesi saniyesine doğru TRT (UTC+3) hesabı yapılıyor
     return {
         fixedDate: matchDateObj.toLocaleDateString('en-CA', { timeZone: 'Europe/Istanbul' }),
         fixedTime: matchDateObj.toLocaleTimeString('en-GB', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }),
@@ -519,9 +522,6 @@ async function fetchEuroLiveScore(seasonCode, gameCode) {
     }
 }
 
-
-
-
 async function updateEuroLeague(targetDates = [getTRDate(0)]) {
     let totalAdded = 0;
     const seasonYear = getCurrentEuroSeasonYear();
@@ -532,13 +532,11 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
         if (!games) continue;
 
         for (const g of games) {
-            // 🔥 DÜZELTME: EuroLeague CET saatleri Türkiye saatine kusursuz şekilde çevriliyor.
             const { fixedDate, fixedTime, timestamp } = convertEuroleagueDate(g.date);
 
-            // Dönüştürülen TRT tarihi hedeflerimiz arasında yoksa bu maçı direkt atla
             if (!targetDates.includes(fixedDate)) continue;
 
-                        const statusType = mapEuroLeagueStatus(g, timestamp);
+            const statusType = mapEuroLeagueStatus(g, timestamp);
             const hasScore = statusType !== 'notstarted';
             
             const homeTeam = g.local?.club;
@@ -709,8 +707,8 @@ async function main() {
             const isUpcoming = () => sportUpdateStatus.nextMatchTime && now >= (sportUpdateStatus.nextMatchTime - (30 * 60000));
         
             if (sportUpdateStatus.hasLiveMatch) {
-                if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
-                    console.log("\n🏀 [HIZLI DÖNGÜ] Canlı basketbol maçı var!");
+                if (now - sportUpdateStatus.lastQuickUpdate >= LIVE_FAST_MS) {
+                    console.log("\n🏀 [HIZLI DÖNGÜ] Canlı basketbol maçı var! (3 DK ARAYLA GÜNCELLENİYOR)");
                     const result = await withTimeout(updateBasketball(quickScanDates, true), 60000, 'Hızlı tarama');  
                     sportUpdateStatus.lastQuickUpdate = Date.now();
                     applyResult(result);
@@ -718,7 +716,7 @@ async function main() {
             }
             else if (isUpcoming()) {
                 if (now - sportUpdateStatus.lastQuickUpdate >= MINUTE_MS) {
-                    console.log("\n⏰ [BASKETBOL YAKLAŞAN] Yaklaşan maç vakti!");
+                    console.log("\n⏰ [BASKETBOL YAKLAŞAN] Yaklaşan maç vakti! (3 DK ARAYLA GÜNCELLENİYOR)");
                     const result = await withTimeout(updateBasketball(quickScanDates, true), 60000, 'Hızlı tarama'); 
                     sportUpdateStatus.lastQuickUpdate = Date.now();
                     applyResult(result);
@@ -726,9 +724,12 @@ async function main() {
             }
 
             let sleepTime;
-            if (sportUpdateStatus.hasLiveMatch || isUpcoming()) {
+            if (sportUpdateStatus.hasLiveMatch) {
+                sleepTime = Math.max(10000, LIVE_FAST_MS - (Date.now() - sportUpdateStatus.lastQuickUpdate));
+                console.log(`\n⚡ [BASKETBOL] Canlı maç var. ${Math.round(sleepTime / 1000)} sn sonra anlık skor güncellenecek.`);
+            } else if (isUpcoming()) {
                 sleepTime = Math.max(10000, MINUTE_MS - (Date.now() - sportUpdateStatus.lastQuickUpdate));
-                console.log(`\n⚡ [BASKETBOL] Aktif/Yaklaşan maç var. ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
+                console.log(`\n⚡ [BASKETBOL] Yaklaşan maç var. ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
             } else if (sportUpdateStatus.nextMatchTime && Date.now() >= sportUpdateStatus.nextMatchTime - MINUTE_MS * 12) {
                 sleepTime = Math.min(30000, Math.max(10000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1 - Date.now()));
                 console.log(`\n⏳ [BASKETBOL] Maça az kaldı, ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
