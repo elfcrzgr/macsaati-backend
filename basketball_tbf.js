@@ -215,9 +215,38 @@ const TBF_LEAGUES = {
     tbl: { id: 22215, displayName: "Türkiye Sigorta Türkiye Basketbol Ligi" }
 };
 
+// 🔥 YENİ: TBF CANLI SKOR AVCISI (Tekil Maç Uç Noktası)
+async function fetchTBFLiveScore(matchId) {
+    try {
+        const url = `https://tbf.org.tr/api/Match/GetMatchInfo?matchId=${matchId}&_=${Date.now()}`;
+        const { stdout } = await execFileAsync('curl', [
+            '-s',
+            '--max-time', '8',
+            url,
+            '-H', 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0 Safari/537.36',
+            '-H', 'Accept: application/json',
+            '-H', 'Cache-Control: no-cache, no-store, must-revalidate',
+            '-H', 'Pragma: no-cache'
+        ]);
+        const json = JSON.parse(stdout);
+        if (json && json.data) {
+            return {
+                homeScore: json.data.homeTeam?.score,
+                awayScore: json.data.awayTeam?.score,
+                statusId: json.data.matchStatusId
+            };
+        }
+        return null;
+    } catch (e) {
+        console.error(`❌ TBF Canlı Skor Hatası (${matchId}):`, e.message);
+        return null;
+    }
+}
+
 async function fetchTBFWeek(activityId, weekFilter = null) {
     try {
-        let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1`;
+        // 🔥 DÜZELTME: TBF Ana URL'sinin sonuna Cache kırmak için zaman damgası (Date.now) eklendi
+        let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1&_=${Date.now()}`;
         if (weekFilter !== null) url += `&WeekFilter=${weekFilter}`;
 
         const { stdout } = await execFileAsync('curl', [
@@ -244,10 +273,21 @@ function extractWeekNumber(matches) {
     return m ? parseInt(m[0]) : null;
 }
 
-function mapTBFStatus(matchStatusId) {
+function mapTBFStatus(matchStatusId, matchTimestamp) {
     if (matchStatusId === 1) return 'finished';
-    if (matchStatusId === 4) return 'notstarted';
-    return 'inprogress';
+    
+    // TBF statüsü canlı olarak güncellediyse
+    if (matchStatusId === 2 || matchStatusId === 3) return 'inprogress';
+
+    // Zorunlu Canlı: Maç saati geldi mi? (Maçın üzerinden 3 saat geçene kadar canlı say)
+    const now = Date.now();
+    const THREE_HOURS = 3 * 60 * 60 * 1000;
+    
+    if (matchStatusId !== 1 && now >= matchTimestamp && now <= matchTimestamp + THREE_HOURS) {
+        return 'inprogress';
+    }
+
+    return 'notstarted';
 }
 
 async function fetchTBFLeagueMatches(activityId, targetDates) {
@@ -280,11 +320,42 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
         if (!matches) continue;
 
         for (const m of matches) {
-            const statusType = mapTBFStatus(m.matchStatusId);
-            const hasScore = statusType !== 'notstarted';
-
+            
             const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00+03:00`;
             const matchDateObj = new Date(dateTimeStr); 
+            const matchTimestamp = matchDateObj.getTime();
+
+            let statusType = mapTBFStatus(m.matchStatusId, matchTimestamp);
+            
+            let homeScore = "-";
+            let awayScore = "-";
+
+            // 🔥 CANLI İSE TEKİL MAÇ UÇ NOKTASINDAN GERÇEK ZAMANLI SKORU ÇEK
+            if (statusType === 'inprogress') {
+                const liveData = await fetchTBFLiveScore(m.matchId);
+                
+                if (liveData) {
+                    if (liveData.statusId === 1) statusType = 'finished';
+                    
+                    if (liveData.homeScore !== null && liveData.homeScore !== undefined) {
+                        homeScore = String(liveData.homeScore);
+                    }
+                    if (liveData.awayScore !== null && liveData.awayScore !== undefined) {
+                        awayScore = String(liveData.awayScore);
+                    }
+                } else {
+                    // API çökükse veya boşsa yedeğe (toplu listeye) düş
+                    if (m.homeTeam?.score !== null && m.homeTeam?.score !== undefined) {
+                        homeScore = String(m.homeTeam.score);
+                    }
+                    if (m.awayTeam?.score !== null && m.awayTeam?.score !== undefined) {
+                        awayScore = String(m.awayTeam.score);
+                    }
+                }
+            } else if (statusType === 'finished') {
+                homeScore = String(m.homeTeam?.score ?? "0");
+                awayScore = String(m.awayTeam?.score ?? "0");
+            }
 
             const tbfFallback = m.broadcastChannel || " ";
             const result = getBroadcasterWithFallback("basketbol", m.matchDateOnly, m.matchTime, m.homeTeam.name, m.awayTeam.name, tbfFallback);
@@ -297,13 +368,13 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
                 status: statusType,
                 fixedDate: m.matchDateOnly,
                 fixedTime: m.matchTime,
-                timestamp: matchDateObj.getTime(),
+                timestamp: matchTimestamp,
                 broadcaster: result.kanal,
                 homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
                 awayTeam: { name: m.awayTeam.name, logo: m.awayTeam.logoUrl },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
-                homeScore: hasScore ? String(m.homeTeam.score || "0") : "-",
-                awayScore: hasScore ? String(m.awayTeam.score || "0") : "-",
+                homeScore: homeScore,
+                awayScore: awayScore,
                 tournament: league.displayName
             });
 
