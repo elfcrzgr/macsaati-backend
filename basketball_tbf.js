@@ -215,6 +215,39 @@ const TBF_LEAGUES = {
     tbl: { id: 22215, displayName: "Türkiye Sigorta Türkiye Basketbol Ligi" }
 };
 
+// 🔥 YENİ JSON YAPISI İLE EŞLEŞTİRİLMİŞ TBF CANLI SKOR AVCISI
+async function fetchTBFLiveScore(matchId) {
+    try {
+        const url = `https://www.tbf.org.tr/api/Match/mac-header?matchId=${matchId}&_=${Date.now()}`;
+        const { stdout } = await execFileAsync('curl', [
+            '-s',
+            '--max-time', '8',
+            url,
+            '-H', 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
+            '-H', 'Accept: */*',
+            '-H', 'Accept-Language: tr-TR,tr;q=0.9',
+            '-H', 'Referer: https://www.tbf.org.tr/',
+            '-H', 'Cache-Control: no-cache, no-store, must-revalidate',
+            '-H', 'Pragma: no-cache'
+        ]);
+
+        const json = JSON.parse(stdout);
+        
+        // JSON formatına uygun hale getirildi (json.data.homeTeamScore)
+        if (json && json.data) {
+            return {
+                homeScore: json.data.homeTeamScore,
+                awayScore: json.data.awayTeamScore,
+                statusId: json.data.matchStatusId
+            };
+        }
+        return null;
+    } catch (e) {
+        console.error(`❌ TBF Canlı Skor Hatası (${matchId}):`, e.message);
+        return null;
+    }
+}
+
 async function fetchTBFWeek(activityId, weekFilter = null) {
     try {
         let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1&_=${Date.now()}`;
@@ -297,24 +330,38 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
 
             let statusType = mapTBFStatus(m.matchStatusId, matchTimestamp);
             
-            // Eğer maç canlıysa ve ana fikstürden skor çekebiliyorsak skoru kullan, yoksa "0" varsayılan yap.
-            let homeScore = "0";
-            let awayScore = "0";
+            let homeScore = "-";
+            let awayScore = "-";
 
-            // Eğer maç bitmiş veya canlıysa toplu listedeki skoru göster
-            if (statusType === 'inprogress' || statusType === 'finished') {
-                if (m.homeTeam?.score !== null && m.homeTeam?.score !== undefined) {
-                    homeScore = String(m.homeTeam.score);
-                }
-                if (m.awayTeam?.score !== null && m.awayTeam?.score !== undefined) {
-                    awayScore = String(m.awayTeam.score);
-                }
+            // 🔥 CANLI İSE DOĞRUDAN TBF mac-header API'SİNDEN GERÇEK ZAMANLI SKORU ÇEK
+            if (statusType === 'inprogress') {
+                const liveData = await fetchTBFLiveScore(m.matchId);
                 
-                // SKOR ZORLAMA MANTIĞI:
-                // TBF maç yeni başladığında skoru anında listeye düşürmüyor olabilir.
-                // Eğer maç yeni başlamışsa (0-0) ama maç canlıysa, yine de skoru göster! (0-0 olarak akar)
-                // "Tire" atma mekanizmasını TAMAMEN sildim. Artık maç canlıysa her zaman skor (veya 0) basacak.
-            } else {
+                if (liveData) {
+                    if (liveData.statusId === 1) statusType = 'finished';
+                    
+                    if (liveData.homeScore !== null && liveData.homeScore !== undefined) {
+                        homeScore = String(liveData.homeScore);
+                    }
+                    if (liveData.awayScore !== null && liveData.awayScore !== undefined) {
+                        awayScore = String(liveData.awayScore);
+                    }
+                } else {
+                    // Skor servisi çökerse ana listeden yedek skoru göster
+                    if (m.homeTeam?.score !== null && m.homeTeam?.score !== undefined) {
+                        homeScore = String(m.homeTeam.score);
+                    }
+                    if (m.awayTeam?.score !== null && m.awayTeam?.score !== undefined) {
+                        awayScore = String(m.awayTeam.score);
+                    }
+                }
+            } else if (statusType === 'finished') {
+                homeScore = String(m.homeTeam?.score ?? "0");
+                awayScore = String(m.awayTeam?.score ?? "0");
+            }
+
+            // Skor 0-0 ve maç henüz canlıya geçtiyse 0-0 yerine tire '-' yapsın
+            if (homeScore === "0" && awayScore === "0" && statusType === 'inprogress' && m.matchStatusId === 4) {
                 homeScore = "-";
                 awayScore = "-";
             }
@@ -732,7 +779,6 @@ async function main() {
                 if (!forceUpdateDueToBroadcasters) lastPeriodicUpdate = now;
             }
 
-            // 🔥 Hızlı Tarama: Gündüz [0], Gece Döngüsünde [0] ve [-1] (Dün gece sarkan maçlar için)
             const currentHour = getIstanbulNow().getHours();
             let quickScanDates = [getTRDate(0)];
             if (currentHour >= 0 && currentHour <= 4) quickScanDates = [getTRDate(-1), getTRDate(0)];
