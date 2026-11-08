@@ -241,38 +241,42 @@ async function fetchTBFWeek(activityId, weekFilter = null) {
 
 async function fetchGeniusLiveScore(genuisId) {
     if (!genuisId) return null;
-    try {
-        const url = `https://fibalivestats.dcd.shared.geniussports.com/data/${genuisId}/data.json?_=${Date.now()}`;
-        const { stdout } = await execFileAsync('curl', [
-            '-s', '--max-time', '8', url,
-            '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
-            '-H', 'Referer: https://www.tbf.org.tr/',
-            '-H', 'Origin: https://www.tbf.org.tr',
-            '-H', 'Cache-Control: no-cache'
-        ], { maxBuffer: 20 * 1024 * 1024 });
+    for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+            const url = `https://fibalivestats.dcd.shared.geniussports.com/data/${genuisId}/data.json?_=${Date.now()}`;
+            const { stdout } = await execFileAsync('curl', [
+                '-sS', '--compressed', '--max-time', '15', url,
+                '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
+                '-H', 'Referer: https://www.tbf.org.tr/',
+                '-H', 'Origin: https://www.tbf.org.tr',
+                '-H', 'Cache-Control: no-cache'
+            ], { maxBuffer: 20 * 1024 * 1024 });
 
-        let j;
-        try { j = JSON.parse(stdout); }
-        catch { console.error(`⚠️ Genius JSON değil (${genuisId}):`, stdout.slice(0, 120).replace(/\s+/g, ' ')); return null; }
+            let j;
+            try { j = JSON.parse(stdout); }
+            catch { console.error(`⚠️ Genius JSON değil (${genuisId}):`, stdout.slice(0, 120).replace(/\s+/g, ' ')); return null; }
 
-        const t1 = j?.tm?.["1"], t2 = j?.tm?.["2"];
-        if (t1?.score === undefined || t2?.score === undefined) {
-            console.error("⚠️ Genius beklenmeyen şema:", Object.keys(j || {}));
-            return null;
+            const t1 = j?.tm?.["1"], t2 = j?.tm?.["2"];
+            if (t1?.score === undefined || t2?.score === undefined) {
+                console.error("⚠️ Genius beklenmeyen şema:", Object.keys(j || {}));
+                return null;
+            }
+            return {
+                t1Name: t1.name || "", t2Name: t2.name || "",
+                t1Score: String(t1.score), t2Score: String(t2.score),
+                clock: String(j.clock ?? ""),
+                period: Number(j.period ?? 0),
+                periodsMax: Number(j.periodsMax ?? 4)
+            };
+        } catch (e) {
+            const detail = (e.stderr || '').trim() || `çıkış kodu=${e.code}`;
+            console.error(`⚠️ Genius deneme ${attempt}/2 başarısız (${genuisId}): ${detail}`);
+            if (attempt === 2) return null;
+            await new Promise(r => setTimeout(r, 1500));
         }
-        return {
-            t1Name: t1.name || "", t2Name: t2.name || "",
-            t1Score: String(t1.score), t2Score: String(t2.score),
-            clock: String(j.clock ?? ""),
-            period: Number(j.period ?? 0),
-            periodsMax: Number(j.periodsMax ?? 4)
-        };
-    } catch (e) {
-        console.error(`⚠️ Genius canlı skor hatası (${genuisId}):`, e.message);
-        return null;
     }
+    return null;
 }
-
 function isGeniusFinal(live) {
     return live.clock === "00:00" && live.period >= live.periodsMax && live.t1Score !== live.t2Score;
 }
@@ -354,15 +358,23 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
                     awayScore = prev.awayScore;
                 } else {
                     const live = await fetchGeniusLiveScore(m.genuisId);
-                    if (live) {
-                        const s = assignGeniusScores(live, m);
-                        homeScore = s.home;
-                        awayScore = s.away;
-                        statusType = (startedAgo > 60 * 60000 && isGeniusFinal(live)) ? 'finished' : 'inprogress';
-                        console.log(`🏀 [GENIUS] ${m.genuisId}: ${live.t1Score}-${live.t2Score} (${live.period}. periyot ${live.clock}) -> ${statusType}`);
-                    } else if (startedAgo <= 3 * 3600000) {
-                        statusType = 'inprogress'; // skor alınamadı, ama maç sürüyor olabilir
-                    }
+if (live) {
+    const s = assignGeniusScores(live, m);
+    homeScore = s.home;
+    awayScore = s.away;
+    const isFinal = isGeniusFinal(live);
+    if (startedAgo > 60 * 60000 && isFinal) statusType = 'finished';
+    else if (startedAgo <= 4 * 3600000) statusType = 'inprogress';
+    else statusType = 'finished'; // 4 saati geçti, hâlâ bitmedi görünüyorsa canlı sayma
+    console.log(`🏀 [GENIUS] ${m.genuisId}: ${live.t1Score}-${live.t2Score} (${live.period}. periyot ${live.clock}) -> ${statusType}`);
+} else {
+    // istek düştü: önceki skoru koru, skoru "-" yapma
+    if (prev && prev.homeScore && prev.homeScore !== "-") {
+        homeScore = prev.homeScore;
+        awayScore = prev.awayScore;
+    }
+    if (startedAgo <= 4 * 3600000) statusType = 'inprogress';
+}
                 }
             }
 
