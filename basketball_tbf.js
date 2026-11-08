@@ -215,49 +215,16 @@ const TBF_LEAGUES = {
     tbl: { id: 22215, displayName: "Türkiye Sigorta Türkiye Basketbol Ligi" }
 };
 
-// 🔥 YENİ: JSON Şemasına Uygun TBF Canlı Skor API'si
-async function fetchTBFLiveScore(matchId) {
-    try {
-        const url = `https://www.tbf.org.tr/api/Match/mac-header?matchId=${matchId}&_=${Date.now()}`;
-        const { stdout } = await execFileAsync('curl', [
-            '-s',
-            '--max-time', '8',
-            url,
-            '-H', 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
-            '-H', 'Accept: */*',
-            '-H', 'Accept-Language: tr-TR,tr;q=0.9',
-            '-H', 'Referer: https://www.tbf.org.tr/',
-            '-H', 'Cache-Control: no-cache, no-store, must-revalidate',
-            '-H', 'Pragma: no-cache'
-        ]);
-
-        const json = JSON.parse(stdout);
-        
-        if (json && json.data) {
-            // 🔥 ÇÖZÜM: JSON şemasındaki DOĞRU isimlendirmeleri kullanıyoruz (homeTeamScore / awayTeamScore)
-            return {
-                homeScore: json.data.homeTeamScore,
-                awayScore: json.data.awayTeamScore,
-                statusId: json.data.matchStatusId
-            };
-        }
-        return null;
-    } catch (e) {
-        console.error(`❌ TBF Canlı Skor Hatası (${matchId}):`, e.message);
-        return null;
-    }
-}
-
 async function fetchTBFWeek(activityId, weekFilter = null) {
     try {
-        let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1&_=${Date.now()}`;
+        let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1`;
         if (weekFilter !== null) url += `&WeekFilter=${weekFilter}`;
 
         const { stdout } = await execFileAsync('curl', [
             '-s',
             '--max-time', '15',
             url,
-            '-H', 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
+            '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
             '-H', 'Referer: https://tbf.org.tr/',
             '-H', 'Cache-Control: no-cache, no-store, must-revalidate',
             '-H', 'Pragma: no-cache'
@@ -266,7 +233,42 @@ async function fetchTBFWeek(activityId, weekFilter = null) {
         const json = JSON.parse(stdout);
         return json?.data || null;
     } catch (e) {
-        console.error(`❌ TBF genel liste istek hatası (ActivityId=${activityId}, Week=${weekFilter}):`, e.message);
+        console.error(`❌ TBF istek hatası (ActivityId=${activityId}, Week=${weekFilter}):`, e.message);
+        return null;
+    }
+}
+
+
+async function fetchGeniusLiveScore(genuisId) {
+    if (!genuisId) return null;
+    try {
+        const url = `https://fibalivestats.dcd.shared.geniussports.com/data/${genuisId}/data.json?_=${Date.now()}`;
+        const r = await fetch(url, {
+            signal: timeoutSignal(8000),
+            cache: 'no-store',
+            headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15",
+                "Accept": "application/json",
+                "Cache-Control": "no-cache"
+            }
+        });
+        if (!r.ok) {
+            console.error(`⚠️ Genius canlı skor HTTP ${r.status} (${genuisId})`);
+            return null;
+        }
+        const j = await r.json();
+        const t1 = j?.tm?.["1"], t2 = j?.tm?.["2"];
+        if (t1?.score === undefined || t2?.score === undefined) {
+            console.error("⚠️ Genius beklenmeyen şema:", Object.keys(j || {}));
+            return null;
+        }
+        return {
+            t1Name: t1.name || "", t2Name: t2.name || "",
+            t1Score: String(t1.score), t2Score: String(t2.score),
+            clock: j.clock, period: j.period
+        };
+    } catch (e) {
+        console.error(`⚠️ Genius canlı skor hatası (${genuisId}):`, e.message);
         return null;
     }
 }
@@ -277,20 +279,10 @@ function extractWeekNumber(matches) {
     return m ? parseInt(m[0]) : null;
 }
 
-function mapTBFStatus(matchStatusId, matchTimestamp) {
+function mapTBFStatus(matchStatusId) {
     if (matchStatusId === 1) return 'finished';
-    
-    if (matchStatusId === 2 || matchStatusId === 3) return 'inprogress';
-
-    // 🔥 Zorunlu Canlı
-    const now = Date.now();
-    const THREE_HOURS = 3 * 60 * 60 * 1000;
-    
-    if (matchStatusId !== 1 && now >= matchTimestamp && now <= matchTimestamp + THREE_HOURS) {
-        return 'inprogress';
-    }
-
-    return 'notstarted';
+    if (matchStatusId === 4) return 'notstarted';
+    return 'inprogress';
 }
 
 async function fetchTBFLeagueMatches(activityId, targetDates) {
@@ -322,48 +314,38 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
         const matches = await fetchTBFLeagueMatches(league.id, targetDates);
         if (!matches) continue;
 
-        for (const m of matches) {
-            
-            const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00+03:00`;
-            const matchDateObj = new Date(dateTimeStr); 
-            const matchTimestamp = matchDateObj.getTime();
+       for (const m of matches) {
+    const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00+03:00`;
+    const matchDateObj = new Date(dateTimeStr);
 
-            let statusType = mapTBFStatus(m.matchStatusId, matchTimestamp);
-            
-            let homeScore = "-";
-            let awayScore = "-";
+    let statusType = mapTBFStatus(m.matchStatusId);
 
-            // 🔥 CANLI İSE mac-header API'SİNDEN GERÇEK ZAMANLI SKORU ÇEK
-            if (statusType === 'inprogress') {
-                const liveData = await fetchTBFLiveScore(m.matchId);
-                
-                if (liveData) {
-                    if (liveData.statusId === 1) statusType = 'finished'; // Maç bittiyse statüyü de güncelle
-                    
-                    if (liveData.homeScore !== null && liveData.homeScore !== undefined) {
-                        homeScore = String(liveData.homeScore);
-                    }
-                    if (liveData.awayScore !== null && liveData.awayScore !== undefined) {
-                        awayScore = String(liveData.awayScore);
-                    }
-                } else {
-                    // Servis çökerse ana listeden yedek skoru göster
-                    if (m.homeTeam?.score !== null && m.homeTeam?.score !== undefined) {
-                        homeScore = String(m.homeTeam.score);
-                    }
-                    if (m.awayTeam?.score !== null && m.awayTeam?.score !== undefined) {
-                        awayScore = String(m.awayTeam.score);
-                    }
-                }
-            } else if (statusType === 'finished') {
-                homeScore = String(m.homeTeam?.score ?? "0");
-                awayScore = String(m.awayTeam?.score ?? "0");
-            }
+    // TBF liste API'si canlı maçı 'notstarted' gösteriyor: saate göre canlı say
+    const nowTs = Date.now();
+    if (statusType === 'notstarted' &&
+        nowTs >= matchDateObj.getTime() &&
+        nowTs <= matchDateObj.getTime() + 3 * 3600000) {
+        statusType = 'inprogress';
+    }
 
-            // Maç yeni canlıya geçmiş ama hala sıfır skorsa bile tire ATMA, 0'ları göster
-            if (homeScore === "0" && awayScore === "0" && statusType === 'inprogress' && m.matchStatusId === 4) {
-                // Şimdilik sıfır kalsın. (Tire atma mantığını kaldırdım ki "-" takılmasın)
-            }
+    const hasScore = statusType !== 'notstarted';
+    let homeScore = hasScore ? String(m.homeTeam.score || "0") : "-";
+    let awayScore = hasScore ? String(m.awayTeam.score || "0") : "-";
+
+    if (statusType === 'inprogress') {
+        const live = await fetchGeniusLiveScore(m.genuisId);
+        if (live) {
+            // Takım sırası ters gelirse (tm.1 = deplasman) yer değiştir
+            const norm = s => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, '');
+            const firstWord = s => norm(String(s || "").split(' ')[0]);
+            const t1IsAway = firstWord(live.t1Name) === firstWord(m.awayTeam.name)
+                          && firstWord(live.t1Name) !== firstWord(m.homeTeam.name);
+            homeScore = t1IsAway ? live.t2Score : live.t1Score;
+            awayScore = t1IsAway ? live.t1Score : live.t2Score;
+        } else {
+            homeScore = "-"; awayScore = "-"; // skor alınamadıysa 0-0 gösterme
+        }
+    }
 
             const tbfFallback = m.broadcastChannel || " ";
             const result = getBroadcasterWithFallback("basketbol", m.matchDateOnly, m.matchTime, m.homeTeam.name, m.awayTeam.name, tbfFallback);
@@ -376,13 +358,13 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
                 status: statusType,
                 fixedDate: m.matchDateOnly,
                 fixedTime: m.matchTime,
-                timestamp: matchTimestamp,
+                timestamp: matchDateObj.getTime(),
                 broadcaster: result.kanal,
                 homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
                 awayTeam: { name: m.awayTeam.name, logo: m.awayTeam.logoUrl },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
-                homeScore: homeScore,
-                awayScore: awayScore,
+                homeScore: hasScore ? String(m.homeTeam.score || "0") : "-",
+                awayScore: hasScore ? String(m.awayTeam.score || "0") : "-",
                 tournament: league.displayName
             });
 
@@ -779,7 +761,6 @@ async function main() {
                 if (!forceUpdateDueToBroadcasters) lastPeriodicUpdate = now;
             }
 
-            // 🔥 Hızlı Tarama: Gündüz [0], Gece Döngüsünde [0] ve [-1] (Dün gece sarkan maçlar için)
             const currentHour = getIstanbulNow().getHours();
             let quickScanDates = [getTRDate(0)];
             if (currentHour >= 0 && currentHour <= 4) quickScanDates = [getTRDate(-1), getTRDate(0)];
