@@ -215,10 +215,11 @@ const TBF_LEAGUES = {
     tbl: { id: 22215, displayName: "Türkiye Sigorta Türkiye Basketbol Ligi" }
 };
 
-// 🔥 YENİ: TBF CANLI SKOR AVCISI (Tekil Maç Uç Noktası)
+// 🔥 YENİ: Proxyman'den yakalanan TBF Canlı Skor API'si
 async function fetchTBFLiveScore(matchId) {
     try {
-        const url = `https://tbf.org.tr/api/Match/GetMatchInfo?matchId=${matchId}&_=${Date.now()}`;
+        // TBF'nin canlı verileri miniappapi üzerinden akıttığı uç nokta:
+        const url = `https://miniappapi.tbf.org.tr/api/Match/GetMatchInfo?matchId=${matchId}&_=${Date.now()}`;
         const { stdout } = await execFileAsync('curl', [
             '-s',
             '--max-time', '8',
@@ -245,7 +246,6 @@ async function fetchTBFLiveScore(matchId) {
 
 async function fetchTBFWeek(activityId, weekFilter = null) {
     try {
-        // 🔥 DÜZELTME: TBF Ana URL'sinin sonuna Cache kırmak için zaman damgası (Date.now) eklendi
         let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1&_=${Date.now()}`;
         if (weekFilter !== null) url += `&WeekFilter=${weekFilter}`;
 
@@ -276,10 +276,9 @@ function extractWeekNumber(matches) {
 function mapTBFStatus(matchStatusId, matchTimestamp) {
     if (matchStatusId === 1) return 'finished';
     
-    // TBF statüsü canlı olarak güncellediyse
     if (matchStatusId === 2 || matchStatusId === 3) return 'inprogress';
 
-    // Zorunlu Canlı: Maç saati geldi mi? (Maçın üzerinden 3 saat geçene kadar canlı say)
+    // 🔥 Zorunlu Canlı
     const now = Date.now();
     const THREE_HOURS = 3 * 60 * 60 * 1000;
     
@@ -330,12 +329,12 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
             let homeScore = "-";
             let awayScore = "-";
 
-            // 🔥 CANLI İSE TEKİL MAÇ UÇ NOKTASINDAN GERÇEK ZAMANLI SKORU ÇEK
+            // 🔥 CANLI İSE miniappapi ÜZERİNDEN GERÇEK ZAMANLI SKORU ÇEK
             if (statusType === 'inprogress') {
                 const liveData = await fetchTBFLiveScore(m.matchId);
                 
                 if (liveData) {
-                    if (liveData.statusId === 1) statusType = 'finished';
+                    if (liveData.statusId === 1) statusType = 'finished'; // Eğer maç bittiyse statüyü güncelle
                     
                     if (liveData.homeScore !== null && liveData.homeScore !== undefined) {
                         homeScore = String(liveData.homeScore);
@@ -344,7 +343,7 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
                         awayScore = String(liveData.awayScore);
                     }
                 } else {
-                    // API çökükse veya boşsa yedeğe (toplu listeye) düş
+                    // API çökükse ana listedeki skoru göster
                     if (m.homeTeam?.score !== null && m.homeTeam?.score !== undefined) {
                         homeScore = String(m.homeTeam.score);
                     }
