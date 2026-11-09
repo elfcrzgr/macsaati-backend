@@ -180,6 +180,13 @@ const getFallbackBroadcaster = (compName) => {
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR VE FETCH
 // =========================================================================
+
+// 🔥 YENİ: Android İçin Boşluklu/Bozuk URL'leri Düzelten Fonksiyon
+function getSafeLogo(url) {
+    if (!url) return "";
+    return encodeURI(url.trim());
+}
+
 async function uploadToFirebase(data) {
     try {
         await withTimeout(firebaseApp.database().ref(`matches_basketball`).set(data), 15000, 'Firebase yazma');
@@ -207,32 +214,6 @@ function findNextMatchTime(cache, now = Date.now()) {
     return nextTime;
 }
 
-
-const shiftDate = (s, n) => {
-    const [y, m, d] = s.split('-').map(Number);
-    return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10);
-};
-
-function getESPNDatesToQuery(targetDates, isQuickScan) {
-    if (!isQuickScan) {
-        // Detaylı tarama: her hedef tarih + bir önceki gün (ESPN ABD tarihine göre gruplar)
-        return [...new Set(targetDates.flatMap(d => [shiftDate(d, -1), d]))];
-    }
-    // Canlı ESPN maçı varsa sadece o maçların kendi ESPN tarihi
-    const liveDates = new Set();
-    for (const match of globalBasketballCache.values()) {
-        if (match.id.startsWith('espn_') && match.status === 'inprogress' && match.espnDate) {
-            liveDates.add(match.espnDate);
-        }
-    }
-    if (liveDates.size > 0) return [...liveDates];
-
-    // Canlı yok: yeni başlayanı yakalamak için bugün, sabah saatlerinde dün de
-    const today = getTRDate(0);
-    return getIstanbulNow().getHours() < 12 ? [shiftDate(today, -1), today] : [today];
-}
-
-
 // =========================================================================
 // 🏀 TBF (TÜRKİYE BASKETBOL FEDERASYONU) ENTEGRASYONU — BSL & TBL
 // =========================================================================
@@ -241,9 +222,40 @@ const TBF_LEAGUES = {
     tbl: { id: 22215, displayName: "Türkiye Sigorta Türkiye Basketbol Ligi" }
 };
 
+async function fetchTBFLiveScore(matchId) {
+    try {
+        const url = `https://tbf.org.tr/api/Match/mac-header?matchId=${matchId}&_=${Date.now()}`;
+        const { stdout } = await execFileAsync('curl', [
+            '-s',
+            '--max-time', '8',
+            url,
+            '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
+            '-H', 'Accept: application/json, text/plain, */*',
+            '-H', 'Accept-Language: tr-TR,tr;q=0.9',
+            '-H', 'Referer: https://tbf.org.tr/',
+            '-H', 'Cache-Control: no-cache, no-store, must-revalidate',
+            '--compressed' 
+        ]);
+
+        const json = JSON.parse(stdout);
+        
+        if (json && json.data) {
+            return {
+                homeScore: json.data.homeTeamScore,
+                awayScore: json.data.awayTeamScore,
+                statusId: json.data.matchStatusId
+            };
+        }
+        return null;
+    } catch (e) {
+        console.error(`❌ TBF Canlı Skor Hatası (${matchId}):`, e.message);
+        return null;
+    }
+}
+
 async function fetchTBFWeek(activityId, weekFilter = null) {
     try {
-        let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1`;
+        let url = `https://tbf.org.tr/api/Match/get-all-matches-for-filter?ActivityId=${activityId}&Page=1&PageSize=-1&_=${Date.now()}`;
         if (weekFilter !== null) url += `&WeekFilter=${weekFilter}`;
 
         const { stdout } = await execFileAsync('curl', [
@@ -253,69 +265,16 @@ async function fetchTBFWeek(activityId, weekFilter = null) {
             '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
             '-H', 'Referer: https://tbf.org.tr/',
             '-H', 'Cache-Control: no-cache, no-store, must-revalidate',
-            '-H', 'Pragma: no-cache'
+            '-H', 'Pragma: no-cache',
+            '--compressed'
         ]);
 
         const json = JSON.parse(stdout);
         return json?.data || null;
     } catch (e) {
-        console.error(`❌ TBF istek hatası (ActivityId=${activityId}, Week=${weekFilter}):`, e.message);
+        console.error(`❌ TBF genel liste istek hatası (ActivityId=${activityId}, Week=${weekFilter}):`, e.message);
         return null;
     }
-}
-
-
-async function fetchGeniusLiveScore(genuisId) {
-    if (!genuisId) return null;
-    for (let attempt = 1; attempt <= 2; attempt++) {
-        try {
-            const url = `https://fibalivestats.dcd.shared.geniussports.com/data/${genuisId}/data.json?_=${Date.now()}`;
-            const { stdout } = await execFileAsync('curl', [
-                '-sS', '--compressed', '--max-time', '15', url,
-                '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
-                '-H', 'Referer: https://www.tbf.org.tr/',
-                '-H', 'Origin: https://www.tbf.org.tr',
-                '-H', 'Cache-Control: no-cache'
-            ], { maxBuffer: 20 * 1024 * 1024 });
-
-            let j;
-            try { j = JSON.parse(stdout); }
-            catch { console.error(`⚠️ Genius JSON değil (${genuisId}):`, stdout.slice(0, 120).replace(/\s+/g, ' ')); return null; }
-
-            const t1 = j?.tm?.["1"], t2 = j?.tm?.["2"];
-            if (t1?.score === undefined || t2?.score === undefined) {
-                console.error("⚠️ Genius beklenmeyen şema:", Object.keys(j || {}));
-                return null;
-            }
-            return {
-                t1Name: t1.name || "", t2Name: t2.name || "",
-                t1Score: String(t1.score), t2Score: String(t2.score),
-                clock: String(j.clock ?? ""),
-                period: Number(j.period ?? 0),
-                periodsMax: Number(j.periodsMax ?? 4)
-            };
-        } catch (e) {
-            const detail = (e.stderr || '').trim() || `çıkış kodu=${e.code}`;
-            console.error(`⚠️ Genius deneme ${attempt}/2 başarısız (${genuisId}): ${detail}`);
-            if (attempt === 2) return null;
-            await new Promise(r => setTimeout(r, 1500));
-        }
-    }
-    return null;
-}
-function isGeniusFinal(live) {
-    return live.clock === "00:00" && live.period >= live.periodsMax && live.t1Score !== live.t2Score;
-}
-
-function assignGeniusScores(live, m) {
-    const norm = s => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, '');
-    const firstWord = s => norm(String(s || "").split(' ')[0]);
-    const t1IsAway = firstWord(live.t1Name) === firstWord(m.awayTeam.name)
-                  && firstWord(live.t1Name) !== firstWord(m.homeTeam.name);
-    return {
-        home: t1IsAway ? live.t2Score : live.t1Score,
-        away: t1IsAway ? live.t1Score : live.t2Score
-    };
 }
 
 function extractWeekNumber(matches) {
@@ -324,10 +283,19 @@ function extractWeekNumber(matches) {
     return m ? parseInt(m[0]) : null;
 }
 
-function mapTBFStatus(matchStatusId) {
+function mapTBFStatus(matchStatusId, matchTimestamp) {
     if (matchStatusId === 1) return 'finished';
-    if (matchStatusId === 4) return 'notstarted';
-    return 'inprogress';
+    
+    if (matchStatusId === 2 || matchStatusId === 3) return 'inprogress';
+
+    const now = Date.now();
+    const THREE_HOURS = 3 * 60 * 60 * 1000;
+    
+    if (matchStatusId !== 1 && now >= matchTimestamp && now <= matchTimestamp + THREE_HOURS) {
+        return 'inprogress';
+    }
+
+    return 'notstarted';
 }
 
 async function fetchTBFLeagueMatches(activityId, targetDates) {
@@ -360,52 +328,40 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
         if (!matches) continue;
 
         for (const m of matches) {
+            
             const dateTimeStr = `${m.matchDateOnly}T${m.matchTime}:00+03:00`;
-            const matchDateObj = new Date(dateTimeStr);
-            const startMs = matchDateObj.getTime();
-            const startedAgo = Date.now() - startMs;
-            const uniqueId = `tbf_${m.matchId}`;
-            const prev = globalBasketballCache.get(uniqueId);
+            const matchDateObj = new Date(dateTimeStr); 
+            const matchTimestamp = matchDateObj.getTime();
 
-            let statusType = mapTBFStatus(m.matchStatusId);
+            let statusType = mapTBFStatus(m.matchStatusId, matchTimestamp);
+            
             let homeScore = "-";
             let awayScore = "-";
 
-            if (m.matchStatusId === 1) {
-                // TBF bitti dedi: resmi skor
-                homeScore = String(m.homeTeam.score || "0");
-                awayScore = String(m.awayTeam.score || "0");
-            } else if (startedAgo >= 0 && startedAgo < 24 * 3600000) {
-                // TBF 'başlamadı' diyor ama saat geçmiş: Genius'a bak
-                if (prev && prev.status === 'finished' && prev.homeScore !== "-") {
-                    // daha önce bitti olarak tespit ettik, tekrar sorgulama
-                    statusType = 'finished';
-                    homeScore = prev.homeScore;
-                    awayScore = prev.awayScore;
+            const fallbackHome = m.homeTeamScore ?? m.homeTeam?.score ?? m.homeScore ?? "0";
+            const fallbackAway = m.awayTeamScore ?? m.awayTeam?.score ?? m.awayScore ?? "0";
+
+            if (statusType === 'inprogress') {
+                const liveData = await fetchTBFLiveScore(m.matchId);
+                
+                if (liveData && liveData.homeScore !== undefined && liveData.homeScore !== null) {
+                    if (liveData.statusId === 1) statusType = 'finished';
+                    
+                    homeScore = String(liveData.homeScore);
+                    awayScore = String(liveData.awayScore);
                 } else {
-                    const live = await fetchGeniusLiveScore(m.genuisId);
-if (live) {
-    const s = assignGeniusScores(live, m);
-    homeScore = s.home;
-    awayScore = s.away;
-    const isFinal = isGeniusFinal(live);
-    if (startedAgo > 60 * 60000 && isFinal) statusType = 'finished';
-    else if (startedAgo <= 4 * 3600000) statusType = 'inprogress';
-    else statusType = 'finished'; // 4 saati geçti, hâlâ bitmedi görünüyorsa canlı sayma
-    console.log(`🏀 [GENIUS] ${m.genuisId}: ${live.t1Score}-${live.t2Score} (${live.period}. periyot ${live.clock}) -> ${statusType}`);
-} else {
-    // istek düştü: önceki skoru koru, skoru "-" yapma
-    if (prev && prev.homeScore && prev.homeScore !== "-") {
-        homeScore = prev.homeScore;
-        awayScore = prev.awayScore;
-    }
-    if (startedAgo <= 4 * 3600000) statusType = 'inprogress';
-}
+                    homeScore = String(fallbackHome);
+                    awayScore = String(fallbackAway);
                 }
+            } else if (statusType === 'finished') {
+                homeScore = String(fallbackHome);
+                awayScore = String(fallbackAway);
             }
 
             const tbfFallback = m.broadcastChannel || " ";
             const result = getBroadcasterWithFallback("basketbol", m.matchDateOnly, m.matchTime, m.homeTeam.name, m.awayTeam.name, tbfFallback);
+
+            const uniqueId = `tbf_${m.matchId}`;
 
             globalBasketballCache.set(uniqueId, {
                 id: uniqueId,
@@ -413,10 +369,11 @@ if (live) {
                 status: statusType,
                 fixedDate: m.matchDateOnly,
                 fixedTime: m.matchTime,
-                timestamp: startMs,
+                timestamp: matchTimestamp,
                 broadcaster: result.kanal,
-                homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
-                awayTeam: { name: m.awayTeam.name, logo: m.awayTeam.logoUrl },
+                // 🔥 ANDROID ÇÖZÜMÜ BURADA: getSafeLogo ile hatalı/boşluklu url'ler düzeltiliyor
+                homeTeam: { name: m.homeTeam.name, logo: getSafeLogo(m.homeTeam.logoUrl || m.homeTeam.logo) },
+                awayTeam: { name: m.awayTeam.name, logo: getSafeLogo(m.awayTeam.logoUrl || m.awayTeam.logo) },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
                 homeScore: homeScore,
                 awayScore: awayScore,
@@ -479,12 +436,11 @@ function mapESPNStatus(state) {
     return 'notstarted';
 }
 
-async function updateESPN(targetDates = [getTRDate(0)], isQuickScan = false) {
+async function updateESPN(targetDates = [getTRDate(0)]) {
     let totalAdded = 0;
 
     for (const [code, league] of Object.entries(ESPN_LEAGUES)) {
-        for (const dateStr of getESPNDatesToQuery(targetDates, isQuickScan)) {
-
+        for (const dateStr of targetDates) {
             const events = await fetchESPNDay(league.slug, dateStr);
             if (!events) continue;
 
@@ -524,7 +480,6 @@ async function updateESPN(targetDates = [getTRDate(0)], isQuickScan = false) {
                     tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
                     homeScore: hasScore ? String(homeC.score ?? "0") : "-",
                     awayScore: hasScore ? String(awayC.score ?? "0") : "-",
-                    espnDate: dateStr,
                     tournament: league.displayName
                 });
 
@@ -666,7 +621,6 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
             
             if (statusType === 'inprogress') {
                 const gameCode = g.gameCode ?? g.code ?? g.id;
-                console.log(`🔎 Canlı: ${homeTeam.name} gameCode=${gameCode} keys=${Object.keys(g).join(',')}`);
                 const live = await fetchEuroLiveScore(seasonCode, gameCode);
                 if (live) { homeScore = live.homeScore; awayScore = live.awayScore; }
             }
@@ -705,20 +659,32 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
 // =========================================================================
 // 🏀 ANA BİRLEŞTİRİCİ GÜNCELLEME DÖNGÜSÜ
 // =========================================================================
-async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false, espnOnly = false) {
-
+async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false) {
     console.log(`🏀 Basketbol: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
     
-        const wrap = (p, label) => withTimeout(p, 30000, label)
-        .then(c => c > 0)
-        .catch(e => { console.error(`❌ ${label} hatası:`, e.message); return false; });
+    let tbfSuccess = false;
+    try {
+        const tbfCount = await withTimeout(updateTBF(targetDates), 30000, 'TBF taraması');
+        tbfSuccess = tbfCount > 0;
+    } catch (e) {
+        console.error("❌ TBF güncelleme hatası:", e.message);
+    }
 
-    const [tbfSuccess, espnSuccess, euroSuccess] = await Promise.all([
-        espnOnly ? false : wrap(updateTBF(targetDates), 'TBF taraması'),
-        wrap(updateESPN(targetDates, isQuickScan), 'ESPN taraması'),
-        espnOnly ? false : wrap(updateEuroLeague(targetDates), 'EuroLeague/Cup taraması')
-    ]);
+    let espnSuccess = false;
+    try {
+        const espnCount = await withTimeout(updateESPN(targetDates), 30000, 'ESPN taraması');
+        espnSuccess = espnCount > 0;
+    } catch (e) {
+        console.error("❌ ESPN güncelleme hatası:", e.message);
+    }
 
+    let euroSuccess = false;
+    try {
+        const euroCount = await withTimeout(updateEuroLeague(targetDates), 30000, 'EuroLeague/Cup taraması');
+        euroSuccess = euroCount > 0;
+    } catch (e) {
+        console.error("❌ EuroLeague/Cup güncelleme hatası:", e.message);
+    }
 
     if (!tbfSuccess && !espnSuccess && !euroSuccess) {
         const stillLive = Array.from(globalBasketballCache.values()).some(m => m.status === 'inprogress');
@@ -733,13 +699,6 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     for (const [id, match] of globalBasketballCache.entries()) {
         if (!validDates.includes(match.fixedDate)) globalBasketballCache.delete(id);
     }
-    
-        // 5 saatten eski ve hâlâ 'inprogress' görünen maçı canlı sayma
-    const staleLimit = Date.now() - 5 * 3600000;
-    for (const match of globalBasketballCache.values()) {
-        if (match.status === 'inprogress' && match.timestamp < staleLimit) match.status = 'finished';
-    }
-
 
     const finalMatches = Array.from(globalBasketballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase({ success: true, matches: finalMatches });
@@ -835,14 +794,6 @@ async function main() {
                     applyResult(result);
                 }
             }
-            
-                else if (now - sportUpdateStatus.lastQuickUpdate >= TEN_MIN_MS) {
-                console.log("\n🔍 [BASKETBOL BOŞTA] 10 dk'lık ESPN yoklaması...");
-                const result = await withTimeout(updateBasketball(quickScanDates, true, true), 40000, 'ESPN yoklama');
-                sportUpdateStatus.lastQuickUpdate = Date.now();
-                applyResult(result);
-            }
-
 
             let sleepTime;
             if (sportUpdateStatus.hasLiveMatch) {
