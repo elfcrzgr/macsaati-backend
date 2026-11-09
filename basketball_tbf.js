@@ -180,6 +180,21 @@ const getFallbackBroadcaster = (compName) => {
 // =========================================================================
 // 🛠️ YARDIMCI FONKSİYONLAR VE FETCH
 // =========================================================================
+
+// 🔥 ANDROID CLOUDFLARE 1011 HATASI İÇİN PROXY ÇÖZÜMÜ
+function getSafeLogo(url) {
+    if (!url) return "";
+    let cleanUrl = url.trim().replace(/ /g, '%20'); // Boşlukları onar
+    
+    // TBF linklerini Cloudflare'in Dalvik bot engellemesinden kaçırmak için 
+    // wsrv.nl CDN servisine sarıyoruz. iOS ve Android sorunsuz okur.
+    if (cleanUrl.includes('tbf.org.tr')) {
+        const noProto = cleanUrl.replace(/^https?:\/\//, '');
+        return `https://wsrv.nl/?url=${noProto}`;
+    }
+    return cleanUrl;
+}
+
 async function uploadToFirebase(data) {
     try {
         await withTimeout(firebaseApp.database().ref(`matches_basketball`).set(data), 15000, 'Firebase yazma');
@@ -215,10 +230,8 @@ const shiftDate = (s, n) => {
 
 function getESPNDatesToQuery(targetDates, isQuickScan) {
     if (!isQuickScan) {
-        // Detaylı tarama: her hedef tarih + bir önceki gün (ESPN ABD tarihine göre gruplar)
         return [...new Set(targetDates.flatMap(d => [shiftDate(d, -1), d]))];
     }
-    // Canlı ESPN maçı varsa sadece o maçların kendi ESPN tarihi
     const liveDates = new Set();
     for (const match of globalBasketballCache.values()) {
         if (match.id.startsWith('espn_') && match.status === 'inprogress' && match.espnDate) {
@@ -227,7 +240,6 @@ function getESPNDatesToQuery(targetDates, isQuickScan) {
     }
     if (liveDates.size > 0) return [...liveDates];
 
-    // Canlı yok: yeni başlayanı yakalamak için bugün, sabah saatlerinde dün de
     const today = getTRDate(0);
     return getIstanbulNow().getHours() < 12 ? [shiftDate(today, -1), today] : [today];
 }
@@ -372,35 +384,31 @@ async function updateTBF(targetDates = [getTRDate(0)]) {
             let awayScore = "-";
 
             if (m.matchStatusId === 1) {
-                // TBF bitti dedi: resmi skor
                 homeScore = String(m.homeTeam.score || "0");
                 awayScore = String(m.awayTeam.score || "0");
             } else if (startedAgo >= 0 && startedAgo < 24 * 3600000) {
-                // TBF 'başlamadı' diyor ama saat geçmiş: Genius'a bak
                 if (prev && prev.status === 'finished' && prev.homeScore !== "-") {
-                    // daha önce bitti olarak tespit ettik, tekrar sorgulama
                     statusType = 'finished';
                     homeScore = prev.homeScore;
                     awayScore = prev.awayScore;
                 } else {
                     const live = await fetchGeniusLiveScore(m.genuisId);
-if (live) {
-    const s = assignGeniusScores(live, m);
-    homeScore = s.home;
-    awayScore = s.away;
-    const isFinal = isGeniusFinal(live);
-    if (startedAgo > 60 * 60000 && isFinal) statusType = 'finished';
-    else if (startedAgo <= 4 * 3600000) statusType = 'inprogress';
-    else statusType = 'finished'; // 4 saati geçti, hâlâ bitmedi görünüyorsa canlı sayma
-    console.log(`🏀 [GENIUS] ${m.genuisId}: ${live.t1Score}-${live.t2Score} (${live.period}. periyot ${live.clock}) -> ${statusType}`);
-} else {
-    // istek düştü: önceki skoru koru, skoru "-" yapma
-    if (prev && prev.homeScore && prev.homeScore !== "-") {
-        homeScore = prev.homeScore;
-        awayScore = prev.awayScore;
-    }
-    if (startedAgo <= 4 * 3600000) statusType = 'inprogress';
-}
+                    if (live) {
+                        const s = assignGeniusScores(live, m);
+                        homeScore = s.home;
+                        awayScore = s.away;
+                        const isFinal = isGeniusFinal(live);
+                        if (startedAgo > 60 * 60000 && isFinal) statusType = 'finished';
+                        else if (startedAgo <= 4 * 3600000) statusType = 'inprogress';
+                        else statusType = 'finished'; 
+                        console.log(`🏀 [GENIUS] ${m.genuisId}: ${live.t1Score}-${live.t2Score} (${live.period}. periyot ${live.clock}) -> ${statusType}`);
+                    } else {
+                        if (prev && prev.homeScore && prev.homeScore !== "-") {
+                            homeScore = prev.homeScore;
+                            awayScore = prev.awayScore;
+                        }
+                        if (startedAgo <= 4 * 3600000) statusType = 'inprogress';
+                    }
                 }
             }
 
@@ -415,8 +423,9 @@ if (live) {
                 fixedTime: m.matchTime,
                 timestamp: startMs,
                 broadcaster: result.kanal,
-                homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl ? m.homeTeam.logoUrl.replace(/ /g, '%20') : "" },
-                awayTeam: { name: m.awayTeam.name, logo: m.awayTeam.logoUrl ? m.awayTeam.logoUrl.replace(/ /g, '%20') : "" },
+                // 🔥 GETSAFELOGO İLE CF KORUMASI AŞILIYOR
+                homeTeam: { name: m.homeTeam.name, logo: getSafeLogo(m.homeTeam.logoUrl) },
+                awayTeam: { name: m.awayTeam.name, logo: getSafeLogo(m.awayTeam.logoUrl) },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
                 homeScore: homeScore,
                 awayScore: awayScore,
