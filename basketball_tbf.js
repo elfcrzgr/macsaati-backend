@@ -207,6 +207,32 @@ function findNextMatchTime(cache, now = Date.now()) {
     return nextTime;
 }
 
+
+const shiftDate = (s, n) => {
+    const [y, m, d] = s.split('-').map(Number);
+    return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10);
+};
+
+function getESPNDatesToQuery(targetDates, isQuickScan) {
+    if (!isQuickScan) {
+        // Detaylı tarama: her hedef tarih + bir önceki gün (ESPN ABD tarihine göre gruplar)
+        return [...new Set(targetDates.flatMap(d => [shiftDate(d, -1), d]))];
+    }
+    // Canlı ESPN maçı varsa sadece o maçların kendi ESPN tarihi
+    const liveDates = new Set();
+    for (const match of globalBasketballCache.values()) {
+        if (match.id.startsWith('espn_') && match.status === 'inprogress' && match.espnDate) {
+            liveDates.add(match.espnDate);
+        }
+    }
+    if (liveDates.size > 0) return [...liveDates];
+
+    // Canlı yok: yeni başlayanı yakalamak için bugün, sabah saatlerinde dün de
+    const today = getTRDate(0);
+    return getIstanbulNow().getHours() < 12 ? [shiftDate(today, -1), today] : [today];
+}
+
+
 // =========================================================================
 // 🏀 TBF (TÜRKİYE BASKETBOL FEDERASYONU) ENTEGRASYONU — BSL & TBL
 // =========================================================================
@@ -453,11 +479,12 @@ function mapESPNStatus(state) {
     return 'notstarted';
 }
 
-async function updateESPN(targetDates = [getTRDate(0)]) {
+async function updateESPN(targetDates = [getTRDate(0)], isQuickScan = false) {
     let totalAdded = 0;
 
     for (const [code, league] of Object.entries(ESPN_LEAGUES)) {
-        for (const dateStr of targetDates) {
+        for (const dateStr of getESPNDatesToQuery(targetDates, isQuickScan)) {
+
             const events = await fetchESPNDay(league.slug, dateStr);
             if (!events) continue;
 
@@ -497,6 +524,7 @@ async function updateESPN(targetDates = [getTRDate(0)]) {
                     tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
                     homeScore: hasScore ? String(homeC.score ?? "0") : "-",
                     awayScore: hasScore ? String(awayC.score ?? "0") : "-",
+                    espnDate: dateStr,
                     tournament: league.displayName
                 });
 
@@ -677,32 +705,20 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
 // =========================================================================
 // 🏀 ANA BİRLEŞTİRİCİ GÜNCELLEME DÖNGÜSÜ
 // =========================================================================
-async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false) {
+async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = false, espnOnly = false) {
+
     console.log(`🏀 Basketbol: (Mod: ${isQuickScan ? '🚀 HIZLI' : '🐢 DETAYLI'}) Tarihler: ${targetDates.join(', ')}`);
     
-    let tbfSuccess = false;
-    try {
-        const tbfCount = await withTimeout(updateTBF(targetDates), 30000, 'TBF taraması');
-        tbfSuccess = tbfCount > 0;
-    } catch (e) {
-        console.error("❌ TBF güncelleme hatası:", e.message);
-    }
+        const wrap = (p, label) => withTimeout(p, 30000, label)
+        .then(c => c > 0)
+        .catch(e => { console.error(`❌ ${label} hatası:`, e.message); return false; });
 
-    let espnSuccess = false;
-    try {
-        const espnCount = await withTimeout(updateESPN(targetDates), 30000, 'ESPN taraması');
-        espnSuccess = espnCount > 0;
-    } catch (e) {
-        console.error("❌ ESPN güncelleme hatası:", e.message);
-    }
+    const [tbfSuccess, espnSuccess, euroSuccess] = await Promise.all([
+        espnOnly ? false : wrap(updateTBF(targetDates), 'TBF taraması'),
+        wrap(updateESPN(targetDates, isQuickScan), 'ESPN taraması'),
+        espnOnly ? false : wrap(updateEuroLeague(targetDates), 'EuroLeague/Cup taraması')
+    ]);
 
-    let euroSuccess = false;
-    try {
-        const euroCount = await withTimeout(updateEuroLeague(targetDates), 30000, 'EuroLeague/Cup taraması');
-        euroSuccess = euroCount > 0;
-    } catch (e) {
-        console.error("❌ EuroLeague/Cup güncelleme hatası:", e.message);
-    }
 
     if (!tbfSuccess && !espnSuccess && !euroSuccess) {
         const stillLive = Array.from(globalBasketballCache.values()).some(m => m.status === 'inprogress');
@@ -717,6 +733,13 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
     for (const [id, match] of globalBasketballCache.entries()) {
         if (!validDates.includes(match.fixedDate)) globalBasketballCache.delete(id);
     }
+    
+        // 5 saatten eski ve hâlâ 'inprogress' görünen maçı canlı sayma
+    const staleLimit = Date.now() - 5 * 3600000;
+    for (const match of globalBasketballCache.values()) {
+        if (match.status === 'inprogress' && match.timestamp < staleLimit) match.status = 'finished';
+    }
+
 
     const finalMatches = Array.from(globalBasketballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
     await uploadToFirebase({ success: true, matches: finalMatches });
@@ -812,6 +835,14 @@ async function main() {
                     applyResult(result);
                 }
             }
+            
+                else if (now - sportUpdateStatus.lastQuickUpdate >= TEN_MIN_MS) {
+                console.log("\n🔍 [BASKETBOL BOŞTA] 10 dk'lık ESPN yoklaması...");
+                const result = await withTimeout(updateBasketball(quickScanDates, true, true), 40000, 'ESPN yoklama');
+                sportUpdateStatus.lastQuickUpdate = Date.now();
+                applyResult(result);
+            }
+
 
             let sleepTime;
             if (sportUpdateStatus.hasLiveMatch) {
