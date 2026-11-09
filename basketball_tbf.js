@@ -265,6 +265,53 @@ async function fetchTBFWeek(activityId, weekFilter = null) {
 }
 
 
+const TEAM_LOGO_DIR = path.join(__dirname, 'basketball', 'team_logos');
+const mirroredLogos = new Set();
+let logosPendingPush = false;
+
+async function mirrorTBFLogo(teamId, originalUrl) {
+    if (!teamId || !originalUrl) return originalUrl || "";
+    const fileName = `tbf_${teamId}.png`;
+    const filePath = path.join(TEAM_LOGO_DIR, fileName);
+    const publicUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/team_logos/${fileName}`;
+
+    if (mirroredLogos.has(teamId) || fs.existsSync(filePath)) {
+        mirroredLogos.add(teamId);
+        return publicUrl;
+    }
+    try {
+        fs.mkdirSync(TEAM_LOGO_DIR, { recursive: true });
+        await execFileAsync('curl', [
+            '-sSf', '--max-time', '15', '-o', filePath,
+            '-A', 'Safari/605.1.15',
+            encodeURI(originalUrl)
+        ]);
+        if (fs.statSync(filePath).size < 500) throw new Error('dosya çok küçük');
+        mirroredLogos.add(teamId);
+        logosPendingPush = true;
+        return publicUrl;
+    } catch (e) {
+        try { fs.unlinkSync(filePath); } catch {}
+        console.error(`⚠️ Logo indirilemedi (${teamId}):`, (e.stderr || e.message || '').toString().trim());
+        return encodeURI(originalUrl);
+    }
+}
+
+async function pushLogosIfNeeded() {
+    if (!logosPendingPush) return;
+    try {
+        const git = (args) => execFileAsync('git', args, { cwd: __dirname, timeout: 60000 });
+        await git(['add', 'basketball/team_logos']);
+        await git(['commit', '-m', 'TBF takim logolari guncellendi']);
+        await git(['push']);
+        logosPendingPush = false;
+        console.log("🖼️ [LOGO] Yeni takım logoları GitHub'a gönderildi.");
+    } catch (e) {
+        console.error("⚠️ Logo push hatası:", (e.stderr || e.message || '').toString().trim().slice(0, 200));
+    }
+}
+
+
 async function fetchGeniusLiveScore(genuisId) {
     if (!genuisId) return null;
     for (let attempt = 1; attempt <= 2; attempt++) {
@@ -407,6 +454,10 @@ if (live) {
             const tbfFallback = m.broadcastChannel || " ";
             const result = getBroadcasterWithFallback("basketbol", m.matchDateOnly, m.matchTime, m.homeTeam.name, m.awayTeam.name, tbfFallback);
 
+const homeLogo = await mirrorTBFLogo(m.homeTeam.id, m.homeTeam.logoUrl);
+const awayLogo = await mirrorTBFLogo(m.awayTeam.id, m.awayTeam.logoUrl);
+
+
             globalBasketballCache.set(uniqueId, {
                 id: uniqueId,
                 isElite: true,
@@ -415,8 +466,8 @@ if (live) {
                 fixedTime: m.matchTime,
                 timestamp: startMs,
                 broadcaster: result.kanal,
-                homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
-                awayTeam: { name: m.awayTeam.name, logo: m.awayTeam.logoUrl },
+                homeTeam: { name: m.homeTeam.name, logo: homeLogo },
+                awayTeam: { name: m.awayTeam.name, logo: awayLogo },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
                 homeScore: homeScore,
                 awayScore: awayScore,
@@ -427,6 +478,8 @@ if (live) {
             totalAdded++;
         }
     }
+
+    await pushLogosIfNeeded();
 
     console.log(`🏀 [TBF] ${totalAdded} maç işlendi (BSL + TBL).`);
     return totalAdded;
