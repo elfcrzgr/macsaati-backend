@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
+const { loadLogoMaps, flagLogo } = require('./logo_helper');
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -386,7 +387,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
                         }
 
                         const flagArray = Array.from(flags);
-                        return flagArray.length > 0 ? flagArray : [`${TENNIS_TOURNAMENT_BASE}default.png`];
+                        return flagArray.length > 0 ? flagArray.map(flagLogo) : [`${TENNIS_TOURNAMENT_BASE}default.png`];
                     };
 
                     const homeLogos = getLogos(homeC);
@@ -510,6 +511,7 @@ async function updateTennis(targetDates = [getTRDate(0)], isQuickScan = false) {
 // =========================================================================
 async function main() {
     loadState();
+    await loadLogoMaps();
     console.log("============================================================");
     console.log("🟢 [TENİS] MAÇKOLİK'TEN ARINDIRILMIŞ (SAF ESPN) SERVİS BAŞLADI");
     console.log("============================================================");
