@@ -40,16 +40,32 @@ async function loadLogoMaps() {
     if (f) flagCodes = f;
 }
 
+const STOP = new Set(['bc','kk','bk','fc','sk','cb','bbc','basket','basketball','basketbol','baloncesto',
+    'pallacanestro','club','spor','sc','the','of','de','la']);
+const tokens = s => norm(s).split(' ').filter(t => t && !STOP.has(t));
+
 function lookup(map, name) {
     const n = norm(name);
     if (!n) return null;
-    if (map.has(n)) return map.get(n);
-    if (n.length < 7) return null;
-    // gevşek eşleşme: biri diğerini içeriyorsa (en az 7 karakter)
+    if (map.has(n)) return map.get(n);                       // birebir eşleşme
+    const nt = tokens(name);
+    if (nt.length === 0) return null;
+    const nset = new Set(nt);
+    let best = null, bestScore = 0;
     for (const [k, v] of map) {
-        if (k.length >= 7 && (n.includes(k) || k.includes(n))) return v;
+        const kt = tokens(k);
+        if (kt.length === 0) continue;
+        const kset = new Set(kt);
+        // 1) kayıtlı adın tüm kelimeleri gelen adda var (sponsor eklenmiş olabilir)
+        if (kt.every(t => nset.has(t)) && (kt.length >= 2 || kt[0].length >= 5)) {
+            if (kt.length > bestScore) { best = v; bestScore = kt.length; }
+        }
+        // 2) gelen adın tüm kelimeleri kayıtlı adda var (kısa yazılmış olabilir)
+        else if (nt.every(t => kset.has(t)) && (nt.length >= 2 || nt[0].length >= 7)) {
+            if (nt.length > bestScore) { best = v; bestScore = nt.length; }
+        }
     }
-    return null;
+    return best;
 }
 
 // Basketbol: takım adı -> repo logosu
