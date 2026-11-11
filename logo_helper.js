@@ -79,7 +79,8 @@ function teamLogo(teamName, isNba, originalUrl) {
         }
         return originalUrl || "";
     }
-    return `${RAW}/basketball/logos/${isNba ? 'NBA/' : ''}${id}.png`;
+    const file = typeof id === 'string' ? id : `${id}.png`;
+    return `${RAW}/basketball/logos/${isNba ? 'NBA/' : ''}${file}`;
 }
 
 // Tenis: ESPN bayrak linki -> repo bayrağı (örn. .../countries/500/tur.png -> tr.png)
