@@ -4,6 +4,7 @@ const admin = require('firebase-admin');
 const { execFile } = require('child_process');
 const util = require('util');
 const execFileAsync = util.promisify(execFile);
+const { loadLogoMaps, teamLogo } = require('./logo_helper');
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -415,8 +416,8 @@ if (live) {
                 fixedTime: m.matchTime,
                 timestamp: startMs,
                 broadcaster: result.kanal,
-                homeTeam: { name: m.homeTeam.name, logo: m.homeTeam.logoUrl },
-                awayTeam: { name: m.awayTeam.name, logo: m.awayTeam.logoUrl },
+               homeTeam: { name: m.homeTeam.name, logo: teamLogo(m.homeTeam.name, false, m.homeTeam.logoUrl) },
+                awayTeam: { name: m.awayTeam.name, logo: teamLogo(m.awayTeam.name, false, m.awayTeam.logoUrl) },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
                 homeScore: homeScore,
                 awayScore: awayScore,
@@ -519,8 +520,8 @@ async function updateESPN(targetDates = [getTRDate(0)], isQuickScan = false) {
                     fixedTime: fixedTime,
                     timestamp: eventDate.getTime(),
                     broadcaster: result.kanal,
-                    homeTeam: { name: homeC.team.displayName, logo: homeC.team.logo },
-                    awayTeam: { name: awayC.team.displayName, logo: awayC.team.logo },
+                    homeTeam: { name: homeC.team.displayName, logo: teamLogo(homeC.team.displayName, true, homeC.team.logo) },
+                    awayTeam: { name: awayC.team.displayName, logo: teamLogo(awayC.team.displayName, true, awayC.team.logo) },
                     tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(league.displayName)}.png`,
                     homeScore: hasScore ? String(homeC.score ?? "0") : "-",
                     awayScore: hasScore ? String(awayC.score ?? "0") : "-",
@@ -685,8 +686,8 @@ async function updateEuroLeague(targetDates = [getTRDate(0)]) {
                 fixedTime: fixedTime,
                 timestamp: timestamp,
                 broadcaster: result.kanal,
-                homeTeam: { name: homeTeam.name, logo: homeTeam.images?.crest || "" },
-                awayTeam: { name: awayTeam.name, logo: awayTeam.images?.crest || "" },
+                homeTeam: { name: homeTeam.name, logo: teamLogo(homeTeam.name, false, homeTeam.images?.crest || "") },
+                awayTeam: { name: awayTeam.name, logo: teamLogo(awayTeam.name, false, awayTeam.images?.crest || "") },
                 tournamentLogo: `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/basketball/tournament_logos/${getTournamentRepoId(comp.displayName)}.png`,
                 homeScore: homeScore,
                 awayScore: awayScore,
@@ -757,6 +758,8 @@ async function updateBasketball(targetDates = [getTRDate(0)], isQuickScan = fals
 // =========================================================================
 async function main() {
     loadState();
+    await loadLogoMaps();
+    
     console.log("============================================================");
     console.log("🟢 [BASKETBOL] TBF + ESPN + EUROLEAGUE SERVİSİ BAŞLADI");
     console.log("============================================================");
