@@ -2,6 +2,7 @@ const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
+const TEST_ONLY_DEVICE_ID = "40f1de18cf45dc9c01a29583e1c1e9b45f350a6851562180d0290a0e16ec7cd082b06a6fb676cc3fe968f4ba577f68fbb19b4687197db0cb26f2364d8ec7a27914ccef974a15e37abc5dfa20cebc9ee6"; // test için kendi cihaz id'n, işin bitince "" yap
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -1165,6 +1166,12 @@ async function triggerPushToStart(matchId) {
     for (const [deviceId, t] of Object.entries(globalSnap.val() || {})) {
         if (typeof t === 'string' && t.length > 0) targets.set(t, deviceId);
     }
+
+    if (TEST_ONLY_DEVICE_ID) {
+    for (const [t, d] of targets) {
+        if (d !== TEST_ONLY_DEVICE_ID) targets.delete(t);
+    }
+}
     if (targets.size === 0) return;
     console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name}: ${targets.size} cihaza gönderiliyor`);
 
