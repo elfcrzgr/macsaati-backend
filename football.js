@@ -2,8 +2,7 @@ const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
-const TEST_ONLY_DEVICE_ID = "40386718c97f5c80ca92bf80d7ff1fb67ddca1ef750b7e26b4001faec821c085aa8b8ac04984124d1351c4e2a2615485eeeea302784f2a32f6b34eb281e0a2fc848ae2b5b4c9f3ceefbe7da48030179c"; // test için kendi cihaz id'n, işin bitince "" yap
-
+const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43";
 require('events').EventEmitter.defaultMaxListeners = 100;
 
 // =========================================================================
