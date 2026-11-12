@@ -22,7 +22,9 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
 // 🕐 FotMob XML'indeki saatler (time ve gs) TR saatinden 1 saat geride geliyor.
 // Azerbaycan-Litvanya maçıyla doğrulandı: XML 15:00 / gs 15:01:29 dedi, gerçek başlangıç 16:01 (TR).
 // Bir gün FotMob düzelirse bunu 0 yapın.
-const FOTMOB_TIME_OFFSET_MS = 60 * 60 * 1000;
+// Avrupa'da kış saatine geçildiği için aradaki fark 2 saate çıktı.
+const FOTMOB_TIME_OFFSET_MS = 2 * 60 * 60 * 1000; // 2 saatlik milisaniye
+
 
 // 👶 U21 milli takım/lig maçları listeye alınmaz (takım adı veya lig adında "U21" / "Under 21" geçenler)
 const EXCLUDE_U21 = true;
@@ -39,6 +41,7 @@ const EXCLUDE_YOUTH_REGEX = /\b(U[-\s]?21|under[-\s]?21)\b/i;
 
 // 🔎 Hata ayıklama: true iken bilinmeyen statü değerlerini ve gelen yeni ligleri loglar
 const DEBUG_UNKNOWN = true;
+const LOG_FILTERED_LEAGUES = false;   // true yaparsan filtrelenen ligler loga yazılır
 
 // =========================================================================
 // 🔥 FIREBASE & APNs
@@ -208,6 +211,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     let minDiff = 9999;
     let foundBroadcaster = fallback;
     let foundSource = "fallback";
+    let bestScore = 0; // 🔥 YENİ KORUMA: Eşleşmenin gücünü (1 veya 2) hafızada tutar
 
     for (const dateKey of getSafeDates(dateStr)) {
         const dayData = externalBroadcasters[dateKey];
@@ -233,18 +237,25 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
                     if (diff > 1000) diff = Math.abs(diff - 1440);
                 }
 
-                // 🚀 ÇÖZÜM: Gördüğün ilk maça atlama, saat farkı en düşük olan (En Yakın) maçı hafızaya al!
+                // 1. KURAL: Her iki takımı da eşleştiren (2 puanlık) mükemmel eşleşmeler
                 if (matchScore === 2) {
-                    if (diff < minDiff && diff <= 300) {
+                    // Eski eşleşme sadece 1 puanlıksa VEYA saat farkı daha küçükse doğrudan ez!
+                    if ((bestScore < 2 || diff < minDiff) && diff <= 300) {
                         minDiff = diff;
+                        bestScore = 2;
                         foundBroadcaster = (m.yayin && m.yayin.trim() !== "") ? m.yayin : fallback;
                         foundSource = "sporekrani";
                     }
                 } 
-                else if (matchScore === 1 && diff <= 15 && dateKey === dateStr && minDiff > 15) {
-                    minDiff = diff;
-                    foundBroadcaster = (m.yayin && m.yayin.trim() !== "") ? m.yayin : fallback;
-                    foundSource = "sporekrani";
+                // 2. KURAL: Sadece 1 takımı eşleştiren (1 puanlık) riskli/kısmi eşleşmeler
+                else if (matchScore === 1 && bestScore < 2 && diff <= 15 && dateKey === dateStr) {
+                    // Eğer henüz 2 puanlık mükemmel bir maç bulamadıysak ve saat farkı daha iyiyse kabul et
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        bestScore = 1;
+                        foundBroadcaster = (m.yayin && m.yayin.trim() !== "") ? m.yayin : fallback;
+                        foundSource = "sporekrani";
+                    }
                 }
             }
         }
@@ -252,6 +263,7 @@ function getBroadcasterWithFallback(sportCategory, dateStr, timeStr, homeName, a
     
     return { kanal: foundBroadcaster, source: foundSource };
 }
+
 
 
 // =========================================================================
@@ -565,110 +577,73 @@ const actualStartById = new Map(); // maç id -> gerçek başlama zamanı (ms)
 
 function normalizeStatus(attr, startMs) {
     const raw = String(attr.Status ?? attr.status ?? '').trim().toUpperCase();
-    const hasScore = attr.hScore !== undefined && attr.hScore !== '' && attr.aScore !== undefined && attr.aScore !== '';
-    const gsMs = parseGameStart(attr.gs);
-    const sinceScheduled = Math.floor((Date.now() - startMs) / 60000);
-    // Dakika hesabı planlanan saatten değil, maçın gerçek başlama zamanından (gs) yapılır
-    const elapsedMin = Math.floor((Date.now() - (gsMs || startMs)) / 60000);
 
-    const KNOWN_STATUSES = ['', 'NS', 'S', 'HT', 'F', 'FT', 'AET', 'PEN', 'AP', 'C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN', 'P', 'PP', 'POSTP', 'POSTPONED'];
-    if (DEBUG_UNKNOWN && !KNOWN_STATUSES.includes(raw) && !seenUnknownStatuses.has(`x/${raw}`)) {
-        seenUnknownStatuses.add(`x/${raw}`);
-        console.log(`🔎 [STATÜ] Bilinmeyen Status "${raw}" | attrs: ${JSON.stringify(attr)}`);
-    }
-
-    if (['F', 'FT', 'AET', 'PEN', 'AP'].includes(raw)) {
-        // İptal edilen maç "bitti" olarak gelebilir: oynanmışsa başlama zamanı (gs) olur.
-        const zeroZero = String(attr.hScore) === '0' && String(attr.aScore) === '0';
-        const finishedBeforeKickoff = !gsMs && sinceScheduled < -5;      // planlanan saatten önce "bitti" olamaz
-        const noStartRecorded = !gsMs && zeroZero;                         // hiç başlamamış 0-0
-        if (finishedBeforeKickoff || (HIDE_FINISHED_WITHOUT_START && noStartRecorded)) {
-            if (!suspectLogged.has(attr.id)) {
-                suspectLogged.add(attr.id);
-                console.log(`🚫 [İPTAL?] ${attr.hTeam} - ${attr.aTeam} "bitti" görünüyor ama başlama kaydı yok, listeden çıkarıldı | attrs: ${JSON.stringify(attr)}`);
-            }
-            return { status: 'canceled', code: 0, label: '', min: 0 };
-        }
-        return { status: 'finished', code: 100, label: 'MS', min: 90 };
-    }
+    // 1. İPTAL / ERTELENME (Sadece FotMob "İptal/Ertelenmiş" dediyse)
     if (['C', 'CANC', 'CANCELED', 'CANCELLED', 'CAN', 'A', 'ABD', 'AB', 'ABAN'].includes(raw)) return { status: 'canceled', code: 0, label: '', min: 0 };
     if (['P', 'PP', 'POSTP', 'POSTPONED'].includes(raw)) return { status: 'postponed', code: 0, label: '', min: 0 };
 
-    if (raw === 'HT') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
-
-       // Başlamamış maç (Saat kontrolü tamamen kaldırıldı, sadece net verilere bakılır)
-    if (raw === 'NS' || (raw === '' && !hasScore) || !hasScore) {
-        return { status: 'notstarted', code: 0, label: '', min: 0 };
+    // 2. MAÇ BİTTİ (Sadece FotMob "Maç Bitti" (FT, F, AET) statüsü yolladıysa)
+    if (['F', 'FT', 'AET', 'PEN_RES', 'AP'].includes(raw)) {
+        return { status: 'finished', code: 100, label: 'MS', min: 90 };
     }
 
-
-    // Güvenlik: 4 saatten uzun "canlı" görünen maç aslında bitmiştir
-    if (elapsedMin > 240) return { status: 'finished', code: 100, label: 'MS', min: 90 };
-
-    if (DEBUG_UNKNOWN) {
-        const key = `${raw}/${attr.stage ?? ''}/${attr.sId ?? ''}${attr.shs ? '/shs' : ''}`;
-        if (!seenUnknownStatuses.has(key)) {
-            seenUnknownStatuses.add(key);
-            console.log(`🔎 [STATÜ] Yeni Status/stage: "${key}" | geçen: ${elapsedMin} dk | attrs: ${JSON.stringify(attr)}`);
-        }
-    }
-
-    // FotMob dakikayı doğrudan veriyorsa onu kullan (alan adı bilinmiyor, olası adayları dene)
-        // FotMob dakikayı doğrudan veriyorsa onu kullan
-    for (const key of ['min', 'minute', 'liveTime', 'timeStr']) {
-        const v = String(attr[key] || "").trim();
-        if (v && /^\d{1,3}(\+\d+)?$/.test(v)) {
-            let exactMin = 0;
-            // Eğer Fotmob "90+4" gönderirse bunu toplayıp 94 yapıyoruz
-            if (v.includes('+')) {
-                const parts = v.split('+').map(Number);
-                exactMin = parts[0] + parts[1];
-            } else {
-                exactMin = parseInt(v, 10);
-            }
-            return { status: 'inprogress', code: exactMin > 45 ? 7 : 6, label: `${exactMin}'`, min: exactMin };
-        }
-    }
-
-
-    // 🎯 FotMob'un verdiği yarı başlangıçları: shs = 2. yarı başlangıcı, gs = maç başlangıcı
-    const shsMs = parseGameStart(attr.shs);
-    // 'ijt' = "ilkYarıİlave,ikinciYarıİlave" (ör. "1" -> sadece ilk yarı, "1,4" -> ikinci yarı +4)
-    const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
-    const inj1 = ijtParts[0] || 0;
-    const inj2 = ijtParts[1] || 0;
-    
-        if (shsMs) {
-        let m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
-        
-        // GÜVENLİK SINIRI: Uzatma dakikası biliniyorsa onu kullan, bilinmiyorsa maksimum +15 dakika (105) sınır koy.
-        // Böylece maç 108. dakikalara kadar çıkamaz, sınırda takılır.
-        const maxLimit = 90 + (inj2 > 0 ? inj2 : 15);
-        if (m > maxLimit) {
-            m = maxLimit; 
-        }
-
-        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
-    }
-
-    
-    
-    // sId: 2 = ilk yarı, 10 = devre arası, 3 = ikinci yarı (Kosova-Avusturya ve Azerbaycan-Litvanya maçlarında gözlendi)
-    if (String(attr.sId) === '10') return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
-
-       if (gsMs) {
-        const e = Math.max(0, elapsedMin);
-        // Devam eden dakika gösterilir: 0:00-0:59 -> 1', 47:15 -> 48'
-        if (e <= 55) return { status: 'inprogress', code: 6, label: `${e + 1}'`, min: e + 1, inj1 };
-        // sId gelmemiş ve 55 dk geçmişse yine de devre arasıdır
+    // 3. DEVRE ARASI (Sadece FotMob "HT" statüsü yolladıysa)
+    if (raw === 'HT' || String(attr.sId) === '10') {
         return { status: 'inprogress', code: 31, label: 'İY', min: 45 };
     }
 
-    // 🔥 DEĞİŞİKLİK BURADA: Artık `estimateMinute` ile saate göre varsayım yapmıyoruz.
-    // FotMob maçın başladığına dair net bir 'gs' (gerçek saat) veya canlı dakika yollamadıysa,
-    // bizim saatimiz maç saatini geçmiş olsa bile maçı başlatma!
+    // 4. PENALTILAR (Sadece FotMob "PEN" statüsü yolladıysa)
+    if (raw === 'PEN') {
+        return { status: 'inprogress', code: 7, label: 'PEN', min: 120 };
+    }
+
+    // 5. BAŞLAMAMIŞ MAÇLAR (FotMob "NS" diyorsa maç başlamamıştır)
+    if (raw === 'NS' || raw === '') {
+        return { status: 'notstarted', code: 0, label: '', min: 0 };
+    }
+
+    // --- BURADAN İTİBAREN CANLI KRONOMETRE (Sıfır tahmin, sıfır sınır) ---
+    const gsMs = parseGameStart(attr.gs);   // 1. Yarı Başlama Damgası
+    const shsMs = parseGameStart(attr.shs); // 2. Yarı Başlama Damgası
+    const eh1Ms = parseGameStart(attr.eh1); // 1. Uzatma Başlama Damgası
+    const eh2Ms = parseGameStart(attr.eh2); // 2. Uzatma Başlama Damgası
+    
+    // FotMob'un yolladığı resmi ilave süreler
+    const ijtParts = String(attr.ijt ?? '').split(',').map(x => parseInt(x, 10) || 0);
+    const inj1 = ijtParts[0] || 0; 
+    const inj2 = ijtParts[1] || 0; 
+
+    // 2. Uzatma Devresi
+    if (eh2Ms) {
+        let m = 106 + Math.max(0, Math.floor((Date.now() - eh2Ms) / 60000));
+        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
+    }
+
+    // 1. Uzatma Devresi
+    if (eh1Ms || raw === 'ET') {
+        // Eğer FotMob damga yollamayıp sadece "ET" statüsü yolladıysa 'UZ' yaz, yolladıysa saydır
+        if (!eh1Ms) return { status: 'inprogress', code: 7, label: 'UZ', min: 120 };
+        let m = 91 + Math.max(0, Math.floor((Date.now() - eh1Ms) / 60000));
+        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
+    }
+
+    // İkinci Yarı
+    if (shsMs) {
+        let m = 46 + Math.max(0, Math.floor((Date.now() - shsMs) / 60000));
+        return { status: 'inprogress', code: 7, label: `${m}'`, min: m, inj1, inj2 };
+    }
+
+    // İlk Yarı
+    if (gsMs) {
+        let m = 1 + Math.max(0, Math.floor((Date.now() - gsMs) / 60000));
+        return { status: 'inprogress', code: 6, label: `${m}'`, min: m, inj1, inj2 };
+    }
+
+    // FotMob maça "Canlı" (S) statüsü vermiş ama hiçbir başlama damgası (gs) yollamamışsa
+    // KAFAMIZA GÖRE 1' YAZIP BAŞLATMIYORUZ! FotMob düdük çaldığını kanıtlayana kadar başlamadı sayıyoruz.
     return { status: 'notstarted', code: 0, label: '', min: 0 };
 }
+
 
 
 // 🔥 FOTMOB XML VERİ ÇEKME. Hata olursa null, gerçekten boşsa [] döner.
@@ -727,7 +702,7 @@ async function fetchFotMobMatches(dateStr) {
                     if (EXCLUDE_U21 && U21_RE.test(String(lAttr.name || ''))) return;
                     const rule = matchLeagueRule(lAttr.name, ccode);
                     if (!isAllowedLeague(leagueId, ccode, lAttr.name)) {
-                        if (DEBUG_UNKNOWN && !seenUnknownLeagues.has(leagueId)) {
+                        if (LOG_FILTERED_LEAGUES && !seenUnknownLeagues.has(leagueId)) {
                             seenUnknownLeagues.add(leagueId);
                             console.log(`🔎 [LİG] Filtrelendi: id=${leagueId} | ${lAttr.name} | ccode=${ccode}`);
                         }
@@ -780,10 +755,10 @@ async function fetchFotMobMatches(dateStr) {
             });
         });
         } catch (e) {
-        console.error("❌ FotMob çekme hatası:", e.message);
-        notifyAdminForBan(`Bağlantı hatası: ${e.message}`);
-        return null;
-    }
+    console.error("❌ FotMob çekme hatası:", e.message, "| sebep:", e.cause ? (e.cause.code || e.cause.message) : "yok");
+    notifyAdminForBan(`Bağlantı hatası: ${e.message}`);
+    return null;
+}
 }
 
 // =========================================================================
@@ -886,6 +861,8 @@ async function fetchEventsFromWebPage(matchId) {
     return ev;
 }
 
+/*
+
 async function fetchGoalScorerOnce(matchId, totalGoals) {
     let events = null;
     try { events = await fetchEventsFromMobileApi(matchId); } catch (e) { goalWarn(`mobil API hatası: ${e.message}`); }
@@ -927,6 +904,63 @@ async function fetchGoalScorer(matchId, totalGoals) {
         return null;
     }
 }
+*/
+
+// 1. GOL ATAN VE GERÇEK DAKİKAYI GETİREN FONKSİYONLAR
+async function fetchGoalScorerOnce(matchId, totalGoals) {
+    let events = null;
+    try { events = await fetchEventsFromMobileApi(matchId); } catch (e) { goalWarn(`mobil API hatası: ${e.message}`); }
+    if (!events) {
+        try { events = await fetchEventsFromWebPage(matchId); } catch (e) { goalWarn(`web sayfası hatası: ${e.message}`); }
+    }
+    if (!events) return { name: null, min: null, complete: true };
+
+    const goals = events.filter(e => e && String(e.type).toLowerCase() === 'goal');
+    if (goals.length === 0) return { name: null, min: null, complete: false };
+
+    goals.sort((a, b) => ((a.time || 0) + (a.overloadTime || 0) / 100) - ((b.time || 0) + (b.overloadTime || 0) / 100));
+    const last = goals[goals.length - 1];
+    
+    let name = last.player?.name || last.nameStr || last.fullName || null;
+    let min = last.time || null; // 🔥 İŞTE BURASI: Gerçek gol dakikası!
+
+    // FotMob bazen oyuncu belli olana kadar "<TBD>" gibi yer tutucu verir
+    if (name && (/[<>]/.test(name) || /^\s*(tbd|unknown|n\/a|\?)\s*$/i.test(name))) {
+        goalWarn(`Gol atan henüz belli değil (yer tutucu: ${name}), tekrar denenecek`);
+        name = null;
+    }
+    if (!name) return { name: null, min: null, complete: false };
+    if (last.ownGoal || last.isOwnGoal) name += " (K.K.)";
+    
+    return { name, min, complete: goals.length >= totalGoals };
+}
+
+async function fetchGoalScorer(matchId, totalGoals) {
+    try {
+        let r = { name: null, min: null, complete: false };
+        for (let attempt = 0; attempt < 3; attempt++) {
+            if (attempt > 0) await new Promise(res => setTimeout(res, 7000));
+            r = await fetchGoalScorerOnce(matchId, totalGoals);
+            
+            // DÜZELTME BURADA: Sadece isim gelmesi yetmez, 
+            // listedeki gol sayısı güncel skora ulaşmışsa (complete: true) ismi kabul et.
+            if (r.complete && r.name) { 
+                console.log(`🧑 [GOL-DETAY] Gol: ${r.name} (${r.min}')`); 
+                return { name: r.name, min: r.min }; 
+            }
+        }
+        
+        // 3 deneme sonunda API hala yeni golü listeye eklemediyse, 
+        // eski golcüyü (Lukaku) yollamak yerine takım adını (Fenerbahçe) kullandır.
+        console.log("🧑 [GOL-DETAY] Yeni gol atan listeye zamanında düşmedi, takım adı kullanılacak");
+        return { name: null, min: null };
+    } catch (e) {
+        console.log(`⚠️ [GOL-DETAY] Alınamadı: ${e.message}`);
+        return { name: null, min: null };
+    }
+}
+
+
 
 function buildLiveActivityNotification(rawPayload) {
     const notification = new apn.Notification();
@@ -1046,14 +1080,23 @@ async function checkAndSendNotifications(newMatches) {
         if (match.status === 'inprogress' && prev.status !== null) {
             if (prev.homeScore !== currH || prev.awayScore !== currA) {
                 const isGoal = (currH + currA) > (prev.homeScore + prev.awayScore);
-                if (isGoal) {
-                    // Gol atan oyuncu maç detayından aranır, bulunamazsa golü atan takımın adı yazılır
+            if (isGoal) {
                     const homeScored = currH > prev.homeScore;
                     const scoringTeam = homeScored ? match.homeTeam : match.awayTeam;
-                    const scorerName = (await withTimeout(fetchGoalScorer(match.id, currH + currA), 40000, 'Gol detayı').catch(() => null)) || scoringTeam.name;
-                    await sendPush(matchIdStr, appTitle, `⚽ Gol - ${scorerName} (${liveMin})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`, scoringTeam.logo, match);
+                    
+                    // Gol datası artık bir obje dönüyor: { name: "Lukaku", min: 40 }
+                    const goalData = (await withTimeout(fetchGoalScorer(match.id, currH + currA), 40000, 'Gol detayı').catch(() => null)) || {};
+                    
+                    const scorerName = goalData.name || scoringTeam.name;
+                    
+                    // Eğer FotMob golün GERÇEK dakikasını verdiyse onu (örn: 40') kullan, veremediyse o anki süreyi (liveMin) yedek kullan.
+                    const exactGoalMinute = goalData.min ? `${goalData.min}'` : liveMin;
+
+                    await sendPush(matchIdStr, appTitle, `⚽ Gol - ${scorerName} (${exactGoalMinute})\n${match.homeTeam.name} ${match.homeScore} - ${notifAwayScore} ${match.awayTeam.name}`, scoringTeam.logo, match);
                     pendingGoalCancel.delete(matchIdStr);
-                } else {
+                }
+
+                else {
                     const pending = pendingGoalCancel.get(matchIdStr);
                     if (!pending) {
                         pendingGoalCancel.set(matchIdStr, { homeScore: currH, awayScore: currA, firstSeen: Date.now() });
@@ -1080,7 +1123,7 @@ async function checkAndSendNotifications(newMatches) {
     saveState();
 }
 
-async function triggerPushToStart(matchId) {
+/*async function triggerPushToStart(matchId) {
     const match = globalFootballCache.get(matchId);
     if (!match) return;
 
@@ -1103,6 +1146,72 @@ async function triggerPushToStart(matchId) {
         });
         try { await withTimeout(apnProvider.send(notification, token), 8000, 'APNs'); } catch (e) {}
     }
+}*/
+
+
+async function triggerPushToStart(matchId) {
+    const match = globalFootballCache.get(matchId);
+    if (!match) return;
+
+    const db = firebaseApp.database();
+    const [perMatchSnap, globalSnap] = await Promise.all([
+        withTimeout(db.ref(`push_to_start_tokens/${matchId}`).once('value'), 8000, 'Push-to-start token okuma'),
+        withTimeout(db.ref('global_push_tokens').once('value'), 15000, 'Global token okuma')
+    ]);
+
+    // token -> deviceId (global olanlar), maça özel olanlar deviceId'siz
+    const targets = new Map();
+    for (const t of Object.keys(perMatchSnap.val() || {})) targets.set(t, null);
+    for (const [deviceId, t] of Object.entries(globalSnap.val() || {})) {
+        if (typeof t === 'string' && t.length > 0) targets.set(t, deviceId);
+    }
+    if (targets.size === 0) return;
+    console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name}: ${targets.size} cihaza gönderiliyor`);
+
+    const cleanHomeScore = match.homeScore && match.homeScore !== "-" ? Number(match.homeScore) : 0;
+    const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
+    const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
+
+    const makeNotification = () => buildLiveActivityNotification({
+        aps: {
+            timestamp: Math.floor(Date.now() / 1000),
+            event: 'start',
+            "attributes-type": "MacSaatiWidgetAttributes",
+            "attributes": {
+                matchId: String(match.id),
+                homeTeamName: String(match.homeTeam.name),
+                awayTeamName: String(match.awayTeam.name),
+                leagueName: String(match.tournament || "Futbol"),
+                homeTeamId: match.homeTeam.id ? Number(match.homeTeam.id) : 0,
+                awayTeamId: match.awayTeam.id ? Number(match.awayTeam.id) : 0,
+                homeLogoFile: `logo_home_${match.id}.png`,
+                awayLogoFile: `logo_away_${match.id}.png`,
+                homeLogoURL: String(match.homeTeam.logo || ""),
+                awayLogoURL: String(match.awayTeam.logo || "")
+            },
+            "content-state": { homeScore: cleanHomeScore, awayScore: cleanAwayScore, matchMinute: String(cleanMinute) },
+            "alert": { title: "Maç Saati", body: `${match.homeTeam.name} - ${match.awayTeam.name} canlı takibi başladı!` }
+        }
+    });
+
+    const entries = Array.from(targets.entries());
+    let ok = 0, failed = 0;
+    for (let i = 0; i < entries.length; i += 50) {
+        await Promise.all(entries.slice(i, i + 50).map(async ([token, deviceId]) => {
+            try {
+                const result = await withTimeout(apnProvider.send(makeNotification(), token), 8000, 'APNs');
+                if (result.failed.length > 0) {
+                    failed++;
+                    const err = result.failed[0];
+                    const reason = err.response ? err.response.reason : err.error;
+                    if ((reason === 'BadDeviceToken' || reason === 'Unregistered') && deviceId) {
+                        await db.ref(`global_push_tokens/${deviceId}`).remove();
+                    }
+                } else ok++;
+            } catch (e) { failed++; }
+        }));
+    }
+    console.log(`🚀 [PUSH-TO-START] Bitti: ${ok} başarılı, ${failed} başarısız`);
 }
 
 // =========================================================================
@@ -1210,12 +1319,21 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     try {
         const forcedSnapshot = await withTimeout(firebaseApp.database().ref('forced_matches').once('value'), 8000, 'forced_matches okuma');
         const forcedMatches = forcedSnapshot.val() || {};
-        for (const [id] of globalFootballCache.entries()) {
-            if (forcedMatches[String(id)] === true && !triggeredMatches.has(String(id))) {
-                await triggerPushToStart(id);
-                triggeredMatches.add(String(id));
-            }
-        }
+       
+        
+        const now = Date.now();
+for (const [id, m] of globalFootballCache.entries()) {
+    if (forcedMatches[String(id)] !== true) continue;      // 'sent' olanlar tekrar gitmez
+    if (triggeredMatches.has(String(id)) || m.status === 'finished') continue;
+
+    // Sadece maça ~2 dk kala (veya maç zaten canlıysa) başlat
+    const startsSoon = m.status === 'inprogress' || (m.timestamp - now) <= 2 * MINUTE_MS;
+    if (!startsSoon) continue;
+
+    triggeredMatches.add(String(id));
+    await firebaseApp.database().ref(`forced_matches/${id}`).set('sent'); // sunucu yeniden başlasa da tekrar gitmesin
+    triggerPushToStart(id).catch(e => console.error("❌ Push-to-start hatası:", e.message));
+}
     } catch (e) {
         console.error("❌ Zorunlu maç kontrolü atlandı:", e.message);
     }
@@ -1339,7 +1457,7 @@ async function main() {
 // ===== MAÇ DETAYI (kullanıcı maça tıklayınca) =====
 const detailLastFetch = new Map();
 
-async function fetchMatchDetailsRaw(matchId) {
+/*async function fetchMatchDetailsRaw(matchId) {
     const res = await fetch(`https://www.fotmob.com/match/${matchId}`, {
         signal: timeoutSignal(10000),
         headers: {
@@ -1349,6 +1467,30 @@ async function fetchMatchDetailsRaw(matchId) {
         }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const html = await res.text();
+    const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    if (!m) throw new Error('__NEXT_DATA__ bulunamadı');
+    const pageProps = JSON.parse(m[1])?.props?.pageProps;
+    if (!pageProps) throw new Error('pageProps yok');
+    return pageProps;
+}*/
+
+
+async function fetchMatchDetailsRaw(matchId) {
+    const bust = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
+    const res = await fetch(`https://www.fotmob.com/match/${matchId}?nocache=${bust}`, {
+        signal: timeoutSignal(10000),
+        headers: {
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+            "Accept": "text/html,application/xhtml+xml",
+            "Accept-Language": "tr-TR,tr;q=0.9",
+            "Cache-Control": "no-cache, no-store, max-age=0",
+            "Pragma": "no-cache"
+        }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const age = res.headers.get('age');
+    if (age && parseInt(age, 10) > 60) console.log(`🕰️ [DETAY] ${matchId} sayfa cache'ten geldi, age=${age} sn`);
     const html = await res.text();
     const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
     if (!m) throw new Error('__NEXT_DATA__ bulunamadı');
@@ -1484,26 +1626,102 @@ function convertDetail(pp) {
     return { updatedAt: Date.now(), event, incidents, lineups };
 }
 
-firebaseApp.database().ref('detail_requests').on('child_added', async (snap) => {
+
+// Başlığı (skor/durum/dakika) ana ekranı besleyen canlı cache'ten ez: iki ekran asla farklı görünmez
+function overlayLiveHeader(out, matchId) {
+    const c = globalFootballCache.get(Number(matchId));
+    if (!c) return;
+    if (c.status === 'inprogress' || c.status === 'finished') {
+        out.event.homeScore.current = parseInt(c.homeScore) || 0;
+        out.event.awayScore.current = parseInt(c.awayScore) || 0;
+        out.event.status.type = c.status;
+        out.event.liveLabel = c.status === 'inprogress' ? c.liveMinute : '';
+        out.event.time.currentMinute = c.timeObj?.currentMinute || 0;
+    }
+}
+
+// Sayfadaki gol sayısı canlı skor toplamından azsa olay listesi bayattır
+function isDetailStale(out, matchId) {
+    const c = globalFootballCache.get(Number(matchId));
+    if (!c || (c.status !== 'inprogress' && c.status !== 'finished')) return false;
+    const liveTotal = (parseInt(c.homeScore) || 0) + (parseInt(c.awayScore) || 0);
+    const goalCount = out.incidents.filter(i => i.incidentType === 'goal').length;
+    return goalCount < liveTotal;
+}
+
+async function buildFreshDetail(matchId) {
+    let out = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+        if (attempt > 0) await new Promise(r => setTimeout(r, 4000));
+        out = convertDetail(await fetchMatchDetailsRaw(matchId));
+        const c = globalFootballCache.get(Number(matchId));
+        const goalCount = out.incidents.filter(i => i.incidentType === 'goal').length;
+        console.log(`🔬 [DETAY-TEST] ${matchId} | sayfa: ${out.event.homeScore.current}-${out.event.awayScore.current}, ${goalCount} gol | canlı cache: ${c?.homeScore}-${c?.awayScore}`);
+        if (!isDetailStale(out, matchId)) break;
+    }
+    overlayLiveHeader(out, matchId);
+    out.stale = isDetailStale(out, matchId);
+    return out;
+}
+
+async function handleDetailRequest(snap) {
     const matchId = snap.key;
-    const token = String(snap.val());
+    const reqRef = snap.ref;
+    const resRef = firebaseApp.database().ref(`match_details/${matchId}`);
+    const myToken = String(snap.val());
+
+    // İşlem sürerken yeni istek (yeni token) gelmiş olabilir: yanıta en yeni token yazılır
+    const latestToken = async () => {
+        try { const v = (await reqRef.once('value')).val(); return v ? String(v) : myToken; }
+        catch (e) { return myToken; }
+    };
+
     try {
-        const resRef = firebaseApp.database().ref(`match_details/${matchId}`);
-        if (Date.now() - (detailLastFetch.get(matchId) || 0) < 10000) {
-            await resRef.child('token').set(token); // 10 sn içinde zaten çekildi, tekrar çekme
+        if (Date.now() - (detailLastFetch.get(matchId) || 0) < 5000) {
+            await resRef.child('token').set(await latestToken());
         } else {
             detailLastFetch.set(matchId, Date.now());
-            const out = convertDetail(await fetchMatchDetailsRaw(matchId));
-            out.token = token;
+            const out = await buildFreshDetail(matchId);
+            out.token = await latestToken();
             await resRef.set(JSON.parse(JSON.stringify(out)));
-            console.log(`📤 [DETAY] ${matchId} yazıldı (${out.incidents.length} olay)`);
+            console.log(`📤 [DETAY] ${matchId} yazıldı (${out.incidents.length} olay, stale=${out.stale})`);
         }
     } catch (e) {
         console.log(`❌ [DETAY] ${matchId}: ${e.message}`);
+        try {
+            const c = globalFootballCache.get(Number(matchId));
+            if (c) {
+                const old = (await resRef.once('value')).val() || {};
+                const fresh = {
+                    updatedAt: Date.now(),
+                    event: {
+                        homeTeam: { name: c.homeNameRaw, id: c.homeTeam.id },
+                        awayTeam: { name: c.awayNameRaw, id: c.awayTeam.id },
+                        homeScore: { current: parseInt(c.homeScore) || 0 },
+                        awayScore: { current: parseInt(c.awayScore) || 0 },
+                        status: { type: c.status },
+                        time: { currentMinute: c.timeObj?.currentMinute || 0 },
+                        liveLabel: c.status === 'inprogress' ? c.liveMinute : ''
+                    },
+                    incidents: old.incidents || [],
+                    lineups: old.lineups || null,
+                    stale: true,
+                    token: await latestToken()
+                };
+                await resRef.set(JSON.parse(JSON.stringify(fresh)));
+            }
+        } catch (e2) {}
     } finally {
-        snap.ref.remove().catch(() => {});
+        // Arada yeni istek geldiyse (token değiştiyse) silme
+        try {
+            const cur = (await reqRef.once('value')).val();
+            if (cur !== null && String(cur) === myToken) await reqRef.remove();
+        } catch (e) {}
     }
-});
+}
+
+firebaseApp.database().ref('detail_requests').on('child_added', handleDetailRequest);
+firebaseApp.database().ref('detail_requests').on('child_changed', handleDetailRequest);
 
 // 6 saatten eski detay kayıtlarını temizle
 setInterval(async () => {
