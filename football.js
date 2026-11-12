@@ -1333,8 +1333,8 @@ for (const [id, m] of globalFootballCache.entries()) {
     if (triggeredMatches.has(String(id)) || m.status === 'finished') continue;
 
     // Sadece maça ~2 dk kala (veya maç zaten canlıysa) başlat
-    //const startsSoon = m.status === 'inprogress' || (m.timestamp - now) <= 2 * MINUTE_MS;
-    const startsSoon = !!TEST_ONLY_DEVICE_ID || m.status === 'inprogress' || (m.timestamp - now) <= 2 * MINUTE_MS;
+    const startsSoon = m.status === 'inprogress' || (m.timestamp - now) <= 5 * MINUTE_MS;
+  
     if (!startsSoon) continue;
 
     triggeredMatches.add(String(id));
@@ -1426,7 +1426,7 @@ async function main() {
             let quickScanDates = [getTRDate(0)];
             if (currentHour >= 0 && currentHour <= 4) quickScanDates = [getTRDate(-1), getTRDate(0)];
 
-            const isUpcoming = () => sportUpdateStatus.nextMatchTime && Date.now() >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1);
+            const isUpcoming = () => sportUpdateStatus.nextMatchTime && Date.now() >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 6);
 
             if ((sportUpdateStatus.hasLiveMatch || isUpcoming()) && Date.now() >= nextLiveScanAt - 1500) {
                 console.log(sportUpdateStatus.hasLiveMatch ? "\n⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var!" : "\n⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç vakti!");
@@ -1442,7 +1442,7 @@ async function main() {
                 sleepTime = Math.max(1000, nextLiveScanAt - Date.now());
                 console.log(`\n⚡ [FUTBOL] Aktif maç var. Sonraki sorgu ${Math.round(sleepTime / 1000)} sn sonra (dakika sınırına hizalı).`);
             } else if (sportUpdateStatus.nextMatchTime && Date.now() >= sportUpdateStatus.nextMatchTime - MINUTE_MS * 12) {
-                sleepTime = Math.min(30000, Math.max(1000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1 - Date.now()));
+               sleepTime = Math.min(30000, Math.max(1000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 6 - Date.now()));
                 console.log(`\n⏳ [FUTBOL] Maça az kaldı, ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
             } else {
                 sleepTime = 10 * MINUTE_MS;
