@@ -1334,7 +1334,8 @@ for (const [id, m] of globalFootballCache.entries()) {
     if (triggeredMatches.has(String(id)) || m.status === 'finished') continue;
 
     // Sadece maça ~2 dk kala (veya maç zaten canlıysa) başlat
-    const startsSoon = m.status === 'inprogress' || (m.timestamp - now) <= 2 * MINUTE_MS;
+    //const startsSoon = m.status === 'inprogress' || (m.timestamp - now) <= 2 * MINUTE_MS;
+    const startsSoon = !!TEST_ONLY_DEVICE_ID || m.status === 'inprogress' || (m.timestamp - now) <= 2 * MINUTE_MS;
     if (!startsSoon) continue;
 
     triggeredMatches.add(String(id));
