@@ -78,7 +78,7 @@ const APNS_BUNDLE_ID = "com.elfcrzgr.macsaati";
 const APNS_KEY_PATH = __dirname + "/AuthKey_9JFB2X7TY9.p8";
 const APNS_KEY_ID = "9JFB2X7TY9";
 const APNS_TEAM_ID = "9MQ7UDX75J";
-const MANAGE_HOST = IS_PRODUCTION ? "https://api-manage-broadcast.push.apple.com:2195" : "https://api-manage-broadcast.sandbox.push.apple.com:2195";
+const MANAGE_HOST = IS_PRODUCTION ? "https://api-manage-broadcast.push.apple.com:2196" : "https://api-manage-broadcast.sandbox.push.apple.com:2195";
 const BROADCAST_HOST = IS_PRODUCTION ? "https://api-broadcast.push.apple.com:443" : "https://api-broadcast.sandbox.push.apple.com:443";
 
 const matchChannels = new Map();      // maç id -> kanal id
