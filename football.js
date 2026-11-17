@@ -4,7 +4,7 @@ const apn = require('apn');
 const xml2js = require('xml2js');
 const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43";
 require('events').EventEmitter.defaultMaxListeners = 100;
-const USE_BROADCAST = false; // true yapınca kanal sistemi devreye girer
+const USE_BROADCAST = true; // true yapınca kanal sistemi devreye girer
 
 // =========================================================================
 // 🔥 AYARLAR
