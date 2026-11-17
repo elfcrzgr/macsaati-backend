@@ -1338,7 +1338,9 @@ async function triggerPushToStart(matchId) {
 
     const cleanHomeScore = match.homeScore && match.homeScore !== "-" ? Number(match.homeScore) : 0;
     const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
-    const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
+    const cleanMinute = match.liveMinute
+    ? String(match.liveMinute).replace("'", "")
+    : (match.fixedTime || "Canlı");
 
     let channelId = null;
    
