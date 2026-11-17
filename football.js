@@ -4,6 +4,7 @@ const apn = require('apn');
 const xml2js = require('xml2js');
 const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43";
 require('events').EventEmitter.defaultMaxListeners = 100;
+const USE_BROADCAST = false; // true yapınca kanal sistemi devreye girer
 
 // =========================================================================
 // 🔥 AYARLAR
@@ -61,6 +62,160 @@ const apnProvider = new apn.Provider({
     },
     production: IS_PRODUCTION
 });
+
+
+
+
+
+
+
+
+
+// ===== 📡 BROADCAST KANALLARI (iOS 18) =====
+const http2 = require('http2');
+const crypto = require('crypto');
+const APNS_BUNDLE_ID = "com.elfcrzgr.macsaati";
+const APNS_KEY_PATH = __dirname + "/AuthKey_9JFB2X7TY9.p8";
+const APNS_KEY_ID = "9JFB2X7TY9";
+const APNS_TEAM_ID = "9MQ7UDX75J";
+const MANAGE_HOST = IS_PRODUCTION ? "https://api-manage-broadcast.push.apple.com:2195" : "https://api-manage-broadcast.sandbox.push.apple.com:2195";
+const BROADCAST_HOST = IS_PRODUCTION ? "https://api-broadcast.push.apple.com:443" : "https://api-broadcast.sandbox.push.apple.com:443";
+
+const matchChannels = new Map();      // maç id -> kanal id
+const channelPending = new Map();     // aynı anda iki kanal oluşmasın
+const endedChannels = new Set();
+let channelFailUntil = 0;
+
+let jwtCache = { token: null, at: 0 };
+function apnsJwt() {
+    const now = Math.floor(Date.now() / 1000);
+    if (jwtCache.token && now - jwtCache.at < 50 * 60) return jwtCache.token;
+    const enc = (o) => Buffer.from(JSON.stringify(o)).toString('base64url');
+    const head = enc({ alg: 'ES256', kid: APNS_KEY_ID });
+    const body = enc({ iss: APNS_TEAM_ID, iat: now });
+    const sig = crypto.sign('sha256', Buffer.from(`${head}.${body}`), {
+        key: fs.readFileSync(APNS_KEY_PATH), dsaEncoding: 'ieee-p1363'
+    }).toString('base64url');
+    jwtCache = { token: `${head}.${body}.${sig}`, at: now };
+    return jwtCache.token;
+}
+
+function h2Request(origin, method, path, headers, body) {
+    return new Promise((resolve, reject) => {
+        const client = http2.connect(origin);
+        let done = false;
+        const finish = (fn, v) => { if (done) return; done = true; try { client.close(); } catch (e) {} fn(v); };
+        client.on('error', e => finish(reject, e));
+        const req = client.request({ ':method': method, ':path': path, ...headers });
+        let data = '', resHeaders = {};
+        req.setEncoding('utf8');
+        req.on('response', h => { resHeaders = h; });
+        req.on('data', c => { data += c; });
+        req.on('end', () => finish(resolve, { status: resHeaders[':status'], headers: resHeaders, body: data }));
+        req.on('error', e => finish(reject, e));
+        req.setTimeout(10000, () => finish(reject, new Error('zaman aşımı')));
+        if (body) req.write(body);
+        req.end();
+    });
+}
+
+async function createChannel() {
+    const res = await h2Request(MANAGE_HOST, 'POST', `/1/apps/${APNS_BUNDLE_ID}/channels`, {
+        authorization: `bearer ${apnsJwt()}`,
+        'content-type': 'application/json',
+        'apns-request-id': crypto.randomUUID()
+    }, JSON.stringify({ 'message-storage-policy': 1, 'push-type': 'LiveActivity' }));
+    const id = res.headers['apns-channel-id'];
+    if (!id) throw new Error(`kanal oluşturulamadı HTTP ${res.status} ${res.body}`);
+    return id;
+}
+
+async function sendBroadcast(channelId, aps) {
+    const res = await h2Request(BROADCAST_HOST, 'POST', `/4/broadcasts/apps/${APNS_BUNDLE_ID}`, {
+        authorization: `bearer ${apnsJwt()}`,
+        'content-type': 'application/json',
+        'apns-channel-id': channelId,
+        'apns-push-type': 'liveactivity',
+        'apns-topic': `${APNS_BUNDLE_ID}.push-type.liveactivity`,
+        'apns-priority': '10',
+        'apns-request-id': crypto.randomUUID()
+    }, JSON.stringify({ aps }));
+    if (String(res.status) !== '200') throw new Error(`HTTP ${res.status} ${res.body}`);
+    return res;
+}
+
+async function ensureChannel(matchId) {
+    const key = String(matchId);
+    if (matchChannels.has(key)) return matchChannels.get(key);
+    if (channelPending.has(key)) return channelPending.get(key);
+    const p = (async () => {
+        const ref = firebaseApp.database().ref(`match_channels/${key}`);
+        const existing = (await ref.once('value')).val();
+        if (existing) { matchChannels.set(key, existing); return existing; }
+        const id = await createChannel();
+        await ref.set(id);
+        matchChannels.set(key, id);
+        console.log(`📡 [KANAL] ${key} için kanal oluşturuldu`);
+        return id;
+    })().finally(() => channelPending.delete(key));
+    channelPending.set(key, p);
+    return p;
+}
+
+async function ensureChannelsForActiveMatches(matches) {
+    if (!USE_BROADCAST) return;
+    if (Date.now() < channelFailUntil) return;
+    const now = Date.now();
+    for (const m of matches) {
+        const soon = m.status === 'inprogress' || (m.status === 'notstarted' && m.timestamp - now <= 30 * MINUTE_MS);
+        if (!soon) continue;
+        try { await ensureChannel(m.id); }
+        catch (e) {
+            console.error(`❌ [KANAL] ${m.id}: ${e.message}`);
+            channelFailUntil = Date.now() + 5 * MINUTE_MS;
+            return;
+        }
+    }
+}
+
+async function removeChannel(matchId, channelId) {
+    try {
+        await h2Request(MANAGE_HOST, 'DELETE', `/1/apps/${APNS_BUNDLE_ID}/channels`, {
+            authorization: `bearer ${apnsJwt()}`, 'apns-channel-id': channelId
+        });
+    } catch (e) {}
+    try { await firebaseApp.database().ref(`match_channels/${matchId}`).remove(); } catch (e) {}
+    matchChannels.delete(String(matchId));
+    console.log(`📡 [KANAL] ${matchId} kanalı silindi`);
+}
+
+function broadcastLiveActivity(channelId, matchId, contentState, isEnd) {
+    sendBroadcast(channelId, {
+        timestamp: Math.floor(Date.now() / 1000),
+        event: isEnd ? 'end' : 'update',
+        "content-state": contentState
+    })
+        .then(r => console.log(`📡 [BROADCAST] ${matchId} → ${contentState.homeScore}-${contentState.awayScore} ${contentState.matchMinute} | HTTP ${r.status}`))
+        .catch(e => console.error(`❌ [BROADCAST] ${matchId}: ${e.message}`));
+    if (isEnd && !endedChannels.has(channelId)) {
+        endedChannels.add(channelId);
+        setTimeout(() => removeChannel(matchId, channelId), 10 * MINUTE_MS);
+    }
+}
+// ===== /BROADCAST =====
+
+
+
+
+
+
+
+
+
+
+
+
+
 console.log(`🍏 [FUTBOL] Apple APNs hazır. (Mod: ${IS_PRODUCTION ? "CANLI" : "GELİŞTİRİCİ"})`);
 
 // =========================================================================
@@ -1007,9 +1162,16 @@ async function checkAndSendNotifications(newMatches) {
         const minuteChanged = liveMin !== prev.liveMinuteStr;
         const scoreChanged = currH !== prev.homeScore || currA !== prev.awayScore;
         const statusChanged = statusType !== prev.status;
-
+        const chId = matchChannels.get(matchIdStr);
+        if (USE_BROADCAST && chId) {
+            broadcastLiveActivity(chId, matchIdStr, {
+                homeScore: currH, awayScore: currA,
+                matchMinute: isFinished ? "MS" : String(liveMin)
+            }, isFinished);
+        }
         // ---- Live Activity güncellemeleri ----
         if ((isLive || isFinished) && (minuteChanged || scoreChanged || statusChanged)) {
+           
             let tokensObj = null;
             try {
                 const snapshot = await withTimeout(firebaseApp.database().ref(`live_activity_tokens/${matchIdStr}`).once('value'), 8000, 'Token okuma');
@@ -1178,10 +1340,19 @@ async function triggerPushToStart(matchId) {
     const cleanAwayScore = match.awayScore && match.awayScore !== "-" ? Number(match.awayScore) : 0;
     const cleanMinute = match.liveMinute ? String(match.liveMinute).replace("'", "") : "Canlı";
 
+    let channelId = null;
+   
+    if (USE_BROADCAST) {
+    try { channelId = await ensureChannel(match.id); }
+    catch (e) { console.error(`❌ [KANAL] ${e.message}`); }
+        }
+        
+    
     const makeNotification = () => buildLiveActivityNotification({
         aps: {
             timestamp: Math.floor(Date.now() / 1000),
             event: 'start',
+            ...(channelId ? { "input-push-channel": channelId } : {}),
             "attributes-type": "MacSaatiWidgetAttributes",
             "attributes": {
                 matchId: String(match.id),
@@ -1312,6 +1483,8 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
     }
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
+
+    await ensureChannelsForActiveMatches(matches).catch(() => {});
     try {
         await withTimeout(checkAndSendNotifications(matches), 60000, 'Bildirim kontrolü');
     } catch (e) {
