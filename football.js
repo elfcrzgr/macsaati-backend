@@ -138,6 +138,7 @@ async function sendBroadcast(channelId, aps) {
         'apns-push-type': 'liveactivity',
         'apns-topic': `${APNS_BUNDLE_ID}.push-type.liveactivity`,
         'apns-priority': '10',
+        'apns-expiration': String(Math.floor(Date.now() / 1000) + 3600),
         'apns-request-id': crypto.randomUUID()
     }, JSON.stringify({ aps }));
     if (String(res.status) !== '200') throw new Error(`HTTP ${res.status} ${res.body}`);
