@@ -2,7 +2,7 @@ const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
-
+const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43";
 require('events').EventEmitter.defaultMaxListeners = 100;
 
 // =========================================================================
@@ -1165,6 +1165,12 @@ async function triggerPushToStart(matchId) {
     for (const [deviceId, t] of Object.entries(globalSnap.val() || {})) {
         if (typeof t === 'string' && t.length > 0) targets.set(t, deviceId);
     }
+
+    if (TEST_ONLY_DEVICE_ID) {
+    for (const [t, d] of targets) {
+        if (d !== TEST_ONLY_DEVICE_ID) targets.delete(t);
+    }
+}
     if (targets.size === 0) return;
     console.log(`🚀 [PUSH-TO-START] ${match.homeTeam.name} - ${match.awayTeam.name}: ${targets.size} cihaza gönderiliyor`);
 
@@ -1327,7 +1333,8 @@ for (const [id, m] of globalFootballCache.entries()) {
     if (triggeredMatches.has(String(id)) || m.status === 'finished') continue;
 
     // Sadece maça ~2 dk kala (veya maç zaten canlıysa) başlat
-    const startsSoon = m.status === 'inprogress' || (m.timestamp - now) <= 2 * MINUTE_MS;
+    const startsSoon = m.status === 'inprogress' || (m.timestamp - now) <= 5 * MINUTE_MS;
+  
     if (!startsSoon) continue;
 
     triggeredMatches.add(String(id));
@@ -1419,7 +1426,7 @@ async function main() {
             let quickScanDates = [getTRDate(0)];
             if (currentHour >= 0 && currentHour <= 4) quickScanDates = [getTRDate(-1), getTRDate(0)];
 
-            const isUpcoming = () => sportUpdateStatus.nextMatchTime && Date.now() >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1);
+            const isUpcoming = () => sportUpdateStatus.nextMatchTime && Date.now() >= (sportUpdateStatus.nextMatchTime - MINUTE_MS * 6);
 
             if ((sportUpdateStatus.hasLiveMatch || isUpcoming()) && Date.now() >= nextLiveScanAt - 1500) {
                 console.log(sportUpdateStatus.hasLiveMatch ? "\n⚽ [HIZLI DÖNGÜ] Canlı futbol maçı var!" : "\n⏰ [FUTBOL YAKLAŞAN] Yaklaşan maç vakti!");
@@ -1435,7 +1442,7 @@ async function main() {
                 sleepTime = Math.max(1000, nextLiveScanAt - Date.now());
                 console.log(`\n⚡ [FUTBOL] Aktif maç var. Sonraki sorgu ${Math.round(sleepTime / 1000)} sn sonra (dakika sınırına hizalı).`);
             } else if (sportUpdateStatus.nextMatchTime && Date.now() >= sportUpdateStatus.nextMatchTime - MINUTE_MS * 12) {
-                sleepTime = Math.min(30000, Math.max(1000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 1.1 - Date.now()));
+               sleepTime = Math.min(30000, Math.max(1000, sportUpdateStatus.nextMatchTime - MINUTE_MS * 6 - Date.now()));
                 console.log(`\n⏳ [FUTBOL] Maça az kaldı, ${Math.round(sleepTime / 1000)} sn sonra tekrar bakılacak.`);
             } else {
                 sleepTime = 10 * MINUTE_MS;
