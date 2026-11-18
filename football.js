@@ -1163,15 +1163,20 @@ async function checkAndSendNotifications(newMatches) {
         const minuteChanged = liveMin !== prev.liveMinuteStr;
         const scoreChanged = currH !== prev.homeScore || currA !== prev.awayScore;
         const statusChanged = statusType !== prev.status;
-        const chId = matchChannels.get(matchIdStr);
-        if (USE_BROADCAST && chId) {
-            broadcastLiveActivity(chId, matchIdStr, {
-                homeScore: currH, awayScore: currA,
-                matchMinute: isFinished ? "MS" : String(liveMin)
-            }, isFinished);
-        }
-        // ---- Live Activity güncellemeleri ----
+        
+        
+       const chId = matchChannels.get(matchIdStr);
+// ---- Live Activity güncellemeleri ----
         if ((isLive || isFinished) && (minuteChanged || scoreChanged || statusChanged)) {
+            if (USE_BROADCAST && chId && (isFinished || liveMin)) {
+                broadcastLiveActivity(chId, matchIdStr, {
+                    homeScore: currH, awayScore: currA,
+                    matchMinute: isFinished ? "MS" : String(liveMin)
+        }, isFinished);
+    }
+
+
+
            
             let tokensObj = null;
             try {
