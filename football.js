@@ -698,7 +698,7 @@ function turkeyLeagueLogoId(name, ccode) {
     if (String(ccode).toUpperCase() !== 'TUR') return null;
     const n = String(name || '').toLowerCase();
     if (/s[üu]per l[iı]g/.test(n)) return 71;
-    if (/1\.?\s?lig|first league/.test(n)) return 135;
+    if (/1\.?\s?lig|first league/.test(n)) return 165;
     return null;
 }
 
