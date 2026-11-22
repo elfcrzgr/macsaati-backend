@@ -694,6 +694,14 @@ const nationalTeamCodes = {
 // =========================================================================
 const fotmobTeamLogo = (id) => `https://images.fotmob.com/image_resources/logo/teamlogo/${id}.png`;
 const fotmobLeagueLogo = (id) => `https://images.fotmob.com/image_resources/logo/leaguelogo/${id}.png`;
+function turkeyLeagueLogoId(name, ccode) {
+    if (String(ccode).toUpperCase() !== 'TUR') return null;
+    const n = String(name || '').toLowerCase();
+    if (/s[üu]per l[iı]g/.test(n)) return 71;
+    if (/1\.?\s?lig|first league/.test(n)) return 135;
+    return null;
+}
+
 const flagLogo = (code) => `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/tennis/logos/${code}.png`;
 
 // "04.10.2026 20:45" | "20:45" -> { date: "2026-10-04", time: "20:45" }
@@ -1451,6 +1459,8 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 if (aCode) awayLogoUrl = flagLogo(aCode);
             }
 
+            if (String(e.ccode).toUpperCase() === 'TUR') console.log(`🔎 [TUR-LİG] id=${e.leagueId} | ${e.leagueName}`);
+            
             globalFootballCache.set(e.id, {
                 id: e.id,
                 isElite: ELITE_FOOT_IDS.has(e.leagueId) || !!(e.rule && e.rule.elite),
@@ -1465,7 +1475,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 awayTeam: { name: aName, logo: awayLogoUrl, id: e.away.id },
                 homeNameRaw: hNameRaw,
                 awayNameRaw: aNameRaw,
-                tournamentLogo: fotmobLeagueLogo(e.rule ? e.rule.logoId : e.leagueId),
+                tournamentLogo: fotmobLeagueLogo(turkeyLeagueLogoId(e.leagueName, e.ccode) || (e.rule ? e.rule.logoId : e.leagueId)),
                 homeScore: finalHomeScore,
                 awayScore: finalAwayScore,
                 setScores: [],
