@@ -1459,7 +1459,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 if (aCode) awayLogoUrl = flagLogo(aCode);
             }
 
-            if (String(e.ccode).toUpperCase() === 'TUR') console.log(`🔎 [TUR-LİG] id=${e.leagueId} | ${e.leagueName}`);
+            
             
             globalFootballCache.set(e.id, {
                 id: e.id,
