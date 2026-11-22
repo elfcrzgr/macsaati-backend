@@ -3,7 +3,16 @@ const { execFileSync } = require('child_process');
 const norm = s => String(s||"").toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ı/g,'i').replace(/[^a-z0-9]+/g,' ').trim();
 const ids = JSON.parse(fs.readFileSync('team_ids.cache.json','utf8'));
 const known = new Set(Object.keys(ids.other).map(norm));
-const get = u => execFileSync('curl',['-sL','--max-time','20',u,'-H','Referer: https://tbf.org.tr/'],{maxBuffer:50e6});
+const get = u => {
+  for (let i = 0; i < 3; i++) {
+    try {
+      return execFileSync('curl', ['-sL', '--max-time', '40', u,
+        '-H', 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15',
+        '-H', 'Referer: https://tbf.org.tr/'], { maxBuffer: 50e6 });
+    } catch (e) { console.log(`tekrar deneniyor (${i + 1}/3): ${u.slice(0, 70)}`); }
+  }
+  throw new Error('3 denemede de alınamadı: ' + u);
+};
 fs.mkdirSync('logos_yeni',{recursive:true});
 const done = {};
 for (const act of [22214, 22215]) {
