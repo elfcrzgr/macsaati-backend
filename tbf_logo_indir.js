@@ -24,7 +24,7 @@ for (const act of [22214, 22215]) {
   for (const m of all) for (const t of [m.homeTeam, m.awayTeam]) {
     if (!t || known.has(norm(t.name)) || done[t.name]) continue;
     if (!t.logoUrl) { console.log(`YOK: ${t.name} (TBF logo vermiyor)`); done[t.name] = 1; continue; }
-    const url = t.logoUrl.startsWith('http') ? t.logoUrl : 'https://tbf.org.tr' + t.logoUrl;
+    const url = (t.logoUrl.startsWith('http') ? t.logoUrl : 'https://tbf.org.tr' + t.logoUrl).replace(/ /g, '%20');
     const ext = (url.match(/\.(png|jpe?g|webp|svg)(\?|$)/i) || [])[1] || 'png';
     const file = norm(t.name).replace(/ /g,'-') + '.' + ext.toLowerCase();
     const buf = get(url);
