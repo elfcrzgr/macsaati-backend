@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { execFileSync } = require('child_process');
 
-const SKIP_RE = /fuzul|tarfin|gelisim/i; // alt takımları atla, istemezsen /^$/ yap
+const SKIP_RE = /^$/; // hiçbir takımı atlama
 const IDS_FILE = 'basketball/team_ids.json';
 const LOGO_DIR = 'basketball/logos';
 
