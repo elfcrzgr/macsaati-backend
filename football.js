@@ -2,7 +2,8 @@ const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
-const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43";
+//const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43";
+const TEST_ONLY_DEVICE_ID = "";
 require('events').EventEmitter.defaultMaxListeners = 100;
 const USE_BROADCAST = true; // true yapınca kanal sistemi devreye girer
 
