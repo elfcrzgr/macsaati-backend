@@ -2,8 +2,9 @@ const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
-const TEST_ONLY_DEVICE_ID = "A8BEC7C0-4B2A-4405-83B7-7F6182202F13"; // iOS: sadece bu cihaz ("" = herkes)
-const ANDROID_TEST_ONLY = true;  // Android: true = sadece debug build (test_live), false = tüm Android kullanıcıları
+//const TEST_ONLY_DEVICE_ID = "A8BEC7C0-4B2A-4405-83B7-7F6182202F13"; // iOS: sadece bu cihaz ("" = herkes)
+const TEST_ONLY_DEVICE_ID = ""; // iOS: sadece bu cihaz ("" = herkes)
+const ANDROID_TEST_ONLY = false;  // Android: true = sadece debug build (test_live), false = tüm Android kullanıcıları
 const SEND_IOS = true;           // testte tek platformu denemek için false yapabilirsin
 const SEND_ANDROID = true;
 require('events').EventEmitter.defaultMaxListeners = 100;
