@@ -2,7 +2,10 @@ const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
-const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43";
+const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43"; // iOS: sadece bu cihaz ("" = herkes)
+const ANDROID_TEST_ONLY = true;  // Android: true = sadece debug build (test_live), false = tüm Android kullanıcıları
+const SEND_IOS = true;           // testte tek platformu denemek için false yapabilirsin
+const SEND_ANDROID = true;
 require('events').EventEmitter.defaultMaxListeners = 100;
 const USE_BROADCAST = true; // true yapınca kanal sistemi devreye girer
 
@@ -86,6 +89,8 @@ const channelPending = new Map();     // aynı anda iki kanal oluşmasın
 const endedChannels = new Set();
 let channelFailUntil = 0;
 
+const channelRetryAt = new Map();
+
 let jwtCache = { token: null, at: 0 };
 function apnsJwt() {
     const now = Math.floor(Date.now() / 1000);
@@ -147,6 +152,7 @@ async function sendBroadcast(channelId, aps) {
 
 async function ensureChannel(matchId) {
     const key = String(matchId);
+    console.log(`📡 [KANAL] ${key} için kanal aranıyor/oluşturuluyor`);
     if (matchChannels.has(key)) return matchChannels.get(key);
     if (channelPending.has(key)) return channelPending.get(key);
     const p = (async () => {
@@ -165,16 +171,15 @@ async function ensureChannel(matchId) {
 
 async function ensureChannelsForActiveMatches(matches) {
     if (!USE_BROADCAST) return;
-    if (Date.now() < channelFailUntil) return;
     const now = Date.now();
     for (const m of matches) {
         const soon = m.status === 'inprogress' || (m.status === 'notstarted' && m.timestamp - now <= 30 * MINUTE_MS);
         if (!soon) continue;
+        if ((channelRetryAt.get(m.id) || 0) > now) continue;
         try { await ensureChannel(m.id); }
         catch (e) {
             console.error(`❌ [KANAL] ${m.id}: ${e.message}`);
-            channelFailUntil = Date.now() + 5 * MINUTE_MS;
-            return;
+            channelRetryAt.set(m.id, now + 2 * MINUTE_MS);
         }
     }
 }
@@ -1408,6 +1413,33 @@ async function triggerPushToStart(matchId) {
     console.log(`🚀 [PUSH-TO-START] Bitti: ${ok} başarılı, ${failed} başarısız`);
 }
 
+
+async function triggerAndroidLiveStart(matchId) {
+    const match = globalFootballCache.get(matchId);
+    if (!match) return;
+    // Test modunda (TEST_ONLY_DEVICE_ID dolu) sadece debug build'e, değilse tüm Android kullanıcılarına
+    const topic = ANDROID_TEST_ONLY ? "test_live" : "genel_duyurular";
+    const message = {
+        topic,
+        data: {
+            type: "LIVE_START",
+            matchId: String(match.id),
+            homeName: String(match.homeTeam.name),
+            awayName: String(match.awayTeam.name),
+            leagueName: String(match.tournament || "Futbol"),
+            leagueLogo: String(match.tournamentLogo || ""),
+            homeLogo: String(match.homeTeam.logo || ""),
+            awayLogo: String(match.awayTeam.logo || ""),
+            homeScore: (match.homeScore && match.homeScore !== "-") ? String(match.homeScore) : "0",
+            awayScore: (match.awayScore && match.awayScore !== "-") ? String(match.awayScore) : "0",
+            liveMinute: match.liveMinute ? String(match.liveMinute) : String(match.fixedTime || "")
+        },
+        android: { priority: "high", ttl: 10 * 60 * 1000 }
+    };
+    await withTimeout(firebaseApp.messaging().send(message), 10000, 'Android canlı kart');
+    console.log(`🤖 [ANDROID-CANLI] ${match.homeTeam.name} - ${match.awayTeam.name} → ${topic}`);
+}
+
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
 // =========================================================================
@@ -1476,7 +1508,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 awayTeam: { name: aName, logo: awayLogoUrl, id: e.away.id },
                 homeNameRaw: hNameRaw,
                 awayNameRaw: aNameRaw,
-                tournamentLogo: fotmobLeagueLogo(turkeyLeagueLogoId(e.leagueName, e.ccode) || (e.rule ? e.rule.logoId : e.leagueId)),
+                tournamentLogo: fotmobLeagueLogo(turkeyLeagueLogoId(e.leagueName, e.ccode) || (e.rule && e.rule.logoId) || e.leagueId),
                 homeScore: finalHomeScore,
                 awayScore: finalAwayScore,
                 setScores: [],
@@ -1503,7 +1535,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
 
-    await ensureChannelsForActiveMatches(matches).catch(() => {});
+    ensureChannelsForActiveMatches(matches).catch(() => {});
     try {
         await withTimeout(checkAndSendNotifications(matches), 60000, 'Bildirim kontrolü');
     } catch (e) {
@@ -1531,7 +1563,8 @@ for (const [id, m] of globalFootballCache.entries()) {
 
     triggeredMatches.add(String(id));
     await firebaseApp.database().ref(`forced_matches/${id}`).set('sent'); // sunucu yeniden başlasa da tekrar gitmesin
-    triggerPushToStart(id).catch(e => console.error("❌ Push-to-start hatası:", e.message));
+      if (SEND_IOS) triggerPushToStart(id).catch(e => console.error("❌ Push-to-start hatası:", e.message));
+    if (SEND_ANDROID) triggerAndroidLiveStart(id).catch(e => console.error("❌ Android canlı kart hatası:", e.message));
 }
     } catch (e) {
         console.error("❌ Zorunlu maç kontrolü atlandı:", e.message);
