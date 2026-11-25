@@ -89,8 +89,6 @@ const channelPending = new Map();     // aynı anda iki kanal oluşmasın
 const endedChannels = new Set();
 let channelFailUntil = 0;
 
-const channelRetryAt = new Map();
-
 let jwtCache = { token: null, at: 0 };
 function apnsJwt() {
     const now = Math.floor(Date.now() / 1000);
@@ -152,7 +150,6 @@ async function sendBroadcast(channelId, aps) {
 
 async function ensureChannel(matchId) {
     const key = String(matchId);
-    console.log(`📡 [KANAL] ${key} için kanal aranıyor/oluşturuluyor`);
     if (matchChannels.has(key)) return matchChannels.get(key);
     if (channelPending.has(key)) return channelPending.get(key);
     const p = (async () => {
@@ -171,15 +168,16 @@ async function ensureChannel(matchId) {
 
 async function ensureChannelsForActiveMatches(matches) {
     if (!USE_BROADCAST) return;
+    if (Date.now() < channelFailUntil) return;
     const now = Date.now();
     for (const m of matches) {
         const soon = m.status === 'inprogress' || (m.status === 'notstarted' && m.timestamp - now <= 30 * MINUTE_MS);
         if (!soon) continue;
-        if ((channelRetryAt.get(m.id) || 0) > now) continue;
         try { await ensureChannel(m.id); }
         catch (e) {
             console.error(`❌ [KANAL] ${m.id}: ${e.message}`);
-            channelRetryAt.set(m.id, now + 2 * MINUTE_MS);
+            channelFailUntil = Date.now() + 5 * MINUTE_MS;
+            return;
         }
     }
 }
@@ -1535,7 +1533,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
 
     const matches = Array.from(globalFootballCache.values()).sort((a, b) => a.timestamp - b.timestamp);
 
-    ensureChannelsForActiveMatches(matches).catch(() => {});
+    await ensureChannelsForActiveMatches(matches).catch(() => {});
     try {
         await withTimeout(checkAndSendNotifications(matches), 60000, 'Bildirim kontrolü');
     } catch (e) {
