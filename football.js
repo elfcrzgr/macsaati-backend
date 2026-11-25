@@ -2,8 +2,10 @@ const fs = require('fs');
 const admin = require('firebase-admin');
 const apn = require('apn');
 const xml2js = require('xml2js');
-//const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43";
-const TEST_ONLY_DEVICE_ID = "";
+const TEST_ONLY_DEVICE_ID = "EBB2F57A-CF06-4F33-A967-F358BE91CA43"; // iOS: sadece bu cihaz ("" = herkes)
+const ANDROID_TEST_ONLY = true;  // Android: true = sadece debug build (test_live), false = tüm Android kullanıcıları
+const SEND_IOS = true;           // testte tek platformu denemek için false yapabilirsin
+const SEND_ANDROID = true;
 require('events').EventEmitter.defaultMaxListeners = 100;
 const USE_BROADCAST = true; // true yapınca kanal sistemi devreye girer
 
@@ -566,7 +568,8 @@ const LEAGUE_NAME_RULES = [
     { re: /s[eé]rie a/i,                     tr: "Brezilya Série A",              logoId: 268,  elite: true },
     { re: /\bmls\b|major league soccer/i,    tr: "MLS",                           logoId: 130,  elite: true },
     { re: /liga profesional/i,               tr: "Arjantin Liga Profesional",     logoId: 112,  elite: true },
-    { re: /saudi.*league|roshn.*league/i,    tr: "Suudi Arabistan Pro Lig",       logoId: 538,  elite: true }
+    { re: /saudi.*league|roshn.*league/i,    tr: "Suudi Arabistan Pro Lig",       logoId: 538,  elite: true },
+        { re: /^afc champions league/i, elite: false }
 ];
 
 
@@ -1408,6 +1411,33 @@ async function triggerPushToStart(matchId) {
     console.log(`🚀 [PUSH-TO-START] Bitti: ${ok} başarılı, ${failed} başarısız`);
 }
 
+
+async function triggerAndroidLiveStart(matchId) {
+    const match = globalFootballCache.get(matchId);
+    if (!match) return;
+    // Test modunda (TEST_ONLY_DEVICE_ID dolu) sadece debug build'e, değilse tüm Android kullanıcılarına
+    const topic = ANDROID_TEST_ONLY ? "test_live" : "genel_duyurular";
+    const message = {
+        topic,
+        data: {
+            type: "LIVE_START",
+            matchId: String(match.id),
+            homeName: String(match.homeTeam.name),
+            awayName: String(match.awayTeam.name),
+            leagueName: String(match.tournament || "Futbol"),
+            leagueLogo: String(match.tournamentLogo || ""),
+            homeLogo: String(match.homeTeam.logo || ""),
+            awayLogo: String(match.awayTeam.logo || ""),
+            homeScore: (match.homeScore && match.homeScore !== "-") ? String(match.homeScore) : "0",
+            awayScore: (match.awayScore && match.awayScore !== "-") ? String(match.awayScore) : "0",
+            liveMinute: match.liveMinute ? String(match.liveMinute) : String(match.fixedTime || "")
+        },
+        android: { priority: "high", ttl: 10 * 60 * 1000 }
+    };
+    await withTimeout(firebaseApp.messaging().send(message), 10000, 'Android canlı kart');
+    console.log(`🤖 [ANDROID-CANLI] ${match.homeTeam.name} - ${match.awayTeam.name} → ${topic}`);
+}
+
 // =========================================================================
 // ⚽ FUTBOL GÜNCELLEME
 // =========================================================================
@@ -1476,7 +1506,7 @@ async function updateFootball(targetDates = [getTRDate(0)], isQuickScan = false)
                 awayTeam: { name: aName, logo: awayLogoUrl, id: e.away.id },
                 homeNameRaw: hNameRaw,
                 awayNameRaw: aNameRaw,
-                tournamentLogo: fotmobLeagueLogo(turkeyLeagueLogoId(e.leagueName, e.ccode) || (e.rule ? e.rule.logoId : e.leagueId)),
+                tournamentLogo: fotmobLeagueLogo(turkeyLeagueLogoId(e.leagueName, e.ccode) || (e.rule && e.rule.logoId) || e.leagueId),
                 homeScore: finalHomeScore,
                 awayScore: finalAwayScore,
                 setScores: [],
@@ -1531,7 +1561,8 @@ for (const [id, m] of globalFootballCache.entries()) {
 
     triggeredMatches.add(String(id));
     await firebaseApp.database().ref(`forced_matches/${id}`).set('sent'); // sunucu yeniden başlasa da tekrar gitmesin
-    triggerPushToStart(id).catch(e => console.error("❌ Push-to-start hatası:", e.message));
+      if (SEND_IOS) triggerPushToStart(id).catch(e => console.error("❌ Push-to-start hatası:", e.message));
+    if (SEND_ANDROID) triggerAndroidLiveStart(id).catch(e => console.error("❌ Android canlı kart hatası:", e.message));
 }
     } catch (e) {
         console.error("❌ Zorunlu maç kontrolü atlandı:", e.message);
