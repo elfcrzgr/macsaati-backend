@@ -533,7 +533,8 @@ const footballLeagues = {
     130: "MLS",
     538: "Pro League",
     268: "Série A",
-    112: "Liga Profesional"
+    112: "Liga Profesional",
+    8982: "Hindistan I League"
 };
 
 // Hangi ligler listede gösterilsin? Boş bırakırsanız (ALLOWED_LEAGUES.size === 0) TÜM ligler gelir.
