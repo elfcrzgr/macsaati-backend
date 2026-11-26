@@ -569,9 +569,7 @@ const LEAGUE_NAME_RULES = [
     { re: /s[eé]rie a/i,                     tr: "Brezilya Série A",              logoId: 268,  elite: true },
     { re: /\bmls\b|major league soccer/i,    tr: "MLS",                           logoId: 130,  elite: true },
     { re: /liga profesional/i,               tr: "Arjantin Liga Profesional",     logoId: 112,  elite: true },
-    { re: /saudi.*league|roshn.*league/i,    tr: "Suudi Arabistan Pro Lig",       logoId: 538,  elite: true },
-           { re: /^afc champions league/i, elite: false },
-    { re: /^i[- ]league/i, tr: "Hindistan I League", logoId: 8982, elite: false }
+    { re: /saudi.*league|roshn.*league/i,    tr: "Suudi Arabistan Pro Lig",       logoId: 538,  elite: true }
 ];
 
 
